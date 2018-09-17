@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CCGCore">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/CCGCore.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
