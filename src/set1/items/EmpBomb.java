@@ -6,7 +6,6 @@
 package set1.items;
 
 import cards.Activation;
-import cards.Card;
 import cards.Item;
 import enums.Knowledge;
 import game.ClientGame;

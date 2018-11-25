@@ -7,17 +7,11 @@ package network;
  */
 
 
-import game.Table;
-import game.Deck;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
 
 /**
  *
@@ -75,8 +69,7 @@ public class Connection {
     public Message receive()
     {
         try {
-            Message message = (Message)reader.readObject();
-            return message;
+            return (Message)reader.readObject();
         } catch (IOException ex) {
             System.out.println("Message recieve error: " + ex.getMessage());
         } catch (ClassNotFoundException ex) {

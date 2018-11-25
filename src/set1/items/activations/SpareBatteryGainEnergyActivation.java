@@ -10,9 +10,6 @@ import game.Game;
 import cards.Item;
 import enums.Counter;
 import game.Player;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *

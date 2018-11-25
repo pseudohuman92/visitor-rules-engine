@@ -93,9 +93,7 @@ public class GameArea extends javax.swing.JPanel {
         jLabel4.setText("Hand: " + client.game.player.hand.size());
         jLabel5.setText("Discard: " + client.game.player.discardPile.size());
         jLabel19.setText("");
-        client.game.player.knowledge.forEach((knowledge, count) -> {
-            jLabel19.setText(jLabel19.getText() + knowledge.toShortString() + ": " + count + " ");
-        });
+        client.game.player.knowledge.forEach((knowledge, count) -> jLabel19.setText(jLabel19.getText() + knowledge.toShortString() + ": " + count + " "));
     }
 
     void setOpponentStats() {
@@ -106,9 +104,7 @@ public class GameArea extends javax.swing.JPanel {
         jLabel9.setText("Hand: " + client.game.opponent.handSize);
         jLabel10.setText("Discard: " + client.game.opponent.discardPile.size());
         jLabel12.setText("");
-        client.game.opponent.knowledge.forEach((knowledge, count) -> {
-            jLabel12.setText(jLabel12.getText() + knowledge.toShortString() + ": " + count + " ");
-        });
+        client.game.opponent.knowledge.forEach((knowledge, count) -> jLabel12.setText(jLabel12.getText() + knowledge.toShortString() + ": " + count + " "));
     }
 
     void setPhase() {
@@ -139,25 +135,19 @@ public class GameArea extends javax.swing.JPanel {
     }
 
     void updateHand() {
-        client.game.player.hand.forEach((card) -> {
-            card.updatePanel();
-        });
+        client.game.player.hand.forEach(Card::updatePanel);
         jPanel4.revalidate();
         jPanel4.repaint();
     }
 
     void updatePlayerItems() {
-        client.game.player.items.forEach((card) -> {
-            card.updatePanel();
-        });
+        client.game.player.items.forEach(Card::updatePanel);
         jPanel6.validate();
         jPanel6.repaint();
     }
 
     void updateOpponentItems() {
-        client.game.opponent.items.forEach((card) -> {
-            card.updatePanel();
-        });
+        client.game.opponent.items.forEach(Card::updatePanel);
         jPanel5.validate();
         jPanel5.repaint();
     }
@@ -367,12 +357,8 @@ public class GameArea extends javax.swing.JPanel {
     }
 
     void clearItemMarks() {
-        client.game.player.items.forEach((card) -> {
-            card.marked = false;
-        });
-        client.game.opponent.items.forEach((card) -> {
-            card.marked = false;
-        });
+        client.game.player.items.forEach((card) -> card.marked = false);
+        client.game.opponent.items.forEach((card) -> card.marked = false);
     }
     
     public void getXValue(BiConsumer<Client, Integer> func, BiFunction <Client, Integer, Boolean> cond){
@@ -401,24 +387,18 @@ public class GameArea extends javax.swing.JPanel {
     void addActivateListeners() {
         removePlayerItemListeners();
         Debug.println("Adding activate listeners");
-        client.game.player.items.forEach((card) -> {
-            card.panel.addMouseListener(activateAdapter(card));
-        });
+        client.game.player.items.forEach((card) -> card.panel.addMouseListener(activateAdapter(card)));
     }
 
     void addPlayListeners() {
         removeHandListeners();
         Debug.println("Adding play listeners");
-        client.game.player.hand.forEach((card) -> {
-            card.panel.addMouseListener(playAdapter(card));
-        });
+        client.game.player.hand.forEach((card) -> card.panel.addMouseListener(playAdapter(card)));
     }
 
     void addDiscardListeners(int count) {
         Debug.println("Adding discard listeners");
-        client.game.player.hand.forEach((card) -> {
-            card.panel.addMouseListener(discardAdapter(card, count));
-        });
+        client.game.player.hand.forEach((card) -> card.panel.addMouseListener(discardAdapter(card, count)));
     }
     
     public void addFilteredPlayerTargetListeners(BiConsumer<Client, ArrayList<Serializable>> func, Function<Item, Boolean> filter, int count) {
@@ -432,7 +412,7 @@ public class GameArea extends javax.swing.JPanel {
     }
 
     public void addPlayerTargetListeners(BiConsumer<Client, ArrayList<Serializable>> func, int count) {
-        addFilteredPlayerTargetListeners(func, c->{return true;}, count);
+        addFilteredPlayerTargetListeners(func, c-> true, count);
     }
     
     public void addFilteredOpponentTargetListeners(BiConsumer<Client, ArrayList<Serializable>> func, Function<Item, Boolean> filter, int count) {
@@ -445,7 +425,7 @@ public class GameArea extends javax.swing.JPanel {
     }
 
     public void addOpponentTargetListeners(BiConsumer<Client, ArrayList<Serializable>> func, int count) {
-        addFilteredOpponentTargetListeners(func, c->{return true;}, count);
+        addFilteredOpponentTargetListeners(func, c-> true, count);
     }
     
     public void addFilteredTargetListeners(BiConsumer<Client, ArrayList<Serializable>> func, Function<Item, Boolean> filter, int count) {
@@ -454,7 +434,7 @@ public class GameArea extends javax.swing.JPanel {
     }
 
     public void addTargetListeners(BiConsumer<Client, ArrayList<Serializable>> func, int count) {
-        addFilteredTargetListeners(func, c->{return true;}, count);
+        addFilteredTargetListeners(func, c-> true, count);
     }
 
     public void addPlayerSelector(BiConsumer<Client, ArrayList<Serializable>> func) {
@@ -561,9 +541,7 @@ public class GameArea extends javax.swing.JPanel {
         JPopupMenu menu = new JPopupMenu();
         JMenuItem menuItem = new JMenuItem("Concede");
         menu.add(menuItem);
-        menuItem.addActionListener((ActionEvent event) -> {
-            client.concede();
-        });
+        menuItem.addActionListener((ActionEvent event) -> client.concede());
         menu.setVisible(true);
         return menu;
     }
@@ -948,29 +926,17 @@ public class GameArea extends javax.swing.JPanel {
 
         jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jCheckBox1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
+        jCheckBox1.addActionListener(this::jCheckBox1ActionPerformed);
         jPanel9.add(jCheckBox1);
 
         jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jCheckBox2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox2ActionPerformed(evt);
-            }
-        });
+        jCheckBox2.addActionListener(this::jCheckBox2ActionPerformed);
         jPanel9.add(jCheckBox2);
 
         jCheckBox3.setSelected(true);
         jCheckBox3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox3ActionPerformed(evt);
-            }
-        });
+        jCheckBox3.addActionListener(this::jCheckBox3ActionPerformed);
         jPanel9.add(jCheckBox3);
 
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -989,29 +955,17 @@ public class GameArea extends javax.swing.JPanel {
 
         jCheckBox4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jCheckBox4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox4ActionPerformed(evt);
-            }
-        });
+        jCheckBox4.addActionListener(this::jCheckBox4ActionPerformed);
         jPanel9.add(jCheckBox4);
 
         jCheckBox5.setSelected(true);
         jCheckBox5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jCheckBox5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox5ActionPerformed(evt);
-            }
-        });
+        jCheckBox5.addActionListener(this::jCheckBox5ActionPerformed);
         jPanel9.add(jCheckBox5);
 
         jCheckBox6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox6ActionPerformed(evt);
-            }
-        });
+        jCheckBox6.addActionListener(this::jCheckBox6ActionPerformed);
         jPanel9.add(jCheckBox6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

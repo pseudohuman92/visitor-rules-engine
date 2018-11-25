@@ -33,10 +33,6 @@ public class GroundConnection extends Action{
     
     @Override
     public void resolve(Game game) {
-        game.players.values().forEach(player -> {
-            player.items.forEach(item -> {
-                item.counters.remove(Counter.CHARGE);
-            });
-        });
+        game.players.values().forEach(player -> player.items.forEach(item -> item.counters.remove(Counter.CHARGE)));
     }
 }

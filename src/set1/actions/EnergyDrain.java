@@ -45,9 +45,7 @@ public class EnergyDrain extends Action{
     }
     
     public void resolve(Game game) {
-        supplimentaryData.forEach(uuid -> {
-            game.deplete((UUID)uuid);
-        });
+        supplimentaryData.forEach(uuid -> game.deplete((UUID)uuid));
         game.draw(owner, 1);
     }
 }

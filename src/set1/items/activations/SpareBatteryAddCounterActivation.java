@@ -9,9 +9,6 @@ import cards.Activation;
 import game.Game;
 import cards.Item;
 import enums.Counter;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *
@@ -20,7 +17,7 @@ import java.util.UUID;
 public class SpareBatteryAddCounterActivation extends Activation{
     
     public SpareBatteryAddCounterActivation (Item owner){
-        super(owner, "Place " + ((int)owner.supplimentaryData.get(1)) + " charge counters.");
+        super(owner, "Place " + owner.supplimentaryData.get(1) + " charge counters.");
     }
 
     @Override

@@ -5,7 +5,6 @@
  */
 package client.gui;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,25 +14,29 @@ import java.io.Writer;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import net.miginfocom.swing.MigLayout;
 import client.Client;
 
 /**
  *
  * @author pseudo
  */
-public class DeckBuilder extends javax.swing.JPanel {
+public class DeckBuilder extends JPanel {
     
     Client client;
-    /**
-     * Creates new form DeckBuilder
-     */
+
     public DeckBuilder(Client client) {
         initComponents();
         this.client = client;
-        loadCardDatabase(jTable1);
+        loadCardDatabase(collectionTable);
     }
     
     void loadCardDatabase(JTable cardDatabase) {
@@ -56,33 +59,33 @@ public class DeckBuilder extends javax.swing.JPanel {
     }
     
     void removeFromDeck(){
-        if (Integer.parseInt((String) jTable2.getValueAt(jTable2.getSelectedRow(), 0)) == 1) {
-            ((DefaultTableModel) jTable2.getModel()).removeRow(jTable2.getSelectedRow());
+        if (Integer.parseInt((String) deckList.getValueAt(deckList.getSelectedRow(), 0)) == 1) {
+            ((DefaultTableModel) deckList.getModel()).removeRow(deckList.getSelectedRow());
         } else {
-            jTable2.setValueAt(String.valueOf(Integer.parseInt((String) 
-                    jTable2.getValueAt(jTable2.getSelectedRow(), 0)) - 1), jTable2.getSelectedRow(), 0);
+            deckList.setValueAt(String.valueOf(Integer.parseInt((String) 
+                    deckList.getValueAt(deckList.getSelectedRow(), 0)) - 1), deckList.getSelectedRow(), 0);
         }
     }
     
     void addToDeck() {
-        String cardName = (String) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+        String cardName = (String) collectionTable.getValueAt(collectionTable.getSelectedRow(), 0);
         boolean exists = false;
-        for (int i = 0; i < jTable2.getModel().getRowCount(); i++) {
-            if (cardName.equals(jTable2.getModel().getValueAt(i, 1))) {
+        for (int i = 0; i < deckList.getModel().getRowCount(); i++) {
+            if (cardName.equals(deckList.getModel().getValueAt(i, 1))) {
                 exists = true;
-                jTable2.setValueAt(String.valueOf(Integer.parseInt((String) jTable2.getValueAt(i, 0)) + 1), i, 0);
+                deckList.setValueAt(String.valueOf(Integer.parseInt((String) deckList.getValueAt(i, 0)) + 1), i, 0);
                 break;
             }
         }
         if (!exists) {
-            ((DefaultTableModel) jTable2.getModel()).addRow(new String[]{"1", cardName});
+            ((DefaultTableModel) deckList.getModel()).addRow(new String[]{"1", cardName});
         }
     }
 
     void newDeck(){
-        DefaultTableModel dtf = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel dtf = (DefaultTableModel) deckList.getModel();
         dtf.setRowCount(0);
-        jTextField1.setText("New Deck");
+        deckName.setText("New Deck");
     }
     
     void loadDeck(){
@@ -90,7 +93,7 @@ public class DeckBuilder extends javax.swing.JPanel {
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-            DefaultTableModel dtf = (DefaultTableModel) jTable2.getModel();
+            DefaultTableModel dtf = (DefaultTableModel) deckList.getModel();
             dtf.setRowCount(0);
 
             Scanner deckFile = null;
@@ -99,7 +102,7 @@ public class DeckBuilder extends javax.swing.JPanel {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            jTextField1.setText(deckFile.nextLine());
+            deckName.setText(deckFile.nextLine());
 
             while (deckFile.hasNextLine()) {
                 String card = deckFile.nextLine();
@@ -116,9 +119,9 @@ public class DeckBuilder extends javax.swing.JPanel {
             Writer writer;
             try {
                 writer = new OutputStreamWriter(new FileOutputStream(fc.getSelectedFile()));
-                writer.write(jTextField1.getText() + "\r\n");
-                for (int i = 0; i < jTable2.getRowCount(); i++) {
-                    writer.write(jTable2.getValueAt(i, 0) + " " + jTable2.getValueAt(i, 1) + "\r\n");
+                writer.write(deckName.getText() + "\r\n");
+                for (int i = 0; i < deckList.getRowCount(); i++) {
+                    writer.write(deckList.getValueAt(i, 0) + " " + deckList.getValueAt(i, 1) + "\r\n");
                 }
                 writer.flush();
                 writer.close();
@@ -127,220 +130,105 @@ public class DeckBuilder extends javax.swing.JPanel {
             }
         }
     }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+                     
     private void initComponents() {
 
-        jFileChooser1 = new javax.swing.JFileChooser();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        collectionPane = new JScrollPane();
+        collectionTable = new JTable();
+        decklistPane = new JScrollPane();
+        deckList = new JTable();
+        loadButton = new JButton();
+        saveButton = new JButton();
+        newButton = new JButton();
+        deckName = new JTextField();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Cards"
-            }
+        collectionTable.setModel(new DefaultTableModel(
+            new Object [][] {},
+            new String [] { "Cards" }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return false;
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        collectionTable.setColumnSelectionAllowed(true);
+        collectionTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                addToDeck(evt);
             }
         });
-        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTable1KeyTyped(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        collectionPane.setViewportView(collectionTable);
+        collectionTable.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-            },
-            new String [] {
-                "Count", "Card"
-            }
+        deckList.setModel(new DefaultTableModel(
+            new Object [][] {},
+            new String [] { "Count", "Card" }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return false;
             }
         });
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        deckList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                removeFromDeck(evt);
             }
         });
-        jTable2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTable2KeyTyped(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTable2);
+        decklistPane.setViewportView(deckList);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 218, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 311, Short.MAX_VALUE)
-        );
 
-        jButton1.setText("Load");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        loadButton.setText("Load");
+        loadButton.addActionListener(this::loadDeck);
 
-        jButton2.setText("Save");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        saveButton.setText("Save");
+        saveButton.addActionListener(this::saveDeck);
 
-        jButton3.setText("New");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        newButton.setText("New");
+        newButton.addActionListener(this::newDeck);
 
-        jTextField1.setText("jTextField1");
+        deckName.setText("New Deck");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
-                        .addGap(12, 12, 12)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+        setLayout(new MigLayout("wrap 5", 
+                                "[button][grow 8][grow 2][button][button]", 
+                                "[grow 6][grow 4][]"));
+        add(collectionPane, "grow, span 2, wrap");
+        add(decklistPane, "grow, span 5");
+        add(newButton);
+        add(deckName, "growx, span 2");
+        add(saveButton);
+        add(loadButton);
+    }                  
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void newDeck(java.awt.event.ActionEvent evt) {                                         
         newDeck();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }                                        
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void addToDeck(java.awt.event.MouseEvent evt) {                                     
         if (evt.getClickCount() == 2) {
             addToDeck();
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }                                                       
 
-    private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
-        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-            addToDeck();
-        }
-    }//GEN-LAST:event_jTable1KeyTyped
-
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+    private void removeFromDeck(java.awt.event.MouseEvent evt) {                                     
         if (evt.getClickCount() == 2) {
             removeFromDeck();
         }
-    }//GEN-LAST:event_jTable2MouseClicked
+    }                                    
 
-    private void jTable2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable2KeyTyped
-        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-            removeFromDeck();
-        }
-    }//GEN-LAST:event_jTable2KeyTyped
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void saveDeck(java.awt.event.ActionEvent evt) {                                         
         saveDeck();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }                                        
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void loadDeck(java.awt.event.ActionEvent evt) {                                         
         loadDeck();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }                                        
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    // End of variables declaration//GEN-END:variables
+               
+    private JButton loadButton;
+    private JButton saveButton;
+    private JButton newButton;
+    private JScrollPane collectionPane;
+    private JScrollPane decklistPane;
+    private JTable collectionTable;
+    private JTable deckList;
+    private JTextField deckName;               
 }

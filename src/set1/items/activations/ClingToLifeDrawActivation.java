@@ -8,8 +8,6 @@ package set1.items.activations;
 import cards.Activation;
 import game.Game;
 import cards.Item;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *

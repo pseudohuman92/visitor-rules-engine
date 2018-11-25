@@ -22,7 +22,7 @@ import client.gui.DeckBuilder;
 import client.gui.GameArea;
 import client.gui.Lobby;
 import client.gui.Login;
-import client.gui.Main;
+import client.gui.MainFrame;
 import client.gui.TextPopup;
 import enums.Knowledge;
 import java.io.Serializable;
@@ -46,7 +46,7 @@ public class Client {
     public ClientGame game;
     
     //UI
-    Main main;
+    MainFrame main;
     Login login;
     Lobby lobby;
     DeckBuilder deckBuilder;
@@ -56,7 +56,7 @@ public class Client {
     public Client(){
         try {
             //Initialize UI
-            main = new Main(this);
+            main = new MainFrame(this);
             login = new Login(this);
             lobby = new Lobby(this);
             deckBuilder = new DeckBuilder(this);

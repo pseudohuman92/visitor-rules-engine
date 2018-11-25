@@ -9,7 +9,6 @@ import cards.Activation;
 import game.ClientGame;
 import game.Game;
 import enums.Knowledge;
-import cards.Card;
 import cards.Item;
 import client.Client;
 import java.io.Serializable;
@@ -48,7 +47,7 @@ public class TransferCable extends Item{
     
     @Override
     public void activate(Client client) {
-        client.gameArea.addFilteredPlayerTargetListeners(this::activateHelper, card -> {return !card.uuid.equals(uuid);}, 1);
+        client.gameArea.addFilteredPlayerTargetListeners(this::activateHelper, card -> !card.uuid.equals(uuid), 1);
     }
     
     public void activateHelper(Client client, ArrayList<Serializable> selection){

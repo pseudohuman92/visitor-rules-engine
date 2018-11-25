@@ -8,7 +8,7 @@ package set1.items.activations;
 import cards.Activation;
 import game.Game;
 import cards.Item;
-import java.util.ArrayList;
+
 import java.util.UUID;
 
 /**
@@ -23,8 +23,6 @@ public class NanobombActivation extends Activation{
 
     @Override
     public void resolve(Game game) {
-        creator.supplimentaryData.forEach(uuid -> {
-            game.getPlayer((UUID)uuid).life--;
-        });
+        creator.supplimentaryData.forEach(uuid -> game.getPlayer((UUID)uuid).life--);
     }
 }

@@ -5,9 +5,6 @@
  */
 package enums;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 /**
  *
  * @author pseudo
@@ -22,7 +19,7 @@ public enum Knowledge {
     NONE(0);
     
     private final int id;
-    private Knowledge(int id) { this.id = id; }
+    Knowledge(int id) { this.id = id; }
     public int getValue() { return id; }
     public String toShortString(){
         switch(this){

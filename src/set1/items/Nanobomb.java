@@ -6,7 +6,6 @@
 package set1.items;
 
 import cards.Activation;
-import cards.Card;
 import cards.Item;
 import client.Client;
 import game.ClientGame;

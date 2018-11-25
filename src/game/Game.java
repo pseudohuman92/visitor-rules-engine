@@ -7,7 +7,7 @@ package game;
 
 import cards.Card;
 import cards.Item;
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;

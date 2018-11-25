@@ -7,10 +7,8 @@ package set1.actions;
 
 import game.Game;
 import enums.Knowledge;
-import cards.Card;
-import enums.Type;
 import cards.Action;
-import java.awt.Color;
+
 import java.util.HashMap;
 
 /**

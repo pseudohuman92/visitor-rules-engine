@@ -9,12 +9,11 @@ import cards.Activation;
 import game.ClientGame;
 import game.Game;
 import enums.Knowledge;
-import cards.Card;
 import cards.Item;
 import client.Client;
-import java.io.Serializable;
+
 import java.util.HashMap;
-import java.util.UUID;
+
 import set1.items.activations.PowerInfuserActivation;
 
 /**

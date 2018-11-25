@@ -6,7 +6,6 @@ import enums.Knowledge;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.UUID;
 
 public class Player implements Serializable {
@@ -84,17 +83,12 @@ public class Player implements Serializable {
     public void newTurn(){
         energy = sources.size();
         playableSource = 1;
-        items.forEach((card) -> {card.depleted = false;});
+        items.forEach((card) -> card.depleted = false);
     }
     
     public void addKnowledge(Knowledge knowl){
         if(knowl == Knowledge.NONE){return;}
-        Integer current = knowledge.get(knowl);
-        if (current != null) {
-            knowledge.put(knowl, current + 1);
-        } else {
-            knowledge.put(knowl, 1);
-        }
+        knowledge.merge(knowl, 1, (a, b) -> a + b);
     }
     
     public boolean hasKnowledge(HashMap<Knowledge, Integer> cardKnowledge){

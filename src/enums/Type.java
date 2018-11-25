@@ -1,5 +1,5 @@
 package enums;
 
 public enum Type {
-	ITEM, ACTION, SOURCE, NONE;
+	ITEM, ACTION, SOURCE, NONE
 }

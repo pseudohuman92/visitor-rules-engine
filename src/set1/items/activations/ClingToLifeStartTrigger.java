@@ -9,8 +9,6 @@ import cards.Activation;
 import game.Game;
 import cards.Item;
 import enums.Counter;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *

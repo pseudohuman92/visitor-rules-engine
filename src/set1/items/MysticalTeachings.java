@@ -6,14 +6,12 @@
 package set1.items;
 
 import cards.Activation;
-import cards.Card;
 import cards.Item;
 import enums.Knowledge;
-import game.ClientGame;
 import game.Game;
-import game.Player;
+
 import java.util.HashMap;
-import set1.items.activations.EmpBombActivation;
+
 import set1.items.activations.MysticalTeachingsGainLifeActivation;
 import set1.items.activations.MysticalTeachingsStartTrigger;
 

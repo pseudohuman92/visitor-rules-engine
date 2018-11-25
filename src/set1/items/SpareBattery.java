@@ -6,13 +6,11 @@
 package set1.items;
 
 import cards.Activation;
-import cards.Card;
 import cards.Item;
 import client.Client;
-import enums.Counter;
 import game.ClientGame;
 import game.Game;
-import game.Player;
+
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,9 +44,7 @@ public class SpareBattery extends Item {
         if (!depleted) {
             menuItem = new JMenuItem("Add charge counters.");
             menu.add(menuItem);
-            menuItem.addActionListener((ActionEvent event) -> {
-                client.gameArea.getXValue(this::activate1Helper, (cli, x) -> {return x <= cli.game.player.energy;});
-            });
+            menuItem.addActionListener((ActionEvent event) -> client.gameArea.getXValue(this::activate1Helper, (cli, x) -> x <= cli.game.player.energy));
         }
         
         menuItem = new JMenuItem("Destroy: Gain energy");

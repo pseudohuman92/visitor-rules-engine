@@ -14,7 +14,7 @@ import game.Phase;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
+
 import network.Message;
 
 /**
@@ -51,8 +51,8 @@ public abstract class Item extends Card {
     }
     
     // Called by the client to see if this item can be activated
-    public boolean canActivate(ClientGame game){ return false; };
-    
+    public boolean canActivate(ClientGame game){ return false; }
+
     // Called by the client when you choose to activate this item
     public void activate(Client client){
         client.gameConnection.send(Message.activate(client.game.uuid, client.username, uuid, new ArrayList<>()));

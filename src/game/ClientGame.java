@@ -9,7 +9,7 @@ import cards.Card;
 import game.Opponent;
 import game.Phase;
 import game.Player;
-import enums.Type;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;

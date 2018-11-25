@@ -5,6 +5,8 @@
  */
 package client;
 
+import static java.awt.EventQueue.invokeLater;
+
 /**
  *
  * @author pseudo
@@ -13,9 +15,6 @@ public class Main {
     public static void main(String args[]) {
         
         Client client = new Client();
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            client.main.setVisible(true);
-        });
+        invokeLater(() -> client.main.setVisible(true));
     }
 }

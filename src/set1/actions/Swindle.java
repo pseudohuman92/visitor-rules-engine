@@ -49,7 +49,7 @@ public class Swindle extends Action{
     
     public void playHelper(Client client, ArrayList<Serializable> selection){
         supplimentaryData.addAll(selection);
-        client.gameArea.addFilteredOpponentTargetListeners(this::playHelper2, card->{return card.cost <= ((Item)selection.get(0)).cost;}, 1);
+        client.gameArea.addFilteredOpponentTargetListeners(this::playHelper2, card-> card.cost <= ((Item)selection.get(0)).cost, 1);
     }
     
     public void playHelper2(Client client, ArrayList<Serializable> selection){

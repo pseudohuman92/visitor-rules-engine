@@ -88,22 +88,16 @@ public abstract class Card implements Serializable {
         creator = c.creator;
 
         values = new int[c.values.length];
-        for (int i = 0; i < values.length; i++) {
-            values[i] = c.values[i];
-        }
+        System.arraycopy(c.values, 0, values, 0, values.length);
 
         counters = new HashMap<>();
         if (c.counters != null) {
-            c.counters.forEach((name, value) -> {
-                counters.put(name, value);
-            });
+            c.counters.forEach((name, value) -> counters.put(name, value));
         }
 
         supplimentaryData = new ArrayList<>();
         if (c.supplimentaryData != null) {
-            c.supplimentaryData.forEach((value) -> {
-                supplimentaryData.add(value);
-            });
+            supplimentaryData.addAll(c.supplimentaryData);
         }
 
         activation = c.activation;
@@ -119,14 +113,10 @@ public abstract class Card implements Serializable {
         knowledge = new HashMap<>();
         
         values = new int[c.values.length];
-        for (int i = 0; i < values.length; i++) {
-            values[i] = c.values[i];
-        }
+        if (values.length >= 0) System.arraycopy(c.values, 0, values, 0, values.length);
         
         if (c.supplimentaryData != null) {
-            c.supplimentaryData.forEach((value) -> {
-                supplimentaryData.add(value);
-            });
+            supplimentaryData.addAll(c.supplimentaryData);
         }
         this.name = c.name;
         this.cost = 0;
@@ -182,12 +172,7 @@ public abstract class Card implements Serializable {
     
 
     public void addCounters(Counter name, int count) {
-        Integer current = counters.get(name);
-        if (current != null) {
-            counters.put(name, current + count);
-        } else {
-            counters.put(name, count);
-        }
+        counters.merge(name, count, (a, b) -> a + b);
     }
 
     public void clear() {
@@ -226,9 +211,7 @@ public abstract class Card implements Serializable {
     }
 
     void drawCounters() {
-        counters.forEach((name, count) -> {
-            panel.add(new JLabel(name + ": " + count));
-        });
+        counters.forEach((name, count) -> panel.add(new JLabel(name + ": " + count)));
     }
 
     String getKnowledgeString() {
@@ -262,12 +245,12 @@ public abstract class Card implements Serializable {
                     break;
             }
         });
-        String knowledgeString = "";
+        StringBuilder knowledgeString = new StringBuilder();
 
         for (Character c : knowledgeChars) {
-            knowledgeString += c.toString();
+            knowledgeString.append(c.toString());
         }
-        return knowledgeString;
+        return knowledgeString.toString();
     }
 
     Color getColor() {
