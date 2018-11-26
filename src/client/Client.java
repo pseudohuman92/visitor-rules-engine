@@ -54,26 +54,22 @@ public class Client {
     
     
     public Client(){
-        try {
-            //Initialize UI
-            main = new MainFrame(this);
-            login = new Login(this);
-            lobby = new Lobby(this);
-            deckBuilder = new DeckBuilder(this);
-            
-            main.add("Login", login);
-            login.setVisible(true);
-            
-            hostname = InetAddress.getLocalHost().getHostAddress();
-            hostport = 8080;
-            hostGamePort = 8081;
-            System.out.println("Hostname: " + hostname);
-            connection = new Connection();
-            connection.openConnection(hostname, hostport);
-            System.out.println("Client Created");
-        } catch (UnknownHostException ex) {
-            System.out.println("Unknown Host");
-        }
+        //Initialize UI
+        main = new MainFrame(this);
+        login = new Login(this);
+        lobby = new Lobby(this);
+        deckBuilder = new DeckBuilder(this);
+
+        main.add("Login", login);
+        login.setVisible(true);
+
+        hostname = "128.52.161.214";
+        hostport = 8080;
+        hostGamePort = 8081;
+        System.out.println("Hostname: " + hostname);
+        connection = new Connection();
+        connection.openConnection(hostname, hostport);
+        System.out.println("Client Created");
     }
     
     //Game Related Functions
