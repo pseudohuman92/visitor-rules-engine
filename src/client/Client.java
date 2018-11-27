@@ -118,7 +118,7 @@ public class Client {
     
     public void discard(int count){
         if (!game.player.hand.isEmpty()) {
-            gameArea.discard(count);
+            gameArea.discardCards(count);
         } else {
             interactionConnection.send(Message.discardReturn(new ArrayList<>()));
         }
