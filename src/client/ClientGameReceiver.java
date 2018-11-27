@@ -29,17 +29,17 @@ public class ClientGameReceiver extends Receiver {
     @Override
     public void handleRequest(Message message){
         System.out.println(message);
-        switch(message.label){
+        switch(message.getLabel()){
             case UPDATE_GAME:
-                client.updateGame((ClientGame)message.object);
+                client.updateGame((ClientGame)message.getObject());
                 break;
             case DISCARD:
-                Serializable[] data = (Serializable[])message.object;
+                Serializable[] data = (Serializable[])message.getObject();
                 client.updateGame((ClientGame)data[0]);
                 client.discard((int)data[1]);
                 break;
             case ORDER:
-                client.order((ArrayList<Card>)message.object);
+                client.order((ArrayList<Card>)message.getObject());
                 break;
             case LOSE:
                 client.lose();

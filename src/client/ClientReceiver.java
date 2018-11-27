@@ -30,21 +30,21 @@ public class ClientReceiver extends Receiver {
     @Override
     public void handleRequest(Message message){
         System.out.println(message);
-        switch(message.label){
+        switch(message.getLabel()){
             case UPDATE_CHAT_LOG:
-                client.chatLog = (ArrayList<String>)(message.object);
+                client.chatLog = (ArrayList<String>)(message.getObject());
                 client.updateChat();
                 break;
             case UPDATE_TABLES:
-                client.tables = (HashMap<UUID, Table>)message.object;
+                client.tables = (HashMap<UUID, Table>)message.getObject();
                 client.updateTables();
                 break;
             case UPDATE_PLAYERS:
-                client.players = (ArrayList<String>)message.object;
+                client.players = (ArrayList<String>)message.getObject();
                 client.updatePlayers();
                 break;
             case NEW_GAME:
-                ClientGame game = (ClientGame)message.object;
+                ClientGame game = (ClientGame)message.getObject();
                 client.newGame(game);
                 break;
             default:

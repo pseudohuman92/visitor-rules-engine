@@ -35,7 +35,7 @@ public abstract class Card implements Serializable {
 
     // intrinsic variables
     public UUID uuid;
-    public JPanel panel;
+    transient public JPanel panel;
     public String name;
     public int cost;
     public HashMap<Knowledge, Integer> knowledge;

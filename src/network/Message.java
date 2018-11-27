@@ -33,6 +33,8 @@ public class Message implements Serializable {
     public MessageLabel label;
     public Serializable object;
     
+    public Message() {}
+    
     private Message(MessageLabel label, Serializable object) {
         this.label = label;
         this.object = object;
@@ -40,7 +42,7 @@ public class Message implements Serializable {
     
     @Override
     public String toString() {
-        return label + ": { " + object.toString() + " }";
+        return getLabel() + ": { " + getObject().toString() + " }";
     }
     
     public static Message register(String username){
@@ -199,4 +201,32 @@ public class Message implements Serializable {
     public static Message orderReturn(ArrayList<UUID> cards){
         return new Message(MessageLabel.ORDER_RETURN, cards);
     } 
+
+    /**
+     * @return the label
+     */
+    public MessageLabel getLabel() {
+        return label;
+    }
+
+    /**
+     * @param label the label to set
+     */
+    public void setLabel(MessageLabel label) {
+        this.label = label;
+    }
+
+    /**
+     * @return the object
+     */
+    public Serializable getObject() {
+        return object;
+    }
+
+    /**
+     * @param object the object to set
+     */
+    public void setObject(Serializable object) {
+        this.object = object;
+    }
 }
