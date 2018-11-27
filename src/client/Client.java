@@ -63,7 +63,7 @@ public class Client {
         main.add("Login", login);
         login.setVisible(true);
 
-        hostname = "128.52.161.214";
+        hostname = "ccgtest.ddns.net";
         hostport = 8080;
         hostGamePort = 8081;
         System.out.println("Hostname: " + hostname);
