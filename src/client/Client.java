@@ -63,7 +63,7 @@ public class Client {
         main.add("Login", login);
         login.setVisible(true);
 
-        hostname = "localhost"; //"ccgtest.ddns.net";
+        hostname = "ccgtest.ddns.net";
         hostport = 8080;
         hostGamePort = 8081;
         System.out.println("Hostname: " + hostname);
@@ -192,11 +192,11 @@ public class Client {
     public String register(String username){
         connection.send(Message.register(username));
         Message message = connection.receive();
-        switch (message.getLabel()) {
+        switch (message.label) {
             case SUCCESS:
                 return username + " successfuly registered.";
             case FAIL:
-                return "Registration failed. Error: " + message.getObject();
+                return "Registration failed. Error: " + message.object;
             default:
                 return "Unexpected server response.";
         }
@@ -216,14 +216,14 @@ public class Client {
     public void login(String username){
         connection.send(Message.login(username));
         Message message = connection.receive();
-        switch (message.getLabel()) {
+        switch (message.label) {
             case SUCCESS:
                 this.username = username;
                 new Thread(new ClientReceiver(connection, this)).start();
                 signalLogin();
                 break;
             default:
-                new TextPopup((String)message.getObject());
+                new TextPopup((String)message.object);
         }
         
     }

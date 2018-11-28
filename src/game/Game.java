@@ -127,7 +127,7 @@ public class Game {
         Message message = connection.receive();
         if (message != null) {
             Player player = players.get(username);
-            player.discard((ArrayList<UUID>)message.getObject());
+            player.discard((ArrayList<UUID>)message.object);
         }
     }
     
@@ -205,7 +205,7 @@ public class Game {
         connection.send(Message.order(cards));
         Message message = connection.receive();
         if (message != null) {
-            cards = Card.sortByUUID(cards, (ArrayList<UUID>)message.getObject());
+            cards = Card.sortByUUID(cards, (ArrayList<UUID>)message.object);
             return cards;
         }
         return null;
