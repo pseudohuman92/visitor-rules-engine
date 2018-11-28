@@ -58,7 +58,7 @@ public class Lobby extends JPanel {
     void joinTable(){
         ListSelectionModel selectionModel = tableList.getSelectionModel();
         if (!selectionModel.isSelectionEmpty()) {
-            JFileChooser chooser = new JFileChooser(".");
+            JFileChooser chooser = new JFileChooser("./assets");
             int returnVal = chooser.showOpenDialog(this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -77,7 +77,7 @@ public class Lobby extends JPanel {
     }
     
     void createTable(){
-        JFileChooser chooser = new JFileChooser(".");
+        JFileChooser chooser = new JFileChooser("./assets");
         int returnVal = chooser.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {

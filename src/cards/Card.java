@@ -19,12 +19,12 @@ import java.util.HashMap;
 import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import net.miginfocom.swing.MigLayout;
 import network.Message;
 
 public abstract class Card implements Serializable {
@@ -300,16 +300,15 @@ public abstract class Card implements Serializable {
     }
     
     public void updatePanel() {
-        
         getPanel().removeAll();
-        getPanel().setLayout(new BoxLayout(getPanel(), BoxLayout.PAGE_AXIS));
+        getPanel().setLayout(new MigLayout("wrap 1"));
         getPanel().setPreferredSize(new Dimension(150, (int) (150 * RATIO)));
         if (!activation) {
             getPanel().add(new JLabel(cost + " " + getKnowledgeString()));
         }
         getPanel().add(new JLabel("<html>" + name + (activation ? "'s Activation" : "") + "</html>"));
         try {
-            getPanel().add(new JLabel(new ImageIcon(ImageIO.read(new File(image)))));
+            getPanel().add(new JLabel(new ImageIcon(ImageIO.read(new File(image)).getScaledInstance(100, -1, 0))));
         } catch (IOException ex) {
         }
         getPanel().add(new JLabel(type.toString()));
@@ -330,8 +329,10 @@ public abstract class Card implements Serializable {
     //</editor-fold>
 
     public JPanel getPanel() {
-        if (panel == null) 
+        if (panel == null) {
             panel = new JPanel();
+            updatePanel();
+        }
         return panel;
     }
 

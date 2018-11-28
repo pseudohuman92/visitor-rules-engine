@@ -5,6 +5,8 @@
  */
 package client.gui;
 
+import cards.Card;
+import cards.CardGenerator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,6 +26,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import client.Client;
+import helpers.Debug;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -32,11 +37,39 @@ import client.Client;
 public class DeckBuilder extends JPanel {
     
     Client client;
+    CardGenerator cardGenerator;
 
     public DeckBuilder(Client client) {
         initComponents();
         this.client = client;
+        cardGenerator = new CardGenerator("");
         loadCardDatabase(collectionTable);
+    }
+    
+    void displayCard(){
+        String cardName = (String) collectionTable.getValueAt(collectionTable.getSelectedRow(), 0);
+        displayedCard.removeAll();
+        Card c = cardGenerator.createCard(cardName);
+        if (c != null) {
+            c.updatePanel();
+            displayedCard.add(c.getPanel(), "grow");
+            displayedCard.revalidate();
+            displayedCard.repaint();
+            Debug.println(cardName + " selected from collection");
+        }
+    }
+    
+    void displayCardDeck(){
+        String cardName = (String) deckList.getValueAt(deckList.getSelectedRow(), 1);
+        displayedCard.removeAll();
+        Card c = cardGenerator.createCard(cardName);
+        if (c != null) {
+            c.updatePanel();
+            displayedCard.add(c.getPanel(), "grow");
+            displayedCard.revalidate();
+            displayedCard.repaint();
+            Debug.println(cardName + " selected from deck");
+        }
     }
     
     void loadCardDatabase(JTable cardDatabase) {
@@ -137,11 +170,14 @@ public class DeckBuilder extends JPanel {
         collectionTable = new JTable();
         decklistPane = new JScrollPane();
         deckList = new JTable();
+        displayedCard = new JPanel();
         loadButton = new JButton();
         saveButton = new JButton();
         newButton = new JButton();
         deckName = new JTextField();
 
+        displayedCard.setLayout(new MigLayout("wrap 1", "[grow]","[grow]"));
+        displayedCard.setBackground(new java.awt.Color(255, 176, 180));
         collectionTable.setModel(new DefaultTableModel(
             new Object [][] {},
             new String [] { "Cards" }
@@ -158,7 +194,14 @@ public class DeckBuilder extends JPanel {
         });
 
         collectionPane.setViewportView(collectionTable);
+        collectionTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent lse) {
+                displayCard();
+            }
+        });
+        
         collectionTable.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
 
         deckList.setModel(new DefaultTableModel(
             new Object [][] {},
@@ -168,11 +211,18 @@ public class DeckBuilder extends JPanel {
                 return false;
             }
         });
+        
         deckList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 removeFromDeck(evt);
             }
         });
+        deckList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent lse) {
+                displayCardDeck();
+            }
+        });
+        deckList.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         decklistPane.setViewportView(deckList);
 
 
@@ -190,7 +240,8 @@ public class DeckBuilder extends JPanel {
         setLayout(new MigLayout("wrap 5", 
                                 "[button][grow 8][grow 2][button][button]", 
                                 "[grow 6][grow 4][]"));
-        add(collectionPane, "grow, span 2, wrap");
+        add(collectionPane, "grow, span 2");
+        add(displayedCard, "grow, span 3");
         add(decklistPane, "grow, span 5");
         add(newButton);
         add(deckName, "growx, span 2");
@@ -229,6 +280,7 @@ public class DeckBuilder extends JPanel {
     private JScrollPane collectionPane;
     private JScrollPane decklistPane;
     private JTable collectionTable;
+    private JPanel displayedCard;
     private JTable deckList;
     private JTextField deckName;               
 }
