@@ -171,7 +171,7 @@ public class GameArea extends JPanel {
         playerItemPanel.removeAll();
         client.game.player.items.forEach((card) -> {
             card.updatePanel();
-            playerItemPanel.add(card.panel);
+            playerItemPanel.add(card.getPanel());
         });
         playerItemPanel.validate();
         playerItemPanel.repaint();
@@ -182,7 +182,7 @@ public class GameArea extends JPanel {
         opponentItemPanel.removeAll();
         client.game.opponent.items.forEach((card) -> {
             card.updatePanel();
-            opponentItemPanel.add(card.panel);
+            opponentItemPanel.add(card.getPanel());
         });
         opponentItemPanel.validate();
         opponentItemPanel.repaint();
@@ -193,7 +193,7 @@ public class GameArea extends JPanel {
         playerHandPanel.removeAll();
         client.game.player.hand.forEach((card) -> {
             card.updatePanel();
-            playerHandPanel.add(card.panel);
+            playerHandPanel.add(card.getPanel());
         });
         playerHandPanel.validate();
         playerHandPanel.repaint();
@@ -203,7 +203,7 @@ public class GameArea extends JPanel {
         stackPanel.removeAll();
         for (Card card : client.game.stack) {
             card.updatePanel();
-            stackPanel.add(card.panel);
+            stackPanel.add(card.getPanel());
         }
         stackPanel.validate();
         stackPanel.repaint();
@@ -396,18 +396,18 @@ public class GameArea extends JPanel {
     void addActivateListeners() {
         removePlayerItemListeners();
         Debug.println("Adding activate listeners");
-        client.game.player.items.forEach((card) -> card.panel.addMouseListener(activateAdapter(card)));
+        client.game.player.items.forEach((card) -> card.getPanel().addMouseListener(activateAdapter(card)));
     }
 
     void addPlayListeners() {
         removeHandListeners();
         Debug.println("Adding play listeners");
-        client.game.player.hand.forEach((card) -> card.panel.addMouseListener(playAdapter(card)));
+        client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(playAdapter(card)));
     }
 
     void addDiscardListeners(int count) {
         Debug.println("Adding discard listeners");
-        client.game.player.hand.forEach((card) -> card.panel.addMouseListener(discardAdapter(card, count)));
+        client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(discardAdapter(card, count)));
     }
     
     public void addFilteredPlayerTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, Function<Item, Boolean> filter, int count) {
@@ -415,7 +415,7 @@ public class GameArea extends JPanel {
         Debug.println("Adding player target listeners");
         client.game.player.items.forEach((card) -> {
             if (filter.apply(card))
-                card.panel.addMouseListener(targetAdapter(continuation, card, count));
+                card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
         });
         displayTargetingText(continuation, count);
     }
@@ -428,7 +428,7 @@ public class GameArea extends JPanel {
         removeOpponentItemListeners();
         client.game.opponent.items.forEach((card) -> {
             if (filter.apply(card))
-                card.panel.addMouseListener(targetAdapter(continuation, card, count));
+                card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
         });
         displayTargetingText(continuation, count);
     }
@@ -485,9 +485,9 @@ public class GameArea extends JPanel {
     void removeHandListeners() {
         Debug.println("Removing hand listeners");
         client.game.player.hand.forEach((card) -> {
-            MouseListener[] listeners = card.panel.getMouseListeners();
+            MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
-                card.panel.removeMouseListener(l);
+                card.getPanel().removeMouseListener(l);
             }
         });
     }
@@ -495,9 +495,9 @@ public class GameArea extends JPanel {
     void removePlayerItemListeners() {
         Debug.println("Removing Item listeners");
         client.game.player.items.forEach((card) -> {
-            MouseListener[] listeners = card.panel.getMouseListeners();
+            MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
-                card.panel.removeMouseListener(l);
+                card.getPanel().removeMouseListener(l);
             }
         });
     }
@@ -505,9 +505,9 @@ public class GameArea extends JPanel {
     void removeOpponentItemListeners() {
         Debug.println("Removing Item listeners");
         client.game.opponent.items.forEach((card) -> {
-            MouseListener[] listeners = card.panel.getMouseListeners();
+            MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
-                card.panel.removeMouseListener(l);
+                card.getPanel().removeMouseListener(l);
             }
         });
     }

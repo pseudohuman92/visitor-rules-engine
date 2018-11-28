@@ -55,7 +55,7 @@ public class SpareBattery extends Item {
             super.activate(client, data);
         });
         menu.setVisible(true);
-        menu.show(panel, 5, 5);
+        menu.show(getPanel(), 5, 5);
     }
 
     public void activate1Helper(Client client, int x) {

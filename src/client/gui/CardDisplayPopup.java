@@ -26,7 +26,7 @@ public class CardDisplayPopup extends javax.swing.JDialog {
         this.setLayout(new MigLayout("wrap 4"));
         cards.forEach((card) -> {
             card.updatePanel();
-            add(card.panel);});
+            add(card.getPanel());});
         java.awt.EventQueue.invokeLater(() -> {
             addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override

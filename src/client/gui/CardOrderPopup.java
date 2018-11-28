@@ -33,8 +33,8 @@ public class CardOrderPopup extends javax.swing.JDialog {
         ordered = new ArrayList<>();
         unordered.forEach((card) -> {
             card.updatePanel();
-            add(card.panel);
-            card.panel.addMouseListener(orderAdapter(card, continuation));
+            add(card.getPanel());
+            card.getPanel().addMouseListener(orderAdapter(card, continuation));
         });
         java.awt.EventQueue.invokeLater(() -> {
             addWindowListener(new java.awt.event.WindowAdapter() {
@@ -56,13 +56,13 @@ public class CardOrderPopup extends javax.swing.JDialog {
                 if (evt.getButton() == MouseEvent.BUTTON1) {
                     Debug.println("Selected an ordering card");
                     unordered.remove(card);
-                    card.panel.removeAll();
+                    card.getPanel().removeAll();
                     ordered.add(card);
                     if (unordered.isEmpty()){
                         func.accept(ordered);
                         dispose();
                     } else {
-                        remove(card.panel);
+                        remove(card.getPanel());
                         pack();
                     }
                 }

@@ -206,12 +206,12 @@ public abstract class Card implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Displayers">        
     void drawBorders() {
-        panel.setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.yellow), 5),
+        getPanel().setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.yellow), 5),
                 marked ? new LineBorder(depleted ? Color.red : Color.yellow, 5) : null));
     }
 
     void drawCounters() {
-        counters.forEach((name, count) -> panel.add(new JLabel(name + ": " + count)));
+        counters.forEach((name, count) -> getPanel().add(new JLabel(name + ": " + count)));
     }
 
     String getKnowledgeString() {
@@ -284,35 +284,52 @@ public abstract class Card implements Serializable {
             tooltip += counters.toString();
         }
         tooltip += "</html>";
-        setToolTipHelper(panel, tooltip);
+        setToolTipHelper(getPanel(), tooltip);
     }
     
     public void updatePanel() {
-        panel.removeAll();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.setPreferredSize(new Dimension(150, (int) (150 * RATIO)));
+        
+        getPanel().removeAll();
+        getPanel().setLayout(new BoxLayout(getPanel(), BoxLayout.PAGE_AXIS));
+        getPanel().setPreferredSize(new Dimension(150, (int) (150 * RATIO)));
         if (!activation) {
-            panel.add(new JLabel(cost + " " + getKnowledgeString()));
+            getPanel().add(new JLabel(cost + " " + getKnowledgeString()));
         }
-        panel.add(new JLabel("<html>" + name + (activation ? "'s Activation" : "") + "</html>"));
+        getPanel().add(new JLabel("<html>" + name + (activation ? "'s Activation" : "") + "</html>"));
         try {
-            panel.add(new JLabel(new ImageIcon(ImageIO.read(new File(image)))));
+            getPanel().add(new JLabel(new ImageIcon(ImageIO.read(new File(image)))));
         } catch (IOException ex) {
         }
-        panel.add(new JLabel(type.toString()));
+        getPanel().add(new JLabel(type.toString()));
         JLabel textLabel = new JLabel("<html>"
                 + String.format(text, (Object[]) Arrays.stream(values).
                         mapToObj(String::valueOf).toArray(String[]::new)) + "</html>");
-        panel.add(textLabel);
+        getPanel().add(textLabel);
         if (!activation) {
             drawCounters();
         }
         drawBorders();
         setToolTip();
-        panel.setBackground(getColor());
-        panel.setVisible(true);
-        panel.revalidate();
-        panel.repaint();
+        getPanel().setBackground(getColor());
+        getPanel().setVisible(true);
+        getPanel().revalidate();
+        getPanel().repaint();
     }
     //</editor-fold>
+
+    /**
+     * @return the panel
+     */
+    public JPanel getPanel() {
+        if (panel == null) 
+            panel = new JPanel();
+        return panel;
+    }
+
+    /**
+     * @param panel the panel to set
+     */
+    public void setPanel(JPanel panel) {
+        this.panel = panel;
+    }
 }
