@@ -24,7 +24,7 @@ import network.Message;
 public abstract class Item extends Card {
     
     public Item(String name, int cost, HashMap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, image, Type.ITEM, owner);
+        super(name, cost, knowledge, text, "assets/item.png", Type.ITEM, owner);
     }
     
     public Item(Item c){

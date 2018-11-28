@@ -17,7 +17,7 @@ import java.util.HashMap;
 public abstract class Action extends Card {
     
     public Action(String name, int cost, HashMap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, image, Type.ACTION, owner);
+        super(name, cost, knowledge, text, "assets/action.png", Type.ACTION, owner);
     }
     
     public Action(Action c){

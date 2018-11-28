@@ -42,7 +42,7 @@ public class DeckBuilder extends JPanel {
     void loadCardDatabase(JTable cardDatabase) {
         Scanner dbFile = null;
         try {
-            File db = new File("./db.txt");
+            File db = new File("./assets/db.txt");
             if (!db.exists()) { db.createNewFile(); }
             dbFile = new Scanner(db);
         } catch (FileNotFoundException e1) {
@@ -89,7 +89,7 @@ public class DeckBuilder extends JPanel {
     }
     
     void loadDeck(){
-        JFileChooser fc = new JFileChooser(".");
+        JFileChooser fc = new JFileChooser("./assets");
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 

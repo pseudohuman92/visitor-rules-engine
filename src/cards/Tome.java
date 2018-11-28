@@ -19,7 +19,7 @@ import java.util.HashMap;
 public abstract class Tome extends Card {
     
     public Tome(String name, String text, String image, String owner) {
-        super(name, 0, new HashMap<>(), text, image, Type.TOME, owner);
+        super(name, 0, new HashMap<>(), text, "assets/tome.png", Type.TOME, owner);
     }
 
     public boolean canPlay(ClientGame game){ return false; }
