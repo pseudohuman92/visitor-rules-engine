@@ -5,15 +5,24 @@
  */
 package cards;
 
+import static cards.Card.RATIO;
 import client.Client;
 import enums.Knowledge;
 import enums.Type;
 import game.ClientGame;
 import game.Game;
 import game.Phase;
+import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import net.miginfocom.swing.MigLayout;
 
 import network.Message;
 
@@ -72,4 +81,28 @@ public abstract class Item extends Card {
     public Activation getPlayerStartTrigger(){ return null; }
     
     public Activation getActivation(){ return null; }
+    
+    public void updatePanel() {
+        getPanel().removeAll();
+        getPanel().setLayout(new MigLayout("wrap 1"));
+        getPanel().setPreferredSize(new Dimension(150, (int) (150 * RATIO)));
+        getPanel().add(new JLabel(cost + " " + getKnowledgeString()));
+        getPanel().add(new JLabel("<html>" + name + "</html>"));
+        try {
+            getPanel().add(new JLabel(new ImageIcon(ImageIO.read(new File(image)).getScaledInstance(100, -1, 0))));
+        } catch (IOException ex) {
+        }
+        getPanel().add(new JLabel(type.toString()));
+        JLabel textLabel = new JLabel("<html>"
+                + String.format(text, (Object[]) Arrays.stream(values).
+                        mapToObj(String::valueOf).toArray(String[]::new)) + "</html>");
+        getPanel().add(textLabel);
+        drawCounters();
+        drawBorders();
+        setToolTip();
+        getPanel().setBackground(getColor());
+        getPanel().setVisible(true);
+        getPanel().revalidate();
+        getPanel().repaint();
+    }
 }

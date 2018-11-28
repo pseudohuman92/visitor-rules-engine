@@ -299,33 +299,7 @@ public abstract class Card implements Serializable {
         setToolTipHelper(getPanel(), tooltip);
     }
     
-    public void updatePanel() {
-        getPanel().removeAll();
-        getPanel().setLayout(new MigLayout("wrap 1"));
-        getPanel().setPreferredSize(new Dimension(150, (int) (150 * RATIO)));
-        if (!activation) {
-            getPanel().add(new JLabel(cost + " " + getKnowledgeString()));
-        }
-        getPanel().add(new JLabel("<html>" + name + (activation ? "'s Activation" : "") + "</html>"));
-        try {
-            getPanel().add(new JLabel(new ImageIcon(ImageIO.read(new File(image)).getScaledInstance(100, -1, 0))));
-        } catch (IOException ex) {
-        }
-        getPanel().add(new JLabel(type.toString()));
-        JLabel textLabel = new JLabel("<html>"
-                + String.format(text, (Object[]) Arrays.stream(values).
-                        mapToObj(String::valueOf).toArray(String[]::new)) + "</html>");
-        getPanel().add(textLabel);
-        if (!activation) {
-            drawCounters();
-        }
-        drawBorders();
-        setToolTip();
-        getPanel().setBackground(getColor());
-        getPanel().setVisible(true);
-        getPanel().revalidate();
-        getPanel().repaint();
-    }
+    abstract public void updatePanel();
     //</editor-fold>
 
     public JPanel getPanel() {
