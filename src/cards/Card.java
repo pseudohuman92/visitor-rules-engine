@@ -54,7 +54,7 @@ public abstract class Card implements Serializable {
     public boolean marked;
     public HashMap<Counter, Integer> counters;
 
-// <editor-fold defaultstate="collapsed" desc="Constructors">
+    // <editor-fold defaultstate="collapsed" desc="Constructors">
     public Card(String name, int cost, HashMap<Knowledge, Integer> knowledge,
             String text, String image, Type type, String owner) {
         uuid = UUID.randomUUID();
@@ -130,9 +130,9 @@ public abstract class Card implements Serializable {
         this.depleted = false;
         this.marked = false;
     }
-//</editor-fold>
+    //</editor-fold>
     
-// <editor-fold defaultstate="collapsed" desc="Client Functions">
+    // <editor-fold defaultstate="collapsed" desc="Client Functions">
     // Called to check if you can play this card
     public abstract boolean canPlay(ClientGame game);
 
@@ -144,9 +144,21 @@ public abstract class Card implements Serializable {
     public void play(Client client, ArrayList<Serializable> targets) {
         client.gameConnection.send(Message.play(client.game.uuid, client.username, uuid, targets));
     }
-//</editor-fold>
+    
+    public void playAsSource(Client client) {
+        HashMap<Knowledge, Integer> knl = new HashMap<>();
+        if (knowledge.isEmpty()) {
+            client.playSource(this, knl);
+        } else if (knowledge.size() == 1) {
+            knl.put(knowledge.keySet().iterator().next(), 1);
+            client.playSource(this, knl);
+        } else {
+            client.gameArea.displayKnowledgeMenu(this);
+        }
+    }
+    //</editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Server Functions">
+    // <editor-fold defaultstate="collapsed" desc="Server Functions">
     // Called by the server when you play this card
     public void play(Game game) {
         Player player = game.players.get(owner);
@@ -157,7 +169,7 @@ public abstract class Card implements Serializable {
     }
 
     // Called by the server when you choose to play this card as a source
-    public void playAsSource(Game game, Knowledge knowledge) {
+    public void playAsSource(Game game, HashMap<Knowledge, Integer> knowledge) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
         player.sources.add(this);
@@ -168,7 +180,7 @@ public abstract class Card implements Serializable {
 
     // Called by server when it is resolved from the stack
     public abstract void resolve(Game game);
-//</editor-fold>
+    //</editor-fold>
     
 
     public void addCounters(Counter name, int count) {
@@ -317,18 +329,12 @@ public abstract class Card implements Serializable {
     }
     //</editor-fold>
 
-    /**
-     * @return the panel
-     */
     public JPanel getPanel() {
         if (panel == null) 
             panel = new JPanel();
         return panel;
     }
 
-    /**
-     * @param panel the panel to set
-     */
     public void setPanel(JPanel panel) {
         this.panel = panel;
     }

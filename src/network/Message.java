@@ -152,7 +152,7 @@ public class Message implements Serializable {
         return new Message(MessageLabel.UPDATE_GAME, game);
     }
     
-    public static Message playSource(UUID gameID, String username, UUID cardID, Knowledge knowledge){
+    public static Message playSource(UUID gameID, String username, UUID cardID, HashMap<Knowledge, Integer> knowledge){
         Serializable[] data = new Serializable[4];
         data[0] = gameID;
         data[1] = username;

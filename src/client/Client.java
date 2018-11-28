@@ -108,7 +108,7 @@ public class Client {
         gameConnection.send(Message.keep(game.uuid, username));
     }
     
-    public void playSource(Card card, Knowledge knowledge){
+    public void playSource(Card card, HashMap<Knowledge, Integer> knowledge){
         gameConnection.send(Message.playSource(game.uuid, username, card.uuid, knowledge));
     }
     

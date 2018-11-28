@@ -86,9 +86,10 @@ public class Player implements Serializable {
         items.forEach((card) -> card.depleted = false);
     }
     
-    public void addKnowledge(Knowledge knowl){
-        if(knowl == Knowledge.NONE){return;}
-        knowledge.merge(knowl, 1, (a, b) -> a + b);
+    public void addKnowledge(HashMap<Knowledge, Integer> knowl){
+        knowl.forEach((k, i) -> {
+            knowledge.merge(k, i, (a, b) -> a + b);
+        });
     }
     
     public boolean hasKnowledge(HashMap<Knowledge, Integer> cardKnowledge){

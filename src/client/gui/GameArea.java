@@ -19,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -350,19 +351,13 @@ public class GameArea extends JPanel {
         displayHand();
     }
 
-    void knowledgeSelection(MouseEvent evt, Card card) {
-        if (card.knowledge.isEmpty()) {
-            client.playSource(card, Knowledge.NONE);
-        } else if (card.knowledge.size() == 1) {
-            client.playSource(card, card.knowledge.keySet().iterator().next());
-        } else {
-            removeHandListeners();
-            removeAllItemListeners();
-            gameTextButtonLeft.setVisible(false);
-            gameTextButtonRight.setVisible(false);
-            gameTextLabel.setText("Choose knowledge to get");
-            knowledgeMenu(evt, card);
-        }
+    public void displayKnowledgeMenu(Card card) {
+        removeHandListeners();
+        removeAllItemListeners();
+        gameTextButtonLeft.setVisible(false);
+        gameTextButtonRight.setVisible(false);
+        gameTextLabel.setText("Choose knowledge to get");
+        knowledgeMenu(card);
     }
 
     void clearItemMarks() {
@@ -520,18 +515,20 @@ public class GameArea extends JPanel {
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Menus">
-    void knowledgeMenu(MouseEvent evt, Card card) {
+    void knowledgeMenu(Card card) {
         JPopupMenu menu = new JPopupMenu();
         for (Knowledge knowl : card.knowledge.keySet()) {
             JMenuItem menuItem = new JMenuItem(knowl.toString());
             menu.add(menuItem);
             menuItem.addActionListener((ActionEvent event) -> {
                 Debug.println("Playing as a source: " + card.name);
-                client.playSource(card, knowl);
+                HashMap<Knowledge, Integer> knl = new HashMap<>();
+                knl.put(knowl, 1);
+                client.playSource(card, knl);
             });
         }
         menu.setVisible(true);
-        menu.show((Component) evt.getSource(), evt.getX(), evt.getY());
+        menu.show((Component) card.getPanel(), card.getPanel().getX(), card.getPanel().getY());
     }
 
     void sourceMenu(MouseEvent evt, Card card) {
@@ -540,7 +537,7 @@ public class GameArea extends JPanel {
         menu.add(menuItem);
         menuItem.addActionListener((ActionEvent event) -> {
             Debug.println("Playing as a source: " + card.name);
-            knowledgeSelection(evt, card);
+            card.playAsSource(client);
         });
         menu.setVisible(true);
         menu.show((Component) evt.getSource(), evt.getX(), evt.getY());
@@ -565,7 +562,7 @@ public class GameArea extends JPanel {
                         if (evt.isControlDown()) {
                             if (client.game.canPlaySource()) {
                                 Debug.println("Playing as a source: " + card.name);
-                                knowledgeSelection(evt, card);
+                                card.playAsSource(client);
                             }
                         } else if (card.canPlay(client.game)) {
                             card.play(client);
@@ -615,7 +612,7 @@ public class GameArea extends JPanel {
         };
     }
 
-    MouseAdapter targetAdapter(BiConsumer<Client, ArrayList<Serializable>> func, Card targetCard, int count) {
+    MouseAdapter targetAdapter(BiConsumer<Client, ArrayList<Serializable>> continuation, Card targetCard, int count) {
         return new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getButton() == MouseEvent.BUTTON1) {
@@ -627,7 +624,7 @@ public class GameArea extends JPanel {
                             Debug.println("All cards are selected for target");
                             removeAllItemListeners();
                             clearItemMarks();
-                            func.accept(client, selected);
+                            continuation.accept(client, selected);
                             selected = new ArrayList<>();
                         }
                         updateAllItems();
@@ -784,7 +781,6 @@ public class GameArea extends JPanel {
         phaseDisplayPanel.add(playerMainBox);
         phaseDisplayPanel.add(playerEndBox);
 
-        
         
         leftColumnPanel.setBackground(new java.awt.Color(150, 100, 100));
         opponentItemPane.setBackground(new java.awt.Color(100, 150, 100));
