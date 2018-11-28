@@ -145,8 +145,8 @@ public class GameArea extends JPanel {
 
     void updateHand() {
         client.game.player.hand.forEach(Card::updatePanel);
-        playerHandPanel.revalidate();
-        playerHandPanel.repaint();
+        handPanel.revalidate();
+        handPanel.repaint();
     }
 
     void updatePlayerItems() {
@@ -190,13 +190,13 @@ public class GameArea extends JPanel {
 
     void displayHand() {
         Debug.println("Displaying Hand");
-        playerHandPanel.removeAll();
+        handPanel.removeAll();
         client.game.player.hand.forEach((card) -> {
             card.updatePanel();
-            playerHandPanel.add(card.getPanel());
+            handPanel.add(card.getPanel());
         });
-        playerHandPanel.validate();
-        playerHandPanel.repaint();
+        handPanel.validate();
+        handPanel.repaint();
     }
 
     void displayStack() {
@@ -670,7 +670,7 @@ public class GameArea extends JPanel {
         playerEnergyLabel = new JLabel();
         playerKnowledgeLabel = new JLabel();
         handPane = new JScrollPane();
-        playerHandPanel = new JPanel();
+        handPanel = new JPanel();
         opponentItemPane = new JScrollPane();
         opponentItemPanel = new JPanel();
         playerItemPane = new JScrollPane();
@@ -707,6 +707,7 @@ public class GameArea extends JPanel {
         opponentPanel.add(opponentDeckLabel);
         opponentPanel.add(opponentKnowledgeLabel);
 
+        
         stackPanel.setLayout(new MigLayout("wrap 1"));       
 
         gameTextPanel.setBackground(new java.awt.Color(230, 228, 140));
@@ -743,18 +744,22 @@ public class GameArea extends JPanel {
         playerPanel.add(playerEnergyLabel);
         playerPanel.add(playerKnowledgeLabel);
 
+        stackPane.setViewportView(stackPanel);
+        
         leftColumnPanel.setLayout(new MigLayout("wrap 1", "[grow]", "[][grow][][]"));
         leftColumnPanel.add(opponentPanel);
         leftColumnPanel.add(stackPane, "grow");
         leftColumnPanel.add(gameTextPanel);
         leftColumnPanel.add(playerPanel);
 
-        handPane.setViewportView(playerHandPanel);
+        handPane.setViewportView(handPanel);
         opponentItemPane.setViewportView(opponentItemPanel);
         playerItemPane.setViewportView(playerItemPanel);
 
+        opponentItemPanel.setLayout(new MigLayout());
+        playerItemPanel.setLayout(new MigLayout());
+        handPanel.setLayout(new MigLayout());
         
-
         phaseDisplayPanel.setLayout(new MigLayout("wrap 4", "[grow 7][grow 1][grow 1][grow 1]", "[][][]"));
 
         currentTurnLabel.setText("currentTurn");
@@ -937,7 +942,7 @@ public class GameArea extends JPanel {
     private JPanel opponentPanel;
     private JPanel playerPanel;
     private JPanel leftColumnPanel;
-    private JPanel playerHandPanel;
+    private JPanel handPanel;
     private JPanel opponentItemPanel;
     private JPanel playerItemPanel;
     private JPanel stackPanel;
