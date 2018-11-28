@@ -7,6 +7,7 @@ package cards;
 
 import set1.actions.*;
 import set1.items.*;
+import set1.tomes.*;
 import java.io.Serializable;
 
 /**
@@ -49,6 +50,26 @@ public class CardGenerator implements Serializable {
                 return new MysticalTeachings(username);
             case "Cling to Life":  
                 return new ClingToLife(username);
+            case "Tome BG":  
+                return new TomeBG(username);
+            case "Tome BR":  
+                return new TomeBR(username);
+            case "Tome BU":  
+                return new TomeBU(username);
+            case "Tome BW":  
+                return new TomeBW(username);
+            case "Tome GR":  
+                return new TomeGR(username);
+            case "Tome GU":  
+                return new TomeGU(username);
+            case "Tome GW":  
+                return new TomeGW(username);
+            case "Tome RU":  
+                return new TomeRU(username);
+            case "Tome RW":  
+                return new TomeRW(username);
+            case "Tome UW":  
+                return new TomeUW(username);
             default:
                 return null;
         }
