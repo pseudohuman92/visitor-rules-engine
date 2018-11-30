@@ -1,7 +1,7 @@
 package cards;
 
 import client.Client;
-import client.gui.MemoryPanel;
+import client.gui.CardPane;
 import enums.Counter;
 import enums.Type;
 import enums.Knowledge;
@@ -9,25 +9,23 @@ import game.ClientGame;
 import game.Game;
 import game.Player;
 import java.awt.Color;
-import java.awt.Component;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 import network.Message;
 
 public abstract class Card implements Serializable {
 
-    static final double RATIO = 3.5 / 2.5;
+    public static final double RATIO = 3.5 / 2.5;
 
     // intrinsic variables
     public UUID uuid;
-    transient public MemoryPanel panel;
+    transient public CardPane panel;
     public String name;
     public int cost;
     public HashMap<Knowledge, Integer> knowledge;
@@ -205,7 +203,7 @@ public abstract class Card implements Serializable {
         return sorted;
     }
 
-// <editor-fold defaultstate="collapsed" desc="Displayers">        
+    // <editor-fold defaultstate="collapsed" desc="Displayers">        
     void drawBorders() {
         getPanel().setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.yellow), 2),
                 marked ? new LineBorder(depleted ? Color.red : Color.yellow, 2) : null));
@@ -267,13 +265,6 @@ public abstract class Card implements Serializable {
         return Color.BLACK;
     }
     
-    void setToolTipHelper(JComponent c, String text) {
-        c.setToolTipText(text);
-        for (Component cc : c.getComponents())
-            if (cc instanceof JComponent)
-                setToolTipHelper((JComponent) cc, text);
-    }
-    
     void setToolTip() {
         String tooltip = "<html>" + cost + " " + getKnowledgeString()+"<br>";
         tooltip += name + (activation ? "'s Activation" : "")+"<br><br>";
@@ -285,30 +276,30 @@ public abstract class Card implements Serializable {
             tooltip += counters.toString();
         }
         tooltip += "</html>";
-        setToolTipHelper(getPanel(), tooltip);
+        getPanel().setToolTipText(tooltip);
     }
     
     abstract public void updatePanel();
 
-    public MemoryPanel getPanel() {
+    public CardPane getPanel() {
         if (panel == null) {
-            panel = new MemoryPanel();
+            panel = new CardPane();
             updatePanel();
         }
         panel.setBounds(0, 0, 250, 350);
         return panel;
     }
     
-    public MemoryPanel getPanel(int width) {
+    public CardPane getPanel(int width) {
         if (panel == null) {
-            panel = new MemoryPanel();
+            panel = new CardPane();
             updatePanel();
         }
         panel.setBounds(0, 0, width, (int)(RATIO * width));
         return panel;
     }
 
-    public void setPanel(MemoryPanel panel) {
+    public void setPanel(CardPane panel) {
         this.panel = panel;
     }
     //</editor-fold>

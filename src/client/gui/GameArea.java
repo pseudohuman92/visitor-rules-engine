@@ -191,7 +191,7 @@ public class GameArea extends JPanel {
 
     void displayHand() {
         Debug.println("Displaying Hand");
-        ArrayList<MemoryPanel> cards = new ArrayList<>();
+        ArrayList<CardPane> cards = new ArrayList<>();
         client.game.player.hand.forEach((card) -> {
             card.updatePanel();
             cards.add(card.getPanel());
@@ -200,7 +200,7 @@ public class GameArea extends JPanel {
     }
 
     void displayStack() {
-        ArrayList<MemoryPanel> cards = new ArrayList<>();
+        ArrayList<CardPane> cards = new ArrayList<>();
         for (Card card : client.game.stack) {
             card.updatePanel();
             cards.add(card.getPanel());
@@ -649,7 +649,7 @@ public class GameArea extends JPanel {
         opponentDiscardLabel = new JLabel();
         opponentEnergyLabel = new JLabel();
         opponentKnowledgeLabel = new JLabel();
-        stackPane = new StackPane();
+        stackPane = new OverlapPane(true);
         gameTextPanel = new JPanel();
         gameTextLabel = new JLabel();
         gameTextButtonRight = new JButton();
@@ -663,7 +663,7 @@ public class GameArea extends JPanel {
         playerDiscardLabel = new JLabel();
         playerEnergyLabel = new JLabel();
         playerKnowledgeLabel = new JLabel();
-        handPane = new HandPane();
+        handPane = new OverlapPane(false);
         opponentItemPane = new JScrollPane();
         opponentItemPanel = new JPanel();
         playerItemPane = new JScrollPane();
@@ -928,10 +928,10 @@ public class GameArea extends JPanel {
     private JPanel opponentPanel;
     private JPanel playerPanel;
     private JPanel leftColumnPanel;
-    private HandPane handPane;
+    private OverlapPane handPane;
     private JPanel opponentItemPanel;
     private JPanel playerItemPanel;
-    private StackPane stackPane;
+    private OverlapPane stackPane;
     private JPanel phaseDisplayPanel;
     private JScrollPane playerItemPane;
     private JScrollPane opponentItemPane;
