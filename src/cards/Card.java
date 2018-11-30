@@ -1,6 +1,7 @@
 package cards;
 
 import client.Client;
+import client.gui.MemoryPanel;
 import enums.Counter;
 import enums.Type;
 import enums.Knowledge;
@@ -9,22 +10,16 @@ import game.Game;
 import game.Player;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import net.miginfocom.swing.MigLayout;
 import network.Message;
 
 public abstract class Card implements Serializable {
@@ -35,7 +30,7 @@ public abstract class Card implements Serializable {
 
     // intrinsic variables
     public UUID uuid;
-    transient public JPanel panel;
+    transient public MemoryPanel panel;
     public String name;
     public int cost;
     public HashMap<Knowledge, Integer> knowledge;
@@ -58,7 +53,7 @@ public abstract class Card implements Serializable {
     public Card(String name, int cost, HashMap<Knowledge, Integer> knowledge,
             String text, String image, Type type, String owner) {
         uuid = UUID.randomUUID();
-        panel = new JPanel();
+        panel = new MemoryPanel();
         counters = new HashMap<>();
         supplimentaryData = new ArrayList<>();
         this.name = name;
@@ -77,7 +72,7 @@ public abstract class Card implements Serializable {
 
     public Card(Card c) {
         uuid = UUID.randomUUID();
-        panel = new JPanel();
+        panel = new MemoryPanel();
         name = c.name;
         cost = c.cost;
         knowledge = c.knowledge;
@@ -107,7 +102,7 @@ public abstract class Card implements Serializable {
 
     public Card(Card c, String text) {
         uuid = UUID.randomUUID();
-        panel = new JPanel();
+        panel = new MemoryPanel();
         counters = new HashMap<>();
         supplimentaryData = new ArrayList<>();
         knowledge = new HashMap<>();
@@ -302,15 +297,15 @@ public abstract class Card implements Serializable {
     abstract public void updatePanel();
     //</editor-fold>
 
-    public JPanel getPanel() {
+    public MemoryPanel getPanel() {
         if (panel == null) {
-            panel = new JPanel();
+            panel = new MemoryPanel();
             updatePanel();
         }
         return panel;
     }
 
-    public void setPanel(JPanel panel) {
+    public void setPanel(MemoryPanel panel) {
         this.panel = panel;
     }
 }

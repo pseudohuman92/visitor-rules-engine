@@ -146,8 +146,8 @@ public class GameArea extends JPanel {
 
     void updateHand() {
         client.game.player.hand.forEach(Card::updatePanel);
-        handPanel.revalidate();
-        handPanel.repaint();
+        handPane.revalidate();
+        handPane.repaint();
     }
 
     void updatePlayerItems() {
@@ -191,23 +191,21 @@ public class GameArea extends JPanel {
 
     void displayHand() {
         Debug.println("Displaying Hand");
-        handPanel.removeAll();
+        ArrayList<MemoryPanel> cards = new ArrayList<>();
         client.game.player.hand.forEach((card) -> {
             card.updatePanel();
-            handPanel.add(card.getPanel());
+            cards.add(card.getPanel());
         });
-        handPanel.validate();
-        handPanel.repaint();
+        handPane.layAll(cards);
     }
 
     void displayStack() {
-        stackPanel.removeAll();
+        ArrayList<MemoryPanel> cards = new ArrayList<>();
         for (Card card : client.game.stack) {
             card.updatePanel();
-            stackPanel.add(card.getPanel());
+            cards.add(card.getPanel());
         }
-        stackPanel.validate();
-        stackPanel.repaint();
+        stackPane.layAll(cards);
     }
 
     void displayGameText() {
@@ -651,8 +649,7 @@ public class GameArea extends JPanel {
         opponentDiscardLabel = new JLabel();
         opponentEnergyLabel = new JLabel();
         opponentKnowledgeLabel = new JLabel();
-        stackPane = new JScrollPane();
-        stackPanel = new JPanel();
+        stackPane = new StackPane();
         gameTextPanel = new JPanel();
         gameTextLabel = new JLabel();
         gameTextButtonRight = new JButton();
@@ -666,8 +663,7 @@ public class GameArea extends JPanel {
         playerDiscardLabel = new JLabel();
         playerEnergyLabel = new JLabel();
         playerKnowledgeLabel = new JLabel();
-        handPane = new JScrollPane();
-        handPanel = new JPanel();
+        handPane = new HandPane();
         opponentItemPane = new JScrollPane();
         opponentItemPanel = new JPanel();
         playerItemPane = new JScrollPane();
@@ -704,8 +700,7 @@ public class GameArea extends JPanel {
         opponentPanel.add(opponentDeckLabel);
         opponentPanel.add(opponentKnowledgeLabel);
 
-        
-        stackPanel.setLayout(new MigLayout("wrap 1"));       
+        stackPane.setLayout(new MigLayout("wrap 1"));       
 
         gameTextPanel.setBackground(new java.awt.Color(230, 228, 140));
         gameTextPanel.setBorder(BorderFactory.createCompoundBorder());
@@ -721,7 +716,6 @@ public class GameArea extends JPanel {
         gameTextPanel.add(xValueSelector, "skip 1");
         gameTextPanel.add(gameTextButtonLeft);
         gameTextPanel.add(gameTextButtonRight);
-        
         
         playerPanel.setBackground(new java.awt.Color(155, 219, 239));
         playerNameLabel.setText("playerName");
@@ -741,21 +735,18 @@ public class GameArea extends JPanel {
         playerPanel.add(playerEnergyLabel);
         playerPanel.add(playerKnowledgeLabel);
 
-        stackPane.setViewportView(stackPanel);
-        
         leftColumnPanel.setLayout(new MigLayout("wrap 1", "[grow]", "[][grow][][]"));
-        leftColumnPanel.add(opponentPanel);
+        leftColumnPanel.add(opponentPanel, "growx");
         leftColumnPanel.add(stackPane, "grow");
-        leftColumnPanel.add(gameTextPanel);
-        leftColumnPanel.add(playerPanel);
+        leftColumnPanel.add(gameTextPanel, "growx");
+        leftColumnPanel.add(playerPanel, "growx");
 
-        handPane.setViewportView(handPanel);
         opponentItemPane.setViewportView(opponentItemPanel);
         playerItemPane.setViewportView(playerItemPanel);
 
         opponentItemPanel.setLayout(new MigLayout());
         playerItemPanel.setLayout(new MigLayout());
-        handPanel.setLayout(new MigLayout());
+        handPane.setLayout(new MigLayout());
         
         phaseDisplayPanel.setLayout(new MigLayout("wrap 4", "[grow 7][grow 1][grow 1][grow 1]", "[][][]"));
 
@@ -763,7 +754,6 @@ public class GameArea extends JPanel {
         beginPhaseLabel.setText("BEGIN");
         mainPhaseLabel.setText("MAIN");
         endPhaseLabel.setText("END");
-        
         
         opponentEndBox.setSelected(true);
         playerMainBox.setSelected(true);
@@ -787,7 +777,10 @@ public class GameArea extends JPanel {
         playerItemPane.setBackground(new java.awt.Color(100, 100, 150));
         phaseDisplayPanel.setBackground(new java.awt.Color(150, 150, 100));
         handPane.setBackground(new java.awt.Color(150, 100, 150));
-        setLayout(new MigLayout("wrap 2", "[10%][90%]", "[grow 12][grow 12][grow 1][grow 6]"));
+        handPane.setLayout(new MigLayout("wrap 8"));
+        playerItemPanel.setLayout(new MigLayout("wrap 8"));
+        opponentItemPanel.setLayout(new MigLayout("wrap 8"));
+        setLayout(new MigLayout("wrap 2", "[10%!][90%!]", "[grow, 35%!][grow, 35%!][grow, 5%!][grow, 25%!]"));
         add(leftColumnPanel, "span 1 4, grow");
         add(opponentItemPane, "grow");
         add(playerItemPane, "grow");
@@ -938,15 +931,13 @@ public class GameArea extends JPanel {
     private JPanel opponentPanel;
     private JPanel playerPanel;
     private JPanel leftColumnPanel;
-    private JPanel handPanel;
+    private HandPane handPane;
     private JPanel opponentItemPanel;
     private JPanel playerItemPanel;
-    private JPanel stackPanel;
+    private StackPane stackPane;
     private JPanel phaseDisplayPanel;
     private JScrollPane playerItemPane;
-    private JScrollPane handPane;
     private JScrollPane opponentItemPane;
-    private JScrollPane stackPane;
     private JSpinner xValueSelector;       
 
 }
