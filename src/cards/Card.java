@@ -18,15 +18,12 @@ import java.util.UUID;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import network.Message;
 
 public abstract class Card implements Serializable {
 
     static final double RATIO = 3.5 / 2.5;
-
-    
 
     // intrinsic variables
     public UUID uuid;
@@ -53,7 +50,6 @@ public abstract class Card implements Serializable {
     public Card(String name, int cost, HashMap<Knowledge, Integer> knowledge,
             String text, String image, Type type, String owner) {
         uuid = UUID.randomUUID();
-        panel = new MemoryPanel();
         counters = new HashMap<>();
         supplimentaryData = new ArrayList<>();
         this.name = name;
@@ -72,7 +68,6 @@ public abstract class Card implements Serializable {
 
     public Card(Card c) {
         uuid = UUID.randomUUID();
-        panel = new MemoryPanel();
         name = c.name;
         cost = c.cost;
         knowledge = c.knowledge;
@@ -102,7 +97,6 @@ public abstract class Card implements Serializable {
 
     public Card(Card c, String text) {
         uuid = UUID.randomUUID();
-        panel = new MemoryPanel();
         counters = new HashMap<>();
         supplimentaryData = new ArrayList<>();
         knowledge = new HashMap<>();
@@ -213,8 +207,8 @@ public abstract class Card implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Displayers">        
     void drawBorders() {
-        getPanel().setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.yellow), 5),
-                marked ? new LineBorder(depleted ? Color.red : Color.yellow, 5) : null));
+        getPanel().setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.yellow), 2),
+                marked ? new LineBorder(depleted ? Color.red : Color.yellow, 2) : null));
     }
 
     void drawCounters() {
@@ -230,11 +224,6 @@ public abstract class Card implements Serializable {
                         knowledgeChars.add('B');
                     }
                     break;
-                case BLUE:
-                    for (int i = 0; i < count; i++) {
-                        knowledgeChars.add('U');
-                    }
-                    break;
                 case GREEN:
                     for (int i = 0; i < count; i++) {
                         knowledgeChars.add('G');
@@ -243,6 +232,11 @@ public abstract class Card implements Serializable {
                 case RED:
                     for (int i = 0; i < count; i++) {
                         knowledgeChars.add('R');
+                    }
+                    break;
+                case BLUE:
+                    for (int i = 0; i < count; i++) {
+                        knowledgeChars.add('U');
                     }
                     break;
                 case WHITE:
@@ -295,17 +289,27 @@ public abstract class Card implements Serializable {
     }
     
     abstract public void updatePanel();
-    //</editor-fold>
 
     public MemoryPanel getPanel() {
         if (panel == null) {
             panel = new MemoryPanel();
             updatePanel();
         }
+        panel.setBounds(0, 0, 250, 350);
+        return panel;
+    }
+    
+    public MemoryPanel getPanel(int width) {
+        if (panel == null) {
+            panel = new MemoryPanel();
+            updatePanel();
+        }
+        panel.setBounds(0, 0, width, (int)(RATIO * width));
         return panel;
     }
 
     public void setPanel(MemoryPanel panel) {
         this.panel = panel;
     }
+    //</editor-fold>
 }

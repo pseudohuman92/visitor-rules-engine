@@ -700,8 +700,6 @@ public class GameArea extends JPanel {
         opponentPanel.add(opponentDeckLabel);
         opponentPanel.add(opponentKnowledgeLabel);
 
-        stackPane.setLayout(new MigLayout("wrap 1"));       
-
         gameTextPanel.setBackground(new java.awt.Color(230, 228, 140));
         gameTextPanel.setBorder(BorderFactory.createCompoundBorder());
 
@@ -746,8 +744,7 @@ public class GameArea extends JPanel {
 
         opponentItemPanel.setLayout(new MigLayout());
         playerItemPanel.setLayout(new MigLayout());
-        handPane.setLayout(new MigLayout());
-        
+
         phaseDisplayPanel.setLayout(new MigLayout("wrap 4", "[grow 7][grow 1][grow 1][grow 1]", "[][][]"));
 
         currentTurnLabel.setText("currentTurn");
@@ -772,15 +769,15 @@ public class GameArea extends JPanel {
         phaseDisplayPanel.add(playerEndBox);
 
         
-        leftColumnPanel.setBackground(new java.awt.Color(150, 100, 100));
-        opponentItemPane.setBackground(new java.awt.Color(100, 150, 100));
-        playerItemPane.setBackground(new java.awt.Color(100, 100, 150));
-        phaseDisplayPanel.setBackground(new java.awt.Color(150, 150, 100));
-        handPane.setBackground(new java.awt.Color(150, 100, 150));
-        handPane.setLayout(new MigLayout("wrap 8"));
+        leftColumnPanel.setBackground(new Color(150, 100, 100));
+        opponentItemPane.setBackground(new Color(100, 150, 100));
+        playerItemPane.setBackground(new Color(100, 100, 150));
+        phaseDisplayPanel.setBackground(new Color(150, 150, 100));
+        handPane.setBackground(new Color(150, 100, 150));
+        
         playerItemPanel.setLayout(new MigLayout("wrap 8"));
         opponentItemPanel.setLayout(new MigLayout("wrap 8"));
-        setLayout(new MigLayout("wrap 2", "[10%!][90%!]", "[grow, 35%!][grow, 35%!][grow, 5%!][grow, 25%!]"));
+        setLayout(new MigLayout("wrap 2", "[10%][90%]", "[grow, 35%][grow, 35%][grow, 5%][grow, 25%]"));
         add(leftColumnPanel, "span 1 4, grow");
         add(opponentItemPane, "grow");
         add(playerItemPane, "grow");
