@@ -8,6 +8,7 @@ import enums.Knowledge;
 import game.ClientGame;
 import game.Game;
 import game.Player;
+import helpers.Hashmap;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public abstract class Card implements Serializable {
     transient public CardPane panel;
     public String name;
     public int cost;
-    public HashMap<Knowledge, Integer> knowledge;
+    public Hashmap<Knowledge, Integer> knowledge;
     public String text;
     public String image;
     public Type type;
@@ -42,13 +43,13 @@ public abstract class Card implements Serializable {
 
     public boolean depleted;
     public boolean marked;
-    public HashMap<Counter, Integer> counters;
+    public Hashmap<Counter, Integer> counters;
 
     // <editor-fold defaultstate="collapsed" desc="Constructors">
-    public Card(String name, int cost, HashMap<Knowledge, Integer> knowledge,
+    public Card(String name, int cost, Hashmap<Knowledge, Integer> knowledge,
             String text, String image, Type type, String owner) {
         uuid = UUID.randomUUID();
-        counters = new HashMap<>();
+        counters = new Hashmap<>();
         supplimentaryData = new ArrayList<>();
         this.name = name;
         this.cost = cost;
@@ -78,7 +79,7 @@ public abstract class Card implements Serializable {
         values = new int[c.values.length];
         System.arraycopy(c.values, 0, values, 0, values.length);
 
-        counters = new HashMap<>();
+        counters = new Hashmap<>();
         if (c.counters != null) {
             c.counters.forEach((name, value) -> counters.put(name, value));
         }
@@ -95,9 +96,9 @@ public abstract class Card implements Serializable {
 
     public Card(Card c, String text) {
         uuid = UUID.randomUUID();
-        counters = new HashMap<>();
+        counters = new Hashmap<>();
         supplimentaryData = new ArrayList<>();
-        knowledge = new HashMap<>();
+        knowledge = new Hashmap<>();
         
         values = new int[c.values.length];
         if (values.length >= 0) System.arraycopy(c.values, 0, values, 0, values.length);
@@ -122,6 +123,10 @@ public abstract class Card implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="Client Functions">
     // Called to check if you can play this card
     public abstract boolean canPlay(ClientGame game);
+    
+    public boolean canPlayAsASource (ClientGame game){
+        return true;
+    }
 
     // Called by the client when you choose to play this card
     public void play(Client client) {
@@ -133,7 +138,7 @@ public abstract class Card implements Serializable {
     }
     
     public void playAsSource(Client client) {
-        HashMap<Knowledge, Integer> knl = new HashMap<>();
+        Hashmap<Knowledge, Integer> knl = new Hashmap<>();
         if (knowledge.isEmpty()) {
             client.playSource(this, knl);
         } else if (knowledge.size() == 1) {
@@ -156,7 +161,7 @@ public abstract class Card implements Serializable {
     }
 
     // Called by the server when you choose to play this card as a source
-    public void playAsSource(Game game, HashMap<Knowledge, Integer> knowledge) {
+    public void playAsSource(Game game, Hashmap<Knowledge, Integer> knowledge) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
         player.sources.add(this);

@@ -11,6 +11,7 @@ import cards.Action;
 import cards.Item;
 import client.Client;
 import game.ClientGame;
+import helpers.Hashmap;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -24,15 +25,9 @@ import java.util.UUID;
 public class Confiscate extends Action{
     
     public Confiscate (String owner){
-        super("Confiscate", 3, getKnowledge(), 
+        super("Confiscate", 3, new Hashmap<>(Knowledge.RED, 2), 
                 "Shuffle target item to your deck.", "action.png", owner);
         values = new int[0];
-    }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.RED, 2);
-       return knowledge;
     }
     
     public boolean canPlay(ClientGame game){ 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import client.Client;
 import enums.Knowledge;
 import cards.Item;
+import helpers.Hashmap;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +20,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -520,8 +520,7 @@ public class GameArea extends JPanel {
             menu.add(menuItem);
             menuItem.addActionListener((ActionEvent event) -> {
                 Debug.println("Playing as a source: " + card.name);
-                HashMap<Knowledge, Integer> knl = new HashMap<>();
-                knl.put(knowl, 1);
+                Hashmap<Knowledge, Integer> knl = new Hashmap<>(knowl, 1);
                 client.playSource(card, knl);
             });
         }
@@ -529,7 +528,7 @@ public class GameArea extends JPanel {
         menu.show((Component) card.getPanel(), card.getPanel().getX(), card.getPanel().getY());
     }
 
-    void sourceMenu(MouseEvent evt, Card card) {
+    void displaySourceMenu(MouseEvent evt, Card card) {
         JPopupMenu menu = new JPopupMenu();
         JMenuItem menuItem = new JMenuItem("Play as a source");
         menu.add(menuItem);
@@ -558,15 +557,15 @@ public class GameArea extends JPanel {
                 if (client.game.hasInitiative()) {
                     if (evt.getButton() == MouseEvent.BUTTON1) {
                         if (evt.isControlDown()) {
-                            if (client.game.canPlaySource()) {
+                            if (client.game.canPlaySource() && card.canPlayAsASource(client.game)) {
                                 Debug.println("Playing as a source: " + card.name);
                                 card.playAsSource(client);
                             }
                         } else if (card.canPlay(client.game)) {
                             card.play(client);
                         }
-                    } else if (evt.getButton() == MouseEvent.BUTTON3 && client.game.canPlaySource()) {
-                        sourceMenu(evt, card);
+                    } else if (evt.getButton() == MouseEvent.BUTTON3 && client.game.canPlaySource() && card.canPlayAsASource(client.game)) {
+                        displaySourceMenu(evt, card);
                     }
                 }
             }
@@ -637,7 +636,8 @@ public class GameArea extends JPanel {
         };
     }
 //</editor-fold>
-                  
+          
+    // <editor-fold defaultstate="collapsed" desc="Initializer">
     private void initComponents() {
         
         leftColumnPanel = new JPanel();
@@ -767,17 +767,10 @@ public class GameArea extends JPanel {
         phaseDisplayPanel.add(playerBeginBox, "skip 1");
         phaseDisplayPanel.add(playerMainBox);
         phaseDisplayPanel.add(playerEndBox);
-
-        
-        leftColumnPanel.setBackground(new Color(150, 100, 100));
-        opponentItemPane.setBackground(new Color(100, 150, 100));
-        playerItemPane.setBackground(new Color(100, 100, 150));
-        phaseDisplayPanel.setBackground(new Color(150, 150, 100));
-        handPane.setBackground(new Color(150, 100, 150));
         
         playerItemPanel.setLayout(new MigLayout("wrap 8"));
         opponentItemPanel.setLayout(new MigLayout("wrap 8"));
-        setLayout(new MigLayout("wrap 2", "[10%][90%]", "[grow, 35%][grow, 35%][grow, 5%][grow, 25%]"));
+        setLayout(new MigLayout("wrap 2", "[grow, 10%][grow, 90%]", "[grow, 35%][grow, 35%][grow, 5%][grow, 25%]"));
         add(leftColumnPanel, "span 1 4, grow");
         add(opponentItemPane, "grow");
         add(playerItemPane, "grow");
@@ -895,8 +888,9 @@ public class GameArea extends JPanel {
             concedeMenu().show((Component) evt.getSource(), evt.getX(), evt.getY());
         }
     }                                                                   
-//</editor-fold>
+    //</editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="GUI Components">
     private JPanel gameTextPanel;
     private JButton gameTextButtonLeft;
     private JButton gameTextButtonRight;
@@ -936,5 +930,5 @@ public class GameArea extends JPanel {
     private JScrollPane playerItemPane;
     private JScrollPane opponentItemPane;
     private JSpinner xValueSelector;       
-
+    //</editor-fold>
 }

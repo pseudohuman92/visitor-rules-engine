@@ -43,7 +43,7 @@ public class DeckBuilder extends JPanel {
         initComponents();
         this.client = client;
         cardGenerator = new CardGenerator("");
-        loadCardDatabase(collectionTable);
+        //loadCardDatabase(collectionTable);
     }
     
     void displayCard(){

@@ -10,6 +10,7 @@ import enums.Knowledge;
 import cards.Action;
 import client.Client;
 import game.ClientGame;
+import helpers.Hashmap;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -22,18 +23,12 @@ import java.util.UUID;
 public class Salvage extends Action{
     
     public Salvage (String owner){
-        super("Salvage", 1, getKnowledge(), 
+        super("Salvage", 1, new Hashmap(Knowledge.RED, 1), 
                 "As an additional cost to play Salvage, destroy an item you control.\n" +
                 "Draw 3 cards.", "action.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.RED, 1);
-       return knowledge;
-    }
-    
+
     @Override
     public boolean canPlay(ClientGame game){ 
         return super.canPlay(game) && !game.player.items.isEmpty();

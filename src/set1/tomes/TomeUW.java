@@ -8,6 +8,7 @@ package set1.tomes;
 import cards.Tome;
 import client.Client;
 import enums.Knowledge;
+import helpers.Hashmap;
 import java.util.HashMap;
 
 /**
@@ -22,7 +23,7 @@ public class TomeUW extends Tome {
 
     @Override
     public void playAsSource(Client client) {
-        HashMap<Knowledge, Integer> knl = new HashMap<>();
+        Hashmap<Knowledge, Integer> knl = new Hashmap<>();
         knl.put(Knowledge.BLUE, 1);
         knl.put(Knowledge.WHITE, 1);
         client.playSource(this, knl);

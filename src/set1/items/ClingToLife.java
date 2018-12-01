@@ -10,7 +10,7 @@ import cards.Item;
 import enums.Knowledge;
 import game.Game;
 
-import java.util.HashMap;
+import helpers.Hashmap;
 import set1.items.activations.ClingToLifeDrawActivation;
 import set1.items.activations.ClingToLifeStartTrigger;
 
@@ -20,7 +20,7 @@ import set1.items.activations.ClingToLifeStartTrigger;
  */
 public class ClingToLife extends Item {
     public ClingToLife (String owner){
-        super("Cling to Life", 2, getKnowledge(), 
+        super("Cling to Life", 2, new Hashmap(Knowledge.BLACK, 2), 
                 "When Cling to Life enters play, lose 2 sanity and draw a card.<br><br>" +
 "At the beginning of your turn, if you have 5 or less sanity,"
                         + "add a survival counter to Cling to life. "
@@ -28,13 +28,7 @@ public class ClingToLife extends Item {
                 "item.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.BLACK, 2);
-       return knowledge;
-    }
-    
+
     @Override
     public void resolve(Game game) {
         super.resolve(game);

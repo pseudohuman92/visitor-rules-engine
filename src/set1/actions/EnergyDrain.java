@@ -10,6 +10,7 @@ import enums.Knowledge;
 import cards.Action;
 import client.Client;
 import game.ClientGame;
+import helpers.Hashmap;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -23,15 +24,9 @@ import java.util.UUID;
 public class EnergyDrain extends Action{
     
     public EnergyDrain (String owner){
-        super("Energy Drain", 1, getKnowledge(), 
+        super("Energy Drain", 1, new Hashmap(Knowledge.RED, 1), 
                 "Deplete target item. Draw a card.", "action.png", owner);
         values = new int[0];
-    }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.RED, 1);
-       return knowledge;
     }
     
     public boolean canPlay(ClientGame game){ 

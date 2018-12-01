@@ -7,15 +7,14 @@ package cards;
 
 import static cards.Card.RATIO;
 import client.Client;
-import enums.Knowledge;
 import enums.Type;
 import game.ClientGame;
 import game.Game;
+import helpers.Hashmap;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -28,7 +27,7 @@ import net.miginfocom.swing.MigLayout;
 public abstract class Tome extends Card {
     
     public Tome(String name, String text, String image, String owner) {
-        super(name, 0, new HashMap<>(), text, "assets/tome.png", Type.TOME, owner);
+        super(name, 0, new Hashmap<>(), text, "assets/tome.png", Type.TOME, owner);
     }
 
     public boolean canPlay(ClientGame game){ return false; }

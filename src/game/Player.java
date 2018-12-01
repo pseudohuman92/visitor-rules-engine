@@ -3,9 +3,9 @@ package game;
 import cards.Item;
 import cards.Card;
 import enums.Knowledge;
+import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class Player implements Serializable {
@@ -19,7 +19,7 @@ public class Player implements Serializable {
     public ArrayList<Card> hand;
     public ArrayList<Card> discardPile;
     public ArrayList<Item> items;
-    public HashMap<Knowledge, Integer> knowledge;
+    public Hashmap<Knowledge, Integer> knowledge;
     
     public Player (String name, Deck deck){
         this.name = name;
@@ -32,7 +32,7 @@ public class Player implements Serializable {
         hand = new ArrayList<>();
         discardPile = new ArrayList<>();
         items = new ArrayList<>();
-        knowledge = new HashMap<>();
+        knowledge = new Hashmap<>();
     }
 
     public Opponent toOpponent ()
@@ -86,13 +86,13 @@ public class Player implements Serializable {
         items.forEach((card) -> card.depleted = false);
     }
     
-    public void addKnowledge(HashMap<Knowledge, Integer> knowl){
+    public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
         knowl.forEach((k, i) -> {
             knowledge.merge(k, i, (a, b) -> a + b);
         });
     }
     
-    public boolean hasKnowledge(HashMap<Knowledge, Integer> cardKnowledge){
+    public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
         for (Knowledge k : cardKnowledge.keySet()){
             result &= knowledge.containsKey(k) && (cardKnowledge.get(k) <= knowledge.get(k));

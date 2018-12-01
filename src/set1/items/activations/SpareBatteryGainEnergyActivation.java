@@ -24,7 +24,7 @@ public class SpareBatteryGainEnergyActivation extends Activation{
     @Override
     public void resolve(Game game) {
         Player player = game.players.get(creator.owner);
-        Integer count = creator.counters.remove(Counter.CHARGE);
+        Integer count = creator.counters.removeAndGet(Counter.CHARGE);
         if (count != null){
             player.energy += count;
         }

@@ -9,8 +9,8 @@ import game.Game;
 import enums.Knowledge;
 import cards.Action;
 import cards.Card;
+import helpers.Hashmap;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -22,14 +22,8 @@ import java.util.HashMap;
 public class DrawAndOrder extends Action{
     
     public DrawAndOrder (String owner){
-        super("Draw And Order", 1, getKnowledge(), 
+        super("Draw And Order", 1, new Hashmap(Knowledge.BLUE, 1), 
                 "Draw 1. Order 3", "action.png", owner);
-    }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.BLUE, 1);
-       return knowledge;
     }
     
     public void resolve(Game game) {

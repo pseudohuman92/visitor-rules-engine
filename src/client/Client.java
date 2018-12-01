@@ -14,8 +14,6 @@ import cards.Card;
 import client.gui.CardOrderPopup;
 import game.Deck;
 import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import client.gui.DeckBuilder;
@@ -25,6 +23,7 @@ import client.gui.Login;
 import client.gui.MainFrame;
 import client.gui.TextPopup;
 import enums.Knowledge;
+import helpers.Hashmap;
 import java.io.Serializable;
 
 /**
@@ -42,7 +41,7 @@ public class Client {
     public String username;
     public ArrayList<String> players;
     public ArrayList<String> chatLog;
-    public HashMap<UUID, Table> tables;
+    public Hashmap<UUID, Table> tables;
     public ClientGame game;
     
     //UI
@@ -108,7 +107,7 @@ public class Client {
         gameConnection.send(Message.keep(game.uuid, username));
     }
     
-    public void playSource(Card card, HashMap<Knowledge, Integer> knowledge){
+    public void playSource(Card card, Hashmap<Knowledge, Integer> knowledge){
         gameConnection.send(Message.playSource(game.uuid, username, card.uuid, knowledge));
     }
     

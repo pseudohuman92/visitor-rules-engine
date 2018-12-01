@@ -11,9 +11,9 @@ import game.Game;
 import enums.Knowledge;
 import cards.Item;
 import client.Client;
+import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 import set1.items.activations.TransferCableActivation;
 
@@ -24,18 +24,12 @@ import set1.items.activations.TransferCableActivation;
 public class TransferCable extends Item{
     
     public TransferCable (String owner){
-        super("Transfer Cable", 1, getKnowledge(), 
+        super("Transfer Cable", 1, new Hashmap(Knowledge.WHITE, 1), 
                 "Exhaust, Exhaust an item you control: Charge target item.", 
                 "item.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.WHITE, 1);
-       return knowledge;
-    }
-    
+
     @Override
     public boolean canActivate(ClientGame game) {
         for (Item i : game.player.items){

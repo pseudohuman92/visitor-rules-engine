@@ -12,13 +12,13 @@ import enums.Type;
 import game.ClientGame;
 import game.Game;
 import game.Phase;
+import helpers.Hashmap;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -32,7 +32,7 @@ import network.Message;
  */
 public abstract class Item extends Card {
     
-    public Item(String name, int cost, HashMap<Knowledge, Integer> knowledge, String text, String image, String owner) {
+    public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
         super(name, cost, knowledge, text, "assets/item.png", Type.ITEM, owner);
     }
     

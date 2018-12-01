@@ -9,7 +9,7 @@ import game.Game;
 import enums.Knowledge;
 import cards.Action;
 
-import java.util.HashMap;
+import helpers.Hashmap;
 
 /**
  *
@@ -18,16 +18,10 @@ import java.util.HashMap;
 public class OpponentDiscard extends Action{
     
     public OpponentDiscard (String owner){
-        super("Opponent Discard", 0, getKnowledge(), 
+        super("Opponent Discard", 0, new Hashmap(Knowledge.GREEN, 1), 
                 "Target opponent discards %s cards.", "action.png", owner);
         values = new int[2];
         values[0] = 2;
-    }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.GREEN, 1);
-       return knowledge;
     }
     
     public void resolve(Game game) {

@@ -10,8 +10,8 @@ import network.Message;
 import network.Receiver;
 import game.ClientGame;
 import game.Table;
+import helpers.Hashmap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -36,7 +36,7 @@ public class ClientReceiver extends Receiver {
                 client.updateChat();
                 break;
             case UPDATE_TABLES:
-                client.tables = (HashMap<UUID, Table>)message.object;
+                client.tables = (Hashmap<UUID, Table>)message.object;
                 client.updateTables();
                 break;
             case UPDATE_PLAYERS:

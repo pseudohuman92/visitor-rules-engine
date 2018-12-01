@@ -9,7 +9,7 @@ import game.Game;
 import enums.Knowledge;
 import cards.Action;
 import enums.Counter;
-import java.util.HashMap;
+import helpers.Hashmap;
 
 
 /**
@@ -21,14 +21,8 @@ import java.util.HashMap;
 public class GroundConnection extends Action{
     
     public GroundConnection (String owner){
-        super("Ground Connection", 4, getKnowledge(), 
+        super("Ground Connection", 4, new Hashmap(Knowledge.BLACK, 2), 
                 "Remove all charge counters from all items", "action.png", owner);
-    }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.BLACK, 2);
-       return knowledge;
     }
     
     @Override

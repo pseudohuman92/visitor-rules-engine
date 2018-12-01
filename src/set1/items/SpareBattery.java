@@ -10,11 +10,11 @@ import cards.Item;
 import client.Client;
 import game.ClientGame;
 import game.Game;
+import helpers.Hashmap;
 
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import set1.items.activations.SpareBatteryAddCounterActivation;
@@ -26,7 +26,7 @@ import set1.items.activations.SpareBatteryGainEnergyActivation;
  */
 public class SpareBattery extends Item {
     public SpareBattery (String owner){
-        super("Spare Battery", 1, new HashMap<>(), 
+        super("Spare Battery", 1, new Hashmap<>(), 
                 "X, Deplete: Remove all charge counters then place X charge counters on ~<br><br>"
                 + "Destroy: Gain X energy where X = # of charge counters on ~", 
                 "item.png", owner);
@@ -44,7 +44,7 @@ public class SpareBattery extends Item {
         if (!depleted) {
             menuItem = new JMenuItem("Add charge counters.");
             menu.add(menuItem);
-            menuItem.addActionListener((ActionEvent event) -> client.gameArea.getXValue(this::activate1Helper, (cli, x) -> x <= cli.game.player.energy));
+            menuItem.addActionListener((event) -> client.gameArea.getXValue(this::activate1Helper, (cli, x) -> x <= cli.game.player.energy));
         }
         
         menuItem = new JMenuItem("Destroy: Gain energy");

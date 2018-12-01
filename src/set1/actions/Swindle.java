@@ -11,9 +11,9 @@ import cards.Action;
 import cards.Item;
 import client.Client;
 import game.ClientGame;
+import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 
@@ -25,16 +25,10 @@ import java.util.UUID;
 public class Swindle extends Action{
     
     public Swindle (String owner){
-        super("Swindle", 2, getKnowledge(), 
+        super("Swindle", 2, new Hashmap(Knowledge.RED, 2), 
                 "Exchange an item you control with an item opponent controls that costs equal or less.", "action.png", owner);
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.RED, 2);
-       return knowledge;
-    }
-    
+
     @Override
     public boolean canPlay(ClientGame game){ 
         return super.canPlay(game) 

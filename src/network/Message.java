@@ -8,6 +8,7 @@ import game.ClientGame;
 import enums.Knowledge;
 import game.Table;
 import game.Deck;
+import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class Message implements Serializable {
         return new Message(MessageLabel.UPDATE_CHAT_LOG, chatLog);
     }
     
-    public static Message updateTables(HashMap<UUID, Table> tables){
+    public static Message updateTables(Hashmap<UUID, Table> tables){
         return new Message(MessageLabel.UPDATE_TABLES, tables);
     }
     
@@ -152,7 +153,7 @@ public class Message implements Serializable {
         return new Message(MessageLabel.UPDATE_GAME, game);
     }
     
-    public static Message playSource(UUID gameID, String username, UUID cardID, HashMap<Knowledge, Integer> knowledge){
+    public static Message playSource(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge){
         Serializable[] data = new Serializable[4];
         data[0] = gameID;
         data[1] = username;

@@ -7,6 +7,7 @@ package client.gui;
 
 import cards.Card;
 import helpers.Debug;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -29,6 +30,7 @@ public class CardOrderPopup extends javax.swing.JDialog {
         super(new javax.swing.JFrame(), true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new MigLayout("wrap 4"));
+        setMinimumSize(new Dimension(350, 350));
         unordered = cards;
         ordered = new ArrayList<>();
         unordered.forEach((card) -> {

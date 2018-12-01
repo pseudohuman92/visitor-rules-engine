@@ -8,9 +8,9 @@ package game;
 import cards.Item;
 import cards.Card;
 import enums.Knowledge;
+import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -27,7 +27,7 @@ public class Opponent implements Serializable {
     public ArrayList<Card> sources;
     public ArrayList<Card> discardPile;
     public ArrayList<Item> items;
-    public HashMap<Knowledge, Integer> knowledge;
+    public Hashmap<Knowledge, Integer> knowledge;
 
     
     public Opponent (Player player) {

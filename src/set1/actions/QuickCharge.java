@@ -10,7 +10,7 @@ import enums.Knowledge;
 import cards.Action;
 import client.Client;
 import game.ClientGame;
-import java.util.HashMap;
+import helpers.Hashmap;
 import java.util.UUID;
 
 
@@ -23,17 +23,11 @@ import java.util.UUID;
 public class QuickCharge extends Action{
     
     public QuickCharge (String owner){
-        super("Quick Charge", 1, getKnowledge(), 
+        super("Quick Charge", 1, new Hashmap(Knowledge.BLUE, 1), 
                 "Charge target item. Draw a card.", "action.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.BLUE, 1);
-       return knowledge;
-    }
-    
+
     public boolean canPlay(ClientGame game){ 
         return super.canPlay(game) 
                && (!game.player.items.isEmpty() 

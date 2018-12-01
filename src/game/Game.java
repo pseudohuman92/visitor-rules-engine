@@ -7,6 +7,7 @@ package game;
 
 import cards.Card;
 import cards.Item;
+import helpers.Hashmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +22,9 @@ import network.Message;
 public class Game {
     
     //(player_name, player) pairs
-    public HashMap<String, Player> players;
-    public HashMap<String, Connection> communicationConnections;
-    public HashMap<String, Connection> interactionConnections;
+    public Hashmap<String, Player> players;
+    public Hashmap<String, Connection> communicationConnections;
+    public Hashmap<String, Connection> interactionConnections;
     public ArrayList<Card> stack;
     public String turnPlayer;
     public String activePlayer;
@@ -35,10 +36,10 @@ public class Game {
     
     public Game (Table table) {
         uuid = UUID.randomUUID();
-        players = new HashMap<>();
+        players = new Hashmap<>();
         stack = new ArrayList<>();
-        communicationConnections = new HashMap<>();
-        interactionConnections = new HashMap<>();
+        communicationConnections = new Hashmap<>();
+        interactionConnections = new Hashmap<>();
         
         table.creatorDeck.shuffle();
         table.opponentDeck.shuffle();

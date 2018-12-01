@@ -11,6 +11,7 @@ import enums.Knowledge;
 import game.ClientGame;
 import game.Game;
 import game.Player;
+import helpers.Hashmap;
 import java.util.HashMap;
 import set1.items.activations.EmpBombActivation;
 
@@ -20,18 +21,12 @@ import set1.items.activations.EmpBombActivation;
  */
 public class EmpBomb extends Item {
     public EmpBomb (String owner){
-        super("Emp Bomb", 4, getKnowledge(), 
+        super("Emp Bomb", 4, new Hashmap(Knowledge.BLACK, 2), 
                 "4, Exhaust, Destroy: Destroy all items.", 
                 "item.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.BLACK, 2);
-       return knowledge;
-    }
-    
+
     @Override
     public boolean canActivate(ClientGame game){ 
         return game.player.energy > 3 && !depleted; 

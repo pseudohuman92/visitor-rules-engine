@@ -6,6 +6,7 @@
 package client.gui;
 
 import cards.Card;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
@@ -24,6 +25,7 @@ public class CardDisplayPopup extends javax.swing.JDialog {
         super(new javax.swing.JFrame(), true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setLayout(new MigLayout("wrap 4"));
+        setMinimumSize(new Dimension(350, 350));
         cards.forEach((card) -> {
             card.updatePanel();
             add(card.getPanel());});

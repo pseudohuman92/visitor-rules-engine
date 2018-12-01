@@ -9,11 +9,11 @@ import static cards.Card.RATIO;
 import enums.Knowledge;
 import enums.Type;
 import game.ClientGame;
+import helpers.Hashmap;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,7 +25,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public abstract class Action extends Card {
     
-    public Action(String name, int cost, HashMap<Knowledge, Integer> knowledge, String text, String image, String owner) {
+    public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
         super(name, cost, knowledge, text, "assets/action.png", Type.ACTION, owner);
     }
     

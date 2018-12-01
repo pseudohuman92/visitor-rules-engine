@@ -10,7 +10,7 @@ import game.ClientGame;
 import game.Game;
 import cards.Item;
 
-import java.util.HashMap;
+import helpers.Hashmap;
 import set1.items.activations.DuplicatingCubeActivation;
 
 /**
@@ -20,7 +20,7 @@ import set1.items.activations.DuplicatingCubeActivation;
 public class DuplicatingCube extends Item{
     
     public DuplicatingCube (String owner){
-        super("Duplicating Cube", 0, new HashMap<>(), 
+        super("Duplicating Cube", 0, new Hashmap<>(), 
                 "Exhaust: Add %s charge counters, increase this ability %s, then duplicate", 
                 "item.png", owner);
         values = new int[2];

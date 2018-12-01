@@ -12,7 +12,7 @@ import enums.Knowledge;
 import cards.Item;
 import client.Client;
 
-import java.util.HashMap;
+import helpers.Hashmap;
 
 import set1.items.activations.PowerInfuserActivation;
 
@@ -23,18 +23,12 @@ import set1.items.activations.PowerInfuserActivation;
 public class PowerInfuser extends Item{
     
     public PowerInfuser (String owner){
-        super("Power Infuser", 1, getKnowledge(), 
+        super("Power Infuser", 1, new Hashmap(Knowledge.BLUE, 1), 
                 "1, Exhaust: Charge target item.", 
                 "item.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.BLUE, 1);
-       return knowledge;
-    }
-    
+
     @Override
     public boolean canActivate(ClientGame game) {
         return game.player.energy > 0 && !depleted;

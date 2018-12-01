@@ -10,7 +10,7 @@ import cards.Item;
 import client.Client;
 import game.ClientGame;
 import game.Game;
-import java.util.HashMap;
+import helpers.Hashmap;
 import set1.items.activations.NanobombActivation;
 
 /**
@@ -19,7 +19,7 @@ import set1.items.activations.NanobombActivation;
  */
 public class Nanobomb extends Item {
     public Nanobomb (String owner){
-        super("Nanobomb", 0, new HashMap<>(), 
+        super("Nanobomb", 0, new Hashmap<>(), 
                 "Destroy: Target player loses 1 life.", 
                 "item.png", owner);
         values = new int[0];

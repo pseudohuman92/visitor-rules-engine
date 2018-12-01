@@ -10,7 +10,7 @@ import cards.Item;
 import enums.Knowledge;
 import game.Game;
 
-import java.util.HashMap;
+import helpers.Hashmap;
 
 import set1.items.activations.MysticalTeachingsGainLifeActivation;
 import set1.items.activations.MysticalTeachingsStartTrigger;
@@ -21,20 +21,14 @@ import set1.items.activations.MysticalTeachingsStartTrigger;
  */
 public class MysticalTeachings extends Item {
     public MysticalTeachings (String owner){
-        super("Mystical Teachings", 3, getKnowledge(), 
+        super("Mystical Teachings", 3, new Hashmap(Knowledge.WHITE, 2), 
                 "When Mystical Teachings enters play, you gain 5 sanity.<br><br>" +
 "At the start of your turn, if you have more than 30 sanity, add a transcendence counter on Mystical Teachings. "
                         + "If Mystical Teachings has 5 or more transcendence counters on it, you win the game.", 
                 "item.png", owner);
         values = new int[0];
     }
-    
-    static private HashMap<Knowledge,Integer> getKnowledge(){
-       HashMap<Knowledge,Integer> knowledge = new HashMap<>();
-       knowledge.put(Knowledge.WHITE, 2);
-       return knowledge;
-    }
-    
+
     @Override
     public void resolve(Game game) {
         super.resolve(game);
