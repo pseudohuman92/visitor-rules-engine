@@ -36,9 +36,9 @@ public class OverlapPane extends JLayeredPane {
             {
                 Component[] comps = getComponents();
                 ArrayList<CardPane> panels = new ArrayList<>();
-                for (Component c : comps){
-                    if (c instanceof CardPane)
-                        panels.add((CardPane)c);
+                for (int i = 0; i < comps.length; i++){
+                    if (comps[i] instanceof CardPane)
+                        panels.add(0, (CardPane)(comps[i]));
                 }
                 layAll(panels);
             }
