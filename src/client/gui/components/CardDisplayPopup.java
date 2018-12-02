@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client.gui;
+package client.gui.components;
 
 import cards.Card;
 import java.awt.Dimension;

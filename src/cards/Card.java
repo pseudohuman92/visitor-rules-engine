@@ -1,10 +1,10 @@
 package cards;
 
 import client.Client;
-import client.gui.CardPane;
+import client.gui.components.CardPane;
 import enums.Counter;
-import enums.Type;
 import enums.Knowledge;
+import enums.Type;
 import game.ClientGame;
 import game.Game;
 import game.Player;
@@ -13,7 +13,6 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.UUID;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -125,7 +124,7 @@ public abstract class Card implements Serializable {
     public abstract boolean canPlay(ClientGame game);
     
     public boolean canPlayAsASource (ClientGame game){
-        return true;
+        return game.canPlaySource();
     }
 
     // Called by the client when you choose to play this card

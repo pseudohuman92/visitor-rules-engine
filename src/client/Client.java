@@ -5,26 +5,25 @@
  */
 package client;
 
-import game.ClientGame;
-import java.util.UUID;
-import network.Connection;
-import network.Message;
-import game.Table;
 import cards.Card;
-import client.gui.CardOrderPopup;
-import game.Deck;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import client.gui.DeckBuilder;
 import client.gui.GameArea;
 import client.gui.Lobby;
 import client.gui.Login;
 import client.gui.MainFrame;
-import client.gui.TextPopup;
+import client.gui.components.CardOrderPopup;
+import client.gui.components.TextPopup;
 import enums.Knowledge;
+import game.ClientGame;
+import game.Deck;
+import game.Table;
 import helpers.Hashmap;
+import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.UUID;
+import network.Connection;
+import network.Message;
 
 /**
  *
@@ -62,7 +61,8 @@ public class Client {
         main.add("Login", login);
         login.setVisible(true);
 
-        hostname = "ccgtest.ddns.net";
+        //hostname = "ccgtest.ddns.net";
+        hostname = "localhost";
         hostport = 8080;
         hostGamePort = 8081;
         System.out.println("Hostname: " + hostname);

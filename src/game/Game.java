@@ -8,9 +8,7 @@ package game;
 import cards.Card;
 import cards.Item;
 import helpers.Hashmap;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 import network.Connection;
 import network.Message;
@@ -202,13 +200,17 @@ public class Game {
     }
 
     public ArrayList<Card> orderCards(String username, ArrayList<Card> cards) {
+        String activePlayerStore = activePlayer;
+        activePlayer = "";
         Connection connection = interactionConnections.get(username);
         connection.send(Message.order(cards));
         Message message = connection.receive();
         if (message != null) {
             cards = Card.sortByUUID(cards, (ArrayList<UUID>)message.object);
+            activePlayer = activePlayerStore;
             return cards;
         }
+        activePlayer = activePlayerStore;
         return null;
     }
     

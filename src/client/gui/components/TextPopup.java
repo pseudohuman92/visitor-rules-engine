@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package client.gui;
+package client.gui.components;
 
 import static java.awt.EventQueue.invokeLater;
 import java.awt.FlowLayout;

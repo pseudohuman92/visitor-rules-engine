@@ -50,6 +50,8 @@ public class CardGenerator implements Serializable {
                 return new MysticalTeachings(username);
             case "Cling to Life":  
                 return new ClingToLife(username);
+            case "Junk":  
+                return new Junk(username);
             case "Tome BG":  
                 return new TomeBG(username);
             case "Tome BR":  

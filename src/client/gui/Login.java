@@ -5,6 +5,7 @@
  */
 package client.gui;
 
+import client.gui.components.TextPopup;
 import client.Client;
 
 import javax.swing.JButton;

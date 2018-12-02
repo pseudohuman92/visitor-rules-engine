@@ -5,21 +5,25 @@
  */
 package client.gui;
 
-import helpers.Debug;
 import cards.Card;
-import java.awt.Component;
-import java.util.ArrayList;
-import client.Client;
-import enums.Knowledge;
 import cards.Item;
+import client.Client;
+import client.gui.components.CardDisplayPopup;
+import client.gui.components.CardPane;
+import client.gui.components.OverlapPane;
+import enums.Knowledge;
+import game.Phase;
+import helpers.Debug;
 import helpers.Hashmap;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -49,6 +53,7 @@ public class GameArea extends JPanel {
     boolean skipOpponentMain;
     boolean skipPlayerEnd;
     boolean skipOpponentEnd;
+    boolean quickPlay;
 
     public GameArea(Client client) {
         this.client = client;
@@ -61,7 +66,8 @@ public class GameArea extends JPanel {
         skipPlayerMain = false;
         skipOpponentMain = true;
         skipPlayerEnd = true;
-        skipOpponentEnd = false;
+        skipOpponentEnd = true;
+        quickPlay = true;
         update();
     }
 
@@ -92,7 +98,8 @@ public class GameArea extends JPanel {
         displayPlayerItems();
         displayOpponentItems();
         validate();
-        checkAutopass();
+        if(quickPlay && checkSmartPass()) //|| checkAutoPass())
+            client.skipInitiative();
     }
 
     void setPlayerStats() {
@@ -314,29 +321,50 @@ public class GameArea extends JPanel {
     }
     // </editor-fold>
 
-    void checkAutopass() {
+    boolean checkSmartPass() {
+        if (client.username.equals(client.game.activePlayer) && 
+              (client.game.phase == Phase.BEGIN || 
+               client.game.phase == Phase.MAIN || 
+               client.game.phase == Phase.END)) 
+        {
+            for (int i = 0; i < client.game.player.hand.size(); i++) {
+                if (client.game.player.hand.get(i).canPlayAsASource(client.game) 
+                 || client.game.player.hand.get(i).canPlay(client.game))
+                    return false;
+            }
+            for (int i = 0; i < client.game.player.items.size(); i++) {
+                if (client.game.player.items.get(i).canActivate(client.game))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    boolean checkAutoPass() {
         if (client.username.equals(client.game.activePlayer) && client.game.stack.isEmpty()) {
             switch (client.game.phase) {
                 case BEGIN:
                     if ((skipPlayerBegin && client.username.equals(client.game.turnPlayer))
                             || (skipOpponentBegin && !client.username.equals(client.game.turnPlayer))) {
-                        client.skipInitiative();
+                        return true;
                     }
                     break;
                 case MAIN:
                     if ((skipPlayerMain && client.username.equals(client.game.turnPlayer))
                             || (skipOpponentMain && !client.username.equals(client.game.turnPlayer))) {
-                        client.skipInitiative();
+                        return true;
                     }
                     break;
                 case END:
                     if ((skipPlayerEnd && client.username.equals(client.game.turnPlayer))
                             || (skipOpponentEnd && !client.username.equals(client.game.turnPlayer))) {
-                        client.skipInitiative();
+                        return true;
                     }
                     break;
             }
         }
+        return false;
     }
 
     public void discardCards(int count) {
@@ -557,14 +585,14 @@ public class GameArea extends JPanel {
                 if (client.game.hasInitiative()) {
                     if (evt.getButton() == MouseEvent.BUTTON1) {
                         if (evt.isControlDown()) {
-                            if (client.game.canPlaySource() && card.canPlayAsASource(client.game)) {
+                            if (card.canPlayAsASource(client.game)) {
                                 Debug.println("Playing as a source: " + card.name);
                                 card.playAsSource(client);
                             }
                         } else if (card.canPlay(client.game)) {
                             card.play(client);
                         }
-                    } else if (evt.getButton() == MouseEvent.BUTTON3 && client.game.canPlaySource() && card.canPlayAsASource(client.game)) {
+                    } else if (evt.getButton() == MouseEvent.BUTTON3 && card.canPlayAsASource(client.game)) {
                         displaySourceMenu(evt, card);
                     }
                 }
