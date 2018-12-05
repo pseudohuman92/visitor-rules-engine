@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/items/Junk.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/cards/CardGenerator.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/game/ClientGame.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/client/Client.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/game/Game.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/client/ClientGameReceiver.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/client/gui/GameArea.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/cards/Card.java</file>
         </group>
     </open-files>
 </project-private>

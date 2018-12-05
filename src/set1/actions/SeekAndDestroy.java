@@ -35,5 +35,6 @@ public class SeekAndDestroy extends Action{
         for(Serializable uuid : supplimentaryData){
             game.destroy((UUID)uuid);
         }
+        super.resolve(game);
     }
 }

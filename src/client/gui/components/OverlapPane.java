@@ -83,6 +83,7 @@ public class OverlapPane extends JLayeredPane {
             }
         }
         
+        /*
         Debug.println("Displaying in OverlapPane.\n"
                     + "num: " + num + "\n"
                     + "cardWidth: " + cardWidth + "\n"
@@ -90,7 +91,7 @@ public class OverlapPane extends JLayeredPane {
                     + "width: " + width + "\n"
                     + "height: " + height + "\n"
                     + "shift: " + shift);
-        
+        */
         setLayout(null);
         for (int i = 0; i < num; i++) {
             CardPane panel = comps.get(i);
@@ -102,14 +103,14 @@ public class OverlapPane extends JLayeredPane {
             panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    System.out.println("Mouse Entered");
+                    //Debug.println("Mouse Entered");
                     setLayer(panel, highestLayer()+1);
                     revalidate();
                     repaint();
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    System.out.println("Mouse Exited");
+                    //Debug.println("Mouse Exited");
                     setLayer(panel, panel.layer);
                     revalidate();
                     repaint();

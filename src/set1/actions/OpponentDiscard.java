@@ -26,5 +26,6 @@ public class OpponentDiscard extends Action{
     
     public void resolve(Game game) {
         game.discard(game.getOpponentName(owner), values[0]);
+        super.resolve(game);
     }
 }

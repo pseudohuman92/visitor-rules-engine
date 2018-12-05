@@ -30,5 +30,6 @@ public class DrawAndOrder extends Action{
         game.draw(owner, 1);
         ArrayList<Card> cards = game.orderCards(owner, game.players.get(owner).deck.draw(3));
         game.players.get(owner).deck.insertAll(cards, 0);
+        super.resolve(game);
     }
 }

@@ -56,5 +56,6 @@ public class Swindle extends Action{
     public void resolve(Game game) {
         game.switchOwner((UUID) supplimentaryData.get(0));
         game.switchOwner((UUID) supplimentaryData.get(1));
+        super.resolve(game);
     }
 }

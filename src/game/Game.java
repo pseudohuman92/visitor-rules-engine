@@ -5,6 +5,7 @@
  */
 package game;
 
+import enums.Phase;
 import cards.Card;
 import cards.Item;
 import helpers.Hashmap;
@@ -29,7 +30,6 @@ public class Game {
     public Phase phase;
     public int turnCount;
     public int passCount;
-    public boolean startTriggered;
     public UUID uuid;
     
     public Game (Table table) {
@@ -60,15 +60,12 @@ public class Game {
                 newTurn();
                 break;
             case BEGIN:
-                phase = jump?Phase.MAIN:Phase.BEGIN_RESOLVING;
-                break;
-            case BEGIN_RESOLVING:
                 passCount = 0;
-                startTriggered = true;
                 activePlayer = turnPlayer;
-                phase = Phase.BEGIN;
+                phase = Phase.MAIN;
                 break;
             case MAIN:
+                activePlayer = "";
                 phase = jump?Phase.END:Phase.MAIN_RESOLVING;
                 break;
             case MAIN_RESOLVING:
@@ -77,16 +74,7 @@ public class Game {
                 phase = Phase.MAIN;
                 break;
             case END:
-                if (jump) {
-                    newTurn();
-                } else {
-                    phase = Phase.END_RESOLVING;
-                }
-                break;
-            case END_RESOLVING:
-                passCount = 0;
-                activePlayer = turnPlayer;
-                phase = Phase.END;
+                newTurn();
                 break;
         }
     }
@@ -97,8 +85,7 @@ public class Game {
             turnPlayer = getOpponentName(turnPlayer);
             players.get(turnPlayer).draw(1);
         }
-        startTriggered = false;
-        activePlayer = turnPlayer;
+        activePlayer = "";
         passCount = 0;
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
@@ -227,32 +214,10 @@ public class Game {
     public void addToStack(Card c){
         stack.add(c);
         passCount = 0;
-        switch (phase) {
-            case BEGIN_RESOLVING:
-                phase = Phase.BEGIN;
-                break;
-            case MAIN_RESOLVING:
-                phase = Phase.MAIN;
-                break;
-            case END_RESOLVING:
-                phase = Phase.END;
-                break;
-        }
     }
     
     public void addToStack(ArrayList<Card> c){
         stack.addAll(c);
         passCount = 0;
-        switch (phase) {
-            case BEGIN_RESOLVING:
-                phase = Phase.BEGIN;
-                break;
-            case MAIN_RESOLVING:
-                phase = Phase.MAIN;
-                break;
-            case END_RESOLVING:
-                phase = Phase.END;
-                break;
-        }
     }
 }

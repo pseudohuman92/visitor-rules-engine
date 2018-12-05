@@ -41,5 +41,6 @@ public class QuickCharge extends Action{
     public void resolve(Game game) {
         supplimentaryData.forEach(uuid -> game.charge((UUID)uuid));
         game.draw(owner, 1);
+        super.resolve(game);
     }
 }

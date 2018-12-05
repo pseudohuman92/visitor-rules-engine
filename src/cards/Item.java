@@ -11,7 +11,7 @@ import enums.Knowledge;
 import enums.Type;
 import game.ClientGame;
 import game.Game;
-import game.Phase;
+import enums.Phase;
 import helpers.Hashmap;
 import java.awt.Dimension;
 import java.io.File;

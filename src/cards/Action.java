@@ -9,6 +9,7 @@ import static cards.Card.RATIO;
 import enums.Knowledge;
 import enums.Type;
 import game.ClientGame;
+import game.Game;
 import helpers.Hashmap;
 import java.awt.Dimension;
 import java.io.File;
@@ -35,6 +36,10 @@ public abstract class Action extends Card {
     
     public Action(Action c, String text){
         super (c, text);
+    }
+    
+    public void resolve (Game game){
+        game.players.get(owner).discardPile.add(this);
     }
     
     public boolean canPlay(ClientGame game){ 

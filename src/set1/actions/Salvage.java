@@ -48,5 +48,6 @@ public class Salvage extends Action{
     @Override
     public void resolve(Game game) {
         game.draw(owner, 3);
+        super.resolve(game);
     }
 }

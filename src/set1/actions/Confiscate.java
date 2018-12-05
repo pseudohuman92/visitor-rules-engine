@@ -47,5 +47,6 @@ public class Confiscate extends Action{
             game.players.get(owner).deck.insertTo(item, 0);
             game.players.get(owner).deck.shuffle();
         });
+        super.resolve(game);
     }
 }

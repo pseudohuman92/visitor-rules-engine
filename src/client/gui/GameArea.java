@@ -12,7 +12,7 @@ import client.gui.components.CardDisplayPopup;
 import client.gui.components.CardPane;
 import client.gui.components.OverlapPane;
 import enums.Knowledge;
-import game.Phase;
+import enums.Phase;
 import helpers.Debug;
 import helpers.Hashmap;
 import java.awt.Color;
@@ -47,12 +47,6 @@ public class GameArea extends JPanel {
 
     Client client;
     ArrayList<Serializable> selected;
-    boolean skipPlayerBegin;
-    boolean skipOpponentBegin;
-    boolean skipPlayerMain;
-    boolean skipOpponentMain;
-    boolean skipPlayerEnd;
-    boolean skipOpponentEnd;
     boolean quickPlay;
 
     public GameArea(Client client) {
@@ -61,12 +55,6 @@ public class GameArea extends JPanel {
         initComponents();
 
         xValueSelector.setVisible(false);
-        skipPlayerBegin = true;
-        skipOpponentBegin = true;
-        skipPlayerMain = false;
-        skipOpponentMain = true;
-        skipPlayerEnd = true;
-        skipOpponentEnd = true;
         quickPlay = true;
         update();
     }
@@ -76,7 +64,6 @@ public class GameArea extends JPanel {
         Debug.println("Updating Display");
         setPlayerStats();
         setOpponentStats();
-        setPhase();
         setTurn();
         switch (client.game.phase) {
             case BEGIN:
@@ -98,7 +85,7 @@ public class GameArea extends JPanel {
         displayPlayerItems();
         displayOpponentItems();
         validate();
-        if(quickPlay && checkSmartPass()) //|| checkAutoPass())
+        if(quickPlay && checkSmartPass())
             client.skipInitiative();
     }
 
@@ -122,29 +109,6 @@ public class GameArea extends JPanel {
         opponentDiscardLabel.setText("Discard: " + client.game.opponent.discardPile.size());
         opponentKnowledgeLabel.setText("");
         client.game.opponent.knowledge.forEach((knowledge, count) -> opponentKnowledgeLabel.setText(opponentKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
-    }
-
-    void setPhase() {
-        switch (client.game.phase) {
-            case BEGIN:
-            case BEGIN_RESOLVING:
-                beginPhaseLabel.setForeground(Color.RED);
-                mainPhaseLabel.setForeground(Color.BLACK);
-                endPhaseLabel.setForeground(Color.BLACK);
-                break;
-            case MAIN:
-            case MAIN_RESOLVING:
-                beginPhaseLabel.setForeground(Color.BLACK);
-                mainPhaseLabel.setForeground(Color.RED);
-                endPhaseLabel.setForeground(Color.BLACK);
-                break;
-            case END:
-            case END_RESOLVING:
-                beginPhaseLabel.setForeground(Color.BLACK);
-                mainPhaseLabel.setForeground(Color.BLACK);
-                endPhaseLabel.setForeground(Color.RED);
-                break;
-        }
     }
 
     void setTurn() {
@@ -221,17 +185,20 @@ public class GameArea extends JPanel {
                 displayMulliganText();
                 break;
             case BEGIN:
-            case MAIN:
             case END:
-                displayPlayText();
+                if (client.game.stack.isEmpty())
+                    //TODO: change this to something appropriate
+                    displayPlayText();
+                else
+                    displayResolvingText();
                 break;
-            case BEGIN_RESOLVING:
+            case MAIN:
+                displayPlayText();
+                break; 
             case MAIN_RESOLVING:
-            case END_RESOLVING:
                 displayResolvingText();
                 break;
         }
-
     }
 
     void displayMulliganText() {
@@ -322,10 +289,7 @@ public class GameArea extends JPanel {
     // </editor-fold>
 
     boolean checkSmartPass() {
-        if (client.username.equals(client.game.activePlayer) && 
-              (client.game.phase == Phase.BEGIN || 
-               client.game.phase == Phase.MAIN || 
-               client.game.phase == Phase.END)) 
+        if (client.username.equals(client.game.activePlayer) && client.game.phase == Phase.MAIN) 
         {
             for (int i = 0; i < client.game.player.hand.size(); i++) {
                 if (client.game.player.hand.get(i).canPlayAsASource(client.game) 
@@ -337,32 +301,6 @@ public class GameArea extends JPanel {
                     return false;
             }
             return true;
-        }
-        return false;
-    }
-    
-    boolean checkAutoPass() {
-        if (client.username.equals(client.game.activePlayer) && client.game.stack.isEmpty()) {
-            switch (client.game.phase) {
-                case BEGIN:
-                    if ((skipPlayerBegin && client.username.equals(client.game.turnPlayer))
-                            || (skipOpponentBegin && !client.username.equals(client.game.turnPlayer))) {
-                        return true;
-                    }
-                    break;
-                case MAIN:
-                    if ((skipPlayerMain && client.username.equals(client.game.turnPlayer))
-                            || (skipOpponentMain && !client.username.equals(client.game.turnPlayer))) {
-                        return true;
-                    }
-                    break;
-                case END:
-                    if ((skipPlayerEnd && client.username.equals(client.game.turnPlayer))
-                            || (skipOpponentEnd && !client.username.equals(client.game.turnPlayer))) {
-                        return true;
-                    }
-                    break;
-            }
         }
         return false;
     }
@@ -698,16 +636,6 @@ public class GameArea extends JPanel {
         playerItemPanel = new JPanel();
         currentTurnLabel = new JLabel();
         phaseDisplayPanel = new JPanel();
-        opponentBeginBox = new JCheckBox();
-        opponentMainBox = new JCheckBox();
-        opponentEndBox = new JCheckBox();
-        beginPhaseLabel = new JLabel();
-        mainPhaseLabel = new JLabel();
-        endPhaseLabel = new JLabel();
-        playerBeginBox = new JCheckBox();
-        playerMainBox = new JCheckBox();
-        playerEndBox = new JCheckBox();
-
         
 
         opponentPanel.setBackground(new java.awt.Color(255, 176, 180));
@@ -776,25 +704,8 @@ public class GameArea extends JPanel {
         phaseDisplayPanel.setLayout(new MigLayout("wrap 4", "[grow 7][grow 1][grow 1][grow 1]", "[][][]"));
 
         currentTurnLabel.setText("currentTurn");
-        beginPhaseLabel.setText("BEGIN");
-        mainPhaseLabel.setText("MAIN");
-        endPhaseLabel.setText("END");
-        
-        opponentEndBox.setSelected(true);
-        playerMainBox.setSelected(true);
-        
-        phaseDisplayPanel.add(opponentBeginBox, "skip 1");
-        phaseDisplayPanel.add(opponentMainBox);
-        phaseDisplayPanel.add(opponentEndBox);
-
         phaseDisplayPanel.add(currentTurnLabel, "grow");
-        phaseDisplayPanel.add(beginPhaseLabel);
-        phaseDisplayPanel.add(mainPhaseLabel);
-        phaseDisplayPanel.add(endPhaseLabel);
-        
-        phaseDisplayPanel.add(playerBeginBox, "skip 1");
-        phaseDisplayPanel.add(playerMainBox);
-        phaseDisplayPanel.add(playerEndBox);
+ 
         
         playerItemPanel.setLayout(new MigLayout("wrap 8"));
         opponentItemPanel.setLayout(new MigLayout("wrap 8"));
@@ -852,13 +763,6 @@ public class GameArea extends JPanel {
                 showConcedeMenu(evt);
             }
         });
-        
-        opponentBeginBox.addActionListener(this::toggleOpponentBeginStop);
-        opponentMainBox.addActionListener(this::toggleOpponentMainStop);
-        opponentEndBox.addActionListener(this::toggleOpponentEndStop);
-        playerBeginBox.addActionListener(this::togglePlayerBeginStop);
-        playerMainBox.addActionListener(this::togglePlayerMainStop);
-        playerEndBox.addActionListener(this::togglePlayerEndStop);
     }// </editor-fold>                        
 
     // <editor-fold defaultstate="collapsed" desc="Actions">
@@ -886,31 +790,6 @@ public class GameArea extends JPanel {
         }
     }                                     
 
-    private void togglePlayerBeginStop(ActionEvent evt) {                                           
-        skipPlayerBegin = !skipPlayerBegin;
-        Debug.println("Checkbox");
-    }                                          
-
-    private void toggleOpponentBeginStop(ActionEvent evt) {                                           
-        skipOpponentBegin = !skipOpponentBegin;
-    }                                          
-
-    private void togglePlayerMainStop(ActionEvent evt) {                                           
-        skipPlayerMain = !skipPlayerMain;
-    }                                          
-
-    private void togglePlayerEndStop(ActionEvent evt) {                                           
-        skipPlayerEnd = !skipPlayerEnd;
-    }                                          
-
-    private void toggleOpponentMainStop(ActionEvent evt) {                                           
-        skipOpponentMain = !skipOpponentMain;
-    }                                          
-
-    private void toggleOpponentEndStop(ActionEvent evt) {                                           
-        skipOpponentEnd = !skipOpponentEnd;
-    }                                          
-
     private void showConcedeMenu(MouseEvent evt) {                                  
         if (evt.getButton() == MouseEvent.BUTTON3) {
             concedeMenu().show((Component) evt.getSource(), evt.getX(), evt.getY());
@@ -922,12 +801,6 @@ public class GameArea extends JPanel {
     private JPanel gameTextPanel;
     private JButton gameTextButtonLeft;
     private JButton gameTextButtonRight;
-    private JCheckBox opponentBeginBox;
-    private JCheckBox opponentMainBox;
-    private JCheckBox opponentEndBox;
-    private JCheckBox playerBeginBox;
-    private JCheckBox playerMainBox;
-    private JCheckBox playerEndBox;
     private JLabel playerNameLabel;
     private JLabel opponentDiscardLabel;
     private JLabel gameTextLabel;
@@ -935,9 +808,6 @@ public class GameArea extends JPanel {
     private JLabel currentTurnLabel;
     private JLabel opponentEnergyLabel;
     private JLabel playerEnergyLabel;
-    private JLabel beginPhaseLabel;
-    private JLabel mainPhaseLabel;
-    private JLabel endPhaseLabel;
     private JLabel playerKnowledgeLabel;
     private JLabel playerLifeLabel;
     private JLabel playerDeckLabel;

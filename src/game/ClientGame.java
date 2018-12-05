@@ -5,9 +5,9 @@
  */
 package game;
 
+import enums.Phase;
 import cards.Card;
 import game.Opponent;
-import game.Phase;
 import game.Player;
 
 import java.io.Serializable;
