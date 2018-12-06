@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import cards.CardGenerator;
+import helpers.Debug;
 
 /**
  *
@@ -83,5 +84,11 @@ public class Deck implements Serializable {
     
     public void insertAll(ArrayList<Card> cards, int index){
         deck.addAll(index, cards);
+    }
+    
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("__ Deck __\n").append(Debug.list(deck, "    "));
+        return sb.toString();
     }
  }

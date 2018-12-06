@@ -8,6 +8,7 @@ package game;
 import enums.Phase;
 import cards.Card;
 import cards.Item;
+import helpers.Debug;
 import helpers.Hashmap;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -219,5 +220,23 @@ public class Game {
     public void addToStack(ArrayList<Card> c){
         stack.addAll(c);
         passCount = 0;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("***** GAME *****\n");
+        sb.append("Game UUID: ").append(uuid).append("\n");
+        sb.append("Turn Player: ").append(turnPlayer).append("\n");
+        sb.append("Active Player: ").append(activePlayer).append("\n");
+        sb.append("TurnCount: ").append(turnCount).append("\n");
+        sb.append("Phase: ").append(phase).append("\n");
+        sb.append("Pass Count: ").append(passCount).append("\n");
+        sb.append("xx Stack xx\n").append(Debug.list(stack, "  ")).append("\n");
+        players.forEach((name, player) -> {
+            sb.append(player).append("\n");
+        });
+        sb.append("****************\n");
+        return sb.toString();
     }
 }

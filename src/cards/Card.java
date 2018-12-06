@@ -206,6 +206,10 @@ public abstract class Card implements Serializable {
         }
         return sorted;
     }
+    
+    public String toString(){
+        return name;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Displayers">        
     void drawBorders() {

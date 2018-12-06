@@ -3,6 +3,7 @@ package game;
 import cards.Item;
 import cards.Card;
 import enums.Knowledge;
+import helpers.Debug;
 import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -100,5 +101,22 @@ public class Player implements Serializable {
         return result;
     }
     
-    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("xx Player xx\n");
+        sb.append("  Player Name: ").append(name).append("\n");
+        sb.append("  UUID: ").append(uuid).append("\n");
+        sb.append("  Life: ").append(life).append("\n");
+        sb.append("  Energy: ").append(energy).append(" / ").append(sources.size()).append("\n");
+        sb.append("  Knowledge\n");
+        knowledge.forEach((k, c) ->{
+            sb.append("    ").append(k).append(": ").append(c).append("\n");
+        });
+        sb.append("  Source Play Count: ").append(playableSource).append("\n");
+        sb.append("  Hand \n").append(Debug.list(hand, "    ")).append("\n");
+        sb.append("  Items \n").append(Debug.list(items, "    ")).append("\n");
+        sb.append("  Discard Pile \n").append(Debug.list(discardPile, "    ")).append("\n");
+        sb.append("  ").append(deck).append("\n");
+        return sb.toString();
+    }
 }
