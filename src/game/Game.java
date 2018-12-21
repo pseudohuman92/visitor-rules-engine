@@ -25,7 +25,6 @@ public class Game {
     public Hashmap<String, Player> players;
     public Hashmap<String, Connection> communicationConnections;
     public Hashmap<String, Connection> interactionConnections;
-    public ArrayList<Card> stack;
     public String turnPlayer;
     public String activePlayer;
     public Phase phase;
@@ -36,7 +35,6 @@ public class Game {
     public Game (Table table) {
         uuid = UUID.randomUUID();
         players = new Hashmap<>();
-        stack = new ArrayList<>();
         communicationConnections = new Hashmap<>();
         interactionConnections = new Hashmap<>();
         
@@ -55,7 +53,7 @@ public class Game {
         players.get(table.opponent).draw(5);
     }
     
-    public void changePhase(boolean jump){
+    public void changePhase(){
         switch(phase) {
             case MULLIGAN:
                 newTurn();
@@ -67,12 +65,7 @@ public class Game {
                 break;
             case MAIN:
                 activePlayer = "";
-                phase = jump?Phase.END:Phase.MAIN_RESOLVING;
-                break;
-            case MAIN_RESOLVING:
-                passCount = 0;
-                activePlayer = turnPlayer;
-                phase = Phase.MAIN;
+                phase = Phase.END;
                 break;
             case END:
                 newTurn();
@@ -105,7 +98,7 @@ public class Game {
     public ClientGame toClientGame(String playerName) {
         Player opponent = players.get(getOpponentName(playerName));
         return new ClientGame (players.get(playerName), opponent.toOpponent(), 
-                stack, turnPlayer, activePlayer, phase, uuid);
+                turnPlayer, activePlayer, phase, uuid);
     }
     
     public void discard(String username, int count){
@@ -212,16 +205,6 @@ public class Game {
         return triggers;
     }
     
-    public void addToStack(Card c){
-        stack.add(c);
-        passCount = 0;
-    }
-    
-    public void addToStack(ArrayList<Card> c){
-        stack.addAll(c);
-        passCount = 0;
-    }
-    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -232,7 +215,6 @@ public class Game {
         sb.append("TurnCount: ").append(turnCount).append("\n");
         sb.append("Phase: ").append(phase).append("\n");
         sb.append("Pass Count: ").append(passCount).append("\n");
-        sb.append("xx Stack xx\n").append(Debug.list(stack, "  ")).append("\n");
         players.forEach((name, player) -> {
             sb.append(player).append("\n");
         });

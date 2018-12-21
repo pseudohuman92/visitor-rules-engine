@@ -73,7 +73,6 @@ public class GameArea extends JPanel {
                 break;
         }
         displayHand();
-        displayStack();
         displayGameText();
         switch (client.game.phase) {
             case BEGIN:
@@ -170,15 +169,6 @@ public class GameArea extends JPanel {
         handPane.layAll(cards);
     }
 
-    void displayStack() {
-        ArrayList<CardPane> cards = new ArrayList<>();
-        for (Card card : client.game.stack) {
-            card.updatePanel();
-            cards.add(card.getPanel());
-        }
-        stackPane.layAll(cards);
-    }
-
     void displayGameText() {
         switch (client.game.phase) {
             case MULLIGAN:
@@ -186,18 +176,12 @@ public class GameArea extends JPanel {
                 break;
             case BEGIN:
             case END:
-                if (client.game.stack.isEmpty())
                     //TODO: change this to something appropriate
                     displayPlayText();
-                else
-                    displayResolvingText();
                 break;
             case MAIN:
                 displayPlayText();
                 break; 
-            case MAIN_RESOLVING:
-                displayResolvingText();
-                break;
         }
     }
 

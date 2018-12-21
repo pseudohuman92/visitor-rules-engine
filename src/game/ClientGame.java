@@ -21,17 +21,15 @@ import java.util.UUID;
 public class ClientGame implements Serializable {
     public Player player;
     public Opponent opponent;
-    public ArrayList<Card> stack;
     public String turnPlayer;
     public String activePlayer;
     public Phase phase;
     public UUID uuid;
     
-    public ClientGame(Player player, Opponent opponent, ArrayList<Card> stack, String turnPlayer, 
+    public ClientGame(Player player, Opponent opponent, String turnPlayer, 
             String activePlayer, Phase phase, UUID uuid){
         this.player = player;
         this.opponent = opponent;
-        this.stack = stack;
         this.turnPlayer = turnPlayer;
         this.activePlayer = activePlayer;
         this.phase = phase;

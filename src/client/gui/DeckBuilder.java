@@ -6,7 +6,7 @@
 package client.gui;
 
 import cards.Card;
-import cards.CardGenerator;
+//import cards.CardGenerator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,18 +37,19 @@ import javax.swing.event.ListSelectionListener;
 public class DeckBuilder extends JPanel {
     
     Client client;
-    CardGenerator cardGenerator;
+    //CardGenerator cardGenerator;
 
     public DeckBuilder(Client client) {
         initComponents();
         this.client = client;
-        cardGenerator = new CardGenerator("");
+        //cardGenerator = new CardGenerator("");
         //loadCardDatabase(collectionTable);
     }
     
     void displayCard(){
         String cardName = (String) collectionTable.getValueAt(collectionTable.getSelectedRow(), 0);
         displayedCard.removeAll();
+        /*
         Card c = cardGenerator.createCard(cardName);
         if (c != null) {
             c.updatePanel();
@@ -57,11 +58,13 @@ public class DeckBuilder extends JPanel {
             displayedCard.repaint();
             Debug.println(cardName + " selected from collection");
         }
+        */
     }
     
     void displayCardDeck(){
         String cardName = (String) deckList.getValueAt(deckList.getSelectedRow(), 1);
         displayedCard.removeAll();
+        /*
         Card c = cardGenerator.createCard(cardName);
         if (c != null) {
             c.updatePanel();
@@ -70,6 +73,7 @@ public class DeckBuilder extends JPanel {
             displayedCard.repaint();
             Debug.println(cardName + " selected from deck");
         }
+        */
     }
     
     void loadCardDatabase(JTable cardDatabase) {

@@ -55,7 +55,6 @@ public abstract class Item extends Card {
         return (game.player.energy >= cost)
                && game.player.hasKnowledge(knowledge)
                && game.turnPlayer.equals(owner)
-               && game.stack.isEmpty()
                && game.phase == Phase.MAIN;
     }
     
@@ -72,10 +71,7 @@ public abstract class Item extends Card {
     }
     
     // Called by the server when you activated this item
-    public void activate(Game game){
-        game.addToStack(getActivation());
-        game.activePlayer = game.getOpponentName(game.activePlayer);
-    }
+    public void activate(Game game){}
     
     //Called at the start of your turn
     public Activation getPlayerStartTrigger(){ return null; }

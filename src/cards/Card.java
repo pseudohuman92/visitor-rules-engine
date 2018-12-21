@@ -150,13 +150,12 @@ public abstract class Card implements Serializable {
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Server Functions">
-    // Called by the server when you play this card
+    
     public void play(Game game) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
         player.energy -= cost;
-        game.addToStack(this);
-        game.activePlayer = game.getOpponentName(game.activePlayer);
+        resolve(game);
     }
 
     // Called by the server when you choose to play this card as a source
@@ -169,7 +168,7 @@ public abstract class Card implements Serializable {
         player.playableSource--;
     }
 
-    // Called by server when it is resolved from the stack
+    // Called by server when it is played
     public abstract void resolve(Game game);
     //</editor-fold>
     
@@ -213,8 +212,8 @@ public abstract class Card implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="Displayers">        
     void drawBorders() {
-        getPanel().setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.yellow), 2),
-                marked ? new LineBorder(depleted ? Color.red : Color.yellow, 2) : null));
+        getPanel().setBorder(BorderFactory.createCompoundBorder(new LineBorder(marked ? Color.green : (depleted ? Color.red : Color.black), 2),
+                marked ? new LineBorder(depleted ? Color.red : Color.black, 2) : null));
     }
 
     void drawCounters() {

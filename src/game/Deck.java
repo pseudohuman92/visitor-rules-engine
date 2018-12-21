@@ -13,7 +13,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-import cards.CardGenerator;
+//import cards.CardGenerator;
 import helpers.Debug;
 
 /**
@@ -21,21 +21,21 @@ import helpers.Debug;
  * @author pseudo
  */
 public class Deck implements Serializable {
-    CardGenerator generator;
+    //CardGenerator generator;
     ArrayList<Card> deck;
     
     public Deck(){
-        generator = new CardGenerator("");
+        //generator = new CardGenerator("");
         deck = new ArrayList<>();
     }
     
     public Deck(String username){
-        generator = new CardGenerator(username);
+        //generator = new CardGenerator(username);
         deck = new ArrayList<>();
     }
     
     public Deck(File file, String username) {
-        generator = new CardGenerator(username);
+        //generator = new CardGenerator(username);
         deck = new ArrayList<>();
         
         Scanner deckFile = null;
@@ -52,7 +52,7 @@ public class Deck implements Serializable {
             int count = Integer.parseInt(card.substring(0, 1));
             String name = card.substring(2);
             for (int i = 0; i < count; i++){
-                deck.add(generator.createCard(name));
+                //deck.add(generator.createCard(name));
             }
         }
         deckFile.close();
