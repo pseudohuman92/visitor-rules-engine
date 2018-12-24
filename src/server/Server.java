@@ -5,8 +5,6 @@
  */
 package server;
 
-//import common.Game;
-import cards.Activation;
 import cards.Card;
 import cards.Item;
 import enums.Knowledge;
@@ -139,7 +137,7 @@ public class Server {
         game.activePlayer = game.getOpponentName(player.name);
     }
     
-    public synchronized void playSource(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge) {
+    public synchronized void study(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
         Card card = player.fromHand(cardID);
@@ -149,22 +147,7 @@ public class Server {
     public synchronized void processPhaseChange(Game game){
         switch (game.phase){
             case BEGIN:
-                //TODO: refactor and generalize this
-                
-                /*
-                    ArrayList<Card> playerStartTriggers = game.getPlayerStartTriggers();
-                    if(playerStartTriggers.size() == 1){
-                        game.addToStack(playerStartTriggers.get(0));
-                    } else if (playerStartTriggers.size() > 1){
-                        game.addToStack(game.orderCards(game.turnPlayer, playerStartTriggers));
-                    }
-                    if(!game.stack.isEmpty()){
-                        updateGame(game.uuid);
-                        resolveStack(game);
-                    }
-                    game.changePhase(true);
-                    processPhaseChange(game);
-                */
+                //TODO: process begin triggers
             break;
             case MAIN:
                 //TODO: process main triggers

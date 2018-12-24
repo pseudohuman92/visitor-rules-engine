@@ -153,13 +153,13 @@ public class Message implements Serializable {
         return new Message(MessageLabel.UPDATE_GAME, game);
     }
     
-    public static Message playSource(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge){
+    public static Message study(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge){
         Serializable[] data = new Serializable[4];
         data[0] = gameID;
         data[1] = username;
         data[2] = cardID;
         data[3] = knowledge;
-        return new Message(MessageLabel.PLAY_SOURCE, data);
+        return new Message(MessageLabel.STUDY, data);
     }
 
     

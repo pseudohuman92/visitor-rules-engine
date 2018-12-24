@@ -30,7 +30,7 @@ import network.Message;
  *
  * @author pseudo
  */
-public abstract class Item extends Card {
+public abstract class Item extends Card implements Activatable {
     
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
         super(name, cost, knowledge, text, "assets/item.png", Type.ITEM, owner);
@@ -73,10 +73,6 @@ public abstract class Item extends Card {
     // Called by the server when you activated this item
     public void activate(Game game){}
     
-    //Called at the start of your turn
-    public Activation getPlayerStartTrigger(){ return null; }
-    
-    public Activation getActivation(){ return null; }
     
     public void updatePanel() {
         getPanel().removeAll();

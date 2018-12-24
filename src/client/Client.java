@@ -33,7 +33,7 @@ public class Client {
     String hostname;
     int hostport;
     int hostGamePort;
-    Connection connection;
+    public Connection connection;
     public Connection gameConnection;
     public Connection interactionConnection;
 
@@ -107,8 +107,8 @@ public class Client {
         gameConnection.send(Message.keep(game.uuid, username));
     }
     
-    public void playSource(Card card, Hashmap<Knowledge, Integer> knowledge){
-        gameConnection.send(Message.playSource(game.uuid, username, card.uuid, knowledge));
+    public void study(Card card, Hashmap<Knowledge, Integer> knowledge){
+        gameConnection.send(Message.study(game.uuid, username, card.uuid, knowledge));
     }
     
     public void skipInitiative(){

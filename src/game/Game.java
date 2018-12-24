@@ -195,16 +195,6 @@ public class Game {
         return null;
     }
     
-    public ArrayList<Card> getPlayerStartTriggers() {
-        ArrayList<Card> triggers = new ArrayList<>();
-        players.get(turnPlayer).items.forEach((card) -> {
-            Card c = card.getPlayerStartTrigger();
-            if (c != null)
-                triggers.add(c);
-        });
-        return triggers;
-    }
-    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

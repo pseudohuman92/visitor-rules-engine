@@ -123,7 +123,7 @@ public abstract class Card implements Serializable {
     // Called to check if you can play this card
     public abstract boolean canPlay(ClientGame game);
     
-    public boolean canPlayAsASource (ClientGame game){
+    public boolean canStudy (ClientGame game){
         return game.canPlaySource();
     }
 
@@ -136,13 +136,13 @@ public abstract class Card implements Serializable {
         client.gameConnection.send(Message.play(client.game.uuid, client.username, uuid, targets));
     }
     
-    public void playAsSource(Client client) {
+    public void study(Client client) {
         Hashmap<Knowledge, Integer> knl = new Hashmap<>();
         if (knowledge.isEmpty()) {
-            client.playSource(this, knl);
+            client.study(this, knl);
         } else if (knowledge.size() == 1) {
             knl.put(knowledge.keySet().iterator().next(), 1);
-            client.playSource(this, knl);
+            client.study(this, knl);
         } else {
             client.gameArea.displayKnowledgeMenu(this);
         }

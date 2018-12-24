@@ -276,7 +276,7 @@ public class GameArea extends JPanel {
         if (client.username.equals(client.game.activePlayer) && client.game.phase == Phase.MAIN) 
         {
             for (int i = 0; i < client.game.player.hand.size(); i++) {
-                if (client.game.player.hand.get(i).canPlayAsASource(client.game) 
+                if (client.game.player.hand.get(i).canStudy(client.game) 
                  || client.game.player.hand.get(i).canPlay(client.game))
                     return false;
             }
@@ -471,7 +471,7 @@ public class GameArea extends JPanel {
             menuItem.addActionListener((ActionEvent event) -> {
                 Debug.println("Playing as a source: " + card.name);
                 Hashmap<Knowledge, Integer> knl = new Hashmap<>(knowl, 1);
-                client.playSource(card, knl);
+                client.study(card, knl);
             });
         }
         menu.setVisible(true);
@@ -484,7 +484,7 @@ public class GameArea extends JPanel {
         menu.add(menuItem);
         menuItem.addActionListener((ActionEvent event) -> {
             Debug.println("Playing as a source: " + card.name);
-            card.playAsSource(client);
+            card.study(client);
         });
         menu.setVisible(true);
         menu.show((Component) evt.getSource(), evt.getX(), evt.getY());
@@ -507,14 +507,14 @@ public class GameArea extends JPanel {
                 if (client.game.hasInitiative()) {
                     if (evt.getButton() == MouseEvent.BUTTON1) {
                         if (evt.isControlDown()) {
-                            if (card.canPlayAsASource(client.game)) {
+                            if (card.canStudy(client.game)) {
                                 Debug.println("Playing as a source: " + card.name);
-                                card.playAsSource(client);
+                                card.study(client);
                             }
                         } else if (card.canPlay(client.game)) {
                             card.play(client);
                         }
-                    } else if (evt.getButton() == MouseEvent.BUTTON3 && card.canPlayAsASource(client.game)) {
+                    } else if (evt.getButton() == MouseEvent.BUTTON3 && card.canStudy(client.game)) {
                         displaySourceMenu(evt, card);
                     }
                 }

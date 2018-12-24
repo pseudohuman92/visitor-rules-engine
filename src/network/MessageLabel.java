@@ -33,7 +33,7 @@ public enum MessageLabel {
     MULLIGAN,
     KEEP,
     PLAY,
-    PLAY_SOURCE,
+    STUDY,
     PASS,
     DISCARD,
     DISCARD_RETURN,

@@ -33,7 +33,7 @@ public abstract class Tome extends Card {
     public boolean canPlay(ClientGame game){ return false; }
     public void resolve(Game game){}
     
-    public abstract void playAsSource(Client client);
+    public abstract void study(Client client);
     
     public void updatePanel() {
         getPanel().removeAll();

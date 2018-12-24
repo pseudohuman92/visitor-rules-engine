@@ -50,9 +50,9 @@ public class ServerGameReceiver extends Receiver {
                     server.play((UUID)data[0], (String)data[1], (UUID)data[2], (ArrayList<Serializable>)data[3]);
                     server.updateGame((UUID)data[0]);
                     break;
-                case PLAY_SOURCE:
+                case STUDY:
                     data = (Serializable[])message.object;
-                    server.playSource((UUID)data[0], (String)data[1], (UUID)data[2], (Hashmap<Knowledge, Integer>)data[3]);
+                    server.study((UUID)data[0], (String)data[1], (UUID)data[2], (Hashmap<Knowledge, Integer>)data[3]);
                     server.updateGame((UUID)data[0]);
                     break;
                 case ACTIVATE:
