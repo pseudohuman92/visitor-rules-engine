@@ -55,7 +55,8 @@ public class MainFrame extends JFrame {
         
         addWindowListener(new WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                logout(evt);
+                if (client.gameConnection != null)
+                    logout(evt);
             }
         });
         
