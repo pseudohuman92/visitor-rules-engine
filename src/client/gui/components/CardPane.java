@@ -23,10 +23,16 @@ import javax.swing.border.Border;
  */
 public class CardPane extends JLayeredPane {
     
+    /**
+     *
+     */
     public int layer;
     private JPanel contentPane;
     private GlassPane glassPane;
     
+    /**
+     *
+     */
     public CardPane(){
         super();
         contentPane = new JPanel();
@@ -40,6 +46,7 @@ public class CardPane extends JLayeredPane {
         add(glassPane, new Integer(1));
         
         addComponentListener(new ComponentAdapter() {   
+            @Override
             public void componentResized(ComponentEvent e)
             {
                 Dimension newSize = ((CardPane)e.getSource()).getSize();
@@ -50,6 +57,10 @@ public class CardPane extends JLayeredPane {
         layer = 0;
     }
     
+    /**
+     *
+     * @param l
+     */
     public CardPane(int l){
         super();
         contentPane = new JPanel();
@@ -62,6 +73,7 @@ public class CardPane extends JLayeredPane {
         glassPane.setSize(getWidth(), getHeight());
         add(glassPane, new Integer(1));
         addComponentListener(new ComponentAdapter() {   
+            @Override
             public void componentResized(ComponentEvent e)
             {
                 Dimension newSize = ((CardPane)e.getSource()).getSize();
@@ -72,22 +84,47 @@ public class CardPane extends JLayeredPane {
         layer = l;
     }
     
+    /**
+     *
+     * @param l
+     */
+    @Override
     public void addMouseListener(MouseListener l){
         glassPane.addMouseListener(l);
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public MouseListener[] getMouseListeners(){
         return glassPane.getMouseListeners(); 
     }
     
+    /**
+     *
+     * @param l
+     */
+    @Override
     public void removeMouseListener(MouseListener l) {
         glassPane.removeMouseListener(l);
     }
     
+    /**
+     *
+     * @param s
+     */
+    @Override
     public void setToolTipText(String s) {
         glassPane.setToolTipText(s);
     }
     
+    /**
+     *
+     * @param l
+     */
+    @Override
     public void setLayout(LayoutManager l) {
         if (contentPane == null)
             super.setLayout(l);
@@ -95,18 +132,38 @@ public class CardPane extends JLayeredPane {
             contentPane.setLayout(l);
     }
     
+    /**
+     *
+     * @param c
+     * @return
+     */
+    @Override
     public Component add(Component c) {
         return contentPane.add(c);
     }
     
+    /**
+     *
+     */
+    @Override
     public void removeAll() {
         contentPane.removeAll();
     }
     
+    /**
+     *
+     * @param c
+     */
+    @Override
     public void setBackground(Color c){
         contentPane.setBackground(c);
     }
     
+    /**
+     *
+     * @param b
+     */
+    @Override
     public void setBorder(Border b){
         contentPane.setBorder(b);
     }

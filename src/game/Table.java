@@ -5,7 +5,6 @@
  */
 package game;
 
-import game.Deck;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -14,18 +13,48 @@ import java.util.UUID;
  * @author pseudo
  */
 public class Table implements Serializable {
+
+    /**
+     *
+     */
     public String creator;
+
+    /**
+     *
+     */
     public String opponent;
+
+    /**
+     *
+     */
     public Deck creatorDeck;
+
+    /**
+     *
+     */
     public Deck opponentDeck;
+
+    /**
+     *
+     */
     public UUID uuid;
     
+    /**
+     *
+     * @param creator
+     * @param creatorDeck
+     * @param uuid
+     */
     public Table(String creator, Deck creatorDeck, UUID uuid){
         this.creator = creator;
         this.creatorDeck = creatorDeck;
         this.uuid = uuid;
     }
     
+    /**
+     *
+     * @return
+     */
     public String[] toStringArray(){
         String[] ret = new String[2];
         ret[0] = creator;
@@ -33,6 +62,10 @@ public class Table implements Serializable {
         return ret;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString(){
         return "Creator: " + creator + "\t Opponent: " + (opponent==null?"":opponent);

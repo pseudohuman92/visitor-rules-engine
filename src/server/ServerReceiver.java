@@ -13,19 +13,30 @@ import java.io.FileWriter;
 import java.io.Serializable;
 import java.util.UUID;
 
-
-	
+/**
+ *
+ * @author pseudo
+ */
 public class ServerReceiver extends Receiver {
 
         Server server;
         
-	public ServerReceiver(Socket socket, Server server)
+    /**
+     *
+     * @param socket
+     * @param server
+     */
+    public ServerReceiver(Socket socket, Server server)
 	{
             super(socket);
             this.server = server;
 	}
         
-        @Override
+    /**
+     *
+     * @param message
+     */
+    @Override
 	public void handleRequest(Message message){
             System.out.println(message);
             switch(message.label){
@@ -79,7 +90,12 @@ public class ServerReceiver extends Receiver {
             }
         }
         
-        public boolean userRegistered(String username){
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public boolean userRegistered(String username){
             try {
                 File userfile = new File("./users.txt");
                 if (!userfile.exists()) { userfile.createNewFile(); }
@@ -99,7 +115,12 @@ public class ServerReceiver extends Receiver {
             return false;
         }
         
-        public boolean registerUser(String username) {
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public boolean registerUser(String username) {
             if (!userRegistered(username)){
                 try {
                     File userfile = new File("./users.txt");

@@ -1,21 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cards;
 
-import static cards.Card.RATIO;
+package card.types;
+
+import card.Card;
+import static card.Card.RATIO;
 import enums.Knowledge;
-import enums.Type;
+import static enums.Type.ACTION;
 import game.ClientGame;
-import game.Game;
 import helpers.Hashmap;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import javax.imageio.ImageIO;
+import static javax.imageio.ImageIO.read;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
@@ -26,27 +21,26 @@ import net.miginfocom.swing.MigLayout;
  */
 public abstract class Action extends Card {
     
+    /**
+     *
+     * @param name
+     * @param cost
+     * @param knowledge
+     * @param text
+     * @param image
+     * @param owner
+     */
     public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/action.png", Type.ACTION, owner);
+        super(name, cost, knowledge, text, "assets/action.png", ACTION, owner);
     }
-    
-    public Action(Action c){
-        super (c);
-    }
-    
-    public Action(Action c, String text){
-        super (c, text);
-    }
-    
-    public void resolve (Game game){
-        game.players.get(owner).discardPile.add(this);
-    }
-    
+
+    @Override
     public boolean canPlay(ClientGame game){ 
         return (game.player.energy >= cost)
                && game.player.hasKnowledge(knowledge);
     }
     
+    @Override
     public void updatePanel() {
         getPanel().removeAll();
         getPanel().setLayout(new MigLayout("wrap 1"));
@@ -54,13 +48,11 @@ public abstract class Action extends Card {
         getPanel().add(new JLabel(cost + " " + getKnowledgeString()));
         getPanel().add(new JLabel("<html>" + name + "</html>"));
         try {
-            getPanel().add(new JLabel(new ImageIcon(ImageIO.read(new File(image)).getScaledInstance(100, -1, 0))));
+            getPanel().add(new JLabel(new ImageIcon(read(new File(image)).getScaledInstance(100, -1, 0))));
         } catch (IOException ex) {
         }
         getPanel().add(new JLabel(type.toString()));
-        JLabel textLabel = new JLabel("<html>"
-                + String.format(text, (Object[]) Arrays.stream(values).
-                        mapToObj(String::valueOf).toArray(String[]::new)) + "</html>");
+        JLabel textLabel = new JLabel("<html>" + text + "</html>");
         getPanel().add(textLabel);
         
         drawCounters();

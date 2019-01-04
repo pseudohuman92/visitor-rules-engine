@@ -5,7 +5,8 @@
  */
 package client;
 
-import cards.Card;
+import card.Card;
+import static card.Card.toUUIDList;
 import client.gui.DeckBuilder;
 import client.gui.GameArea;
 import client.gui.Lobby;
@@ -20,10 +21,16 @@ import game.Table;
 import helpers.Hashmap;
 import java.io.File;
 import java.io.Serializable;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.UUID;
 import network.Connection;
 import network.Message;
+import static network.Message.chatMessage;
+import static network.Message.pass;
+import static network.Message.registerGameConnection;
+import static network.Message.registerInteractionConnection;
+import static network.Message.updateLobby;
 
 /**
  *
@@ -33,14 +40,45 @@ public class Client {
     String hostname;
     int hostport;
     int hostGamePort;
+
+    /**
+     *
+     */
     public Connection connection;
+
+    /**
+     *
+     */
     public Connection gameConnection;
+
+    /**
+     *
+     */
     public Connection interactionConnection;
 
+    /**
+     *
+     */
     public String username;
+
+    /**
+     *
+     */
     public ArrayList<String> players;
+
+    /**
+     *
+     */
     public ArrayList<String> chatLog;
+
+    /**
+     *
+     */
     public Hashmap<UUID, Table> tables;
+
+    /**
+     *
+     */
     public ClientGame game;
     
     //UI
@@ -48,9 +86,15 @@ public class Client {
     Login login;
     Lobby lobby;
     DeckBuilder deckBuilder;
+
+    /**
+     *
+     */
     public GameArea gameArea;
     
-    
+    /**
+     *
+     */
     public Client(){
         //Initialize UI
         main = new MainFrame(this);
@@ -63,26 +107,30 @@ public class Client {
 
         //hostname = "ccgtest.ddns.net";
         hostname = "localhost";
-        hostport = 8080;
-        hostGamePort = 8081;
-        System.out.println("Hostname: " + hostname);
+        hostport = 8_080;
+        hostGamePort = 8_081;
+        out.println("Hostname: " + hostname);
         connection = new Connection();
         connection.openConnection(hostname, hostport);
-        System.out.println("Client Created");
     }
     
     //Game Related Functions
+
+    /**
+     *
+     * @param game
+     */
     public void newGame(ClientGame game){
         this.game = game;
         gameConnection = new Connection();
         gameConnection.openConnection(hostname, hostGamePort);
         new Thread(new ClientGameReceiver(gameConnection, this)).start();
-        gameConnection.send(Message.registerGameConnection(game.uuid, username));
+        gameConnection.send(registerGameConnection(game.uuid, username));
         
         interactionConnection = new Connection();
         interactionConnection.openConnection(hostname, hostGamePort);
         new Thread(new ClientGameReceiver(interactionConnection, this)).start();
-        interactionConnection.send(Message.registerInteractionConnection(game.uuid, username));
+        interactionConnection.send(registerInteractionConnection(game.uuid, username));
         
         gameArea = new GameArea(this);
         main.add("Game", gameArea);
@@ -94,27 +142,49 @@ public class Client {
         main.setSelectedComponent(gameArea);
     }
     
+    /**
+     *
+     * @param game
+     */
     public void updateGame(ClientGame game){
         this.game = game;
         gameArea.update();
     }
     
+    /**
+     *
+     */
     public void mulligan(){
         gameConnection.send(Message.mulligan(game.uuid, username));
     }
     
+    /**
+     *
+     */
     public void keep(){
         gameConnection.send(Message.keep(game.uuid, username));
     }
     
+    /**
+     *
+     * @param card
+     * @param knowledge
+     */
     public void study(Card card, Hashmap<Knowledge, Integer> knowledge){
         gameConnection.send(Message.study(game.uuid, username, card.uuid, knowledge));
     }
     
+    /**
+     *
+     */
     public void skipInitiative(){
-        gameConnection.send(Message.pass(game.uuid));
+        gameConnection.send(pass(game.uuid));
     }
     
+    /**
+     *
+     * @param count
+     */
     public void discard(int count){
         if (!game.player.hand.isEmpty()) {
             gameArea.discardCards(count);
@@ -123,24 +193,40 @@ public class Client {
         }
     }
     
+    /**
+     *
+     * @param cards
+     */
     public void discardReturn(ArrayList<Serializable> cards){
         interactionConnection.send(Message.discardReturn(cards));
     }
     
+    /**
+     *
+     */
     public void concede(){
         gameConnection.send(Message.concede(game.uuid, username));
     }
     
+    /**
+     *
+     */
     public void lose(){
         new TextPopup("You lost");
         finishGame();
     }
     
+    /**
+     *
+     */
     public void win(){
         new TextPopup("You win");
         finishGame();
     }
     
+    /**
+     *
+     */
     public void finishGame(){
         gameConnection.closeConnection();
         interactionConnection.closeConnection();
@@ -151,19 +237,35 @@ public class Client {
     }
     
     //Chat Related Functions
+
+    /**
+     *
+     * @param message
+     */
     public void sendMessage(String message){
-        connection.send(Message.chatMessage(username+": "+message));
+        connection.send(chatMessage(username+": "+message));
     }
     
+    /**
+     *
+     */
     public void updateChat(){
         lobby.updateChat();
     }
     
+    /**
+     *
+     */
     public void updatePlayers(){
         lobby.updatePlayers();
     }
     
     //Table Related Functions
+
+    /**
+     *
+     * @param deckFile
+     */
     public void createTable(File deckFile){
         Deck deck = new Deck(deckFile, username);
         if(deck.valid()){
@@ -173,6 +275,11 @@ public class Client {
         }
     }
     
+    /**
+     *
+     * @param deckFile
+     * @param uuid
+     */
     public void joinTable(File deckFile, UUID uuid){
         Deck deck = new Deck(deckFile, username);
         if(deck.valid()){
@@ -182,12 +289,21 @@ public class Client {
         }
     }
     
+    /**
+     *
+     */
     public void updateTables(){
         lobby.updateTables();
     }
     
     
     // Login related functions
+
+    /**
+     *
+     * @param username
+     * @return
+     */
     public String register(String username){
         connection.send(Message.register(username));
         Message message = connection.receive();
@@ -201,6 +317,9 @@ public class Client {
         }
     }
     
+    /**
+     *
+     */
     public void signalLogin(){
         main.remove(login);
         login.setVisible(false);
@@ -209,9 +328,13 @@ public class Client {
         lobby.setVisible(true);
         deckBuilder.setVisible(true);
         main.setSelectedComponent(lobby);
-        connection.send(Message.updateLobby());
+        connection.send(updateLobby());
     }
     
+    /**
+     *
+     * @param username
+     */
     public void login(String username){
         connection.send(Message.login(username));
         Message message = connection.receive();
@@ -227,16 +350,27 @@ public class Client {
         
     }
 
+    /**
+     *
+     */
     public void logout(){
         connection.send(Message.logout(username));      
     }
 
+    /**
+     *
+     * @param cards
+     */
     public void order(ArrayList<Card> cards) {
         new CardOrderPopup(cards, this::orderReturn);
     }
     
+    /**
+     *
+     * @param cards
+     */
     public void orderReturn(ArrayList<Card> cards){
-        interactionConnection.send(Message.orderReturn(Card.toUUIDList(cards)));
+        interactionConnection.send(Message.orderReturn(toUUIDList(cards)));
     }
     
 }

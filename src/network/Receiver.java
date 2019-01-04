@@ -4,10 +4,26 @@ package network;
 
 import java.net.Socket;
 
+/**
+ *
+ * @author pseudo
+ */
 public abstract class Receiver implements Runnable {
+
+    /**
+     *
+     */
     public Connection connection;
+
+    /**
+     *
+     */
     public boolean stop;
 
+    /**
+     *
+     * @param socket
+     */
     public Receiver(Socket socket)
     {
         stop = false;
@@ -15,12 +31,18 @@ public abstract class Receiver implements Runnable {
         connection.openConnection(socket);
     }
     
+    /**
+     *
+     * @param connection
+     */
     public Receiver(Connection connection)
     {
         this.connection = connection;
     }
 
-
+    /**
+     *
+     */
     @Override
     public void run() {
         while (true) {
@@ -31,5 +53,9 @@ public abstract class Receiver implements Runnable {
         }
     }
 
+    /**
+     *
+     * @param message
+     */
     public abstract void handleRequest(Message message);
 }

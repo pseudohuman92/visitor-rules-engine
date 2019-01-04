@@ -3,26 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package enums;
+package card.properties;
+
+import card.Card;
 
 /**
  *
  * @author pseudo
  */
-public enum Counter {
+public interface Targeting {
 
     /**
      *
+     * @param c
+     * @return
      */
-    CHARGE,
-
-    /**
-     *
-     */
-    TRANSENDENCE,
-
-    /**
-     *
-     */
-    SURVIVAL
+    public abstract boolean validTarget(Card c);
 }

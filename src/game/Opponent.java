@@ -5,8 +5,8 @@
  */
 package game;
 
-import cards.Item;
-import cards.Card;
+import card.Card;
+import card.types.Item;
 import enums.Knowledge;
 import helpers.Hashmap;
 import java.io.Serializable;
@@ -18,18 +18,61 @@ import java.util.UUID;
  * @author pseudo
  */
 public class Opponent implements Serializable {
+
+    /**
+     *
+     */
     public String name;
+
+    /**
+     *
+     */
     public UUID uuid;
+
+    /**
+     *
+     */
     public int life;
+
+    /**
+     *
+     */
     public int deckSize;
+
+    /**
+     *
+     */
     public int handSize;
+
+    /**
+     *
+     */
     public int energy;
+
+    /**
+     *
+     */
     public ArrayList<Card> sources;
+
+    /**
+     *
+     */
     public ArrayList<Card> discardPile;
+
+    /**
+     *
+     */
     public ArrayList<Item> items;
+
+    /**
+     *
+     */
     public Hashmap<Knowledge, Integer> knowledge;
 
-    
+    /**
+     *
+     * @param player
+     */
     public Opponent (Player player) {
         this.name = player.name;
         this.uuid = player.uuid;

@@ -5,40 +5,79 @@
  */
 package server;
 
-import cards.Card;
-import cards.Item;
+import card.Card;
+import card.types.Item;
 import enums.Knowledge;
-import enums.Type;
 import game.Deck;
 import game.Game;
-import enums.Phase;
 import game.Player;
 import game.Table;
 import helpers.Debug;
+import static helpers.Debug.println;
 import helpers.Hashmap;
 import java.io.Serializable;
+import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
+import static java.util.UUID.randomUUID;
 import network.Connection;
 import network.Message;
+import static network.Message.fail;
+import static network.Message.lose;
+import static network.Message.updateChatLog;
+import static network.Message.win;
 
 /**
  *
  * @author pseudo
  */
 public class Server {
+
+    /**
+     *
+     */
     public Hashmap<String, Connection> players;
+
+    /**
+     *
+     */
     public Hashmap<UUID, Table> tables;
+
+    /**
+     *
+     */
     public Hashmap<UUID, Game> games;
+
+    /**
+     *
+     */
     public ArrayList<String> chatLog;
     
+    /**
+     *
+     */
     public ServerSocket serverSocket;
+
+    /**
+     *
+     */
     public ServerSocket serverGameSocket;
+
+    /**
+     *
+     */
     public int port;
+
+    /**
+     *
+     */
     public int gamePort;
     
+    /**
+     *
+     */
     public Server() {
         players = new Hashmap<>();
         tables = new Hashmap<>();
@@ -47,16 +86,34 @@ public class Server {
     }
     
     //Game Related Functions
+
+    /**
+     *
+     * @param gameID
+     * @param username
+     * @param connection
+     */
     public synchronized void addGameConnection(UUID gameID, String username, Connection connection){
         Game game = games.get(gameID);
         game.communicationConnections.put(username, connection);
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     * @param connection
+     */
     public synchronized void addInteractionConnection(UUID gameID, String username, Connection connection){
         Game game = games.get(gameID);
         game.interactionConnections.put(username, connection);
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     */
     public synchronized void mulligan(UUID gameID, String username){
         Game game = games.get(gameID);
         Player player = game.players.get(username);
@@ -70,6 +127,11 @@ public class Server {
         }
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     */
     public synchronized void keep(UUID gameID, String username){
         Game game = games.get(gameID);
         game.activePlayer = game.getOpponentName(game.activePlayer);
@@ -79,27 +141,40 @@ public class Server {
         }
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     */
     public synchronized void concede(UUID gameID, String username){
         Game game = games.get(gameID);
         Connection connection = game.communicationConnections.get(username);
-        connection.send(Message.lose());
+        connection.send(lose());
         connection = game.communicationConnections.get(game.getOpponentName(username));
-        connection.send(Message.win());
+        connection.send(win());
         removeTable(gameID, username);
         removeGame(gameID);
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     */
     public synchronized void removeTable(UUID gameID, String username){
         Game game = games.get(gameID);
-        for (Iterator<Table> it = tables.values().iterator(); it.hasNext();) {
-            Table table = it.next();
+        for (Table table : tables.values()) {
             if ((table.creator.equals(username) && table.opponent.equals(game.getOpponentName(username)))
-                ||(table.opponent.equals(username) && table.creator.equals(game.getOpponentName(username)))){
+                    ||(table.opponent.equals(username) && table.creator.equals(game.getOpponentName(username)))){
                 tables.remove(table.uuid);
             }
         }
     }
     
+    /**
+     *
+     * @param gameID
+     */
     public synchronized void removeGame(UUID gameID){
         Game game = games.get(gameID);
         game.communicationConnections.forEach((name,conn) -> {
@@ -111,39 +186,68 @@ public class Server {
         games.remove(gameID);
     }
     
+    /**
+     *
+     * @param gameID
+     */
     public synchronized void updateGame(UUID gameID){
         Game game = games.get(gameID);
-        Debug.println(game.toString());
+        println(game.toString());
         game.communicationConnections.forEach((name, connection) -> {
             connection.send(Message.updateGame(game.toClientGame(name)));
         });
     }
 
+    /**
+     *
+     * @param gameID
+     * @param username
+     * @param cardID
+     * @param targets
+     */
     public synchronized void play(UUID gameID, String username, UUID cardID, ArrayList<Serializable> targets) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
         Card card = player.fromHand(cardID);
-        card.supplimentaryData = targets;
+        card.supplementaryData = targets;
         card.play(game);
         game.activePlayer = game.getOpponentName(player.name);
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     * @param cardID
+     * @param targets
+     */
     public synchronized void activate(UUID gameID, String username, UUID cardID, ArrayList<Serializable> targets) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
         Item card = player.fromItems(cardID);
-        card.supplimentaryData = targets;
+        card.supplementaryData = targets;
         card.activate(game);
         game.activePlayer = game.getOpponentName(player.name);
     }
     
+    /**
+     *
+     * @param gameID
+     * @param username
+     * @param cardID
+     * @param knowledge
+     */
     public synchronized void study(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
         Card card = player.fromHand(cardID);
-        card.playAsSource(game, knowledge);
+        card.study(game, knowledge);
     }
 
+    /**
+     *
+     * @param game
+     */
     public synchronized void processPhaseChange(Game game){
         switch (game.phase){
             case BEGIN:
@@ -161,6 +265,10 @@ public class Server {
         }
     }
     
+    /**
+     *
+     * @param gameID
+     */
     public synchronized void skipInitiative(UUID gameID) {
         Game game = games.get(gameID);
         game.passCount++;
@@ -174,6 +282,10 @@ public class Server {
         updateGame(game.uuid);
     }
     
+    /**
+     *
+     * @param table
+     */
     public synchronized void newGame(Table table) {
         Game game = new Game(table);
         games.put(game.uuid, game);
@@ -184,19 +296,30 @@ public class Server {
     }
     
     //Char Related Functions
+
+    /**
+     *
+     * @param message
+     */
     public synchronized void appendToChatLog(String message) {
         chatLog.add(message);
-        if (chatLog.size() > 1000) {
+        if (chatLog.size() > 1_000) {
             chatLog.remove(0);
         }
     }
     
+    /**
+     *
+     */
     public synchronized void updateChatLogs() {
         players.values().forEach((entry) -> {
-            entry.send(Message.updateChatLog(chatLog));
+            entry.send(updateChatLog(chatLog));
         });
     }
     
+    /**
+     *
+     */
     public synchronized void updatePlayers() {
         ArrayList<String> names = new ArrayList<>();
         players.forEach((name, entry) -> names.add(name));
@@ -206,11 +329,23 @@ public class Server {
     }
     
     //Table Related Functions
+
+    /**
+     *
+     * @param creator
+     * @param creatorDeck
+     */
     public synchronized void createTable(String creator, Deck creatorDeck){
-        UUID uuid =UUID.randomUUID();
+        UUID uuid =randomUUID();
         tables.put(uuid, new Table(creator, creatorDeck, uuid));
     }
     
+    /**
+     *
+     * @param player
+     * @param deck
+     * @param uuid
+     */
     public synchronized void joinTable(String player, Deck deck, UUID uuid){
         Table table = tables.get(uuid);
         Connection playerConnection = players.get(player);
@@ -219,10 +354,13 @@ public class Server {
             table.opponentDeck = deck;
             newGame(table);            
         } else {
-            playerConnection.send(Message.fail("Wrong UUID or table is full"));
+            playerConnection.send(fail("Wrong UUID or table is full"));
         } 
     }
     
+    /**
+     *
+     */
     public synchronized void updateTables() {
         players.values().forEach((entry) -> {
             entry.send(Message.updateTables(tables));
@@ -230,31 +368,42 @@ public class Server {
     }
 
     //Login Related Functions
+
+    /**
+     *
+     * @param username
+     * @return
+     */
     public synchronized boolean isLoggedIn(String username) {
         return players.containsKey(username); 
     }
     
+    /**
+     *
+     * @param username
+     * @param connection
+     */
     public synchronized void addLogin(String username, Connection connection) {
         players.put(username, connection);
-        System.out.println(username + " is logged in successfully.");
     }
     
+    /**
+     *
+     * @param username
+     */
     public synchronized void removeLogin(String username) {
         if(isLoggedIn(username)){
             players.remove(username);
-            System.out.println(username + " is logged out successfully.");
         }
-        for (Iterator<Table> it = tables.values().iterator(); it.hasNext();) {
-            Table table = it.next();
+        for (Table table : tables.values()) {
             if (table.creator.equals(username) || table.opponent.equals(username)){
                 tables.remove(table.uuid);
             }
         }
-        for (Iterator<Game> it = games.values().iterator(); it.hasNext();) {
-            Game game = it.next();
-            if (game.players.get(username) != null){
+        for (Game game : games.values()) {
+            if (game.players.get(username) != null) {
                 Connection connection = game.communicationConnections.get(game.getOpponentName(username));
-                connection.send(Message.win());
+                connection.send(win());
                 removeGame(game.uuid);
             }
         }

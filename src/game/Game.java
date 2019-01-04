@@ -1,19 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package game;
 
+import card.Card;
+import static card.Card.sortByUUID;
+import card.types.Item;
 import enums.Phase;
-import cards.Card;
-import cards.Item;
-import helpers.Debug;
+import static enums.Phase.BEGIN;
+import static enums.Phase.END;
+import static enums.Phase.MAIN;
+import static enums.Phase.MULLIGAN;
 import helpers.Hashmap;
+import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.UUID;
+import static java.util.UUID.randomUUID;
 import network.Connection;
 import network.Message;
+import static network.Message.lose;
+import static network.Message.order;
 
 /**
  *
@@ -22,18 +26,58 @@ import network.Message;
 public class Game {
     
     //(player_name, player) pairs
+
+    /**
+     *
+     */
     public Hashmap<String, Player> players;
+
+    /**
+     *
+     */
     public Hashmap<String, Connection> communicationConnections;
+
+    /**
+     *
+     */
     public Hashmap<String, Connection> interactionConnections;
+
+    /**
+     *
+     */
     public String turnPlayer;
+
+    /**
+     *
+     */
     public String activePlayer;
+
+    /**
+     *
+     */
     public Phase phase;
+
+    /**
+     *
+     */
     public int turnCount;
+
+    /**
+     *
+     */
     public int passCount;
+
+    /**
+     *
+     */
     public UUID uuid;
     
+    /**
+     *
+     * @param table
+     */
     public Game (Table table) {
-        uuid = UUID.randomUUID();
+        uuid = randomUUID();
         players = new Hashmap<>();
         communicationConnections = new Hashmap<>();
         interactionConnections = new Hashmap<>();
@@ -44,8 +88,8 @@ public class Game {
         players.put(table.creator, new Player(table.creator, table.creatorDeck));
         players.put(table.opponent, new Player(table.opponent, table.opponentDeck));
         
-        phase = Phase.MULLIGAN;
-        turnPlayer = (Math.random() < 0.5)?table.creator:table.opponent;
+        phase = MULLIGAN;
+        turnPlayer = (random() < 0.5)?table.creator:table.opponent;
         activePlayer = turnPlayer;
         turnCount = 0;
         passCount = 0;
@@ -53,6 +97,9 @@ public class Game {
         players.get(table.opponent).draw(5);
     }
     
+    /**
+     *
+     */
     public void changePhase(){
         switch(phase) {
             case MULLIGAN:
@@ -61,11 +108,11 @@ public class Game {
             case BEGIN:
                 passCount = 0;
                 activePlayer = turnPlayer;
-                phase = Phase.MAIN;
+                phase = MAIN;
                 break;
             case MAIN:
                 activePlayer = "";
-                phase = Phase.END;
+                phase = END;
                 break;
             case END:
                 newTurn();
@@ -74,7 +121,7 @@ public class Game {
     }
     
     void newTurn(){
-        phase = Phase.BEGIN;
+        phase = BEGIN;
         if(turnCount > 0){
             turnPlayer = getOpponentName(turnPlayer);
             players.get(turnPlayer).draw(1);
@@ -86,6 +133,11 @@ public class Game {
         turnCount++;
     }
     
+    /**
+     *
+     * @param playerName
+     * @return
+     */
     public String getOpponentName(String playerName){
         for(String name : players.keySet()){
             if(!name.equals(playerName)){
@@ -95,12 +147,22 @@ public class Game {
         return null;
     }
     
+    /**
+     *
+     * @param playerName
+     * @return
+     */
     public ClientGame toClientGame(String playerName) {
         Player opponent = players.get(getOpponentName(playerName));
         return new ClientGame (players.get(playerName), opponent.toOpponent(), 
                 turnPlayer, activePlayer, phase, uuid);
     }
     
+    /**
+     *
+     * @param username
+     * @param count
+     */
     public void discard(String username, int count){
         Connection connection = interactionConnections.get(username);
         connection.send(Message.discard(toClientGame(username), count));
@@ -111,17 +173,30 @@ public class Game {
         }
     }
     
+    /**
+     *
+     * @param username
+     * @param count
+     */
     public void draw(String username, int count){
         Player player = players.get(username);
         player.draw(count);
     }
     
+    /**
+     *
+     * @param uuid
+     */
     public void destroy(UUID uuid){
         Item item = getItem(uuid);
         players.get(item.owner).items.remove(item);
         players.get(item.owner).discardPile.add(item);
     }
     
+    /**
+     *
+     * @param uuid
+     */
     public void charge(UUID uuid){
         for (Player player : players.values()) {
             for (Card card : player.items) {
@@ -133,6 +208,10 @@ public class Game {
         }
     }
     
+    /**
+     *
+     * @param uuid
+     */
     public void deplete(UUID uuid){
         for (Player player : players.values()) {
             for (Card card : player.items) {
@@ -144,6 +223,11 @@ public class Game {
         }
     }
     
+    /**
+     *
+     * @param playerID
+     * @return
+     */
     public Player getPlayer(UUID playerID){
         for (Player player : players.values()) {
             if(player.uuid.equals(playerID)){ 
@@ -153,6 +237,11 @@ public class Game {
         return null;
     }
     
+    /**
+     *
+     * @param itemID
+     * @return
+     */
     public Item getItem(UUID itemID){
         for (Player player : players.values()) {
             for (Item item : player.items){
@@ -164,6 +253,10 @@ public class Game {
         return null;
     }
     
+    /**
+     *
+     * @param itemID
+     */
     public void switchOwner(UUID itemID){
         Item item = getItem(itemID);
         players.get(item.owner).items.remove(item);
@@ -171,23 +264,33 @@ public class Game {
         item.owner = getOpponentName(item.owner);
     }
 
+    /**
+     *
+     * @param player
+     */
     public void win(String player) {
         Connection connection = interactionConnections.get(player);
         connection.send(Message.win());
         connection.closeConnection();
         connection = interactionConnections.get(getOpponentName(player));
-        connection.send(Message.lose());
+        connection.send(lose());
         connection.closeConnection();
     }
 
+    /**
+     *
+     * @param username
+     * @param cards
+     * @return
+     */
     public ArrayList<Card> orderCards(String username, ArrayList<Card> cards) {
         String activePlayerStore = activePlayer;
         activePlayer = "";
         Connection connection = interactionConnections.get(username);
-        connection.send(Message.order(cards));
+        connection.send(order(cards));
         Message message = connection.receive();
         if (message != null) {
-            cards = Card.sortByUUID(cards, (ArrayList<UUID>)message.object);
+            cards = sortByUUID(cards, (ArrayList<UUID>)message.object);
             activePlayer = activePlayerStore;
             return cards;
         }
@@ -195,6 +298,15 @@ public class Game {
         return null;
     }
     
+    public void loot(String username, int x) {
+        draw(username, x);
+        discard(username, x);
+    }
+    
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -210,5 +322,17 @@ public class Game {
         });
         sb.append("****************\n");
         return sb.toString();
+    }
+
+    /**
+     *
+     * @param itemID
+     * @param newController
+     */
+    public void changeItemController(UUID itemID, String newController) {
+        Item c = getItem(itemID);
+        players.get(c.controller).items.remove(c);
+        players.get(newController).items.add(c);
+        c.controller = newController;
     }
 }

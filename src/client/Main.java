@@ -7,6 +7,7 @@ package client;
 
 import static java.awt.EventQueue.invokeLater;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.net.Socket;
 import server.Server;
@@ -18,15 +19,19 @@ import server.ServerReceiver;
  * @author pseudo
  */
 public class Main {
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String args[]) {
         if(args.length > 1 && args[1].equals("--server")){
             Server server = new Server();
-            server.port = 8080;
-            server.gamePort = 8081;
+            server.port = 8_080;
+            server.gamePort = 8_081;
             try {
                     server.serverSocket = new ServerSocket(server.port);
                     server.serverGameSocket = new ServerSocket(server.gamePort);
-                    System.out.println("Server started successfully.");
             } catch (IOException e) {
                 throw new RuntimeException("Error accepting client connection", e);
             }

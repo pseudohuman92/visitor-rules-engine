@@ -21,12 +21,21 @@ import java.util.UUID;
 public class ClientReceiver extends Receiver {
     Client client;
         
+    /**
+     *
+     * @param connection
+     * @param client
+     */
     public ClientReceiver(Connection connection, Client client)
     {
         super(connection);
         this.client = client;
     }
         
+    /**
+     *
+     * @param message
+     */
     @Override
     public void handleRequest(Message message){
         System.out.println(message);

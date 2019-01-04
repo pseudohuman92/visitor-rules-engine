@@ -3,26 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package enums;
+package card.properties;
+
+import client.Client;
+import game.ClientGame;
 
 /**
  *
  * @author pseudo
  */
-public enum Counter {
-
-    /**
-     *
-     */
-    CHARGE,
-
-    /**
-     *
-     */
-    TRANSENDENCE,
-
-    /**
-     *
-     */
-    SURVIVAL
+public interface XValued {
+    public abstract boolean isXValid(Client c, int x);
 }

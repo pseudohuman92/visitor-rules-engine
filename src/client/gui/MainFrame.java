@@ -7,15 +7,14 @@
 package client.gui;
 
 
-import java.awt.Component;
-import javax.swing.JPanel;
 import client.Client;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 
 
@@ -26,21 +25,38 @@ import net.miginfocom.swing.MigLayout;
 public class MainFrame extends JFrame {
     
     Client client;
+    private JTabbedPane tabbedPane;
     
+    /**
+     *
+     * @param client
+     */
     public MainFrame(Client client) {
         this.client = client;
         initComponents();
     }
 
+    /**
+     *
+     * @param tabName
+     * @param panel
+     */
     public void add(String tabName, JPanel panel){
         tabbedPane.addTab(tabName, panel);
     }
     
+    /**
+     *
+     * @param c
+     */
     public void setSelectedComponent(Component c) {
         tabbedPane.setSelectedComponent(c);
     }
             
-    
+    /**
+     *
+     * @param panel
+     */
     public void remove(JPanel panel){
         tabbedPane.remove(panel);
     }
@@ -48,12 +64,13 @@ public class MainFrame extends JFrame {
     private void initComponents() {
 
         tabbedPane = new JTabbedPane();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(800, 600));
         
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 if (client.connection != null)
                     logout(evt);
@@ -68,5 +85,4 @@ public class MainFrame extends JFrame {
         client.logout();
     }                                  
                   
-    private JTabbedPane tabbedPane;                
 }

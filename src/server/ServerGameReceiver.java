@@ -9,19 +9,30 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
-	
+/**
+ *
+ * @author pseudo
+ */
 public class ServerGameReceiver extends Receiver {
 
         Server server;
         
-	public ServerGameReceiver(Socket socket, Server server)
+    /**
+     *
+     * @param socket
+     * @param server
+     */
+    public ServerGameReceiver(Socket socket, Server server)
 	{
             super(socket);
             this.server = server;
 	}
         
-        @Override
+    /**
+     *
+     * @param message
+     */
+    @Override
 	public void handleRequest(Message message){
             System.out.println(message);
             Serializable[] data;

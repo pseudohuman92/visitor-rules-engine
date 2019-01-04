@@ -5,9 +5,8 @@
  */
 package client.gui;
 
-import client.gui.components.TextPopup;
 import client.Client;
-
+import client.gui.components.TextPopup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,13 +22,24 @@ public class Login extends JPanel {
 
     Client client;
     
+
+
+    // Variables declaration - do not modify                     
+    private JButton loginButton;
+    private JButton registerButton;
+    private JLabel usernameLabel;
+    private JTextField usernameField;
+    // End of variables declaration                   
+    /**
+     *
+     * @param client
+     */
     public Login(Client client) {
         this.client = client;
         initComponents();
         //Comment out to activate registration
         registerButton.setVisible(false);
     }
-                   
     private void initComponents() {
 
         usernameField = new JTextField();
@@ -38,8 +48,8 @@ public class Login extends JPanel {
         usernameLabel = new JLabel();
         
         setLayout(new MigLayout("wrap 5",
-                                "[left, 20% | center, 20% | center, fill, 20% | center, 20% | right, 20%]", 
-                                "[20%] [30%] [30%] [20%]"));
+                "[left, 20% | center, 20% | center, fill, 20% | center, 20% | right, 20%]",
+                "[20%] [30%] [30%] [20%]"));
         add(usernameLabel,"newline, skip 1, right, bottom");
         add(usernameField, "growx, span 2, bottom, wrap");
         add(registerButton, "skip 1");
@@ -56,25 +66,17 @@ public class Login extends JPanel {
         usernameLabel.setText("Username");
     }// </editor-fold>                        
 
-    private void login(java.awt.event.ActionEvent evt) {                                      
-        if (!usernameField.getText().equals("")) {
+    private void login(java.awt.event.ActionEvent evt) {
+        if (!usernameField.getText().isEmpty()) {
             String username = usernameField.getText();
             client.login(username);
         }
     }                                     
 
-    private void register(java.awt.event.ActionEvent evt) {                                            
-        if (!usernameField.getText().equals("")) {
+    private void register(java.awt.event.ActionEvent evt) {
+        if (!usernameField.getText().isEmpty()) {
             String username = usernameField.getText();
             new TextPopup(client.register(username));
         }
-    }                                           
-
-
-    // Variables declaration - do not modify                     
-    private JButton loginButton;
-    private JButton registerButton;
-    private JLabel usernameLabel;
-    private JTextField usernameField;
-    // End of variables declaration                   
+    }
 }

@@ -1,21 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package client.gui.components;
 
-import cards.Card;
-import helpers.Debug;
-import java.awt.Color;
+import static card.Card.RATIO;
+import static java.awt.Color.BLACK;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JLayeredPane;
 import javax.swing.border.LineBorder;
 
@@ -25,29 +18,39 @@ import javax.swing.border.LineBorder;
  */
 public class OverlapPane extends JLayeredPane {
     
-    private boolean vertical;
+    private final boolean vertical;
     
+    /**
+     *
+     * @param vert
+     */
     public OverlapPane(boolean vert){
         vertical = vert;
         setLayout(null);
-        setBorder(new LineBorder(Color.BLACK, 1));
+        setBorder(new LineBorder(BLACK, 1));
         addComponentListener(new ComponentAdapter() {   
+            @Override
             public void componentResized(ComponentEvent e)
             {
                 Component[] comps = getComponents();
                 ArrayList<CardPane> panels = new ArrayList<>();
-                for (int i = 0; i < comps.length; i++){
-                    if (comps[i] instanceof CardPane)
-                        panels.add(0, (CardPane)(comps[i]));
+                for (Component comp : comps) {
+                    if (comp instanceof CardPane) {
+                        panels.add(0, (CardPane) (comp));
+                    }
                 }
                 layAll(panels);
             }
         });
     }
     
+    /**
+     *
+     * @param comps
+     */
     public void layAll(ArrayList<CardPane> comps){
         removeAll();
-        if(comps == null || comps.size() == 0){
+        if(comps == null || comps.isEmpty()){
             revalidate();
             repaint(); 
             return;
@@ -66,7 +69,7 @@ public class OverlapPane extends JLayeredPane {
         
         if (vertical) {
             cardWidth = width;
-            cardHeight = (int) (Card.RATIO * cardWidth);
+            cardHeight = (int) (RATIO * cardWidth);
             shift = 0;
             if ((height / num) < cardHeight + 5 && num > 1)
                 shift = (height - cardHeight)/(num - 1);
@@ -74,7 +77,7 @@ public class OverlapPane extends JLayeredPane {
                 shift = cardHeight + 5;            
         } else {
             cardHeight = height; 
-            cardWidth = (int) (cardHeight / Card.RATIO);
+            cardWidth = (int) (cardHeight / RATIO);
             shift = 0;
             if ((width / num) < cardWidth + 5 && num > 1) {
                 shift = (width - cardWidth)/(num - 1);
@@ -122,6 +125,10 @@ public class OverlapPane extends JLayeredPane {
         repaint();
     }
     
+    /**
+     *
+     * @param p
+     */
     public void add(CardPane p){
         Component[] comps = getComponents();
         ArrayList<CardPane> panels = new ArrayList<>();
@@ -133,6 +140,10 @@ public class OverlapPane extends JLayeredPane {
         layAll(panels);
     }
     
+    /**
+     *
+     * @param p
+     */
     public void remove (CardPane p){
         remove(p);
         Component[] comps = getComponents();

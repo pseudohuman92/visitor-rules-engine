@@ -5,13 +5,13 @@
  */
 package client.gui.components;
 
-import cards.Card;
-import helpers.Debug;
+import card.Card;
+import static helpers.Debug.println;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
+import static java.awt.EventQueue.invokeLater;
+import static java.awt.event.MouseEvent.BUTTON1;
 import java.util.ArrayList;
 import java.util.function.Consumer;
-import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -28,7 +28,7 @@ public class CardOrderPopup extends javax.swing.JDialog {
      */
     public CardOrderPopup(ArrayList<Card> cards, Consumer<ArrayList<Card>> continuation) {
         super(new javax.swing.JFrame(), true);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new MigLayout("wrap 4"));
         setMinimumSize(new Dimension(350, 350));
         unordered = cards;
@@ -38,7 +38,7 @@ public class CardOrderPopup extends javax.swing.JDialog {
             add(card.getPanel());
             card.getPanel().addMouseListener(orderAdapter(card, continuation));
         });
-        java.awt.EventQueue.invokeLater(() -> {
+        invokeLater(() -> {
             addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -54,9 +54,10 @@ public class CardOrderPopup extends javax.swing.JDialog {
 
     java.awt.event.MouseAdapter orderAdapter(Card card, Consumer<ArrayList<Card>> func) {
         return new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getButton() == MouseEvent.BUTTON1) {
-                    Debug.println("Selected an ordering card");
+                if (evt.getButton() == BUTTON1) {
+                    println("Selected an ordering card");
                     unordered.remove(card);
                     card.getPanel().removeAll();
                     ordered.add(card);

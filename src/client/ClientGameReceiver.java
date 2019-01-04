@@ -5,7 +5,7 @@
  */
 package client;
 
-import cards.Card;
+import card.Card;
 import network.Connection;
 import network.Message;
 import network.Receiver;
@@ -20,12 +20,21 @@ import java.util.ArrayList;
 public class ClientGameReceiver extends Receiver {
     Client client;
         
+    /**
+     *
+     * @param connection
+     * @param client
+     */
     public ClientGameReceiver(Connection connection, Client client)
     {
         super(connection);
         this.client = client;
     }
         
+    /**
+     *
+     * @param message
+     */
     @Override
     public void handleRequest(Message message){
         System.out.println(message);
