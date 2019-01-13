@@ -6,12 +6,19 @@
 package card.properties;
 
 import client.Client;
-import game.ClientGame;
 
 /**
- *
+ * Interface for cards that has X associated with a cost.
  * @author pseudo
  */
 public interface XValued {
+    
+    /**
+     * CALLER: Client<br>
+     * BEHAVIOR: Return true if argument is a valid X value.
+     * @param c
+     * @param x
+     * @return
+     */
     public abstract boolean isXValid(Client c, int x);
 }

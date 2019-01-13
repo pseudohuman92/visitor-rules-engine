@@ -7,7 +7,6 @@ import static card.Card.RATIO;
 import client.Client;
 import enums.Knowledge;
 import static enums.Phase.MAIN;
-import static enums.Type.ITEM;
 import game.ClientGame;
 import game.Game;
 import helpers.Hashmap;
@@ -23,7 +22,7 @@ import net.miginfocom.swing.MigLayout;
 import network.Message;
 
 /**
- *
+ * Abstract class for the Item card type.
  * @author pseudo
  */
 public abstract class Item extends Card implements Activatable {
@@ -38,8 +37,9 @@ public abstract class Item extends Card implements Activatable {
      * @param owner
      */
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/item.png", ITEM, owner);
+        super(name, cost, knowledge, text, "assets/item.png", owner);
     }
+    
     
     @Override
     public void resolve(Game game) {
@@ -53,48 +53,7 @@ public abstract class Item extends Card implements Activatable {
                && game.player.hasKnowledge(knowledge)
                && game.turnPlayer.equals(owner)
                && game.phase == MAIN;
-    }
-    
-    // Called by the client to see if this item can be activated
-
-    /**
-     *
-     * @param game
-     * @return
-     */
-    @Override
-    public boolean canActivate(ClientGame game){ return false; }
-
-    // Called by the client when you choose to activate this item
-
-    /**
-     *
-     * @param client
-     */
-    @Override
-    public void activate(Client client){
-        client.gameConnection.send(Message.activate(client.game.uuid, client.username, uuid, new ArrayList<>()));
-    }
-    
-    /**
-     *
-     * @param client
-     * @param targets
-     */
-    @Override
-    public void activate(Client client, ArrayList<Serializable> targets){
-        client.gameConnection.send(Message.activate(client.game.uuid, client.username, uuid, targets));
-    }
-    
-    // Called by the server when you activated this item
-
-    /**
-     *
-     * @param game
-     */
-    @Override
-    public void activate(Game game){}
-    
+    }  
     
     @Override
     public void updatePanel() {
@@ -107,7 +66,7 @@ public abstract class Item extends Card implements Activatable {
             getPanel().add(new JLabel(new ImageIcon(read(new File(image)).getScaledInstance(100, -1, 0))));
         } catch (IOException ex) {
         }
-        getPanel().add(new JLabel(type.toString()));
+        getPanel().add(new JLabel("Item"));
         JLabel textLabel = new JLabel("<html>"+ text + "</html>");
         getPanel().add(textLabel);
         drawCounters();

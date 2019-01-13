@@ -7,17 +7,16 @@ package card.types;
 
 import card.Card;
 import enums.Knowledge;
-import enums.Type;
 import helpers.Hashmap;
 
 /**
- *
+ * Abstract class for the Ally card type.
  * @author pseudo
  */
 public abstract class Ally extends Card {
     
-    public Ally(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, Type type, String owner) {
-        super(name, cost, knowledge, text, image, type, owner);
+    public Ally(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
+        super(name, cost, knowledge, text, image, owner);
     }
     
 }

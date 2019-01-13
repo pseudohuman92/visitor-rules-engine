@@ -5,7 +5,6 @@ import client.gui.components.CardPane;
 import enums.Counter;
 import enums.Knowledge;
 import static enums.Knowledge.YELLOW;
-import enums.Type;
 import game.ClientGame;
 import game.Game;
 import game.Player;
@@ -32,7 +31,7 @@ import network.Message;
 public abstract class Card implements Serializable {
 
     /**
-     * Ration of the displayed cards in the height/width format.
+     * Ratio of the displayed cards in the height/width format.
      */
     public static final double RATIO = 3.5 / 2.5;
     /**
@@ -108,11 +107,6 @@ public abstract class Card implements Serializable {
     public String image;
 
     /**
-     * Type of the card.
-     */
-    public Type type;
-
-    /**
      * Owner of the card. This is the player who started the game with the card in his deck.
      */
     public String owner;
@@ -149,11 +143,10 @@ public abstract class Card implements Serializable {
      * @param knowledge
      * @param text
      * @param image
-     * @param type
      * @param owner
      */
     public Card(String name, int cost, Hashmap<Knowledge, Integer> knowledge,
-            String text, String image, Type type, String owner) {
+            String text, String image, String owner) {
         uuid = randomUUID();
         counters = new Hashmap<>();
         supplementaryData = new ArrayList<>();
@@ -162,7 +155,6 @@ public abstract class Card implements Serializable {
         this.knowledge = knowledge;
         this.text = text;
         this.image = image;
-        this.type = type;
         this.owner = owner;
         controller = owner;
         
@@ -179,17 +171,19 @@ public abstract class Card implements Serializable {
     
     /**
      * Called by client to check if you can study this card in current game state.
+     * Default implementation just checks the game if the controller can study.
+     * OVERRIDE IF: Card has special conditions to be studied.
      * @param game
      * @return
      */
     public boolean canStudy (ClientGame game){
-        return game.canPlaySource();
+        return game.canStudy();
     }
 
     /**
      * Called by the client when you choose to play this card. 
-     * For most cards, this just sends the play message to server.
-     * For some cards, this may trigger actions like target selection before sending the message.
+     * Default implementation just sends the play message to server with no supplementary data.
+     * OVERRIDE IF: Card requires extra actions to play. (selecting a target, choosing an X value etc.)
      * @param client
      */
     public void play(Client client) {
@@ -198,7 +192,8 @@ public abstract class Card implements Serializable {
     
     /**
      * Called by the client when you choose to study this card.
-     * It also handles knowledge selection if card is multifaction.
+     * It also handles knowledge selection if card is multi-faction.
+     * OVERRIDE IF: Card requires a special action to study.
      * @param client
      */
     public void study(Client client) {
@@ -217,6 +212,7 @@ public abstract class Card implements Serializable {
      * Called by server when this card is played.
      * Default behavior is that it deducts the energy cost of the card, 
      * removes it from player's hand and then resolves the card.
+     * OVERRIDE IF: Card has an alternative cost (like X) or a special effect when played.
      * @param game
      */
     public void play(Game game) {
@@ -229,6 +225,7 @@ public abstract class Card implements Serializable {
     /**
      * Called by the server when you choose to study this card.
      * It increases player's maximum energy and adds selected knowledge.
+     * OVERRIDE IF: Card has a special effect when studied.
      * @param game
      * @param knowledge
      */
@@ -341,7 +338,6 @@ public abstract class Card implements Serializable {
     protected void setToolTip() {
         String tooltip = "<html>" + cost + " " + getKnowledgeString()+"<br>";
         tooltip += name + "<br><br>";
-        tooltip += type.toString() + "<br><br>";
         tooltip += text + "<br><br>";
         if (!counters.isEmpty()){
             tooltip += "<br><br>--- COUNTERS ---<br>";

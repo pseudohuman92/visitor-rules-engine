@@ -2,6 +2,7 @@
 package client.gui;
 
 import card.Card;
+import card.properties.Activatable;
 import card.types.Item;
 import client.Client;
 import client.gui.components.CardDisplayPopup;
@@ -569,12 +570,11 @@ public class GameArea extends JPanel {
         };
     }
 
-    MouseAdapter activateAdapter(Item card) {
+    MouseAdapter activateAdapter(Activatable card) {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (client.game.hasInitiative() && card.canActivate(client.game) && evt.getButton() == BUTTON1) {
-                    println("Activating: " + card.name);
                     card.activate(client);
                 }
             }

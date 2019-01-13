@@ -26,50 +26,14 @@ import static network.Message.order;
 public class Game {
     
     //(player_name, player) pairs
-
-    /**
-     *
-     */
     public Hashmap<String, Player> players;
-
-    /**
-     *
-     */
     public Hashmap<String, Connection> communicationConnections;
-
-    /**
-     *
-     */
     public Hashmap<String, Connection> interactionConnections;
-
-    /**
-     *
-     */
     public String turnPlayer;
-
-    /**
-     *
-     */
     public String activePlayer;
-
-    /**
-     *
-     */
     public Phase phase;
-
-    /**
-     *
-     */
     public int turnCount;
-
-    /**
-     *
-     */
     public int passCount;
-
-    /**
-     *
-     */
     public UUID uuid;
     
     /**
@@ -181,6 +145,18 @@ public class Game {
     public void draw(String username, int count){
         Player player = players.get(username);
         player.draw(count);
+        //TODO: Check loss
+    }
+    
+    /**
+     *
+     * @param username
+     * @param count
+     */
+    public void purge(String username, int count){
+        Player player = players.get(username);
+        player.purge(count);
+        //TODO: Check loss
     }
     
     /**
@@ -188,7 +164,7 @@ public class Game {
      * @param uuid
      */
     public void destroy(UUID uuid){
-        Item item = getItem(uuid);
+        Item item = getItemByID(uuid);
         players.get(item.owner).items.remove(item);
         players.get(item.owner).discardPile.add(item);
     }
@@ -228,7 +204,7 @@ public class Game {
      * @param playerID
      * @return
      */
-    public Player getPlayer(UUID playerID){
+    public Player getPlayerByID(UUID playerID){
         for (Player player : players.values()) {
             if(player.uuid.equals(playerID)){ 
                 return player;
@@ -239,10 +215,19 @@ public class Game {
     
     /**
      *
+     * @param playerID
+     * @return
+     */
+    public Player getPlayerByName(String playerName){
+        return players.get(playerName);
+    }
+    
+    /**
+     *
      * @param itemID
      * @return
      */
-    public Item getItem(UUID itemID){
+    public Item getItemByID(UUID itemID){
         for (Player player : players.values()) {
             for (Item item : player.items){
                 if(item.uuid.equals(itemID)){ 
@@ -258,7 +243,7 @@ public class Game {
      * @param itemID
      */
     public void switchOwner(UUID itemID){
-        Item item = getItem(itemID);
+        Item item = getItemByID(itemID);
         players.get(item.owner).items.remove(item);
         players.get(getOpponentName(item.owner)).items.add(item);
         item.owner = getOpponentName(item.owner);
@@ -330,7 +315,7 @@ public class Game {
      * @param newController
      */
     public void changeItemController(UUID itemID, String newController) {
-        Item c = getItem(itemID);
+        Item c = getItemByID(itemID);
         players.get(c.controller).items.remove(c);
         players.get(newController).items.add(c);
         c.controller = newController;

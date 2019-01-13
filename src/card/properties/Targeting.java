@@ -8,13 +8,14 @@ package card.properties;
 import card.Card;
 
 /**
- *
+ * Interface for cards that require targets for their effects.
  * @author pseudo
  */
 public interface Targeting {
 
     /**
-     *
+     * CALLER: Client<br>
+     * BEHAVIOR: Return true if the argument is a valid target for the card.
      * @param c
      * @return
      */

@@ -6,12 +6,9 @@
 package enums;
 
 /**
- * Enum for different types of counters that can be placed on cards.
+ *
  * @author pseudo
  */
-public enum Counter {
-
-    CHARGE,
-    TRANSENDENCE,
-    SURVIVAL
+public enum Event {
+    
 }

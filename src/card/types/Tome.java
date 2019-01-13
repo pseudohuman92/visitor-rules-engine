@@ -4,7 +4,6 @@ package card.types;
 import card.Card;
 import static card.Card.RATIO;
 import client.Client;
-import static enums.Type.TOME;
 import game.ClientGame;
 import game.Game;
 import helpers.Hashmap;
@@ -17,7 +16,7 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 /**
- *
+ * Abstract class for the Tome card type.
  * @author pseudo
  */
 public abstract class Tome extends Card {
@@ -30,7 +29,7 @@ public abstract class Tome extends Card {
      * @param owner
      */
     public Tome(String name, String text, String image, String owner) {
-        super(name, 0, new Hashmap<>(), text, "assets/tome.png", TOME, owner);
+        super(name, 0, new Hashmap<>(), text, "assets/tome.png", owner);
     }
 
     @Override
@@ -51,7 +50,7 @@ public abstract class Tome extends Card {
             getPanel().add(new JLabel(new ImageIcon(read(new File(image)).getScaledInstance(100, -1, 0))));
         } catch (IOException ex) {
         }
-        getPanel().add(new JLabel(type.toString()));
+        getPanel().add(new JLabel("Tome"));
         JLabel textLabel = new JLabel("<html>" + text + "</html>");
         getPanel().add(textLabel);
 

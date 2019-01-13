@@ -4,7 +4,6 @@ package card.types;
 import card.Card;
 import static card.Card.RATIO;
 import enums.Knowledge;
-import static enums.Type.ACTION;
 import game.ClientGame;
 import helpers.Hashmap;
 import java.awt.Dimension;
@@ -16,7 +15,7 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 /**
- *
+ * Abstract class for the Action card type.
  * @author pseudo
  */
 public abstract class Action extends Card {
@@ -31,7 +30,7 @@ public abstract class Action extends Card {
      * @param owner
      */
     public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/action.png", ACTION, owner);
+        super(name, cost, knowledge, text, "assets/action.png", owner);
     }
 
     @Override
@@ -51,7 +50,7 @@ public abstract class Action extends Card {
             getPanel().add(new JLabel(new ImageIcon(read(new File(image)).getScaledInstance(100, -1, 0))));
         } catch (IOException ex) {
         }
-        getPanel().add(new JLabel(type.toString()));
+        getPanel().add(new JLabel("Action"));
         JLabel textLabel = new JLabel("<html>" + text + "</html>");
         getPanel().add(textLabel);
         

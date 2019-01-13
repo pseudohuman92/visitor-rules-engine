@@ -14,6 +14,7 @@ import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.lang.reflect.Array;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
@@ -75,8 +76,9 @@ public class Lobby extends JPanel {
     public void updateTables(){
         DefaultTableModel model = (DefaultTableModel)tableList.getModel();
         model.setRowCount(0);
-        client.tables.values().stream().forEachOrdered((ta) -> {
-            model.addRow(ta);
+        client.tables.values().stream().forEachOrdered((Table ta) -> {
+            Table[] tarr = {ta};
+            model.addRow(tarr);
         });
     }
     

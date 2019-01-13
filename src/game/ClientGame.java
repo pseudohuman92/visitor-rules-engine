@@ -67,7 +67,7 @@ public class ClientGame implements Serializable {
      *
      * @return
      */
-    public boolean canPlaySource(){
+    public boolean canStudy(){
         return player.name.equals(turnPlayer) 
             && phase == MAIN
             && player.playableSource > 0;

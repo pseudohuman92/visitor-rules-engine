@@ -1,6 +1,7 @@
 package game;
 
 import card.Card;
+import card.properties.Triggering;
 import card.types.Item;
 import enums.Knowledge;
 import static helpers.Debug.list;
@@ -60,6 +61,8 @@ public class Player implements Serializable {
      *
      */
     public ArrayList<Card> discardPile;
+    
+    public ArrayList<Card> voidPile;
 
     /**
      *
@@ -70,6 +73,8 @@ public class Player implements Serializable {
      *
      */
     public Hashmap<Knowledge, Integer> knowledge;
+ 
+    public ArrayList<Triggering> triggers;
     
     /**
      *
@@ -86,8 +91,10 @@ public class Player implements Serializable {
         sources = new ArrayList<>();
         hand = new ArrayList<>();
         discardPile = new ArrayList<>();
+        voidPile = new ArrayList<>();
         items = new ArrayList<>();
         knowledge = new Hashmap<>();
+        triggers = new ArrayList<>();
     }
 
     /**
@@ -105,6 +112,12 @@ public class Player implements Serializable {
      */
     public void draw(int count){
         hand.addAll(deck.draw(count));
+        //TODO: Check loss
+    }
+    
+    public void purge(int count) {
+        voidPile.addAll(deck.draw(count));
+        //TODO: Check loss
     }
     
     /**
@@ -214,4 +227,5 @@ public class Player implements Serializable {
         sb.append("  ").append(deck).append("\n");
         return sb.toString();
     }
+
 }
