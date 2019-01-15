@@ -21,17 +21,17 @@ import network.Message;
  *
  * @author pseudo
  */
-public class GarbageCannon extends Item implements Targeting {
+public class MatterCondenser extends Item implements Targeting {
     
-    public GarbageCannon (String owner){
-        super("Garbage Cannon", 4, new Hashmap(Knowledge.BLACK, 3), 
-                "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", 
+    public MatterCondenser (String owner){
+        super("Matter Condenser", 4, new Hashmap(Knowledge.BLACK, 2), 
+                "Sacrifice an Item: Gain 1 Energy. If that item is owned by the opponent gain 1 additional energy.", 
                 "item.png", owner);
     }
 
     @Override
     public boolean canActivate(ClientGame game) {
-        return (!game.player.items.isEmpty())&&(!depleted);
+        return !game.player.items.isEmpty();
     }
     
     @Override
@@ -42,13 +42,12 @@ public class GarbageCannon extends Item implements Targeting {
     
     @Override
     public void activate(Game game) {
-        depleted = true;
         Card c = game.getItemByID((UUID)supplementaryData.get(0));
         game.destroy(c.uuid);
         if (c.owner.equals(game.getOpponentName(controller))) {
-            game.purge(game.getOpponentName(controller), 10);
+            game.players.get(controller).energy +=2;
         } else {
-            game.purge(game.getOpponentName(controller), 5);
+            game.players.get(controller).energy +=1;
         }
     }
 

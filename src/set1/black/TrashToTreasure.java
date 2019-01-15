@@ -35,13 +35,7 @@ public class TrashToTreasure extends Action implements XValued {
         supplementaryData.add(0, x);
         client1.gameConnection.send(Message.play(client1.game.uuid, client1.username, uuid, supplementaryData)); });
     }
-    
-    /**
-     * Called by server when this card is played.
-     * Default behavior is that it deducts the energy cost of the card, 
-     * removes it from player's hand and then resolves the card.
-     * @param game
-     */
+
     public void play(Game game) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
