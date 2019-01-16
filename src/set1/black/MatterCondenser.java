@@ -9,10 +9,10 @@ package set1.black;
 import card.Card;
 import card.properties.Targeting;
 import card.types.Item;
+import client.Client;
+import enums.Knowledge;
 import game.ClientGame;
 import game.Game;
-import enums.Knowledge;
-import client.Client;
 import helpers.Hashmap;
 import java.util.UUID;
 import network.Message;
@@ -31,23 +31,23 @@ public class MatterCondenser extends Item implements Targeting {
 
     @Override
     public boolean canActivate(ClientGame game) {
-        return !game.player.items.isEmpty();
+        return game.hasAnItem(controller);
     }
     
     @Override
     public void activate(Client client) {
         client.gameArea.getPlayAreaTargets(this::validTarget, 1, (client1, targets) -> {
-        client1.gameConnection.send(Message.activate(client1.game.uuid, client.username, uuid, targets)); });
+        client1.gameConnection.send(Message.activate(client1.game.id, client.username, id, targets)); });
     }
     
     @Override
     public void activate(Game game) {
-        Card c = game.getItemByID((UUID)supplementaryData.get(0));
-        game.destroy(c.uuid);
-        if (c.owner.equals(game.getOpponentName(controller))) {
-            game.players.get(controller).energy +=2;
+        UUID sacID = (UUID)supplementaryData.get(0);
+        game.destroy(sacID);
+        if (game.ownedByOpponent(sacID)) {
+            game.addEnergy(controller, 2);
         } else {
-            game.players.get(controller).energy +=1;
+            game.addEnergy(controller, 1);
         }
     }
 

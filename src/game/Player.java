@@ -2,7 +2,6 @@ package game;
 
 import card.Card;
 import card.properties.Triggering;
-import card.types.Item;
 import enums.Knowledge;
 import static helpers.Debug.list;
 import helpers.Hashmap;
@@ -17,64 +16,19 @@ import static java.util.UUID.randomUUID;
  */
 public class Player implements Serializable {
 
-    /**
-     *
-     */
     public String name;
-
-    /**
-     *
-     */
-    public UUID uuid;
-
-    /**
-     *
-     */
-    public int life;
-
-    /**
-     *
-     */
+    public UUID id;
     public Deck deck;
-
-    /**
-     *
-     */
     public int energy;
-
-    /**
-     *
-     */
-    public int playableSource;
-
-    /**
-     *
-     */
+    public int numOfStudiesLeft;
     public ArrayList<Card> sources;
-
-    /**
-     *
-     */
     public ArrayList<Card> hand;
-
-    /**
-     *
-     */
     public ArrayList<Card> discardPile;
-    
     public ArrayList<Card> voidPile;
-
-    /**
-     *
-     */
-    public ArrayList<Item> items;
-
-    /**
-     *
-     */
-    public Hashmap<Knowledge, Integer> knowledge;
+    public ArrayList<Card> inPlayCards;
+    public Hashmap<Knowledge, Integer> knowledgePool;
  
-    public ArrayList<Triggering> triggers;
+    public ArrayList<Triggering> triggeringCards;
     
     /**
      *
@@ -83,18 +37,17 @@ public class Player implements Serializable {
      */
     public Player (String name, Deck deck){
         this.name = name;
-        uuid = randomUUID();
-        life = 30;
+        id = randomUUID();
         this.deck = deck;
         energy = 0;
-        playableSource = 1;
+        numOfStudiesLeft = 1;
         sources = new ArrayList<>();
         hand = new ArrayList<>();
         discardPile = new ArrayList<>();
         voidPile = new ArrayList<>();
-        items = new ArrayList<>();
-        knowledge = new Hashmap<>();
-        triggers = new ArrayList<>();
+        inPlayCards = new ArrayList<>();
+        knowledgePool = new Hashmap<>();
+        triggeringCards = new ArrayList<>();
     }
 
     /**
@@ -115,6 +68,10 @@ public class Player implements Serializable {
         //TODO: Check loss
     }
     
+    /**
+     *
+     * @param count
+     */
     public void purge(int count) {
         voidPile.addAll(deck.draw(count));
         //TODO: Check loss
@@ -125,9 +82,9 @@ public class Player implements Serializable {
      * @param cardID
      * @return
      */
-    public Card fromHand(UUID cardID){
+    public Card getCardFromHandByID (UUID cardID){
         for (Card card : hand) {
-            if(card.uuid.equals(cardID)){ 
+            if(card.id.equals(cardID)){ 
                 return card;
             }
         }
@@ -139,21 +96,32 @@ public class Player implements Serializable {
      * @param cardID
      * @return
      */
-    public Item fromItems(UUID cardID){
-        for (Item card : items) {
-            if(card.uuid.equals(cardID)){ 
+    public Card getCardFromPlayByID (UUID cardID){
+        for (Card card : inPlayCards) {
+            if(card.id.equals(cardID)){ 
                 return card;
             }
         }
         return null;
     }
     
+    public Card getCardByID(UUID cardID) {
+        Card c = getCardFromHandByID (cardID);
+        if (c != null) {
+            return c;
+        }
+        c = getCardFromPlayByID(cardID);
+        if (c != null) {
+            return c;
+        }
+        return null;
+    }
     /**
      *
      * @param cards
      */
     public void discard(ArrayList<UUID> cards){
-        cards.stream().map((cardID) -> fromHand(cardID)).map((card) -> {
+        cards.stream().map((cardID) -> getCardFromHandByID(cardID)).map((card) -> {
             hand.remove(card);
             return card;
         }).forEachOrdered((card) -> {
@@ -179,8 +147,8 @@ public class Player implements Serializable {
      */
     public void newTurn(){
         energy = sources.size();
-        playableSource = 1;
-        items.forEach((card) -> card.depleted = false);
+        numOfStudiesLeft = 1;
+        inPlayCards.forEach((card) -> card.depleted = false);
     }
     
     /**
@@ -189,7 +157,7 @@ public class Player implements Serializable {
      */
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
         knowl.forEach((k, i) -> {
-            knowledge.merge(k, i, (a, b) -> a + b);
+            knowledgePool.merge(k, i, (a, b) -> a + b);
         });
     }
     
@@ -200,7 +168,8 @@ public class Player implements Serializable {
      */
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
-        result = cardKnowledge.keySet().stream().map((k) -> knowledge.containsKey(k) && (cardKnowledge.get(k) <= knowledge.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
+        result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
+                (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
         return result;
     }
     
@@ -213,19 +182,24 @@ public class Player implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("xx Player xx\n");
         sb.append("  Player Name: ").append(name).append("\n");
-        sb.append("  UUID: ").append(uuid).append("\n");
-        sb.append("  Life: ").append(life).append("\n");
+        sb.append("  ID: ").append(id).append("\n");
         sb.append("  Energy: ").append(energy).append(" / ").append(sources.size()).append("\n");
         sb.append("  Knowledge\n");
-        knowledge.forEach((k, c) ->{
+        knowledgePool.forEach((k, c) ->{
             sb.append("    ").append(k).append(": ").append(c).append("\n");
         });
-        sb.append("  Source Play Count: ").append(playableSource).append("\n");
+        sb.append("  Source Play Count: ").append(numOfStudiesLeft).append("\n");
         sb.append("  Hand \n").append(list(hand, "    ")).append("\n");
-        sb.append("  Items \n").append(list(items, "    ")).append("\n");
+        sb.append("  Items \n").append(list(inPlayCards, "    ")).append("\n");
         sb.append("  Discard Pile \n").append(list(discardPile, "    ")).append("\n");
         sb.append("  ").append(deck).append("\n");
         return sb.toString();
+    }
+
+    public void addTriggerEvent(Game game, Event e) {
+        for (int i = 0; i < triggeringCards.size(); i++){
+            triggeringCards.get(i).checkEvent(game, e);
+        }
     }
 
 }

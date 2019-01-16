@@ -3,26 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/game/Player.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/properties/Targeting.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/types/Ally.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/game/Game.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/properties/Activatable.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/enums/Phase.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/Card.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/client/gui/GameArea.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/enums/Knowledge.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/enums/Event.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/game/ClientGame.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/types/Action.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/black/TrashToTreasure.java</file>
             <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/black/GarbageCannon.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/types/Tome.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/client/gui/Lobby.java</file>
             <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/black/Sifterbot.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/enums/Counter.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/properties/XValued.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/types/Item.java</file>
-            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/card/properties/Triggering.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/client/Main.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/black/MatterCondenser.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/server/ServerGameReceiver.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/black/Pickpocketing.java</file>
+            <file>file:/home/pseudo/Dropbox%20(MIT)/Repos/CCG/CCGCore/src/set1/black/DigForTheParts.java</file>
         </group>
     </open-files>
 </project-private>

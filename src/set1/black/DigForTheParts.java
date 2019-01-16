@@ -5,15 +5,13 @@
  */
 package set1.black;
 
-import card.types.Action;
 import card.Card;
 import card.properties.Targeting;
-import card.types.Item;
+import card.types.Action;
 import client.Client;
 import static enums.Knowledge.BLACK;
 import game.ClientGame;
 import game.Game;
-import game.Player;
 import helpers.Hashmap;
 import java.util.UUID;
 import network.Message;
@@ -41,14 +39,13 @@ public class DigForTheParts extends Action implements Targeting {
     public void play(Client client) {
         client.gameArea.getPlayAreaTargets(this::validTarget, 1, (client2, targets) -> {
         supplementaryData.add(0, targets.get(0));
-        client2.gameConnection.send(Message.play(client2.game.uuid, client2.username, uuid, supplementaryData)); });
+        client2.gameConnection.send(Message.play(client2.game.id, client2.username, id, supplementaryData)); });
     }
     
     @Override
     public void play(Game game) {
-        Player player = game.players.get(owner);
-        player.hand.remove(this);
-        player.energy -= cost;
+        game.removeFromHand(controller, id);
+        game.removeEnergy (controller, cost);
         game.destroy((UUID)supplementaryData.get(0));
         resolve(game);
     }
@@ -56,12 +53,12 @@ public class DigForTheParts extends Action implements Targeting {
     @Override
     public void resolve (Game game){
         game.draw(controller, 2);
-        game.players.get(owner).discardPile.add(this);
+        game.discardAfterPlay(this);
     }
 
     @Override
     public boolean validTarget(Card c) {
-        return (c.controller.equals(controller) && c instanceof Item);
+        return (c.controller.equals(controller) && c instanceof Card);
     }    
     
 }

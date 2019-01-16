@@ -367,22 +367,15 @@ public class Message implements Serializable {
     public static Message orderReturn(ArrayList<UUID> cards){
         return new Message(ORDER_RETURN, cards);
     } 
-    /**
-     *
-     */
+
     public MessageLabel label;
-    /**
-     *
-     */
     public Serializable object;
+    
     private Message(MessageLabel label, Serializable object) {
         this.label = label;
         this.object = object;
     }
-    /**
-     *
-     * @return
-     */
+
     @Override
     public String toString() {
         return label + ": { " + object.toString() + " }";

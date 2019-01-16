@@ -6,7 +6,6 @@
 package game;
 
 import card.Card;
-import card.types.Item;
 import enums.Knowledge;
 import helpers.Hashmap;
 import java.io.Serializable;
@@ -19,55 +18,16 @@ import java.util.UUID;
  */
 public class Opponent implements Serializable {
 
-    /**
-     *
-     */
     public String name;
-
-    /**
-     *
-     */
-    public UUID uuid;
-
-    /**
-     *
-     */
-    public int life;
-
-    /**
-     *
-     */
+    public UUID id;
     public int deckSize;
-
-    /**
-     *
-     */
     public int handSize;
-
-    /**
-     *
-     */
     public int energy;
 
-    /**
-     *
-     */
     public ArrayList<Card> sources;
-
-    /**
-     *
-     */
     public ArrayList<Card> discardPile;
-
-    /**
-     *
-     */
-    public ArrayList<Item> items;
-
-    /**
-     *
-     */
-    public Hashmap<Knowledge, Integer> knowledge;
+    public ArrayList<Card> cardsInPlay;
+    public Hashmap<Knowledge, Integer> knowledgePool;
 
     /**
      *
@@ -75,14 +35,13 @@ public class Opponent implements Serializable {
      */
     public Opponent (Player player) {
         this.name = player.name;
-        this.uuid = player.uuid;
-        this.life = player.life;
+        this.id = player.id;
         this.energy = player.energy;
         this.deckSize = player.deck.size();
         this.handSize = player.hand.size();
         this.sources = player.sources;
         this.discardPile = player.discardPile;
-        this.items = player.items;
-        this.knowledge = player.knowledge;
+        this.cardsInPlay = player.inPlayCards;
+        this.knowledgePool = player.knowledgePool;
     }
 }

@@ -7,7 +7,6 @@ package client;
 
 import static java.awt.EventQueue.invokeLater;
 import java.io.IOException;
-import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.net.Socket;
 import server.Server;

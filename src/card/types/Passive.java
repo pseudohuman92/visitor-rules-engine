@@ -3,7 +3,6 @@ package card.types;
 
 import card.Card;
 import static card.Card.RATIO;
-import card.properties.Activatable;
 import enums.Knowledge;
 import static enums.Phase.MAIN;
 import game.ClientGame;
@@ -21,7 +20,7 @@ import net.miginfocom.swing.MigLayout;
  * Abstract class for the Item card type.
  * @author pseudo
  */
-public abstract class Item extends Card implements Activatable {
+public abstract class Passive extends Card {
     
     /**
      *
@@ -32,14 +31,14 @@ public abstract class Item extends Card implements Activatable {
      * @param image
      * @param owner
      */
-    public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/item.png", owner);
+    public Passive(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
+        super(name, cost, knowledge, text, "assets/passive.png", owner);
     }
     
     
     @Override
     public void resolve(Game game) {
-        depleted = true;
+        game.deplete(id);
         game.players.get(owner).inPlayCards.add(this);
     }
     
@@ -62,7 +61,7 @@ public abstract class Item extends Card implements Activatable {
             getPanel().add(new JLabel(new ImageIcon(read(new File(image)).getScaledInstance(100, -1, 0))));
         } catch (IOException ex) {
         }
-        getPanel().add(new JLabel("Item"));
+        getPanel().add(new JLabel("Passive"));
         JLabel textLabel = new JLabel("<html>"+ text + "</html>");
         getPanel().add(textLabel);
         drawCounters();

@@ -2,8 +2,7 @@
 package game;
 
 import card.Card;
-import static card.Card.sortByUUID;
-import card.types.Item;
+import static card.Card.sortByID;
 import enums.Phase;
 import static enums.Phase.BEGIN;
 import static enums.Phase.END;
@@ -16,7 +15,6 @@ import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import network.Connection;
 import network.Message;
-import static network.Message.lose;
 import static network.Message.order;
 
 /**
@@ -145,7 +143,11 @@ public class Game {
     public void draw(String username, int count){
         Player player = players.get(username);
         player.draw(count);
-        //TODO: Check loss
+        if (player.deck.deck.size() == 0){
+            lose(username);
+        }
+        players.get(turnPlayer).addTriggerEvent(this, Event.draw(username, count));
+        players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, Event.draw(username, count));
     }
     
     /**
@@ -156,7 +158,9 @@ public class Game {
     public void purge(String username, int count){
         Player player = players.get(username);
         player.purge(count);
-        //TODO: Check loss
+        if (player.deck.deck.size() == 0){
+            lose(username);
+        }
     }
     
     /**
@@ -164,8 +168,8 @@ public class Game {
      * @param uuid
      */
     public void destroy(UUID uuid){
-        Item item = getItemByID(uuid);
-        players.get(item.owner).items.remove(item);
+        Card item = getPlayAreaCardByID(uuid);
+        players.get(item.owner).inPlayCards.remove(item);
         players.get(item.owner).discardPile.add(item);
     }
     
@@ -173,10 +177,10 @@ public class Game {
      *
      * @param uuid
      */
-    public void charge(UUID uuid){
+    public void ready(UUID uuid){
         for (Player player : players.values()) {
-            for (Card card : player.items) {
-                if (card.uuid.equals(uuid)){
+            for (Card card : player.inPlayCards) {
+                if (card.id.equals(uuid)){
                     card.depleted = false;
                     return;
                 }
@@ -190,8 +194,8 @@ public class Game {
      */
     public void deplete(UUID uuid){
         for (Player player : players.values()) {
-            for (Card card : player.items) {
-                if (card.uuid.equals(uuid)){
+            for (Card card : player.inPlayCards) {
+                if (card.id.equals(uuid)){
                     card.depleted = true;
                     break;
                 }
@@ -206,7 +210,7 @@ public class Game {
      */
     public Player getPlayerByID(UUID playerID){
         for (Player player : players.values()) {
-            if(player.uuid.equals(playerID)){ 
+            if(player.id.equals(playerID)){ 
                 return player;
             }
         }
@@ -215,7 +219,7 @@ public class Game {
     
     /**
      *
-     * @param playerID
+     * @param playerName
      * @return
      */
     public Player getPlayerByName(String playerName){
@@ -227,10 +231,10 @@ public class Game {
      * @param itemID
      * @return
      */
-    public Item getItemByID(UUID itemID){
+    public Card getPlayAreaCardByID(UUID itemID){
         for (Player player : players.values()) {
-            for (Item item : player.items){
-                if(item.uuid.equals(itemID)){ 
+            for (Card item : player.inPlayCards){
+                if(item.id.equals(itemID)){ 
                     return item;
                 }
             }
@@ -243,9 +247,9 @@ public class Game {
      * @param itemID
      */
     public void switchOwner(UUID itemID){
-        Item item = getItemByID(itemID);
-        players.get(item.owner).items.remove(item);
-        players.get(getOpponentName(item.owner)).items.add(item);
+        Card item = getPlayAreaCardByID(itemID);
+        players.get(item.owner).inPlayCards.remove(item);
+        players.get(getOpponentName(item.owner)).inPlayCards.add(item);
         item.owner = getOpponentName(item.owner);
     }
 
@@ -258,7 +262,16 @@ public class Game {
         connection.send(Message.win());
         connection.closeConnection();
         connection = interactionConnections.get(getOpponentName(player));
-        connection.send(lose());
+        connection.send(Message.lose());
+        connection.closeConnection();
+    }
+    
+    public void lose(String player) {
+        Connection connection = interactionConnections.get(player);
+        connection.send(Message.lose());
+        connection.closeConnection();
+        connection = interactionConnections.get(getOpponentName(player));
+        connection.send(Message.win());
         connection.closeConnection();
     }
 
@@ -269,20 +282,20 @@ public class Game {
      * @return
      */
     public ArrayList<Card> orderCards(String username, ArrayList<Card> cards) {
-        String activePlayerStore = activePlayer;
-        activePlayer = "";
         Connection connection = interactionConnections.get(username);
         connection.send(order(cards));
         Message message = connection.receive();
         if (message != null) {
-            cards = sortByUUID(cards, (ArrayList<UUID>)message.object);
-            activePlayer = activePlayerStore;
-            return cards;
+            return sortByID(cards, (ArrayList<UUID>)message.object);
         }
-        activePlayer = activePlayerStore;
         return null;
     }
     
+    /**
+     *
+     * @param username
+     * @param x
+     */
     public void loot(String username, int x) {
         draw(username, x);
         discard(username, x);
@@ -311,13 +324,48 @@ public class Game {
 
     /**
      *
-     * @param itemID
+     * @param cardID
      * @param newController
      */
-    public void changeItemController(UUID itemID, String newController) {
-        Item c = getItemByID(itemID);
-        players.get(c.controller).items.remove(c);
-        players.get(newController).items.add(c);
+    public void possess(UUID cardID, String newController) {
+        Card c = getPlayAreaCardByID(cardID);
+        String oldController = c.controller;
+        players.get(oldController).inPlayCards.remove(c);
+        players.get(newController).inPlayCards.add(c);
         c.controller = newController;
+        players.get(turnPlayer).addTriggerEvent(this, Event.possess(oldController, newController, cardID));
+        players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, Event.possess(oldController, newController, cardID));
+    }
+
+    public void discardAfterPlay(Card c) {
+        players.get(c.controller).discardPile.add(c);
+    }
+
+    public boolean ownedByOpponent(UUID targetID) {
+        Card c = getCardByID(targetID);
+        return c.owner.equals(getOpponentName(c.controller));
+    }
+
+    public void addEnergy(String controller, int i) {
+        players.get(controller).energy+=i;
+    }
+
+    public void removeEnergy(String controller, int i) {
+        players.get(controller).energy-=i;
+    }
+
+    public Card getCardByID(UUID targetID) {
+        for (Player player : players.values()) {
+            Card c = player.getCardByID(targetID);
+            if (c != null){
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public void removeFromHand(String controller, UUID id) {
+        Player p = players.get(controller);
+        p.hand.remove(p.getCardFromHandByID(id));
     }
 }

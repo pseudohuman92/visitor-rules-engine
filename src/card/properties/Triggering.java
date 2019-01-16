@@ -5,7 +5,7 @@
  */
 package card.properties;
 
-import enums.Event;
+import game.Event;
 import game.Game;
 
 /**

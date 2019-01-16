@@ -14,7 +14,6 @@ import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.lang.reflect.Array;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import static javax.swing.JFileChooser.APPROVE_OPTION;

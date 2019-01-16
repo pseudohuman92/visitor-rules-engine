@@ -14,35 +14,12 @@ import java.util.function.Function;
  */
 public class ClientGame implements Serializable {
 
-    /**
-     *
-     */
     public Player player;
-
-    /**
-     *
-     */
     public Opponent opponent;
-
-    /**
-     *
-     */
     public String turnPlayer;
-
-    /**
-     *
-     */
     public String activePlayer;
-
-    /**
-     *
-     */
     public Phase phase;
-
-    /**
-     *
-     */
-    public UUID uuid;
+    public UUID id;
     
     /**
      *
@@ -60,7 +37,7 @@ public class ClientGame implements Serializable {
         this.turnPlayer = turnPlayer;
         this.activePlayer = activePlayer;
         this.phase = phase;
-        this.uuid = uuid;
+        this.id = uuid;
     }
     
     /**
@@ -70,7 +47,7 @@ public class ClientGame implements Serializable {
     public boolean canStudy(){
         return player.name.equals(turnPlayer) 
             && phase == MAIN
-            && player.playableSource > 0;
+            && player.numOfStudiesLeft > 0;
     }
     
     /**
@@ -92,19 +69,24 @@ public class ClientGame implements Serializable {
 
     public boolean hasValidTargetsInPlay(Function<Card, Boolean> valid, int count){
         assert (count > 0);
-        for (int i = 0; i < player.items.size(); i++){
-            if (valid.apply(player.items.get(i)))
+        for (int i = 0; i < player.inPlayCards.size(); i++){
+            if (valid.apply(player.inPlayCards.get(i)))
                 count--;
             if (count == 0)
                 return true;
         }
         
-        for (int i = 0; i < opponent.items.size(); i++){
-            if (valid.apply(opponent.items.get(i)))
+        for (int i = 0; i < opponent.cardsInPlay.size(); i++){
+            if (valid.apply(opponent.cardsInPlay.get(i)))
                 count--;
             if (count == 0)
                 return true;
         }
         return false;
     }
+
+    public boolean hasAnItem(String controller) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

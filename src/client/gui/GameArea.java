@@ -3,7 +3,6 @@ package client.gui;
 
 import card.Card;
 import card.properties.Activatable;
-import card.types.Item;
 import client.Client;
 import client.gui.components.CardDisplayPopup;
 import client.gui.components.CardPane;
@@ -126,24 +125,22 @@ public class GameArea extends JPanel {
 
     void setPlayerStats() {
         playerNameLabel.setText(client.game.player.name);
-        playerLifeLabel.setText("Life: " + client.game.player.life);
         playerEnergyLabel.setText("Energy: " + client.game.player.energy + " / " + client.game.player.sources.size());
         playerDeckLabel.setText("Deck: " + client.game.player.deck.size());
         playerHandLabel.setText("Hand: " + client.game.player.hand.size());
         playerDiscardLabel.setText("Discard: " + client.game.player.discardPile.size());
         playerKnowledgeLabel.setText("");
-        client.game.player.knowledge.forEach((knowledge, count) -> playerKnowledgeLabel.setText(playerKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
+        client.game.player.knowledgePool.forEach((knowledge, count) -> playerKnowledgeLabel.setText(playerKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
     }
 
     void setOpponentStats() {
         opponentNameLabel.setText(client.game.opponent.name);
-        opponentLifeLabel.setText("Life: " + client.game.opponent.life);
         opponentEnergyLabel.setText("Energy: " + client.game.opponent.energy + " / " + client.game.opponent.sources.size());
         opponentDeckLabel.setText("Deck: " + client.game.opponent.deckSize);
         opponentHandLabel.setText("Hand: " + client.game.opponent.handSize);
         opponentDiscardLabel.setText("Discard: " + client.game.opponent.discardPile.size());
         opponentKnowledgeLabel.setText("");
-        client.game.opponent.knowledge.forEach((knowledge, count) -> opponentKnowledgeLabel.setText(opponentKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
+        client.game.opponent.knowledgePool.forEach((knowledge, count) -> opponentKnowledgeLabel.setText(opponentKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
     }
 
     void setTurn() {
@@ -157,13 +154,13 @@ public class GameArea extends JPanel {
     }
 
     void updatePlayerItems() {
-        client.game.player.items.forEach(Card::updatePanel);
+        client.game.player.inPlayCards.forEach(Card::updatePanel);
         playerItemPanel.validate();
         playerItemPanel.repaint();
     }
 
     void updateOpponentItems() {
-        client.game.opponent.items.forEach(Card::updatePanel);
+        client.game.opponent.cardsInPlay.forEach(Card::updatePanel);
         opponentItemPanel.validate();
         opponentItemPanel.repaint();
     }
@@ -174,9 +171,9 @@ public class GameArea extends JPanel {
     }
 
     void displayPlayerItems() {
-        println("Displaying Player Items: " + client.game.player.items);
+        println("Displaying Player Items: " + client.game.player.inPlayCards);
         playerItemPanel.removeAll();
-        client.game.player.items.forEach((card) -> {
+        client.game.player.inPlayCards.forEach((card) -> {
             card.updatePanel();
             playerItemPanel.add(card.getPanel());
         });
@@ -185,9 +182,9 @@ public class GameArea extends JPanel {
     }
 
     void displayOpponentItems() {
-        println("Displaying Opponent Items: " + client.game.opponent.items);
+        println("Displaying Opponent Items: " + client.game.opponent.cardsInPlay);
         opponentItemPanel.removeAll();
-        client.game.opponent.items.forEach((card) -> {
+        client.game.opponent.cardsInPlay.forEach((card) -> {
             card.updatePanel();
             opponentItemPanel.add(card.getPanel());
         });
@@ -313,12 +310,15 @@ public class GameArea extends JPanel {
         {
             for (int i = 0; i < client.game.player.hand.size(); i++) {
                 if (client.game.player.hand.get(i).canStudy(client.game) 
-                 || client.game.player.hand.get(i).canPlay(client.game))
+                 || client.game.player.hand.get(i).canPlay(client.game)) {
                     return false;
+                }
             }
-            for (int i = 0; i < client.game.player.items.size(); i++) {
-                if (client.game.player.items.get(i).canActivate(client.game))
+            for (int i = 0; i < client.game.player.inPlayCards.size(); i++) {
+                if (client.game.player.inPlayCards.get(i) instanceof Activatable 
+                    && ((Activatable)client.game.player.inPlayCards.get(i)).canActivate(client.game)) {
                     return false;
+                }
             }
             return true;
         }
@@ -353,8 +353,8 @@ public class GameArea extends JPanel {
     }
 
     void clearItemMarks() {
-        client.game.player.items.forEach((card) -> card.marked = false);
-        client.game.opponent.items.forEach((card) -> card.marked = false);
+        client.game.player.inPlayCards.forEach((card) -> card.marked = false);
+        client.game.opponent.cardsInPlay.forEach((card) -> card.marked = false);
     }
     
     /**
@@ -386,7 +386,11 @@ public class GameArea extends JPanel {
     void addActivateListeners() {
         removePlayAreaListeners();
         println("Adding activate listeners");
-        client.game.player.items.forEach((card) -> card.getPanel().addMouseListener(activateAdapter(card)));
+        client.game.player.inPlayCards.forEach((card) -> {
+            if (card instanceof Activatable){
+                card.getPanel().addMouseListener(activateAdapter((Activatable)card));
+            }
+        });
     }
 
     void addPlayListeners() {
@@ -409,11 +413,11 @@ public class GameArea extends JPanel {
     public void getPlayAreaTargets(Function<Card, Boolean> filter, int count, BiConsumer<Client, ArrayList<Serializable>> continuation) {
         removePlayAreaListeners();
         println("Adding play area listeners");
-        client.game.player.items.forEach((card) -> {
+        client.game.player.inPlayCards.forEach((card) -> {
             if (filter.apply(card))
                 card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
         });
-        client.game.opponent.items.forEach((card) -> {
+        client.game.opponent.cardsInPlay.forEach((card) -> {
             if (filter.apply(card))
                 card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
         });
@@ -433,7 +437,7 @@ public class GameArea extends JPanel {
         gameTextButtonLeft.addActionListener((action) -> {
             gameTextButtonLeft.setEnabled(false);
             gameTextButtonRight.setEnabled(false);
-            selected.add(client.game.player.uuid);
+            selected.add(client.game.player.id);
             continuation.accept(client, selected);
             selected = new ArrayList<>();
         });
@@ -445,7 +449,7 @@ public class GameArea extends JPanel {
         gameTextButtonRight.addActionListener((action) -> {
             gameTextButtonLeft.setEnabled(false);
             gameTextButtonRight.setEnabled(false);
-            selected.add(client.game.opponent.uuid);
+            selected.add(client.game.opponent.id);
             continuation.accept(client, selected);
             selected = new ArrayList<>();
         });
@@ -471,13 +475,13 @@ public class GameArea extends JPanel {
 
     void removePlayAreaListeners() {
         println("Removing Play Area listeners");
-        client.game.player.items.forEach((card) -> {
+        client.game.player.inPlayCards.forEach((card) -> {
             MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
                 card.getPanel().removeMouseListener(l);
             }
         });
-        client.game.opponent.items.forEach((card) -> {
+        client.game.opponent.cardsInPlay.forEach((card) -> {
             MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
                 card.getPanel().removeMouseListener(l);
@@ -551,7 +555,7 @@ public class GameArea extends JPanel {
                     if (!card.marked) {
                         println("Selected for discard: " + card.name);
                         card.marked = true;
-                        selected.add(card.uuid);
+                        selected.add(card.id);
                         if (selected.size() == count || selected.size() == client.game.player.hand.size()) {
                             println("All cards are selected for discard");
                             removeHandListeners();
@@ -562,7 +566,7 @@ public class GameArea extends JPanel {
                     } else {
                         println("Unselected for discard: " + card.name);
                         card.marked = false;
-                        selected.remove(card.uuid);
+                        selected.remove(card.id);
                         updateHand();
                     }
                 }
@@ -589,7 +593,7 @@ public class GameArea extends JPanel {
                     if (!targetCard.marked) {
                         println("Selected for target: " + targetCard.name);
                         targetCard.marked = true;
-                        selected.add(targetCard.uuid);
+                        selected.add(targetCard.id);
                         if (selected.size() == count) {
                             println("All cards are selected for target");
                             removePlayAreaListeners();
@@ -601,7 +605,7 @@ public class GameArea extends JPanel {
                     } else {
                         println("Unselected for target: " + targetCard.name);
                         targetCard.marked = false;
-                        selected.remove(targetCard.uuid);
+                        selected.remove(targetCard.id);
                         updateAllItems();
                     }
                 }

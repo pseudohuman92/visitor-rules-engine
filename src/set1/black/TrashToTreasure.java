@@ -5,8 +5,8 @@
  */
 package set1.black;
 
-import card.types.Action;
 import card.properties.XValued;
+import card.types.Action;
 import client.Client;
 import static enums.Knowledge.BLACK;
 import game.Game;
@@ -33,9 +33,10 @@ public class TrashToTreasure extends Action implements XValued {
     public void play(Client client) {
         client.gameArea.getXValue(this::isXValid, (client1, x) -> {
         supplementaryData.add(0, x);
-        client1.gameConnection.send(Message.play(client1.game.uuid, client1.username, uuid, supplementaryData)); });
+        client1.gameConnection.send(Message.play(client1.game.id, client1.username, id, supplementaryData)); });
     }
 
+    @Override
     public void play(Game game) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
@@ -46,7 +47,7 @@ public class TrashToTreasure extends Action implements XValued {
     @Override
     public void resolve (Game game){
         game.loot(controller, (int)supplementaryData.get(0));
-        game.players.get(controller).discardPile.add(this);
+        game.discardAfterPlay(this);
     }
 
     @Override

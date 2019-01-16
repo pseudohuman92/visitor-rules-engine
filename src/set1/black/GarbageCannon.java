@@ -9,10 +9,10 @@ package set1.black;
 import card.Card;
 import card.properties.Targeting;
 import card.types.Item;
+import client.Client;
+import enums.Knowledge;
 import game.ClientGame;
 import game.Game;
-import enums.Knowledge;
-import client.Client;
 import helpers.Hashmap;
 import java.util.UUID;
 import network.Message;
@@ -31,29 +31,30 @@ public class GarbageCannon extends Item implements Targeting {
 
     @Override
     public boolean canActivate(ClientGame game) {
-        return (!game.player.items.isEmpty())&&(!depleted);
+        return (!game.player.inPlayCards.isEmpty())&&(!depleted);
     }
     
     @Override
     public void activate(Client client) {
         client.gameArea.getPlayAreaTargets(this::validTarget, 1, (client1, targets) -> {
-        client1.gameConnection.send(Message.activate(client1.game.uuid, client.username, uuid, targets)); });
+        client1.gameConnection.send(Message.activate(client1.game.id, client.username, id, targets)); });
     }
     
     @Override
     public void activate(Game game) {
-        depleted = true;
-        Card c = game.getItemByID((UUID)supplementaryData.get(0));
-        game.destroy(c.uuid);
-        if (c.owner.equals(game.getOpponentName(controller))) {
-            game.purge(game.getOpponentName(controller), 10);
+        game.deplete(id);
+        String oppName = game.getOpponentName(controller);
+        UUID targetID = (UUID)supplementaryData.get(0);
+        game.destroy(targetID);
+        if (game.ownedByOpponent(targetID)) {
+            game.purge(oppName, 10);
         } else {
-            game.purge(game.getOpponentName(controller), 5);
+            game.purge(oppName, 5);
         }
     }
 
     @Override
     public boolean validTarget(Card c) {
-        return (c instanceof Item && c.controller.equals(controller));
+        return (c instanceof Card && c.controller.equals(controller));
     }
 }

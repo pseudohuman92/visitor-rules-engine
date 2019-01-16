@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package set1.black;
+package inactive;
 
-import card.types.Action;
 import card.Card;
 import card.properties.Targeting;
 import card.properties.XValued;
+import card.types.Action;
 import card.types.Ally;
 import client.Client;
 import static enums.Knowledge.BLACK;
@@ -44,7 +44,7 @@ public class Bribery extends Action implements Targeting, XValued {
         supplementaryData.add(0, x);
         client1.gameArea.getPlayAreaTargets(this::validTarget, 1, (client2, targets) -> {
         supplementaryData.add(1, targets);
-        client2.gameConnection.send(Message.play(client2.game.uuid, client2.username, uuid, supplementaryData)); }); });
+        client2.gameConnection.send(Message.play(client2.game.id, client2.username, id, supplementaryData)); }); });
     }
     
     /**
@@ -53,6 +53,7 @@ public class Bribery extends Action implements Targeting, XValued {
      * removes it from player's hand and then resolves the card.
      * @param game
      */
+    @Override
     public void play(Game game) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
@@ -62,7 +63,7 @@ public class Bribery extends Action implements Targeting, XValued {
     
     @Override
     public void resolve (Game game){
-        game.changeItemController((UUID)supplementaryData.get(1), controller);
+        game.possess((UUID)supplementaryData.get(1), controller);
         game.players.get(owner).discardPile.add(this);
     }
 

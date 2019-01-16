@@ -26,7 +26,6 @@ public interface Activatable {
      * CALLER: Client<br>
      * BEHAVIOR: Execute required logic to activate the card.
      * @param client
-     * @param targets
      */
     public void activate(Client client);
 

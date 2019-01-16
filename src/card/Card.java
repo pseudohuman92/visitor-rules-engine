@@ -43,24 +43,24 @@ public abstract class Card implements Serializable {
         ArrayList<UUID> uuids = new ArrayList<>();
         while (!cards.isEmpty()){
             Card c = cards.remove(0);
-            uuids.add(c.uuid);
+            uuids.add(c.id);
         }
         return uuids;
     }
     /**
      * Sorts given list of cards in the order of the provided uuids.
-     * If a card appears in the card list but not in uuid list, card is ignored.
-     * If a uuid appears in uuid list but there is no card corresponding to it in the card list, uuid is ignored.
+     * If a card appears in the card list but not in id list, card is ignored.
+ If a id appears in id list but there is no card corresponding to it in the card list, id is ignored.
      * @param cards
      * @param uuids
      * @return
      */
-    public static ArrayList<Card> sortByUUID(ArrayList<Card> cards, ArrayList<UUID> uuids) {
+    public static ArrayList<Card> sortByID(ArrayList<Card> cards, ArrayList<UUID> uuids) {
         ArrayList<Card> sorted = new ArrayList<>();
         while (!uuids.isEmpty()){
             UUID u = uuids.remove(0);
             for (Card c : cards){
-                if (c.uuid.equals(u)){
+                if (c.id.equals(u)){
                     sorted.add(c);
                     break;
                 }
@@ -74,7 +74,7 @@ public abstract class Card implements Serializable {
     /**
      * Unique identifier for the card.
      */
-    public UUID uuid;
+    public UUID id;
 
     /**
      * GUI element for displaying the card.
@@ -147,7 +147,7 @@ public abstract class Card implements Serializable {
      */
     public Card(String name, int cost, Hashmap<Knowledge, Integer> knowledge,
             String text, String image, String owner) {
-        uuid = randomUUID();
+        id = randomUUID();
         counters = new Hashmap<>();
         supplementaryData = new ArrayList<>();
         this.name = name;
@@ -187,13 +187,13 @@ public abstract class Card implements Serializable {
      * @param client
      */
     public void play(Client client) {
-        client.gameConnection.send(Message.play(client.game.uuid, client.username, uuid, new ArrayList<>()));
+        client.gameConnection.send(Message.play(client.game.id, client.username, id, new ArrayList<>()));
     }
     
     /**
      * Called by the client when you choose to study this card.
-     * It also handles knowledge selection if card is multi-faction.
-     * OVERRIDE IF: Card requires a special action to study.
+     * It also handles knowledgePool selection if card is multi-faction.
+ OVERRIDE IF: Card requires a special action to study.
      * @param client
      */
     public void study(Client client) {
@@ -224,8 +224,8 @@ public abstract class Card implements Serializable {
 
     /**
      * Called by the server when you choose to study this card.
-     * It increases player's maximum energy and adds selected knowledge.
-     * OVERRIDE IF: Card has a special effect when studied.
+     * It increases player's maximum energy and adds selected knowledgePool.
+ OVERRIDE IF: Card has a special effect when studied.
      * @param game
      * @param knowledge
      */
@@ -235,7 +235,7 @@ public abstract class Card implements Serializable {
         player.sources.add(this);
         player.energy++;
         player.addKnowledge(knowledge);
-        player.playableSource--;
+        player.numOfStudiesLeft--;
     }
 
     /**

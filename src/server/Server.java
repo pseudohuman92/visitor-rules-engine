@@ -12,14 +12,11 @@ import game.Deck;
 import game.Game;
 import game.Player;
 import game.Table;
-import helpers.Debug;
 import static helpers.Debug.println;
 import helpers.Hashmap;
 import java.io.Serializable;
-import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import network.Connection;
@@ -208,7 +205,7 @@ public class Server {
     public synchronized void play(UUID gameID, String username, UUID cardID, ArrayList<Serializable> targets) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
-        Card card = player.fromHand(cardID);
+        Card card = player.getCardFromHandByID(cardID);
         card.supplementaryData = targets;
         card.play(game);
         game.activePlayer = game.getOpponentName(player.name);
@@ -224,7 +221,7 @@ public class Server {
     public synchronized void activate(UUID gameID, String username, UUID cardID, ArrayList<Serializable> targets) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
-        Item card = player.fromItems(cardID);
+        Item card = (Item)player.getCardFromPlayByID(cardID);
         card.supplementaryData = targets;
         card.activate(game);
         game.activePlayer = game.getOpponentName(player.name);
@@ -240,7 +237,7 @@ public class Server {
     public synchronized void study(UUID gameID, String username, UUID cardID, Hashmap<Knowledge, Integer> knowledge) {
         Game game = games.get(gameID);
         Player player = game.players.get(username);
-        Card card = player.fromHand(cardID);
+        Card card = player.getCardFromHandByID(cardID);
         card.study(game, knowledge);
     }
 
@@ -251,13 +248,13 @@ public class Server {
     public synchronized void processPhaseChange(Game game){
         switch (game.phase){
             case BEGIN:
-                //TODO: process begin triggers
+                //TODO: process begin triggeringCards
             break;
             case MAIN:
-                //TODO: process main triggers
+                //TODO: process main triggeringCards
                 break;
             case END:
-                //TODO: process end triggers
+                //TODO: process end triggeringCards
                 //TODO: check hand size
                 game.changePhase();
                 processPhaseChange(game);

@@ -125,12 +125,12 @@ public class Client {
         gameConnection = new Connection();
         gameConnection.openConnection(hostname, hostGamePort);
         new Thread(new ClientGameReceiver(gameConnection, this)).start();
-        gameConnection.send(registerGameConnection(game.uuid, username));
+        gameConnection.send(registerGameConnection(game.id, username));
         
         interactionConnection = new Connection();
         interactionConnection.openConnection(hostname, hostGamePort);
         new Thread(new ClientGameReceiver(interactionConnection, this)).start();
-        interactionConnection.send(registerInteractionConnection(game.uuid, username));
+        interactionConnection.send(registerInteractionConnection(game.id, username));
         
         gameArea = new GameArea(this);
         main.add("Game", gameArea);
@@ -155,14 +155,14 @@ public class Client {
      *
      */
     public void mulligan(){
-        gameConnection.send(Message.mulligan(game.uuid, username));
+        gameConnection.send(Message.mulligan(game.id, username));
     }
     
     /**
      *
      */
     public void keep(){
-        gameConnection.send(Message.keep(game.uuid, username));
+        gameConnection.send(Message.keep(game.id, username));
     }
     
     /**
@@ -171,14 +171,14 @@ public class Client {
      * @param knowledge
      */
     public void study(Card card, Hashmap<Knowledge, Integer> knowledge){
-        gameConnection.send(Message.study(game.uuid, username, card.uuid, knowledge));
+        gameConnection.send(Message.study(game.id, username, card.id, knowledge));
     }
     
     /**
      *
      */
     public void skipInitiative(){
-        gameConnection.send(pass(game.uuid));
+        gameConnection.send(pass(game.id));
     }
     
     /**
@@ -205,7 +205,7 @@ public class Client {
      *
      */
     public void concede(){
-        gameConnection.send(Message.concede(game.uuid, username));
+        gameConnection.send(Message.concede(game.id, username));
     }
     
     /**

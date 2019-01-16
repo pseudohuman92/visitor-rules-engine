@@ -5,10 +5,10 @@
  */
 package set1.black;
 
-import card.types.Action;
 import card.Card;
-import card.types.Item;
 import card.properties.Targeting;
+import card.types.Action;
+import card.types.Item;
 import client.Client;
 import static enums.Knowledge.BLACK;
 import game.ClientGame;
@@ -39,13 +39,13 @@ public class Pickpocketing extends Action implements Targeting {
     
     @Override
     public void play(Client client) {
-        client.gameConnection.send(Message.play(client.game.uuid, client.username, uuid, new ArrayList<>()));
+        client.gameConnection.send(Message.play(client.game.id, client.username, id, new ArrayList<>()));
     }
     
     @Override
     public void resolve (Game game){
-        game.changeItemController((UUID)supplementaryData.get(0), controller);
-        game.players.get(owner).discardPile.add(this);
+        game.possess((UUID)supplementaryData.get(0), controller);
+        game.discardAfterPlay(this);
     }
 
     @Override

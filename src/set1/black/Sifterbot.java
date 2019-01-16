@@ -7,11 +7,10 @@
 package set1.black;
 
 import card.types.Item;
+import client.Client;
+import enums.Knowledge;
 import game.ClientGame;
 import game.Game;
-import enums.Knowledge;
-import client.Client;
-import game.Player;
 import helpers.Hashmap;
 import network.Message;
 
@@ -34,14 +33,13 @@ public class Sifterbot extends Item {
     
     @Override
     public void activate(Client client) {
-        client.gameConnection.send(Message.activate(client.game.uuid, client.username, uuid, null));
+        client.gameConnection.send(Message.activate(client.game.id, client.username, id, null));
     }
     
     @Override
     public void activate(Game game) {
-        Player p = game.getPlayerByName(controller);
-        p.energy--;
-        depleted = true;
+        game.removeEnergy(controller, 1);
+        game.deplete(id);
         game.loot(controller, 1);
     }
 }
