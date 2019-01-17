@@ -10,6 +10,13 @@
 <project name="CCGCore" default="default" basedir=".">
     <description>Builds, tests, and runs the project CCGCore.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-pre-compile">
+        <javac srcdir="./src" destdir="./build/classes">   
+            <classpath>
+                <pathelement path="lib/miglayout-4.0-swing.jar"/>
+            </classpath>
+        </javac>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
