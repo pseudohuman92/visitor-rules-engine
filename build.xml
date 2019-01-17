@@ -11,11 +11,12 @@
     <description>Builds, tests, and runs the project CCGCore.</description>
     <import file="nbproject/build-impl.xml"/>
     <target name="-pre-compile">
-        <javac srcdir="./src" destdir="./build/classes">   
-            <classpath>
-                <pathelement path="lib/miglayout-4.0-swing.jar"/>
-            </classpath>
-        </javac>
+        <path id="build.classpath">
+          <fileset dir="lib">
+            <include name="**/*.jar"/>
+            <include name="**/*.zip"/>
+          </fileset>
+        </path>
     </target>
     <!--
 

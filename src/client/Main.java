@@ -24,7 +24,8 @@ public class Main {
      * @param args
      */
     public static void main(String args[]) {
-        if(args.length > 1 && args[1].equals("--server")){
+        if(args[0].equals("--server")){
+            System.out.println("Server starting...");
             Server server = new Server();
             server.port = 8_080;
             server.gamePort = 8_081;
@@ -56,6 +57,7 @@ public class Main {
                 }
             }
             }).start();
+            System.out.println("Server started.");
         } else {
             Client client = new Client();
             invokeLater(() -> client.main.setVisible(true));
