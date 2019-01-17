@@ -124,12 +124,12 @@ public enum MessageLabel {
     /**
      *
      */
-    DISCARD,
+    HAND_SELECTION,
 
     /**
      *
      */
-    DISCARD_RETURN,
+    HAND_SELECTION_RETURN,
 
     /**
      *
