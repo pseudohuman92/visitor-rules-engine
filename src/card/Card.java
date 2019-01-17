@@ -5,6 +5,7 @@ import client.gui.components.CardPane;
 import enums.Counter;
 import enums.Knowledge;
 import static enums.Knowledge.YELLOW;
+import enums.Subtype;
 import game.ClientGame;
 import game.Game;
 import game.Player;
@@ -34,6 +35,7 @@ public abstract class Card implements Serializable {
      * Ratio of the displayed cards in the height/width format.
      */
     public static final double RATIO = 3.5 / 2.5;
+    
     /**
      * Extracts the uuids of the given list of cards while preserving their order.
      * @param cards
@@ -100,6 +102,8 @@ public abstract class Card implements Serializable {
      * Text of the card
      */
     public String text;
+    
+    public ArrayList<Subtype> subtypes;
 
     /**
      * Illustration of the card.
@@ -150,6 +154,7 @@ public abstract class Card implements Serializable {
         id = randomUUID();
         counters = new Hashmap<>();
         supplementaryData = new ArrayList<>();
+        subtypes = new ArrayList<>();
         this.name = name;
         this.cost = cost;
         this.knowledge = knowledge;
@@ -225,7 +230,7 @@ public abstract class Card implements Serializable {
     /**
      * Called by the server when you choose to study this card.
      * It increases player's maximum energy and adds selected knowledgePool.
- OVERRIDE IF: Card has a special effect when studied.
+     * OVERRIDE IF: Card has a special effect when studied.
      * @param game
      * @param knowledge
      */

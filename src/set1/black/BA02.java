@@ -18,14 +18,14 @@ import network.Message;
  *
  * @author pseudo
  */
-public class TrashToTreasure extends Action implements XValued {
+public class BA02 extends Action implements XValued {
     
     /**
      *
      * @param owner
      */
-    public TrashToTreasure(String owner) {
-        super("Trash To Treasure", 0, new Hashmap(BLACK, 1), "Loot X.", "action.png", owner);
+    public BA02(String owner) {
+        super("BA02", 0, new Hashmap(BLACK, 1), "Loot X.", "action.png", owner);
     }
     
     

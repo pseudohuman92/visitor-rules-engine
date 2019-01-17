@@ -21,10 +21,10 @@ import network.Message;
  *
  * @author pseudo
  */
-public class MatterCondenser extends Item implements Targeting {
+public class BI03 extends Item implements Targeting {
     
-    public MatterCondenser (String owner){
-        super("Matter Condenser", 4, new Hashmap(Knowledge.BLACK, 2), 
+    public BI03 (String owner){
+        super("BI03", 4, new Hashmap(Knowledge.BLACK, 2), 
                 "Sacrifice an Item: Gain 1 Energy. If that item is owned by the opponent gain 1 additional energy.", 
                 "item.png", owner);
     }

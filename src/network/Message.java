@@ -4,6 +4,7 @@ package network;
 
 
 import card.Card;
+import com.google.gson.Gson;
 import enums.Knowledge;
 import game.ClientGame;
 import game.Deck;
@@ -12,36 +13,7 @@ import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
-import static network.MessageLabel.ACTIVATE;
-import static network.MessageLabel.CHAT_MESSAGE;
-import static network.MessageLabel.CONCEDE;
-import static network.MessageLabel.CREATE_TABLE;
-import static network.MessageLabel.DISCARD;
-import static network.MessageLabel.DISCARD_RETURN;
-import static network.MessageLabel.FAIL;
-import static network.MessageLabel.JOIN_TABLE;
-import static network.MessageLabel.KEEP;
-import static network.MessageLabel.LOGIN;
-import static network.MessageLabel.LOGOUT;
-import static network.MessageLabel.LOSE;
-import static network.MessageLabel.MULLIGAN;
-import static network.MessageLabel.NEW_GAME;
-import static network.MessageLabel.ORDER;
-import static network.MessageLabel.ORDER_RETURN;
-import static network.MessageLabel.PASS;
-import static network.MessageLabel.PLAY;
-import static network.MessageLabel.REGISTER;
-import static network.MessageLabel.REGISTER_GAME_CONNECTION;
-import static network.MessageLabel.REGISTER_INTERACTION_CONNECTION;
-import static network.MessageLabel.STUDY;
-import static network.MessageLabel.SUCCESS;
-import static network.MessageLabel.UPDATE_CHAT_LOG;
-import static network.MessageLabel.UPDATE_GAME;
-import static network.MessageLabel.UPDATE_LOBBY;
-import static network.MessageLabel.UPDATE_PLAYERS;
-import static network.MessageLabel.UPDATE_TABLES;
-import static network.MessageLabel.WIN;
-import com.google.gson.*;
+import static network.MessageLabel.*;
 
 /**
  *
@@ -59,7 +31,7 @@ public class Message implements Serializable {
      * @return
      */
     public static Message register(String username){
-    return new Message(REGISTER, username);
+        return new Message(REGISTER, username);
     }
 
     /**
@@ -305,11 +277,11 @@ public class Message implements Serializable {
      * @param count
      * @return
      */
-    public static Message discard(ClientGame game, int count){
+    public static Message selectFromHand(ClientGame game, int count){
         Serializable[] data = new Serializable[2];
         data[0] = game;
         data[1] = count;
-        return new Message(DISCARD, data);
+        return new Message(HAND_SELECTION, data);
     }
     
     /**
@@ -317,8 +289,8 @@ public class Message implements Serializable {
      * @param cards
      * @return
      */
-    public static Message discardReturn(ArrayList<Serializable> cards){
-        return new Message(DISCARD_RETURN, cards);
+    public static Message selectFromHandReturn(ArrayList<Serializable> cards){
+        return new Message(HAND_SELECTION_RETURN, cards);
     }
     
     /**
@@ -367,14 +339,10 @@ public class Message implements Serializable {
     public static Message orderReturn(ArrayList<UUID> cards){
         return new Message(ORDER_RETURN, cards);
     } 
-    /**
-     *
-     */
+
     public MessageLabel label;
-    /**
-     *
-     */
-    public Serializable object;
+    public Object object;
+    
     private Message(MessageLabel label, Serializable object) {
         this.label = label;
         this.object = object;
@@ -388,17 +356,15 @@ public class Message implements Serializable {
         return label + ": { " + object.toString() + " }";
     }
     
-    public String convertToJson(GameData data)
+    public static String convertToJson(Message data)
     {
     	Gson gson = new Gson();
     	return gson.toJson(data);
-		
-    	
     }
     
-    public GameData convertToObject(String json)
+    public static Message convertToObject(String json)
     {
     	Gson gson = new Gson();
-    	return gson.fromJson(json, GameData.class);
+    	return gson.fromJson(json, Message.class);
     }
 }

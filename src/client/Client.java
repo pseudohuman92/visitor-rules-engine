@@ -82,7 +82,7 @@ public class Client {
     public ClientGame game;
     
     //UI
-    MainFrame main;
+    public MainFrame main;
     Login login;
     Lobby lobby;
     DeckBuilder deckBuilder;

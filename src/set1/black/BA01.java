@@ -22,14 +22,14 @@ import network.Message;
  *
  * @author pseudo
  */
-public class Pickpocketing extends Action implements Targeting {
+public class BA01 extends Action implements Targeting {
     
     /**
      *
      * @param owner
      */
-    public Pickpocketing(String owner) {
-        super("Pickpocketing", 3, new Hashmap(BLACK, 2), "Possess target item that costs 3 or less.", "action.png", owner);
+    public BA01(String owner) {
+        super("BA01", 3, new Hashmap(BLACK, 2), "Possess target item that costs 3 or less.", "action.png", owner);
     }
     
     @Override

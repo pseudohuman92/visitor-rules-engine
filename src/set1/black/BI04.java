@@ -21,10 +21,10 @@ import network.Message;
  *
  * @author pseudo
  */
-public class PortableGateway extends Item implements Targeting {
+public class BI04 extends Item implements Targeting {
     
-    public PortableGateway (String owner){
-        super("Portable Gateway", 3, new Hashmap(Knowledge.BLACK, 1), 
+    public BI04 (String owner){
+        super("BI04", 3, new Hashmap(Knowledge.BLACK, 1), 
                 "Activate, Destroy Portable Gateway: Draw a card from your void, then purge a card from your hand.", 
                 "item.png", owner);
     }

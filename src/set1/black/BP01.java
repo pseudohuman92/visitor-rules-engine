@@ -8,9 +8,10 @@ package set1.black;
 
 import card.properties.Triggering;
 import card.types.Passive;
-import game.Event;
 import static enums.EventLabel.*;
 import enums.Knowledge;
+import static enums.Subtype.Trap;
+import game.Event;
 import game.Game;
 import helpers.Hashmap;
 
@@ -18,12 +19,13 @@ import helpers.Hashmap;
  *
  * @author pseudo
  */
-public class BoobyTrap extends Passive implements Triggering {
+public class BP01 extends Passive implements Triggering {
     
-    public BoobyTrap (String owner){
+    public BP01 (String owner){
         super("Booby Trap", 1, new Hashmap(Knowledge.BLACK, 2), 
                 "Trigger - opponent draws a card during your turn: Destroy Booby Trap, then opponent Purge 6.", 
                 "passive.png", owner);
+        subtypes.add(Trap);
     }
 
     @Override

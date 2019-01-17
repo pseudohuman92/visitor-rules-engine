@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
 
+
+import client.Client;
 import static java.awt.EventQueue.invokeLater;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -24,7 +25,7 @@ public class Main {
      * @param args
      */
     public static void main(String args[]) {
-        if(args[0].equals("--server")){
+        if(args.length > 0 && args[0].equals("--server")){
             System.out.println("Server starting...");
             Server server = new Server();
             server.port = 8_080;

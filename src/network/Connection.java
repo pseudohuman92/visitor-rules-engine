@@ -10,7 +10,6 @@ package network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import static java.lang.System.out;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -80,9 +79,11 @@ public class Connection {
      */
     public void send(Message message)
     {
+        System.out.println("SEND: " + message);
+        System.out.println("SEND: " + Message.convertToJson(message));
         try {
             writer.reset();
-            writer.writeObject(message);
+            writer.writeObject(Message.convertToJson(message));
         } catch (IOException ex) {
         }
 
@@ -95,7 +96,10 @@ public class Connection {
     public Message receive()
     {
         try {
-            return (Message)reader.readObject();
+            String m = (String)reader.readObject();
+            System.out.println("RECEIVE: " + m);
+            System.out.println("RECEIVE: " + Message.convertToObject(m));
+            return Message.convertToObject(m);
         } catch (IOException ex) {
         } catch (ClassNotFoundException ex) {
         }

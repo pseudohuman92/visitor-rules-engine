@@ -20,14 +20,14 @@ import network.Message;
  *
  * @author pseudo
  */
-public class DigForTheParts extends Action implements Targeting {
+public class BA03 extends Action implements Targeting {
     
     /**
      *
      * @param owner
      */
-    public DigForTheParts(String owner) {
-        super("Dig For The Parts", 1, new Hashmap(BLACK, 1), "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", "action.png", owner);
+    public BA03(String owner) {
+        super("BA03", 1, new Hashmap(BLACK, 1), "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", "action.png", owner);
     }
     
     @Override

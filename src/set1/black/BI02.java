@@ -11,6 +11,7 @@ import card.properties.Targeting;
 import card.types.Item;
 import client.Client;
 import enums.Knowledge;
+import static enums.Subtype.*;
 import game.ClientGame;
 import game.Game;
 import helpers.Hashmap;
@@ -21,12 +22,13 @@ import network.Message;
  *
  * @author pseudo
  */
-public class GarbageCannon extends Item implements Targeting {
+public class BI02 extends Item implements Targeting {
     
-    public GarbageCannon (String owner){
+    public BI02 (String owner){
         super("Garbage Cannon", 4, new Hashmap(Knowledge.BLACK, 3), 
                 "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", 
                 "item.png", owner);
+        subtypes.add(Weapon);
     }
 
     @Override

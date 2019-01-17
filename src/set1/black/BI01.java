@@ -18,10 +18,10 @@ import network.Message;
  *
  * @author pseudo
  */
-public class Sifterbot extends Item {
+public class BI01 extends Item {
     
-    public Sifterbot (String owner){
-        super("Sifterbot", 1, new Hashmap(Knowledge.BLACK, 1), 
+    public BI01 (String owner){
+        super("BI01", 1, new Hashmap(Knowledge.BLACK, 1), 
                 "1, Activate: Loot 1", 
                 "item.png", owner);
     }

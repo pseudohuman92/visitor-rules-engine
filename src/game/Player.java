@@ -64,7 +64,7 @@ public class Player implements Serializable {
      * @param count
      */
     public void draw(int count){
-        hand.addAll(deck.draw(count));
+        hand.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
     
@@ -73,7 +73,7 @@ public class Player implements Serializable {
      * @param count
      */
     public void purgeFromDeck(int count) {
-        voidPile.addAll(deck.draw(count));
+        voidPile.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
     

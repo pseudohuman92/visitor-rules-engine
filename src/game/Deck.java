@@ -65,20 +65,11 @@ public class Deck implements Serializable {
         deckFile.close();
     }
     
-    /**
-     *
-     * @return
-     */
     public int size() {
         return deck.size();
     }
-    
-    /**
-     *
-     * @param count
-     * @return
-     */
-    public ArrayList<Card> draw(int count){
+  
+    public ArrayList<Card> getFromTop(int count){
         ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < count && !deck.isEmpty(); i++){
             cards.add(deck.remove(0));
@@ -86,38 +77,46 @@ public class Deck implements Serializable {
         return cards;
     }
     
-    /**
-     *
-     */
+    public ArrayList<Card> lookFromTop(int count){
+        ArrayList<Card> cards = new ArrayList<>();
+        for (int i = 0; i < count && i < deck.size(); i++){
+            cards.add(deck.get(i));
+        }
+        return cards;
+    }
+
     public void shuffle(){
         Collections.shuffle(deck, new SecureRandom());
     }
-    
-    /**
-     *
-     * @return
-     */
+
     public boolean valid() {
         return true;
     }
-    
-    /**
-     *
-     * @param card
-     * @param index
-     */
+
     public void insertTo(Card card, int index){
         deck.add(index, card);
     }
     
-    /**
-     *
-     * @param cards
-     * @param index
-     */
-    public void insertAll(ArrayList<Card> cards, int index){
+    public void putToBottom(Card card){
+        insertTo(card, deck.size()-1);
+    }
+    
+    public void putToTop(Card card){
+        insertTo(card, 0);
+    }
+
+    public void insertAllTo(ArrayList<Card> cards, int index){
         deck.addAll(index, cards);
     }
+    
+    public void puAllToBottom(ArrayList<Card> cards){
+        insertAllTo(cards, deck.size()-1);
+    }
+    
+    public void puAllToTop(ArrayList<Card> cards){
+        insertAllTo(cards, 0);
+    }
+    
     
     /**
      *
