@@ -185,11 +185,11 @@ public class Client {
      *
      * @param count
      */
-    public void discard(int count){
+    public void handSelection(int count){
         if (!game.player.hand.isEmpty()) {
             gameArea.discardCards(count);
         } else {
-            interactionConnection.send(Message.discardReturn(new ArrayList<>()));
+            interactionConnection.send(Message.selectFromHandReturn(new ArrayList<>()));
         }
     }
     
@@ -197,8 +197,8 @@ public class Client {
      *
      * @param cards
      */
-    public void discardReturn(ArrayList<Serializable> cards){
-        interactionConnection.send(Message.discardReturn(cards));
+    public void handSelectionReturn(ArrayList<Serializable> cards){
+        interactionConnection.send(Message.selectFromHandReturn(cards));
     }
     
     /**

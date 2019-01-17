@@ -401,7 +401,7 @@ public class GameArea extends JPanel {
 
     void addDiscardListeners(int count) {
         println("Adding discard listeners");
-        client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(discardAdapter(card, count)));
+        client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(handSelectionAdapter(card, count)));
     }
     
     /**
@@ -412,14 +412,25 @@ public class GameArea extends JPanel {
      */
     public void getPlayAreaTargets(Function<Card, Boolean> filter, int count, BiConsumer<Client, ArrayList<Serializable>> continuation) {
         removePlayAreaListeners();
-        println("Adding play area listeners");
         client.game.player.inPlayCards.forEach((card) -> {
-            if (filter.apply(card))
+            if (filter.apply(card)) {
                 card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
+            }
         });
         client.game.opponent.cardsInPlay.forEach((card) -> {
-            if (filter.apply(card))
+            if (filter.apply(card)) {
                 card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
+            }
+        });
+        displayTargetingText(continuation, count);
+    }
+    
+    public void getPlayerVoidTargets(Function<Card, Boolean> filter, int count, BiConsumer<Client, ArrayList<Serializable>> continuation) {
+        removePlayAreaListeners();
+        client.game.player.voidPile.forEach((card) -> {
+            if (filter.apply(card)) {
+                card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
+            }
         });
         displayTargetingText(continuation, count);
     }
@@ -547,7 +558,7 @@ public class GameArea extends JPanel {
         };
     }
 
-    MouseAdapter discardAdapter(Card card, int count) {
+    MouseAdapter handSelectionAdapter(Card card, int count) {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
@@ -559,7 +570,7 @@ public class GameArea extends JPanel {
                         if (selected.size() == count || selected.size() == client.game.player.hand.size()) {
                             println("All cards are selected for discard");
                             removeHandListeners();
-                            client.discardReturn(selected);
+                            client.handSelectionReturn(selected);
                             selected = new ArrayList<>();
                         }
                         updateHand();

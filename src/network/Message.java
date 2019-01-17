@@ -16,8 +16,6 @@ import static network.MessageLabel.ACTIVATE;
 import static network.MessageLabel.CHAT_MESSAGE;
 import static network.MessageLabel.CONCEDE;
 import static network.MessageLabel.CREATE_TABLE;
-import static network.MessageLabel.DISCARD;
-import static network.MessageLabel.DISCARD_RETURN;
 import static network.MessageLabel.FAIL;
 import static network.MessageLabel.JOIN_TABLE;
 import static network.MessageLabel.KEEP;
@@ -41,6 +39,8 @@ import static network.MessageLabel.UPDATE_LOBBY;
 import static network.MessageLabel.UPDATE_PLAYERS;
 import static network.MessageLabel.UPDATE_TABLES;
 import static network.MessageLabel.WIN;
+import static network.MessageLabel.HAND_SELECTION;
+import static network.MessageLabel.HAND_SELECTION_RETURN;
 
 
 /**
@@ -305,11 +305,11 @@ public class Message implements Serializable {
      * @param count
      * @return
      */
-    public static Message discard(ClientGame game, int count){
+    public static Message selectFromHand(ClientGame game, int count){
         Serializable[] data = new Serializable[2];
         data[0] = game;
         data[1] = count;
-        return new Message(DISCARD, data);
+        return new Message(HAND_SELECTION, data);
     }
     
     /**
@@ -317,8 +317,8 @@ public class Message implements Serializable {
      * @param cards
      * @return
      */
-    public static Message discardReturn(ArrayList<Serializable> cards){
-        return new Message(DISCARD_RETURN, cards);
+    public static Message selectFromHandReturn(ArrayList<Serializable> cards){
+        return new Message(HAND_SELECTION_RETURN, cards);
     }
     
     /**

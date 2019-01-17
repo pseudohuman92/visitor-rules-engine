@@ -42,10 +42,10 @@ public class ClientGameReceiver extends Receiver {
             case UPDATE_GAME:
                 client.updateGame((ClientGame)message.object);
                 break;
-            case DISCARD:
+            case HAND_SELECTION:
                 Serializable[] data = (Serializable[])message.object;
                 client.updateGame((ClientGame)data[0]);
-                client.discard((int)data[1]);
+                client.handSelection((int)data[1]);
                 break;
             case ORDER:
                 client.order((ArrayList<Card>)message.object);

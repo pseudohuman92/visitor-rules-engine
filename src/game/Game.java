@@ -127,7 +127,7 @@ public class Game {
      */
     public void discard(String username, int count){
         Connection connection = interactionConnections.get(username);
-        connection.send(Message.discard(toClientGame(username), count));
+        connection.send(Message.selectFromHand(toClientGame(username), count));
         Message message = connection.receive();
         if (message != null) {
             Player player = players.get(username);
@@ -146,8 +146,7 @@ public class Game {
         if (player.deck.deck.size() == 0){
             lose(username);
         }
-        players.get(turnPlayer).addTriggerEvent(this, Event.draw(username, count));
-        players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, Event.draw(username, count));
+        processTrigger(Event.draw(username, count));
     }
     
     /**
@@ -157,7 +156,7 @@ public class Game {
      */
     public void purge(String username, int count){
         Player player = players.get(username);
-        player.purge(count);
+        player.purgeFromDeck(count);
         if (player.deck.deck.size() == 0){
             lose(username);
         }
@@ -322,6 +321,11 @@ public class Game {
         return sb.toString();
     }
 
+    void processTrigger (Event e) {
+        players.get(turnPlayer).addTriggerEvent(this, e);
+        players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, e);
+    }
+    
     /**
      *
      * @param cardID
@@ -333,8 +337,7 @@ public class Game {
         players.get(oldController).inPlayCards.remove(c);
         players.get(newController).inPlayCards.add(c);
         c.controller = newController;
-        players.get(turnPlayer).addTriggerEvent(this, Event.possess(oldController, newController, cardID));
-        players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, Event.possess(oldController, newController, cardID));
+        processTrigger(Event.possess(oldController, newController, cardID));
     }
 
     public void discardAfterPlay(Card c) {
@@ -367,5 +370,23 @@ public class Game {
     public void removeFromHand(String controller, UUID id) {
         Player p = players.get(controller);
         p.hand.remove(p.getCardFromHandByID(id));
+    }
+
+    public void drawFromVoid(String controller, UUID retID) {
+        Player p = players.get(controller);
+        Card c = p.getCardFromVoidByID(retID);
+        p.voidPile.remove(c);
+        p.hand.add(c);
+        processTrigger(Event.draw(controller, 1));
+    }
+
+    public void purgeFromHand(String username, int count) {
+        Connection connection = interactionConnections.get(username);
+        connection.send(Message.selectFromHand(toClientGame(username), count));
+        Message message = connection.receive();
+        if (message != null) {
+            Player player = players.get(username);
+            player.purgeCardsFromHand((ArrayList<UUID>)message.object);
+        }
     }
 }

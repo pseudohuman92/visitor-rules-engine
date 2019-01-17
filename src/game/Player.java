@@ -72,7 +72,7 @@ public class Player implements Serializable {
      *
      * @param count
      */
-    public void purge(int count) {
+    public void purgeFromDeck(int count) {
         voidPile.addAll(deck.draw(count));
         //TODO: Check loss
     }
@@ -200,6 +200,24 @@ public class Player implements Serializable {
         for (int i = 0; i < triggeringCards.size(); i++){
             triggeringCards.get(i).checkEvent(game, e);
         }
+    }
+
+    public void purgeCardsFromHand(ArrayList<UUID> cards) {
+        cards.stream().map((cardID) -> getCardFromHandByID(cardID)).map((card) -> {
+            hand.remove(card);
+            return card;
+        }).forEachOrdered((card) -> {
+            voidPile.add(card);
+        });
+    }
+
+    public Card getCardFromVoidByID(UUID cardID) {
+        for (Card card : voidPile) {
+            if(card.id.equals(cardID)){ 
+                return card;
+            }
+        }
+        return null;
     }
 
 }
