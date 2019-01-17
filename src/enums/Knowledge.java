@@ -10,17 +10,55 @@ package enums;
  * @author pseudo
  */
 public enum Knowledge {
-    BLACK(0x233F63), 
-    BLUE(0x00A6ED), 
-    GREEN(0x7FB800), 
-    RED(0x7e0202), 
-    WHITE(0xE9EBEF), 
-    YELLOW(0x7e7902),
+
+    /**
+     *
+     */
+    BLACK(0x23_3F63), 
+
+    /**
+     *
+     */
+    BLUE(0x00_A6ED), 
+
+    /**
+     *
+     */
+    GREEN(0x7F_B800), 
+
+    /**
+     *
+     */
+    RED(0x7e_0202), 
+
+    /**
+     *
+     */
+    WHITE(0xE9_EBEF), 
+
+    /**
+     *
+     */
+    YELLOW(0x7e_7902),
+
+    /**
+     *
+     */
     NONE(0);
     
     private final int id;
     Knowledge(int id) { this.id = id; }
+
+    /**
+     *
+     * @return
+     */
     public int getValue() { return id; }
+
+    /**
+     *
+     * @return
+     */
     public String toShortString(){
         switch(this){
             case BLACK:

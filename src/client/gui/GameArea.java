@@ -1,35 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package client.gui;
 
-import cards.Card;
-import cards.Item;
+import card.Card;
+import card.properties.Activatable;
 import client.Client;
 import client.gui.components.CardDisplayPopup;
 import client.gui.components.CardPane;
 import client.gui.components.OverlapPane;
 import enums.Knowledge;
-import game.Phase;
-import helpers.Debug;
+import static enums.Phase.MAIN;
+import static helpers.Debug.println;
 import helpers.Hashmap;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.awt.event.MouseEvent.BUTTON1;
+import static java.awt.event.MouseEvent.BUTTON3;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import javax.swing.BorderFactory;
+import static javax.swing.BorderFactory.createCompoundBorder;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -47,36 +43,62 @@ public class GameArea extends JPanel {
 
     Client client;
     ArrayList<Serializable> selected;
-    boolean skipPlayerBegin;
-    boolean skipOpponentBegin;
-    boolean skipPlayerMain;
-    boolean skipOpponentMain;
-    boolean skipPlayerEnd;
-    boolean skipOpponentEnd;
     boolean quickPlay;
+    // <editor-fold defaultstate="collapsed" desc="GUI Components">
+    private JPanel gameTextPanel;
+    private JButton gameTextButtonLeft;
+    private JButton gameTextButtonRight;
+    private JLabel playerNameLabel;
+    private JLabel opponentDiscardLabel;
+    private JLabel gameTextLabel;
+    private JLabel opponentKnowledgeLabel;
+    private JLabel currentTurnLabel;
+    private JLabel opponentEnergyLabel;
+    private JLabel playerEnergyLabel;
+    private JLabel playerKnowledgeLabel;
+    private JLabel playerLifeLabel;
+    private JLabel playerDeckLabel;
+    private JLabel playerHandLabel;
+    private JLabel playerDiscardLabel;
+    private JLabel opponentNameLabel;
+    private JLabel opponentLifeLabel;
+    private JLabel opponentDeckLabel;
+    private JLabel opponentHandLabel;
+    private JPanel opponentPanel;
+    private JPanel playerPanel;
+    private JPanel leftColumnPanel;
+    private OverlapPane handPane;
+    private JPanel opponentItemPanel;
+    private JPanel playerItemPanel;
+    private OverlapPane stackPane;
+    private JPanel phaseDisplayPanel;
+    private JScrollPane playerItemPane;
+    private JScrollPane opponentItemPane;
+    private JSpinner xValueSelector;
+    //</editor-fold>
 
+    /**
+     *
+     * @param client
+     */
     public GameArea(Client client) {
         this.client = client;
         selected = new ArrayList<>();
         initComponents();
 
         xValueSelector.setVisible(false);
-        skipPlayerBegin = true;
-        skipOpponentBegin = true;
-        skipPlayerMain = false;
-        skipOpponentMain = true;
-        skipPlayerEnd = true;
-        skipOpponentEnd = true;
         quickPlay = true;
         update();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Displayers">
-    public final void update() {
-        Debug.println("Updating Display");
+
+    /**
+     *
+     */
+    public void update() {
+        println("Updating Display");
         setPlayerStats();
         setOpponentStats();
-        setPhase();
         setTurn();
         switch (client.game.phase) {
             case BEGIN:
@@ -86,7 +108,6 @@ public class GameArea extends JPanel {
                 break;
         }
         displayHand();
-        displayStack();
         displayGameText();
         switch (client.game.phase) {
             case BEGIN:
@@ -98,53 +119,28 @@ public class GameArea extends JPanel {
         displayPlayerItems();
         displayOpponentItems();
         validate();
-        if(quickPlay && checkSmartPass()) //|| checkAutoPass())
+        if(quickPlay && checkSmartPass())
             client.skipInitiative();
     }
 
     void setPlayerStats() {
         playerNameLabel.setText(client.game.player.name);
-        playerLifeLabel.setText("Life: " + client.game.player.life);
         playerEnergyLabel.setText("Energy: " + client.game.player.energy + " / " + client.game.player.sources.size());
         playerDeckLabel.setText("Deck: " + client.game.player.deck.size());
         playerHandLabel.setText("Hand: " + client.game.player.hand.size());
         playerDiscardLabel.setText("Discard: " + client.game.player.discardPile.size());
         playerKnowledgeLabel.setText("");
-        client.game.player.knowledge.forEach((knowledge, count) -> playerKnowledgeLabel.setText(playerKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
+        client.game.player.knowledgePool.forEach((knowledge, count) -> playerKnowledgeLabel.setText(playerKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
     }
 
     void setOpponentStats() {
         opponentNameLabel.setText(client.game.opponent.name);
-        opponentLifeLabel.setText("Life: " + client.game.opponent.life);
         opponentEnergyLabel.setText("Energy: " + client.game.opponent.energy + " / " + client.game.opponent.sources.size());
         opponentDeckLabel.setText("Deck: " + client.game.opponent.deckSize);
         opponentHandLabel.setText("Hand: " + client.game.opponent.handSize);
         opponentDiscardLabel.setText("Discard: " + client.game.opponent.discardPile.size());
         opponentKnowledgeLabel.setText("");
-        client.game.opponent.knowledge.forEach((knowledge, count) -> opponentKnowledgeLabel.setText(opponentKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
-    }
-
-    void setPhase() {
-        switch (client.game.phase) {
-            case BEGIN:
-            case BEGIN_RESOLVING:
-                beginPhaseLabel.setForeground(Color.RED);
-                mainPhaseLabel.setForeground(Color.BLACK);
-                endPhaseLabel.setForeground(Color.BLACK);
-                break;
-            case MAIN:
-            case MAIN_RESOLVING:
-                beginPhaseLabel.setForeground(Color.BLACK);
-                mainPhaseLabel.setForeground(Color.RED);
-                endPhaseLabel.setForeground(Color.BLACK);
-                break;
-            case END:
-            case END_RESOLVING:
-                beginPhaseLabel.setForeground(Color.BLACK);
-                mainPhaseLabel.setForeground(Color.BLACK);
-                endPhaseLabel.setForeground(Color.RED);
-                break;
-        }
+        client.game.opponent.knowledgePool.forEach((knowledge, count) -> opponentKnowledgeLabel.setText(opponentKnowledgeLabel.getText() + knowledge.toShortString() + ": " + count + " "));
     }
 
     void setTurn() {
@@ -158,13 +154,13 @@ public class GameArea extends JPanel {
     }
 
     void updatePlayerItems() {
-        client.game.player.items.forEach(Card::updatePanel);
+        client.game.player.inPlayCards.forEach(Card::updatePanel);
         playerItemPanel.validate();
         playerItemPanel.repaint();
     }
 
     void updateOpponentItems() {
-        client.game.opponent.items.forEach(Card::updatePanel);
+        client.game.opponent.cardsInPlay.forEach(Card::updatePanel);
         opponentItemPanel.validate();
         opponentItemPanel.repaint();
     }
@@ -175,9 +171,9 @@ public class GameArea extends JPanel {
     }
 
     void displayPlayerItems() {
-        Debug.println("Displaying Player Items: " + client.game.player.items);
+        println("Displaying Player Items: " + client.game.player.inPlayCards);
         playerItemPanel.removeAll();
-        client.game.player.items.forEach((card) -> {
+        client.game.player.inPlayCards.forEach((card) -> {
             card.updatePanel();
             playerItemPanel.add(card.getPanel());
         });
@@ -186,9 +182,9 @@ public class GameArea extends JPanel {
     }
 
     void displayOpponentItems() {
-        Debug.println("Displaying Opponent Items: " + client.game.opponent.items);
+        println("Displaying Opponent Items: " + client.game.opponent.cardsInPlay);
         opponentItemPanel.removeAll();
-        client.game.opponent.items.forEach((card) -> {
+        client.game.opponent.cardsInPlay.forEach((card) -> {
             card.updatePanel();
             opponentItemPanel.add(card.getPanel());
         });
@@ -197,7 +193,7 @@ public class GameArea extends JPanel {
     }
 
     void displayHand() {
-        Debug.println("Displaying Hand");
+        println("Displaying Hand");
         ArrayList<CardPane> cards = new ArrayList<>();
         client.game.player.hand.forEach((card) -> {
             card.updatePanel();
@@ -206,32 +202,20 @@ public class GameArea extends JPanel {
         handPane.layAll(cards);
     }
 
-    void displayStack() {
-        ArrayList<CardPane> cards = new ArrayList<>();
-        for (Card card : client.game.stack) {
-            card.updatePanel();
-            cards.add(card.getPanel());
-        }
-        stackPane.layAll(cards);
-    }
-
     void displayGameText() {
         switch (client.game.phase) {
             case MULLIGAN:
                 displayMulliganText();
                 break;
             case BEGIN:
-            case MAIN:
             case END:
+                    //TODO: change this to something appropriate
+                    displayPlayText();
+                break;
+            case MAIN:
                 displayPlayText();
-                break;
-            case BEGIN_RESOLVING:
-            case MAIN_RESOLVING:
-            case END_RESOLVING:
-                displayResolvingText();
-                break;
+                break; 
         }
-
     }
 
     void displayMulliganText() {
@@ -298,7 +282,7 @@ public class GameArea extends JPanel {
         gameTextButtonLeft.addActionListener((action) -> {
             gameTextButtonLeft.setEnabled(false);
             gameTextButtonRight.setEnabled(false);
-            removeAllItemListeners();
+            removePlayAreaListeners();
             clearItemMarks();
             selected = new ArrayList<>();
             update();
@@ -311,7 +295,7 @@ public class GameArea extends JPanel {
         gameTextButtonRight.addActionListener((action) -> {
             gameTextButtonLeft.setEnabled(false);
             gameTextButtonRight.setEnabled(false);
-            removeAllItemListeners();
+            removePlayAreaListeners();
             clearItemMarks();
             func.accept(client, selected);
             selected = new ArrayList<>();
@@ -322,53 +306,31 @@ public class GameArea extends JPanel {
     // </editor-fold>
 
     boolean checkSmartPass() {
-        if (client.username.equals(client.game.activePlayer) && 
-              (client.game.phase == Phase.BEGIN || 
-               client.game.phase == Phase.MAIN || 
-               client.game.phase == Phase.END)) 
+        if (client.username.equals(client.game.activePlayer) && client.game.phase == MAIN) 
         {
             for (int i = 0; i < client.game.player.hand.size(); i++) {
-                if (client.game.player.hand.get(i).canPlayAsASource(client.game) 
-                 || client.game.player.hand.get(i).canPlay(client.game))
+                if (client.game.player.hand.get(i).canStudy(client.game) 
+                 || client.game.player.hand.get(i).canPlay(client.game)) {
                     return false;
+                }
             }
-            for (int i = 0; i < client.game.player.items.size(); i++) {
-                if (client.game.player.items.get(i).canActivate(client.game))
+            for (int i = 0; i < client.game.player.inPlayCards.size(); i++) {
+                if (client.game.player.inPlayCards.get(i) instanceof Activatable 
+                    && ((Activatable)client.game.player.inPlayCards.get(i)).canActivate(client.game)) {
                     return false;
+                }
             }
             return true;
         }
         return false;
     }
-    
-    boolean checkAutoPass() {
-        if (client.username.equals(client.game.activePlayer) && client.game.stack.isEmpty()) {
-            switch (client.game.phase) {
-                case BEGIN:
-                    if ((skipPlayerBegin && client.username.equals(client.game.turnPlayer))
-                            || (skipOpponentBegin && !client.username.equals(client.game.turnPlayer))) {
-                        return true;
-                    }
-                    break;
-                case MAIN:
-                    if ((skipPlayerMain && client.username.equals(client.game.turnPlayer))
-                            || (skipOpponentMain && !client.username.equals(client.game.turnPlayer))) {
-                        return true;
-                    }
-                    break;
-                case END:
-                    if ((skipPlayerEnd && client.username.equals(client.game.turnPlayer))
-                            || (skipOpponentEnd && !client.username.equals(client.game.turnPlayer))) {
-                        return true;
-                    }
-                    break;
-            }
-        }
-        return false;
-    }
 
+    /**
+     *
+     * @param count
+     */
     public void discardCards(int count) {
-        Debug.println("Discarding " + count);
+        println("Discarding " + count);
         gameTextLabel.setText("Discard " + count + " cards.");
         gameTextButtonLeft.setVisible(false);
         gameTextButtonRight.setVisible(false);
@@ -377,9 +339,13 @@ public class GameArea extends JPanel {
         displayHand();
     }
 
+    /**
+     *
+     * @param card
+     */
     public void displayKnowledgeMenu(Card card) {
         removeHandListeners();
-        removeAllItemListeners();
+        removePlayAreaListeners();
         gameTextButtonLeft.setVisible(false);
         gameTextButtonRight.setVisible(false);
         gameTextLabel.setText("Choose knowledge to get");
@@ -387,11 +353,16 @@ public class GameArea extends JPanel {
     }
 
     void clearItemMarks() {
-        client.game.player.items.forEach((card) -> card.marked = false);
-        client.game.opponent.items.forEach((card) -> card.marked = false);
+        client.game.player.inPlayCards.forEach((card) -> card.marked = false);
+        client.game.opponent.cardsInPlay.forEach((card) -> card.marked = false);
     }
     
-    public void getXValue(BiConsumer<Client, Integer> continuation, BiFunction <Client, Integer, Boolean> condition){
+    /**
+     *
+     * @param continuation
+     * @param condition
+     */
+    public void getXValue(BiFunction <Client, Integer, Boolean> condition, BiConsumer<Client, Integer> continuation){
         xValueSelector.setVisible(true);
         xValueSelector.setValue(0);
         
@@ -412,61 +383,63 @@ public class GameArea extends JPanel {
         gameTextButtonLeft.setVisible(true);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Listeners">
-    // <editor-fold defaultstate="collapsed" desc="Adders">
     void addActivateListeners() {
-        removePlayerItemListeners();
-        Debug.println("Adding activate listeners");
-        client.game.player.items.forEach((card) -> card.getPanel().addMouseListener(activateAdapter(card)));
+        removePlayAreaListeners();
+        println("Adding activate listeners");
+        client.game.player.inPlayCards.forEach((card) -> {
+            if (card instanceof Activatable){
+                card.getPanel().addMouseListener(activateAdapter((Activatable)card));
+            }
+        });
     }
 
     void addPlayListeners() {
         removeHandListeners();
-        Debug.println("Adding play listeners");
+        println("Adding play listeners");
         client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(playAdapter(card)));
     }
 
     void addDiscardListeners(int count) {
-        Debug.println("Adding discard listeners");
-        client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(discardAdapter(card, count)));
+        println("Adding discard listeners");
+        client.game.player.hand.forEach((card) -> card.getPanel().addMouseListener(handSelectionAdapter(card, count)));
     }
     
-    public void addFilteredPlayerTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, Function<Item, Boolean> filter, int count) {
-        removePlayerItemListeners();
-        Debug.println("Adding player target listeners");
-        client.game.player.items.forEach((card) -> {
-            if (filter.apply(card))
+    /**
+     *
+     * @param continuation
+     * @param filter
+     * @param count
+     */
+    public void getPlayAreaTargets(Function<Card, Boolean> filter, int count, BiConsumer<Client, ArrayList<Serializable>> continuation) {
+        removePlayAreaListeners();
+        client.game.player.inPlayCards.forEach((card) -> {
+            if (filter.apply(card)) {
                 card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
+            }
+        });
+        client.game.opponent.cardsInPlay.forEach((card) -> {
+            if (filter.apply(card)) {
+                card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
+            }
+        });
+        displayTargetingText(continuation, count);
+    }
+    
+    public void getPlayerVoidTargets(Function<Card, Boolean> filter, int count, BiConsumer<Client, ArrayList<Serializable>> continuation) {
+        removePlayAreaListeners();
+        client.game.player.voidPile.forEach((card) -> {
+            if (filter.apply(card)) {
+                card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
+            }
         });
         displayTargetingText(continuation, count);
     }
 
-    public void addPlayerTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, int count) {
-        addFilteredPlayerTargetListeners(continuation, c-> true, count);
-    }
-    
-    public void addFilteredOpponentTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, Function<Item, Boolean> filter, int count) {
-        removeOpponentItemListeners();
-        client.game.opponent.items.forEach((card) -> {
-            if (filter.apply(card))
-                card.getPanel().addMouseListener(targetAdapter(continuation, card, count));
-        });
-        displayTargetingText(continuation, count);
-    }
 
-    public void addOpponentTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, int count) {
-        addFilteredOpponentTargetListeners(continuation, c-> true, count);
-    }
-    
-    public void addFilteredTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, Function<Item, Boolean> filter, int count) {
-        addFilteredPlayerTargetListeners(continuation, filter, count);
-        addFilteredOpponentTargetListeners(continuation, filter, count);
-    }
-
-    public void addTargetListeners(BiConsumer<Client, ArrayList<Serializable>> continuation, int count) {
-        addFilteredTargetListeners(continuation, c-> true, count);
-    }
-
+    /**
+     *
+     * @param continuation
+     */
     public void addPlayerSelector(BiConsumer<Client, ArrayList<Serializable>> continuation) {
         gameTextLabel.setText("Select a player");
 
@@ -475,7 +448,7 @@ public class GameArea extends JPanel {
         gameTextButtonLeft.addActionListener((action) -> {
             gameTextButtonLeft.setEnabled(false);
             gameTextButtonRight.setEnabled(false);
-            selected.add(client.game.player.uuid);
+            selected.add(client.game.player.id);
             continuation.accept(client, selected);
             selected = new ArrayList<>();
         });
@@ -487,16 +460,14 @@ public class GameArea extends JPanel {
         gameTextButtonRight.addActionListener((action) -> {
             gameTextButtonLeft.setEnabled(false);
             gameTextButtonRight.setEnabled(false);
-            selected.add(client.game.opponent.uuid);
+            selected.add(client.game.opponent.id);
             continuation.accept(client, selected);
             selected = new ArrayList<>();
         });
         gameTextButtonRight.setEnabled(true);
         gameTextButtonRight.setVisible(true);
     }
-    //</editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Removers">
+    
     void removeActionListeners(JButton b) {
         for (ActionListener l : b.getActionListeners()) {
             b.removeActionListener(l);
@@ -504,7 +475,7 @@ public class GameArea extends JPanel {
     }
 
     void removeHandListeners() {
-        Debug.println("Removing hand listeners");
+        println("Removing hand listeners");
         client.game.player.hand.forEach((card) -> {
             MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
@@ -513,9 +484,15 @@ public class GameArea extends JPanel {
         });
     }
 
-    void removePlayerItemListeners() {
-        Debug.println("Removing Item listeners");
-        client.game.player.items.forEach((card) -> {
+    void removePlayAreaListeners() {
+        println("Removing Play Area listeners");
+        client.game.player.inPlayCards.forEach((card) -> {
+            MouseListener[] listeners = card.getPanel().getMouseListeners();
+            for (MouseListener l : listeners) {
+                card.getPanel().removeMouseListener(l);
+            }
+        });
+        client.game.opponent.cardsInPlay.forEach((card) -> {
             MouseListener[] listeners = card.getPanel().getMouseListeners();
             for (MouseListener l : listeners) {
                 card.getPanel().removeMouseListener(l);
@@ -523,35 +500,17 @@ public class GameArea extends JPanel {
         });
     }
 
-    void removeOpponentItemListeners() {
-        Debug.println("Removing Item listeners");
-        client.game.opponent.items.forEach((card) -> {
-            MouseListener[] listeners = card.getPanel().getMouseListeners();
-            for (MouseListener l : listeners) {
-                card.getPanel().removeMouseListener(l);
-            }
-        });
-    }
-
-    void removeAllItemListeners() {
-        removePlayerItemListeners();
-        removeOpponentItemListeners();
-    }
-    //</editor-fold>
-    //</editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Menus">
     void knowledgeMenu(Card card) {
         JPopupMenu menu = new JPopupMenu();
-        for (Knowledge knowl : card.knowledge.keySet()) {
+        card.knowledge.keySet().forEach((knowl) -> {
             JMenuItem menuItem = new JMenuItem(knowl.toString());
             menu.add(menuItem);
             menuItem.addActionListener((ActionEvent event) -> {
-                Debug.println("Playing as a source: " + card.name);
+                println("Playing as a source: " + card.name);
                 Hashmap<Knowledge, Integer> knl = new Hashmap<>(knowl, 1);
-                client.playSource(card, knl);
+                client.study(card, knl);
             });
-        }
+        });
         menu.setVisible(true);
         menu.show((Component) card.getPanel(), card.getPanel().getX(), card.getPanel().getY());
     }
@@ -561,8 +520,8 @@ public class GameArea extends JPanel {
         JMenuItem menuItem = new JMenuItem("Play as a source");
         menu.add(menuItem);
         menuItem.addActionListener((ActionEvent event) -> {
-            Debug.println("Playing as a source: " + card.name);
-            card.playAsSource(client);
+            println("Playing as a source: " + card.name);
+            card.study(client);
         });
         menu.setVisible(true);
         menu.show((Component) evt.getSource(), evt.getX(), evt.getY());
@@ -576,23 +535,22 @@ public class GameArea extends JPanel {
         menu.setVisible(true);
         return menu;
     }
-//</editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Adapters">
+    
     MouseAdapter playAdapter(Card card) {
         return new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 if (client.game.hasInitiative()) {
-                    if (evt.getButton() == MouseEvent.BUTTON1) {
+                    if (evt.getButton() == BUTTON1) {
                         if (evt.isControlDown()) {
-                            if (card.canPlayAsASource(client.game)) {
-                                Debug.println("Playing as a source: " + card.name);
-                                card.playAsSource(client);
+                            if (card.canStudy(client.game)) {
+                                println("Playing as a source: " + card.name);
+                                card.study(client);
                             }
                         } else if (card.canPlay(client.game)) {
                             card.play(client);
                         }
-                    } else if (evt.getButton() == MouseEvent.BUTTON3 && card.canPlayAsASource(client.game)) {
+                    } else if (evt.getButton() == BUTTON3 && card.canStudy(client.game)) {
                         displaySourceMenu(evt, card);
                     }
                 }
@@ -600,25 +558,26 @@ public class GameArea extends JPanel {
         };
     }
 
-    MouseAdapter discardAdapter(Card card, int count) {
+    MouseAdapter handSelectionAdapter(Card card, int count) {
         return new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
-                if (evt.getButton() == MouseEvent.BUTTON1) {
+                if (evt.getButton() == BUTTON1) {
                     if (!card.marked) {
-                        Debug.println("Selected for discard: " + card.name);
+                        println("Selected for discard: " + card.name);
                         card.marked = true;
-                        selected.add(card.uuid);
+                        selected.add(card.id);
                         if (selected.size() == count || selected.size() == client.game.player.hand.size()) {
-                            Debug.println("All cards are selected for discard");
+                            println("All cards are selected for discard");
                             removeHandListeners();
-                            client.discardReturn(selected);
+                            client.handSelectionReturn(selected);
                             selected = new ArrayList<>();
                         }
                         updateHand();
                     } else {
-                        Debug.println("Unselected for discard: " + card.name);
+                        println("Unselected for discard: " + card.name);
                         card.marked = false;
-                        selected.remove(card.uuid);
+                        selected.remove(card.id);
                         updateHand();
                     }
                 }
@@ -626,11 +585,11 @@ public class GameArea extends JPanel {
         };
     }
 
-    MouseAdapter activateAdapter(Item card) {
+    MouseAdapter activateAdapter(Activatable card) {
         return new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
-                if (client.game.hasInitiative() && card.canActivate(client.game) && evt.getButton() == MouseEvent.BUTTON1) {
-                    Debug.println("Activating: " + card.name);
+                if (client.game.hasInitiative() && card.canActivate(client.game) && evt.getButton() == BUTTON1) {
                     card.activate(client);
                 }
             }
@@ -639,31 +598,31 @@ public class GameArea extends JPanel {
 
     MouseAdapter targetAdapter(BiConsumer<Client, ArrayList<Serializable>> continuation, Card targetCard, int count) {
         return new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
-                if (evt.getButton() == MouseEvent.BUTTON1) {
+                if (evt.getButton() == BUTTON1) {
                     if (!targetCard.marked) {
-                        Debug.println("Selected for target: " + targetCard.name);
+                        println("Selected for target: " + targetCard.name);
                         targetCard.marked = true;
-                        selected.add(targetCard.uuid);
+                        selected.add(targetCard.id);
                         if (selected.size() == count) {
-                            Debug.println("All cards are selected for target");
-                            removeAllItemListeners();
+                            println("All cards are selected for target");
+                            removePlayAreaListeners();
                             clearItemMarks();
                             continuation.accept(client, selected);
                             selected = new ArrayList<>();
                         }
                         updateAllItems();
                     } else {
-                        Debug.println("Unselected for target: " + targetCard.name);
+                        println("Unselected for target: " + targetCard.name);
                         targetCard.marked = false;
-                        selected.remove(targetCard.uuid);
+                        selected.remove(targetCard.id);
                         updateAllItems();
                     }
                 }
             }
         };
     }
-//</editor-fold>
           
     // <editor-fold defaultstate="collapsed" desc="Initializer">
     private void initComponents() {
@@ -698,16 +657,6 @@ public class GameArea extends JPanel {
         playerItemPanel = new JPanel();
         currentTurnLabel = new JLabel();
         phaseDisplayPanel = new JPanel();
-        opponentBeginBox = new JCheckBox();
-        opponentMainBox = new JCheckBox();
-        opponentEndBox = new JCheckBox();
-        beginPhaseLabel = new JLabel();
-        mainPhaseLabel = new JLabel();
-        endPhaseLabel = new JLabel();
-        playerBeginBox = new JCheckBox();
-        playerMainBox = new JCheckBox();
-        playerEndBox = new JCheckBox();
-
         
 
         opponentPanel.setBackground(new java.awt.Color(255, 176, 180));
@@ -729,7 +678,7 @@ public class GameArea extends JPanel {
         opponentPanel.add(opponentKnowledgeLabel);
 
         gameTextPanel.setBackground(new java.awt.Color(230, 228, 140));
-        gameTextPanel.setBorder(BorderFactory.createCompoundBorder());
+        gameTextPanel.setBorder(createCompoundBorder());
 
         gameTextLabel.setText("gameTextArea");
         gameTextButtonRight.setText("rightButton");
@@ -776,25 +725,8 @@ public class GameArea extends JPanel {
         phaseDisplayPanel.setLayout(new MigLayout("wrap 4", "[grow 7][grow 1][grow 1][grow 1]", "[][][]"));
 
         currentTurnLabel.setText("currentTurn");
-        beginPhaseLabel.setText("BEGIN");
-        mainPhaseLabel.setText("MAIN");
-        endPhaseLabel.setText("END");
-        
-        opponentEndBox.setSelected(true);
-        playerMainBox.setSelected(true);
-        
-        phaseDisplayPanel.add(opponentBeginBox, "skip 1");
-        phaseDisplayPanel.add(opponentMainBox);
-        phaseDisplayPanel.add(opponentEndBox);
-
         phaseDisplayPanel.add(currentTurnLabel, "grow");
-        phaseDisplayPanel.add(beginPhaseLabel);
-        phaseDisplayPanel.add(mainPhaseLabel);
-        phaseDisplayPanel.add(endPhaseLabel);
-        
-        phaseDisplayPanel.add(playerBeginBox, "skip 1");
-        phaseDisplayPanel.add(playerMainBox);
-        phaseDisplayPanel.add(playerEndBox);
+ 
         
         playerItemPanel.setLayout(new MigLayout("wrap 8"));
         opponentItemPanel.setLayout(new MigLayout("wrap 8"));
@@ -807,156 +739,90 @@ public class GameArea extends JPanel {
 
 
         opponentDiscardLabel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showOpponentDiscardPile(evt);
             }
         });
    
         opponentEnergyLabel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showOpponentSources(evt);
             }
         });
         
         playerDiscardLabel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showPlayerDiscardPile(evt);
             }
         });
         playerEnergyLabel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showPlayerSources(evt);
             }
         });
         
         addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showConcedeMenu(evt);
             }
         });
         
         handPane.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showConcedeMenu(evt);
             }
         });
 
         opponentItemPane.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showConcedeMenu(evt);
             }
         });
 
         playerItemPane.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 showConcedeMenu(evt);
             }
         });
-        
-        opponentBeginBox.addActionListener(this::toggleOpponentBeginStop);
-        opponentMainBox.addActionListener(this::toggleOpponentMainStop);
-        opponentEndBox.addActionListener(this::toggleOpponentEndStop);
-        playerBeginBox.addActionListener(this::togglePlayerBeginStop);
-        playerMainBox.addActionListener(this::togglePlayerMainStop);
-        playerEndBox.addActionListener(this::togglePlayerEndStop);
     }// </editor-fold>                        
 
     // <editor-fold defaultstate="collapsed" desc="Actions">
     private void showPlayerSources(MouseEvent evt) {                                      
-        if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == BUTTON1) {
             new CardDisplayPopup(client.game.player.sources);
         }
     }                                     
 
     private void showPlayerDiscardPile(MouseEvent evt) {                                     
-        if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == BUTTON1) {
             new CardDisplayPopup(client.game.player.discardPile);
         }
     }                                    
 
     private void showOpponentSources(MouseEvent evt) {                                      
-        if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == BUTTON1) {
             new CardDisplayPopup(client.game.opponent.sources);
         }
     }                                     
 
     private void showOpponentDiscardPile(MouseEvent evt) {                                      
-        if (evt.getButton() == MouseEvent.BUTTON1) {
+        if (evt.getButton() == BUTTON1) {
             new CardDisplayPopup(client.game.opponent.discardPile);
         }
     }                                     
 
-    private void togglePlayerBeginStop(ActionEvent evt) {                                           
-        skipPlayerBegin = !skipPlayerBegin;
-        Debug.println("Checkbox");
-    }                                          
-
-    private void toggleOpponentBeginStop(ActionEvent evt) {                                           
-        skipOpponentBegin = !skipOpponentBegin;
-    }                                          
-
-    private void togglePlayerMainStop(ActionEvent evt) {                                           
-        skipPlayerMain = !skipPlayerMain;
-    }                                          
-
-    private void togglePlayerEndStop(ActionEvent evt) {                                           
-        skipPlayerEnd = !skipPlayerEnd;
-    }                                          
-
-    private void toggleOpponentMainStop(ActionEvent evt) {                                           
-        skipOpponentMain = !skipOpponentMain;
-    }                                          
-
-    private void toggleOpponentEndStop(ActionEvent evt) {                                           
-        skipOpponentEnd = !skipOpponentEnd;
-    }                                          
-
     private void showConcedeMenu(MouseEvent evt) {                                  
-        if (evt.getButton() == MouseEvent.BUTTON3) {
+        if (evt.getButton() == BUTTON3) {
             concedeMenu().show((Component) evt.getSource(), evt.getX(), evt.getY());
         }
     }                                                                   
-    //</editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="GUI Components">
-    private JPanel gameTextPanel;
-    private JButton gameTextButtonLeft;
-    private JButton gameTextButtonRight;
-    private JCheckBox opponentBeginBox;
-    private JCheckBox opponentMainBox;
-    private JCheckBox opponentEndBox;
-    private JCheckBox playerBeginBox;
-    private JCheckBox playerMainBox;
-    private JCheckBox playerEndBox;
-    private JLabel playerNameLabel;
-    private JLabel opponentDiscardLabel;
-    private JLabel gameTextLabel;
-    private JLabel opponentKnowledgeLabel;
-    private JLabel currentTurnLabel;
-    private JLabel opponentEnergyLabel;
-    private JLabel playerEnergyLabel;
-    private JLabel beginPhaseLabel;
-    private JLabel mainPhaseLabel;
-    private JLabel endPhaseLabel;
-    private JLabel playerKnowledgeLabel;
-    private JLabel playerLifeLabel;
-    private JLabel playerDeckLabel;
-    private JLabel playerHandLabel;
-    private JLabel playerDiscardLabel;
-    private JLabel opponentNameLabel;
-    private JLabel opponentLifeLabel;
-    private JLabel opponentDeckLabel;
-    private JLabel opponentHandLabel;
-    private JPanel opponentPanel;
-    private JPanel playerPanel;
-    private JPanel leftColumnPanel;
-    private OverlapPane handPane;
-    private JPanel opponentItemPanel;
-    private JPanel playerItemPanel;
-    private OverlapPane stackPane;
-    private JPanel phaseDisplayPanel;
-    private JScrollPane playerItemPane;
-    private JScrollPane opponentItemPane;
-    private JSpinner xValueSelector;       
     //</editor-fold>
 }

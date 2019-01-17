@@ -7,20 +7,23 @@ package client.gui;
 
 import client.Client;
 import game.Table;
-import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
@@ -31,28 +34,51 @@ import net.miginfocom.swing.MigLayout;
 public class Lobby extends JPanel {
 
     Client client;
+    private JButton sendButton;
+    private JButton createButton;
+    private JButton joinButton;
+    private JList<String> playerList;
+    private JList<String> chatHistory;
+    private JScrollPane tableScrollPane;
+    private JScrollPane chatScrollPane;
+    private JScrollPane playerScrollPane;
+    private JTable tableList;
+    private JTextField newMessageBox;
     
+    /**
+     *
+     * @param client
+     */
     public Lobby(Client client) {
         this.client = client;
         initComponents();
     }
     
+    /**
+     *
+     */
     public void updateChat(){
-        chatHistory.setListData(client.chatLog.toArray(new String[0]));
+        chatHistory.setListData(client.chatLog.toArray(new String[client.chatLog.size()]));
         chatHistory.ensureIndexIsVisible(client.chatLog.size()-1);
     }
     
+    /**
+     *
+     */
     public void updatePlayers(){
-        playerList.setListData(client.players.toArray(new String[0]));
+        playerList.setListData(client.players.toArray(new String[client.players.size()]));
     }
     
+    /**
+     *
+     */
     public void updateTables(){
         DefaultTableModel model = (DefaultTableModel)tableList.getModel();
         model.setRowCount(0);
-        for (Table t : client.tables.values()){
-            Table[] ta = {t};
-            model.addRow(ta);
-        }
+        client.tables.values().stream().forEachOrdered((Table ta) -> {
+            Table[] tarr = {ta};
+            model.addRow(tarr);
+        });
     }
     
     void joinTable(){
@@ -61,7 +87,7 @@ public class Lobby extends JPanel {
             JFileChooser chooser = new JFileChooser("./assets");
             int returnVal = chooser.showOpenDialog(this);
 
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == APPROVE_OPTION) {
                 File file = chooser.getSelectedFile();
                 Table table = (Table)tableList.getValueAt(selectionModel.getMaxSelectionIndex(), 0);
                 client.joinTable(file, table.uuid);
@@ -70,7 +96,7 @@ public class Lobby extends JPanel {
     }
     
     void sendMessage(){
-        if (!newMessageBox.getText().equals("")){
+        if (!newMessageBox.getText().isEmpty()){
             client.sendMessage(newMessageBox.getText());
             newMessageBox.setText("");
         }
@@ -80,7 +106,7 @@ public class Lobby extends JPanel {
         JFileChooser chooser = new JFileChooser("./assets");
         int returnVal = chooser.showOpenDialog(this);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        if (returnVal == APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             client.createTable(file);
         }
@@ -120,7 +146,7 @@ public class Lobby extends JPanel {
                 return false;
             }
         });
-        tableList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableList.setSelectionMode(SINGLE_SELECTION);
         tableList.setShowVerticalLines(false);
         tableList.addMouseListener(new MouseAdapter() {
             @Override
@@ -162,7 +188,7 @@ public class Lobby extends JPanel {
     }                                        
 
     private void send(KeyEvent evt) {                                       
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == VK_ENTER){
             sendMessage();
         }
     }                                      
@@ -181,14 +207,4 @@ public class Lobby extends JPanel {
         }
     }                                    
                   
-    private JButton sendButton;
-    private JButton createButton;
-    private JButton joinButton;
-    private JList<String> playerList;
-    private JList<String> chatHistory;
-    private JScrollPane tableScrollPane;
-    private JScrollPane chatScrollPane;
-    private JScrollPane playerScrollPane;
-    private JTable tableList;
-    private JTextField newMessageBox;        
 }

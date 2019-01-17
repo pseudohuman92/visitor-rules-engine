@@ -1,34 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package client.gui;
 
-import cards.Card;
-import cards.CardGenerator;
+//import cards.CardGenerator;
+import client.Client;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import static java.lang.Integer.parseInt;
+import static java.lang.Integer.valueOf;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import client.Client;
-import helpers.Debug;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -37,18 +33,32 @@ import javax.swing.event.ListSelectionListener;
 public class DeckBuilder extends JPanel {
     
     Client client;
-    CardGenerator cardGenerator;
+    //CardGenerator cardGenerator;
+    private JButton loadButton;
+    private JButton saveButton;
+    private JButton newButton;
+    private JScrollPane collectionPane;
+    private JScrollPane decklistPane;
+    private JTable collectionTable;
+    private JPanel displayedCard;
+    private JTable deckList;
+    private JTextField deckName;
 
+    /**
+     *
+     * @param client
+     */
     public DeckBuilder(Client client) {
         initComponents();
         this.client = client;
-        cardGenerator = new CardGenerator("");
+        //cardGenerator = new CardGenerator("");
         //loadCardDatabase(collectionTable);
     }
     
     void displayCard(){
         String cardName = (String) collectionTable.getValueAt(collectionTable.getSelectedRow(), 0);
         displayedCard.removeAll();
+        /*
         Card c = cardGenerator.createCard(cardName);
         if (c != null) {
             c.updatePanel();
@@ -57,11 +67,13 @@ public class DeckBuilder extends JPanel {
             displayedCard.repaint();
             Debug.println(cardName + " selected from collection");
         }
+        */
     }
     
     void displayCardDeck(){
         String cardName = (String) deckList.getValueAt(deckList.getSelectedRow(), 1);
         displayedCard.removeAll();
+        /*
         Card c = cardGenerator.createCard(cardName);
         if (c != null) {
             c.updatePanel();
@@ -70,6 +82,7 @@ public class DeckBuilder extends JPanel {
             displayedCard.repaint();
             Debug.println(cardName + " selected from deck");
         }
+        */
     }
     
     void loadCardDatabase(JTable cardDatabase) {
@@ -79,9 +92,8 @@ public class DeckBuilder extends JPanel {
             if (!db.exists()) { db.createNewFile(); }
             dbFile = new Scanner(db);
         } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
         } catch (IOException ex) {
-            Logger.getLogger(DeckBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(DeckBuilder.class.getName()).log(SEVERE, null, ex);
         }
 
         while (dbFile.hasNextLine()) {
@@ -92,10 +104,10 @@ public class DeckBuilder extends JPanel {
     }
     
     void removeFromDeck(){
-        if (Integer.parseInt((String) deckList.getValueAt(deckList.getSelectedRow(), 0)) == 1) {
+        if (parseInt((String) deckList.getValueAt(deckList.getSelectedRow(), 0)) == 1) {
             ((DefaultTableModel) deckList.getModel()).removeRow(deckList.getSelectedRow());
         } else {
-            deckList.setValueAt(String.valueOf(Integer.parseInt((String) 
+            deckList.setValueAt(valueOf(parseInt((String) 
                     deckList.getValueAt(deckList.getSelectedRow(), 0)) - 1), deckList.getSelectedRow(), 0);
         }
     }
@@ -106,7 +118,7 @@ public class DeckBuilder extends JPanel {
         for (int i = 0; i < deckList.getModel().getRowCount(); i++) {
             if (cardName.equals(deckList.getModel().getValueAt(i, 1))) {
                 exists = true;
-                deckList.setValueAt(String.valueOf(Integer.parseInt((String) deckList.getValueAt(i, 0)) + 1), i, 0);
+                deckList.setValueAt(valueOf(parseInt((String) deckList.getValueAt(i, 0)) + 1), i, 0);
                 break;
             }
         }
@@ -124,7 +136,7 @@ public class DeckBuilder extends JPanel {
     void loadDeck(){
         JFileChooser fc = new JFileChooser("./assets");
         int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        if (returnVal == APPROVE_OPTION) {
 
             DefaultTableModel dtf = (DefaultTableModel) deckList.getModel();
             dtf.setRowCount(0);
@@ -133,7 +145,6 @@ public class DeckBuilder extends JPanel {
             try {
                 deckFile = new Scanner(fc.getSelectedFile());
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
             }
             deckName.setText(deckFile.nextLine());
 
@@ -148,7 +159,7 @@ public class DeckBuilder extends JPanel {
     void saveDeck(){
         JFileChooser fc = new JFileChooser(".");
         int returnVal = fc.showSaveDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        if (returnVal == APPROVE_OPTION) {
             Writer writer;
             try {
                 writer = new OutputStreamWriter(new FileOutputStream(fc.getSelectedFile()));
@@ -158,8 +169,7 @@ public class DeckBuilder extends JPanel {
                 }
                 writer.flush();
                 writer.close();
-            } catch (Exception e1) {
-                e1.printStackTrace();
+            } catch (IOException e1) {
             }
         }
     }
@@ -182,47 +192,47 @@ public class DeckBuilder extends JPanel {
             new Object [][] {},
             new String [] { "Cards" }
         ) {
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
         });
         collectionTable.setColumnSelectionAllowed(true);
         collectionTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addToDeck(evt);
             }
         });
 
         collectionPane.setViewportView(collectionTable);
-        collectionTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent lse) {
-                displayCard();
-            }
+        collectionTable.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+            displayCard();
         });
         
-        collectionTable.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        collectionTable.getColumnModel().getSelectionModel().setSelectionMode(SINGLE_SELECTION);
         
 
         deckList.setModel(new DefaultTableModel(
             new Object [][] {},
             new String [] { "Count", "Card" }
         ) {
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
         });
         
         deckList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 removeFromDeck(evt);
             }
         });
-        deckList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent lse) {
-                displayCardDeck();
-            }
+        deckList.getSelectionModel().addListSelectionListener((ListSelectionEvent lse) -> {
+            displayCardDeck();
         });
-        deckList.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        deckList.getColumnModel().getSelectionModel().setSelectionMode(SINGLE_SELECTION);
         decklistPane.setViewportView(deckList);
 
 
@@ -274,13 +284,4 @@ public class DeckBuilder extends JPanel {
     }                                        
 
                
-    private JButton loadButton;
-    private JButton saveButton;
-    private JButton newButton;
-    private JScrollPane collectionPane;
-    private JScrollPane decklistPane;
-    private JTable collectionTable;
-    private JPanel displayedCard;
-    private JTable deckList;
-    private JTextField deckName;               
 }

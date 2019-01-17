@@ -9,23 +9,28 @@ package client.gui.components;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import static java.awt.Font.BOLD;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.WindowConstants;
 
 /**
  *
  * @author pseudo
  */
 public class TextPopup extends JDialog {
+    private JLabel text;
 
+    /**
+     *
+     * @param message
+     */
     public TextPopup(String message) {
         super(new JFrame(), true);
         initComponents();
-        text.setFont(new Font("Ubuntu", Font.BOLD, 18));
+        text.setFont(new Font("Ubuntu", BOLD, 18));
         text.setText(message);
         invokeLater(() -> {
             addWindowListener(new WindowAdapter() {
@@ -44,7 +49,7 @@ public class TextPopup extends JDialog {
     private void initComponents() {
         text = new JLabel();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new FlowLayout());
 
         text.setText("Default popup text");
@@ -52,5 +57,4 @@ public class TextPopup extends JDialog {
         pack();
     }                     
                     
-    private JLabel text;               
 }

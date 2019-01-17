@@ -10,6 +10,14 @@
 <project name="CCGCore" default="default" basedir=".">
     <description>Builds, tests, and runs the project CCGCore.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-pre-compile">
+        <path id="build.classpath">
+          <fileset dir="lib">
+            <include name="**/*.jar"/>
+            <include name="**/*.zip"/>
+          </fileset>
+        </path>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
