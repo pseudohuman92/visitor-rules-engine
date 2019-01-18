@@ -109,11 +109,11 @@ public class Deck implements Serializable {
         deck.addAll(index, cards);
     }
     
-    public void puAllToBottom(ArrayList<Card> cards){
+    public void putAllToBottom(ArrayList<Card> cards){
         insertAllTo(cards, deck.size()-1);
     }
     
-    public void puAllToTop(ArrayList<Card> cards){
+    public void putAllToTop(ArrayList<Card> cards){
         insertAllTo(cards, 0);
     }
     

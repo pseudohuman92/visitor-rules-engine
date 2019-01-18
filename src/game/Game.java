@@ -13,6 +13,8 @@ import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import network.Connection;
 import network.Message;
 import static network.Message.order;
@@ -388,5 +390,12 @@ public class Game {
             Player player = players.get(username);
             player.purgeCardsFromHand((ArrayList<UUID>)message.object);
         }
+    }
+    
+    public void selectFromTopOfDeck(String controller, int numOfCardsToLook, int NumOfCardsToSelect, 
+                                    Function<Card, Boolean> isValidTarget, 
+                                    BiConsumer<Player, ArrayList<Card>> processSelected,
+                                    BiConsumer<Player, ArrayList<Card>> processNotSelected) {
+        //TODO: implement this
     }
 }
