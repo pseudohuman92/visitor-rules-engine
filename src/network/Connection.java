@@ -19,20 +19,9 @@ import java.net.UnknownHostException;
  */
 public class Connection {
 
-    /**
-     *
-     */
-    protected Socket socket;
-
-    /**
-     *
-     */
-    protected ObjectInputStream reader;
-
-    /**
-     *
-     */
-    protected ObjectOutputStream writer;
+    private Socket socket;
+    private ObjectInputStream reader;
+    private ObjectOutputStream writer;
     
     /**
      *
@@ -80,7 +69,6 @@ public class Connection {
     public void send(Message message)
     {
         System.out.println("SEND: " + message);
-        System.out.println("SEND: " + Message.convertToJson(message));
         try {
             writer.reset();
             writer.writeObject(Message.convertToJson(message));
@@ -96,12 +84,10 @@ public class Connection {
     public Message receive()
     {
         try {
-            String m = (String)reader.readObject();
+            Message m = (Message)reader.readObject();
             System.out.println("RECEIVE: " + m);
-            System.out.println("RECEIVE: " + Message.convertToObject(m));
-            return Message.convertToObject(m);
-        } catch (IOException ex) {
-        } catch (ClassNotFoundException ex) {
+            return m;
+        } catch (IOException | ClassNotFoundException ex) {
         }
         return null;
     }	

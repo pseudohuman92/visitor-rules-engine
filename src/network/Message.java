@@ -341,7 +341,7 @@ public class Message implements Serializable {
     } 
 
     public MessageLabel label;
-    public Object object;
+    public Serializable object;
     
     private Message(MessageLabel label, Serializable object) {
         this.label = label;
