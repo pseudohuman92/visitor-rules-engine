@@ -1,0 +1,92 @@
+syntax = "proto3";
+import "Types.proto";
+option java_multiple_files = true;
+/**
+ * Messages from client to server.
+ */
+message RegisterUser {
+    string username = 1;
+}
+
+message Login {
+    string username = 1;
+}
+
+message Logout {
+    string username = 1;
+}
+
+message ChatMessage {
+    string msg = 1;
+}
+
+message CreateTable {
+    string username = 1;
+    repeated string decklist = 2;
+}
+
+message JoinTable {
+    string tableID = 1;
+    string username = 2;
+    repeated string decklist = 3;
+}
+
+message PlayCard {
+    string gameID = 1;
+    string username = 2;
+    string cardID = 3;
+}
+
+message ActivateCard {
+    string gameID = 1;
+    string username = 2;
+    string cardID = 3;
+}
+
+message StudyCard {
+    string gameID = 1;
+    string username = 2;
+    string cardID = 3;
+    repeated Knowledge knowledge = 4;
+}
+
+message Pass {
+    string gameID = 1;
+    string username = 2;
+}
+
+message RegisterGameConnection {
+    string gameID = 1;
+    string username = 2;
+}
+
+message RegisterInteractionConnection {
+    string gameID = 1;
+    string username = 2;
+}
+
+message Mulligan {
+    string gameID = 1;
+    string username = 2;
+}
+
+message Keep {
+    string gameID = 1;
+    string username = 2;
+}
+
+message SelectFromHandResponse {
+    string gameID = 1;
+    string username = 2;
+    repeated string selectedIDs = 3;
+}
+
+message Concede {
+    string gameID = 1;
+    string username = 2;
+}
+
+message OrderCardsResponse {
+    GameState game = 1;
+    repeated Card orderedCards = 2;
+}
