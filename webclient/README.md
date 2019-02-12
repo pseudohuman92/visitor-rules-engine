@@ -1,3 +1,10 @@
+Install yarn.
+
+To install dependencies: yarn install
+To start sever: yarn start
+
+Ignore below for now
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
