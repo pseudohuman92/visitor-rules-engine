@@ -5,8 +5,6 @@
  */
 package card.properties;
 
-import client.Client;
-import game.ClientGame;
 import game.Game;
 /**
  * Interface for cards that has an activating ability.
@@ -15,22 +13,14 @@ import game.Game;
 public interface Activatable {
     
     /**
-     * CALLER: Client<br>
      * BEHAVIOR: return true if item can be activated.
      * @param game
      * @return
      */
-    public boolean canActivate(ClientGame game);
+    public boolean canActivate(Game game);
     
-    /**
-     * CALLER: Client<br>
-     * BEHAVIOR: Execute required logic to activate the card.
-     * @param client
-     */
-    public void activate(Client client);
 
     /**
-     * CALLER: Server<br>
      * BEHAVIOR: Execute effects of the activation.
      * @param game
      */

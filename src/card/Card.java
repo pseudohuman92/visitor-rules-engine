@@ -1,29 +1,15 @@
 package card;
 
-import client.Client;
-import client.gui.components.CardPane;
 import enums.Counter;
 import enums.Knowledge;
-import static enums.Knowledge.YELLOW;
 import enums.Subtype;
-import game.ClientGame;
 import game.Game;
 import game.Player;
 import helpers.Hashmap;
-import java.awt.Color;
-import static java.awt.Color.BLACK;
-import static java.awt.Color.LIGHT_GRAY;
-import static java.awt.Color.black;
-import static java.awt.Color.green;
-import static java.awt.Color.red;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
-import static javax.swing.BorderFactory.createCompoundBorder;
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-import network.Message;
 
 /**
  *
@@ -77,11 +63,6 @@ public abstract class Card implements Serializable {
      * Unique identifier for the card.
      */
     public UUID id;
-
-    /**
-     * GUI element for displaying the card.
-     */
-    transient public CardPane panel;
 
     /**
      * Name of the card.
@@ -172,7 +153,7 @@ public abstract class Card implements Serializable {
      * @param game
      * @return
      */
-    public abstract boolean canPlay(ClientGame game);
+    public abstract boolean canPlay(Game game);
     
     /**
      * Called by client to check if you can study this card in current game state.
@@ -181,36 +162,8 @@ public abstract class Card implements Serializable {
      * @param game
      * @return
      */
-    public boolean canStudy (ClientGame game){
-        return game.canStudy();
-    }
-
-    /**
-     * Called by the client when you choose to play this card. 
-     * Default implementation just sends the play message to server with no supplementary data.
-     * OVERRIDE IF: Card requires extra actions to play. (selecting a target, choosing an X value etc.)
-     * @param client
-     */
-    public void play(Client client) {
-        client.gameConnection.send(Message.play(client.game.id, client.username, id, new ArrayList<>()));
-    }
-    
-    /**
-     * Called by the client when you choose to study this card.
-     * It also handles knowledgePool selection if card is multi-faction.
- OVERRIDE IF: Card requires a special action to study.
-     * @param client
-     */
-    public void study(Client client) {
-        Hashmap<Knowledge, Integer> knl = new Hashmap<>();
-        if (knowledge.isEmpty()) {
-            client.study(this, knl);
-        } else if (knowledge.size() == 1) {
-            knl.put(knowledge.keySet().iterator().next(), 1);
-            client.study(this, knl);
-        } else {
-            client.gameArea.displayKnowledgeMenu(this);
-        }
+    public boolean canStudy (Game game){
+        return game.canStudy(controller);
     }
     
     /**
@@ -267,130 +220,5 @@ public abstract class Card implements Serializable {
         depleted = false;
         marked = false;
         supplementaryData = new ArrayList<>();
-    }
-    
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public String toString(){
-        return name;
-    }
-    
-    protected void drawBorders() {
-        getPanel().setBorder(createCompoundBorder(new LineBorder(marked ? green : (depleted ? red : black), 2),
-                marked ? new LineBorder(depleted ? red : black, 2) : null));
-    }
-
-    protected void drawCounters() {
-        counters.forEach((name, count) -> getPanel().add(new JLabel(name + ": " + count)));
-    }
-
-    protected String getKnowledgeString() {
-        ArrayList<Character> knowledgeChars = new ArrayList<>();
-        knowledge.forEach((knowl, count) -> {
-            switch (knowl) {
-                case BLACK:
-                    for (int i = 0; i < count; i++) {
-                        knowledgeChars.add('B');
-                    }
-                    break;
-                case GREEN:
-                    for (int i = 0; i < count; i++) {
-                        knowledgeChars.add('G');
-                    }
-                    break;
-                case RED:
-                    for (int i = 0; i < count; i++) {
-                        knowledgeChars.add('R');
-                    }
-                    break;
-                case BLUE:
-                    for (int i = 0; i < count; i++) {
-                        knowledgeChars.add('U');
-                    }
-                    break;
-                case WHITE:
-                    for (int i = 0; i < count; i++) {
-                        knowledgeChars.add('W');
-                    }
-                    break;
-            }
-        });
-        StringBuilder knowledgeString = new StringBuilder();
-
-        knowledgeChars.forEach((c) -> {
-            knowledgeString.append(c.toString());
-        });
-        return knowledgeString.toString();
-    }
-
-    protected Color getColor() {
-        if (knowledge.isEmpty()) {
-            return LIGHT_GRAY;
-        } else if (knowledge.size() > 1) {
-            return new Color(YELLOW.getValue());
-        } else {
-            for (Knowledge knowl : knowledge.keySet()) {
-                return new Color(knowl.getValue());
-            }
-        }
-        return BLACK;
-    }
-    
-    protected void setToolTip() {
-        String tooltip = "<html>" + cost + " " + getKnowledgeString()+"<br>";
-        tooltip += name + "<br><br>";
-        tooltip += text + "<br><br>";
-        if (!counters.isEmpty()){
-            tooltip += "<br><br>--- COUNTERS ---<br>";
-            tooltip += counters.toString();
-        }
-        tooltip += "</html>";
-        getPanel().setToolTipText(tooltip);
-    }
-    
-    /**
-     *
-     */
-    abstract public void updatePanel();
-
-    /**
-     * Get panel to display the card with dimensions 250 x 350. 
-     * Always use one of the getPanel() functions to ensure a non-null panel is returned.
-     * @return Swing panel that displays the card.
-     */
-    public CardPane getPanel() {
-        if (panel == null) {
-            panel = new CardPane();
-            updatePanel();
-        }
-        panel.setBounds(0, 0, 250, 350);
-        return panel;
-    }
-    
-    /**
-     * Get panel to display the card with dimensions width x (RATIO * width). 
-     * Always use one of the getPanel() functions to ensure a non-null panel is returned.
-     * @param width
-     * @return Swing panel that displays the card.
-     */
-    public CardPane getPanel(int width) {
-        if (panel == null) {
-            panel = new CardPane();
-            updatePanel();
-        }
-        panel.setBounds(0, 0, width, (int)(RATIO * width));
-        return panel;
-    }
-
-    /**
-     *
-     * @param panel
-     */
-    public void setPanel(CardPane panel) {
-        this.panel = panel;
     }
 }

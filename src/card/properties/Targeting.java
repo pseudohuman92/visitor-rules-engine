@@ -14,7 +14,6 @@ import card.Card;
 public interface Targeting {
 
     /**
-     * CALLER: Client<br>
      * BEHAVIOR: Return true if the argument is a valid target for the card.
      * @param c
      * @return
