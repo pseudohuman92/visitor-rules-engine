@@ -14,7 +14,7 @@ export default class Hand extends React.Component {
 
   render() {
     return (
-      <div className="Hand">
+      <div className="hand">
         <Grid
           container
           spacing={24}

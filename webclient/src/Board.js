@@ -14,7 +14,7 @@ export default class BoardSide extends React.Component {
 
   render() {
     return (
-      <div className="BoardSide">
+      <div className="board-side">
         <Grid
           container
           spacing={24}

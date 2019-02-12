@@ -32,10 +32,14 @@
   }
 }
 
-.PlayArea {
+.play-area {
   height: 100%;
 }
 
-.PlayRow {
-  height: 33%;
+.play-row {
+  width: 100%;
+}
+
+.display-col {
+  height: 100%;
 }

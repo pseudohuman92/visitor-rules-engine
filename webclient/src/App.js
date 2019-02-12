@@ -64,28 +64,30 @@ class App extends Component {
         <header className="App-header">
           <Grid
             container
-            spacing={0}
+            spacing={24}
             style={{
-              padding: 20,
-            }}>
-            <Grid item xs={2}>
+              padding: 24,
+              height: '100vh',
+            }}
+            justify="space-between">
+            <Grid item xs={2} className="display-col">
               <StateDisplay me={this.state.me} gary={this.state.gary} />
             </Grid>
             <Grid item xs={9}>
               <Grid
                 container
-                spacing={40}
+                direction="column"
+                spacing={24}
                 style={{
-                  padding: 20,
-                }}
-                className="PlayArea">
-                <Grid item xs={12} className="PlayRow">
+                  padding: 24,
+                }}>
+                <Grid item xs={4}>
                   <BoardSide player="gary" cards={this.state.cards} />
                 </Grid>
-                <Grid item xs={12} className="PlayRow">
+                <Grid item xs={4}>
                   <BoardSide player="me" cards={this.state.cards} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
                   <Hand player="me" cards={this.state.cards} />
                 </Grid>
               </Grid>
