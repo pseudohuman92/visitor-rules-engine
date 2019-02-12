@@ -1,9 +1,13 @@
 .board-side {
   background-color: pink;
   border: 2px black solid;
+  padding: 12px;
+  height: 100%;
 }
 
 .hand {
   background-color: skyblue;
   border: 2px black solid;
+  padding: 12px;
+  height: 100%;
 }

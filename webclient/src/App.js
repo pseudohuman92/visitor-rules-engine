@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+
+import HTML5Backend from 'react-dnd-html5-backend';
+import {DragDropContextProvider} from 'react-dnd';
+
 import Grid from '@material-ui/core/Grid';
-import './App.css';
+
 import Board from './Board.js';
 import Stack from './Stack.js';
 import StateDisplay from './StateDisplay.js';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -59,32 +63,34 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <Grid
-            container
-            spacing={24}
-            style={{
-              padding: '12px 24px',
-              height: '100vh',
-            }}
-            justify="space-between">
-            <Grid item xs={2} className="display-col">
-              <StateDisplay me={this.state.me} gary={this.state.gary} />
+      <DragDropContextProvider backend={HTML5Backend}>
+        <div className="App">
+          <header className="App-header">
+            <Grid
+              container
+              spacing={24}
+              style={{
+                padding: '12px 24px',
+                height: '100vh',
+              }}
+              justify="space-between">
+              <Grid item xs={2} className="display-col">
+                <StateDisplay me={this.state.me} gary={this.state.gary} />
+              </Grid>
+              <Grid item xs={9} className="display-col">
+                <Board
+                  myCards={this.state.cards}
+                  garyCards={this.state.cards}
+                  hand={this.state.me.hand}
+                />
+              </Grid>
+              <Grid item xs={1} className="display-col">
+                <Stack cards={this.state.cards} />
+              </Grid>
             </Grid>
-            <Grid item xs={9} className="display-col">
-              <Board
-                myCards={this.state.cards}
-                garyCards={this.state.cards}
-                hand={this.state.me.hand}
-              />
-            </Grid>
-            <Grid item xs={1} className="display-col">
-              <Stack cards={this.state.cards} />
-            </Grid>
-          </Grid>
-        </header>
-      </div>
+          </header>
+        </div>
+      </DragDropContextProvider>
     );
   }
 }
