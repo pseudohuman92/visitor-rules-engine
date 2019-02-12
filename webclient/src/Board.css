@@ -1,3 +1,9 @@
 .board-side {
   background-color: pink;
+  border: 2px black solid;
+}
+
+.hand {
+  background-color: skyblue;
+  border: 2px black solid;
 }

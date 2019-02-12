@@ -2,6 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import './StateDisplay.css';
+import './Utils.css';
 
 export class PlayerDisplay extends React.Component {
   constructor(props) {
@@ -69,7 +70,7 @@ export default class StateDisplay extends React.Component {
         container
         spacing={24}
         style={{
-          padding: 12,
+          padding: 0,
         }}
         className="state-display"
         direction="column">

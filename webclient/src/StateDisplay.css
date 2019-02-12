@@ -13,16 +13,3 @@
   background-color: white;
   color: black;
 }
-
-/* Kind of a hack. Uses 2 classes to increase the specificity to override
- * the material-ui classes and set max-width to none for grid items when
- * direction is "column".
- */
-.grid-col-item.no-max-width {
-  max-width: none;
-  width: 100%;
-}
-
-.grid-elem {
-  border: 1px black solid;
-}
