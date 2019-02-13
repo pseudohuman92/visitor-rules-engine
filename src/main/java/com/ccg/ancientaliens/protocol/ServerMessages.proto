@@ -1,0 +1,68 @@
+syntax = "proto3";
+import "Types.proto";
+
+/**
+ * Messages from server to client.
+ */
+message LoginResponse {
+    //TODO
+}
+
+message RegisterUserResponse {
+    //TODO
+}
+
+message UpdateChatLog {
+    repeated string chatLog = 1;
+}
+
+message UpdateTableList {
+    repeated Table tables = 1;
+}
+    
+message UpdatePlayerList {
+    repeated string players = 1;
+}
+    
+message NewGame {
+    GameState game = 1;
+}
+
+message UpdateGameState {
+    GameState game = 1;
+}
+
+message SelectFromHand {
+    GameState game = 1;
+    int32 selectionCount = 2;
+}
+
+message Loss {
+    string GameID = 1;
+}
+
+message Win {
+    string GameID = 1;
+}
+
+message OrderCards {
+    GameState game = 1;
+    repeated Card cardsToOrder = 2;
+}
+
+message ServerMessage {
+    //ServerMessageType       type = 1;
+    oneof payload {
+        LoginResponse           loginResponse = 2;
+        RegisterUserResponse    registerUserResponse = 3;
+        UpdateChatLog           updateChatLog = 4;
+        UpdateTableList         updateTableList = 5;
+        UpdatePlayerList        updatePlayerList = 6;
+        NewGame                 newGame = 7;
+        UpdateGameState         updateGameState = 8;
+        SelectFromHand          selectFromHand = 9;
+        Loss                    loss = 10;
+        Win                     win = 11;
+        OrderCards              orderCards = 12;
+    }
+}

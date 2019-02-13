@@ -1,0 +1,81 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+
+/**
+ * Custom type messages. Should not be sent directly.
+ */    
+message Table
+{
+    string id = 1;
+    string creator = 2;
+    string opponent = 3;
+}
+
+enum KnowledgeType {
+    NONE = 0;
+    BLACK = 1;
+    GREEN = 2;
+    RED = 3;
+    BLUE = 4;
+    WHITE = 5;
+}
+
+message Knowledge {
+    KnowledgeType knowledge = 1;
+    int32 count = 2;
+}
+
+enum CounterType {
+    nullCounterType = 0;
+}
+
+message Counter {
+    CounterType counter = 1;
+    int32 count = 2;
+}
+
+message Card {
+    string id = 1;
+    string name = 2;
+    repeated Counter counters = 3;
+    bool depleted = 4;
+    bool marked = 5;
+    repeated string targets = 6;
+}
+
+message Player {
+    string id = 1;
+    string name = 2;
+    int32 deckSize = 3;
+    int32 energy = 4;
+    int32 maxEnergy = 5;
+    repeated Card hand = 6;
+    repeated Card play = 7;
+    repeated Card scrapyard = 8;
+    repeated Card void = 9;
+    repeated Knowledge knowledgePool = 10;
+}
+
+message Opponent {
+    string id = 1;
+    string name = 2;
+    int32 deckSize = 3;
+    int32 energy = 4;
+    int32 maxEnergy = 5;
+    int32 handSize = 6;
+    repeated Card play = 7;
+    repeated Card scrapyard = 8;
+    repeated Card void = 9;
+    repeated Knowledge knowledgePool = 10;
+}
+
+message GameState {
+    string id = 1;
+    Player player = 2;
+    Opponent opponent = 3;
+    string turnPlayer =  4;
+    string activePlayer = 5;
+    repeated Card stack = 6;
+}
+
