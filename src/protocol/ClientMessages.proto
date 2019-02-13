@@ -90,3 +90,25 @@ message OrderCardsResponse {
     GameState game = 1;
     repeated Card orderedCards = 2;
 }
+
+message ClientMessage {
+    oneof payload {
+        RegisterUser                    registerUser = 1;
+        Login                           login = 2;
+        Logout                          logout = 3;
+        ChatMessage                     chatMessage = 4;
+        CreateTable                     createTable = 5;
+        JoinTable                       joinTable = 6;
+        PlayCard                        playCard = 7;
+        ActivateCard                    activateCard = 8;
+        StudyCard                       studyCard = 9;
+        Pass                            pass = 10;
+        RegisterGameConnection          registerGameConnection = 11;
+        RegisterInteractionConnection   registerInteractionConnection = 12;
+        Mulligan                        mulligan = 13;
+        Keep                            keep = 14;
+        SelectFromHandResponse          selectFromHandResponse = 15;
+        Concede                         concede = 16;
+        OrderCardsResponse              orderCardsResponse = 17;
+    }
+};

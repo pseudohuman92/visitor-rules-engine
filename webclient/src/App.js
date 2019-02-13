@@ -8,7 +8,32 @@ import Grid from '@material-ui/core/Grid';
 import Board from './Board.js';
 import Stack from './Stack.js';
 import StateDisplay from './StateDisplay.js';
+import {ServerWSURL} from './Constants.js';
 import './App.css';
+
+var cmessages = require('./proto/ClientMessages_pb.js');
+var smessages = require('./proto/ServerMessages_pb.js');
+
+class ProtoSocket {
+  constructor(url, msgHandler) {
+    this.socket = new WebSocket(ServerWSURL);
+
+    this.socket.onmessage = event => {
+      var msg = event.deserializeBinary;
+    };
+  }
+
+  send(msgType, params) {
+    var msg = new cmessages[msgType]();
+    Object.keys(params).forEach(function(key) {
+      const setName = 'set' + key.charAt(0).toUpperCase() + key.slice(1);
+      msg[setName] = params[key];
+    });
+
+    var bytes = msg.serializeBinary();
+    this.socket(bytes);
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -17,6 +42,7 @@ class App extends Component {
       cards: [],
       me: null,
       gary: null,
+      socket: new WebSocket(ServerWSURL),
     };
 
     var card1 = {

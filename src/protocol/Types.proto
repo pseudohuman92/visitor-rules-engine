@@ -27,7 +27,7 @@ message Knowledge {
 }
 
 enum CounterType {
-    //TODO
+    nullCounterType = 0;
 }
 
 message Counter {

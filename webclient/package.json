@@ -11,6 +11,9 @@
     "react-scripts": "2.1.5"
   },
   "scripts": {
+    "prestart": "./bin/gen-proto-js.sh",
+    "prebuild": "./bin/gen-proto-js.sh",
+    "pretest": "./bin/gen-proto-js.sh",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -19,10 +22,8 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"],
+  "devDependencies": {
+    "google-protobuf": "^3.7.0-rc.2"
+  }
 }
