@@ -2,32 +2,56 @@ package server;
 
 import enums.Knowledge;
 import helpers.Hashmap;
-import java.net.Socket;
-import network.Receiver;
-import network.Message;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
+import javax.websocket.*;
+import javax.websocket.server.*;
+import network.Message;
+import network.Receiver;
+import static server.Main.server;
 
 /**
  *
  * @author pseudo
  */
-public class ServerGameReceiver extends Receiver {
+@ServerEndpoint(value="/chat/{username}/{gameID}")
+public class GameEndpoint extends Receiver {
 
-        Server server;
-        
-    /**
-     *
-     * @param socket
-     * @param server
-     */
-    public ServerGameReceiver(Socket socket, Server server)
-	{
-            super(socket);
-            this.server = server;
-	}
-        
+    Session session;
+    String username;
+    UUID gameID;
+    
+    @OnOpen
+    public void onOpen(Session session, @PathParam("username") String username, @PathParam("gameID") String gameID) throws IOException {
+        this.session = session;
+        this.username = username;
+        this.gameID = UUID.fromString(gameID);
+        session.getBasicRemote().setBatchingAllowed(false);
+        session.getAsyncRemote().setBatchingAllowed(false);
+        server.addNewGameConnection(gameID, username, session.getId());
+    }
+ 
+    @OnMessage
+    public void onMessage(Session session, Message message) throws IOException {
+        handleRequest(message);
+    }
+ 
+    @OnClose
+    public void onClose(Session session) throws IOException {
+        server.removeConnection(session.getId());
+        session = null;
+    }
+ 
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        // Do error handling here
+    }
+ 
+    public void send(Message message) throws IOException, EncodeException {
+        session.getBasicRemote().sendText(message);
+    }
     /**
      *
      * @param message

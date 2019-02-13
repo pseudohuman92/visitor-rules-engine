@@ -19,19 +19,14 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
-import network.Connection;
 import network.Message;
-import static network.Message.fail;
-import static network.Message.lose;
-import static network.Message.updateChatLog;
-import static network.Message.win;
 
 /**
  *
  * @author pseudo
  */
 public class Server {
-
+    
     /**
      *
      */

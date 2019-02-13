@@ -15,7 +15,7 @@ import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import network.Connection;
+import server.Connection;
 import network.Message;
 import static network.Message.order;
 
