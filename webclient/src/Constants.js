@@ -3,4 +3,4 @@ export const ItemTypes = {
   FIELD: 'field',
 };
 
-export const ServerWSURL = 'ws://localhost/chat/me';
+export const ServerWSURL = 'ws://localhost:8080/chat/me';
