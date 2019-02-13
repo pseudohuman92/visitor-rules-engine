@@ -3,6 +3,7 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.card.Card;
 import com.ccg.ancientaliens.game.Game;
+import enums.Knowledge;
 import helpers.Hashmap;
 
 /**
@@ -19,7 +20,7 @@ public abstract class Tome extends Card {
      * @param owner
      */
     public Tome(String name, String text, String image, String owner) {
-        super(name, 0, new Hashmap<>(), text, "assets/tome.png", owner);
+        super(name, 0, new Hashmap<Knowledge, Integer>(), text, "assets/tome.png", owner);
     }
 
     @Override

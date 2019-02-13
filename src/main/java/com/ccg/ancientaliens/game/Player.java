@@ -121,12 +121,14 @@ public class Player implements Serializable {
      * @param cards
      */
     public void discard(ArrayList<UUID> cards){
+        /*
         cards.stream().map((cardID) -> getCardFromHandByID(cardID)).map((card) -> {
             hand.remove(card);
             return card;
         }).forEachOrdered((card) -> {
             discardPile.add(card);
         });
+        */
     }
     
     /**
@@ -148,7 +150,7 @@ public class Player implements Serializable {
     public void newTurn(){
         energy = sources.size();
         numOfStudiesLeft = 1;
-        inPlayCards.forEach((card) -> card.depleted = false);
+        //inPlayCards.forEach((card) -> card.depleted = false);
     }
     
     /**
@@ -156,9 +158,11 @@ public class Player implements Serializable {
      * @param knowl
      */
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
+        /*
         knowl.forEach((k, i) -> {
             knowledgePool.merge(k, i, (a, b) -> a + b);
         });
+        */
     }
     
     /**
@@ -168,8 +172,8 @@ public class Player implements Serializable {
      */
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
-        result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
-                (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
+        //result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
+        //        (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
         return result;
     }
     
@@ -185,9 +189,9 @@ public class Player implements Serializable {
         sb.append("  ID: ").append(id).append("\n");
         sb.append("  Energy: ").append(energy).append(" / ").append(sources.size()).append("\n");
         sb.append("  Knowledge\n");
-        knowledgePool.forEach((k, c) ->{
-            sb.append("    ").append(k).append(": ").append(c).append("\n");
-        });
+        //knowledgePool.forEach((k, c) ->{
+        //    sb.append("    ").append(k).append(": ").append(c).append("\n");
+        //});
         sb.append("  Source Play Count: ").append(numOfStudiesLeft).append("\n");
         sb.append("  Hand \n").append(list(hand, "    ")).append("\n");
         sb.append("  Items \n").append(list(inPlayCards, "    ")).append("\n");
@@ -203,12 +207,14 @@ public class Player implements Serializable {
     }
     */
     public void purgeCardsFromHand(ArrayList<UUID> cards) {
+        /*
         cards.stream().map((cardID) -> getCardFromHandByID(cardID)).map((card) -> {
             hand.remove(card);
             return card;
         }).forEachOrdered((card) -> {
             voidPile.add(card);
         });
+        */
     }
 
     public Card getCardFromVoidByID(UUID cardID) {

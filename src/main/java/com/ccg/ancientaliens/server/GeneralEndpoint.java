@@ -31,7 +31,7 @@ public class GeneralEndpoint {
     }
  
     @OnMessage
-    public void onMessage(Session session, Message message) throws IOException {
+    public void onMessage(Session session, String message) throws IOException {
         System.out.println(username + " sent a message!");
         //handleRequest(message);
     }

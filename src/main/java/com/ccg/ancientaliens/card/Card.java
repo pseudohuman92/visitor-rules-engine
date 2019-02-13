@@ -210,7 +210,7 @@ public abstract class Card implements Serializable {
      * @param count
      */
     public void addCounters(Counter name, int count) {
-        counters.merge(name, count, (a, b) -> a + b);
+        //counters.merge(name, count, (a, b) -> a + b);
     }
 
     /**
