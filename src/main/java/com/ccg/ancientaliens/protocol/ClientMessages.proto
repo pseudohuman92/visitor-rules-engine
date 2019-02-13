@@ -31,30 +31,6 @@ message JoinTable {
     repeated string decklist = 3;
 }
 
-message PlayCard {
-    string gameID = 1;
-    string username = 2;
-    string cardID = 3;
-}
-
-message ActivateCard {
-    string gameID = 1;
-    string username = 2;
-    string cardID = 3;
-}
-
-message StudyCard {
-    string gameID = 1;
-    string username = 2;
-    string cardID = 3;
-    repeated Knowledge knowledge = 4;
-}
-
-message Pass {
-    string gameID = 1;
-    string username = 2;
-}
-
 message RegisterGameConnection {
     string gameID = 1;
     string username = 2;
@@ -65,31 +41,7 @@ message RegisterInteractionConnection {
     string username = 2;
 }
 
-message Mulligan {
-    string gameID = 1;
-    string username = 2;
-}
 
-message Keep {
-    string gameID = 1;
-    string username = 2;
-}
-
-message SelectFromHandResponse {
-    string gameID = 1;
-    string username = 2;
-    repeated string selectedIDs = 3;
-}
-
-message Concede {
-    string gameID = 1;
-    string username = 2;
-}
-
-message OrderCardsResponse {
-    GameState game = 1;
-    repeated Card orderedCards = 2;
-}
 
 message ClientMessage {
     oneof payload {
@@ -99,16 +51,7 @@ message ClientMessage {
         ChatMessage                     chatMessage = 4;
         CreateTable                     createTable = 5;
         JoinTable                       joinTable = 6;
-        PlayCard                        playCard = 7;
-        ActivateCard                    activateCard = 8;
-        StudyCard                       studyCard = 9;
-        Pass                            pass = 10;
         RegisterGameConnection          registerGameConnection = 11;
         RegisterInteractionConnection   registerInteractionConnection = 12;
-        Mulligan                        mulligan = 13;
-        Keep                            keep = 14;
-        SelectFromHandResponse          selectFromHandResponse = 15;
-        Concede                         concede = 16;
-        OrderCardsResponse              orderCardsResponse = 17;
     }
 };

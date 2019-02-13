@@ -1,0 +1,81 @@
+syntax = "proto3";
+import "Types.proto";
+
+/**
+ * Messages that will be send by the server during a game
+ */
+
+//This will be send when a game state changes to notify the client to update display 
+message UpdateGameState {
+    GameState game = 1;
+}
+
+//This will be send when a player loses a game
+message Loss {
+    string GameID = 1;
+}
+
+//This will be send when a player wins the game
+message Win {
+    string GameID = 1;
+}
+
+//This will be send when a player needs order a list of cards
+message OrderCards {
+    GameState game = 1;
+    repeated Card cardsToOrder = 2;
+}
+
+//This will be send when some number of cards needs to be selected from a list of cards
+message SelectFromList {
+    GameState game = 1;
+    int32 selectionCount = 2;
+    repeated Card candidates = 3;
+}
+
+//This will be send when some number of cards needs to be selected from player's hand
+message SelectFromHand {
+    GameState game = 1;
+    int32 selectionCount = 2;
+}
+
+//This will be send when some number of cards needs to be selected from the cards in play
+message SelectFromPlay {
+    GameState game = 1;
+    int32 selectionCount = 2;
+    repeated Card candidates = 3;
+}
+
+//This will be send when some number of cards needs to be selected from player's scrapyard
+message SelectFromScrapyard {
+    GameState game = 1;
+    int32 selectionCount = 2;
+    repeated Card candidates = 3;
+}
+
+//This will be send when some number of cards needs to be selected from player's void
+message SelectFromVoid {
+    GameState game = 1;
+    int32 selectionCount = 2;
+    repeated Card candidates = 3;
+}
+
+//This will be send when a player needs to be selected
+message SelectPlayer {
+    GameState game = 1;
+}
+
+message ServerGameMessage {
+    oneof payload {
+        UpdateGameState         updateGameState = 8;
+        Loss                    loss = 10;
+        Win                     win = 11;
+        OrderCards              orderCards = 12;
+        SelectFromList          selectFromList = 13;
+        SelectFromPlay          selectFromPlay = 14;
+        SelectFromHand          selectFromHand = 15;
+        SelectFromScrapyard     selectFromScrapyard = 16;
+        SelectFromVoid          selectFromVoid = 17;
+        SelectPlayer            selectPlayer = 18;
+    }
+}

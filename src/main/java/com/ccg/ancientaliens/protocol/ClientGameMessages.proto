@@ -1,0 +1,114 @@
+syntax = "proto3";
+import "Types.proto";
+
+/**
+ * Messages that will be send by the client during a game 
+ */
+
+//This will be send when player plays a card from hand
+message PlayCard {
+    string gameID = 1;
+    string username = 2;
+    string cardID = 3;
+}
+
+//This will be send when player activates a card in play
+message ActivateCard {
+    string gameID = 1;
+    string username = 2;
+    string cardID = 3;
+}
+
+//This will be send when player studies a card in hand
+message StudyCard {
+    string gameID = 1;
+    string username = 2;
+    string cardID = 3;
+    repeated Knowledge knowledge = 4;
+}
+
+//This will be send when player passes initiative
+message Pass {
+    string gameID = 1;
+    string username = 2;
+}
+
+//This will be send when player mulligans his starting hand
+message Mulligan {
+    string gameID = 1;
+    string username = 2;
+}
+
+//This will be send when player keeps his starting hand
+message Keep {
+    string gameID = 1;
+    string username = 2;
+}
+
+//This will be send when player concedes from a game
+message Concede {
+    string gameID = 1;
+    string username = 2;
+}
+
+//This will be send as a response to OrderCards message from server
+message OrderCardsResponse {
+    GameState game = 1;
+    repeated string orderedCards = 2;
+}
+
+//This will be send as a response to SelectFromList message from server
+message SelectFromListResponse {
+    GameState game = 1;
+    repeated string selectedCards = 2;
+}
+
+//This will be send as a response to SelectFromHand message from server
+message SelectFromHandResponse {
+    string gameID = 1;
+    repeated string selectedIDs = 3;
+}
+
+//This will be send as a response to SelectFromPlay message from server
+message SelectFromPlayResponse {
+    GameState game = 1;
+    repeated string selectedCards = 2;
+}
+
+//This will be send as a response to SelectFromScrapyard message from server
+message SelectFromScrapyardResponse {
+    GameState game = 1;
+    repeated string selectedCards = 2;
+}
+
+//This will be send as a response to SelectFromVoid message from server
+message SelectFromVoidResponse {
+    GameState game = 1;
+    repeated string selectedCards = 2;
+}
+
+//This will be send as a response to SelectPlayer message from server
+message SelectPlayerResponse {
+    GameState game = 1;
+    string selectedPlayerName = 2;
+}
+
+
+message ClientGameMessage {
+    oneof payload {
+        PlayCard                        playCard = 7;
+        ActivateCard                    activateCard = 8;
+        StudyCard                       studyCard = 9;
+        Pass                            pass = 10;
+        Mulligan                        mulligan = 13;
+        Keep                            keep = 14;
+        Concede                         concede = 16;
+        OrderCardsResponse              orderCardsResponse = 17;
+        SelectFromHandResponse          selectFromHandResponse = 15;
+        SelectFromListResponse          selectFromListResponse = 18;
+        SelectFromPlayResponse          selectFromPlayResponse = 19;
+        SelectFromScrapyardResponse     selectFromScrapyardResponse = 20;
+        SelectFromVoidResponse          selectFromVoidResponse = 21;
+        SelectPlayerResponse            selectPlayerResponse = 22;
+    }
+};
