@@ -5,18 +5,22 @@ package com.ccg.ancientaliens.server;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import com.ccg.ancientaliens.protocol.ClientMessages.ClientMessage;
+import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage;
 import java.io.IOException;
-import javax.websocket.*;
-import javax.websocket.server.*;
-/**
- *
- * @author pseudo
- */
+import javax.websocket.EncodeException;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint(value="/chat/{username}")
 public class GeneralEndpoint {
   
+    static GameServer gameServer = null;
     Session session;
     String username;
     
@@ -26,13 +30,16 @@ public class GeneralEndpoint {
         this.username = username;
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
+        if (gameServer == null)
+            gameServer = new GameServer();
         System.out.println(username + " connected!");
         //server.addNewConnection(username, session.getId());
     }
  
     @OnMessage
-    public void onMessage(Session session, String message) throws IOException {
-        System.out.println(username + " sent a message!");
+    public void onMessage(Session session, byte[] message) throws IOException {
+        ClientMessage cm = ClientMessage.parseFrom(message);
+        System.out.println(username + " sent a message: " + cm);
         //handleRequest(message);
     }
  
@@ -48,8 +55,9 @@ public class GeneralEndpoint {
         System.out.println(username + " ERROR!");
     }
  
-    public void send(Message message) throws IOException, EncodeException {
-        //session.getBasicRemote().sendText(message);
+    public void send(ServerMessage message) throws IOException, EncodeException {
+        System.out.println("Server sending a message to " + username + ": " + message);
+        session.getBasicRemote().sendObject(message.toByteArray());
     }
     
     /*

@@ -1,5 +1,7 @@
 package com.ccg.ancientaliens.server;
 
+import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import java.io.IOException;
 import java.util.UUID;
 import javax.websocket.*;
@@ -26,7 +28,9 @@ public class GameEndpoint {
     }
  
     @OnMessage
-    public void onMessage(Session session, String message) throws IOException {
+    public void onMessage(Session session, byte[] message) throws IOException {
+        ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
+        System.out.println(username + " sent a game message: " + cgm);
         //handleRequest(message);
     }
  
@@ -41,8 +45,9 @@ public class GameEndpoint {
         // Do error handling here
     }
  
-    public void send(Message message) throws IOException, EncodeException {
-        //session.getBasicRemote().sendText(message);
+    public void send(ServerGameMessage message) throws IOException, EncodeException {
+        System.out.println("Server sending a game message to " + username + ": " + message);
+        session.getBasicRemote().sendObject(message.toByteArray());
     }
     /*
     @Override
