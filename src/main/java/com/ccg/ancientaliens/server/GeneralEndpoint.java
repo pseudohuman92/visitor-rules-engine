@@ -30,10 +30,11 @@ public class GeneralEndpoint {
         this.username = username;
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
-        if (gameServer == null)
+        if (gameServer == null) {
             gameServer = new GameServer();
+        }
         System.out.println(username + " connected!");
-        //server.addNewConnection(username, session.getId());
+        gameServer.addConnection(username, this);
     }
  
     @OnMessage
@@ -46,8 +47,8 @@ public class GeneralEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println(username + " disconnected!");
-        //server.removeConnection(session.getId());
-        session = null;
+        gameServer.removeConnection(username);
+        this.session = null;
     }
  
     @OnError

@@ -5,20 +5,12 @@
  */
 package com.ccg.ancientaliens.server;
 
-import com.ccg.ancientaliens.card.Card;
-import com.ccg.ancientaliens.card.types.Item;
-import enums.Knowledge;
-import com.ccg.ancientaliens.game.Deck;
-import com.ccg.ancientaliens.game.Game;
-import com.ccg.ancientaliens.game.Player;
-import com.ccg.ancientaliens.game.Table;
-import static helpers.Debug.println;
+import com.ccg.ancientaliens.game.*;
+import com.ccg.ancientaliens.protocol.Types;
 import helpers.Hashmap;
-import java.io.Serializable;
-import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import static java.util.UUID.randomUUID;
 
 /**
  *
@@ -26,5 +18,60 @@ import static java.util.UUID.randomUUID;
  */
 public class GameServer {
     
+    public Hashmap<String, GeneralEndpoint> playerConnections;
+    public Hashmap<UUID, Table> tables;
+    public Hashmap<UUID, Game> games;
+    public ArrayList<String> chatLog;
     
+
+    public GameServer() {
+        playerConnections = new Hashmap<>();
+        tables = new Hashmap<>();
+        chatLog = new ArrayList<>();
+        games = new Hashmap<>();
+    }
+
+    void playCard(UUID gameID, String username, UUID fromString) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void activateCard(UUID gameID, String username, UUID fromString) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void studyCard(UUID gameID, String username, UUID fromString, List<Types.Knowledge> knowledgeList) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void pass(UUID gameID, String username) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void mulligan(UUID gameID, String username) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void keep(UUID gameID, String username) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void concede(UUID gameID, String username) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void addConnection(String username, GeneralEndpoint connection) {
+        playerConnections.put(username, connection);
+    }
+
+    void removeConnection(String username) {
+        playerConnections.remove(username);
+    }
+
+    void addGameConnection(UUID gameID, String username, GameEndpoint connection) {
+        games.get(gameID).addConnection(username, connection);
+    }
+    
+    void removeGameConnection(UUID gameID, String username) {
+        games.get(gameID).removeConnection(username);
+    }
 }
