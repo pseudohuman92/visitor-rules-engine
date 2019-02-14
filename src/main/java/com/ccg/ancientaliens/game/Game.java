@@ -236,12 +236,13 @@ public class Game {
         sb.append("****************\n");
         return sb.toString();
     }
-    */
+    
     
     void processTrigger (Event e) {
         players.get(turnPlayer).addTriggerEvent(this, e);
         players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, e);
     }
+    */
     
     public void possess(UUID cardID, String newController) {
         Card c = getPlayAreaCardByID(cardID);
@@ -249,7 +250,7 @@ public class Game {
         players.get(oldController).inPlayCards.remove(c);
         players.get(newController).inPlayCards.add(c);
         c.controller = newController;
-        processTrigger(Event.possess(oldController, newController, cardID));
+        //processTrigger(Event.possess(oldController, newController, cardID));
     }
 
     public void discardAfterPlay(Card c) {
@@ -289,7 +290,7 @@ public class Game {
         Card c = p.getCardFromVoidByID(retID);
         p.voidPile.remove(c);
         p.hand.add(c);
-        processTrigger(Event.draw(controller, 1));
+        //processTrigger(Event.draw(controller, 1));
     }
     
     /*

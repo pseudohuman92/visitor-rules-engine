@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package com.ccg.ancientaliens.game;
 
 import enums.EventLabel;
 import static enums.EventLabel.*;

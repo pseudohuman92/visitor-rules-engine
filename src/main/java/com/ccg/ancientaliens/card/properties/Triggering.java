@@ -5,7 +5,7 @@
  */
 package com.ccg.ancientaliens.card.properties;
 
-import game.Event;
+import com.ccg.ancientaliens.game.Event;
 import com.ccg.ancientaliens.game.Game;
 
 /**
