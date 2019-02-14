@@ -5,14 +5,9 @@ import './Stack.css';
 import './Utils.css';
 
 export default class Stack extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cards: props.cards,
-    };
-  }
-
   render() {
+    const cards = this.props.cards;
+
     return (
       <Grid
         container
@@ -22,7 +17,7 @@ export default class Stack extends React.Component {
         }}
         className="stack"
         direction="column">
-        {this.state.cards.map(card => (
+        {cards.map(card => (
           <Grid
             item
             key={card.id}

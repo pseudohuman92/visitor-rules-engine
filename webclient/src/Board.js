@@ -5,7 +5,7 @@ import {DropTarget} from 'react-dnd';
 import Grid from '@material-ui/core/Grid';
 
 import PlayingCard from './PlayingCard.js';
-import {ItemTypes} from './Constants.js';
+import {ItemTypes, FieldIDs} from './Constants.js';
 import './Board.css';
 import './Board.css';
 import './Utils.css';
@@ -17,7 +17,7 @@ const fieldTarget = {
       return;
     }
 
-    return {targetType: ItemTypes.FIELD, props: props};
+    return {targetType: ItemTypes.FIELD, id: props.id};
   },
 };
 
@@ -25,13 +25,12 @@ class BoardSide extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      myField: props.myField,
       cards: props.cards,
     };
   }
 
   render() {
-    const {isOver, isOverCurrent, canDrop, connectDropTarget} = this.props;
+    const {id, isOver, isOverCurrent, canDrop, connectDropTarget} = this.props;
 
     var style = {};
     if (canDrop && isOverCurrent) {
@@ -43,7 +42,11 @@ class BoardSide extends React.Component {
         <Grid container spacing={0} style={style} className="board-side">
           {this.state.cards.map(card => (
             <Grid item xs={1} key={card.id}>
-              <PlayingCard {...card} />
+              <PlayingCard
+                inHand={false}
+                myCard={id === FieldIDs.MY_FIELD}
+                {...card}
+              />
             </Grid>
           ))}
         </Grid>
@@ -72,7 +75,7 @@ class Hand extends React.Component {
       <Grid container spacing={0} className="hand">
         {this.state.cards.map(card => (
           <Grid item xs={1} key={card.id}>
-            <PlayingCard {...card} />
+            <PlayingCard inHand={true} myCard={true} {...card} />
           </Grid>
         ))}
       </Grid>
@@ -81,16 +84,20 @@ class Hand extends React.Component {
 }
 
 export default class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      myCards: props.myCards,
-      garyCards: props.garyCards,
-      hand: props.hand,
-    };
-  }
+  //constructor(props) {
+  //  super(props);
+  //  this.state = {
+  //    myCards: props.myCards,
+  //    garyCards: props.garyCards,
+  //    hand: props.hand,
+  //  };
+  //}
 
   render() {
+    const myPlayCards = this.props.game.player.play;
+    const myHandCards = this.props.game.player.hand;
+    const garyPlayCards = this.props.game.opponent.play;
+
     return (
       <Grid
         container
@@ -101,13 +108,13 @@ export default class Board extends React.Component {
           height: '100%',
         }}>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <BoardSide id="gary" myField={false} cards={this.state.garyCards} />
+          <BoardSide id={FieldIDs.GARY_FIELD} cards={garyPlayCards} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <BoardSide id="me" myField={true} cards={this.state.myCards} />
+          <BoardSide id={FieldIDs.MY_FIELD} cards={myPlayCards} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <Hand cards={this.state.hand} />
+          <Hand cards={myHandCards} />
         </Grid>
       </Grid>
     );

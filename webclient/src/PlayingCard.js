@@ -7,7 +7,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 
 import {protoSocket} from './ProtoSocket.js';
-import {ItemTypes} from './Constants.js';
+import {ItemTypes, FieldIDs} from './Constants.js';
+import {PlayCard, ActivateCard} from './Game.js';
 import './PlayingCard.css';
 
 const cardSource = {
@@ -21,18 +22,13 @@ const cardSource = {
     }
 
     const targetProps = monitor.getDropResult();
-    console.log(targetProps);
-    protoSocket.send('ActivateCard', {
-      gameID: 'best game',
-      username: 'me',
-      cardID: props.id,
-    });
-
-    alert(
-      `You dragged card ${props.id} to ${targetProps.targetType} ${
-        targetProps.props.id
-      }`,
-    );
+    if (
+      props.inHand &&
+      (targetProps.targetType === ItemTypes.FIELD &&
+        targetProps.id === FieldIDs.MY_FIELD)
+    ) {
+      PlayCard(props.id);
+    }
   },
 };
 
@@ -42,22 +38,18 @@ const cardTarget = {
       return;
     }
 
-    return {targetType: ItemTypes.CARD, props: props};
+    return {targetType: ItemTypes.CARD, id: props.id};
   },
 };
 
 export class PlayingCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: props.id,
-      name: props.name,
-      description: 'Some shit',
-    };
-  }
-
   render() {
     const {
+      id,
+      name,
+      description,
+      inHand,
+      myCard,
       isOver,
       canDrop,
       isDragging,
@@ -75,6 +67,13 @@ export class PlayingCard extends React.Component {
         border = '5px red solid';
       }
     }
+
+    let clickHandler = undefined;
+    if (!inHand && myCard) {
+      clickHandler = event => {
+        ActivateCard(id);
+      };
+    }
     return connectDropTarget(
       connectDragSource(
         <div>
@@ -82,9 +81,10 @@ export class PlayingCard extends React.Component {
             style={{
               opacity: opacity,
               border: border,
-            }}>
-            <CardHeader title={this.state.name} />
-            <CardContent>{this.state.description}</CardContent>
+            }}
+            onClick={clickHandler}>
+            <CardHeader title={name} />
+            <CardContent>{description}</CardContent>
           </Card>
         </div>,
       ),
