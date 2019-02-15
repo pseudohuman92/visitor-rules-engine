@@ -27,7 +27,14 @@ const fieldTarget = {
 
 class BoardSide extends React.Component {
   render() {
-    const {id, cards, isOverCurrent, canDrop, connectDropTarget} = this.props;
+    const {
+      id,
+      cards,
+      isOverCurrent,
+      canDrop,
+      connectDropTarget,
+      amActive,
+    } = this.props;
     const selectCandIDs = this.props.selectCands.map(card => card.id);
 
     var style = {};
@@ -42,7 +49,7 @@ class BoardSide extends React.Component {
             <Grid item xs={1} key={card.id}>
               <PlayingCard
                 playable={false}
-                activatable={id === FieldIDs.MY_FIELD}
+                activatable={amActive}
                 selectable={selectCandIDs.includes(card.id)}
                 {...card}
               />
@@ -63,13 +70,14 @@ BoardSide = DropTarget(ItemTypes.CARD, fieldTarget, (connect, monitor) => ({
 
 class Hand extends React.Component {
   render() {
+    const amActive = this.props.amActive;
     const selectCandIDs = this.props.selectCands.map(card => card.id);
     return (
       <Grid container spacing={0} className="hand">
         {this.props.cards.map(card => (
           <Grid item xs={1} key={card.id}>
             <PlayingCard
-              playable={true}
+              playable={amActive}
               activatable={false}
               selectable={selectCandIDs.includes(card.id)}
               {...card}
@@ -96,6 +104,7 @@ export default class Board extends React.Component {
     const myHandCards = this.props.game.player.hand;
     const garyPlayCards = this.props.game.opponent.play;
     const selectCands = this.props.selectCands;
+    const amActive = this.props.game.activePlayer === this.props.game.player.id;
 
     return (
       <Grid
@@ -111,6 +120,7 @@ export default class Board extends React.Component {
             id={FieldIDs.GARY_FIELD}
             cards={garyPlayCards}
             selectCands={selectCands}
+            amActive={false}
           />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
@@ -118,10 +128,15 @@ export default class Board extends React.Component {
             id={FieldIDs.MY_FIELD}
             cards={myPlayCards}
             selectCands={selectCands}
+            amActive={amActive}
           />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <Hand cards={myHandCards} selectCands={selectCands} />
+          <Hand
+            cards={myHandCards}
+            selectCands={selectCands}
+            amActive={amActive}
+          />
         </Grid>
       </Grid>
     );

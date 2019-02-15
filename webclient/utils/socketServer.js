@@ -179,8 +179,22 @@ function send(ws, msgType, params) {
   ws.send(bytes);
 }
 
-function handlePlayCard(ws, params) {}
-function handleActivateCard(ws, params) {}
+function handlePlayCard(ws, params) {
+  const playedCard = gameState.player.hand.find(
+    card => card.id === params.cardID,
+  );
+  gameState.player.hand = gameState.player.hand.filter(
+    card => card.id !== params.cardID,
+  );
+  gameState.player.play.push(playedCard);
+  gameState.activePlayer = otherPlayer(gameState.activePlayer);
+  send(ws, 'UpdateGameState', {game: gameState});
+}
+function handleActivateCard(ws, params) {
+  const selectedCards = params.selectedCards;
+  gameState.activePlayer = otherPlayer(gameState.activePlayer);
+  send(ws, 'UpdateGameState', {game: gameState});
+}
 function handleStudyCard(ws, params) {}
 function handlePass(ws, params) {
   gameState.activePlayer = otherPlayer(gameState.turnPlayer);
@@ -191,6 +205,8 @@ function handleMulligan(ws, params) {
   send(ws, 'UpdateGameState', {game: gameState});
 }
 function handleKeep(ws, params) {
+  gameState.activePlayer = me.id;
+  gameState.turnPlayer = me.id;
   send(ws, 'UpdateGameState', {game: gameState});
   // send(ws, 'SelectFromPlay', {
   //   game: gameState,

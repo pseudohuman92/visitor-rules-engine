@@ -174,6 +174,7 @@ class App extends Component {
       toUpdate['selectCands'] = params.candidates;
       toUpdate['selectCount'] = params.selectionCount;
     }
+    console.log(phase, toUpdate);
     this.setState(toUpdate);
   }
 
