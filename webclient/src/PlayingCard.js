@@ -15,6 +15,10 @@ const cardSource = {
     return {};
   },
 
+  canDrag(props) {
+    return props.playable;
+  },
+
   endDrag(props, monitor) {
     if (!monitor.didDrop()) {
       return;
@@ -22,7 +26,7 @@ const cardSource = {
 
     const targetProps = monitor.getDropResult();
     if (
-      props.inHand &&
+      props.playable &&
       (targetProps.targetType === ItemTypes.FIELD &&
         targetProps.id === FieldIDs.MY_FIELD)
     ) {
@@ -47,8 +51,8 @@ export class PlayingCard extends React.Component {
       id,
       name,
       description,
-      inHand,
-      myCard,
+      activatable,
+      playable,
       isOver,
       canDrop,
       isDragging,
@@ -73,7 +77,7 @@ export class PlayingCard extends React.Component {
       clickHandler = event => {
         SelectCard(id);
       };
-    } else if (!inHand && myCard) {
+    } else if (activatable) {
       clickHandler = event => {
         ActivateCard(id);
       };

@@ -19,6 +19,10 @@ const fieldTarget = {
 
     return {targetType: ItemTypes.FIELD, id: props.id};
   },
+
+  canDrop(props, monitor) {
+    return props.id !== FieldIDs.GARY_FIELD;
+  },
 };
 
 class BoardSide extends React.Component {
@@ -37,8 +41,8 @@ class BoardSide extends React.Component {
           {cards.map(card => (
             <Grid item xs={1} key={card.id}>
               <PlayingCard
-                inHand={false}
-                myCard={id === FieldIDs.MY_FIELD}
+                playable={false}
+                activatable={id === FieldIDs.MY_FIELD}
                 selectable={selectCandIDs.includes(card.id)}
                 {...card}
               />
@@ -65,8 +69,8 @@ class Hand extends React.Component {
         {this.props.cards.map(card => (
           <Grid item xs={1} key={card.id}>
             <PlayingCard
-              inHand={true}
-              myCard={true}
+              playable={true}
+              activatable={false}
               selectable={selectCandIDs.includes(card.id)}
               {...card}
             />
