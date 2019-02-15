@@ -17,7 +17,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value="/chat/{username}")
+@ServerEndpoint(value="/profiles/{username}")
 public class GeneralEndpoint {
   
     static GameServer gameServer = null;

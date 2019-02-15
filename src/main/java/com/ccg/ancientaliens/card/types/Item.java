@@ -31,7 +31,7 @@ public abstract class Item extends Card implements Activatable {
     @Override
     public void resolve(Game game) {
         depleted = true;
-        game.players.get(controller).inPlayCards.add(this);
+        game.players.get(controller).playArea.add(this);
     }
     
     @Override
