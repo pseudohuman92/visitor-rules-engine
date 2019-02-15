@@ -36,22 +36,20 @@ public class GameServer {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-
-    void pass(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void mulligan(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void keep(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     void concede(UUID gameID, String username) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    void mulligan(UUID gameID, String username) {
+        games.get(gameID).mulligan(username);
+    }
+    
+    void keep(UUID gameID, String username) {
+        games.get(gameID).keep(username);
+    }
+    
+    void pass(UUID gameID, String username) {
+        games.get(gameID).pass(username);
     }
     
     void studyCard(UUID gameID, String username, UUID cardID, List<Types.Knowledge> knowledgeList) {

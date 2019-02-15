@@ -47,52 +47,7 @@ public class Game {
         players.get(table.creator).draw(5);
         players.get(table.opponent).draw(5);
     }
-    
-    /*
-    public void changePhase(){
-        switch(phase) {
-            case MULLIGAN:
-                newTurn();
-                break;
-            case BEGIN:
-                passCount = 0;
-                activePlayer = turnPlayer;
-                phase = MAIN;
-                break;
-            case MAIN:
-                activePlayer = "";
-                phase = END;
-                break;
-            case END:
-                newTurn();
-                break;
-        }
-    }
-    
-    
-    void newTurn(){
-        phase = BEGIN;
-        if(turnCount > 0){
-            turnPlayer = getOpponentName(turnPlayer);
-            players.get(turnPlayer).draw(1);
-        }
-        activePlayer = "";
-        passCount = 0;
-        players.get(turnPlayer).draw(1);
-        players.get(turnPlayer).newTurn();
-        turnCount++;
-    }
-    
 
-    public String getOpponentName(String playerName){
-        for(String name : players.keySet()){
-            if(!name.equals(playerName)){
-                return name;
-            }
-        }
-        return null;
-    }
-    
     /*
     public void discard(String username, int count){
         Connection connection = connections.get(username);
@@ -310,10 +265,6 @@ public class Game {
             connections.remove(username);
     }
 
-    public void playCard(String username, UUID cardID) {
-        getCard(cardID).play(this);
-    }
-    
     public Card getCard(UUID targetID) {
         for (Player player : players.values()) {
             Card c = player.getCard(targetID);
@@ -333,8 +284,91 @@ public class Game {
         }
         return null;
     }
+    
+    public void playCard(String username, UUID cardID) {
+        getCard(cardID).play(this);
+        passCount = 0;
+        activePlayer = getOpponentName(username);
+    }
 
     public void studyCard(String username, UUID cardID) {
         getCard(cardID).study(this);
+    }
+    
+    public void changePhase(){
+        /*
+        switch(phase) {
+            case MULLIGAN:
+                newTurn();
+                break;
+            case BEGIN:
+                passCount = 0;
+                activePlayer = turnPlayer;
+                phase = MAIN;
+                break;
+            case MAIN:
+                activePlayer = "";
+                phase = END;
+                break;
+            case END:
+                newTurn();
+                break;
+        }
+        */
+    }
+    
+    void newTurn(){
+        /*
+        phase = BEGIN;
+        if(turnCount > 0){
+            turnPlayer = getOpponentName(turnPlayer);
+            players.get(turnPlayer).draw(1);
+        }
+        activePlayer = "";
+        passCount = 0;
+        players.get(turnPlayer).draw(1);
+        players.get(turnPlayer).newTurn();
+        turnCount++;
+        */
+    }
+    
+
+    public String getOpponentName(String playerName){
+        for(String name : players.keySet()){
+            if(!name.equals(playerName)){
+                return name;
+            }
+        }
+        return null;
+    }
+
+    public void pass(String username) {
+        passCount++;
+        if (passCount == 2) {
+            if (!stack.isEmpty()){
+                resolveStack();
+            } else {
+                changePhase();
+            }
+        } else {
+            activePlayer = getOpponentName(username);
+        }
+    }
+
+    private void resolveStack() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void mulligan(String username) {
+        players.get(username).mulligan();
+    }
+
+    public void keep(String username) {
+        passCount++;
+        if (passCount == 2) {
+            changePhase();
+        } else {
+            activePlayer = getOpponentName(username);
+        }
     }
 }

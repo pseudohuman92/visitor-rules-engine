@@ -49,37 +49,22 @@ public class Player implements Serializable {
         knowledgePool = new Hashmap<>();
         triggeringCards = new ArrayList<>();
     }
-    
-    /**
-     *
-     * @param count
-     */
+
     public void draw(int count){
         hand.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
     
-    /**
-     *
-     * @param count
-     */
     public void purgeFromDeck(int count) {
         voidPile.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
 
-    /**
-     *
-     * @param cards
-     */
     public void discard(ArrayList<UUID> cards){
         cards.stream().map((cardID) -> getCardFrom(cardID, hand))
                 .forEachOrdered((card) -> { scrapyard.add(card); });     
     }
     
-    /**
-     *
-     */
     public void mulligan(){
         int size = hand.size();
         if(size > 0){
@@ -89,32 +74,20 @@ public class Player implements Serializable {
             draw(size -1);
         }
     }
-    
-    /**
-     *
-     */
+
     public void newTurn(){
         energy = maxEnergy;
         numOfStudiesLeft = 1;
         playArea.forEach((card) -> card.depleted = false);
     }
     
-    /**
-     *
-     * @param knowl
-     */
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
         knowl.forEach((k, i) -> {
             knowledgePool.merge(k, i, (a, b) -> a + b);
         });
         
     }
-    
-    /**
-     *
-     * @param cardKnowledge
-     * @return
-     */
+
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
         result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
@@ -122,10 +95,6 @@ public class Player implements Serializable {
         return result;
     }
     
-    /**
-     *
-     * @return
-     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -173,25 +142,18 @@ public class Player implements Serializable {
     }
     
     public Card getCard(UUID cardID) {
-        Card c = getCardFrom (cardID, hand);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, deck.deck);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, playArea);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, scrapyard);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, voidPile);
-        if (c != null) {
-            return c;
+        Card c; 
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            c = getCardFrom (cardID, list);
+            if (c != null) {
+                return c;
+            }
         }
         return null;
     }
@@ -206,25 +168,18 @@ public class Player implements Serializable {
     }
     
     public Card peekCard(UUID cardID) {
-        Card c = peekCardFrom (cardID, hand);
-        if (c != null) {
-            return c;
-        }
-        c = peekCardFrom(cardID, deck.deck);
-        if (c != null) {
-            return c;
-        }
-        c = peekCardFrom(cardID, playArea);
-        if (c != null) {
-            return c;
-        }
-        c = peekCardFrom(cardID, scrapyard);
-        if (c != null) {
-            return c;
-        }
-        c = peekCardFrom(cardID, voidPile);
-        if (c != null) {
-            return c;
+        Card c; 
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            c = peekCardFrom (cardID, list);
+            if (c != null) {
+                return c;
+            }
         }
         return null;
     }
