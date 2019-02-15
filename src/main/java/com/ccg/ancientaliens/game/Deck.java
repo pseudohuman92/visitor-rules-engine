@@ -1,7 +1,7 @@
 
 package com.ccg.ancientaliens.game;
 
-import com.ccg.ancientaliens.card.Card;
+import com.ccg.ancientaliens.card.types.Card;
 import static helpers.Debug.list;
 import java.io.File;
 import java.io.FileNotFoundException;

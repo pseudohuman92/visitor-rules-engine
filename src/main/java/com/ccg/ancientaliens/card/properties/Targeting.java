@@ -5,7 +5,7 @@
  */
 package com.ccg.ancientaliens.card.properties;
 
-import com.ccg.ancientaliens.card.Card;
+import com.ccg.ancientaliens.card.types.Card;
 
 /**
  * Interface for cards that require targets for their effects.

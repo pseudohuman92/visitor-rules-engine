@@ -1,9 +1,14 @@
 package com.ccg.ancientaliens.server;
 
 import com.ccg.ancientaliens.protocol.ClientGameMessages.*;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.ActivateCard;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import static com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.PlayCard;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.StudyCard;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.*;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
 import java.io.IOException;
 import java.util.UUID;

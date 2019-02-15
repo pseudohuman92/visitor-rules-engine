@@ -1,10 +1,10 @@
 
 package com.ccg.ancientaliens.game;
 
-import com.ccg.ancientaliens.card.Card;
+import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.server.GameEndpoint;
-import enums.Phase;
-import static enums.Phase.MULLIGAN;
+import com.ccg.ancientaliens.enums.Phase;
+import static com.ccg.ancientaliens.enums.Phase.*;
 import helpers.Hashmap;
 import static java.lang.Math.random;
 import java.util.ArrayList;
@@ -322,5 +322,19 @@ public class Game {
             }
         }
         return null;
+    }
+    
+    public Card peekCard(UUID targetID) {
+        for (Player player : players.values()) {
+            Card c = player.peekCard(targetID);
+            if (c != null){
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public void studyCard(String username, UUID cardID) {
+        getCard(cardID).study(this);
     }
 }

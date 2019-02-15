@@ -31,17 +31,12 @@ public class GameServer {
         games = new Hashmap<>();
     }
 
-    void playCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).playCard(username, cardID);
-    }
 
     void activateCard(UUID gameID, String username, UUID fromString) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    void studyCard(UUID gameID, String username, UUID fromString, List<Types.Knowledge> knowledgeList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     void pass(UUID gameID, String username) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -57,6 +52,14 @@ public class GameServer {
 
     void concede(UUID gameID, String username) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    void studyCard(UUID gameID, String username, UUID cardID, List<Types.Knowledge> knowledgeList) {
+        games.get(gameID).studyCard(username, cardID);
+    }
+    
+    void playCard(UUID gameID, String username, UUID cardID) {
+        games.get(gameID).playCard(username, cardID);
     }
 
     void addConnection(String username, GeneralEndpoint connection) {

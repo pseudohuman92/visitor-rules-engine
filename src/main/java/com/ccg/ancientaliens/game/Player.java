@@ -1,8 +1,8 @@
 package com.ccg.ancientaliens.game;
 
-import com.ccg.ancientaliens.card.Card;
+import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.properties.Triggering;
-import enums.Knowledge;
+import com.ccg.ancientaliens.enums.Knowledge;
 import static helpers.Debug.list;
 import helpers.Hashmap;
 import java.io.Serializable;
@@ -49,15 +49,6 @@ public class Player implements Serializable {
         knowledgePool = new Hashmap<>();
         triggeringCards = new ArrayList<>();
     }
-
-    /**
-     *
-     * @return
-     
-    public Opponent toOpponent ()
-    {
-        return new Opponent(this);
-    }*/
     
     /**
      *
@@ -82,14 +73,8 @@ public class Player implements Serializable {
      * @param cards
      */
     public void discard(ArrayList<UUID> cards){
-        /*
-        cards.stream().map((cardID) -> getCardFromHand(cardID)).map((card) -> {
-            hand.remove(card);
-            return card;
-        }).forEachOrdered((card) -> {
-            scrapyard.add(card);
-        });
-        */
+        cards.stream().map((cardID) -> getCardFrom(cardID, hand))
+                .forEachOrdered((card) -> { scrapyard.add(card); });     
     }
     
     /**
@@ -111,7 +96,7 @@ public class Player implements Serializable {
     public void newTurn(){
         energy = maxEnergy;
         numOfStudiesLeft = 1;
-        //inPlayCards.forEach((card) -> card.depleted = false);
+        playArea.forEach((card) -> card.depleted = false);
     }
     
     /**
@@ -119,11 +104,10 @@ public class Player implements Serializable {
      * @param knowl
      */
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
-        /*
         knowl.forEach((k, i) -> {
             knowledgePool.merge(k, i, (a, b) -> a + b);
         });
-        */
+        
     }
     
     /**
@@ -133,8 +117,8 @@ public class Player implements Serializable {
      */
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
-        //result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
-        //        (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
+        result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
+                (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
         return result;
     }
     
@@ -180,7 +164,8 @@ public class Player implements Serializable {
 
     public Card getCardFrom (UUID cardID, ArrayList<Card> list){
         for (Card card : list) {
-            if(card.id.equals(cardID)){ 
+            if(card.id.equals(cardID)){
+                list.remove(card);
                 return card;
             }
         }
@@ -205,6 +190,39 @@ public class Player implements Serializable {
             return c;
         }
         c = getCardFrom(cardID, voidPile);
+        if (c != null) {
+            return c;
+        }
+        return null;
+    }
+    
+    public Card peekCardFrom (UUID cardID, ArrayList<Card> list){
+        for (Card card : list) {
+            if(card.id.equals(cardID)){ 
+                return card;
+            }
+        }
+        return null;
+    }
+    
+    public Card peekCard(UUID cardID) {
+        Card c = peekCardFrom (cardID, hand);
+        if (c != null) {
+            return c;
+        }
+        c = peekCardFrom(cardID, deck.deck);
+        if (c != null) {
+            return c;
+        }
+        c = peekCardFrom(cardID, playArea);
+        if (c != null) {
+            return c;
+        }
+        c = peekCardFrom(cardID, scrapyard);
+        if (c != null) {
+            return c;
+        }
+        c = peekCardFrom(cardID, voidPile);
         if (c != null) {
             return c;
         }

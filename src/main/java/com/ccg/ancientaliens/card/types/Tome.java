@@ -1,9 +1,8 @@
 
 package com.ccg.ancientaliens.card.types;
 
-import com.ccg.ancientaliens.card.Card;
 import com.ccg.ancientaliens.game.Game;
-import enums.Knowledge;
+import com.ccg.ancientaliens.enums.Knowledge;
 import helpers.Hashmap;
 
 /**
@@ -25,6 +24,7 @@ public abstract class Tome extends Card {
 
     @Override
     public boolean canPlay(Game game){ return false; }
+    
     @Override
     public void resolve(Game game){}
 }

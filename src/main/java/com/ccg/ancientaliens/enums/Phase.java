@@ -1,4 +1,4 @@
-package enums;
+package com.ccg.ancientaliens.enums;
 
 import java.io.Serializable;
 

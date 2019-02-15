@@ -5,8 +5,7 @@
  */
 package com.ccg.ancientaliens.card.types;
 
-import com.ccg.ancientaliens.card.Card;
-import enums.Knowledge;
+import com.ccg.ancientaliens.enums.Knowledge;
 import helpers.Hashmap;
 
 /**
