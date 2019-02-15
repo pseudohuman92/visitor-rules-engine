@@ -30,6 +30,7 @@
   ],
   "devDependencies": {
     "google-protobuf": "^3.7.0-rc.2",
+    "protobufjs": "^6.8.8",
     "ws": "^6.1.3"
   }
 }

@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 
-import {protoSocket} from './ProtoSocket.js';
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard} from './Game.js';
 import './PlayingCard.css';

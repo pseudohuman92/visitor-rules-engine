@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 
-import HTML5Backend from 'react-dnd-html5-backend';
-import {DragDropContextProvider} from 'react-dnd';
-
 import Grid from '@material-ui/core/Grid';
 
 import Board from './Board.js';
@@ -23,6 +20,48 @@ class App extends Component {
       phase: GamePhases.NOT_STARTED,
     };
 
+    const me = {
+      id: 'me',
+      name: 'me',
+      deckSize: 0,
+      energy: 0,
+      maxEnergy: 0,
+      play: [],
+      handSize: 0,
+      hand: [],
+      scrapyard: [],
+      void: [],
+      knowledgePool: [],
+    };
+
+    const gary = {
+      id: 'gary',
+      name: 'gary',
+      deckSize: 0,
+      energy: 0,
+      maxEnergy: 0,
+      play: [],
+      handSize: 0,
+      hand: [],
+      scrapyard: [],
+      void: [],
+      knowledgePool: [],
+    };
+
+    this.state.game = {
+      id: 'best game',
+      player: me,
+      opponent: gary,
+      turnPlayer: me.id,
+      activePlayer: me.id,
+      stack: [],
+    };
+
+    SetBasicGameInfo('best game', me.id, gary.id);
+    RegisterUpdateViewHandler(this.updateView.bind(this));
+  }
+
+  setDummyData(state) {
     const cards = 'abcdefghijklmnopqrstuvwxyz'.split('').map(l => ({
       id: l,
       name: l,
@@ -54,11 +93,11 @@ class App extends Component {
       void: myVoidCards,
       knowledgePool: [
         {
-          knowledgeType: 1,
+          knowledge: 1,
           count: 3,
         },
         {
-          knowledgeType: 3,
+          knowledge: 3,
           count: 2,
         },
       ],
@@ -76,66 +115,58 @@ class App extends Component {
       void: garyVoidCards,
       knowledgePool: [
         {
-          knowledgeType: 1,
+          knowledge: 1,
           count: 6,
         },
         {
-          knowledgeType: 3,
+          knowledge: 3,
           count: 2,
         },
         {
-          knowledgeType: 4,
+          knowledge: 4,
           count: 1,
         },
       ],
     };
 
-    this.state.game = {
+    state.game = {
       id: 'best game',
       player: me,
       opponent: gary,
       turnPlayer: me.id,
       activePlayer: me.id,
-      stackCards: stackCards,
+      stack: stackCards,
     };
-
-    SetBasicGameInfo('best game', me.id, gary.id);
   }
 
   updateView(gameState, phase) {
-    if (phase) {
-      this.setState({game: gameState, phase: phase});
-    } else {
-      this.setState({game: gameState});
-    }
+    this.setState({game: gameState, phase: phase});
   }
 
   render() {
     return (
-      <DragDropContextProvider backend={HTML5Backend}>
-        <div className="App">
-          <header className="App-header">
-            <Grid
-              container
-              spacing={24}
-              style={{
-                padding: '12px 24px',
-                height: '100vh',
-              }}
-              justify="space-between">
-              <Grid item xs={2} className="display-col">
-                <StateDisplay game={this.state.game} phase={this.state.phase} />
-              </Grid>
-              <Grid item xs={9} className="display-col">
-                <Board game={this.state.game} phase={this.state.phase} />
-              </Grid>
-              <Grid item xs={1} className="display-col">
-                <Stack cards={this.state.game.stackCards} />
-              </Grid>
+      <div className="App">
+        <header className="App-header">
+          <Grid
+            container
+            spacing={24}
+            style={{
+              padding: '12px 24px',
+              height: '100vh',
+            }}
+            justify="space-between">
+            <Grid item xs={2} className="display-col">
+              <StateDisplay game={this.state.game} phase={this.state.phase} />
             </Grid>
-          </header>
-        </div>
-      </DragDropContextProvider>
+            <Grid item xs={9} className="display-col">
+              <Board game={this.state.game} phase={this.state.phase} />
+            </Grid>
+            <Grid item xs={1} className="display-col">
+              <Stack cards={this.state.game.stack} />
+            </Grid>
+          </Grid>
+        </header>
+      </div>
     );
   }
 }

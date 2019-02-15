@@ -7,10 +7,6 @@ import './StateDisplay.css';
 import './Utils.css';
 
 export class PlayerDisplay extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {
       name,
@@ -35,7 +31,7 @@ export class PlayerDisplay extends React.Component {
           <Grid item xs={12} className="grid-elem">
             <Grid container spacing={16} justify="space-evenly">
               {knowledgePool.map(knowledge => (
-                <Grid item xs={2} key={knowledge.knowledgeType}>
+                <Grid item xs={2} key={knowledge.knowledge}>
                   {knowledge.count}
                 </Grid>
               ))}

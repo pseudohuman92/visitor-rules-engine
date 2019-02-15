@@ -3,6 +3,7 @@ import {ServerWSURL} from './Constants.js';
 
 export const GamePhases = {
   NOT_STARTED: 'NOT_STARTED',
+  UPDATE_GAME: 'UPDATE_GAME',
   WIN: 'WIN',
   LOSE: 'LOSE',
   ORDER_CARDS: 'ORDER_CARDS',
@@ -16,7 +17,7 @@ export const GamePhases = {
 
 export class GameState {
   constructor() {
-    this.protoSocket = new ProtoSocket(ServerWSURL, this.msgHandler);
+    this.protoSocket = new ProtoSocket(ServerWSURL, this.handleMsg.bind(this));
     // This is the handler which will be called whenever the game state
     // changes.
     this.updateViewHandler = undefined;
@@ -25,16 +26,16 @@ export class GameState {
   handleMsg(msgType, params) {
     // XXX Remember to update this with the protocol updates
     const phase = {
-      8: null,
-      10: GamePhases.LOSS,
-      11: GameState.WIN,
-      12: GameState.ORDER_CARDS,
-      13: GameState.SELECT_FROM_LIST,
-      14: GameState.SELECT_FROM_PLAY,
-      15: GameState.SELECT_FROM_HAND,
-      16: GameState.SELECT_FROM_SCRAPYARD,
-      17: GameState.SELECT_FROM_VOID,
-      18: GameState.SELECT_PLAYER,
+      UpdateGameState: GamePhases.UPDATE_GAME,
+      Loss: GamePhases.LOSS,
+      Win: GameState.WIN,
+      OrderCards: GameState.ORDER_CARDS,
+      SelectFromList: GameState.SELECT_FROM_LIST,
+      SelectFromPlay: GameState.SELECT_FROM_PLAY,
+      SelectFromHand: GameState.SELECT_FROM_HAND,
+      SelectFromScrapyard: GameState.SELECT_FROM_SCRAPYARD,
+      SelectFromVoid: GameState.SELECT_FROM_VOID,
+      SelectPlayer: GameState.SELECT_PLAYER,
     }[msgType];
     this.updateViewHandler(params.game, phase);
   }

@@ -1,23 +1,22 @@
 import {ServerWSURL} from './Constants.js';
 
-const jspb = require('google-protobuf');
+const proto = require('./protojs/compiled.js');
 
-const cmessages = require('./proto/ClientGameMessages_pb.js');
-const smessages = require('./proto/ServerGameMessages_pb.js');
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
-function capitalizeOnlyFirst(s) {
-  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+function decapitalize(s) {
+  return s.charAt(0).toLowerCase() + s.slice(1);
 }
 
 export default class ProtoSocket {
   constructor(url, msgHandler) {
     this.socket = new WebSocket(url);
+    this.socket.binaryType = 'arraybuffer';
     this.socket.onmessage = event => {
-      console.log(event);
-      const outerMsg = smessages.ServerGameMessage.deserializeBinary(event);
-      const msg = jspb.Message.getField(outerMsg, outerMsg.getPayloadCase());
-      console.log(msg);
-      msgHandler(msg);
+      const msg = proto.ServerGameMessage.decode(new Uint8Array(event.data));
+      msgHandler(capitalize(msg.payload), msg[msg.payload]);
     };
   }
 
@@ -26,16 +25,11 @@ export default class ProtoSocket {
       console.log('wtf not ready');
     }
 
-    const msg = new cmessages[msgType]();
-    Object.keys(params).forEach(function(key) {
-      const setName = 'set' + capitalizeOnlyFirst(key);
-      msg[setName](params[key]);
-    });
+    const msgParams = {};
+    msgParams[decapitalize(msgType)] = params;
+    const msg = proto.ClientGameMessage.create(msgParams);
+    const bytes = proto.ClientGameMessage.encode(msg).finish();
 
-    const setPayloadName = 'set' + capitalizeOnlyFirst(msgType);
-    const outerMsg = new cmessages.ClientGameMessage();
-    outerMsg[setPayloadName](msg);
-    const bytes = outerMsg.serializeBinary();
     this.socket.send(bytes);
   }
 }

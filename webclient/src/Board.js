@@ -22,15 +22,8 @@ const fieldTarget = {
 };
 
 class BoardSide extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cards: props.cards,
-    };
-  }
-
   render() {
-    const {id, isOver, isOverCurrent, canDrop, connectDropTarget} = this.props;
+    const {id, cards, isOverCurrent, canDrop, connectDropTarget} = this.props;
 
     var style = {};
     if (canDrop && isOverCurrent) {
@@ -40,7 +33,7 @@ class BoardSide extends React.Component {
     return connectDropTarget(
       <div style={{height: '100%'}}>
         <Grid container spacing={0} style={style} className="board-side">
-          {this.state.cards.map(card => (
+          {cards.map(card => (
             <Grid item xs={1} key={card.id}>
               <PlayingCard
                 inHand={false}
@@ -63,17 +56,10 @@ BoardSide = DropTarget(ItemTypes.CARD, fieldTarget, (connect, monitor) => ({
 }))(BoardSide);
 
 class Hand extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cards: props.cards,
-    };
-  }
-
   render() {
     return (
       <Grid container spacing={0} className="hand">
-        {this.state.cards.map(card => (
+        {this.props.cards.map(card => (
           <Grid item xs={1} key={card.id}>
             <PlayingCard inHand={true} myCard={true} {...card} />
           </Grid>

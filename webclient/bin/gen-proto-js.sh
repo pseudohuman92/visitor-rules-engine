@@ -1,7 +1,26 @@
 #!/bin/bash
 
+compiled_dir=src/protojs
+compiled_file=src/protojs/compiled.js
 proto_dir="../src/main/proto"
-./bin/protoc --js_out=import_style=commonjs,binary:src/proto --proto_path=${proto_dir} ${proto_dir}/*.proto
-for f in src/proto/*.js ; do 
-  sed -i '1i/* eslint-disable */\' ${f}
+
+function compile() {
+  yarn run pbjs -t static-module -w commonjs -o ${compiled_file} ${proto_dir}/*.proto
+}
+
+[[ -d ${compiled_dir} ]] || mkdir -p ${compiled_dir}
+
+compiled_ts=0
+[[ -f ${compiled_file} ]] && compiled_ts=$(stat -c '%Y' ${compiled_file})
+if [[ $compiled_ts == 0 ]]; then
+  compile
+  exit
+fi
+
+for f in ${proto_dir}/*.proto; do
+  proto_ts=$(stat -c '%Y' ${f})
+  if [[ $proto_ts > $compiled_ts ]]; then
+    compile
+    exit
+  fi
 done
