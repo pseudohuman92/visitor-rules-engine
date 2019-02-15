@@ -14,10 +14,24 @@ export class PlayerDisplay extends React.Component {
       maxEnergy,
       knowledgePool,
       deckSize,
-      handSize,
       scrapyard,
     } = this.props.player;
     const void_ = this.props.player.void;
+    const updateDialog = this.props.updateDialog;
+    let handSize;
+    if (this.props.player.hasOwnProperty('hand')) {
+      handSize = this.props.player.hand.length;
+    } else {
+      handSize = this.props.player.handSize;
+    }
+
+    const scrapyardOnClick = event => {
+      updateDialog(true, `${name}'s Scrapyard`, scrapyard);
+    };
+
+    const voidOnClick = event => {
+      updateDialog(true, `${name}'s Void`, void_);
+    };
 
     return (
       <Paper className="player-display">
@@ -43,10 +57,10 @@ export class PlayerDisplay extends React.Component {
           <Grid item xs={6} className="grid-elem">
             {handSize}
           </Grid>
-          <Grid item xs={6} className="grid-elem">
+          <Grid item xs={6} className="grid-elem" onClick={scrapyardOnClick}>
             {scrapyard.length}
           </Grid>
-          <Grid item xs={6} className="grid-elem">
+          <Grid item xs={6} className="grid-elem" onClick={voidOnClick}>
             {void_.length}
           </Grid>
         </Grid>
@@ -117,6 +131,7 @@ export default class StateDisplay extends React.Component {
     const gary = this.props.game.opponent;
     const me = this.props.game.player;
     const phase = this.props.phase;
+    const updateDialog = this.props.updateDialog;
 
     return (
       <Grid
@@ -128,13 +143,13 @@ export default class StateDisplay extends React.Component {
         className="state-display"
         direction="column">
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <PlayerDisplay player={gary} />
+          <PlayerDisplay player={gary} updateDialog={updateDialog} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
           <MessageDisplay game={this.props.game} phase={phase} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <PlayerDisplay player={me} />
+          <PlayerDisplay player={me} updateDialog={updateDialog} />
         </Grid>
       </Grid>
     );

@@ -29,7 +29,6 @@ const me = {
   energy: 3,
   maxEnergy: 7,
   play: myPlayCards,
-  handSize: myHandCards.length,
   hand: myHandCards,
   scrapyard: myScrapCards,
   void: myVoidCards,

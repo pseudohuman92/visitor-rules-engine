@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Board from './Board.js';
 import Stack from './Stack.js';
 import StateDisplay from './StateDisplay.js';
+import ChooseDialog from './ChooseDialog.js';
 import {
   GamePhases,
   SetBasicGameInfo,
@@ -18,6 +19,7 @@ class App extends Component {
     this.state = {
       game: {},
       phase: GamePhases.NOT_STARTED,
+      dialog: {title: '', cards: [], open: false},
     };
 
     const me = {
@@ -27,7 +29,6 @@ class App extends Component {
       energy: 0,
       maxEnergy: 0,
       play: [],
-      handSize: 0,
       hand: [],
       scrapyard: [],
       void: [],
@@ -87,7 +88,6 @@ class App extends Component {
       energy: 3,
       maxEnergy: 7,
       play: myPlayCards,
-      handSize: myHandCards.length,
       hand: myHandCards,
       scrapyard: myScrapCards,
       void: myVoidCards,
@@ -143,10 +143,34 @@ class App extends Component {
     this.setState({game: gameState, phase: phase});
   }
 
+  updateDialog = (open, title, cards) => {
+    this.setState({
+      dialog: {
+        open: open,
+        title: title,
+        cards: cards,
+        onClose: this.state.dialog.onClose,
+      },
+    });
+  };
+
   render() {
+    const dialog = this.state.dialog;
+    const chooseDialog = (
+      <ChooseDialog
+        title={dialog.title}
+        cards={dialog.cards}
+        open={dialog.open}
+        onClose={event => {
+          this.setState({dialog: {...this.state.dialog, open: false}});
+        }}
+      />
+    );
+
     return (
       <div className="App">
         <header className="App-header">
+          {chooseDialog}
           <Grid
             container
             spacing={24}
@@ -156,7 +180,11 @@ class App extends Component {
             }}
             justify="space-between">
             <Grid item xs={2} className="display-col">
-              <StateDisplay game={this.state.game} phase={this.state.phase} />
+              <StateDisplay
+                game={this.state.game}
+                phase={this.state.phase}
+                updateDialog={this.updateDialog}
+              />
             </Grid>
             <Grid item xs={9} className="display-col">
               <Board game={this.state.game} phase={this.state.phase} />
