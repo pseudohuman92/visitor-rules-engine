@@ -37,7 +37,7 @@ export class GameState {
       SelectFromVoid: GameState.SELECT_FROM_VOID,
       SelectPlayer: GameState.SELECT_PLAYER,
     }[msgType];
-    this.updateViewHandler(params.game, phase);
+    this.updateViewHandler(params, phase);
   }
 
   send(msgType, params) {

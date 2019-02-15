@@ -139,8 +139,17 @@ class App extends Component {
     };
   }
 
-  updateView(gameState, phase) {
-    this.setState({game: gameState, phase: phase});
+  updateView(params, phase) {
+    const game = params.game;
+    let dialog = this.state.dialog;
+    if (phase === GamePhases.SELECT_FROM_LIST) {
+      dialog = {
+        open: true,
+        title: `Select ${params.selectionCount} from the following`,
+        cards: params.candidates,
+      };
+    }
+    this.setState({game: game, phase: phase, dialog: dialog});
   }
 
   updateDialog = (open, title, cards) => {
@@ -149,7 +158,6 @@ class App extends Component {
         open: open,
         title: title,
         cards: cards,
-        onClose: this.state.dialog.onClose,
       },
     });
   };
