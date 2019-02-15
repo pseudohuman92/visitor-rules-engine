@@ -1,13 +1,16 @@
 
-package com.ccg.ancientaliens.game;
 
+
+import com.ccg.ancientaliens.game.*;
 import com.ccg.ancientaliens.card.Card;
 import com.ccg.ancientaliens.server.GameEndpoint;
 import enums.Phase;
+import static enums.Phase.BEGIN;
+import static enums.Phase.END;
+import static enums.Phase.MAIN;
 import static enums.Phase.MULLIGAN;
 import helpers.Hashmap;
 import static java.lang.Math.random;
-import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 
@@ -15,23 +18,21 @@ import static java.util.UUID.randomUUID;
  *
  * @author pseudo
  */
-public class Game {
+public class GameOld {
     
     public Hashmap<String, Player> players;
     public Hashmap<String, GameEndpoint> connections;
     public String turnPlayer;
     public String activePlayer;
-    public ArrayList<Card> stack;
     public Phase phase;
     public int turnCount;
     public int passCount;
     public UUID id;
     
-    public Game (Table table) {
+    public GameOld (Table table) {
         id = randomUUID();
         players = new Hashmap<>();
         connections = new Hashmap<>();
-        stack = new ArrayList<>();
         
         table.creatorDeck.shuffle();
         table.opponentDeck.shuffle();
@@ -48,7 +49,7 @@ public class Game {
         players.get(table.opponent).draw(5);
     }
     
-    /*
+    
     public void changePhase(){
         switch(phase) {
             case MULLIGAN:
@@ -120,7 +121,7 @@ public class Game {
             lose(username);
         }
     }
-    
+    */
     
     public void destroy(UUID id){
         Card item = getPlayAreaCardByID(id);
@@ -242,7 +243,7 @@ public class Game {
         players.get(turnPlayer).addTriggerEvent(this, e);
         players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, e);
     }
-    
+    */
     
     public void possess(UUID cardID, String newController) {
         Card c = getPlayAreaCardByID(cardID);
@@ -258,7 +259,7 @@ public class Game {
     }
 
     public boolean ownedByOpponent(UUID targetID) {
-        Card c = getCard(targetID);
+        Card c = getCardByID(targetID);
         return c.owner.equals(getOpponentName(c.controller));
     }
 
@@ -270,20 +271,30 @@ public class Game {
         players.get(controller).energy-=i;
     }
 
+    public Card getCardByID(UUID targetID) {
+        for (Player player : players.values()) {
+            Card c = player.getCard(targetID);
+            if (c != null){
+                return c;
+            }
+        }
+        return null;
+    }
+
     public void removeFromHand(String controller, UUID id) {
         Player p = players.get(controller);
-        p.hand.remove(p.getCard(id));
+        p.hand.remove(p.getCardFromHand(id));
     }
 
     public void drawFromVoid(String controller, UUID retID) {
         Player p = players.get(controller);
-        Card c = p.getCard(retID);
+        Card c = p.getCardFromVoid(retID);
         p.voidPile.remove(c);
         p.hand.add(c);
         //processTrigger(Event.draw(controller, 1));
     }
     
-    
+    /*
     public void purgeFromHand(String username, int count) {
         Connection connection = connections.get(username);
         connection.send(Message.selectFromHand(toClientGame(username), count));
@@ -308,19 +319,5 @@ public class Game {
 
     public void removeConnection(String username) {
             connections.remove(username);
-    }
-
-    public void playCard(String username, UUID cardID) {
-        getCard(cardID).play(this);
-    }
-    
-    public Card getCard(UUID targetID) {
-        for (Player player : players.values()) {
-            Card c = player.getCard(targetID);
-            if (c != null){
-                return c;
-            }
-        }
-        return null;
     }
 }

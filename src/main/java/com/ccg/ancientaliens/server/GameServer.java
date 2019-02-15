@@ -31,8 +31,8 @@ public class GameServer {
         games = new Hashmap<>();
     }
 
-    void playCard(UUID gameID, String username, UUID fromString) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    void playCard(UUID gameID, String username, UUID cardID) {
+        games.get(gameID).playCard(username, cardID);
     }
 
     void activateCard(UUID gameID, String username, UUID fromString) {

@@ -18,14 +18,14 @@ public class Player implements Serializable {
 
     public String name;
     public UUID id;
-    public Deck deck;
     public int energy;
+    public int maxEnergy;
     public int numOfStudiesLeft;
-    public ArrayList<Card> sources;
+    public Deck deck;
     public ArrayList<Card> hand;
-    public ArrayList<Card> discardPile;
+    public ArrayList<Card> scrapyard;
     public ArrayList<Card> voidPile;
-    public ArrayList<Card> inPlayCards;
+    public ArrayList<Card> playArea;
     public Hashmap<Knowledge, Integer> knowledgePool;
  
     public ArrayList<Triggering> triggeringCards;
@@ -40,12 +40,12 @@ public class Player implements Serializable {
         id = randomUUID();
         this.deck = deck;
         energy = 0;
+        maxEnergy = 0;
         numOfStudiesLeft = 1;
-        sources = new ArrayList<>();
         hand = new ArrayList<>();
-        discardPile = new ArrayList<>();
+        scrapyard = new ArrayList<>();
         voidPile = new ArrayList<>();
-        inPlayCards = new ArrayList<>();
+        playArea = new ArrayList<>();
         knowledgePool = new Hashmap<>();
         triggeringCards = new ArrayList<>();
     }
@@ -76,57 +76,18 @@ public class Player implements Serializable {
         voidPile.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
-    
-    /**
-     *
-     * @param cardID
-     * @return
-     */
-    public Card getCardFromHandByID (UUID cardID){
-        for (Card card : hand) {
-            if(card.id.equals(cardID)){ 
-                return card;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     *
-     * @param cardID
-     * @return
-     */
-    public Card getCardFromPlayByID (UUID cardID){
-        for (Card card : inPlayCards) {
-            if(card.id.equals(cardID)){ 
-                return card;
-            }
-        }
-        return null;
-    }
-    
-    public Card getCardByID(UUID cardID) {
-        Card c = getCardFromHandByID (cardID);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFromPlayByID(cardID);
-        if (c != null) {
-            return c;
-        }
-        return null;
-    }
+
     /**
      *
      * @param cards
      */
     public void discard(ArrayList<UUID> cards){
         /*
-        cards.stream().map((cardID) -> getCardFromHandByID(cardID)).map((card) -> {
+        cards.stream().map((cardID) -> getCardFromHand(cardID)).map((card) -> {
             hand.remove(card);
             return card;
         }).forEachOrdered((card) -> {
-            discardPile.add(card);
+            scrapyard.add(card);
         });
         */
     }
@@ -148,7 +109,7 @@ public class Player implements Serializable {
      *
      */
     public void newTurn(){
-        energy = sources.size();
+        energy = maxEnergy;
         numOfStudiesLeft = 1;
         //inPlayCards.forEach((card) -> card.depleted = false);
     }
@@ -187,15 +148,15 @@ public class Player implements Serializable {
         sb.append("xx Player xx\n");
         sb.append("  Player Name: ").append(name).append("\n");
         sb.append("  ID: ").append(id).append("\n");
-        sb.append("  Energy: ").append(energy).append(" / ").append(sources.size()).append("\n");
+        sb.append("  Energy: ").append(energy).append(" / ").append(maxEnergy).append("\n");
         sb.append("  Knowledge\n");
         //knowledgePool.forEach((k, c) ->{
         //    sb.append("    ").append(k).append(": ").append(c).append("\n");
         //});
         sb.append("  Source Play Count: ").append(numOfStudiesLeft).append("\n");
         sb.append("  Hand \n").append(list(hand, "    ")).append("\n");
-        sb.append("  Items \n").append(list(inPlayCards, "    ")).append("\n");
-        sb.append("  Discard Pile \n").append(list(discardPile, "    ")).append("\n");
+        sb.append("  Items \n").append(list(playArea, "    ")).append("\n");
+        sb.append("  Discard Pile \n").append(list(scrapyard, "    ")).append("\n");
         sb.append("  ").append(deck).append("\n");
         return sb.toString();
     }
@@ -208,7 +169,7 @@ public class Player implements Serializable {
     */
     public void purgeCardsFromHand(ArrayList<UUID> cards) {
         /*
-        cards.stream().map((cardID) -> getCardFromHandByID(cardID)).map((card) -> {
+        cards.stream().map((cardID) -> getCardFromHand(cardID)).map((card) -> {
             hand.remove(card);
             return card;
         }).forEachOrdered((card) -> {
@@ -217,13 +178,36 @@ public class Player implements Serializable {
         */
     }
 
-    public Card getCardFromVoidByID(UUID cardID) {
-        for (Card card : voidPile) {
+    public Card getCardFrom (UUID cardID, ArrayList<Card> list){
+        for (Card card : list) {
             if(card.id.equals(cardID)){ 
                 return card;
             }
         }
         return null;
     }
-
+    
+    public Card getCard(UUID cardID) {
+        Card c = getCardFrom (cardID, hand);
+        if (c != null) {
+            return c;
+        }
+        c = getCardFrom(cardID, deck.deck);
+        if (c != null) {
+            return c;
+        }
+        c = getCardFrom(cardID, playArea);
+        if (c != null) {
+            return c;
+        }
+        c = getCardFrom(cardID, scrapyard);
+        if (c != null) {
+            return c;
+        }
+        c = getCardFrom(cardID, voidPile);
+        if (c != null) {
+            return c;
+        }
+        return null;
+    }
 }

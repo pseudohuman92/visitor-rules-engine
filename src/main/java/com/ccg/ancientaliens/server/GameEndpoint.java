@@ -13,7 +13,7 @@ import javax.websocket.server.*;
  *
  * @author pseudo
  */
-@ServerEndpoint(value="/chat/{username}/{gameID}")
+@ServerEndpoint(value="/games/{gameID}/{username}")
 public class GameEndpoint {
 
     Session session;

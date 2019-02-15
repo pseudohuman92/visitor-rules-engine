@@ -163,22 +163,24 @@ public abstract class Card implements Serializable {
      * @return
      */
     public boolean canStudy (Game game){
-        //return game.canStudy(controller);
-        return true;
+        Player player = game.players.get(controller);
+        return game.activePlayer.equals(controller) 
+            && player.numOfStudiesLeft > 0 
+            && game.stack.isEmpty();
     }
     
     /**
      * Called by server when this card is played.
      * Default behavior is that it deducts the energy cost of the card, 
-     * removes it from player's hand and then resolves the card.
+     * removes it from player's hand and then puts on the stack.
      * OVERRIDE IF: Card has an alternative cost (like X) or a special effect when played.
      * @param game
      */
     public void play(Game game) {
-        Player player = game.players.get(owner);
+        Player player = game.players.get(controller);
         player.hand.remove(this);
         player.energy -= cost;
-        resolve(game);
+        game.stack.add(0, this);
     }
 
     /**
@@ -191,14 +193,15 @@ public abstract class Card implements Serializable {
     public void study(Game game, Hashmap<Knowledge, Integer> knowledge) {
         Player player = game.players.get(owner);
         player.hand.remove(this);
-        player.sources.add(this);
+        player.voidPile.add(this);
         player.energy++;
+        player.maxEnergy++;
         player.addKnowledge(knowledge);
         player.numOfStudiesLeft--;
     }
 
     /**
-     * This is the function that describes what is the effect of the card when it is played.
+     * This is the function that describes what is the effect of the card when it is resolved.
      * This function contains the business logic of the card effect.
      * @param game
      */
