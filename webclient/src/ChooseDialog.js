@@ -11,6 +11,7 @@ import './ChooseDialog.css';
 export default class ChooseDialog extends Component {
   render = () => {
     const {open, title, cards, onClose} = this.props;
+    const selectCandIDs = this.props.selectCands.map(card => card.id);
 
     return (
       <Dialog open={open} onClose={onClose} maxWidth={false} fullWidth={true}>
@@ -19,7 +20,12 @@ export default class ChooseDialog extends Component {
           <Grid container spacing={0} className="choose-dialog">
             {cards.map(card => (
               <Grid item xs={1} key={card.id}>
-                <PlayingCard inHand={false} myCard={false} {...card} />
+                <PlayingCard
+                  inHand={false}
+                  myCard={false}
+                  selectable={selectCandIDs.includes(card.id)}
+                  {...card}
+                />
               </Grid>
             ))}
           </Grid>

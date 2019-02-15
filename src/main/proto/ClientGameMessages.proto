@@ -54,43 +54,43 @@ message Concede {
 
 //This will be send as a response to OrderCards message from server
 message OrderCardsResponse {
-    GameState game = 1;
+    string gameID = 1;
     repeated string orderedCards = 2;
 }
 
 //This will be send as a response to SelectFromList message from server
 message SelectFromListResponse {
-    GameState game = 1;
+    string gameID = 1;
     repeated string selectedCards = 2;
 }
 
 //This will be send as a response to SelectFromHand message from server
 message SelectFromHandResponse {
     string gameID = 1;
-    repeated string selectedIDs = 3;
+    repeated string selectedCards = 3;
 }
 
 //This will be send as a response to SelectFromPlay message from server
 message SelectFromPlayResponse {
-    GameState game = 1;
+    string gameID = 1;
     repeated string selectedCards = 2;
 }
 
 //This will be send as a response to SelectFromScrapyard message from server
 message SelectFromScrapyardResponse {
-    GameState game = 1;
+    string gameID = 1;
     repeated string selectedCards = 2;
 }
 
 //This will be send as a response to SelectFromVoid message from server
 message SelectFromVoidResponse {
-    GameState game = 1;
+    string gameID = 1;
     repeated string selectedCards = 2;
 }
 
 //This will be send as a response to SelectPlayer message from server
 message SelectPlayerResponse {
-    GameState game = 1;
+    string gameID = 1;
     string selectedPlayerName = 2;
 }
 

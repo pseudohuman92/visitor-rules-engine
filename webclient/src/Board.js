@@ -24,6 +24,7 @@ const fieldTarget = {
 class BoardSide extends React.Component {
   render() {
     const {id, cards, isOverCurrent, canDrop, connectDropTarget} = this.props;
+    const selectCandIDs = this.props.selectCands.map(card => card.id);
 
     var style = {};
     if (canDrop && isOverCurrent) {
@@ -38,6 +39,7 @@ class BoardSide extends React.Component {
               <PlayingCard
                 inHand={false}
                 myCard={id === FieldIDs.MY_FIELD}
+                selectable={selectCandIDs.includes(card.id)}
                 {...card}
               />
             </Grid>
@@ -57,11 +59,17 @@ BoardSide = DropTarget(ItemTypes.CARD, fieldTarget, (connect, monitor) => ({
 
 class Hand extends React.Component {
   render() {
+    const selectCandIDs = this.props.selectCands.map(card => card.id);
     return (
       <Grid container spacing={0} className="hand">
         {this.props.cards.map(card => (
           <Grid item xs={1} key={card.id}>
-            <PlayingCard inHand={true} myCard={true} {...card} />
+            <PlayingCard
+              inHand={true}
+              myCard={true}
+              selectable={selectCandIDs.includes(card.id)}
+              {...card}
+            />
           </Grid>
         ))}
       </Grid>
@@ -83,6 +91,7 @@ export default class Board extends React.Component {
     const myPlayCards = this.props.game.player.play;
     const myHandCards = this.props.game.player.hand;
     const garyPlayCards = this.props.game.opponent.play;
+    const selectCands = this.props.selectCands;
 
     return (
       <Grid
@@ -94,13 +103,21 @@ export default class Board extends React.Component {
           height: '100%',
         }}>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <BoardSide id={FieldIDs.GARY_FIELD} cards={garyPlayCards} />
+          <BoardSide
+            id={FieldIDs.GARY_FIELD}
+            cards={garyPlayCards}
+            selectCands={selectCands}
+          />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <BoardSide id={FieldIDs.MY_FIELD} cards={myPlayCards} />
+          <BoardSide
+            id={FieldIDs.MY_FIELD}
+            cards={myPlayCards}
+            selectCands={selectCands}
+          />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <Hand cards={myHandCards} />
+          <Hand cards={myHandCards} selectCands={selectCands} />
         </Grid>
       </Grid>
     );

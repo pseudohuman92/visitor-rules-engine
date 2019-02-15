@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
-import {PlayCard, ActivateCard} from './Game.js';
+import {PlayCard, ActivateCard, SelectCard} from './Game.js';
 import './PlayingCard.css';
 
 const cardSource = {
@@ -54,6 +54,7 @@ export class PlayingCard extends React.Component {
       isDragging,
       connectDragSource,
       connectDropTarget,
+      selectable,
     } = this.props;
 
     var opacity = 1,
@@ -61,18 +62,23 @@ export class PlayingCard extends React.Component {
     if (isDragging) {
       opacity = 0.5;
       border = '5px blue solid';
-    } else {
-      if (canDrop && isOver) {
-        border = '5px red solid';
-      }
+    } else if (canDrop && isOver) {
+      border = '5px red solid';
+    } else if (selectable) {
+      border = '5px green solid';
     }
 
     let clickHandler = undefined;
-    if (!inHand && myCard) {
+    if (selectable) {
+      clickHandler = event => {
+        SelectCard(id);
+      };
+    } else if (!inHand && myCard) {
       clickHandler = event => {
         ActivateCard(id);
       };
     }
+
     return connectDropTarget(
       connectDragSource(
         <div>

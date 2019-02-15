@@ -20,6 +20,8 @@ class App extends Component {
       game: {},
       phase: GamePhases.NOT_STARTED,
       dialog: {title: '', cards: [], open: false},
+      selectCands: [],
+      selectCount: 0,
     };
 
     const me = {
@@ -139,17 +141,40 @@ class App extends Component {
     };
   }
 
-  updateView(params, phase) {
+  updateView(params, phase, dialog = null) {
     const game = params.game;
-    let dialog = this.state.dialog;
-    if (phase === GamePhases.SELECT_FROM_LIST) {
-      dialog = {
+    const toUpdate = {game: game, phase: phase};
+    if (this.state.selectCands.length !== 0) {
+      // Reset select cands if we get another message.
+      // TODO In the future, this reset should go under the ack of the
+      // selection responses.
+      toUpdate['selectCands'] = [];
+      toUpdate['selectCount'] = 0;
+    }
+    if (dialog !== null) {
+      toUpdate['dialog'] = dialog;
+    }
+
+    if (
+      phase === GamePhases.SELECT_FROM_LIST ||
+      phase === GamePhases.SELECT_FROM_SCRAPYARD ||
+      phase === GamePhases.SELECT_FROM_VOID
+    ) {
+      toUpdate['dialog'] = {
         open: true,
         title: `Select ${params.selectionCount} from the following`,
         cards: params.candidates,
       };
+      toUpdate['selectCands'] = params.candidates;
+      toUpdate['selectCount'] = params.selectionCount;
+    } else if (
+      phase === GamePhases.SELECT_FROM_PLAY ||
+      phase === GamePhases.SELECT_FROM_HAND
+    ) {
+      toUpdate['selectCands'] = params.candidates;
+      toUpdate['selectCount'] = params.selectionCount;
     }
-    this.setState({game: game, phase: phase, dialog: dialog});
+    this.setState(toUpdate);
   }
 
   updateDialog = (open, title, cards) => {
@@ -164,11 +189,13 @@ class App extends Component {
 
   render() {
     const dialog = this.state.dialog;
+    const selectCands = this.state.selectCands;
     const chooseDialog = (
       <ChooseDialog
         title={dialog.title}
         cards={dialog.cards}
         open={dialog.open}
+        selectCands={selectCands}
         onClose={event => {
           this.setState({dialog: {...this.state.dialog, open: false}});
         }}
@@ -195,7 +222,11 @@ class App extends Component {
               />
             </Grid>
             <Grid item xs={9} className="display-col">
-              <Board game={this.state.game} phase={this.state.phase} />
+              <Board
+                game={this.state.game}
+                phase={this.state.phase}
+                selectCands={selectCands}
+              />
             </Grid>
             <Grid item xs={1} className="display-col">
               <Stack cards={this.state.game.stack} />

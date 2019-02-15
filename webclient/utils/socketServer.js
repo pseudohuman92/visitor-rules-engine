@@ -192,6 +192,37 @@ function handleMulligan(ws, params) {
 }
 function handleKeep(ws, params) {
   send(ws, 'UpdateGameState', {game: gameState});
+  // send(ws, 'SelectFromPlay', {
+  //   game: gameState,
+  //   selectionCount: 2,
+  //   candidates: [
+  //     myPlayCards[0],
+  //     myPlayCards[2],
+  //     myPlayCards[3],
+  //     garyPlayCards[0],
+  //     garyPlayCards[2],
+  //   ],
+  // });
+  //send(ws, 'SelectFromHand', {
+  //  game: gameState,
+  //  selectionCount: 2,
+  //  candidates: [myHandCards[0], myHandCards[1]],
+  //});
+  //send(ws, 'SelectFromScrapyard', {
+  //  game: gameState,
+  //  selectionCount: 1,
+  //  candidates: [myScrapCards[0], myScrapCards[1]],
+  //});
+  //send(ws, 'SelectFromVoid', {
+  //  game: gameState,
+  //  selectionCount: 2,
+  //  candidates: [myVoidCards[0], myVoidCards[1]],
+  //});
+  send(ws, 'SelectFromList', {
+    game: gameState,
+    selectionCount: 2,
+    candidates: cards.slice(0, 4),
+  });
 }
 function handleConcede(ws, params) {}
 function handleOrderCardsResponse(ws, params) {}
