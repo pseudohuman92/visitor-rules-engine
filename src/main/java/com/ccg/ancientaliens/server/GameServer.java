@@ -48,22 +48,27 @@ public class GameServer {
     
     void mulligan(UUID gameID, String username) {
         games.get(gameID).mulligan(username);
+        games.get(gameID).updatePlayers();
     }
     
     void keep(UUID gameID, String username) {
         games.get(gameID).keep(username);
+        games.get(gameID).updatePlayers();
     }
     
     void pass(UUID gameID, String username) {
         games.get(gameID).pass(username);
+        games.get(gameID).updatePlayers();
     }
     
     void studyCard(UUID gameID, String username, UUID cardID, List<Types.Knowledge> knowledgeList) {
         games.get(gameID).studyCard(username, cardID);
+        games.get(gameID).updatePlayers();
     }
     
     void playCard(UUID gameID, String username, UUID cardID) {
         games.get(gameID).playCard(username, cardID);
+        games.get(gameID).updatePlayers();
     }
 
     void addConnection(String username, GeneralEndpoint connection) {
