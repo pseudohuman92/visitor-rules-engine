@@ -25,7 +25,6 @@ message StudyCard {
     string gameID = 1;
     string username = 2;
     string cardID = 3;
-    repeated Knowledge knowledge = 4;
 }
 
 //This will be send when player passes initiative

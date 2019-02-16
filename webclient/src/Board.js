@@ -21,7 +21,12 @@ const fieldTarget = {
   },
 
   canDrop(props, monitor) {
-    return props.id !== FieldIDs.GARY_FIELD;
+    const item = monitor.getItem();
+    return (
+      item.sourceType === ItemTypes.CARD &&
+      item.playable &&
+      props.id !== FieldIDs.GARY_FIELD
+    );
   },
 };
 
@@ -51,6 +56,7 @@ class BoardSide extends React.Component {
                 activatable={activatableCards.includes(card.id)}
                 selectable={selectableCards.includes(card.id)}
                 selected={selectedCards.includes(card.id)}
+                studyable={false}
                 {...card}
               />
             </Grid>
@@ -70,7 +76,12 @@ BoardSide = DropTarget(ItemTypes.CARD, fieldTarget, (connect, monitor) => ({
 
 class Hand extends React.Component {
   render() {
-    const {playableCards, selectableCards, selectedCards} = this.props;
+    const {
+      playableCards,
+      selectableCards,
+      selectedCards,
+      studyableCards,
+    } = this.props;
     return (
       <Grid container spacing={0} className="hand">
         {this.props.cards.map(card => (
@@ -80,6 +91,7 @@ class Hand extends React.Component {
               activatable={false}
               selectable={selectableCards.includes(card.id)}
               selected={selectedCards.includes(card.id)}
+              studyable={studyableCards.includes(card.id)}
               {...card}
             />
           </Grid>
@@ -105,11 +117,13 @@ export default class Board extends React.Component {
     const garyPlayCards = this.props.game.opponent.play;
     let activatableCards = this.props.game.canActivate;
     let playableCards = this.props.game.canPlay;
+    let studyableCards = this.props.game.canStudy;
     const selectableCards = this.props.selectableCards;
     const selectedCards = this.props.selectedCards;
     if (selectableCards.length > 0) {
       activatableCards = [];
       playableCards = [];
+      studyableCards = [];
     }
 
     return (
@@ -145,6 +159,7 @@ export default class Board extends React.Component {
             selectableCards={selectableCards}
             selectedCards={selectedCards}
             playableCards={playableCards}
+            studyableCards={studyableCards}
           />
         </Grid>
       </Grid>

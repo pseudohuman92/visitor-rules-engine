@@ -11,13 +11,18 @@ const altarTarget = {
   drop(props, monitor) {
     return {targetType: ItemTypes.ALTAR};
   },
+
+  canDrop(props, monitor) {
+    const item = monitor.getItem();
+    return item.sourceType === ItemTypes.CARD && item.studyable;
+  },
 };
 
 class Altar extends React.Component {
   render() {
-    const {isOver, connectDropTarget} = this.props;
+    const {isOver, connectDropTarget, canDrop} = this.props;
     const style = {};
-    if (isOver) {
+    if (isOver && canDrop) {
       style.border = '5px red solid';
     }
 
@@ -32,6 +37,7 @@ class Altar extends React.Component {
 Altar = DropTarget(ItemTypes.CARD, altarTarget, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
+  canDrop: monitor.canDrop(),
 }))(Altar);
 
 export default Altar;

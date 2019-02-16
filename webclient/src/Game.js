@@ -132,7 +132,6 @@ export function StudyCard(cardID) {
     gameID: gameState.gameID,
     username: gameState.me,
     cardID: cardID,
-    knowledge: [],
   });
 }
 

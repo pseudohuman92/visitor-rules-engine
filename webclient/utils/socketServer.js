@@ -83,6 +83,7 @@ const gameState = {
   stackCards: stackCards,
   canActivate: [myPlayCards[0].id, myPlayCards[2].id],
   canPlay: [myHandCards[0].id, myHandCards[2].id],
+  canStudy: [myHandCards[0].id, myHandCards[1].id],
   phase: 0,
 };
 

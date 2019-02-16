@@ -12,11 +12,15 @@ import './PlayingCard.css';
 
 const cardSource = {
   beginDrag(props) {
-    return {};
+    return {
+      sourceType: ItemTypes.CARD,
+      playable: props.playable,
+      studyable: props.studyable,
+    };
   },
 
   canDrag(props) {
-    return props.playable;
+    return props.playable || props.studyable;
   },
 
   endDrag(props, monitor) {
@@ -63,6 +67,7 @@ export class PlayingCard extends React.Component {
       connectDropTarget,
       selectable,
       selected,
+      studyable,
     } = this.props;
 
     var opacity = 1,
