@@ -35,6 +35,7 @@ public class GameServer {
         tables = new Hashmap<>();
         chatLog = new ArrayList<>();
         games = new Hashmap<>();
+        gameQueue = new ArrayList<>();
     }
 
 
