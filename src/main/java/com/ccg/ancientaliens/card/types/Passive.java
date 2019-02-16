@@ -1,10 +1,9 @@
 
 package com.ccg.ancientaliens.card.types;
 
-import com.ccg.ancientaliens.card.Card;
-import enums.Knowledge;
-import static enums.Phase.MAIN;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.enums.Knowledge;
+import static com.ccg.ancientaliens.enums.Phase.*;
 import helpers.Hashmap;
 
 /**
@@ -37,6 +36,7 @@ public abstract class Passive extends Card {
         return (game.players.get(controller).energy >= cost)
                && game.players.get(controller).hasKnowledge(knowledge)
                && game.turnPlayer.equals(controller)
+               && game.stack.isEmpty()
                && game.phase == MAIN;
     }  
 }

@@ -5,8 +5,8 @@
  */
 package com.ccg.ancientaliens.game;
 
-import enums.EventLabel;
-import static enums.EventLabel.*;
+import com.ccg.ancientaliens.enums.EventLabel;
+import static com.ccg.ancientaliens.enums.EventLabel.*;
 import java.util.ArrayList;
 import java.util.UUID;
 

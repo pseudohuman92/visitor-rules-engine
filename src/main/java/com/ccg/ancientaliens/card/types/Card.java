@@ -1,10 +1,9 @@
-package com.ccg.ancientaliens.card;
+package com.ccg.ancientaliens.card.types;
 
-import enums.Counter;
-import enums.Knowledge;
-import enums.Subtype;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
+import com.ccg.ancientaliens.enums.*;
+import com.ccg.ancientaliens.protocol.Types;
 import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -178,28 +177,30 @@ public abstract class Card implements Serializable {
      */
     public void play(Game game) {
         Player player = game.players.get(controller);
-        player.hand.remove(this);
         player.energy -= cost;
         game.stack.add(0, this);
     }
 
     /**
      * Called by the server when you choose to study this card.
-     * It increases player's maximum energy and adds selected knowledgePool.
-     * OVERRIDE IF: Card has a special effect when studied.
+     * It increases player's maximum energy and adds knowledgePool.
+     * OVERRIDE IF: Card has a special effect when studied or card is multicolor.
      * @param game
-     * @param knowledge
      */
-    public void study(Game game, Hashmap<Knowledge, Integer> knowledge) {
+    public void study(Game game) {
         Player player = game.players.get(owner);
-        player.hand.remove(this);
         player.voidPile.add(this);
         player.energy++;
         player.maxEnergy++;
-        player.addKnowledge(knowledge);
+        player.addKnowledge(getKnowledgeType());
         player.numOfStudiesLeft--;
     }
 
+    public Hashmap<Knowledge, Integer> getKnowledgeType() {
+        Hashmap<Knowledge, Integer> knowledgeType = new Hashmap<>();
+        knowledge.forEach((k, i) -> { knowledgeType.put(k, 1);});
+        return knowledgeType;
+    }
     /**
      * This is the function that describes what is the effect of the card when it is resolved.
      * This function contains the business logic of the card effect.
@@ -224,5 +225,16 @@ public abstract class Card implements Serializable {
         depleted = false;
         marked = false;
         supplementaryData = new ArrayList<>();
+    }
+
+    public Types.Card toCardMessage() {
+        Types.Card.Builder b = Types.Card.newBuilder()
+                .setId(id.toString())
+                .setName(name)
+                .setDepleted(depleted)
+                .setMarked(marked);
+        //TODO: add counters
+        //TODO: add targets
+        return b.build();
     }
 }

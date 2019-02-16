@@ -1,8 +1,10 @@
 package com.ccg.ancientaliens.game;
 
-import com.ccg.ancientaliens.card.Card;
+import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.properties.Triggering;
-import enums.Knowledge;
+import com.ccg.ancientaliens.enums.Knowledge;
+import com.ccg.ancientaliens.protocol.Types;
+import com.ccg.ancientaliens.protocol.Types.KnowledgeType;
 import static helpers.Debug.list;
 import helpers.Hashmap;
 import java.io.Serializable;
@@ -50,51 +52,21 @@ public class Player implements Serializable {
         triggeringCards = new ArrayList<>();
     }
 
-    /**
-     *
-     * @return
-     
-    public Opponent toOpponent ()
-    {
-        return new Opponent(this);
-    }*/
-    
-    /**
-     *
-     * @param count
-     */
     public void draw(int count){
         hand.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
     
-    /**
-     *
-     * @param count
-     */
     public void purgeFromDeck(int count) {
         voidPile.addAll(deck.getFromTop(count));
         //TODO: Check loss
     }
 
-    /**
-     *
-     * @param cards
-     */
     public void discard(ArrayList<UUID> cards){
-        /*
-        cards.stream().map((cardID) -> getCardFromHand(cardID)).map((card) -> {
-            hand.remove(card);
-            return card;
-        }).forEachOrdered((card) -> {
-            scrapyard.add(card);
-        });
-        */
+        cards.stream().map((cardID) -> getCardFrom(cardID, hand))
+                .forEachOrdered((card) -> { scrapyard.add(card); });     
     }
     
-    /**
-     *
-     */
     public void mulligan(){
         int size = hand.size();
         if(size > 0){
@@ -104,44 +76,27 @@ public class Player implements Serializable {
             draw(size -1);
         }
     }
-    
-    /**
-     *
-     */
+
     public void newTurn(){
         energy = maxEnergy;
         numOfStudiesLeft = 1;
-        //inPlayCards.forEach((card) -> card.depleted = false);
+        playArea.forEach((card) -> card.depleted = false);
     }
     
-    /**
-     *
-     * @param knowl
-     */
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
-        /*
         knowl.forEach((k, i) -> {
             knowledgePool.merge(k, i, (a, b) -> a + b);
         });
-        */
+        
     }
-    
-    /**
-     *
-     * @param cardKnowledge
-     * @return
-     */
+
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
-        //result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
-        //        (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
+        result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
+                (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
         return result;
     }
     
-    /**
-     *
-     * @return
-     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -180,7 +135,8 @@ public class Player implements Serializable {
 
     public Card getCardFrom (UUID cardID, ArrayList<Card> list){
         for (Card card : list) {
-            if(card.id.equals(cardID)){ 
+            if(card.id.equals(cardID)){
+                list.remove(card);
                 return card;
             }
         }
@@ -188,26 +144,97 @@ public class Player implements Serializable {
     }
     
     public Card getCard(UUID cardID) {
-        Card c = getCardFrom (cardID, hand);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, deck.deck);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, playArea);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, scrapyard);
-        if (c != null) {
-            return c;
-        }
-        c = getCardFrom(cardID, voidPile);
-        if (c != null) {
-            return c;
+        Card c; 
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            c = getCardFrom (cardID, list);
+            if (c != null) {
+                return c;
+            }
         }
         return null;
+    }
+    
+    public Card peekCardFrom (UUID cardID, ArrayList<Card> list){
+        for (Card card : list) {
+            if(card.id.equals(cardID)){ 
+                return card;
+            }
+        }
+        return null;
+    }
+    
+    public Card peekCard(UUID cardID) {
+        Card c; 
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            c = peekCardFrom (cardID, list);
+            if (c != null) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public Types.Player toPlayerMessage() {
+        Types.Player.Builder b = Types.Player.newBuilder()
+                .setId(id.toString())
+                .setName(name)
+                .setDeckSize(deck.size())
+                .setEnergy(energy)
+                .setMaxEnergy(maxEnergy);
+        for(int i = 0; i < hand.size(); i++){
+            b.addHand(hand.get(i).toCardMessage());
+        }
+        for(int i = 0; i < playArea.size(); i++){
+            b.addPlay(playArea.get(i).toCardMessage());
+        }
+        for(int i = 0; i < scrapyard.size(); i++){
+            b.addScrapyard(scrapyard.get(i).toCardMessage());
+        }
+        for(int i = 0; i < voidPile.size(); i++){
+            b.addVoid(voidPile.get(i).toCardMessage());
+        }
+        knowledgePool.forEach((k, i) -> {
+            b.addKnowledgePool(Types.Knowledge.newBuilder()
+                    .setKnowledge(KnowledgeType.forNumber(k.getValue()))
+                    .setCount(i).build());
+        });
+        return b.build();
+    }
+    
+    public Types.Opponent toOpponentMessage() {
+        Types.Opponent.Builder b = Types.Opponent.newBuilder()
+                .setId(id.toString())
+                .setName(name)
+                .setDeckSize(deck.size())
+                .setEnergy(energy)
+                .setMaxEnergy(maxEnergy)
+                .setHandSize(hand.size());
+        for(int i = 0; i < playArea.size(); i++){
+            b.addPlay(playArea.get(i).toCardMessage());
+        }
+        for(int i = 0; i < scrapyard.size(); i++){
+            b.addScrapyard(scrapyard.get(i).toCardMessage());
+        }
+        for(int i = 0; i < voidPile.size(); i++){
+            b.addVoid(voidPile.get(i).toCardMessage());
+        }
+        knowledgePool.forEach((k, i) -> {
+            b.addKnowledgePool(Types.Knowledge.newBuilder()
+                    .setKnowledge(KnowledgeType.forNumber(k.getValue()))
+                    .setCount(i).build());
+        });
+        return b.build();
     }
 }

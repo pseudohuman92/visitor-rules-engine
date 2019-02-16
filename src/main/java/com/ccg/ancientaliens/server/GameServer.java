@@ -6,11 +6,17 @@
 package com.ccg.ancientaliens.server;
 
 import com.ccg.ancientaliens.game.*;
+import com.ccg.ancientaliens.protocol.ServerMessages.NewGame;
+import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage;
 import com.ccg.ancientaliens.protocol.Types;
 import helpers.Hashmap;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.websocket.EncodeException;
 
 /**
  *
@@ -22,7 +28,7 @@ public class GameServer {
     public Hashmap<UUID, Table> tables;
     public Hashmap<UUID, Game> games;
     public ArrayList<String> chatLog;
-    
+    public ArrayList<String> gameQueue;
 
     public GameServer() {
         playerConnections = new Hashmap<>();
@@ -31,32 +37,33 @@ public class GameServer {
         games = new Hashmap<>();
     }
 
-    void playCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).playCard(username, cardID);
-    }
 
     void activateCard(UUID gameID, String username, UUID fromString) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    void studyCard(UUID gameID, String username, UUID fromString, List<Types.Knowledge> knowledgeList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void pass(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void mulligan(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void keep(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     void concede(UUID gameID, String username) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    void mulligan(UUID gameID, String username) {
+        games.get(gameID).mulligan(username);
+    }
+    
+    void keep(UUID gameID, String username) {
+        games.get(gameID).keep(username);
+    }
+    
+    void pass(UUID gameID, String username) {
+        games.get(gameID).pass(username);
+    }
+    
+    void studyCard(UUID gameID, String username, UUID cardID, List<Types.Knowledge> knowledgeList) {
+        games.get(gameID).studyCard(username, cardID);
+    }
+    
+    void playCard(UUID gameID, String username, UUID cardID) {
+        games.get(gameID).playCard(username, cardID);
     }
 
     void addConnection(String username, GeneralEndpoint connection) {
@@ -73,5 +80,27 @@ public class GameServer {
     
     void removeGameConnection(UUID gameID, String username) {
         games.get(gameID).removeConnection(username);
+    }
+
+    void joinTable(String username) {
+        if (gameQueue.isEmpty()){
+            gameQueue.add(username);
+        } else {
+            String p1 = gameQueue.remove(0);
+            Game g = new Game(p1, username);
+            games.put(g.id, g);
+            try {
+                playerConnections.get(p1).send(ServerMessage.newBuilder()
+                        .setNewGame(NewGame.newBuilder()
+                                .setGame(g.toGameState(p1)).build()).build());
+                playerConnections.get(username).send(ServerMessage.newBuilder()
+                        .setNewGame(NewGame.newBuilder()
+                                .setGame(g.toGameState(username)).build()).build());
+            } catch (IOException ex) {
+                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (EncodeException ex) {
+                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

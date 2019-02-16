@@ -1,10 +1,12 @@
 
 package com.ccg.ancientaliens.game;
 
-import com.ccg.ancientaliens.card.Card;
+import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.server.GameEndpoint;
-import enums.Phase;
-import static enums.Phase.MULLIGAN;
+import com.ccg.ancientaliens.enums.Phase;
+import static com.ccg.ancientaliens.enums.Phase.*;
+import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage.Builder;
+import com.ccg.ancientaliens.protocol.Types.GameState;
 import helpers.Hashmap;
 import static java.lang.Math.random;
 import java.util.ArrayList;
@@ -48,51 +50,24 @@ public class Game {
         players.get(table.opponent).draw(5);
     }
     
-    /*
-    public void changePhase(){
-        switch(phase) {
-            case MULLIGAN:
-                newTurn();
-                break;
-            case BEGIN:
-                passCount = 0;
-                activePlayer = turnPlayer;
-                phase = MAIN;
-                break;
-            case MAIN:
-                activePlayer = "";
-                phase = END;
-                break;
-            case END:
-                newTurn();
-                break;
-        }
-    }
-    
-    
-    void newTurn(){
-        phase = BEGIN;
-        if(turnCount > 0){
-            turnPlayer = getOpponentName(turnPlayer);
-            players.get(turnPlayer).draw(1);
-        }
-        activePlayer = "";
+    public Game (String p1, String p2) {
+        id = randomUUID();
+        players = new Hashmap<>();
+        connections = new Hashmap<>();
+        stack = new ArrayList<>();
+        
+        players.put(p1, new Player(p1, new Deck(p1, true)));
+        players.put(p2, new Player(p2, new Deck(p2, true)));
+        
+        phase = MULLIGAN;
+        turnPlayer = (random() < 0.5)?p1:p2;
+        activePlayer = turnPlayer;
+        turnCount = 0;
         passCount = 0;
-        players.get(turnPlayer).draw(1);
-        players.get(turnPlayer).newTurn();
-        turnCount++;
+        players.get(p1).draw(5);
+        players.get(p2).draw(5);
     }
-    
 
-    public String getOpponentName(String playerName){
-        for(String name : players.keySet()){
-            if(!name.equals(playerName)){
-                return name;
-            }
-        }
-        return null;
-    }
-    
     /*
     public void discard(String username, int count){
         Connection connection = connections.get(username);
@@ -310,10 +285,6 @@ public class Game {
             connections.remove(username);
     }
 
-    public void playCard(String username, UUID cardID) {
-        getCard(cardID).play(this);
-    }
-    
     public Card getCard(UUID targetID) {
         for (Player player : players.values()) {
             Card c = player.getCard(targetID);
@@ -322,5 +293,116 @@ public class Game {
             }
         }
         return null;
+    }
+    
+    public Card peekCard(UUID targetID) {
+        for (Player player : players.values()) {
+            Card c = player.peekCard(targetID);
+            if (c != null){
+                return c;
+            }
+        }
+        return null;
+    }
+    
+    public void playCard(String username, UUID cardID) {
+        getCard(cardID).play(this);
+        passCount = 0;
+        activePlayer = getOpponentName(username);
+    }
+
+    public void studyCard(String username, UUID cardID) {
+        getCard(cardID).study(this);
+    }
+    
+    public void changePhase(){
+        /*
+        switch(phase) {
+            case MULLIGAN:
+                newTurn();
+                break;
+            case BEGIN:
+                passCount = 0;
+                activePlayer = turnPlayer;
+                phase = MAIN;
+                break;
+            case MAIN:
+                activePlayer = "";
+                phase = END;
+                break;
+            case END:
+                newTurn();
+                break;
+        }
+        */
+    }
+    
+    void newTurn(){
+        /*
+        phase = BEGIN;
+        if(turnCount > 0){
+            turnPlayer = getOpponentName(turnPlayer);
+            players.get(turnPlayer).draw(1);
+        }
+        activePlayer = "";
+        passCount = 0;
+        players.get(turnPlayer).draw(1);
+        players.get(turnPlayer).newTurn();
+        turnCount++;
+        */
+    }
+    
+
+    public String getOpponentName(String playerName){
+        for(String name : players.keySet()){
+            if(!name.equals(playerName)){
+                return name;
+            }
+        }
+        return null;
+    }
+
+    public void pass(String username) {
+        passCount++;
+        if (passCount == 2) {
+            if (!stack.isEmpty()){
+                resolveStack();
+            } else {
+                changePhase();
+            }
+        } else {
+            activePlayer = getOpponentName(username);
+        }
+    }
+
+    private void resolveStack() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void mulligan(String username) {
+        players.get(username).mulligan();
+    }
+
+    public void keep(String username) {
+        passCount++;
+        if (passCount == 2) {
+            changePhase();
+        } else {
+            activePlayer = getOpponentName(username);
+        }
+    }
+
+    public GameState toGameState(String username){
+        GameState.Builder b = 
+                GameState.newBuilder()
+                .setId(id.toString())
+                .setPlayer(players.get(username).toPlayerMessage())
+                .setOpponent(players.get(getOpponentName(username)).toOpponentMessage())
+                .setTurnPlayer(turnPlayer)
+                .setActivePlayer(activePlayer);
+        for(int i = 0; i < stack.size(); i++){
+            b.addStack(stack.get(i).toCardMessage());
+        }
+    return b.build();
     }
 }

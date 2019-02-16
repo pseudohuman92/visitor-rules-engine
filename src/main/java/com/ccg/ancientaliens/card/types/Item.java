@@ -1,11 +1,10 @@
 
 package com.ccg.ancientaliens.card.types;
 
-import com.ccg.ancientaliens.card.Card;
 import com.ccg.ancientaliens.card.properties.Activatable;
-import enums.Knowledge;
-import static enums.Phase.MAIN;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.enums.*;
+import static com.ccg.ancientaliens.enums.Phase.*;
 import helpers.Hashmap;
 
 /**
@@ -39,6 +38,7 @@ public abstract class Item extends Card implements Activatable {
         return (game.players.get(controller).energy >= cost)
                && game.players.get(controller).hasKnowledge(knowledge)
                && game.turnPlayer.equals(controller)
+               && game.stack.isEmpty()
                && game.phase == MAIN;
     }  
 }
