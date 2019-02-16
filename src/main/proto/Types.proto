@@ -51,6 +51,7 @@ message Card {
     bool depleted = 4;
     bool marked = 5;
     repeated string targets = 6;
+    string description = 7;
 }
 
 message Player {
