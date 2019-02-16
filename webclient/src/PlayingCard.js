@@ -68,7 +68,7 @@ export class PlayingCard extends React.Component {
     let clickHandler = undefined;
     if (isDragging) {
       opacity = 0.5;
-      border = '5px blue solid';
+      border = '5px yellow solid';
     } else if (canDrop && isOver) {
       border = '5px red solid';
     } else if (selected) {
@@ -82,9 +82,9 @@ export class PlayingCard extends React.Component {
       clickHandler = event => {
         ActivateCard(id);
       };
-      border = '5px yellow solid';
+      border = '5px blue solid';
     } else if (playable) {
-      border = '5px yellow solid';
+      border = '5px blue solid';
     } else if (depleted) {
       opacity = 0.7;
     }
