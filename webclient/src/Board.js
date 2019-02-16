@@ -104,7 +104,8 @@ export default class Board extends React.Component {
     const myHandCards = this.props.game.player.hand;
     const garyPlayCards = this.props.game.opponent.play;
     const selectCands = this.props.selectCands;
-    const amActive = this.props.game.activePlayer === this.props.game.player.id;
+    const amActive =
+      this.props.game.activePlayer === this.props.game.player.name;
 
     return (
       <Grid

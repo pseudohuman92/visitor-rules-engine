@@ -6,6 +6,7 @@ proto_dir="../src/main/proto"
 
 function compile() {
   yarn run pbjs -t static-module -w commonjs -o ${compiled_file} ${proto_dir}/*.proto
+  sed -i '1i/* eslint-disable */\' ${compiled_file}
 }
 
 [[ -d ${compiled_dir} ]] || mkdir -p ${compiled_dir}

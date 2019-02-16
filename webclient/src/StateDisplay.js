@@ -2,6 +2,9 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+
+import proto from './protojs/compiled.js';
+
 import {GamePhases, Concede, Mulligan, Keep, Pass} from './Game.js';
 import './StateDisplay.css';
 import './Utils.css';
@@ -72,10 +75,38 @@ export class PlayerDisplay extends React.Component {
 export class MessageDisplay extends React.Component {
   render() {
     const phase = this.props.phase;
-    const amActive = this.props.game.activePlayer === this.props.game.player.id;
+    const gamePhase = this.props.game.phase;
+    const amActive =
+      this.props.game.activePlayer === this.props.game.player.name;
 
     let buttonMenu;
-    if (phase !== GamePhases.NOT_STARTED) {
+    if (
+      phase === GamePhases.NOT_STARTED ||
+      gamePhase === proto.Phase.MULLIGAN
+    ) {
+      buttonMenu = (
+        <Grid container spacing={0} direction="column" style={{height: '100%'}}>
+          <Grid item xs={6} className="grid-col-item no-max-width">
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={Mulligan}
+              disabled={!amActive}>
+              Mulligan
+            </Button>
+          </Grid>
+          <Grid item xs={6} className="grid-col-item no-max-width">
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={Keep}
+              disabled={!amActive}>
+              Keep
+            </Button>
+          </Grid>
+        </Grid>
+      );
+    } else {
       buttonMenu = (
         <Grid container spacing={0} direction="column" style={{height: '100%'}}>
           <Grid item xs={6} className="grid-col-item no-max-width">
@@ -90,21 +121,6 @@ export class MessageDisplay extends React.Component {
               disabled={!amActive}
               onClick={Pass}>
               Pass
-            </Button>
-          </Grid>
-        </Grid>
-      );
-    } else {
-      buttonMenu = (
-        <Grid container spacing={0} direction="column" style={{height: '100%'}}>
-          <Grid item xs={6} className="grid-col-item no-max-width">
-            <Button color="secondary" variant="contained" onClick={Mulligan}>
-              Mulligan
-            </Button>
-          </Grid>
-          <Grid item xs={6} className="grid-col-item no-max-width">
-            <Button color="primary" variant="contained" onClick={Keep}>
-              Keep
             </Button>
           </Grid>
         </Grid>

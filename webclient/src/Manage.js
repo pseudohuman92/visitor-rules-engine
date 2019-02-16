@@ -2,14 +2,17 @@
 
 import {ProtoSocket} from './ProtoSocket.js';
 import {GetProfileURL, GetGameURL} from './Utils.js';
-import {GamePhases, InitiateConnection} from './Game.js';
+import {GamePhases, InitiateConnection, SetGameInfo} from './Game.js';
 
 let updateViewHandler = null;
 let protoSocket = null;
 
 function handleMsg(msgType, params) {
+  if (msgType === 'newGame') {
+    SetGameInfo({gameID: params.game.gameID, gary: params.game.opponent.name});
+  }
   const phase = GamePhases.NOT_STARTED;
-  InitiateConnection(GetGameURL(params.game.player.id, params.game.id));
+  InitiateConnection(GetGameURL(params.game.player.name, params.game.id));
   updateViewHandler(params, phase);
 }
 

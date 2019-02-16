@@ -10,6 +10,7 @@ function decapitalize(s) {
 
 export class GameProtoSocket {
   constructor(url, msgHandler) {
+    console.log('[connecting]', url);
     this.socket = new WebSocket(url);
     this.socket.binaryType = 'arraybuffer';
     this.socket.onmessage = event => {
@@ -51,6 +52,7 @@ export class GameProtoSocket {
 
 export class ProtoSocket {
   constructor(url, msgHandler) {
+    console.log('[connecting]', url);
     this.socket = new WebSocket(url);
     this.socket.binaryType = 'arraybuffer';
     this.socket.onmessage = event => {
@@ -71,10 +73,10 @@ export class ProtoSocket {
           return;
         } else {
           this.waitForOpen(bytes, waitCount + 1);
-          console.log('[sentMsg]', bytes);
         }
       }, 10);
     } else {
+      console.log('[sentMsg]', bytes);
       this.socket.send(bytes);
     }
   };

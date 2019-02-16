@@ -73,6 +73,12 @@ export function Pass() {
   gameState.send('Pass', {gameID: gameState.gameID, username: gameState.me});
 }
 
+export function SetGameInfo(newInfo) {
+  Object.keys(newInfo).forEach(i => {
+    gameState[i] = newInfo[i];
+  });
+}
+
 export function Mulligan() {
   gameState.send('Mulligan', {
     gameID: gameState.gameID,

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 
 import Grid from '@material-ui/core/Grid';
 
+import proto from './protojs/compiled.js';
+
 import Board from './Board.js';
 import Stack from './Stack.js';
 import StateDisplay from './StateDisplay.js';
@@ -9,7 +11,9 @@ import ChooseDialog from './ChooseDialog.js';
 import InfoEntryDialog from './InfoEntryDialog.js';
 import LoadingDialog from './LoadingDialog.js';
 import {
+  Keep,
   GamePhases,
+  SetGameInfo,
   SetBasicGameInfo,
   RegisterUpdateGameHandler,
 } from './Game.js';
@@ -147,6 +151,7 @@ class App extends Component {
   }
 
   updateInfoUpdate = username => {
+    SetGameInfo({me: username});
     ConnectProfile(username);
     this.setState({waiting: true});
   };
@@ -186,6 +191,14 @@ class App extends Component {
     }
     console.log('[toUpdate]', phase, toUpdate);
     this.setState(toUpdate);
+
+    if (
+      game.phase === proto.Phase.MULLIGAN &&
+      game.activePlayer === game.player.name &&
+      game.player.hand.length === 0
+    ) {
+      Keep();
+    }
   };
 
   updateDialog = (open, title, cards) => {
