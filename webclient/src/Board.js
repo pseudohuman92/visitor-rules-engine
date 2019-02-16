@@ -28,15 +28,14 @@ const fieldTarget = {
 class BoardSide extends React.Component {
   render() {
     const {
-      id,
       cards,
       isOverCurrent,
       canDrop,
       connectDropTarget,
-      amActive,
+      activatableCards,
+      selectableCards,
+      selectedCards,
     } = this.props;
-    const selectCandIDs = this.props.selectCands.map(card => card.id);
-
     var style = {};
     if (canDrop && isOverCurrent) {
       style.border = '5px red solid';
@@ -49,8 +48,9 @@ class BoardSide extends React.Component {
             <Grid item xs={1} key={card.id}>
               <PlayingCard
                 playable={false}
-                activatable={amActive}
-                selectable={selectCandIDs.includes(card.id)}
+                activatable={activatableCards.includes(card.id)}
+                selectable={selectableCards.includes(card.id)}
+                selected={selectedCards.includes(card.id)}
                 {...card}
               />
             </Grid>
@@ -70,16 +70,16 @@ BoardSide = DropTarget(ItemTypes.CARD, fieldTarget, (connect, monitor) => ({
 
 class Hand extends React.Component {
   render() {
-    const amActive = this.props.amActive;
-    const selectCandIDs = this.props.selectCands.map(card => card.id);
+    const {playableCards, selectableCards, selectedCards} = this.props;
     return (
       <Grid container spacing={0} className="hand">
         {this.props.cards.map(card => (
           <Grid item xs={1} key={card.id}>
             <PlayingCard
-              playable={amActive}
+              playable={playableCards.includes(card.id)}
               activatable={false}
-              selectable={selectCandIDs.includes(card.id)}
+              selectable={selectableCards.includes(card.id)}
+              selected={selectedCards.includes(card.id)}
               {...card}
             />
           </Grid>
@@ -103,9 +103,14 @@ export default class Board extends React.Component {
     const myPlayCards = this.props.game.player.play;
     const myHandCards = this.props.game.player.hand;
     const garyPlayCards = this.props.game.opponent.play;
-    const selectCands = this.props.selectCands;
-    const amActive =
-      this.props.game.activePlayer === this.props.game.player.name;
+    let activatableCards = this.props.game.canActivate;
+    let playableCards = this.props.game.canPlay;
+    const selectableCards = this.props.selectableCards;
+    const selectedCards = this.props.selectedCards;
+    if (selectableCards.length > 0) {
+      activatableCards = [];
+      playableCards = [];
+    }
 
     return (
       <Grid
@@ -120,23 +125,26 @@ export default class Board extends React.Component {
           <BoardSide
             id={FieldIDs.GARY_FIELD}
             cards={garyPlayCards}
-            selectCands={selectCands}
-            amActive={false}
+            selectableCards={selectableCards}
+            selectedCards={selectedCards}
+            activatableCards={[]}
           />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
           <BoardSide
             id={FieldIDs.MY_FIELD}
             cards={myPlayCards}
-            selectCands={selectCands}
-            amActive={amActive}
+            selectableCards={selectableCards}
+            selectedCards={selectedCards}
+            activatableCards={activatableCards}
           />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
           <Hand
             cards={myHandCards}
-            selectCands={selectCands}
-            amActive={amActive}
+            selectableCards={selectableCards}
+            selectedCards={selectedCards}
+            playableCards={playableCards}
           />
         </Grid>
       </Grid>

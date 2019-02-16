@@ -78,9 +78,12 @@ const gameState = {
   id: 'best game',
   player: me,
   opponent: gary,
-  turnPlayer: me.id,
-  activePlayer: me.id,
+  turnPlayer: me.name,
+  activePlayer: me.name,
   stackCards: stackCards,
+  canActivate: [myPlayCards[0].id, myPlayCards[2].id],
+  canPlay: [myHandCards[0].id, myHandCards[2].id],
+  phase: 0,
 };
 
 function otherPlayer(id) {
@@ -221,37 +224,37 @@ function handleKeep(ws, params) {
   gameState.activePlayer = me.id;
   gameState.turnPlayer = me.id;
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
-  // send(ws, 'SelectFromPlay', {
-  //   game: gameState,
-  //   selectionCount: 2,
-  //   candidates: [
-  //     myPlayCards[0],
-  //     myPlayCards[2],
-  //     myPlayCards[3],
-  //     garyPlayCards[0],
-  //     garyPlayCards[2],
-  //   ],
-  // });
-  //send(ws, 'SelectFromHand', {
+  //sendGameMsg(ws, 'SelectFromPlay', {
   //  game: gameState,
   //  selectionCount: 2,
-  //  candidates: [myHandCards[0], myHandCards[1]],
+  //  candidates: [
+  //    myPlayCards[0],
+  //    myPlayCards[2],
+  //    myPlayCards[3],
+  //    garyPlayCards[0],
+  //    garyPlayCards[2],
+  //  ],
   //});
-  //send(ws, 'SelectFromScrapyard', {
-  //  game: gameState,
-  //  selectionCount: 1,
-  //  candidates: [myScrapCards[0], myScrapCards[1]],
-  //});
-  //send(ws, 'SelectFromVoid', {
+  //  sendGameMsg(ws, 'SelectFromHand', {
+  //    game: gameState,
+  //    selectionCount: 2,
+  //    candidates: [myHandCards[0], myHandCards[1]],
+  //  });
+  sendGameMsg(ws, 'SelectFromScrapyard', {
+    game: gameState,
+    selectionCount: 1,
+    candidates: [myScrapCards[1]],
+  });
+  //sendGameMsg(ws, 'SelectFromVoid', {
   //  game: gameState,
   //  selectionCount: 2,
   //  candidates: [myVoidCards[0], myVoidCards[1]],
   //});
-  sendGameMsg(ws, 'SelectFromList', {
-    game: gameState,
-    selectionCount: 2,
-    candidates: cards.slice(0, 4),
-  });
+  //sendGameMsg(ws, 'SelectFromList', {
+  //  game: gameState,
+  //  selectionCount: 2,
+  //  candidates: cards.slice(0, 4),
+  //});
 }
 function handleConcede(ws, params) {}
 function handleOrderCardsResponse(ws, params) {}

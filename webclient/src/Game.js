@@ -12,7 +12,18 @@ export const GamePhases = {
   SELECT_FROM_SCRAPYARD: 'SelectFromScrapyard',
   SELECT_FROM_VOID: 'SelectFromVoid',
   SELECT_PLAYER: 'SelectPlayer',
+  DONE_SELECT: 'DoneSelect',
 };
+
+export function IsSelectCardPhase(phase) {
+  return [
+    GamePhases.SELECT_FROM_LIST,
+    GamePhases.SELECT_FROM_PLAY,
+    GamePhases.SELECT_FROM_HAND,
+    GamePhases.SELECT_FROM_SCRAPYARD,
+    GamePhases.SELECT_FROM_VOID,
+  ].includes(phase);
+}
 
 export class GameState {
   constructor() {
@@ -40,12 +51,12 @@ export class GameState {
     }[msgType];
     this.lastMsg = params;
     this.phase = phase;
-    this.selected = [];
+    this.selectedCards = [];
 
     if (phase === GamePhases.SELECT_FROM_HAND) {
       params.candidates = params.game.player.hand;
     }
-    this.updateViewHandler(params, phase);
+    this.updateViewHandler(params, phase, null);
   };
 
   send(msgType, params) {
@@ -117,29 +128,19 @@ export function ActivateCard(cardID) {
 }
 
 export function SelectCard(cardID) {
-  let selectCount = gameState.lastMsg.selectionCount;
-  gameState.selected.push(cardID);
-  if (selectCount === 1) {
+  const selectCount = gameState.lastMsg.selectionCount;
+  gameState.selectedCards.push(cardID);
+  if (gameState.selectedCards.length === selectCount) {
     gameState.send(gameState.phase + 'Response', {
       gameID: gameState.gameID,
-      selectedCards: gameState.selected,
+      selectedCards: gameState.selectedCards,
     });
-    gameState.selected = [];
-    // TODO This probably shouldn't update here but when we receive the ack
-    // from the server.
-    // XXX Also this is kind of a hack to call update game state when we didn't
-    // really get a message to do so and game state hasn't changed, but it will
-    // clear out candidates and stuff.
-    gameState.updateViewHandler(
-      {game: gameState.lastMsg.game},
-      GamePhases.UPDATE_GAME,
-      {open: false, title: '', cards: []},
-    );
-  } else {
-    gameState.lastMsg.selectionCount--;
-    gameState.lastMsg.candidates = gameState.lastMsg.candidates.filter(
-      cand => cand.id !== cardID,
-    );
-    gameState.updateViewHandler(gameState.lastMsg, gameState.phase);
+    gameState.selectedCards = [];
+    gameState.phase = GamePhases.DONE_SELECT;
   }
+  gameState.updateViewHandler(
+    gameState.lastMsg,
+    gameState.phase,
+    gameState.selectedCards,
+  );
 }

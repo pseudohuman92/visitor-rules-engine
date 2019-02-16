@@ -51,6 +51,7 @@ export class PlayingCard extends React.Component {
       id,
       name,
       description,
+      depleted,
       activatable,
       playable,
       isOver,
@@ -59,28 +60,33 @@ export class PlayingCard extends React.Component {
       connectDragSource,
       connectDropTarget,
       selectable,
+      selected,
     } = this.props;
 
     var opacity = 1,
       border = 'none';
+    let clickHandler = undefined;
     if (isDragging) {
       opacity = 0.5;
       border = '5px blue solid';
     } else if (canDrop && isOver) {
       border = '5px red solid';
+    } else if (selected) {
+      border = '5px magenta solid';
     } else if (selectable) {
-      border = '5px green solid';
-    }
-
-    let clickHandler = undefined;
-    if (selectable) {
       clickHandler = event => {
         SelectCard(id);
       };
+      border = '5px green solid';
     } else if (activatable) {
       clickHandler = event => {
         ActivateCard(id);
       };
+      border = '5px yellow solid';
+    } else if (playable) {
+      border = '5px yellow solid';
+    } else if (depleted) {
+      opacity = 0.7;
     }
 
     return connectDropTarget(

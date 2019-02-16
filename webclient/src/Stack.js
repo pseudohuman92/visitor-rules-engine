@@ -6,7 +6,7 @@ import './Utils.css';
 
 export default class Stack extends React.Component {
   render() {
-    const cards = this.props.cards;
+    const {cards, selectedCards, selectableCards} = this.props;
 
     return (
       <Grid
@@ -23,7 +23,13 @@ export default class Stack extends React.Component {
             key={card.id}
             xs={1}
             className="grid-col-item no-max-width">
-            <PlayingCard {...card} />
+            <PlayingCard
+              {...card}
+              activatable={false}
+              playable={false}
+              selectable={selectableCards.includes(card.id)}
+              selected={selectedCards.includes(card.id)}
+            />
           </Grid>
         ))}
       </Grid>

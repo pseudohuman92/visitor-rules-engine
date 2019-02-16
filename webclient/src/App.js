@@ -16,6 +16,7 @@ import {
   SetGameInfo,
   SetBasicGameInfo,
   RegisterUpdateGameHandler,
+  IsSelectCardPhase,
 } from './Game.js';
 import {ConnectProfile, RegisterUpdateViewHandler} from './Manage.js';
 import './App.css';
@@ -27,9 +28,9 @@ class App extends Component {
       game: {},
       phase: GamePhases.NOT_STARTED,
       dialog: {title: '', cards: [], open: false},
-      selectCands: [],
-      selectCount: 0,
       waiting: false,
+      selectedCards: [],
+      selectableCards: [],
     };
 
     const me = {
@@ -156,39 +157,52 @@ class App extends Component {
     this.setState({waiting: true});
   };
 
-  updateView = (params, phase, dialog = null) => {
+  updateView = (params, phase, selectedCards = null) => {
     const game = params.game;
-    const toUpdate = {game: game, phase: phase, waiting: false};
-    if (this.state.selectCands.length !== 0) {
-      // Reset select cands if we get another message.
-      // TODO In the future, this reset should go under the ack of the
-      // selection responses.
-      toUpdate['selectCands'] = [];
-      toUpdate['selectCount'] = 0;
-    }
-    if (dialog !== null) {
-      toUpdate['dialog'] = dialog;
+    const toUpdate = {};
+
+    if (phase === GamePhases.UPDATE_GAME) {
+      toUpdate.game = params.game;
     }
 
-    if (
-      phase === GamePhases.SELECT_FROM_LIST ||
-      phase === GamePhases.SELECT_FROM_SCRAPYARD ||
-      phase === GamePhases.SELECT_FROM_VOID
-    ) {
-      toUpdate['dialog'] = {
-        open: true,
-        title: `Select ${params.selectionCount} from the following`,
-        cards: params.candidates,
-      };
-      toUpdate['selectCands'] = params.candidates;
-      toUpdate['selectCount'] = params.selectionCount;
-    } else if (
-      phase === GamePhases.SELECT_FROM_PLAY ||
-      phase === GamePhases.SELECT_FROM_HAND
-    ) {
-      toUpdate['selectCands'] = params.candidates;
-      toUpdate['selectCount'] = params.selectionCount;
+    console.log(phase);
+    if (IsSelectCardPhase(phase) && selectedCards === null) {
+      toUpdate.selectableCards = params.candidates.map(card => card.id);
     }
+
+    if (this.state.waiting) {
+      // XXX This will not be true in the future when we have server messages
+      // as well.
+      toUpdate.waiting = false;
+    }
+
+    if (phase === GamePhases.DONE_SELECT) {
+      if (this.state.dialog.open) {
+        toUpdate['dialog'] = {...this.state.dialog, open: false};
+      }
+      toUpdate.selectableCards = [];
+      toUpdate.selectedCards = [];
+    }
+
+    if (selectedCards !== null) {
+      toUpdate.selectedCards = selectedCards;
+    } else {
+      if (
+        phase === GamePhases.SELECT_FROM_LIST ||
+        phase === GamePhases.SELECT_FROM_SCRAPYARD ||
+        phase === GamePhases.SELECT_FROM_VOID
+      ) {
+        toUpdate['dialog'] = {
+          open: true,
+          title: `Select ${params.selectionCount} from the following`,
+          cards: params.candidates,
+        };
+      }
+    }
+    if (phase !== this.state.phase) {
+      toUpdate.phase = phase;
+    }
+
     console.log('[toUpdate]', phase, toUpdate);
     this.setState(toUpdate);
 
@@ -212,18 +226,24 @@ class App extends Component {
   };
 
   render() {
-    const dialog = this.state.dialog;
-    const selectCands = this.state.selectCands;
-    const waiting = this.state.waiting;
+    const {
+      dialog,
+      waiting,
+      selectedCards,
+      phase,
+      game,
+      selectableCards,
+    } = this.state;
 
     const chooseDialog = (
       <ChooseDialog
         title={dialog.title}
         cards={dialog.cards}
         open={dialog.open}
-        selectCands={selectCands}
+        selectedCards={selectedCards}
+        selectableCards={selectableCards}
         onClose={event => {
-          this.setState({dialog: {...this.state.dialog, open: false}});
+          this.setState({dialog: {...dialog, open: false}});
         }}
       />
     );
@@ -244,20 +264,25 @@ class App extends Component {
             justify="space-between">
             <Grid item xs={2} className="display-col">
               <StateDisplay
-                game={this.state.game}
-                phase={this.state.phase}
+                game={game}
+                phase={phase}
                 updateDialog={this.updateDialog}
               />
             </Grid>
             <Grid item xs={9} className="display-col">
               <Board
-                game={this.state.game}
-                phase={this.state.phase}
-                selectCands={selectCands}
+                game={game}
+                phase={phase}
+                selectedCards={selectedCards}
+                selectableCards={selectableCards}
               />
             </Grid>
             <Grid item xs={1} className="display-col">
-              <Stack cards={this.state.game.stack} />
+              <Stack
+                cards={game.stack}
+                selectedCards={selectedCards}
+                selectableCards={selectableCards}
+              />
             </Grid>
           </Grid>
         </header>
