@@ -77,6 +77,7 @@ public class GameServer {
 
     void removeConnection(String username) {
         playerConnections.remove(username);
+        gameQueue.remove(username);
     }
 
     void addGameConnection(UUID gameID, String username, GameEndpoint connection) {
