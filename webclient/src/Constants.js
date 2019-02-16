@@ -1,6 +1,7 @@
 export const ItemTypes = {
   CARD: 'card',
   FIELD: 'field',
+  ALTAR: 'altar',
 };
 
 //export const ServerName = 'ancientaliens.ddns.net:8080';

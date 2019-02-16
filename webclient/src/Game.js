@@ -127,6 +127,15 @@ export function ActivateCard(cardID) {
   });
 }
 
+export function StudyCard(cardID) {
+  gameState.send('StudyCard', {
+    gameID: gameState.gameID,
+    username: gameState.me,
+    cardID: cardID,
+    knowledge: [],
+  });
+}
+
 export function SelectCard(cardID) {
   const selectCount = gameState.lastMsg.selectionCount;
   gameState.selectedCards.push(cardID);

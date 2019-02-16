@@ -6,6 +6,7 @@ import proto from './protojs/compiled.js';
 
 import Board from './Board.js';
 import Stack from './Stack.js';
+import Altar from './Altar.js';
 import StateDisplay from './StateDisplay.js';
 import ChooseDialog from './ChooseDialog.js';
 import InfoEntryDialog from './InfoEntryDialog.js';
@@ -278,11 +279,25 @@ class App extends Component {
               />
             </Grid>
             <Grid item xs={1} className="display-col">
-              <Stack
-                cards={game.stack}
-                selectedCards={selectedCards}
-                selectableCards={selectableCards}
-              />
+              <Grid
+                container
+                spacing={24}
+                style={{
+                  padding: 0,
+                  height: '100%',
+                }}
+                direction="column">
+                <Grid item xs={9} className="grid-col-item no-max-width">
+                  <Stack
+                    cards={game.stack}
+                    selectedCards={selectedCards}
+                    selectableCards={selectableCards}
+                  />
+                </Grid>
+                <Grid item xs={3} className="grid-col-item no-max-width">
+                  <Altar />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </header>

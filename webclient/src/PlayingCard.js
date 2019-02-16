@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
-import {PlayCard, ActivateCard, SelectCard} from './Game.js';
+import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
 import './PlayingCard.css';
 
 const cardSource = {
@@ -31,6 +31,8 @@ const cardSource = {
         targetProps.id === FieldIDs.MY_FIELD)
     ) {
       PlayCard(props.id);
+    } else if (targetProps.targetType === ItemTypes.ALTAR) {
+      StudyCard(props.id);
     }
   },
 };
