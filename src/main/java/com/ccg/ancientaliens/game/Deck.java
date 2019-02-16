@@ -2,7 +2,7 @@
 package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.set1.black.BA01;
+import com.ccg.ancientaliens.set1.black.*;
 import static helpers.Debug.list;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +26,10 @@ public class Deck implements Serializable {
         deck = new ArrayList<>();
         for (int i = 0; i < 10; i++){
             deck.add(new BA01(username));
+            deck.add(new BA03(username));
+            deck.add(new BI01(username));
+            deck.add(new BI02(username));
+            deck.add(new BI03(username));
         }
     }
 

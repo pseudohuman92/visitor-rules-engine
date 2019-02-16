@@ -18,7 +18,7 @@ public abstract class Tome extends Card {
      * @param image
      * @param owner
      */
-    public Tome(String name, String text, String image, String owner) {
+    public Tome(String name, String text, String owner) {
         super(name, 0, new Hashmap<Knowledge, Integer>(), text, owner);
     }
 

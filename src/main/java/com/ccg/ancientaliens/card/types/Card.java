@@ -222,14 +222,15 @@ public abstract class Card implements Serializable {
         supplementaryData = new ArrayList<>();
     }
 
-    public Types.Card toCardMessage() {
+    public Types.Card.Builder toCardMessage() {
         Types.Card.Builder b = Types.Card.newBuilder()
                 .setId(id.toString())
                 .setName(name)
                 .setDepleted(depleted)
-                .setMarked(marked);
+                .setMarked(marked)
+                .setDescription(text);
         //TODO: add counters
         //TODO: add targets
-        return b.build();
+        return b;
     }
 }

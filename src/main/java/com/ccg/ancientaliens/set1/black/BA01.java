@@ -21,7 +21,7 @@ import java.util.UUID;
 public class BA01 extends Action implements Targeting {
 
     public BA01(String owner) {
-        super("BA01", 3, new Hashmap(BLACK, 2), "Possess target item that costs 3 or less.", "action.png", owner);
+        super("BA01", 3, new Hashmap(BLACK, 2), "Possess target item that costs 3 or less.", owner);
     }
     
     @Override
