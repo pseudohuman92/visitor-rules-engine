@@ -315,9 +315,13 @@ public class Game {
     
     public void playCard(String username, UUID cardID) {
         getCard(cardID).play(this);
-        passCount = 0;
         activePlayer = getOpponentName(username);
         
+    }
+    
+    public void addToStack(Card c) {
+        passCount = 0;
+        stack.add(0, c);
     }
 
     public void studyCard(String username, UUID cardID) {
@@ -416,10 +420,8 @@ public class Game {
             try {
                 e.send(ServerGameMessage.newBuilder()
                         .setUpdateGameState(UpdateGameState.newBuilder()
-                                .setGame(toGameState(p)).build()).build());
-            } catch (IOException ex) {
-                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (EncodeException ex) {
+                                .setGame(toGameState(p))));
+            } catch (IOException | EncodeException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         });

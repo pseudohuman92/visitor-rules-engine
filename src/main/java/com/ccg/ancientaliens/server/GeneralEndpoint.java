@@ -60,6 +60,12 @@ public class GeneralEndpoint {
         System.out.println("Server sending a message to " + username + ": " + message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
+    
+    public void send(ServerMessage.Builder builder) throws IOException, EncodeException {
+        ServerMessage message = builder.build();
+        System.out.println("Server sending a message to " + username + ": " + message);
+        session.getBasicRemote().sendObject(message.toByteArray());
+    }
 
     private void handleMessage(ClientMessage cm) {
         switch(cm.getPayloadCase()){

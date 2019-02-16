@@ -98,10 +98,10 @@ public class GameServer {
             try {
                 playerConnections.get(p1).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
-                                .setGame(g.toGameState(p1)).build()).build());
+                                .setGame(g.toGameState(p1))));
                 playerConnections.get(username).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
-                                .setGame(g.toGameState(username)).build()).build());
+                                .setGame(g.toGameState(username))));
             } catch (IOException ex) {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EncodeException ex) {

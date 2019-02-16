@@ -178,7 +178,7 @@ public abstract class Card implements Serializable {
     public void play(Game game) {
         Player player = game.players.get(controller);
         player.energy -= cost;
-        game.stack.add(0, this);
+        game.addToStack(this);
     }
 
     /**
