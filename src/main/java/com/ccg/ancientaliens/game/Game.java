@@ -347,12 +347,12 @@ public class Game {
     }
     
     void newTurn(){
-        phase = BEGIN;
+        phase = MAIN;
         if(turnCount > 0){
             turnPlayer = getOpponentName(turnPlayer);
             players.get(turnPlayer).draw(1);
         }
-        activePlayer = "";
+        activePlayer = turnPlayer;
         passCount = 0;
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
