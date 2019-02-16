@@ -25,8 +25,7 @@ public class BI02 extends Item implements Targeting {
     
     public BI02 (String owner){
         super("BI02", 4, new Hashmap(BLACK, 3), 
-                "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", 
-                "item.png", owner);
+                "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", owner);
         subtypes.add(Weapon);
     }
 

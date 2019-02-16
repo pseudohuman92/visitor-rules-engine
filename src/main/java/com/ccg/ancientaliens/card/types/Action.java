@@ -20,7 +20,7 @@ public abstract class Action extends Card {
      * @param image
      * @param owner
      */
-    public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
+    public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
     }
 

@@ -21,8 +21,7 @@ public class BI01 extends Item {
     
     public BI01 (String owner){
         super("BI01", 1, new Hashmap(BLACK, 1), 
-                "1, Activate: Loot 1", 
-                "item.png", owner);
+                "1, Activate: Loot 1", owner);
     }
 
     @Override

@@ -21,7 +21,7 @@ public abstract class Passive extends Card {
      * @param image
      * @param owner
      */
-    public Passive(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
+    public Passive(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
     }
     

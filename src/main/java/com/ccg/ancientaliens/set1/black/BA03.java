@@ -26,7 +26,7 @@ public class BA03 extends Action implements Targeting {
      * @param owner
      */
     public BA03(String owner) {
-        super("BA03", 1, new Hashmap(BLACK, 1), "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", "action.png", owner);
+        super("BA03", 1, new Hashmap(BLACK, 1), "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", owner);
     }
     
     @Override
