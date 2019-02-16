@@ -1,8 +1,12 @@
+const http = require('http');
+const url = require('url');
 const WebSocket = require('ws');
 
 const proto = require('../src/protojs/compiled.js');
 
-const wss = new WebSocket.Server({port: 8080});
+const server = http.createServer();
+const gameSocket = new WebSocket.Server({noServer: true});
+const manageSocket = new WebSocket.Server({noServer: true});
 
 const cards = 'abcdefghijklmnopqrstuvwxyz'.split('').map(l => ({
   id: l,
@@ -154,7 +158,16 @@ function decapitalize(s) {
 //  msg.setStackList(gameState.stackCards.map(c => serializeCard(c)));
 //}
 
-function send(ws, msgType, params) {
+function sendMsg(ws, msgType, params) {
+  const msgParams = {};
+  msgParams[decapitalize(msgType)] = params;
+  const msg = proto.ServerMessage.create(msgParams);
+  const bytes = proto.ServerMessage.encode(msg).finish();
+  console.log('[sendMsg]', msg);
+  ws.send(bytes);
+}
+
+function sendGameMsg(ws, msgType, params) {
   const msgParams = {};
   msgParams[decapitalize(msgType)] = params;
   const msg = proto.ServerGameMessage.create(msgParams);
@@ -175,7 +188,7 @@ function send(ws, msgType, params) {
   //outerMsg[setPayloadName](msg);
   //const bytes = outerMsg.serializeBinary();
   //console.log(bytes);
-  console.log('SEND:', msg);
+  console.log('[sendGameMsg]', msg);
   ws.send(bytes);
 }
 
@@ -188,12 +201,12 @@ function handlePlayCard(ws, params) {
   );
   gameState.player.play.push(playedCard);
   gameState.activePlayer = otherPlayer(gameState.activePlayer);
-  send(ws, 'UpdateGameState', {game: gameState});
+  sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleActivateCard(ws, params) {
   const selectedCards = params.selectedCards;
   gameState.activePlayer = otherPlayer(gameState.activePlayer);
-  send(ws, 'UpdateGameState', {game: gameState});
+  sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleStudyCard(ws, params) {}
 function handlePass(ws, params) {
@@ -202,12 +215,12 @@ function handlePass(ws, params) {
   gameState.stackCards = [];
 }
 function handleMulligan(ws, params) {
-  send(ws, 'UpdateGameState', {game: gameState});
+  sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleKeep(ws, params) {
   gameState.activePlayer = me.id;
   gameState.turnPlayer = me.id;
-  send(ws, 'UpdateGameState', {game: gameState});
+  sendGameMsg(ws, 'UpdateGameState', {game: gameState});
   // send(ws, 'SelectFromPlay', {
   //   game: gameState,
   //   selectionCount: 2,
@@ -234,7 +247,7 @@ function handleKeep(ws, params) {
   //  selectionCount: 2,
   //  candidates: [myVoidCards[0], myVoidCards[1]],
   //});
-  send(ws, 'SelectFromList', {
+  sendGameMsg(ws, 'SelectFromList', {
     game: gameState,
     selectionCount: 2,
     candidates: cards.slice(0, 4),
@@ -249,7 +262,10 @@ function handleSelectFromScrapyardResponse(ws, params) {}
 function handleSelectFromVoidResponse(ws, params) {}
 function handleSelectPlayerResponse(ws, params) {}
 
-wss.on('connection', function connection(ws) {
+let gameConnection = null;
+
+gameSocket.on('connection', function connection(ws) {
+  gameConnection = ws;
   ws.on('message', function incoming(message) {
     const msg = proto.ClientGameMessage.decode(new Uint8Array(message));
     //const outerMsg = cmessages.ClientGameMessage.deserializeBinary(message);
@@ -272,7 +288,37 @@ wss.on('connection', function connection(ws) {
       selectFromVoidResponse: handleSelectFromVoidResponse,
       selectPlayerResponse: handleSelectPlayerResponse,
     }[msg.payload];
-    console.log('RECV:', msg[msg.payload]);
+    console.log('[recvGameMsg]', msg[msg.payload]);
     handler(ws, msg[msg.payload]);
   });
 });
+
+manageSocket.on('connection', function connection(ws) {
+  ws.on('message', function incoming(message) {
+    const msg = proto.ClientMessage.decode(new Uint8Array(message));
+    //const outerMsg = cmessages.ClientGameMessage.deserializeBinary(message);
+    //const msg = jspb.Message.getField(outerMsg, outerMsg.getPayloadCase());
+    //const msgType = outerMsg.getPayloadCase();
+    //console.log(outerMsg.getPayloadCase(), msg);
+    console.log('[recvMsg]:', msg[msg.payload]);
+    gameState.player.id = msg[msg.payload].username;
+    sendMsg(ws, 'NewGame', {game: gameState});
+  });
+});
+
+server.on('upgrade', function upgrade(request, socket, head) {
+  const pathname = url.parse(request.url).pathname;
+  if (pathname === '/chat/me') {
+    manageSocket.handleUpgrade(request, socket, head, function done(ws) {
+      manageSocket.emit('connection', ws, request);
+    });
+  } else if (pathname === '/game') {
+    gameSocket.handleUpgrade(request, socket, head, function done(ws) {
+      gameSocket.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+server.listen(8080);

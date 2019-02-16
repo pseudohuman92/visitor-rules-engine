@@ -4,6 +4,7 @@ export const ItemTypes = {
 };
 
 export const ServerWSURL = 'ws://localhost:8080/chat/me';
+export const ServerWSGameURL = 'ws://localhost:8080/game';
 
 export const FieldIDs = {
   MY_FIELD: 'myField',

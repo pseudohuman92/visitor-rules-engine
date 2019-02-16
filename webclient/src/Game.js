@@ -1,5 +1,5 @@
-import ProtoSocket from './ProtoSocket.js';
-import {ServerWSURL} from './Constants.js';
+import {GameProtoSocket} from './ProtoSocket.js';
+import {ServerWSGameURL} from './Constants.js';
 
 export const GamePhases = {
   NOT_STARTED: 'NotStarted',
@@ -17,10 +17,10 @@ export const GamePhases = {
 
 export class GameState {
   constructor() {
-    this.protoSocket = new ProtoSocket(ServerWSURL, this.handleMsg);
+    this.protoSocket = null;
     // This is the handler which will be called whenever the game state
     // changes.
-    this.updateViewHandler = undefined;
+    this.updateViewHandler = null;
     this.lastMsg = null;
     this.phase = null;
   }
@@ -56,13 +56,17 @@ export class GameState {
 
 const gameState = new GameState();
 
+export function InitiateConnection(url) {
+  gameState.protoSocket = new GameProtoSocket(url, gameState.handleMsg);
+}
+
 export function SetBasicGameInfo(gameID, me, gary) {
   gameState.gameID = gameID;
   gameState.me = me;
   gameState.gary = gary;
 }
 
-export function RegisterUpdateViewHandler(updateViewHandler) {
+export function RegisterUpdateGameHandler(updateViewHandler) {
   gameState.updateViewHandler = updateViewHandler;
 }
 

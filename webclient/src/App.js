@@ -6,11 +6,14 @@ import Board from './Board.js';
 import Stack from './Stack.js';
 import StateDisplay from './StateDisplay.js';
 import ChooseDialog from './ChooseDialog.js';
+import InfoEntryDialog from './InfoEntryDialog.js';
+import LoadingDialog from './LoadingDialog.js';
 import {
   GamePhases,
   SetBasicGameInfo,
-  RegisterUpdateViewHandler,
+  RegisterUpdateGameHandler,
 } from './Game.js';
+import {RegisterUpdateViewHandler} from './Manage.js';
 import './App.css';
 
 class App extends Component {
@@ -22,6 +25,7 @@ class App extends Component {
       dialog: {title: '', cards: [], open: false},
       selectCands: [],
       selectCount: 0,
+      waiting: false,
     };
 
     const me = {
@@ -61,7 +65,8 @@ class App extends Component {
     };
 
     SetBasicGameInfo('best game', me.id, gary.id);
-    RegisterUpdateViewHandler(this.updateView.bind(this));
+    RegisterUpdateGameHandler(this.updateView);
+    RegisterUpdateViewHandler(this.updateView);
   }
 
   setDummyData(state) {
@@ -141,9 +146,13 @@ class App extends Component {
     };
   }
 
-  updateView(params, phase, dialog = null) {
+  updateInfoUpdate = event => {
+    this.setState({waiting: true});
+  };
+
+  updateView = (params, phase, dialog = null) => {
     const game = params.game;
-    const toUpdate = {game: game, phase: phase};
+    const toUpdate = {game: game, phase: phase, waiting: false};
     if (this.state.selectCands.length !== 0) {
       // Reset select cands if we get another message.
       // TODO In the future, this reset should go under the ack of the
@@ -176,7 +185,7 @@ class App extends Component {
     }
     console.log(phase, toUpdate);
     this.setState(toUpdate);
-  }
+  };
 
   updateDialog = (open, title, cards) => {
     this.setState({
@@ -191,6 +200,8 @@ class App extends Component {
   render() {
     const dialog = this.state.dialog;
     const selectCands = this.state.selectCands;
+    const waiting = this.state.waiting;
+
     const chooseDialog = (
       <ChooseDialog
         title={dialog.title}
@@ -206,6 +217,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <LoadingDialog open={waiting} />
+          <InfoEntryDialog open={true} onSubmit={this.updateInfoUpdate} />
           {chooseDialog}
           <Grid
             container
