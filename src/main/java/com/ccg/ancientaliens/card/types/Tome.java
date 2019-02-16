@@ -19,7 +19,7 @@ public abstract class Tome extends Card {
      * @param owner
      */
     public Tome(String name, String text, String image, String owner) {
-        super(name, 0, new Hashmap<Knowledge, Integer>(), text, "assets/tome.png", owner);
+        super(name, 0, new Hashmap<Knowledge, Integer>(), text, owner);
     }
 
     @Override

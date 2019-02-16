@@ -87,11 +87,6 @@ public abstract class Card implements Serializable {
     public ArrayList<Subtype> subtypes;
 
     /**
-     * Illustration of the card.
-     */
-    public String image;
-
-    /**
      * Owner of the card. This is the player who started the game with the card in his deck.
      */
     public String owner;
@@ -104,7 +99,7 @@ public abstract class Card implements Serializable {
     /**
      * General purpose Data field for holding information like targets etc.
      */
-    public ArrayList<Serializable> supplementaryData;
+    public Object supplementaryData;
 
     /**
      * Flag to indicate if the card is depleted.
@@ -131,7 +126,7 @@ public abstract class Card implements Serializable {
      * @param owner
      */
     public Card(String name, int cost, Hashmap<Knowledge, Integer> knowledge,
-            String text, String image, String owner) {
+            String text, String owner) {
         id = randomUUID();
         counters = new Hashmap<>();
         supplementaryData = new ArrayList<>();
@@ -140,7 +135,6 @@ public abstract class Card implements Serializable {
         this.cost = cost;
         this.knowledge = knowledge;
         this.text = text;
-        this.image = image;
         this.owner = owner;
         controller = owner;
         

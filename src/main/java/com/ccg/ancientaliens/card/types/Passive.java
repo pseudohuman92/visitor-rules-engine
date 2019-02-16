@@ -22,7 +22,7 @@ public abstract class Passive extends Card {
      * @param owner
      */
     public Passive(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/passive.png", owner);
+        super(name, cost, knowledge, text, owner);
     }
     
     @Override

@@ -2,6 +2,7 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.properties.Triggering;
+import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
 import com.ccg.ancientaliens.protocol.Types.*;
@@ -54,16 +55,14 @@ public class Player implements Serializable {
 
     public void draw(int count){
         hand.addAll(deck.getFromTop(count));
-        //TODO: Check loss
     }
     
     public void purgeFromDeck(int count) {
         voidPile.addAll(deck.getFromTop(count));
-        //TODO: Check loss
     }
 
     public void discard(ArrayList<UUID> cards){
-        cards.stream().map((cardID) -> getCardFrom(cardID, hand))
+        cards.stream().map((cardID) -> extractCardFrom(cardID, hand))
                 .forEachOrdered((card) -> { scrapyard.add(card); });     
     }
     
@@ -123,20 +122,42 @@ public class Player implements Serializable {
     }
     */
     public void purgeCardsFromHand(ArrayList<UUID> cards) {
-        /*
-        cards.stream().map((cardID) -> getCardFromHand(cardID)).map((card) -> {
-            hand.remove(card);
-            return card;
-        }).forEachOrdered((card) -> {
+        
+        cards.stream().map((cardID) -> extractCardFrom(cardID, hand)).forEachOrdered((card) -> {
             voidPile.add(card);
         });
-        */
     }
 
-    public Card getCardFrom (UUID cardID, ArrayList<Card> list){
+    public Card extractCardFrom (UUID cardID, ArrayList<Card> list){
         for (Card card : list) {
             if(card.id.equals(cardID)){
                 list.remove(card);
+                return card;
+            }
+        }
+        return null;
+    }
+    
+    public Card extractCard(UUID cardID) {
+        Card c; 
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            c = extractCardFrom (cardID, list);
+            if (c != null) {
+                return c;
+            }
+        }
+        return null;
+    }
+    
+    public Card getCardFrom (UUID cardID, ArrayList<Card> list){
+        for (Card card : list) {
+            if(card.id.equals(cardID)){ 
                 return card;
             }
         }
@@ -153,32 +174,6 @@ public class Player implements Serializable {
         lists.add(deck.deck);
         for (ArrayList<Card> list : lists){ 
             c = getCardFrom (cardID, list);
-            if (c != null) {
-                return c;
-            }
-        }
-        return null;
-    }
-    
-    public Card peekCardFrom (UUID cardID, ArrayList<Card> list){
-        for (Card card : list) {
-            if(card.id.equals(cardID)){ 
-                return card;
-            }
-        }
-        return null;
-    }
-    
-    public Card peekCard(UUID cardID) {
-        Card c; 
-        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
-        lists.add(hand);
-        lists.add(playArea);
-        lists.add(scrapyard); 
-        lists.add(voidPile);
-        lists.add(deck.deck);
-        for (ArrayList<Card> list : lists){ 
-            c = peekCardFrom (cardID, list);
             if (c != null) {
                 return c;
             }
@@ -236,5 +231,14 @@ public class Player implements Serializable {
                     .setCount(i).build());
         });
         return b.build();
+    }
+
+    public boolean hasAnItem() {
+        for(Card c : playArea){
+            if (c instanceof Item){
+                return true;
+            }
+        }
+        return false;
     }
 }
