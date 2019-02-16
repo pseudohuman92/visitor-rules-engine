@@ -19,6 +19,20 @@ export class GameProtoSocket {
     };
   }
 
+  waitForOpen = (bytes, waitCount = 0) => {
+    if (this.socket.readyState !== 1) {
+      setTimeout(() => {
+        if (waitCount >= 50) {
+          return;
+        } else {
+          this.waitForOpen(bytes, waitCount + 1);
+        }
+      }, 10);
+    } else {
+      this.socket.send(bytes);
+    }
+  };
+
   send = (msgType, params) => {
     // Sends client game messages
     if (this.socket.readyState !== 1) {
@@ -31,7 +45,7 @@ export class GameProtoSocket {
     const bytes = proto.ClientGameMessage.encode(msg).finish();
 
     console.log('[sendGameMsg]', msg);
-    this.socket.send(bytes);
+    this.waitForOpen(bytes);
   };
 }
 
@@ -46,6 +60,25 @@ export class ProtoSocket {
     };
   }
 
+  sendMsg = bytes => {
+    this.socket.send(bytes);
+  };
+
+  waitForOpen = (bytes, waitCount = 0) => {
+    if (this.socket.readyState !== 1) {
+      setTimeout(() => {
+        if (waitCount >= 500) {
+          return;
+        } else {
+          this.waitForOpen(bytes, waitCount + 1);
+          console.log('[sentMsg]', bytes);
+        }
+      }, 10);
+    } else {
+      this.socket.send(bytes);
+    }
+  };
+
   send = (msgType, params) => {
     // Sends client game messages
     if (this.socket.readyState !== 1) {
@@ -58,6 +91,6 @@ export class ProtoSocket {
     const bytes = proto.ClientMessage.encode(msg).finish();
 
     console.log('[sendMsg]', msg);
-    this.socket.send(bytes);
+    this.waitForOpen(bytes);
   };
 }

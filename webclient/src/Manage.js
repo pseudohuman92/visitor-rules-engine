@@ -1,16 +1,20 @@
 // Handles logic and calls to app outside of games.
 
 import {ProtoSocket} from './ProtoSocket.js';
-import {ServerWSURL, ServerWSGameURL} from './Constants.js';
+import {GetProfileURL, GetGameURL} from './Utils.js';
 import {GamePhases, InitiateConnection} from './Game.js';
 
 let updateViewHandler = null;
-const protoSocket = new ProtoSocket(ServerWSURL, handleMsg);
+let protoSocket = null;
 
 function handleMsg(msgType, params) {
   const phase = GamePhases.NOT_STARTED;
-  InitiateConnection(ServerWSGameURL);
+  InitiateConnection(GetGameURL(params.game.player.id, params.game.id));
   updateViewHandler(params, phase);
+}
+
+export function ConnectProfile(username) {
+  protoSocket = new ProtoSocket(GetProfileURL(username), handleMsg);
 }
 
 export function RegisterUpdateViewHandler(handler) {

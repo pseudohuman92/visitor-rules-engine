@@ -308,11 +308,12 @@ manageSocket.on('connection', function connection(ws) {
 
 server.on('upgrade', function upgrade(request, socket, head) {
   const pathname = url.parse(request.url).pathname;
-  if (pathname === '/chat/me') {
+  console.log('connected to', pathname);
+  if (pathname.startsWith('/profiles/')) {
     manageSocket.handleUpgrade(request, socket, head, function done(ws) {
       manageSocket.emit('connection', ws, request);
     });
-  } else if (pathname === '/game') {
+  } else if (pathname.startsWith('/games/')) {
     gameSocket.handleUpgrade(request, socket, head, function done(ws) {
       gameSocket.emit('connection', ws, request);
     });

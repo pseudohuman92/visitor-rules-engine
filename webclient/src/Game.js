@@ -1,5 +1,4 @@
 import {GameProtoSocket} from './ProtoSocket.js';
-import {ServerWSGameURL} from './Constants.js';
 
 export const GamePhases = {
   NOT_STARTED: 'NotStarted',

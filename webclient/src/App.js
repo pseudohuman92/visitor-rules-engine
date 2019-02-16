@@ -13,7 +13,7 @@ import {
   SetBasicGameInfo,
   RegisterUpdateGameHandler,
 } from './Game.js';
-import {RegisterUpdateViewHandler} from './Manage.js';
+import {ConnectProfile, RegisterUpdateViewHandler} from './Manage.js';
 import './App.css';
 
 class App extends Component {
@@ -146,7 +146,8 @@ class App extends Component {
     };
   }
 
-  updateInfoUpdate = event => {
+  updateInfoUpdate = username => {
+    ConnectProfile(username);
     this.setState({waiting: true});
   };
 
@@ -183,7 +184,7 @@ class App extends Component {
       toUpdate['selectCands'] = params.candidates;
       toUpdate['selectCount'] = params.selectionCount;
     }
-    console.log(phase, toUpdate);
+    console.log('[toUpdate]', phase, toUpdate);
     this.setState(toUpdate);
   };
 

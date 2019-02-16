@@ -20,12 +20,12 @@ export default class InfoEntryDialog extends Component {
     };
   }
 
-  handleInfoUpdate = event => {
+  handleInfoUpdate = () => {
     const username = this.state.username;
     console.assert(username);
+    this.state.onSubmit(username);
     JoinTable(username, 'best game');
     this.setState({open: false});
-    this.state.onSubmit(event);
   };
 
   handleChange = event => {
@@ -33,8 +33,8 @@ export default class InfoEntryDialog extends Component {
   };
 
   handleKeyPress = event => {
-    if (event.keyCode == 13) {
-      this.handleInfoUpdate(event);
+    if (event.keyCode === 13) {
+      this.handleInfoUpdate();
       event.preventDefault();
     }
   };
