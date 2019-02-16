@@ -3,6 +3,7 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Card;
+import com.ccg.ancientaliens.helpers.Signaler;
 import com.ccg.ancientaliens.protocol.ServerGameMessages;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.Loss;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.SelectFromHand;
@@ -316,11 +317,12 @@ public class Game {
             }
         }
         try {
+            Signaler s = new Signaler();
             connections.get(c.controller).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromPlay(b),
                     (l) -> { c.supplementaryData = l;
-                             c.supplementaryData.notify();});
-            c.supplementaryData.wait();
+                             s.signal();});
+            s.waitSignal();
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -371,11 +373,12 @@ public class Game {
             b.addCandidates(c.toCardMessage());
         });
         try {
+            Signaler s = new Signaler();
             connections.get(username).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromHand(b),
                     (l) -> { p.discard((ArrayList<UUID>)l);
-                             p.notify();});
-            p.wait();
+                             s.signal();});
+            s.waitSignal();
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -72,24 +72,24 @@ public class GameServer {
         games.get(gameID).updatePlayers();
     }
 
-    void addConnection(String username, GeneralEndpoint connection) {
+    synchronized void addConnection(String username, GeneralEndpoint connection) {
         playerConnections.put(username, connection);
     }
 
-    void removeConnection(String username) {
+    synchronized void removeConnection(String username) {
         playerConnections.remove(username);
         gameQueue.remove(username);
     }
 
-    void addGameConnection(UUID gameID, String username, GameEndpoint connection) {
+    synchronized void addGameConnection(UUID gameID, String username, GameEndpoint connection) {
         games.get(gameID).addConnection(username, connection);
     }
     
-    void removeGameConnection(UUID gameID, String username) {
+    synchronized void removeGameConnection(UUID gameID, String username) {
         games.get(gameID).removeConnection(username);
     }
 
-    void joinTable(String username) {
+    synchronized void joinTable(String username) {
         if (gameQueue.isEmpty()){
             System.out.println("Adding " + username + " to game queue!");
             gameQueue.add(username);
@@ -107,9 +107,7 @@ public class GameServer {
                 playerConnections.get(username).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
                                 .setGame(g.toGameState(username))));
-            } catch (IOException ex) {
-                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (EncodeException ex) {
+            } catch (IOException | EncodeException ex) {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
