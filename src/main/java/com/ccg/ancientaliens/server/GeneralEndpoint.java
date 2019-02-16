@@ -41,7 +41,7 @@ public class GeneralEndpoint {
     public void onMessage(Session session, byte[] message) throws IOException {
         ClientMessage cm = ClientMessage.parseFrom(message);
         System.out.println(username + " sent a message: " + cm);
-        //handleRequest(message);
+        handleMessage(cm);
     }
  
     @OnClose
@@ -115,4 +115,13 @@ public class GeneralEndpoint {
         }
     }
     */
+
+    private void handleMessage(ClientMessage cm) {
+        switch(cm.getPayloadCase()){
+            case JOINTABLE:
+                //Temporary implementation
+                gameServer.joinTable(username);
+                break;
+        }
+    }
 }

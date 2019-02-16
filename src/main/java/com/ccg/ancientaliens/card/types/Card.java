@@ -3,6 +3,7 @@ package com.ccg.ancientaliens.card.types;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
 import com.ccg.ancientaliens.enums.*;
+import com.ccg.ancientaliens.protocol.Types;
 import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -224,5 +225,16 @@ public abstract class Card implements Serializable {
         depleted = false;
         marked = false;
         supplementaryData = new ArrayList<>();
+    }
+
+    public Types.Card toCardMessage() {
+        Types.Card.Builder b = Types.Card.newBuilder()
+                .setId(id.toString())
+                .setName(name)
+                .setDepleted(depleted)
+                .setMarked(marked);
+        //TODO: add counters
+        //TODO: add targets
+        return b.build();
     }
 }

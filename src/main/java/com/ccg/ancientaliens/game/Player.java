@@ -3,6 +3,8 @@ package com.ccg.ancientaliens.game;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.properties.Triggering;
 import com.ccg.ancientaliens.enums.Knowledge;
+import com.ccg.ancientaliens.protocol.Types;
+import com.ccg.ancientaliens.protocol.Types.KnowledgeType;
 import static helpers.Debug.list;
 import helpers.Hashmap;
 import java.io.Serializable;
@@ -182,5 +184,57 @@ public class Player implements Serializable {
             }
         }
         return null;
+    }
+
+    public Types.Player toPlayerMessage() {
+        Types.Player.Builder b = Types.Player.newBuilder()
+                .setId(id.toString())
+                .setName(name)
+                .setDeckSize(deck.size())
+                .setEnergy(energy)
+                .setMaxEnergy(maxEnergy);
+        for(int i = 0; i < hand.size(); i++){
+            b.addHand(hand.get(i).toCardMessage());
+        }
+        for(int i = 0; i < playArea.size(); i++){
+            b.addPlay(playArea.get(i).toCardMessage());
+        }
+        for(int i = 0; i < scrapyard.size(); i++){
+            b.addScrapyard(scrapyard.get(i).toCardMessage());
+        }
+        for(int i = 0; i < voidPile.size(); i++){
+            b.addVoid(voidPile.get(i).toCardMessage());
+        }
+        knowledgePool.forEach((k, i) -> {
+            b.addKnowledgePool(Types.Knowledge.newBuilder()
+                    .setKnowledge(KnowledgeType.forNumber(k.getValue()))
+                    .setCount(i).build());
+        });
+        return b.build();
+    }
+    
+    public Types.Opponent toOpponentMessage() {
+        Types.Opponent.Builder b = Types.Opponent.newBuilder()
+                .setId(id.toString())
+                .setName(name)
+                .setDeckSize(deck.size())
+                .setEnergy(energy)
+                .setMaxEnergy(maxEnergy)
+                .setHandSize(hand.size());
+        for(int i = 0; i < playArea.size(); i++){
+            b.addPlay(playArea.get(i).toCardMessage());
+        }
+        for(int i = 0; i < scrapyard.size(); i++){
+            b.addScrapyard(scrapyard.get(i).toCardMessage());
+        }
+        for(int i = 0; i < voidPile.size(); i++){
+            b.addVoid(voidPile.get(i).toCardMessage());
+        }
+        knowledgePool.forEach((k, i) -> {
+            b.addKnowledgePool(Types.Knowledge.newBuilder()
+                    .setKnowledge(KnowledgeType.forNumber(k.getValue()))
+                    .setCount(i).build());
+        });
+        return b.build();
     }
 }
