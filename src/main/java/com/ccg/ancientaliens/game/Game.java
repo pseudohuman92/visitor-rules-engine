@@ -407,7 +407,7 @@ public class Game {
                 .setOpponent(players.get(getOpponentName(username)).toOpponentMessage())
                 .setTurnPlayer(turnPlayer)
                 .setActivePlayer(activePlayer)
-                .setPhase(Types.Phase.forNumber(phase.ordinal()));
+                .setPhase(phase);
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
         }
