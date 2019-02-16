@@ -4,7 +4,16 @@ option java_package = "com.ccg.ancientaliens.protocol";
 
 /**
  * Custom type messages. Should not be sent directly.
- */    
+ */
+enum Phase {
+    NOPHASE = 0;
+    MULLIGAN = 1;
+    BEGIN = 2;
+    MAIN = 3;
+    MAIN_RESOLVING = 4;
+    END = 5;
+}
+ 
 message Table
 {
     string id = 1;
@@ -12,7 +21,7 @@ message Table
     string opponent = 3;
 }
 
-enum KnowledgeType {
+enum Knowledge {
     NONE = 0;
     BLACK = 1;
     GREEN = 2;
@@ -21,24 +30,24 @@ enum KnowledgeType {
     WHITE = 5;
 }
 
-message Knowledge {
-    KnowledgeType knowledge = 1;
+message KnowledgeGroup {
+    Knowledge knowledge = 1;
     int32 count = 2;
 }
 
-enum CounterType {
-    nullCounterType = 0;
+enum Counter {
+    NOCOUNTER = 0;
 }
 
-message Counter {
-    CounterType counter = 1;
+message CounterGroup {
+    Counter counter = 1;
     int32 count = 2;
 }
 
 message Card {
     string id = 1;
     string name = 2;
-    repeated Counter counters = 3;
+    repeated CounterGroup counters = 3;
     bool depleted = 4;
     bool marked = 5;
     repeated string targets = 6;
@@ -54,7 +63,7 @@ message Player {
     repeated Card play = 7;
     repeated Card scrapyard = 8;
     repeated Card void = 9;
-    repeated Knowledge knowledgePool = 10;
+    repeated KnowledgeGroup knowledgePool = 10;
 }
 
 message Opponent {
@@ -67,7 +76,7 @@ message Opponent {
     repeated Card play = 7;
     repeated Card scrapyard = 8;
     repeated Card void = 9;
-    repeated Knowledge knowledgePool = 10;
+    repeated KnowledgeGroup knowledgePool = 10;
 }
 
 message GameState {
@@ -80,5 +89,6 @@ message GameState {
     repeated string canPlay = 7;
     repeated string canActivate = 8;
     repeated string canStudy = 9;
+    Phase phase = 10;
 }
 

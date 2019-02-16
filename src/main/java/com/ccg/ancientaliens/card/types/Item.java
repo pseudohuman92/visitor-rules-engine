@@ -3,8 +3,8 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.card.properties.Activatable;
 import com.ccg.ancientaliens.game.Game;
-import com.ccg.ancientaliens.enums.*;
-import static com.ccg.ancientaliens.enums.Phase.*;
+import com.ccg.ancientaliens.protocol.Types.Knowledge;
+import static com.ccg.ancientaliens.protocol.Types.Phase.MAIN;
 import helpers.Hashmap;
 
 /**

@@ -3,7 +3,6 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.cards.TestCard;
-import com.ccg.ancientaliens.enums.Knowledge;
 import static helpers.Debug.list;
 import helpers.Hashmap;
 import java.io.File;

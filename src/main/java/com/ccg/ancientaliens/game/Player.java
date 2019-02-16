@@ -2,9 +2,9 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.properties.Triggering;
-import com.ccg.ancientaliens.enums.Knowledge;
 import com.ccg.ancientaliens.protocol.Types;
-import com.ccg.ancientaliens.protocol.Types.KnowledgeType;
+import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
+import com.ccg.ancientaliens.protocol.Types.*;
 import static helpers.Debug.list;
 import helpers.Hashmap;
 import java.io.Serializable;
@@ -92,8 +92,8 @@ public class Player implements Serializable {
 
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
-        result = cardKnowledge.keySet().stream().map((k) -> knowledgePool.containsKey(k) && 
-                (cardKnowledge.get(k) <= knowledgePool.get(k))).reduce(result, (accumulator, _item) -> accumulator & _item);
+        //result = (boolean) cardKnowledge.keySet().stream().map((<any> k) -> (cardKnowledge.get(k) <= knowledgePool.get(k)) && 
+        //        knowledgePool.containsKey(k)).reduce(result, (accumulator, _item) -> accumulator & _item);
         return result;
     }
     
@@ -206,8 +206,8 @@ public class Player implements Serializable {
             b.addVoid(voidPile.get(i).toCardMessage());
         }
         knowledgePool.forEach((k, i) -> {
-            b.addKnowledgePool(Types.Knowledge.newBuilder()
-                    .setKnowledge(KnowledgeType.forNumber(k.getValue()))
+            b.addKnowledgePool(KnowledgeGroup.newBuilder()
+                    .setKnowledge(k)
                     .setCount(i).build());
         });
         return b.build();
@@ -231,8 +231,8 @@ public class Player implements Serializable {
             b.addVoid(voidPile.get(i).toCardMessage());
         }
         knowledgePool.forEach((k, i) -> {
-            b.addKnowledgePool(Types.Knowledge.newBuilder()
-                    .setKnowledge(KnowledgeType.forNumber(k.getValue()))
+            b.addKnowledgePool(KnowledgeGroup.newBuilder()
+                    .setKnowledge(k)
                     .setCount(i).build());
         });
         return b.build();

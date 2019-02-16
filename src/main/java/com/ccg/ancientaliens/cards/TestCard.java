@@ -6,8 +6,8 @@
 package com.ccg.ancientaliens.cards;
 
 import com.ccg.ancientaliens.card.types.Action;
-import com.ccg.ancientaliens.enums.Knowledge;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.protocol.Types.Knowledge;
 import helpers.Hashmap;
 
 /**

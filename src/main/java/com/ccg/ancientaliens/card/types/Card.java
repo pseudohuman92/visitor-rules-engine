@@ -4,6 +4,7 @@ import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
 import com.ccg.ancientaliens.enums.*;
 import com.ccg.ancientaliens.protocol.Types;
+import com.ccg.ancientaliens.protocol.Types.*;
 import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;

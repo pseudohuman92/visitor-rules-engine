@@ -2,8 +2,8 @@
 package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
-import com.ccg.ancientaliens.enums.Knowledge;
-import static com.ccg.ancientaliens.enums.Phase.*;
+import com.ccg.ancientaliens.protocol.Types.*;
+import static com.ccg.ancientaliens.protocol.Types.Phase.MAIN;
 import helpers.Hashmap;
 
 /**

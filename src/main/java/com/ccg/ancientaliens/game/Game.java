@@ -3,14 +3,12 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.server.GameEndpoint;
-import com.ccg.ancientaliens.enums.Phase;
-import static com.ccg.ancientaliens.enums.Phase.*;
+
 import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.UpdateGameState;
-import com.ccg.ancientaliens.protocol.ServerMessages;
-import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage.Builder;
-import com.ccg.ancientaliens.protocol.Types.GameState;
-import com.ccg.ancientaliens.server.GameServer;
+import com.ccg.ancientaliens.protocol.Types;
+import com.ccg.ancientaliens.protocol.Types.*;
+import static com.ccg.ancientaliens.protocol.Types.Phase.*;
 import helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
@@ -408,7 +406,8 @@ public class Game {
                 .setPlayer(players.get(username).toPlayerMessage())
                 .setOpponent(players.get(getOpponentName(username)).toOpponentMessage())
                 .setTurnPlayer(turnPlayer)
-                .setActivePlayer(activePlayer);
+                .setActivePlayer(activePlayer)
+                .setPhase(Types.Phase.forNumber(phase.ordinal()));
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
         }
