@@ -321,7 +321,9 @@ public class Game {
             connections.get(c.controller).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromPlay(b),
                     (l) -> { c.supplementaryData = l;
-                             s.signal();});
+                             s.signal();
+                             System.out.println("Signaling targets!");});
+            System.out.println("Waiting targets!");
             s.waitSignal();
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -377,7 +379,9 @@ public class Game {
             connections.get(username).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromHand(b),
                     (l) -> { p.discard((ArrayList<UUID>)l);
-                             s.signal();});
+                             s.signal();
+                             System.out.println("Signaling discard!");});
+            System.out.println("Waiting discard!");
             s.waitSignal();
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
