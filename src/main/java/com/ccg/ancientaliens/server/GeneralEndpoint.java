@@ -53,7 +53,7 @@ public class GeneralEndpoint {
  
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println(username + " ERROR!");
+        System.out.println(username + " ERROR!: " + throwable.getMessage());
     }
  
     public void send(ServerMessage message) throws IOException, EncodeException {

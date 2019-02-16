@@ -54,7 +54,7 @@ public class GameEndpoint {
  
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println(username + " ERROR!");
+        System.out.println(username + " ERROR!: " + throwable.getMessage());
     }
  
     public void send(ServerGameMessage message) throws IOException, EncodeException {

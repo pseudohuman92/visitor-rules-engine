@@ -90,11 +90,13 @@ public class GameServer {
 
     void joinTable(String username) {
         if (gameQueue.isEmpty()){
+            System.out.println("Adding " + username + " to game queue!");
             gameQueue.add(username);
         } else {
             if(gameQueue.get(0).equals(username))
                 return;
             String p1 = gameQueue.remove(0);
+            System.out.println("Starting a new game with " + username + " and " + p1);
             Game g = new Game(p1, username);
             games.put(g.id, g);
             try {
