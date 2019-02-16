@@ -92,6 +92,8 @@ public class GameServer {
         if (gameQueue.isEmpty()){
             gameQueue.add(username);
         } else {
+            if(gameQueue.get(0).equals(username))
+                return;
             String p1 = gameQueue.remove(0);
             Game g = new Game(p1, username);
             games.put(g.id, g);
