@@ -26,7 +26,7 @@ public class GameEndpoint {
     PayloadCase responseType;
     
     @OnOpen
-    public void onOpen(Session session, @PathParam("username") String username, @PathParam("gameID") String gameID) throws IOException {
+    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException {
         this.session = session;
         this.username = username;
         this.gameID = UUID.fromString(gameID);
