@@ -181,7 +181,7 @@ public class Player implements Serializable {
         return null;
     }
 
-    public Types.Player toPlayerMessage() {
+    public Types.Player.Builder toPlayerMessage() {
         Types.Player.Builder b = Types.Player.newBuilder()
                 .setId(id.toString())
                 .setName(name)
@@ -205,10 +205,10 @@ public class Player implements Serializable {
                     .setKnowledge(k)
                     .setCount(i).build());
         });
-        return b.build();
+        return b;
     }
     
-    public Types.Opponent toOpponentMessage() {
+    public Types.Opponent.Builder toOpponentMessage() {
         Types.Opponent.Builder b = Types.Opponent.newBuilder()
                 .setId(id.toString())
                 .setName(name)
@@ -230,7 +230,7 @@ public class Player implements Serializable {
                     .setKnowledge(k)
                     .setCount(i).build());
         });
-        return b.build();
+        return b;
     }
 
     public boolean hasAnItem() {

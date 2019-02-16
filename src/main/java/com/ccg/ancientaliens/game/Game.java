@@ -424,7 +424,7 @@ public class Game {
         }
     }
     
-    public GameState toGameState(String username){
+    public GameState.Builder toGameState(String username){
         GameState.Builder b = 
                 GameState.newBuilder()
                 .setId(id.toString())
@@ -436,7 +436,17 @@ public class Game {
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
         }
-    return b.build();
+        players.forEach((s, p) -> {
+            p.hand.forEach(c -> {
+                if(c.canPlay(this)){
+                    b.addCanPlay(c.id.toString());
+                }
+                if(c.canStudy(this)){
+                    b.addCanStudy(c.id.toString());
+                }
+            });
+        });
+        return b;
     }
     
     public void updatePlayers(){
