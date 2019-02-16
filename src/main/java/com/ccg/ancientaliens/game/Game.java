@@ -347,12 +347,12 @@ public class Game {
     }
     
     void newTurn(){
-        phase = BEGIN;
+        phase = MAIN;
         if(turnCount > 0){
             turnPlayer = getOpponentName(turnPlayer);
             players.get(turnPlayer).draw(1);
         }
-        activePlayer = "";
+        activePlayer = turnPlayer;
         passCount = 0;
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
@@ -407,7 +407,7 @@ public class Game {
                 .setOpponent(players.get(getOpponentName(username)).toOpponentMessage())
                 .setTurnPlayer(turnPlayer)
                 .setActivePlayer(activePlayer)
-                .setPhase(Types.Phase.forNumber(phase.ordinal()));
+                .setPhase(phase);
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
         }
