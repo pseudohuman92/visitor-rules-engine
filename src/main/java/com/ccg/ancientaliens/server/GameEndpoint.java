@@ -140,7 +140,7 @@ public class GameEndpoint {
                 break;
             case STUDYCARD:
                 StudyCard payload3 = message.getStudyCard();
-                gameServer.studyCard(gameID, username, UUID.fromString(payload3.getCardID()), payload3.getKnowledgeList());
+                gameServer.studyCard(gameID, username, UUID.fromString(payload3.getCardID()));
                 break;
             case PASS:
                 gameServer.pass(gameID, username);

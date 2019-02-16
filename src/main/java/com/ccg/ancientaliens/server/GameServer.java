@@ -62,7 +62,7 @@ public class GameServer {
         games.get(gameID).updatePlayers();
     }
     
-    void studyCard(UUID gameID, String username, UUID cardID, List<Types.Knowledge> knowledgeList) {
+    void studyCard(UUID gameID, String username, UUID cardID) {
         games.get(gameID).studyCard(username, cardID);
         games.get(gameID).updatePlayers();
     }
