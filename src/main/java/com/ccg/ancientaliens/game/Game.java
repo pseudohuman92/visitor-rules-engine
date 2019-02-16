@@ -5,13 +5,21 @@ import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.server.GameEndpoint;
 import com.ccg.ancientaliens.enums.Phase;
 import static com.ccg.ancientaliens.enums.Phase.*;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.UpdateGameState;
+import com.ccg.ancientaliens.protocol.ServerMessages;
 import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage.Builder;
 import com.ccg.ancientaliens.protocol.Types.GameState;
+import com.ccg.ancientaliens.server.GameServer;
 import helpers.Hashmap;
+import java.io.IOException;
 import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.websocket.EncodeException;
 
 /**
  *
@@ -307,8 +315,13 @@ public class Game {
     
     public void playCard(String username, UUID cardID) {
         getCard(cardID).play(this);
-        passCount = 0;
         activePlayer = getOpponentName(username);
+        
+    }
+    
+    public void addToStack(Card c) {
+        passCount = 0;
+        stack.add(0, c);
     }
 
     public void studyCard(String username, UUID cardID) {
@@ -316,7 +329,6 @@ public class Game {
     }
     
     public void changePhase(){
-        /*
         switch(phase) {
             case MULLIGAN:
                 newTurn();
@@ -334,11 +346,9 @@ public class Game {
                 newTurn();
                 break;
         }
-        */
     }
     
     void newTurn(){
-        /*
         phase = BEGIN;
         if(turnCount > 0){
             turnPlayer = getOpponentName(turnPlayer);
@@ -349,7 +359,6 @@ public class Game {
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
         turnCount++;
-        */
     }
     
 
@@ -404,5 +413,17 @@ public class Game {
             b.addStack(stack.get(i).toCardMessage());
         }
     return b.build();
+    }
+    
+    public void updatePlayers(){
+        connections.forEach((p , e) -> {
+            try {
+                e.send(ServerGameMessage.newBuilder()
+                        .setUpdateGameState(UpdateGameState.newBuilder()
+                                .setGame(toGameState(p))));
+            } catch (IOException | EncodeException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 }

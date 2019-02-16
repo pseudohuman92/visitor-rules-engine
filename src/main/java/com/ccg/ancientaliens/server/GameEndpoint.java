@@ -62,6 +62,13 @@ public class GameEndpoint {
         checkNeedsResponse(message);     
         session.getBasicRemote().sendObject(message.toByteArray());
     }
+    
+    public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
+        ServerGameMessage message = builder.build();
+        System.out.println("Server sending a game message to " + username + ": " + message);
+        checkNeedsResponse(message);     
+        session.getBasicRemote().sendObject(message.toByteArray());
+    }
 
     private void processResponse(ClientGameMessage message) {
         if (message.getPayloadCase() == responseType){

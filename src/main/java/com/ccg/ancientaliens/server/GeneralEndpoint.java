@@ -61,60 +61,11 @@ public class GeneralEndpoint {
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
-    /*
-    public void handleRequest(Message message){
-        System.out.println(message);
-        switch(message.label){
-            case REGISTER:
-                String username = (String)message.object;
-                if (registerUser(username)){
-                    connection.send(Message.success());
-                } else {
-                    connection.send(Message.fail("Username already exists."));
-                }
-                break;
-            case LOGIN:
-                username = (String)message.object;
-                if (server.isLoggedIn(username)) {
-                    connection.send(Message.fail(username + " is already logged in."));
-                } else if (true) { //comment in to enable registering if (userRegistered(username)){
-                    server.addLogin(username, connection);
-                    connection.send(Message.success());
-                } else {
-                    connection.send(Message.fail(username + " is not registered."));
-                }
-                server.updatePlayers();
-                break;
-            case LOGOUT:
-                username = (String)message.object;
-                server.removeLogin(username);
-                server.updatePlayers();
-                server.updateTables();
-                break;
-            case CHAT_MESSAGE:
-                server.appendToChatLog((String)message.object);
-                server.updateChatLogs();
-                break;
-            case CREATE_TABLE:
-                Serializable[] data = (Serializable[])message.object;
-                server.createTable((String)data[0], (Deck)data[1]);
-                server.updateTables();
-                break;
-            case JOIN_TABLE:
-                data = (Serializable[])message.object;
-                server.joinTable((String)data[0], (Deck)data[1], (UUID)data[2]);
-                server.updateTables();
-                break;
-            case UPDATE_LOBBY:
-                server.updateTables();
-                server.updateChatLogs();
-                server.updatePlayers();
-                break;
-            default:
-                System.out.println("Unhandled label: "+ message.toString());
-        }
+    public void send(ServerMessage.Builder builder) throws IOException, EncodeException {
+        ServerMessage message = builder.build();
+        System.out.println("Server sending a message to " + username + ": " + message);
+        session.getBasicRemote().sendObject(message.toByteArray());
     }
-    */
 
     private void handleMessage(ClientMessage cm) {
         switch(cm.getPayloadCase()){

@@ -48,22 +48,27 @@ public class GameServer {
     
     void mulligan(UUID gameID, String username) {
         games.get(gameID).mulligan(username);
+        games.get(gameID).updatePlayers();
     }
     
     void keep(UUID gameID, String username) {
         games.get(gameID).keep(username);
+        games.get(gameID).updatePlayers();
     }
     
     void pass(UUID gameID, String username) {
         games.get(gameID).pass(username);
+        games.get(gameID).updatePlayers();
     }
     
     void studyCard(UUID gameID, String username, UUID cardID, List<Types.Knowledge> knowledgeList) {
         games.get(gameID).studyCard(username, cardID);
+        games.get(gameID).updatePlayers();
     }
     
     void playCard(UUID gameID, String username, UUID cardID) {
         games.get(gameID).playCard(username, cardID);
+        games.get(gameID).updatePlayers();
     }
 
     void addConnection(String username, GeneralEndpoint connection) {
@@ -72,6 +77,7 @@ public class GameServer {
 
     void removeConnection(String username) {
         playerConnections.remove(username);
+        gameQueue.remove(username);
     }
 
     void addGameConnection(UUID gameID, String username, GameEndpoint connection) {
@@ -86,16 +92,18 @@ public class GameServer {
         if (gameQueue.isEmpty()){
             gameQueue.add(username);
         } else {
+            if(gameQueue.get(0).equals(username))
+                return;
             String p1 = gameQueue.remove(0);
             Game g = new Game(p1, username);
             games.put(g.id, g);
             try {
                 playerConnections.get(p1).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
-                                .setGame(g.toGameState(p1)).build()).build());
+                                .setGame(g.toGameState(p1))));
                 playerConnections.get(username).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
-                                .setGame(g.toGameState(username)).build()).build());
+                                .setGame(g.toGameState(username))));
             } catch (IOException ex) {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EncodeException ex) {

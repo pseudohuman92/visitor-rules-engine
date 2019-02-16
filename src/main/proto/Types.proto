@@ -77,5 +77,8 @@ message GameState {
     string turnPlayer =  4;
     string activePlayer = 5;
     repeated Card stack = 6;
+    repeated string canPlay = 7;
+    repeated string canActivate = 8;
+    repeated string canStudy = 9;
 }
 
