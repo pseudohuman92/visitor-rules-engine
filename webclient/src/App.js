@@ -162,7 +162,7 @@ class App extends Component {
     const game = params.game;
     const toUpdate = {};
 
-    if (phase === GamePhases.UPDATE_GAME) {
+    if (phase === GamePhases.UPDATE_GAME || phase === GamePhases.NOT_STARTED) {
       toUpdate.game = params.game;
     }
 
