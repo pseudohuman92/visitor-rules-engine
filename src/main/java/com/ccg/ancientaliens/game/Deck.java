@@ -2,9 +2,8 @@
 package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.cards.TestCard;
+import com.ccg.ancientaliens.set1.black.BA01;
 import static helpers.Debug.list;
-import helpers.Hashmap;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -22,31 +21,19 @@ public class Deck implements Serializable {
     //CardGenerator generator;
     ArrayList<Card> deck;
     
-    /**
-     *
-     */
     public Deck(String username, boolean test){
         //generator = new CardGenerator("");
         deck = new ArrayList<>();
         for (int i = 0; i < 10; i++){
-            deck.add(new TestCard("TestCard", 1, new Hashmap<>(), "Test Text", "", username));
+            deck.add(new BA01(username));
         }
     }
-    
-    /**
-     *
-     * @param username
-     */
+
     public Deck(String username){
         //generator = new CardGenerator(username);
         deck = new ArrayList<>();
     }
-    
-    /**
-     *
-     * @param file
-     * @param username
-     */
+
     public Deck(File file, String username) {
         //generator = new CardGenerator(username);
         deck = new ArrayList<>();

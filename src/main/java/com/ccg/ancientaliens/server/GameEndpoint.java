@@ -4,12 +4,14 @@ import com.ccg.ancientaliens.protocol.ClientGameMessages.ActivateCard;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import static com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
-import com.ccg.ancientaliens.protocol.ClientGameMessages.PlayCard;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.*;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.SelectPlayerResponse;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.StudyCard;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.function.Consumer;
 import javax.websocket.*;
 import javax.websocket.server.*;
 /**
@@ -24,6 +26,7 @@ public class GameEndpoint {
     UUID gameID;
     boolean waitingResponse;
     PayloadCase responseType;
+    Consumer<Object> responseCallback;
     
     @OnOpen
     public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException {
@@ -59,41 +62,61 @@ public class GameEndpoint {
     }
  
     public void send(ServerGameMessage message) throws IOException, EncodeException {
-        System.out.println("Server sending a game message to " + username + ": " + message);
-        checkNeedsResponse(message);     
+        System.out.println("Server sending a game message to " + username + ": " + message);  
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
+        System.out.println("Server sending a game message to " + username + ": " + message);   
+        session.getBasicRemote().sendObject(message.toByteArray());
+    }
+    
+    public void sendForResponse(ServerGameMessage.Builder builder, Consumer<Object> callback) throws IOException, EncodeException {
+        ServerGameMessage message = builder.build();
         System.out.println("Server sending a game message to " + username + ": " + message);
-        checkNeedsResponse(message);     
+        checkResponseType(message);
+        responseCallback = callback;
         session.getBasicRemote().sendObject(message.toByteArray());
     }
 
     private void processResponse(ClientGameMessage message) {
         if (message.getPayloadCase() == responseType){
+            Consumer<Object> callback;
             switch(message.getPayloadCase()){
                 case ORDERCARDSRESPONSE:
                     waitingResponse = false;
+                    responseCallback = null;
                     break;
                 case SELECTFROMLISTRESPONSE:
                     waitingResponse = false;
+                    responseCallback = null;
                     break;
                 case SELECTFROMPLAYRESPONSE:
+                    SelectFromPlayResponse sfpr = message.getSelectFromPlayResponse();
                     waitingResponse = false;
+                    callback = responseCallback;
+                    responseCallback = null;
+                    callback.accept(sfpr.getSelectedCardsList().toArray());
                     break;
                 case SELECTFROMHANDRESPONSE:
                     waitingResponse = false;
+                    responseCallback = null;
                     break;
                 case SELECTFROMSCRAPYARDRESPONSE:
                     waitingResponse = false;
+                    responseCallback = null;
                     break;
                 case SELECTFROMVOIDRESPONSE:
                     waitingResponse = false;
+                    responseCallback = null;
                     break;
                 case SELECTPLAYERRESPONSE:
+                    SelectPlayerResponse spr = message.getSelectPlayerResponse();
                     waitingResponse = false;
+                    callback = responseCallback;
+                    responseCallback = null;
+                    callback.accept(spr.getSelectedPlayerName());
                     break;
                 default:
                     System.out.println("Expected " + responseType + " from " + username + ". Received: " + message);
@@ -137,7 +160,7 @@ public class GameEndpoint {
         }
     }
 
-    private void checkNeedsResponse(ServerGameMessage message) {
+    private void checkResponseType(ServerGameMessage message) {
         switch(message.getPayloadCase()){
             case ORDERCARDS:
                 waitingResponse = true;

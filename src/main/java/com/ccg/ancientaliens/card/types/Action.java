@@ -21,7 +21,7 @@ public abstract class Action extends Card {
      * @param owner
      */
     public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/action.png", owner);
+        super(name, cost, knowledge, text, owner);
     }
 
     @Override

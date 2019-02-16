@@ -14,8 +14,8 @@ import helpers.Hashmap;
  */
 public abstract class Ally extends Card {
     
-    public Ally(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, image, owner);
+    public Ally(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
+        super(name, cost, knowledge, text, owner);
     }
     
 }

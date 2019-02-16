@@ -1,11 +1,17 @@
 
 package com.ccg.ancientaliens.game;
 
+import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Card;
+import com.ccg.ancientaliens.protocol.ServerGameMessages;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.Loss;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.SelectFromHand;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.SelectFromPlay;
 import com.ccg.ancientaliens.server.GameEndpoint;
 
 import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.UpdateGameState;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.Win;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.*;
 import static com.ccg.ancientaliens.protocol.Types.Phase.*;
@@ -15,6 +21,7 @@ import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.EncodeException;
@@ -75,65 +82,6 @@ public class Game {
     }
 
     /*
-    public void discard(String username, int count){
-        Connection connection = connections.get(username);
-        connection.send(Message.selectFromHand(toClientGame(username), count));
-        Message message = connection.receive();
-        if (message != null) {
-            Player player = players.get(username);
-            player.discard((ArrayList<UUID>)message.object);
-        }
-    }
- 
-    public void draw(String username, int count){
-        Player player = players.get(username);
-        player.draw(count);
-        if (player.deck.deck.isEmpty()){
-            lose(username);
-        }
-        processTrigger(Event.draw(username, count));
-    }
-
-    public void purge(String username, int count){
-        Player player = players.get(username);
-        player.purgeFromDeck(count);
-        if (player.deck.deck.isEmpty()){
-            lose(username);
-        }
-    }
-    
-    
-    public void destroy(UUID id){
-        Card item = getPlayAreaCardByID(id);
-        players.get(item.owner).playArea.remove(item);
-        players.get(item.owner).scrapyard.add(item);
-    }
-    
-
-    public void ready(UUID id){
-        for (Player player : players.values()) {
-            for (Card card : player.playArea) {
-                if (card.id.equals(id)){
-                    card.depleted = false;
-                    return;
-                }
-            }
-        }
-    }
-    
-
-    public void deplete(UUID id){
-        for (Player player : players.values()) {
-            for (Card card : player.playArea) {
-                if (card.id.equals(id)){
-                    card.depleted = true;
-                    break;
-                }
-            }
-        }
-    }
-    
-
     public Player getPlayerByID(UUID playerID){
         for (Player player : players.values()) {
             if(player.id.equals(playerID)){ 
@@ -145,45 +93,7 @@ public class Game {
  
     public Player getPlayerByName(String playerName){
         return players.get(playerName);
-    }
-
-    public Card getPlayAreaCardByID(UUID itemID){
-        for (Player player : players.values()) {
-            for (Card item : player.playArea){
-                if(item.id.equals(itemID)){ 
-                    return item;
-                }
-            }
-        }
-        return null;
-    }
-    
-    public void switchOwner(UUID itemID){
-        Card item = getPlayAreaCardByID(itemID);
-        players.get(item.owner).playArea.remove(item);
-        players.get(getOpponentName(item.owner)).playArea.add(item);
-        item.owner = getOpponentName(item.owner);
-    }
-    
-    /*
-    public void win(String player) {
-        Connection connection = connections.get(player);
-        connection.send(Message.win());
-        connection.closeConnection();
-        connection = connections.get(getOpponentName(player));
-        connection.send(Message.lose());
-        connection.closeConnection();
-    }
-    
-    public void lose(String player) {
-        Connection connection = connections.get(player);
-        connection.send(Message.lose());
-        connection.closeConnection();
-        connection = connections.get(getOpponentName(player));
-        connection.send(Message.win());
-        connection.closeConnection();
-    }
-    
+    }  
  
     public ArrayList<Card> orderCards(String username, ArrayList<Card> cards) {
         Connection connection = connections.get(username);
@@ -195,10 +105,7 @@ public class Game {
         return null;
     }
 
-    public void loot(String username, int x) {
-        draw(username, x);
-        discard(username, x);
-    }
+    
     
     
     @Override
@@ -218,38 +125,10 @@ public class Game {
         return sb.toString();
     }
     
-    
     void processTrigger (Event e) {
         players.get(turnPlayer).addTriggerEvent(this, e);
         players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, e);
-    }
-    
-    
-    public void possess(UUID cardID, String newController) {
-        Card c = getPlayAreaCardByID(cardID);
-        String oldController = c.controller;
-        players.get(oldController).playArea.remove(c);
-        players.get(newController).playArea.add(c);
-        c.controller = newController;
-        //processTrigger(Event.possess(oldController, newController, cardID));
-    }
-
-    public void discardAfterPlay(Card c) {
-        players.get(c.controller).scrapyard.add(c);
-    }
-
-    public boolean ownedByOpponent(UUID targetID) {
-        Card c = getCard(targetID);
-        return c.owner.equals(getOpponentName(c.controller));
-    }
-
-    public void addEnergy(String controller, int i) {
-        players.get(controller).energy+=i;
-    }
-
-    public void removeEnergy(String controller, int i) {
-        players.get(controller).energy-=i;
-    }
+    } 
 
     public void removeFromHand(String controller, UUID id) {
         Player p = players.get(controller);
@@ -291,6 +170,16 @@ public class Game {
             connections.remove(username);
     }
 
+    public Card extractCard(UUID targetID) {
+        for (Player player : players.values()) {
+            Card c = player.extractCard(targetID);
+            if (c != null){
+                return c;
+            }
+        }
+        return null;
+    }
+    
     public Card getCard(UUID targetID) {
         for (Player player : players.values()) {
             Card c = player.getCard(targetID);
@@ -301,18 +190,8 @@ public class Game {
         return null;
     }
     
-    public Card peekCard(UUID targetID) {
-        for (Player player : players.values()) {
-            Card c = player.peekCard(targetID);
-            if (c != null){
-                return c;
-            }
-        }
-        return null;
-    }
-    
     public void playCard(String username, UUID cardID) {
-        getCard(cardID).play(this);
+        extractCard(cardID).play(this);
         activePlayer = getOpponentName(username);
         
     }
@@ -323,7 +202,7 @@ public class Game {
     }
 
     public void studyCard(String username, UUID cardID) {
-        getCard(cardID).study(this);
+        extractCard(cardID).study(this);
     }
     
     public void changePhase(){
@@ -337,7 +216,8 @@ public class Game {
                 phase = MAIN;
                 break;
             case MAIN:
-                activePlayer = "";
+                passCount = 0;
+                activePlayer = turnPlayer;
                 phase = END;
                 break;
             case END:
@@ -383,7 +263,18 @@ public class Game {
     }
 
     private void resolveStack() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (passCount == 2) {
+            activePlayer = "";
+            Card c = stack.remove(0);
+            c.resolve(this);
+            updatePlayers();
+            if (!stack.isEmpty()){
+                resolveStack();
+            } else {
+                passCount = 0;
+                activePlayer = turnPlayer;
+            }
+        }
     }
 
     public void mulligan(String username) {
@@ -398,7 +289,141 @@ public class Game {
             activePlayer = getOpponentName(username);
         }
     }
+    
+    public boolean hasValidTargetsInPlay(Targeting c, int count){
+        for (Player player : players.values()) {
+            for (Card cx : player.playArea){
+                if (c.validTarget(cx)){
+                    count--;
+                    if (count == 0){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public void getTargetsFromPlay(Card c, int count){        
+        SelectFromPlay.Builder b = SelectFromPlay.newBuilder()
+                .setSelectionCount(count)
+                .setGame(toGameState(c.controller));
+        for (Player player : players.values()) {
+            for (Card cx : player.playArea){
+                if (((Targeting)c).validTarget(cx)){
+                    b.addCandidates(cx.toCardMessage());
+                }
+            }
+        }
+        try {
+            connections.get(c.controller).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectFromPlay(b),
+                    (l) -> { c.supplementaryData = l;
+                             c.supplementaryData.notify();});
+            c.supplementaryData.wait();
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void possess(UUID cardID, String newController) {
+        Card c = extractCard(cardID);
+        players.get(newController).playArea.add(c);
+        c.controller = newController;
+    }
+    
+    public void putToScrapyard(Card c) {
+        players.get(c.controller).scrapyard.add(c);
+    }
+    
+    public void addEnergy(String controller, int i) {
+        players.get(controller).energy+=i;
+    }
+    
+    public void spendEnergy(String controller, int i) {
+        players.get(controller).energy-=i;
+    }
+    
+    public void draw(String username, int count){
+        Player player = players.get(username);
+        player.draw(count);
+        if (player.deck.deck.isEmpty()){
+            lose(username);
+        }
+    }
 
+    public void destroy(UUID id){
+        Card item = extractCard(id);
+        players.get(item.controller).scrapyard.add(item);
+    }
+    
+    public void loot(String username, int x) {
+        draw(username, x);
+        discard(username, x);
+    }
+    
+    public void discard(String username, int count){
+        Player p = players.get(username);
+        SelectFromHand.Builder b = SelectFromHand.newBuilder()
+                .setSelectionCount(count)
+                .setGame(toGameState(username));
+        p.hand.forEach(c -> {
+            b.addCandidates(c.toCardMessage());
+        });
+        try {
+            connections.get(username).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectFromHand(b),
+                    (l) -> { p.discard((ArrayList<UUID>)l);
+                             p.notify();});
+            p.wait();
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deplete(UUID id){
+        getCard(id).depleted = true;
+    }
+    
+    public void ready(UUID id){
+        getCard(id).depleted = false;
+    }
+    
+    public boolean ownedByOpponent(UUID targetID) {
+        Card c = getCard(targetID);
+        return c.owner.equals(getOpponentName(c.controller));
+    }
+    
+    public void purge(String username, int count){
+        Player player = players.get(username);
+        player.purgeFromDeck(count);
+        if (player.deck.deck.isEmpty()){
+            lose(username);
+        }
+    }
+
+    public void win(String player) {
+        try {
+            GameEndpoint connection = connections.get(player);
+            connection.send(ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
+            connection = connections.get(getOpponentName(player));
+            connection.send(ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
+        } catch (IOException | EncodeException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void lose(String player) {
+        try {
+            GameEndpoint connection = connections.get(player);
+            connection.send(ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
+            connection = connections.get(getOpponentName(player));
+            connection.send(ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
+        } catch (IOException | EncodeException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public GameState toGameState(String username){
         GameState.Builder b = 
                 GameState.newBuilder()

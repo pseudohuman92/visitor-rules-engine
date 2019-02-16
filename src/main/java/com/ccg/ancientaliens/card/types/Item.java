@@ -23,7 +23,7 @@ public abstract class Item extends Card implements Activatable {
      * @param owner
      */
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String image, String owner) {
-        super(name, cost, knowledge, text, "assets/item.png", owner);
+        super(name, cost, knowledge, text, owner);
     }
     
     
