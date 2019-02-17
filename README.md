@@ -2,7 +2,13 @@
 
 ## To run the server
 
-You need protobuf compiler (protoc) to be installed to build the project. protoc should be in "/usr/bin". If you want it to be in somewhere else, edit pom.xml file with correct path.
+### Required Software
+
+Install Maven: https://maven.apache.org/
+
+Install Protobuf Compiler: https://developers.google.com/protocol-buffers/
+
+Before Building: Find absolute path of protobuf compiler (protoc). Go and edit <protocExecutable> tag in the pom.xml file with the correct path.
 
 To build: mvn install
 
