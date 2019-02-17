@@ -222,8 +222,7 @@ function handleMulligan(ws, params) {
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleKeep(ws, params) {
-  gameState.activePlayer = me.id;
-  gameState.turnPlayer = me.id;
+  gameState.canStudy = [];
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
   //sendGameMsg(ws, 'SelectFromPlay', {
   //  game: gameState,
@@ -241,11 +240,11 @@ function handleKeep(ws, params) {
   //    selectionCount: 2,
   //    candidates: [myHandCards[0], myHandCards[1]],
   //  });
-  sendGameMsg(ws, 'SelectFromScrapyard', {
-    game: gameState,
-    selectionCount: 1,
-    candidates: [myScrapCards[1]],
-  });
+  //sendGameMsg(ws, 'SelectFromScrapyard', {
+  //  game: gameState,
+  //  selectionCount: 1,
+  //  candidates: [myScrapCards[1]],
+  //});
   //sendGameMsg(ws, 'SelectFromVoid', {
   //  game: gameState,
   //  selectionCount: 2,
@@ -305,7 +304,9 @@ manageSocket.on('connection', function connection(ws) {
     //const msgType = outerMsg.getPayloadCase();
     //console.log(outerMsg.getPayloadCase(), msg);
     console.log('[recvMsg]:', msg[msg.payload]);
-    gameState.player.id = msg[msg.payload].username;
+    gameState.player.name = msg[msg.payload].username;
+    gameState.activePlayer = gameState.player.name;
+    gameState.turnPlayer = gameState.player.name;
     sendMsg(ws, 'NewGame', {game: gameState});
   });
 });

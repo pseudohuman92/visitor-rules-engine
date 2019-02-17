@@ -20,8 +20,13 @@ const altarTarget = {
 
 class Altar extends React.Component {
   render() {
-    const {isOver, connectDropTarget, canDrop} = this.props;
+    const {isOver, connectDropTarget, canDrop, hasStudyable} = this.props;
     const style = {};
+    if (hasStudyable) {
+      style.backgroundColor = 'slateblue';
+    } else {
+      style.backgroundColor = 'brown';
+    }
     if (isOver && canDrop) {
       style.border = '5px red solid';
     }

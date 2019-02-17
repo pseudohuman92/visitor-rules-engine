@@ -235,6 +235,10 @@ class App extends Component {
       game,
       selectableCards,
     } = this.state;
+    const hasStudyable =
+      phase === GamePhases.UPDATE_GAME &&
+      game.activePlayer === game.player.name &&
+      game.canStudy.length > 0;
 
     const chooseDialog = (
       <ChooseDialog
@@ -295,7 +299,7 @@ class App extends Component {
                   />
                 </Grid>
                 <Grid item xs={3} className="grid-col-item no-max-width">
-                  <Altar />
+                  <Altar hasStudyable={hasStudyable} />
                 </Grid>
               </Grid>
             </Grid>
