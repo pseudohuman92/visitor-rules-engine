@@ -20,6 +20,7 @@ import {
   IsSelectCardPhase,
 } from './Game.js';
 import {ConnectProfile, RegisterUpdateViewHandler} from './Manage.js';
+import {debug} from './Utils.js';
 import './App.css';
 
 class App extends Component {
@@ -166,7 +167,6 @@ class App extends Component {
       toUpdate.game = params.game;
     }
 
-    console.log(phase);
     if (IsSelectCardPhase(phase) && selectedCards === null) {
       toUpdate.selectableCards = params.candidates.map(card => card.id);
     }
@@ -204,7 +204,7 @@ class App extends Component {
       toUpdate.phase = phase;
     }
 
-    console.log('[toUpdate]', phase, toUpdate);
+    debug('[toUpdate]', phase, toUpdate);
     this.setState(toUpdate);
 
     if (

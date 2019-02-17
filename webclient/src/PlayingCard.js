@@ -67,7 +67,6 @@ export class PlayingCard extends React.Component {
       connectDropTarget,
       selectable,
       selected,
-      studyable,
     } = this.props;
 
     var opacity = 1,

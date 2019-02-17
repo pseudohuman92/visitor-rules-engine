@@ -1,3 +1,5 @@
+import {debug} from './Utils.js';
+
 const proto = require('./protojs/compiled.js');
 
 function capitalize(s) {
@@ -10,12 +12,12 @@ function decapitalize(s) {
 
 export class GameProtoSocket {
   constructor(url, msgHandler) {
-    console.log('[connecting]', url);
+    debug('[connecting]', url);
     this.socket = new WebSocket(url);
     this.socket.binaryType = 'arraybuffer';
     this.socket.onmessage = event => {
       const msg = proto.ServerGameMessage.decode(new Uint8Array(event.data));
-      console.log('[recvGameMsg]', msg);
+      debug('[recvGameMsg]', msg);
       msgHandler(capitalize(msg.payload), msg[msg.payload]);
     };
   }
@@ -37,7 +39,7 @@ export class GameProtoSocket {
   send = (msgType, params) => {
     // Sends client game messages
     if (this.socket.readyState !== 1) {
-      console.log('wtf not ready');
+      debug('wtf not ready');
     }
 
     const msgParams = {};
@@ -45,19 +47,19 @@ export class GameProtoSocket {
     const msg = proto.ClientGameMessage.create(msgParams);
     const bytes = proto.ClientGameMessage.encode(msg).finish();
 
-    console.log('[sendGameMsg]', msg);
+    debug('[sendGameMsg]', msg);
     this.waitForOpen(bytes);
   };
 }
 
 export class ProtoSocket {
   constructor(url, msgHandler) {
-    console.log('[connecting]', url);
+    debug('[connecting]', url);
     this.socket = new WebSocket(url);
     this.socket.binaryType = 'arraybuffer';
     this.socket.onmessage = event => {
       const msg = proto.ServerMessage.decode(new Uint8Array(event.data));
-      console.log('[recvMsg]', msg);
+      debug('[recvMsg]', msg);
       msgHandler(capitalize(msg.payload), msg[msg.payload]);
     };
   }
@@ -76,7 +78,7 @@ export class ProtoSocket {
         }
       }, 10);
     } else {
-      console.log('[sentMsg]', bytes);
+      debug('[sentMsg]', bytes);
       this.socket.send(bytes);
     }
   };
@@ -84,7 +86,7 @@ export class ProtoSocket {
   send = (msgType, params) => {
     // Sends client game messages
     if (this.socket.readyState !== 1) {
-      console.log('wtf not ready');
+      debug('wtf not ready');
     }
 
     const msgParams = {};
@@ -92,7 +94,7 @@ export class ProtoSocket {
     const msg = proto.ClientMessage.create(msgParams);
     const bytes = proto.ClientMessage.encode(msg).finish();
 
-    console.log('[sendMsg]', msg);
+    debug('[sendMsg]', msg);
     this.waitForOpen(bytes);
   };
 }
