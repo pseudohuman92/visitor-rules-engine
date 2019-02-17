@@ -105,7 +105,7 @@ export class PlayingCard extends React.Component {
             }}
             onClick={clickHandler}>
             <CardHeader title={name} />
-            <CardContent>{description}</CardContent>
+            <CardContent>{/*description*/}</CardContent>
           </Card>
         </div>,
       ),
