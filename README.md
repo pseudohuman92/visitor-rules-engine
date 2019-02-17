@@ -14,6 +14,8 @@ To stop: <CTRL+C> or mvn jetty:stop (if running in background)
 
 Install yarn and npm.
 
+Go to the webclient directory.
+
 To install dependencies: yarn install
 
 To start sever: yarn start

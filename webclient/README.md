@@ -1,5 +1,6 @@
 Install yarn and npm.
 
+Go to the webclient directory.
 To install dependencies: yarn install
 To start sever: yarn start
 
