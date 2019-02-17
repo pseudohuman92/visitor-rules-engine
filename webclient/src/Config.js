@@ -1,4 +1,9 @@
-//export const ServerName = 'ancientaliens.ddns.net:8080';
-export const ServerName = 'localhost:8080';
+export let ServerName, PrintDebug;
 
-export const PrintDebug = true;
+if (process.env.NODE_ENV === 'production') {
+  ServerName = 'ancientaliens.ddns.net:8080';
+  PrintDebug = false;
+} else {
+  ServerName = 'localhost:8080';
+  PrintDebug = true;
+}
