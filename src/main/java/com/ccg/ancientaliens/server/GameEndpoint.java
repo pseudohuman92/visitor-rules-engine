@@ -30,7 +30,7 @@ public class GameEndpoint {
     UUID gameID;
     boolean waitingResponse;
     PayloadCase responseType;
-    ArrayBlockingQueue<Object> q = new ArrayBlockingQueue<>(1);
+    ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
     
     @OnOpen
     public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException {
@@ -89,8 +89,8 @@ public class GameEndpoint {
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
-    public Object getResponseObject() throws InterruptedException {
-        return q.take();
+    public Object getResponse() throws InterruptedException {
+        return response.take();
     }
 
     private void processResponse(ClientGameMessage message) {
@@ -105,7 +105,7 @@ public class GameEndpoint {
                 case SELECTFROMPLAYRESPONSE:
                     SelectFromPlayResponse sfpr = message.getSelectFromPlayResponse();
                     waitingResponse = false;
-                    q.add(sfpr.getSelectedCardsList().toArray());
+                    response.add(sfpr.getSelectedCardsList().toArray(new String[sfpr.getSelectedCardsCount()]));
                     break;
                 case SELECTFROMHANDRESPONSE:
                     waitingResponse = false;
@@ -119,7 +119,6 @@ public class GameEndpoint {
                 case SELECTPLAYERRESPONSE:
                     SelectPlayerResponse spr = message.getSelectPlayerResponse();
                     waitingResponse = false;
-                    q.add(spr.getSelectedPlayerName());
                     break;
                 default:
                     System.out.println("Expected " + responseType + " from " + username + ". Received: " + message);

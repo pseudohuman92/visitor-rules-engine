@@ -34,15 +34,15 @@ public class BI03 extends Item implements Targeting {
     @Override
     public void activate(Game game) {
         game.getTargetsFromPlay(this, 1);
-        UUID sacID = ((UUID[])supplementaryData)[0];
+        UUID sacID = supplementaryData.get(0);
         game.destroy(sacID);
         if (game.ownedByOpponent(sacID)) {
             game.addToStack(new Activation("", controller, 
-                "Gain 2 energy", game.players.get(controller).id,
+                "Gain 2 energy", null,
                 g -> { g.addEnergy(controller, 2); }));
         } else {
             game.addToStack(new Activation("", controller, 
-                "Gain 2 energy", game.players.get(controller).id,
+                "Gain 2 energy", null,
                 g -> { g.addEnergy(controller, 2); }));
         }
     }

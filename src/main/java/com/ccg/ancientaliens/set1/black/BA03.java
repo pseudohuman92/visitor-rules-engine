@@ -38,7 +38,7 @@ public class BA03 extends Action implements Targeting {
     public void play(Game game) {
         game.getTargetsFromPlay(this, 1);
         game.spendEnergy(controller, cost);
-        game.destroy(((UUID[])supplementaryData)[0]);
+        game.destroy(supplementaryData.get(0));
         game.addToStack(this);
     }
     

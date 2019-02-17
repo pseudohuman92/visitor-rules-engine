@@ -38,16 +38,16 @@ public class BI02 extends Item implements Targeting {
     public void activate(Game game) {
         game.getTargetsFromPlay(this, 1);
         game.deplete(id);
-        UUID targetID = ((UUID[])supplementaryData)[0];
+        UUID targetID = supplementaryData.get(0);
         game.destroy(targetID);
         String oppName = game.getOpponentName(controller);
         if (game.ownedByOpponent(targetID)) {
             game.addToStack(new Activation("", controller, 
-                "Purge 10", game.players.get(oppName).id,
+                "Purge 10", null,
                 g -> { g.purge(oppName, 10); }));
         } else {
             game.addToStack(new Activation("", controller, 
-                "Purge 5", game.players.get(oppName).id,
+                "Purge 5", null,
                 g -> { g.purge(oppName, 5); }));
         }
     }

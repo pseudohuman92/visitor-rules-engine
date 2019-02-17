@@ -321,9 +321,10 @@ public class Game {
             connections.get(c.controller).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromPlay(b));
             System.out.println("Waiting targets!");
-            String[] l = (String[])connections.get(c.controller).getResponseObject();
+            String[] l = (String[])connections.get(c.controller).getResponse();
             System.out.println("Done waiting!");
-            c.supplementaryData = Arrays.stream(l).map(s -> {return UUID.fromString(s);}).toArray();
+            c.supplementaryData = new ArrayList<>(Arrays.asList(
+                    Arrays.stream(l).map(s -> {return UUID.fromString(s);}).toArray(UUID[]::new)));
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -378,7 +379,7 @@ public class Game {
                     ServerGameMessage.newBuilder().setSelectFromHand(b));
             
             System.out.println("Waiting discard!");
-            String[] l = (String[])connections.get(username).getResponseObject();
+            String[] l = (String[])connections.get(username).getResponse();
             System.out.println("Done waiting!");
             
             p.discard(new ArrayList<UUID>(Arrays.asList((UUID[])Arrays.stream(l)

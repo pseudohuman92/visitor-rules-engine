@@ -8,6 +8,8 @@ package com.ccg.ancientaliens.card.types;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.protocol.Types;
 import helpers.Hashmap;
+import java.util.ArrayList;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -18,7 +20,7 @@ public class Activation extends Card {
     
     Consumer<Game> effect;
     
-    public Activation (String name, String owner, String text, Object data, Consumer<Game> effect){
+    public Activation (String name, String owner, String text, ArrayList<UUID> data, Consumer<Game> effect){
         super(name, 0, new Hashmap<>(), text, owner);
         this.effect = effect;
         supplementaryData = data;

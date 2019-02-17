@@ -99,7 +99,7 @@ public abstract class Card implements Serializable {
     /**
      * General purpose Data field for holding information like targets etc.
      */
-    public Object supplementaryData;
+    public ArrayList<UUID> supplementaryData;
 
     /**
      * Flag to indicate if the card is depleted.

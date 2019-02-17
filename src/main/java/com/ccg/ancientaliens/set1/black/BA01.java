@@ -38,7 +38,7 @@ public class BA01 extends Action implements Targeting {
     
     @Override
     public void resolve (Game game){
-        game.possess(((UUID[])supplementaryData)[0], controller);
+        game.possess(supplementaryData.get(0), controller);
         game.putToScrapyard(this);
     }
 
