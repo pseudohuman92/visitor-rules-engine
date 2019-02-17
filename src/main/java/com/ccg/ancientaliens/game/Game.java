@@ -3,6 +3,7 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Card;
+import com.ccg.ancientaliens.helpers.Signaler;
 import com.ccg.ancientaliens.protocol.ServerGameMessages;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.Loss;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.SelectFromHand;
@@ -319,8 +320,14 @@ public class Game {
             connections.get(c.controller).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromPlay(b),
                     (l) -> { c.supplementaryData = l;
-                             c.supplementaryData.notify();});
-            c.supplementaryData.wait();
+                             synchronized(c) {
+                                c.notifyAll();
+                                System.out.println("Signaling targets!");
+                             }});
+            System.out.println("Waiting targets!");
+            synchronized(c) {
+                c.wait();
+            }
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -374,8 +381,14 @@ public class Game {
             connections.get(username).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromHand(b),
                     (l) -> { p.discard((ArrayList<UUID>)l);
-                             p.notify();});
-            p.wait();
+                             synchronized(p) {
+                                p.notifyAll();
+                                System.out.println("Signaling discard!");
+                             }});
+            System.out.println("Waiting discard!");
+            synchronized(p) {
+                p.wait();
+            }
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
