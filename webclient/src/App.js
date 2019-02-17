@@ -13,6 +13,7 @@ import InfoEntryDialog from './InfoEntryDialog.js';
 import LoadingDialog from './LoadingDialog.js';
 import {
   Keep,
+  Pass,
   GamePhases,
   SetGameInfo,
   SetBasicGameInfo,
@@ -213,6 +214,16 @@ class App extends Component {
       game.player.hand.length === 0
     ) {
       Keep();
+    }
+
+    if (
+      phase === GamePhases.UPDATE_GAME &&
+      game.activePlayer === game.player.name &&
+      game.canStudy.length === 0 &&
+      game.canActivate.length === 0 &&
+      game.canPlay.length === 0
+    ) {
+      Pass();
     }
   };
 

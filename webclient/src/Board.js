@@ -120,7 +120,9 @@ export default class Board extends React.Component {
     let studyableCards = this.props.game.canStudy;
     const selectableCards = this.props.selectableCards;
     const selectedCards = this.props.selectedCards;
-    if (selectableCards.length > 0) {
+    const amActive =
+      this.props.game.player.name === this.props.game.activePlayer;
+    if (selectableCards.length > 0 || !amActive) {
       activatableCards = [];
       playableCards = [];
       studyableCards = [];

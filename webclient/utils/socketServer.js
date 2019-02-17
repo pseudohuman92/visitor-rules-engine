@@ -217,12 +217,12 @@ function handlePass(ws, params) {
   gameState.activePlayer = otherPlayer(gameState.turnPlayer);
   gameState.turnPlayer = otherPlayer(gameState.turnPlayer);
   gameState.stackCards = [];
+  sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleMulligan(ws, params) {
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleKeep(ws, params) {
-  gameState.canStudy = [];
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
   //sendGameMsg(ws, 'SelectFromPlay', {
   //  game: gameState,
