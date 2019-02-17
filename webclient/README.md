@@ -1,4 +1,4 @@
-Install yarn.
+Install yarn and npm.
 
 To install dependencies: yarn install
 To start sever: yarn start
