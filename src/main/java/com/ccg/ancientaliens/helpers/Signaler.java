@@ -5,7 +5,8 @@
  */
 package com.ccg.ancientaliens.helpers;
 
-import java.util.concurrent.Semaphore;
+import static java.lang.Thread.sleep;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  *
@@ -13,15 +14,13 @@ import java.util.concurrent.Semaphore;
  */
 public class Signaler {
     
-    public synchronized void waitSignal() throws InterruptedException{
-        wait();
+    private final ArrayBlockingQueue<Integer> q = new ArrayBlockingQueue<>(1);
+    
+    public void waitSignal() throws InterruptedException{
+        q.take();
     }
     
-    public synchronized void signal() {
-        notify();
-    }
-    
-    public synchronized void signalAll() {
-        notifyAll();
+    public void signal() {
+        q.add(0);
     }
 }
