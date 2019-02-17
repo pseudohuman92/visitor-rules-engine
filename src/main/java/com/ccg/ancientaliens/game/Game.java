@@ -20,6 +20,7 @@ import helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.function.Function;
@@ -317,15 +318,12 @@ public class Game {
             }
         }
         try {
-            Signaler s = new Signaler();
             connections.get(c.controller).sendForResponse(
-                    ServerGameMessage.newBuilder().setSelectFromPlay(b),
-                    (l) -> { c.supplementaryData = l;
-                             s.signal();
-                             System.out.println("Signaling targets!");
-                            });
+                    ServerGameMessage.newBuilder().setSelectFromPlay(b));
             System.out.println("Waiting targets!");
-            s.waitSignal();
+            String[] l = (String[])connections.get(c.controller).getResponseObject();
+            System.out.println("Done waiting!");
+            c.supplementaryData = Arrays.stream(l).map(s -> {return UUID.fromString(s);}).toArray();
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -377,16 +375,14 @@ public class Game {
         });
         try {
             connections.get(username).sendForResponse(
-                    ServerGameMessage.newBuilder().setSelectFromHand(b),
-                    (l) -> { p.discard((ArrayList<UUID>)l);
-                             synchronized(p) {
-                                p.notifyAll();
-                                System.out.println("Signaling discard!");
-                             }});
+                    ServerGameMessage.newBuilder().setSelectFromHand(b));
+            
             System.out.println("Waiting discard!");
-            synchronized(p) {
-                p.wait();
-            }
+            String[] l = (String[])connections.get(username).getResponseObject();
+            System.out.println("Done waiting!");
+            
+            p.discard(new ArrayList<UUID>(Arrays.asList((UUID[])Arrays.stream(l)
+                    .map(s -> {return UUID.fromString(username);}).toArray())));
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
