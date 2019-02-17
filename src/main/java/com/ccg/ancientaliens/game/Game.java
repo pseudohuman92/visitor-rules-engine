@@ -317,17 +317,15 @@ public class Game {
             }
         }
         try {
+            Signaler s = new Signaler();
             connections.get(c.controller).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromPlay(b),
                     (l) -> { c.supplementaryData = l;
-                             synchronized(c) {
-                                c.notifyAll();
-                                System.out.println("Signaling targets!");
-                             }});
+                             s.signal();
+                             System.out.println("Signaling targets!");
+                            });
             System.out.println("Waiting targets!");
-            synchronized(c) {
-                c.wait();
-            }
+            s.waitSignal();
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
