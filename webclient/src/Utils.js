@@ -1,4 +1,4 @@
-import {ServerName} from './Constants.js';
+import {ServerName} from './Config.js';
 
 export function GetProfileURL(username) {
   return `ws://${ServerName}/profiles/${username}`;
