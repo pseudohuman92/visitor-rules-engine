@@ -120,6 +120,9 @@ public class GameEndpoint {
                     SelectPlayerResponse spr = message.getSelectPlayerResponse();
                     waitingResponse = false;
                     break;
+                case SELECTXVALUERESPONSE:
+                    waitingResponse = false;
+                    break;
                 default:
                     System.out.println("Expected " + responseType + " from " + username + ". Received: " + message);
                     break;
@@ -191,6 +194,10 @@ public class GameEndpoint {
             case SELECTPLAYER:
                 waitingResponse = true;
                 responseType = SELECTPLAYERRESPONSE;
+                break;
+            case SELECTXVALUE:
+                waitingResponse = true;
+                responseType = SELECTXVALUERESPONSE;
                 break;
             default:
                 waitingResponse = false;

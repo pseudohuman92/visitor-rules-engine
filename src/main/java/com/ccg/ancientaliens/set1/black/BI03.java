@@ -42,8 +42,8 @@ public class BI03 extends Item implements Targeting {
                 g -> { g.addEnergy(controller, 2); }));
         } else {
             game.addToStack(new Activation("", controller, 
-                "Gain 2 energy", null,
-                g -> { g.addEnergy(controller, 2); }));
+                "Gain 1 energy", null,
+                g -> { g.addEnergy(controller, 1); }));
         }
     }
 

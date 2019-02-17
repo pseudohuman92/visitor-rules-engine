@@ -35,6 +35,14 @@ public abstract class Card implements Serializable {
         }
         return uuids;
     }
+    
+    public static ArrayList<UUID> toUUIDList(String[] cards) {
+        ArrayList<UUID> uuids = new ArrayList<>();
+        for (int i =0; i < cards.length; i++){
+            uuids.add(UUID.fromString(cards[i]));
+        }
+        return uuids;
+    }
     /**
      * Sorts given list of cards in the order of the provided uuids.
      * If a card appears in the card list but not in id list, card is ignored.

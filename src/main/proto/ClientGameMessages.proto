@@ -93,6 +93,10 @@ message SelectPlayerResponse {
     string selectedPlayerName = 2;
 }
 
+message SelectXValueResponse {
+    string gameID = 1;
+    int32 selectedXValue = 2;
+}
 
 message ClientGameMessage {
     oneof payload {
@@ -110,5 +114,6 @@ message ClientGameMessage {
         SelectFromScrapyardResponse     selectFromScrapyardResponse = 20;
         SelectFromVoidResponse          selectFromVoidResponse = 21;
         SelectPlayerResponse            selectPlayerResponse = 22;
+        SelectXValueResponse            selectXValueResponse = 23;
     }
 };

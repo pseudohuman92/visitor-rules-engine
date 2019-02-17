@@ -62,6 +62,11 @@ message SelectFromVoid {
     repeated Card candidates = 3;
 }
 
+message SelectXValue {
+    GameState game = 1;
+    int32 maxXValue = 2;
+}
+
 //This will be send when a player needs to be selected
 message SelectPlayer {
     GameState game = 1;
@@ -79,5 +84,6 @@ message ServerGameMessage {
         SelectFromScrapyard     selectFromScrapyard = 16;
         SelectFromVoid          selectFromVoid = 17;
         SelectPlayer            selectPlayer = 18;
+        SelectXValue            selectXValue = 19;
     }
 }

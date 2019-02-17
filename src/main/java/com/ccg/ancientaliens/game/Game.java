@@ -1,6 +1,7 @@
 
 package com.ccg.ancientaliens.game;
 
+import com.ccg.ancientaliens.card.properties.Activatable;
 import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.helpers.Signaler;
@@ -73,6 +74,9 @@ public class Game {
         
         players.put(p1, new Player(p1, new Deck(p1, true)));
         players.put(p2, new Player(p2, new Deck(p2, true)));
+        
+        players.get(p1).deck.shuffle();
+        players.get(p2).deck.shuffle();
         
         phase = MULLIGAN;
         turnPlayer = (random() < 0.5)?p1:p2;
@@ -323,8 +327,7 @@ public class Game {
             System.out.println("Waiting targets!");
             String[] l = (String[])connections.get(c.controller).getResponse();
             System.out.println("Done waiting!");
-            c.supplementaryData = new ArrayList<>(Arrays.asList(
-                    Arrays.stream(l).map(s -> {return UUID.fromString(s);}).toArray(UUID[]::new)));
+            c.supplementaryData = Card.toUUIDList(l);
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -382,8 +385,7 @@ public class Game {
             String[] l = (String[])connections.get(username).getResponse();
             System.out.println("Done waiting!");
             
-            p.discard(new ArrayList<UUID>(Arrays.asList((UUID[])Arrays.stream(l)
-                    .map(s -> {return UUID.fromString(username);}).toArray())));
+            p.discard(Card.toUUIDList(l));
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -451,6 +453,11 @@ public class Game {
                 }
                 if(c.canStudy(this)){
                     b.addCanStudy(c.id.toString());
+                }
+            });
+            p.playArea.forEach(c -> {
+                if(c instanceof Activatable && ((Activatable)c).canActivate(this)){
+                    b.addCanActivate(c.id.toString());
                 }
             });
         });
