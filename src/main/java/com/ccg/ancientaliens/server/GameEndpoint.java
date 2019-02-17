@@ -9,10 +9,13 @@ import com.ccg.ancientaliens.protocol.ClientGameMessages.SelectPlayerResponse;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.StudyCard;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.websocket.*;
 import javax.websocket.server.*;
 /**
@@ -41,13 +44,19 @@ public class GameEndpoint {
  
     @OnMessage
     public void onMessage(Session session, byte[] message) throws IOException {
-        ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
-        System.out.println(username + " sent a game message: " + cgm);
-        if (waitingResponse){
-            processResponse(cgm);
-        } else {
-            processMessage(cgm);
-        }
+        new Thread (() -> {
+            try {
+                ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
+                System.out.println(username + " sent a game message: " + cgm);
+                if (waitingResponse){
+                    processResponse(cgm);
+                } else {
+                    processMessage(cgm);
+                }
+            } catch (InvalidProtocolBufferException ex) {
+                Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
     }
  
     @OnClose
