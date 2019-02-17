@@ -317,14 +317,17 @@ public class Game {
             }
         }
         try {
-            Signaler s = new Signaler();
             connections.get(c.controller).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromPlay(b),
                     (l) -> { c.supplementaryData = l;
-                             s.signal();
-                             System.out.println("Signaling targets!");});
+                             synchronized(c) {
+                                c.notifyAll();
+                                System.out.println("Signaling targets!");
+                             }});
             System.out.println("Waiting targets!");
-            s.waitSignal();
+            synchronized(c) {
+                c.wait();
+            }
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -375,14 +378,17 @@ public class Game {
             b.addCandidates(c.toCardMessage());
         });
         try {
-            Signaler s = new Signaler();
             connections.get(username).sendForResponse(
                     ServerGameMessage.newBuilder().setSelectFromHand(b),
                     (l) -> { p.discard((ArrayList<UUID>)l);
-                             s.signal();
-                             System.out.println("Signaling discard!");});
+                             synchronized(p) {
+                                p.notifyAll();
+                                System.out.println("Signaling discard!");
+                             }});
             System.out.println("Waiting discard!");
-            s.waitSignal();
+            synchronized(p) {
+                p.wait();
+            }
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
