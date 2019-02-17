@@ -110,9 +110,9 @@ export class MessageDisplay extends React.Component {
       buttonMenu = (
         <Grid container spacing={0} direction="column" style={{height: '100%'}}>
           <Grid item xs={6} className="grid-col-item no-max-width">
-            <Button color="secondary" variant="contained" onClick={Concede}>
+            {/* <Button color="secondary" variant="contained" onClick={Concede}>
               Concede
-            </Button>
+            </Button> */}
           </Grid>
           <Grid item xs={6} className="grid-col-item no-max-width">
             <Button
