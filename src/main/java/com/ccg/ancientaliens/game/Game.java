@@ -108,8 +108,12 @@ public class Game {
     
     public void playCard(String username, UUID cardID) {
         extractCard(cardID).play(this);
-        activePlayer = getOpponentName(username);
-        
+        activePlayer = getOpponentName(username); 
+    }
+    
+    public void activateCard(String username, UUID cardID) {
+        ((Activatable)getCard(cardID)).activate(this);
+        activePlayer = getOpponentName(username); 
     }
     
     public void addToStack(Card c) {
@@ -142,7 +146,7 @@ public class Game {
         }
     }
     
-    void newTurn(){
+    private void newTurn(){
         phase = MAIN;
         if(turnCount > 0){
             turnPlayer = getOpponentName(turnPlayer);
@@ -220,6 +224,10 @@ public class Game {
         return false;
     }
     
+     public boolean hasACardInVoid(String username) {
+        return !players.get(username).voidPile.isEmpty();
+    }
+     
     public void possess(UUID cardID, String newController) {
         Card c = extractCard(cardID);
         players.get(newController).playArea.add(c);
@@ -468,9 +476,5 @@ public class Game {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-
-    public boolean hasACardInVoid(String username) {
-        return !players.get(username).voidPile.isEmpty();
     }
 }

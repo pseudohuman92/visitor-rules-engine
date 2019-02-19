@@ -37,8 +37,9 @@ public class GameServer {
     }
 
 
-    void activateCard(UUID gameID, String username, UUID fromString) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    void activateCard(UUID gameID, String username, UUID cardID) {
+        games.get(gameID).activateCard(username, cardID);
+        games.get(gameID).updatePlayers();
     }
 
     void concede(UUID gameID, String username) {
