@@ -131,8 +131,7 @@ public abstract class Card implements Serializable {
      * @param game
      */
     public void play(Game game) {
-        Player player = game.players.get(controller);
-        player.energy -= cost;
+        game.spendEnergy(controller, cost);
         game.addToStack(this);
     }
 
@@ -169,7 +168,7 @@ public abstract class Card implements Serializable {
      * @param count
      */
     public void addCounters(Counter name, int count) {
-        //counters.merge(name, count, (a, b) -> a + b);
+        counters.merge(name, count, (a, b) -> a + b);
     }
 
     /**

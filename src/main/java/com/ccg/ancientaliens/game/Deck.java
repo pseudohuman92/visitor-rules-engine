@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import static java.lang.Integer.parseInt;
+import java.lang.reflect.Type;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,6 +72,15 @@ public class Deck implements Serializable {
             cards.add(deck.remove(0));
         }
         return cards;
+    }
+    
+    public Card extractFromTop(Class c){
+        for (int i = 0; i < deck.size(); i++){
+            if(c.isInstance(deck.get(i))){
+                return deck.remove(i);
+            }
+        }
+        return null;
     }
     
     public ArrayList<Card> getFromTop(int count){

@@ -477,4 +477,22 @@ public class Game {
         }
         return null;
     }
+
+    public void possessFromPlay(String newController, UUID cardID) {
+        Card c = extractCard(cardID);
+        c.controller = newController;
+        players.get(newController).playArea.add(c);
+    }
+
+    public boolean controlsUnownedCard(String username) {
+        Player p = players.get(username);
+        for (int i = 0; i < p.playArea.size(); i++){
+            Card c = p.playArea.get(i);
+            if(c.controller.equals(username) && 
+               c.owner.equals(getOpponentName(username))){
+                return true;
+            }
+        }
+        return false;
+    }
 }
