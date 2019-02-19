@@ -23,7 +23,7 @@ public class BI03 extends Item implements Targeting {
     
     public BI03 (String owner){
         super("BI03", 4, new Hashmap(BLACK, 2), 
-                "Sacrifice an Item: Gain 1 Energy. If that item is owned by the opponent gain 1 additional energy.", owner);
+        "Sacrifice an Item: Gain 1 Energy. If that item is owned by the opponent gain 1 additional energy.", owner);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        game.getTargetsFromPlay(this, 1);
+        game.getSelectedFromPlay(controller, this::validTarget, 1);
         UUID sacID = supplementaryData.get(0);
         game.destroy(sacID);
         if (game.ownedByOpponent(sacID)) {

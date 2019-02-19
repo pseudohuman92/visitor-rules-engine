@@ -32,6 +32,7 @@ message SelectFromList {
     GameState game = 1;
     int32 selectionCount = 2;
     repeated Card candidates = 3;
+    repeated string canSelected = 4;
 }
 
 //This will be send when some number of cards needs to be selected from player's hand

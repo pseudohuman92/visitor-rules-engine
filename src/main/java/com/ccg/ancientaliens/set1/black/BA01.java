@@ -31,7 +31,7 @@ public class BA01 extends Action implements Targeting {
     
     @Override
     public void play(Game game) {
-        game.getTargetsFromPlay(this, 1);
+        game.getSelectedFromPlay(controller, this::validTarget, 1);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     }

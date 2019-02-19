@@ -54,11 +54,11 @@ public class Player implements Serializable {
     }
 
     public void draw(int count){
-        hand.addAll(deck.getFromTop(count));
+        hand.addAll(deck.extractFromTop(count));
     }
     
     public void purgeFromDeck(int count) {
-        voidPile.addAll(deck.getFromTop(count));
+        voidPile.addAll(deck.extractFromTop(count));
     }
 
     public void discard(ArrayList<UUID> cards){

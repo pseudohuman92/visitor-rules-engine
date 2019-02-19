@@ -4,24 +4,15 @@ package com.ccg.ancientaliens.game;
 import com.ccg.ancientaliens.card.properties.Activatable;
 import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.helpers.Signaler;
-import com.ccg.ancientaliens.protocol.ServerGameMessages;
-import com.ccg.ancientaliens.protocol.ServerGameMessages.Loss;
-import com.ccg.ancientaliens.protocol.ServerGameMessages.SelectFromHand;
-import com.ccg.ancientaliens.protocol.ServerGameMessages.SelectFromPlay;
+import com.ccg.ancientaliens.helpers.UUIDHelper;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.*;
 import com.ccg.ancientaliens.server.GameEndpoint;
-
-import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
-import com.ccg.ancientaliens.protocol.ServerGameMessages.UpdateGameState;
-import com.ccg.ancientaliens.protocol.ServerGameMessages.Win;
-import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.*;
 import static com.ccg.ancientaliens.protocol.Types.Phase.*;
 import helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.function.Function;
@@ -86,87 +77,6 @@ public class Game {
         players.get(p1).draw(5);
         players.get(p2).draw(5);
     }
-
-    /*
-    public Player getPlayerByID(UUID playerID){
-        for (Player player : players.values()) {
-            if(player.id.equals(playerID)){ 
-                return player;
-            }
-        }
-        return null;
-    }
- 
-    public Player getPlayerByName(String playerName){
-        return players.get(playerName);
-    }  
- 
-    public ArrayList<Card> orderCards(String username, ArrayList<Card> cards) {
-        Connection connection = connections.get(username);
-        connection.send(order(cards));
-        Message message = connection.receive();
-        if (message != null) {
-            return sortByID(cards, (ArrayList<UUID>)message.object);
-        }
-        return null;
-    }
-
-    
-    
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("***** GAME *****\n");
-        sb.append("Game UUID: ").append(id).append("\n");
-        sb.append("Turn Player: ").append(turnPlayer).append("\n");
-        sb.append("Active Player: ").append(activePlayer).append("\n");
-        sb.append("TurnCount: ").append(turnCount).append("\n");
-        sb.append("Phase: ").append(phase).append("\n");
-        sb.append("Pass Count: ").append(passCount).append("\n");
-        players.forEach((name, player) -> {
-            sb.append(player).append("\n");
-        });
-        sb.append("****************\n");
-        return sb.toString();
-    }
-    
-    void processTrigger (Event e) {
-        players.get(turnPlayer).addTriggerEvent(this, e);
-        players.get(getOpponentName(turnPlayer)).addTriggerEvent(this, e);
-    } 
-
-    public void removeFromHand(String controller, UUID id) {
-        Player p = players.get(controller);
-        p.hand.remove(p.getCard(id));
-    }
-
-    public void drawFromVoid(String controller, UUID retID) {
-        Player p = players.get(controller);
-        Card c = p.getCard(retID);
-        p.voidPile.remove(c);
-        p.hand.add(c);
-        //processTrigger(Event.draw(controller, 1));
-    }
-    
-    
-    public void purgeFromHand(String username, int count) {
-        Connection connection = connections.get(username);
-        connection.send(Message.selectFromHand(toClientGame(username), count));
-        Message message = connection.receive();
-        if (message != null) {
-            Player player = players.get(username);
-            player.purgeCardsFromHand((ArrayList<UUID>)message.object);
-        }
-    }
-    
-    public void selectFromTopOfDeck(String controller, int numOfCardsToLook, int NumOfCardsToSelect, 
-                                    Function<Card, Boolean> isValidTarget, 
-                                    BiConsumer<Player, ArrayList<Card>> processSelected,
-                                    BiConsumer<Player, ArrayList<Card>> processNotSelected) {
-        //TODO: implement this
-    }
-    */
 
     public void addConnection(String username, GameEndpoint connection) {
         connections.put(username, connection);
@@ -310,29 +220,6 @@ public class Game {
         return false;
     }
     
-    public void getTargetsFromPlay(Card c, int count){        
-        SelectFromPlay.Builder b = SelectFromPlay.newBuilder()
-                .setSelectionCount(count)
-                .setGame(toGameState(c.controller));
-        for (Player player : players.values()) {
-            for (Card cx : player.playArea){
-                if (((Targeting)c).validTarget(cx)){
-                    b.addCandidates(cx.toCardMessage());
-                }
-            }
-        }
-        try {
-            connections.get(c.controller).sendForResponse(
-                    ServerGameMessage.newBuilder().setSelectFromPlay(b));
-            System.out.println("Waiting targets!");
-            String[] l = (String[])connections.get(c.controller).getResponse();
-            System.out.println("Done waiting!");
-            c.supplementaryData = Card.toUUIDList(l);
-        } catch (IOException | EncodeException | InterruptedException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     public void possess(UUID cardID, String newController) {
         Card c = extractCard(cardID);
         players.get(newController).playArea.add(c);
@@ -358,6 +245,14 @@ public class Game {
             lose(username);
         }
     }
+    
+    public void drawByID(String username, UUID cardID) {
+        players.get(username).hand.add(extractCard(id));
+    }
+    
+    public void purgeByID(String username, UUID cardID) {
+        players.get(username).voidPile.add(extractCard(id));
+    }
 
     public void destroy(UUID id){
         Card item = extractCard(id);
@@ -370,25 +265,7 @@ public class Game {
     }
     
     public void discard(String username, int count){
-        Player p = players.get(username);
-        SelectFromHand.Builder b = SelectFromHand.newBuilder()
-                .setSelectionCount(count)
-                .setGame(toGameState(username));
-        p.hand.forEach(c -> {
-            b.addCandidates(c.toCardMessage());
-        });
-        try {
-            connections.get(username).sendForResponse(
-                    ServerGameMessage.newBuilder().setSelectFromHand(b));
-            
-            System.out.println("Waiting discard!");
-            String[] l = (String[])connections.get(username).getResponse();
-            System.out.println("Done waiting!");
-            
-            p.discard(Card.toUUIDList(l));
-        } catch (IOException | EncodeException | InterruptedException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        players.get(username).discard(getSelectedFromHand(username, (c -> {return true;}), count));
     }
     
     public void deplete(UUID id){
@@ -474,5 +351,126 @@ public class Game {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+    
+    public ArrayList<UUID> getSelectedFromPlay(String username, Function<Card, Boolean> validTarget, int count){        
+        SelectFromPlay.Builder b = SelectFromPlay.newBuilder()
+                .setSelectionCount(count)
+                .setGame(toGameState(username));
+        for (Player player : players.values()) {
+            for (Card cx : player.playArea){
+                if (validTarget.apply(cx)){
+                    b.addCandidates(cx.toCardMessage());
+                }
+            }
+        }
+        try {
+            connections.get(username).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectFromPlay(b));
+            System.out.println("Waiting targets!");
+            String[] l = (String[])connections.get(username).getResponse();
+            System.out.println("Done waiting!");
+            return UUIDHelper.toUUIDList(l);
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<UUID> getSelectedFromHand(String username, Function<Card, Boolean> validTarget, int count) {
+        Player p = players.get(username);
+        SelectFromHand.Builder b = SelectFromHand.newBuilder()
+                .setSelectionCount(count)
+                .setGame(toGameState(username));
+        p.hand.forEach(c -> {
+            if(validTarget.apply(c))
+                b.addCandidates(c.toCardMessage());
+        });
+        try {
+            connections.get(username).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectFromHand(b));
+            
+            System.out.println("Waiting discard!");
+            String[] l = (String[])connections.get(username).getResponse();
+            System.out.println("Done waiting!");
+            
+            return UUIDHelper.toUUIDList(l);
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public int getXValue(String username, int maxX) {
+        Player p = players.get(username);
+        SelectXValue.Builder b = SelectXValue.newBuilder()
+                .setMaxXValue(maxX)
+                .setGame(toGameState(username));
+        try {
+            connections.get(username).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectXValue(b));
+            
+            System.out.println("Waiting discard!");
+            int l = (int)connections.get(username).getResponse();
+            System.out.println("Done waiting!");
+            return l;
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public ArrayList<UUID> getSelectedFromList(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
+        Player p = players.get(username);
+        SelectFromList.Builder b = SelectFromList.newBuilder()
+                .setSelectionCount(count)
+                .setGame(toGameState(username));
+        candidates.forEach(c -> {
+            b.addCandidates(c.toCardMessage());
+        });
+        canSelect.forEach(s -> {
+            b.addCanSelected(s.toString());
+        });
+        try {
+            connections.get(username).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectFromList(b));
+            
+            System.out.println("Waiting discard!");
+            String[] l = (String[])connections.get(username).getResponse();
+            System.out.println("Done waiting!");
+            
+            return UUIDHelper.toUUIDList(l);
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ArrayList<UUID> getSelectedFromVoid(String username, Function<Card, Boolean> validTarget, int count) {
+        Player p = players.get(username);
+        SelectFromVoid.Builder b = SelectFromVoid.newBuilder()
+                .setSelectionCount(count)
+                .setGame(toGameState(username));
+        p.voidPile.forEach(c -> {
+            if(validTarget.apply(c))
+                b.addCandidates(c.toCardMessage());
+        });
+        try {
+            connections.get(username).sendForResponse(
+                    ServerGameMessage.newBuilder().setSelectFromVoid(b));
+            
+            System.out.println("Waiting discard!");
+            String[] l = (String[])connections.get(username).getResponse();
+            System.out.println("Done waiting!");
+            
+            return UUIDHelper.toUUIDList(l);
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public boolean hasACardInVoid(String username) {
+        return !players.get(username).voidPile.isEmpty();
     }
 }

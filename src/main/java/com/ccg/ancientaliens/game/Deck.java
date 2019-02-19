@@ -65,7 +65,7 @@ public class Deck implements Serializable {
         return deck.size();
     }
   
-    public ArrayList<Card> getFromTop(int count){
+    public ArrayList<Card> extractFromTop(int count){
         ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < count && !deck.isEmpty(); i++){
             cards.add(deck.remove(0));
@@ -73,7 +73,7 @@ public class Deck implements Serializable {
         return cards;
     }
     
-    public ArrayList<Card> lookFromTop(int count){
+    public ArrayList<Card> getFromTop(int count){
         ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < count && i < deck.size(); i++){
             cards.add(deck.get(i));
@@ -89,28 +89,28 @@ public class Deck implements Serializable {
         return true;
     }
 
-    public void insertTo(Card card, int index){
+    public void putTo(Card card, int index){
         deck.add(index, card);
     }
     
     public void putToBottom(Card card){
-        insertTo(card, deck.size()-1);
+        putTo(card, deck.size()-1);
     }
     
     public void putToTop(Card card){
-        insertTo(card, 0);
+        putTo(card, 0);
     }
 
-    public void insertAllTo(ArrayList<Card> cards, int index){
+    public void putAllTo(ArrayList<Card> cards, int index){
         deck.addAll(index, cards);
     }
     
     public void putAllToBottom(ArrayList<Card> cards){
-        insertAllTo(cards, deck.size()-1);
+        putAllTo(cards, deck.size()-1);
     }
     
     public void putAllToTop(ArrayList<Card> cards){
-        insertAllTo(cards, 0);
+        putAllTo(cards, 0);
     }
     
     

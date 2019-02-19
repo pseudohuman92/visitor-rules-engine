@@ -26,7 +26,8 @@ public class BA03 extends Action implements Targeting {
      * @param owner
      */
     public BA03(String owner) {
-        super("BA03", 1, new Hashmap(BLACK, 1), "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", owner);
+        super("BA03", 1, new Hashmap(BLACK, 1), 
+        "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", owner);
     }
     
     @Override
@@ -36,7 +37,7 @@ public class BA03 extends Action implements Targeting {
     
     @Override
     public void play(Game game) {
-        game.getTargetsFromPlay(this, 1);
+        game.getSelectedFromPlay(controller, this::validTarget, 1);
         game.spendEnergy(controller, cost);
         game.destroy(supplementaryData.get(0));
         game.addToStack(this);

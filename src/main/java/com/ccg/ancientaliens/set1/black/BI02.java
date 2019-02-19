@@ -25,7 +25,7 @@ public class BI02 extends Item implements Targeting {
     
     public BI02 (String owner){
         super("BI02", 4, new Hashmap(BLACK, 3), 
-                "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", owner);
+        "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", owner);
         subtypes.add(Weapon);
     }
 
@@ -36,7 +36,7 @@ public class BI02 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        game.getTargetsFromPlay(this, 1);
+        game.getSelectedFromPlay(controller, this::validTarget, 1);
         game.deplete(id);
         UUID targetID = supplementaryData.get(0);
         game.destroy(targetID);
