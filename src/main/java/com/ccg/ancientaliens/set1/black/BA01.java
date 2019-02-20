@@ -25,7 +25,7 @@ public class BA01 extends Action implements Targeting {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasValidTargetsInPlay(this, 1);
+        return super.canPlay(game) && game.hasValidTargetsIn(controller, this::validTarget, 1, "both play");
     }
     
     @Override
@@ -37,16 +37,14 @@ public class BA01 extends Action implements Targeting {
     
     @Override
     public void resolve (Game game){
-        if(game.isInPlay(supplementaryData.get(0))){
-            game.possess(supplementaryData.get(0), controller);
+        if(game.isIn(controller, supplementaryData.get(0), "both play")){
+            game.possessTo(controller, supplementaryData.get(0), "single play");
         }
-        game.putToScrapyard(this);
+        game.putTo(controller, this, "scrapyard");
     }
 
     @Override
     public boolean validTarget(Card c) {
         return (c instanceof Item && c.cost <= 3);
-    }
-    
-    
+    } 
 }

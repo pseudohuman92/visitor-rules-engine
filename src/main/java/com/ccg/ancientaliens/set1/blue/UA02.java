@@ -3,54 +3,48 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ccg.ancientaliens.set1.black;
-
+package com.ccg.ancientaliens.set1.blue;
 
 import com.ccg.ancientaliens.card.properties.Targeting;
-import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.card.types.Card;
+import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
-import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
+import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import helpers.Hashmap;
 
 /**
  *
  * @author pseudo
  */
-public class BA03 extends Action implements Targeting {
-    
-    /**
-     *
-     * @param owner
-     */
-    public BA03(String owner) {
-        super("BA03", 1, new Hashmap(BLACK, 1), 
-        "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", owner);
+public class UA02 extends Action implements Targeting {
+
+    public UA02(String owner) {
+        super("UA02", 3, new Hashmap(BLUE, 1), "Transform target item into Junk", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasAnInstanceIn(controller, Item.class, "single play");
+        return super.canPlay(game) && game.hasAnInstanceIn(controller, Item.class, "both play");
     }
     
     @Override
     public void play(Game game) {
-        game.getSelectedFromPlay(controller, this::validTarget, 1);
+        supplementaryData = game.getSelectedFromPlay(controller, this::validTarget, 1);
         game.spendEnergy(controller, cost);
-        game.destroy(supplementaryData.get(0));
         game.addToStack(this);
     }
     
     @Override
     public void resolve (Game game){
-        game.draw(controller, 2);
+        if(game.isIn(controller, supplementaryData.get(0), "both play")){
+            game.transformToJunk(supplementaryData.get(0));
+        }
         game.putTo(controller, this, "scrapyard");
-    }
+    }    
 
     @Override
     public boolean validTarget(Card c) {
-        return (c.controller.equals(controller) && c instanceof Item);
-    }    
-    
+        return c instanceof Item;
+    }
 }

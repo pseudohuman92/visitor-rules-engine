@@ -171,6 +171,15 @@ public abstract class Card implements Serializable {
         depleted = false;
         supplementaryData = new ArrayList<>();
     }
+    
+    public void copyPropertiesFrom(Card c) {
+        id = c.id;
+        owner = c.owner;
+        controller = c.controller;
+        counters = c.counters;
+        depleted = c.depleted;
+        supplementaryData = c.supplementaryData;
+    }
 
     public Types.Card.Builder toCardMessage() {
         Types.Card.Builder b = Types.Card.newBuilder()
@@ -182,4 +191,5 @@ public abstract class Card implements Serializable {
         //TODO: add targets
         return b;
     }
+    
 }

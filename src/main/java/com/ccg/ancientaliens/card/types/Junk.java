@@ -1,0 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ccg.ancientaliens.card.types;
+
+import com.ccg.ancientaliens.game.Game;
+import helpers.Hashmap;
+
+/**
+ *
+ * @author pseudo
+ */
+public class Junk extends Card {
+
+    public Junk(String owner){
+        super("Junk", 0, new Hashmap<>(), "Junk can't be played or studied.", owner);
+    }
+
+    @Override
+    public boolean canPlay(Game game) { return false; }
+    
+    @Override
+    public boolean canStudy(Game game) { return false; }
+
+    @Override
+    public void resolve(Game game) {}
+    
+}

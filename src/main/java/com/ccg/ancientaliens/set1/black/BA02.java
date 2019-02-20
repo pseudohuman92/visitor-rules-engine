@@ -37,6 +37,6 @@ public class BA02 extends Action implements XValued {
     @Override
     public void resolve (Game game){
         game.loot(controller, cost);
-        game.putToScrapyard(this);
+        game.putTo(controller, this, "scrapyard");
     }
 }

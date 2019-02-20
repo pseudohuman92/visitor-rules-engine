@@ -11,7 +11,7 @@ import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
-import com.ccg.ancientaliens.set1.additional.AI01;
+import com.ccg.ancientaliens.set1.additional.AI02;
 import helpers.Hashmap;
 
 
@@ -19,31 +19,33 @@ import helpers.Hashmap;
  *
  * @author pseudo
  */
-public class UI01 extends Item implements Transforming {
+public class UI04 extends Item implements Transforming {
     
-    public UI01 (String owner){
-        super("UI01", 2, new Hashmap(BLUE, 2), 
-                "Discard 2: Transform ~ into AI01.", owner);
+    public UI04 (String owner){
+        super("UI04", 1, new Hashmap(BLUE, 1), 
+                "1, Discard 1: Transform ~ into AI02.", owner);
         subtypes.add("Kit");
     }
 
     @Override
     public boolean canActivate(Game game) {
-        return game.players.get(controller).hand.size() >= 2;
+        return game.players.get(controller).hand.size() > 0
+                && game.players.get(controller).energy > 0;
     }
     
     @Override
     public void activate(Game game) {
-        game.discard(controller, 2);
-        game.addToStack(new Activation("", controller, "Transform ~ into AI01.", null, 
+        game.discard(controller, 1);
+        game.spendEnergy(controller, 1);
+        game.addToStack(new Activation("", controller, "Transform ~ into AI02.", null, 
             (g , c) -> { 
-                if(g.isIn(controller, id, "single play")) 
+                if(g.isIn(controller, id, "single play"))
                     transform(g); 
         }));
     }
 
     @Override
     public void transform(Game game) {
-        game.replaceWith(this, new AI01(this));
+        game.replaceWith(this, new AI02(this));
     }
 }

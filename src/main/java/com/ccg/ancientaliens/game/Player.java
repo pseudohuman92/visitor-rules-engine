@@ -5,7 +5,6 @@ import com.ccg.ancientaliens.card.properties.Triggering;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
 import com.ccg.ancientaliens.protocol.Types.*;
-import static helpers.Debug.list;
 import helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,29 +90,13 @@ public class Player implements Serializable {
 
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
-        //result = (boolean) cardKnowledge.keySet().stream().map((<any> k) -> (cardKnowledge.get(k) <= knowledgePool.get(k)) && 
-        //        knowledgePool.containsKey(k)).reduce(result, (accumulator, _item) -> accumulator & _item);
+        for (Knowledge k : cardKnowledge.keySet()){
+            result = result && cardKnowledge.get(k) <= knowledgePool.get(k);
+        }
         return result;
     }
     
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("xx Player xx\n");
-        sb.append("  Player Name: ").append(name).append("\n");
-        sb.append("  ID: ").append(id).append("\n");
-        sb.append("  Energy: ").append(energy).append(" / ").append(maxEnergy).append("\n");
-        sb.append("  Knowledge\n");
-        //knowledgePool.forEach((k, c) ->{
-        //    sb.append("    ").append(k).append(": ").append(c).append("\n");
-        //});
-        sb.append("  Source Play Count: ").append(numOfStudiesLeft).append("\n");
-        sb.append("  Hand \n").append(list(hand, "    ")).append("\n");
-        sb.append("  Items \n").append(list(playArea, "    ")).append("\n");
-        sb.append("  Discard Pile \n").append(list(scrapyard, "    ")).append("\n");
-        sb.append("  ").append(deck).append("\n");
-        return sb.toString();
-    }
+    
     /*
     public void addTriggerEvent(Game game, Event e) {
         for (int i = 0; i < triggeringCards.size(); i++){
@@ -121,12 +104,6 @@ public class Player implements Serializable {
         }
     }
     */
-    public void purgeCardsFromHand(ArrayList<UUID> cards) {
-        
-        cards.stream().map((cardID) -> extractCardFrom(cardID, hand)).forEachOrdered((card) -> {
-            voidPile.add(card);
-        });
-    }
 
     public Card extractCardFrom (UUID cardID, ArrayList<Card> list){
         for (Card card : list) {
@@ -180,6 +157,23 @@ public class Player implements Serializable {
         }
         return null;
     }
+    
+    void replaceWith(Card oldCard, Card newCard) {
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            for (int i = 0; i < list.size(); i++){
+                if(list.get(i).equals(oldCard)){
+                    list.remove(i);
+                    list.add(i, newCard);
+                }
+            }
+        }
+    }
 
     public Types.Player.Builder toPlayerMessage() {
         Types.Player.Builder b = Types.Player.newBuilder()
@@ -217,26 +211,5 @@ public class Player implements Serializable {
                     .setCount(i).build());
         });
         return b;
-    }
-
-    public boolean hasInPlay(Class c) {
-        return playArea.parallelStream().anyMatch(c::isInstance);
-    }
-
-    void replaceWith(Card oldCard, Card newCard) {
-        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
-        lists.add(hand);
-        lists.add(playArea);
-        lists.add(scrapyard); 
-        lists.add(voidPile);
-        lists.add(deck.deck);
-        for (ArrayList<Card> list : lists){ 
-            for (int i = 0; i < list.size(); i++){
-                if(list.get(i).equals(oldCard)){
-                    list.remove(i);
-                    list.add(i, newCard);
-                }
-            }
-        }
     }
 }

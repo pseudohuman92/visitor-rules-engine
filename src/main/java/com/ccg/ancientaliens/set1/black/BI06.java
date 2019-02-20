@@ -20,12 +20,12 @@ public class BI06 extends Item {
     
     public BI06 (String owner){
         super("BI06", 1, new Hashmap(BLACK, 1), 
-                "Condition - Control a card you don't own. Activate: Opponent purges 3.", owner);
+                "Condition - Control a card you don't own in play. Activate: Opponent purges 3.", owner);
     }
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.controlsUnownedCard(controller);
+        return !depleted && game.controlsUnownedCard(controller, "single play");
     }
 
     @Override

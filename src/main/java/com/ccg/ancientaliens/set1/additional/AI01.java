@@ -22,13 +22,7 @@ public class AI01 extends Item {
     public AI01 (UI01 c){
         super("AI01", 1, new Hashmap(), 
                 "Destroy: Opponent purges 6.", c.controller);
-        id = c.id;
-        owner = c.owner;
-        controller = c.controller;
-        counters = c.counters;
-        depleted = c.depleted;
-        supplementaryData = c.supplementaryData;
-        subtypes.add("Kit");
+        copyPropertiesFrom(c);
     }
 
     @Override

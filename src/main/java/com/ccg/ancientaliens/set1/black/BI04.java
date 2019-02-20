@@ -29,7 +29,7 @@ public class BI04 extends Item implements Targeting {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasACardInVoid(controller);
+        return !depleted && game.hasAnInstanceIn(controller, Card.class, "void");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class BI04 extends Item implements Targeting {
         game.addToStack(new Activation ("", controller,
             "Draw a card from void, then purge acard from your hand",
             null, (g, c) -> {
-                if (g.isInVoid(c.controller, selected.get(0))){
+                if (g.isIn(c.controller, selected.get(0), "void")){
                     g.drawByID(c.controller, selected.get(0));
                     ArrayList<UUID> selection = g.getSelectedFromHand(c.controller, (cx-> {return true;}), 1);
                     g.purgeByID(c.controller, selection.get(0));

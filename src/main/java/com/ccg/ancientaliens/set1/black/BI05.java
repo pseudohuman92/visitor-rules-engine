@@ -26,7 +26,7 @@ public class BI05 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasACardInVoid(controller);
+        return !depleted;
     }
 
     @Override
@@ -38,9 +38,11 @@ public class BI05 extends Item {
             null, (g, cx) -> {
                 Card c = g.players.get(g.getOpponentName(cx.controller))
                         .deck.extractFromTop(Item.class);
-                c.controller = cx.controller;
-                c.knowledge = new Hashmap<>();
-                g.players.get(cx.controller).hand.add(c);
+                if(c != null){
+                    c.controller = cx.controller;
+                    c.knowledge = new Hashmap<>();
+                    g.putTo(c.controller, c, "hand");
+                }
             }));
     }
 }
