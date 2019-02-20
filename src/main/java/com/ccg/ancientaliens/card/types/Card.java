@@ -2,7 +2,6 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
-import com.ccg.ancientaliens.enums.*;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.*;
 import helpers.Hashmap;
@@ -44,7 +43,7 @@ public abstract class Card implements Serializable {
      */
     public String text;
     
-    public ArrayList<Subtype> subtypes;
+    public ArrayList<String> subtypes;
 
     /**
      * Owner of the card. This is the player who started the game with the card in his deck.
@@ -65,11 +64,6 @@ public abstract class Card implements Serializable {
      * Flag to indicate if the card is depleted.
      */
     public boolean depleted;
-
-    /**
-     * Flag to indicate if the card is marked for any reason.
-     */
-    public boolean marked;
 
     /**
      * Collection of counters on the card.
@@ -96,10 +90,8 @@ public abstract class Card implements Serializable {
         this.knowledge = knowledge;
         this.text = text;
         this.owner = owner;
-        controller = owner;
-        
-        depleted = false;
-        marked = false;
+        this.controller = owner;
+        this.depleted = false;
     }
     
     /**
@@ -177,7 +169,6 @@ public abstract class Card implements Serializable {
      */
     public void clear() {
         depleted = false;
-        marked = false;
         supplementaryData = new ArrayList<>();
     }
 
@@ -186,7 +177,6 @@ public abstract class Card implements Serializable {
                 .setId(id.toString())
                 .setName(name)
                 .setDepleted(depleted)
-                .setMarked(marked)
                 .setDescription(text);
         //TODO: add counters
         //TODO: add targets

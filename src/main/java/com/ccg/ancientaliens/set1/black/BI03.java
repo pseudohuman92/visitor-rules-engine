@@ -28,7 +28,7 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.players.get(controller).hasAnItem();
+        return game.players.get(controller).hasInPlay(Item.class);
     }
 
     @Override
@@ -39,11 +39,11 @@ public class BI03 extends Item implements Targeting {
         if (game.ownedByOpponent(sacID)) {
             game.addToStack(new Activation("", controller, 
                 "Gain 2 energy", null,
-                g -> { g.addEnergy(controller, 2); }));
+                (g, c) -> { g.addEnergy(controller, 2); }));
         } else {
             game.addToStack(new Activation("", controller, 
                 "Gain 1 energy", null,
-                g -> { g.addEnergy(controller, 1); }));
+                (g, c) -> { g.addEnergy(controller, 1); }));
         }
     }
 

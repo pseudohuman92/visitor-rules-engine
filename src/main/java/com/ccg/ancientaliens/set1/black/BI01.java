@@ -21,7 +21,7 @@ public class BI01 extends Item {
     
     public BI01 (String owner){
         super("BI01", 1, new Hashmap(BLACK, 1), 
-                "1, Activate: Loot 1", owner);
+                "Activate: Loot 1", owner);
     }
 
     @Override
@@ -31,9 +31,8 @@ public class BI01 extends Item {
     
     @Override
     public void activate(Game game) {
-        game.spendEnergy(controller, 1);
         game.deplete(id);
         game.addToStack(new Activation("", controller, "Loot 1", null, 
-                g -> { g.loot(controller, 1); }));
+                (g , c) -> { g.loot(controller, 1); }));
     }
 }

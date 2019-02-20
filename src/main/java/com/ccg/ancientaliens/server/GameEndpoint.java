@@ -1,13 +1,11 @@
 package com.ccg.ancientaliens.server;
 
-import com.ccg.ancientaliens.protocol.ClientGameMessages.ActivateCard;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage;
-import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import static com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
 import com.ccg.ancientaliens.protocol.ClientGameMessages.*;
-import com.ccg.ancientaliens.protocol.ClientGameMessages.SelectPlayerResponse;
-import com.ccg.ancientaliens.protocol.ClientGameMessages.StudyCard;
+import com.ccg.ancientaliens.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
+import com.ccg.ancientaliens.protocol.Types.SelectFromType;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.IOException;
@@ -29,6 +27,7 @@ public class GameEndpoint {
     UUID gameID;
     boolean waitingResponse;
     PayloadCase responseType;
+    SelectFromType selectFromType;
     ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
     
     @OnOpen
@@ -69,19 +68,8 @@ public class GameEndpoint {
         System.out.println("Game " + username + " ERROR!: " + throwable.getMessage());
         throwable.printStackTrace();
     }
- 
-    public void send(ServerGameMessage message) throws IOException, EncodeException {
-        System.out.println("Server sending a game message to " + username + ": " + message);  
-        session.getBasicRemote().sendObject(message.toByteArray());
-    }
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
-        ServerGameMessage message = builder.build();
-        System.out.println("Server sending a game message to " + username + ": " + message);   
-        session.getBasicRemote().sendObject(message.toByteArray());
-    }
-    
-    public void sendForResponse(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
         System.out.println("Server sending a game message to " + username + ": " + message);
         checkResponseType(message);
@@ -96,34 +84,31 @@ public class GameEndpoint {
         if (message.getPayloadCase() == responseType){
             switch(message.getPayloadCase()){
                 case ORDERCARDSRESPONSE:
+                    OrderCardsResponse ocr = message.getOrderCardsResponse();
                     waitingResponse = false;
+                    response.add(ocr.getOrderedCardsList().toArray(new String[ocr.getOrderedCardsCount()]));
                     break;
-                case SELECTFROMLISTRESPONSE:
+                case SELECTFROMRESPONSE:
+                    SelectFromResponse sfr = message.getSelectFromResponse();
+                    if(sfr.getMessageType() != selectFromType){
+                        System.out.println("Wrong SelectFrom response received from " + username + 
+                                "\nExpected " + selectFromType + " Received: " + message);
+                        break;
+                    }
                     waitingResponse = false;
-                    break;
-                case SELECTFROMPLAYRESPONSE:
-                    SelectFromPlayResponse sfpr = message.getSelectFromPlayResponse();
-                    waitingResponse = false;
-                    response.add(sfpr.getSelectedCardsList().toArray(new String[sfpr.getSelectedCardsCount()]));
-                    break;
-                case SELECTFROMHANDRESPONSE:
-                    waitingResponse = false;
-                    break;
-                case SELECTFROMSCRAPYARDRESPONSE:
-                    waitingResponse = false;
-                    break;
-                case SELECTFROMVOIDRESPONSE:
-                    waitingResponse = false;
+                    response.add(sfr.getSelectedCardsList().toArray(new String[sfr.getSelectedCardsCount()]));
                     break;
                 case SELECTPLAYERRESPONSE:
-                    SelectPlayerResponse spr = message.getSelectPlayerResponse();
                     waitingResponse = false;
+                    response.add(message.getSelectPlayerResponse().getSelectedPlayerName());
                     break;
                 case SELECTXVALUERESPONSE:
                     waitingResponse = false;
+                    response.add(message.getSelectXValueResponse().getSelectedXValue());
                     break;
                 default:
-                    System.out.println("Expected " + responseType + " from " + username + ". Received: " + message);
+                    System.out.println("Wrong Message received from " + username  
+                            + "\nExpected " + responseType + " Received: " + message);
                     break;
             }
             waitingResponse = false;
@@ -135,16 +120,13 @@ public class GameEndpoint {
     private void processMessage(ClientGameMessage message) {
         switch(message.getPayloadCase()){
             case PLAYCARD:
-                PlayCard payload1 = message.getPlayCard();
-                gameServer.playCard(gameID, username, UUID.fromString(payload1.getCardID()));
+                gameServer.playCard(gameID, username, UUID.fromString(message.getPlayCard().getCardID()));
                 break;
             case ACTIVATECARD:
-                ActivateCard payload2 = message.getActivateCard();
-                gameServer.activateCard(gameID, username, UUID.fromString(payload2.getCardID()));
+                gameServer.activateCard(gameID, username, UUID.fromString(message.getActivateCard().getCardID()));
                 break;
             case STUDYCARD:
-                StudyCard payload3 = message.getStudyCard();
-                gameServer.studyCard(gameID, username, UUID.fromString(payload3.getCardID()));
+                gameServer.studyCard(gameID, username, UUID.fromString(message.getStudyCard().getCardID()));
                 break;
             case PASS:
                 gameServer.pass(gameID, username);
@@ -159,7 +141,7 @@ public class GameEndpoint {
                 gameServer.concede(gameID, username);
                 break;
             default:
-                System.out.println("Unexpected response from " + username + ": " + message);
+                System.out.println("Unexpected message from " + username + ": " + message);
                 break;
         }
     }
@@ -170,25 +152,10 @@ public class GameEndpoint {
                 waitingResponse = true;
                 responseType = ORDERCARDSRESPONSE;
                 break;
-            case SELECTFROMLIST:
+            case SELECTFROM:
                 waitingResponse = true;
-                responseType = SELECTFROMLISTRESPONSE;
-                break;
-            case SELECTFROMPLAY:
-                waitingResponse = true;
-                responseType = SELECTFROMPLAYRESPONSE;
-                break;
-            case SELECTFROMHAND:
-                waitingResponse = true;
-                responseType = SELECTFROMHANDRESPONSE;
-                break;
-            case SELECTFROMSCRAPYARD:
-                waitingResponse = true;
-                responseType = SELECTFROMSCRAPYARDRESPONSE;
-                break;
-            case SELECTFROMVOID:
-                waitingResponse = true;
-                responseType = SELECTFROMVOIDRESPONSE;
+                responseType = SELECTFROMRESPONSE;
+                selectFromType = message.getSelectFrom().getMessageType();
                 break;
             case SELECTPLAYER:
                 waitingResponse = true;

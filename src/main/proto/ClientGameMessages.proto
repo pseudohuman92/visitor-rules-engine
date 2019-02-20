@@ -58,33 +58,10 @@ message OrderCardsResponse {
 }
 
 //This will be send as a response to SelectFromList message from server
-message SelectFromListResponse {
-    string gameID = 1;
-    repeated string selectedCards = 2;
-}
-
-//This will be send as a response to SelectFromHand message from server
-message SelectFromHandResponse {
-    string gameID = 1;
+message SelectFromResponse {
+    SelectFromType messageType = 1;
+    string gameID = 2;
     repeated string selectedCards = 3;
-}
-
-//This will be send as a response to SelectFromPlay message from server
-message SelectFromPlayResponse {
-    string gameID = 1;
-    repeated string selectedCards = 2;
-}
-
-//This will be send as a response to SelectFromScrapyard message from server
-message SelectFromScrapyardResponse {
-    string gameID = 1;
-    repeated string selectedCards = 2;
-}
-
-//This will be send as a response to SelectFromVoid message from server
-message SelectFromVoidResponse {
-    string gameID = 1;
-    repeated string selectedCards = 2;
 }
 
 //This will be send as a response to SelectPlayer message from server
@@ -108,11 +85,7 @@ message ClientGameMessage {
         Keep                            keep = 14;
         Concede                         concede = 16;
         OrderCardsResponse              orderCardsResponse = 17;
-        SelectFromHandResponse          selectFromHandResponse = 15;
-        SelectFromListResponse          selectFromListResponse = 18;
-        SelectFromPlayResponse          selectFromPlayResponse = 19;
-        SelectFromScrapyardResponse     selectFromScrapyardResponse = 20;
-        SelectFromVoidResponse          selectFromVoidResponse = 21;
+        SelectFromResponse              selectFromResponse = 15;
         SelectPlayerResponse            selectPlayerResponse = 22;
         SelectXValueResponse            selectXValueResponse = 23;
     }

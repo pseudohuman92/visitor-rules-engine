@@ -13,6 +13,16 @@ enum Phase {
     MAIN_RESOLVING = 4;
     END = 5;
 }
+
+enum SelectFromType {
+    NOTYPE = 0;
+    LIST = 1;
+    LISTUPTO = 2;
+    HAND = 3;
+    PLAY = 4;
+    SCRAPYARD = 5;
+    VOID = 6;
+}
  
 message Table
 {

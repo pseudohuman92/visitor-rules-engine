@@ -40,8 +40,9 @@ public class BI07 extends Item implements Targeting {
         game.destroy(id);
         game.addToStack(new Activation ("", controller,
             "Possess target item",
-            null, g -> {
-                g.possess(selected.get(0), controller);
+            null, (g, c) -> {
+                if (g.isInPlay(selected.get(0)))
+                    g.possess(selected.get(0), c.controller);
             }));
     }
 

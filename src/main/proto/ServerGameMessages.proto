@@ -27,40 +27,12 @@ message OrderCards {
     repeated Card cardsToOrder = 2;
 }
 
-//This will be send when some number of cards needs to be selected from a list of cards
-message SelectFromList {
-    GameState game = 1;
-    int32 selectionCount = 2;
-    repeated Card candidates = 3;
-    repeated string canSelected = 4;
-}
-
-//This will be send when some number of cards needs to be selected from player's hand
-message SelectFromHand {
-    GameState game = 1;
-    int32 selectionCount = 2;
-    repeated Card candidates = 3;
-}
-
-//This will be send when some number of cards needs to be selected from the cards in play
-message SelectFromPlay {
-    GameState game = 1;
-    int32 selectionCount = 2;
-    repeated Card candidates = 3;
-}
-
-//This will be send when some number of cards needs to be selected from player's scrapyard
-message SelectFromScrapyard {
-    GameState game = 1;
-    int32 selectionCount = 2;
-    repeated Card candidates = 3;
-}
-
-//This will be send when some number of cards needs to be selected from player's void
-message SelectFromVoid {
-    GameState game = 1;
-    int32 selectionCount = 2;
-    repeated Card candidates = 3;
+message SelectFrom {
+    SelectFromType messageType = 1;
+    GameState game = 2;
+    int32 selectionCount = 3;
+    repeated Card candidates = 4;
+    repeated string canSelected = 5;
 }
 
 message SelectXValue {
@@ -79,11 +51,7 @@ message ServerGameMessage {
         Loss                    loss = 10;
         Win                     win = 11;
         OrderCards              orderCards = 12;
-        SelectFromList          selectFromList = 13;
-        SelectFromPlay          selectFromPlay = 14;
-        SelectFromHand          selectFromHand = 15;
-        SelectFromScrapyard     selectFromScrapyard = 16;
-        SelectFromVoid          selectFromVoid = 17;
+        SelectFrom              selectFrom = 13;
         SelectPlayer            selectPlayer = 18;
         SelectXValue            selectXValue = 19;
     }

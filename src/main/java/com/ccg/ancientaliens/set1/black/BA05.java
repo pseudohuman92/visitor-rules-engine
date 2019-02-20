@@ -7,7 +7,6 @@ package com.ccg.ancientaliens.set1.black;
 
 import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.card.types.Card;
-import static com.ccg.ancientaliens.enums.Subtype.Trap;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
@@ -37,7 +36,7 @@ public class BA05 extends Action {
         ArrayList<Card> topCards = p.deck.extractFromTop(4);
         ArrayList <UUID> canSelected = new ArrayList<>();
         topCards.forEach(c -> {
-            if (c.subtypes.contains(Trap)){
+            if (c.subtypes.contains("Trap")){
                 canSelected.add(c.id);
             }
         });

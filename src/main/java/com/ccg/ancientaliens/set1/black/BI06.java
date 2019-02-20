@@ -6,15 +6,11 @@
 
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Activation;
-import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import helpers.Hashmap;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *
@@ -37,8 +33,8 @@ public class BI06 extends Item {
         game.deplete(id);
         game.addToStack(new Activation ("", controller,
             "Opponent purges 3",
-            null, g -> {
-                g.purge(g.getOpponentName(controller), 3);
+            null, (g, c) -> {
+                g.purge(g.getOpponentName(c.controller), 3);
             }));
     }
 }

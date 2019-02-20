@@ -13,7 +13,6 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import helpers.Hashmap;
-import java.util.UUID;
 
 /**
  *
@@ -32,7 +31,7 @@ public class BA03 extends Action implements Targeting {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.players.get(controller).hasAnItem();
+        return super.canPlay(game) && game.players.get(controller).hasInPlay(Item.class);
     }
     
     @Override

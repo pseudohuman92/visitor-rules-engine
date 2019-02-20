@@ -34,7 +34,7 @@ public class BA04 extends Action implements Targeting {
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
-            game.players.get(game.getOpponentName(controller)).hasAnItem();
+            game.players.get(game.getOpponentName(controller)).hasInPlay(Item.class);
     }
     
     @Override

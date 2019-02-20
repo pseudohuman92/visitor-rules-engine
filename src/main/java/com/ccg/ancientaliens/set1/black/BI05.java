@@ -6,15 +6,12 @@
 
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import helpers.Hashmap;
-import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *
@@ -38,12 +35,12 @@ public class BI05 extends Item {
         game.spendEnergy(controller, 3);
         game.addToStack(new Activation ("", controller,
             "Draw top item of opponent's deck",
-            null, g -> {
-                Card c = g.players.get(g.getOpponentName(controller))
+            null, (g, cx) -> {
+                Card c = g.players.get(g.getOpponentName(cx.controller))
                         .deck.extractFromTop(Item.class);
-                c.controller = controller;
+                c.controller = cx.controller;
                 c.knowledge = new Hashmap<>();
-                g.players.get(controller).hand.add(c);
+                g.players.get(cx.controller).hand.add(c);
             }));
     }
 }

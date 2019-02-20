@@ -94,7 +94,7 @@ public class GameServer {
             gameQueue.add(username);
         } else {
             if(gameQueue.get(0).equals(username))
-                return;
+                    return;
             String p1 = gameQueue.remove(0);
             System.out.println("Starting a new game with " + username + " and " + p1);
             Game g = new Game(p1, username);

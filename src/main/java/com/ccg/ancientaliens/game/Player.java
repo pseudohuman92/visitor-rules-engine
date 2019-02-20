@@ -2,7 +2,6 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.properties.Triggering;
-import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
 import com.ccg.ancientaliens.protocol.Types.*;
@@ -12,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -187,19 +187,11 @@ public class Player implements Serializable {
                 .setName(name)
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
-                .setMaxEnergy(maxEnergy);
-        for(int i = 0; i < hand.size(); i++){
-            b.addHand(hand.get(i).toCardMessage());
-        }
-        for(int i = 0; i < playArea.size(); i++){
-            b.addPlay(playArea.get(i).toCardMessage());
-        }
-        for(int i = 0; i < scrapyard.size(); i++){
-            b.addScrapyard(scrapyard.get(i).toCardMessage());
-        }
-        for(int i = 0; i < voidPile.size(); i++){
-            b.addVoid(voidPile.get(i).toCardMessage());
-        }
+                .setMaxEnergy(maxEnergy)
+                .addAllHand(hand.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
+                .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
+                .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
+                .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));
         knowledgePool.forEach((k, i) -> {
             b.addKnowledgePool(KnowledgeGroup.newBuilder()
                     .setKnowledge(k)
@@ -215,16 +207,10 @@ public class Player implements Serializable {
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
-                .setHandSize(hand.size());
-        for(int i = 0; i < playArea.size(); i++){
-            b.addPlay(playArea.get(i).toCardMessage());
-        }
-        for(int i = 0; i < scrapyard.size(); i++){
-            b.addScrapyard(scrapyard.get(i).toCardMessage());
-        }
-        for(int i = 0; i < voidPile.size(); i++){
-            b.addVoid(voidPile.get(i).toCardMessage());
-        }
+                .setHandSize(hand.size())
+                .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
+                .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
+                .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));
         knowledgePool.forEach((k, i) -> {
             b.addKnowledgePool(KnowledgeGroup.newBuilder()
                     .setKnowledge(k)
@@ -233,12 +219,24 @@ public class Player implements Serializable {
         return b;
     }
 
-    public boolean hasAnItem() {
-        for(Card c : playArea){
-            if (c instanceof Item){
-                return true;
+    public boolean hasInPlay(Class c) {
+        return playArea.parallelStream().anyMatch(c::isInstance);
+    }
+
+    void replaceWith(Card oldCard, Card newCard) {
+        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        lists.add(hand);
+        lists.add(playArea);
+        lists.add(scrapyard); 
+        lists.add(voidPile);
+        lists.add(deck.deck);
+        for (ArrayList<Card> list : lists){ 
+            for (int i = 0; i < list.size(); i++){
+                if(list.get(i).equals(oldCard)){
+                    list.remove(i);
+                    list.add(i, newCard);
+                }
             }
         }
-        return false;
     }
 }

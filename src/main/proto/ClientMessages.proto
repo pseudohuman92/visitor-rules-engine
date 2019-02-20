@@ -1,5 +1,4 @@
 syntax = "proto3";
-import "Types.proto";
 option java_package = "com.ccg.ancientaliens.protocol";
 
 /**

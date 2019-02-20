@@ -12,7 +12,6 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import helpers.Hashmap;
-import java.util.UUID;
 
 /**
  *
@@ -38,7 +37,9 @@ public class BA01 extends Action implements Targeting {
     
     @Override
     public void resolve (Game game){
-        game.possess(supplementaryData.get(0), controller);
+        if(game.isInPlay(supplementaryData.get(0))){
+            game.possess(supplementaryData.get(0), controller);
+        }
         game.putToScrapyard(this);
     }
 
