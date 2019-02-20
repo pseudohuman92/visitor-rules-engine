@@ -10,14 +10,7 @@ import helpers.Hashmap;
  * @author pseudo
  */
 public abstract class Tome extends Card {
-    
-    /**
-     *
-     * @param name
-     * @param text
-     * @param image
-     * @param owner
-     */
+
     public Tome(String name, String text, String owner) {
         super(name, 0, new Hashmap<Knowledge, Integer>(), text, owner);
     }
@@ -26,5 +19,7 @@ public abstract class Tome extends Card {
     public boolean canPlay(Game game){ return false; }
     
     @Override
-    public void resolve(Game game){}
+    public void resolve(Game game){
+        game.putTo(controller, this, "scrapyard");
+    }
 }

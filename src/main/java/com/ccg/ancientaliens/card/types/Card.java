@@ -180,7 +180,11 @@ public abstract class Card implements Serializable {
                 .setName(name)
                 .setDepleted(depleted)
                 .setDescription(text);
-        //TODO: add counters
+        counters.forEach((k, i) -> {
+            b.addCounters(CounterGroup.newBuilder()
+                    .setCounter(k)
+                    .setCount(i).build());
+        });
         //TODO: add targets
         return b;
     }
