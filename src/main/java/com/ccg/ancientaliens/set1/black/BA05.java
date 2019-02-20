@@ -40,11 +40,11 @@ public class BA05 extends Action {
                 canSelected.add(c.id);
             }
         });
-        ArrayList<UUID> s = game.getSelectedFromListUpTo(controller, topCards, canSelected, 1);
+        ArrayList<UUID> s = game.selectFromListUpTo(controller, topCards, canSelected, 1);
         ArrayList<Card> selected = UUIDHelper.getInList(topCards, s);
         ArrayList<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
         p.hand.addAll(selected);
-        p.deck.putAllToBottom(notSelected);
+        p.deck.putToBottom(notSelected);
         game.putTo(controller, this, "scrapyard");
     }
     

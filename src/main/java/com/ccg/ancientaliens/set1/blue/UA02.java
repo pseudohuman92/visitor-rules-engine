@@ -12,6 +12,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import helpers.Hashmap;
+import java.util.UUID;
 
 /**
  *
@@ -19,6 +20,8 @@ import helpers.Hashmap;
  */
 public class UA02 extends Action implements Targeting {
 
+    UUID target;
+    
     public UA02(String owner) {
         super("UA02", 3, new Hashmap(BLUE, 1), "Transform target item into Junk", owner);
     }
@@ -30,15 +33,15 @@ public class UA02 extends Action implements Targeting {
     
     @Override
     public void play(Game game) {
-        supplementaryData = game.getSelectedFromPlay(controller, this::validTarget, 1);
+        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     }
     
     @Override
     public void resolve (Game game){
-        if(game.isIn(controller, supplementaryData.get(0), "both play")){
-            game.transformToJunk(supplementaryData.get(0));
+        if(game.isIn(controller, target, "both play")){
+            game.transformToJunk(target);
         }
         game.putTo(controller, this, "scrapyard");
     }    

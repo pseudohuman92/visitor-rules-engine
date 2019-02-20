@@ -17,6 +17,10 @@ public class Junk extends Card {
     public Junk(String owner){
         super("Junk", 0, new Hashmap<>(), "Junk can't be played or studied.", owner);
     }
+    
+     public Junk(){
+        super("Junk", 0, new Hashmap<>(), "Junk can't be played or studied.", "");
+    }
 
     @Override
     public boolean canPlay(Game game) { return false; }
@@ -25,6 +29,8 @@ public class Junk extends Card {
     public boolean canStudy(Game game) { return false; }
 
     @Override
-    public void resolve(Game game) {}
+    public void resolve(Game game) {
+        game.putTo(controller, this, "scrapyard");
+    }
     
 }

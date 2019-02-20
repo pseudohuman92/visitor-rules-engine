@@ -11,6 +11,7 @@ import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import helpers.Hashmap;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -18,6 +19,8 @@ import java.util.ArrayList;
  */
 public class UA01 extends Action {
 
+    UUID target; 
+    
     public UA01(String owner) {
         super("UA01", 1, new Hashmap(BLUE, 2), "Purge all copies of a target card from your scrapyard. Opponent Purge as many cards.", owner);
     }
@@ -29,15 +32,15 @@ public class UA01 extends Action {
     
     @Override
     public void play(Game game) {
-        supplementaryData = game.getSelectedFromScrapyard(controller, c->{return true;}, 1);
+        target = game.selectFromScrapyard(controller, c->{return true;}, 1).get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     }
     
     @Override
     public void resolve (Game game){
-        if(game.isIn(controller, supplementaryData.get(0), "scrapyard")){
-            Card c = game.getCard(supplementaryData.get(0));
+        if(game.isIn(controller, target, "scrapyard")){
+            Card c = game.getCard(target);
             ArrayList<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
             game.putAllTo(controller, cards, "void");
             game.purge(game.getOpponentName(controller), cards.size());

@@ -22,6 +22,8 @@ import java.util.UUID;
  */
 public class BI02 extends Item implements Targeting {
     
+    UUID target;
+    
     public BI02 (String owner){
         super("BI02", 4, new Hashmap(BLACK, 3), 
         "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", owner);
@@ -35,20 +37,13 @@ public class BI02 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        game.getSelectedFromPlay(controller, this::validTarget, 1);
+        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
         game.deplete(id);
-        UUID targetID = supplementaryData.get(0);
-        game.destroy(targetID);
+        game.destroy(target);
         String oppName = game.getOpponentName(controller);
-        if (game.ownedByOpponent(targetID)) {
-            game.addToStack(new Activation("", controller, 
-                "Purge 10", null,
-                (g, c) -> { g.purge(oppName, 10); }));
-        } else {
-            game.addToStack(new Activation("", controller, 
-                "Purge 5", null,
-                (g, c) -> { g.purge(oppName, 5); }));
-        }
+        game.addToStack(new Activation(controller, 
+            (game.ownedByOpponent(target)?"Purge 10":"Purge 5"),
+            (g, c) -> { g.purge(oppName, (game.ownedByOpponent(target)?10:5)); }));
     }
 
     @Override

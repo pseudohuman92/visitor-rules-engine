@@ -39,7 +39,7 @@ public class BA04 extends Action implements Targeting {
     
     @Override
     public void resolve (Game game){
-        ArrayList<UUID> selected = game.getSelectedFromPlay(game.getOpponentName(controller), this::validTarget, 1);
+        ArrayList<UUID> selected = game.selectFromPlay(game.getOpponentName(controller), this::validTarget, 1);
         game.possessTo(controller, selected.get(0), "single play");
         game.putTo(controller, this, "scrapyard");
     }

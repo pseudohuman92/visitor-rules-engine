@@ -13,6 +13,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import helpers.Hashmap;
+import java.util.UUID;
 
 /**
  *
@@ -20,10 +21,8 @@ import helpers.Hashmap;
  */
 public class BA03 extends Action implements Targeting {
     
-    /**
-     *
-     * @param owner
-     */
+    UUID target;
+    
     public BA03(String owner) {
         super("BA03", 1, new Hashmap(BLACK, 1), 
         "Additional Cost - Sacrifice an item.<br>Draw 2 cards.", owner);
@@ -36,9 +35,9 @@ public class BA03 extends Action implements Targeting {
     
     @Override
     public void play(Game game) {
-        game.getSelectedFromPlay(controller, this::validTarget, 1);
+        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
         game.spendEnergy(controller, cost);
-        game.destroy(supplementaryData.get(0));
+        game.destroy(target);
         game.addToStack(this);
     }
     

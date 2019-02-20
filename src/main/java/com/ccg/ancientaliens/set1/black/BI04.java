@@ -34,14 +34,14 @@ public class BI04 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        ArrayList<UUID> selected = game.getSelectedFromVoid(controller, this::validTarget, 1);
+        ArrayList<UUID> selected = game.selectFromVoid(controller, this::validTarget, 1);
         game.destroy(id);
-        game.addToStack(new Activation ("", controller,
+        game.addToStack(new Activation (controller,
             "Draw a card from void, then purge acard from your hand",
-            null, (g, c) -> {
+            (g, c) -> {
                 if (g.isIn(c.controller, selected.get(0), "void")){
                     g.drawByID(c.controller, selected.get(0));
-                    ArrayList<UUID> selection = g.getSelectedFromHand(c.controller, (cx-> {return true;}), 1);
+                    ArrayList<UUID> selection = g.selectFromHand(c.controller, (cx-> {return true;}), 1);
                     g.purgeByID(c.controller, selection.get(0));
                 }
             }));

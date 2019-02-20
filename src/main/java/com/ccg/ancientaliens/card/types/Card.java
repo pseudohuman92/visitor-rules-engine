@@ -56,11 +56,6 @@ public abstract class Card implements Serializable {
     public String controller;
 
     /**
-     * General purpose Data field for holding information like targets etc.
-     */
-    public ArrayList<UUID> supplementaryData;
-
-    /**
      * Flag to indicate if the card is depleted.
      */
     public boolean depleted;
@@ -83,7 +78,6 @@ public abstract class Card implements Serializable {
             String text, String owner) {
         id = randomUUID();
         counters = new Hashmap<>();
-        supplementaryData = new ArrayList<>();
         subtypes = new ArrayList<>();
         this.name = name;
         this.cost = cost;
@@ -169,7 +163,7 @@ public abstract class Card implements Serializable {
      */
     public void clear() {
         depleted = false;
-        supplementaryData = new ArrayList<>();
+        counters = new Hashmap<>();
     }
     
     public void copyPropertiesFrom(Card c) {
@@ -178,7 +172,6 @@ public abstract class Card implements Serializable {
         controller = c.controller;
         counters = c.counters;
         depleted = c.depleted;
-        supplementaryData = c.supplementaryData;
     }
 
     public Types.Card.Builder toCardMessage() {

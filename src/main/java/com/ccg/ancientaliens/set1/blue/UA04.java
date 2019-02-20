@@ -36,7 +36,7 @@ public class UA04 extends Action {
                 canSelected.add(c.id);
             }
         });
-        ArrayList<UUID> s = game.getSelectedFromListUpTo(controller, game.getZone(game.getOpponentName(controller), "hand"), canSelected, 1);
+        ArrayList<UUID> s = game.selectFromListUpTo(controller, game.getZone(game.getOpponentName(controller), "hand"), canSelected, 1);
         if (!s.isEmpty()){
             game.transformToJunk(s.get(0));
         }

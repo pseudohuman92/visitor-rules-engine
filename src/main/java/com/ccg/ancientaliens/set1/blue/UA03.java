@@ -40,11 +40,11 @@ public class UA03 extends Action {
                 canSelected.add(c.id);
             }
         });
-        ArrayList<UUID> s = game.getSelectedFromListUpTo(controller, topCards, canSelected, 1);
+        ArrayList<UUID> s = game.selectFromListUpTo(controller, topCards, canSelected, 1);
         ArrayList<Card> selected = UUIDHelper.getInList(topCards, s);
         ArrayList<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
         selected.forEach(c ->{c.resolve(game);});
-        p.deck.putAllToBottom(notSelected);
+        p.deck.putToBottom(notSelected);
         game.putTo(controller, this, "scrapyard");
     }
     

@@ -21,7 +21,7 @@ public class AI01 extends Item {
     
     public AI01 (UI01 c){
         super("AI01", 1, new Hashmap(), 
-                "Destroy: Opponent purges 6.", c.controller);
+                "Sacrifice ~: Opponent purges 6.", c.controller);
         copyPropertiesFrom(c);
     }
 
@@ -33,7 +33,7 @@ public class AI01 extends Item {
     @Override
     public void activate(Game game) {
         game.destroy(id);
-        game.addToStack(new Activation("", controller, 
-                "Opponent purges 6", null, 
+        game.addToStack(new Activation(controller, 
+                "Opponent purges 6",
                 (g , c) -> { g.purge(g.getOpponentName(c.controller), 6); }));    }
 }

@@ -17,18 +17,17 @@ import helpers.Hashmap;
  */
 public class BA02 extends Action implements XValued {
     
-    /**
-     *
-     * @param owner
-     */
+    String targetPlayer;
+    
     public BA02(String owner) {
-        super("BA02", 0, new Hashmap(BLACK, 1), "Loot X.", owner);
+        super("BA02", 0, new Hashmap(BLACK, 1), "Target player loots X.", owner);
     }
     
 
     @Override
     public void play(Game game) {
-        int x = game.getXValue(controller, game.players.get(controller).energy);
+        targetPlayer = game.selectPlayer(controller);
+        int x = game.selectX(controller, game.players.get(controller).energy);
         cost = x;
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -36,7 +35,7 @@ public class BA02 extends Action implements XValued {
     
     @Override
     public void resolve (Game game){
-        game.loot(controller, cost);
+        game.loot(targetPlayer, cost);
         game.putTo(controller, this, "scrapyard");
     }
 }

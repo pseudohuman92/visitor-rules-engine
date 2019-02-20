@@ -231,6 +231,8 @@ public class Game {
     
     public ArrayList<Card> getZone(String username, String zone){
         switch(zone){
+            case "deck":
+                return players.get(username).deck;
             case "hand":
                 return players.get(username).hand;
             case "play":
@@ -272,7 +274,7 @@ public class Game {
     public void draw(String username, int count){
         Player player = players.get(username);
         player.draw(count);
-        if (player.deck.deck.isEmpty()){
+        if (player.deck.isEmpty()){
             lose(username);
         }
     }
@@ -296,7 +298,13 @@ public class Game {
     }
     
     public void discard(String username, int count){
-        players.get(username).discard(getSelectedFromHand(username, (c -> {return true;}), count));
+        players.get(username).discard(selectFromHand(username, (c -> {return true;}), count));
+    }
+    
+    public void discard(String username, UUID cardID){
+        ArrayList<UUID> temp = new ArrayList<>();
+        temp.add(cardID);
+        players.get(username).discard(temp);
     }
     
     public void deplete(UUID id){
@@ -315,7 +323,7 @@ public class Game {
     public void purge(String username, int count){
         Player player = players.get(username);
         player.purgeFromDeck(count);
-        if (player.deck.deck.isEmpty()){
+        if (player.deck.isEmpty()){
             lose(username);
         }
     }
@@ -365,11 +373,16 @@ public class Game {
         return new ArrayList<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
     }
     
+    public void shuffleIntoDeck(String username, ArrayList<Card> cards) {
+        players.get(username).deck.shuffleInto(cards);
+    }
+
     
     
     
     
-    public int getXValue(String username, int maxX) {
+    
+    public int selectX(String username, int maxX) {
         SelectXValue.Builder b = SelectXValue.newBuilder()
                 .setMaxXValue(maxX)
                 .setGame(toGameState(username));
@@ -387,7 +400,7 @@ public class Game {
         return 0;
     }
     
-    public ArrayList<UUID> getSelectedFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count){        
+    public ArrayList<UUID> selectFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count){        
         SelectFrom.Builder b = SelectFrom.newBuilder()
                 .addAllCanSelected(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
                 .addAllCandidates(candidates.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
@@ -407,45 +420,65 @@ public class Game {
         return null;
     }
     
-    public ArrayList<UUID> getSelectedFromPlay(String username, Predicate<Card> validTarget, int count){        
+    public ArrayList<UUID> selectFromPlay(String username, Predicate<Card> validTarget, int count){        
         ArrayList<UUID> canSelect = new ArrayList<>();
         for (Player player : players.values()) {
             canSelect.addAll(player.playArea.parallelStream()
                     .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
         } 
-        return getSelectedFrom(username, PLAY, null, canSelect, count);
+        return selectFrom(username, PLAY, null, canSelect, count);
     }
 
-    public ArrayList<UUID> getSelectedFromHand(String username, Predicate<Card> validTarget, int count) {
+    public ArrayList<UUID> selectFromHand(String username, Predicate<Card> validTarget, int count) {
         ArrayList<UUID> canSelect = new ArrayList<>();
         canSelect.addAll(players.get(username).hand.parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return getSelectedFrom(username, HAND, null, canSelect, count);
+        return selectFrom(username, HAND, null, canSelect, count);
     }
     
-     public ArrayList<UUID> getSelectedFromScrapyard(String username, Predicate<Card> validTarget, int count) {
+     public ArrayList<UUID> selectFromScrapyard(String username, Predicate<Card> validTarget, int count) {
         ArrayList<UUID> canSelect = new ArrayList<>();
         canSelect.addAll(players.get(username).scrapyard.parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return getSelectedFrom(username, SCRAPYARD, null, canSelect, count);
+        return selectFrom(username, SCRAPYARD, null, canSelect, count);
     }
     
-    public ArrayList<UUID> getSelectedFromVoid(String username, Predicate<Card> validTarget, int count) {
+    public ArrayList<UUID> selectFromVoid(String username, Predicate<Card> validTarget, int count) {
         ArrayList<UUID> canSelect = new ArrayList<>();
         canSelect.addAll(players.get(username).voidPile.parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return getSelectedFrom(username, VOID, null, canSelect, count);
+        return selectFrom(username, VOID, null, canSelect, count);
     }
 
-    public ArrayList<UUID> getSelectedFromList(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
-        return getSelectedFrom(username, LIST, candidates, canSelect, count);
+    public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
+        return selectFrom(username, LIST, candidates, canSelect, count);
     }
     
-    public ArrayList<UUID> getSelectedFromListUpTo(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
-        return getSelectedFrom(username, LISTUPTO, candidates, canSelect, count);
+    public ArrayList<UUID> selectFromListUpTo(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
+        return selectFrom(username, LISTUPTO, candidates, canSelect, count);
     }
     
-        public void win(String player) {
+    public String selectPlayer(String username) {
+        SelectPlayer.Builder b = SelectPlayer.newBuilder()
+                .setGame(toGameState(username));
+        try {
+            connections.get(username).send(
+                    ServerGameMessage.newBuilder().setSelectPlayer(b));
+            System.out.println("Waiting targets!");
+            String selection = (String)connections.get(username).getResponse();
+            System.out.println("Done waiting!");
+            return selection;
+        } catch (IOException | EncodeException | InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+    
+    
+    
+    public void win(String player) {
         try {
             GameEndpoint connection = connections.get(player);
             connection.send(ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
@@ -466,6 +499,10 @@ public class Game {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    
+    
     
     public GameState.Builder toGameState(String username){
         GameState.Builder b = 
@@ -508,5 +545,4 @@ public class Game {
             }
         });
     }
-    
 }

@@ -33,11 +33,11 @@ public class BI05 extends Item {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        game.addToStack(new Activation ("", controller,
+        game.addToStack(new Activation (controller,
             "Draw top item of opponent's deck",
-            null, (g, cx) -> {
+            (g, cx) -> {
                 Card c = g.players.get(g.getOpponentName(cx.controller))
-                        .deck.extractFromTop(Item.class);
+                        .deck.extractInstanceFromTop(Item.class);
                 if(c != null){
                     c.controller = cx.controller;
                     c.knowledge = new Hashmap<>();

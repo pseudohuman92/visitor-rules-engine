@@ -68,7 +68,7 @@ public class Player implements Serializable {
     public void mulligan(){
         int size = hand.size();
         if(size > 0){
-            deck.deck.addAll(hand);
+            deck.addAll(hand);
             hand = new ArrayList<>();
             deck.shuffle();
             draw(size -1);
@@ -95,15 +95,6 @@ public class Player implements Serializable {
         }
         return result;
     }
-    
-    
-    /*
-    public void addTriggerEvent(Game game, Event e) {
-        for (int i = 0; i < triggeringCards.size(); i++){
-            triggeringCards.get(i).checkEvent(game, e);
-        }
-    }
-    */
 
     public Card extractCardFrom (UUID cardID, ArrayList<Card> list){
         for (Card card : list) {
@@ -122,7 +113,7 @@ public class Player implements Serializable {
         lists.add(playArea);
         lists.add(scrapyard); 
         lists.add(voidPile);
-        lists.add(deck.deck);
+        lists.add(deck);
         for (ArrayList<Card> list : lists){ 
             c = extractCardFrom (cardID, list);
             if (c != null) {
@@ -148,7 +139,7 @@ public class Player implements Serializable {
         lists.add(playArea);
         lists.add(scrapyard); 
         lists.add(voidPile);
-        lists.add(deck.deck);
+        lists.add(deck);
         for (ArrayList<Card> list : lists){ 
             c = getCardFrom (cardID, list);
             if (c != null) {
@@ -164,7 +155,7 @@ public class Player implements Serializable {
         lists.add(playArea);
         lists.add(scrapyard); 
         lists.add(voidPile);
-        lists.add(deck.deck);
+        lists.add(deck);
         for (ArrayList<Card> list : lists){ 
             for (int i = 0; i < list.size(); i++){
                 if(list.get(i).equals(oldCard)){

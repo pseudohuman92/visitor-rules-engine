@@ -21,6 +21,8 @@ import java.util.UUID;
  */
 public class BI03 extends Item implements Targeting {
     
+    UUID target;
+    
     public BI03 (String owner){
         super("BI03", 4, new Hashmap(BLACK, 2), 
         "Sacrifice an Item: Gain 1 Energy. If that item is owned by the opponent gain 1 additional energy.", owner);
@@ -33,18 +35,11 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        game.getSelectedFromPlay(controller, this::validTarget, 1);
-        UUID sacID = supplementaryData.get(0);
-        game.destroy(sacID);
-        if (game.ownedByOpponent(sacID)) {
-            game.addToStack(new Activation("", controller, 
-                "Gain 2 energy", null,
-                (g, c) -> { g.addEnergy(controller, 2); }));
-        } else {
-            game.addToStack(new Activation("", controller, 
-                "Gain 1 energy", null,
-                (g, c) -> { g.addEnergy(controller, 1); }));
-        }
+        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
+        game.destroy(target);
+        game.addToStack(new Activation(controller, 
+            (game.ownedByOpponent(target)?"Gain 2 energy":"Gain 1 energy"),
+            (g, c) -> { g.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
     }
 
     @Override

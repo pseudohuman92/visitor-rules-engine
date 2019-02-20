@@ -33,7 +33,7 @@ public class UI06 extends Item{
     public void activate(Game game) {
         game.discard(controller, 1);
         game.purge(controller, 1);
-        game.addToStack(new Activation("", controller, "Gain 1 energy", null, 
+        game.addToStack(new Activation(controller, "Gain 1 energy",
                 (g , c) -> { g.addEnergy(c.controller, 1); }));
     }
 }

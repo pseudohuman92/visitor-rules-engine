@@ -35,7 +35,7 @@ public class UI01 extends Item implements Transforming {
     @Override
     public void activate(Game game) {
         game.discard(controller, 2);
-        game.addToStack(new Activation("", controller, "Transform ~ into AI01.", null, 
+        game.addToStack(new Activation(controller, "Transform ~ into AI01.",
             (g , c) -> { 
                 if(g.isIn(controller, id, "single play")) 
                     transform(g); 

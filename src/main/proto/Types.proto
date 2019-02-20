@@ -47,6 +47,7 @@ message KnowledgeGroup {
 
 enum Counter {
     NOCOUNTER = 0;
+    CHARGE = 1;
 }
 
 message CounterGroup {

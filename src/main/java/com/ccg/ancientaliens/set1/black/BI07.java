@@ -36,11 +36,11 @@ public class BI07 extends Item implements Targeting {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        ArrayList<UUID> selected = game.getSelectedFromPlay(controller, this::validTarget, 1);
+        ArrayList<UUID> selected = game.selectFromPlay(controller, this::validTarget, 1);
         game.destroy(id);
-        game.addToStack(new Activation ("", controller,
+        game.addToStack(new Activation (controller,
             "Possess target item",
-            null, (g, c) -> {
+            (g, c) -> {
                 if (g.isIn(c.controller, selected.get(0), "both play"))
                     g.possessTo(c.controller, selected.get(0), "single play");
             }));

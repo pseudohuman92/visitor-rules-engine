@@ -36,9 +36,9 @@ public class AI02 extends Item {
     
     @Override
     public void activate(Game game) {
-        ArrayList<UUID> selected = game.getSelectedFromHand(controller, c -> {return c instanceof Junk;}, 1);
+        ArrayList<UUID> selected = game.selectFromHand(controller, c -> {return c instanceof Junk;}, 1);
         game.purgeByID(controller, selected.get(0));
-        game.addToStack(new Activation("", controller, 
-                "Opponent purges 5", null, 
+        game.addToStack(new Activation(controller, 
+                "Opponent purges 5",
                 (g , c) -> { g.purge(g.getOpponentName(c.controller), 5); }));    }
 }

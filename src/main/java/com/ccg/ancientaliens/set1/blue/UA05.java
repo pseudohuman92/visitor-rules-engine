@@ -23,6 +23,8 @@ import java.util.logging.Logger;
  */
 public class UA05 extends Action {
 
+    ArrayList<UUID> targets;
+    
     public UA05(String owner) {
         super("UA01", 1, new Hashmap(BLUE, 2), 
                 "Additional Cost - Purge 5 items from your scrapyard. Transform target item you control into a copy of target item in your void.", owner);
@@ -38,25 +40,25 @@ public class UA05 extends Action {
     
     @Override
     public void play(Game game) {
-        supplementaryData = game.getSelectedFromScrapyard(controller, c->{return c instanceof Item;}, 5);
-        ArrayList<UUID> sel = game.getSelectedFromVoid(controller, c->{return c instanceof Item;}, 1);
-        supplementaryData.addAll(sel);
-        ArrayList<UUID> sel2 = game.getSelectedFromPlay(controller, c->{return (c instanceof Item) && (c.controller.equals(controller));}, 1);
-        supplementaryData.addAll(sel2);
+        targets = game.selectFromScrapyard(controller, c->{return c instanceof Item;}, 5);
+        ArrayList<UUID> sel = game.selectFromVoid(controller, c->{return c instanceof Item;}, 1);
+        targets.addAll(sel);
+        ArrayList<UUID> sel2 = game.selectFromPlay(controller, c->{return (c instanceof Item) && (c.controller.equals(controller));}, 1);
+        targets.addAll(sel2);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     }
     
     @Override
     public void resolve (Game game){
-        if(supplementaryData.subList(0, 5).parallelStream().allMatch(i -> { return game.isIn(controller, i, "scrapyard");})
-            && game.isIn(controller, supplementaryData.get(5), "void")
-            && game.isIn(controller, supplementaryData.get(6), "single play")){
+        if(targets.subList(0, 5).parallelStream().allMatch(i -> { return game.isIn(controller, i, "scrapyard");})
+            && game.isIn(controller, targets.get(5), "void")
+            && game.isIn(controller, targets.get(6), "single play")){
             try {
-                ArrayList<Card> fromScrap = game.extractAll(supplementaryData.subList(0, 5));
+                ArrayList<Card> fromScrap = game.extractAll(targets.subList(0, 5));
                 game.putAllTo(controller, fromScrap, "void");
-                Card voidCard = game.getCard(supplementaryData.get(5));
-                Card playCard = game.getCard(supplementaryData.get(6));
+                Card voidCard = game.getCard(targets.get(5));
+                Card playCard = game.getCard(targets.get(6));
                 Card newCard = voidCard.getClass().getDeclaredConstructor(String.class).newInstance(playCard.controller);
                 newCard.copyPropertiesFrom(playCard);
                 game.replaceWith(playCard, newCard);

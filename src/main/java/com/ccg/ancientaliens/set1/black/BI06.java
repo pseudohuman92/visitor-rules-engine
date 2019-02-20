@@ -31,9 +31,9 @@ public class BI06 extends Item {
     @Override
     public void activate(Game game) {
         game.deplete(id);
-        game.addToStack(new Activation ("", controller,
+        game.addToStack(new Activation (controller,
             "Opponent purges 3",
-            null, (g, c) -> {
+            (g, c) -> {
                 g.purge(g.getOpponentName(c.controller), 3);
             }));
     }

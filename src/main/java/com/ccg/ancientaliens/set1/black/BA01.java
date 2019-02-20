@@ -12,6 +12,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import helpers.Hashmap;
+import java.util.UUID;
 
 /**
  *
@@ -19,6 +20,8 @@ import helpers.Hashmap;
  */
 public class BA01 extends Action implements Targeting {
 
+    UUID target;
+    
     public BA01(String owner) {
         super("BA01", 3, new Hashmap(BLACK, 2), "Possess target item that costs 3 or less.", owner);
     }
@@ -30,15 +33,15 @@ public class BA01 extends Action implements Targeting {
     
     @Override
     public void play(Game game) {
-        game.getSelectedFromPlay(controller, this::validTarget, 1);
+        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     }
     
     @Override
     public void resolve (Game game){
-        if(game.isIn(controller, supplementaryData.get(0), "both play")){
-            game.possessTo(controller, supplementaryData.get(0), "single play");
+        if(game.isIn(controller, target, "both play")){
+            game.possessTo(controller, target, "single play");
         }
         game.putTo(controller, this, "scrapyard");
     }
