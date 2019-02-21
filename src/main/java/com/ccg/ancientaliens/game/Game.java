@@ -371,7 +371,13 @@ public class Game {
     }
 
     public void replaceWith(Card oldCard, Card newCard) {
-        players.get(oldCard.controller).replaceWith(oldCard, newCard);
+        players.values().forEach(p->{p.replaceWith(oldCard, newCard);});
+        for (int i = 0; i < stack.size(); i++){
+            if(stack.get(i).equals(oldCard)){
+                stack.remove(i);
+                stack.add(i, newCard);
+            }
+        }
     }
 
     public ArrayList<Card> extractAllCopiesFrom(String username, String cardName, String zone) {
