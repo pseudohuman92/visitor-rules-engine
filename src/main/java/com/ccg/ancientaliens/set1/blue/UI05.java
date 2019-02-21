@@ -44,7 +44,7 @@ public class UI05 extends Item{
                 "Look at the top two cards of your deck. "
                 + "Draw one, transform other into junk and shuffle into the deck.",
                 (g , c) -> { 
-                    Player p = g.players.get(c.controller);
+                    Player p = g.getPlayer(c.controller);
                     ArrayList<Card> cand = p.deck.extractFromTop(2);
                     ArrayList<UUID> selected = g.selectFromListUpTo(controller, cand, UUIDHelper.toUUIDList(cand), 2);
                     p.hand.addAll(UUIDHelper.getInList(cand, selected));

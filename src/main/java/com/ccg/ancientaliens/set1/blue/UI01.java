@@ -29,7 +29,7 @@ public class UI01 extends Item implements Transforming {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.players.get(controller).hand.size() >= 2;
+        return game.getZone(controller, "hand").size() >= 2;
     }
     
     @Override

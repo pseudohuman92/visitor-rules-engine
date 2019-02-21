@@ -27,7 +27,7 @@ public class BA02 extends Action implements XValued {
     @Override
     public void play(Game game) {
         targetPlayer = game.selectPlayer(controller);
-        int x = game.selectX(controller, game.players.get(controller).energy);
+        int x = game.selectX(controller, game.getPlayer(controller).energy);
         cost = x;
         game.spendEnergy(controller, cost);
         game.addToStack(this);

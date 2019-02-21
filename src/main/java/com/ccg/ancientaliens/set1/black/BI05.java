@@ -36,7 +36,7 @@ public class BI05 extends Item {
         game.addToStack(new Activation (controller,
             "Draw top item of opponent's deck",
             (g, cx) -> {
-                Card c = g.players.get(g.getOpponentName(cx.controller))
+                Card c = g.getPlayer(g.getOpponentName(cx.controller))
                         .deck.extractInstanceFromTop(Item.class);
                 if(c != null){
                     c.controller = cx.controller;

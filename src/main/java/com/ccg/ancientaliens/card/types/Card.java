@@ -103,10 +103,7 @@ public abstract class Card implements Serializable {
      * @return
      */
     public boolean canStudy (Game game){
-        Player player = game.players.get(controller);
-        return game.activePlayer.equals(controller) 
-            && player.numOfStudiesLeft > 0 
-            && game.stack.isEmpty();
+       return game.canStudy(controller);
     }
     
     /**
@@ -128,7 +125,7 @@ public abstract class Card implements Serializable {
      * @param game
      */
     public void study(Game game) {
-        Player player = game.players.get(controller);
+        Player player = game.getPlayer(controller);
         player.voidPile.add(this);
         player.energy++;
         player.maxEnergy++;

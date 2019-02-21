@@ -36,7 +36,7 @@ public class UI07 extends Item {
 
     @Override
     public void activate(Game game) {
-        x = game.selectX(controller, game.players.get(controller).energy);
+        x = game.selectX(controller, game.getPlayer(controller).energy);
         game.destroy(id);
         game.addToStack(new Activation(controller, 
             "  Look at opponent's deck. \n" +

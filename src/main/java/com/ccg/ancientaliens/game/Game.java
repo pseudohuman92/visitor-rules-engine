@@ -32,15 +32,15 @@ import javax.websocket.EncodeException;
  */
 public class Game {
     
-    public Hashmap<String, Player> players;
-    public Hashmap<String, GameEndpoint> connections;
-    public String turnPlayer;
-    public String activePlayer;
-    public ArrayList<Card> stack;
-    public Phase phase;
-    public int turnCount;
-    public int passCount;
-    public UUID id;
+    Hashmap<String, Player> players;
+    Hashmap<String, GameEndpoint> connections;
+    String turnPlayer;
+    String activePlayer;
+    ArrayList<Card> stack;
+    Phase phase;
+    int turnCount;
+    int passCount;
+    UUID id;
     
     public Game (Table table) {
         id = randomUUID();
@@ -69,8 +69,8 @@ public class Game {
         connections = new Hashmap<>();
         stack = new ArrayList<>();
         
-        players.put(p1, new Player(p1, new Deck(p1, true)));
-        players.put(p2, new Player(p2, new Deck(p2, true)));
+        players.put(p1, new Player(p1, TestDecks.blackDeck(p1)));
+        players.put(p2, new Player(p2, TestDecks.blueDeck(p2)));
         
         players.get(p1).deck.shuffle();
         players.get(p2).deck.shuffle();
@@ -596,5 +596,20 @@ public class Game {
                 && activePlayer.equals(username)
                 && stack.isEmpty()
                 && phase == MAIN;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public boolean canStudy(String username) {
+        return activePlayer.equals(username) 
+            && players.get(username).numOfStudiesLeft > 0 
+            && stack.isEmpty();
+    }
+
+    //Eventually get rid of this
+    public Player getPlayer(String username) {
+        return players.get(username);
     }
 }

@@ -26,8 +26,7 @@ public abstract class Passive extends Card {
     
     @Override
     public void resolve(Game game) {
-        //game.deplete(id);
-        game.players.get(controller).playArea.add(this);
+        game.putTo(controller, this, "play");
     }
     
     @Override

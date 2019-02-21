@@ -36,7 +36,7 @@ public class YA04 extends Action {
     
     @Override
     public void play (Game game){
-        x = game.selectX(controller, Math.min(game.players.get(controller).energy/2, 
+        x = game.selectX(controller, Math.min(game.getPlayer(controller).energy/2, 
                                               game.getZone(controller, "scrapyard").size()));
         game.spendEnergy(controller, 2 * x);
         game.addToStack(this);

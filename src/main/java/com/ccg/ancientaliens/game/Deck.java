@@ -2,7 +2,6 @@
 package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.set1.black.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -17,16 +16,6 @@ import java.util.Scanner;
  * @author pseudo
  */
 public class Deck extends ArrayList<Card> implements Serializable {
-    
-    public Deck(String username, boolean test){
-        for (int i = 0; i < 10; i++){
-            add(new BA01(username));
-            add(new BA03(username));
-            add(new BI01(username));
-            add(new BI02(username));
-            add(new BI03(username));
-        }
-    }
 
     public Deck(String username){
     }
@@ -51,7 +40,6 @@ public class Deck extends ArrayList<Card> implements Serializable {
         }
         deckFile.close();
     }
-    
   
     public ArrayList<Card> extractFromTop(int count){
         ArrayList<Card> cards = new ArrayList<>();

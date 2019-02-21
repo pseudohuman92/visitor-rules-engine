@@ -32,7 +32,7 @@ public class UA03 extends Action {
     
     @Override
     public void resolve (Game game){
-        Player p = game.players.get(controller);
+        Player p = game.getPlayer(controller);
         ArrayList<Card> topCards = p.deck.extractFromTop(4);
         ArrayList <UUID> canSelected = new ArrayList<>();
         topCards.forEach(c -> {

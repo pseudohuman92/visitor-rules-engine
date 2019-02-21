@@ -98,7 +98,7 @@ public class GameServer {
             String p1 = gameQueue.remove(0);
             System.out.println("Starting a new game with " + username + " and " + p1);
             Game g = new Game(p1, username);
-            games.put(g.id, g);
+            games.put(g.getId(), g);
             try {
                 playerConnections.get(p1).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
