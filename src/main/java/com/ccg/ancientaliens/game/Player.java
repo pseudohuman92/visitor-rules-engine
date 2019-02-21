@@ -188,10 +188,13 @@ public class Player implements Serializable {
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
+                .setShield(shield)
+                .setReflect(reflect)
                 .addAllHand(hand.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));
+
         knowledgePool.forEach((k, i) -> {
             b.addKnowledgePool(KnowledgeGroup.newBuilder()
                     .setKnowledge(k)
@@ -208,9 +211,12 @@ public class Player implements Serializable {
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
                 .setHandSize(hand.size())
+                .setShield(shield)
+                .setReflect(reflect)
                 .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));
+                
         knowledgePool.forEach((k, i) -> {
             b.addKnowledgePool(KnowledgeGroup.newBuilder()
                     .setKnowledge(k)

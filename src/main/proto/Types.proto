@@ -77,6 +77,8 @@ message Player {
     repeated Card scrapyard = 8;
     repeated Card void = 9;
     repeated KnowledgeGroup knowledgePool = 10;
+    int32 reflect = 11;
+    int32 shield = 12;
 }
 
 message Opponent {
@@ -90,6 +92,8 @@ message Opponent {
     repeated Card scrapyard = 8;
     repeated Card void = 9;
     repeated KnowledgeGroup knowledgePool = 10;
+    int32 reflect = 11;
+    int32 shield = 12;
 }
 
 message GameState {
