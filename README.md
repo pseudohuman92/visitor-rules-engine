@@ -8,7 +8,13 @@ Install Maven: https://maven.apache.org/
 
 Install Protobuf Compiler: https://developers.google.com/protocol-buffers/
 
-Before Building: Find absolute path of protobuf compiler (protoc). Go and edit <protocExecutable> tag in the pom.xml file with the correct path.
+---
+
+### Before Building
+
+Find absolute path of protobuf compiler (protoc), then edit <protocExecutable> tag in the pom.xml file with the correct path.
+
+---
 
 To build: mvn install
 
@@ -18,10 +24,20 @@ To stop: <CTRL+C> or mvn jetty:stop (if running in background)
 
 ## To run the client
 
-Install yarn and npm.
+### Required Software
 
-Go to the webclient directory.
+Install Yarn: https://yarnpkg.com/en/
+
+Install npm: https://www.npmjs.com/
+
+---
+
+### Before Building
+
+Go to the "webclient" directory.
+
+---
 
 To install dependencies: yarn install
 
-To start sever: yarn start
+To start client: yarn start
