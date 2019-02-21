@@ -30,7 +30,7 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasAnInstanceIn(controller, Item.class, "single play");
+        return game.hasAnInstanceIn(controller, Item.class, "play");
     }
 
     @Override

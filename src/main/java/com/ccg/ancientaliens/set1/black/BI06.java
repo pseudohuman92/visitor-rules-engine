@@ -25,7 +25,7 @@ public class BI06 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.controlsUnownedCard(controller, "single play");
+        return !depleted && game.controlsUnownedCard(controller, "play");
     }
 
     @Override

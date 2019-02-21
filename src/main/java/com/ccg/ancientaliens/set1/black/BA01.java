@@ -41,7 +41,7 @@ public class BA01 extends Action implements Targeting {
     @Override
     public void resolve (Game game){
         if(game.isIn(controller, target, "both play")){
-            game.possessTo(controller, target, "single play");
+            game.possessTo(controller, target, "play");
         }
         game.putTo(controller, this, "scrapyard");
     }

@@ -49,7 +49,7 @@ public class UI08 extends Item implements Transforming {
     @Override
     public boolean canActivate(Game game) {
         return game.hasAnInstanceIn(controller, Junk.class, "hand") 
-            || game.hasAnInstanceIn(controller, Item.class, "single play");
+            || game.hasAnInstanceIn(controller, Item.class, "play");
     }
     
     @Override
@@ -70,7 +70,7 @@ public class UI08 extends Item implements Transforming {
                 ));
             }));
         }
-        if (game.hasAnInstanceIn(controller, Item.class, "single play")){
+        if (game.hasAnInstanceIn(controller, Item.class, "play")){
             choices.add(new Activation(controller, "Sacrifice an Item: Charge 1.",
             (g, c) -> {
                 target = g.selectFromPlay(controller, c1 -> {return c1.controller.equals(controller) && c1 instanceof Item;}, 1).get(0);

@@ -1,7 +1,6 @@
 package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.card.properties.Triggering;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
 import com.ccg.ancientaliens.protocol.Types.*;
@@ -29,8 +28,9 @@ public class Player implements Serializable {
     public ArrayList<Card> voidPile;
     public ArrayList<Card> playArea;
     public Hashmap<Knowledge, Integer> knowledgePool;
- 
-    public ArrayList<Triggering> triggeringCards;
+    
+    public int shield;
+    public int reflect;
     
     /**
      *
@@ -49,15 +49,30 @@ public class Player implements Serializable {
         voidPile = new ArrayList<>();
         playArea = new ArrayList<>();
         knowledgePool = new Hashmap<>();
-        triggeringCards = new ArrayList<>();
+        shield = 0;
+        reflect = 0;
     }
 
     public void draw(int count){
         hand.addAll(deck.extractFromTop(count));
     }
     
-    public void purgeFromDeck(int count) {
+    public int purgeFromDeck(int count) {
+        if(shield >= count){
+            shield -= count;
+            return 0;
+        }
+        count -= shield;
+        shield = 0;
+        if(reflect >= count){
+            reflect -= count;
+            return count;
+        }
+        int temp = reflect;
+        count -= reflect;
+        reflect = 0;
         voidPile.addAll(deck.extractFromTop(count));
+        return temp;
     }
 
     public void discard(ArrayList<UUID> cards){

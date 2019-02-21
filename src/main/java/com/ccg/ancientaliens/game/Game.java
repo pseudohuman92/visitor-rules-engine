@@ -98,6 +98,12 @@ public class Game {
                 return c;
             }
         }
+        for (Card c : stack){
+            if (c.id.equals(targetID)){
+                stack.remove(c);
+                return c;
+            }
+        }
         return null;
     }
     
@@ -105,6 +111,11 @@ public class Game {
         for (Player player : players.values()) {
             Card c = player.getCard(targetID);
             if (c != null){
+                return c;
+            }
+        }
+        for (Card c : stack){
+            if (c.id.equals(targetID)){
                 return c;
             }
         }
@@ -162,6 +173,7 @@ public class Game {
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
         turnCount++;
+        players.values().forEach(p->{ p.shield = 0; p.reflect = 0;});
     }
     
 
@@ -237,15 +249,17 @@ public class Game {
                 return players.get(username).hand;
             case "play":
                 return players.get(username).playArea;
+            case "scrapyard":
+                return players.get(username).scrapyard;
+            case "void":
+                return players.get(username).voidPile;
+            case "stack":
+                return stack;
             case "both play":
                 ArrayList<Card> total = new ArrayList<>();
                 total.addAll(players.get(username).playArea);
                 total.addAll(players.get(getOpponentName(username)).playArea);
                 return total;
-            case "scrapyard":
-                return players.get(username).scrapyard;
-            case "void":
-                return players.get(username).voidPile;
             default:
                 return null;
         }
@@ -321,11 +335,18 @@ public class Game {
     }
     
     public void purge(String username, int count){
-        Player player = players.get(username);
-        player.purgeFromDeck(count);
-        if (player.deck.isEmpty()){
-            lose(username);
-        }
+        String current = username;
+        Player player; 
+        int ret = count;
+        
+        do {
+            player = players.get(current);
+            ret = player.purgeFromDeck(ret);
+            if (player.deck.isEmpty()){
+                lose(current);
+            }
+            current = getOpponentName(current);
+        } while(ret > 0);
     }
 
     public void possessTo(String newController, UUID cardID, String zone) {
@@ -449,6 +470,13 @@ public class Game {
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
         return selectFrom(username, VOID, null, canSelect, count);
     }
+    
+    public ArrayList<UUID> selectFromStack(String username, Predicate<Card> validTarget, int count) {
+        ArrayList<UUID> canSelect = new ArrayList<>();
+        canSelect.addAll(stack.parallelStream()
+                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
+        return selectFrom(username, STACK, null, canSelect, count);
+    }
 
     public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
         return selectFrom(username, LIST, candidates, canSelect, count);
@@ -544,5 +572,13 @@ public class Game {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+
+    public void addReflect(String username, int i) {
+        players.get(username).reflect += i;
+    }
+    
+    public void addShield(String username, int i) {
+        players.get(username).shield += i;
     }
 }

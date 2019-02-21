@@ -35,7 +35,7 @@ public class UA05 extends Action {
         return super.canPlay(game) 
                 && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 5, "scrapyard")
                 && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 1, "void")
-                && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 1, "single play");
+                && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 1, "play");
     }
     
     @Override
@@ -53,7 +53,7 @@ public class UA05 extends Action {
     public void resolve (Game game){
         if(targets.subList(0, 5).parallelStream().allMatch(i -> { return game.isIn(controller, i, "scrapyard");})
             && game.isIn(controller, targets.get(5), "void")
-            && game.isIn(controller, targets.get(6), "single play")){
+            && game.isIn(controller, targets.get(6), "play")){
             try {
                 ArrayList<Card> fromScrap = game.extractAll(targets.subList(0, 5));
                 game.putAllTo(controller, fromScrap, "void");

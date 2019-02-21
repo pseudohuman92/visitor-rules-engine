@@ -22,6 +22,7 @@ enum SelectFromType {
     PLAY = 4;
     SCRAPYARD = 5;
     VOID = 6;
+    STACK = 7;
 }
  
 message Table
@@ -37,7 +38,7 @@ enum Knowledge {
     GREEN = 2;
     RED = 3;
     BLUE = 4;
-    WHITE = 5;
+    YELLOW = 5;
 }
 
 message KnowledgeGroup {

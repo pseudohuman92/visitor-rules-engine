@@ -42,7 +42,7 @@ public class BI07 extends Item implements Targeting {
             "Possess target item",
             (g, c) -> {
                 if (g.isIn(c.controller, selected.get(0), "both play"))
-                    g.possessTo(c.controller, selected.get(0), "single play");
+                    g.possessTo(c.controller, selected.get(0), "play");
             }));
     }
 
