@@ -8,7 +8,7 @@ package com.ccg.ancientaliens.server;
 import com.ccg.ancientaliens.game.*;
 import com.ccg.ancientaliens.protocol.ServerMessages.NewGame;
 import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;

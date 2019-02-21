@@ -9,7 +9,7 @@ import static enums.Phase.BEGIN;
 import static enums.Phase.END;
 import static enums.Phase.MAIN;
 import static enums.Phase.MULLIGAN;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import static java.lang.Math.random;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;

@@ -16,7 +16,7 @@ import com.ccg.ancientaliens.helpers.UUIDHelper;
 import static com.ccg.ancientaliens.protocol.Types.Counter.CHARGE;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.set1.additional.AI03;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Collectors;

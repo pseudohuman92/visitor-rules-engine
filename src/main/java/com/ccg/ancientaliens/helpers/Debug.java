@@ -1,4 +1,4 @@
-package helpers;
+package com.ccg.ancientaliens.helpers;
 
 import java.util.ArrayList;
 

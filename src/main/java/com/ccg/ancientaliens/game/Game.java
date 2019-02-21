@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.server.GameEndpoint;
 import static com.ccg.ancientaliens.protocol.Types.Phase.*;
 import com.ccg.ancientaliens.protocol.Types.SelectFromType;
 import static com.ccg.ancientaliens.protocol.Types.SelectFromType.*;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
 import java.util.ArrayList;
@@ -242,6 +242,7 @@ public class Game {
         }
     }
     
+    //Eventually make this private.
     public ArrayList<Card> getZone(String username, String zone){
         switch(zone){
             case "deck":

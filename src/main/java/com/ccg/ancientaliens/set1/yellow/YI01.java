@@ -11,7 +11,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Counter.CHARGE;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 
 
 /**

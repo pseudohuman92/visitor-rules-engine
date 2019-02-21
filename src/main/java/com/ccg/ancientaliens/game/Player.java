@@ -4,7 +4,7 @@ import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
 import com.ccg.ancientaliens.protocol.Types.*;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;

@@ -3,7 +3,7 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.protocol.Types.*;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 
 /**
  * Abstract class for the Item card type.

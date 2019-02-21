@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package helpers;
+package com.ccg.ancientaliens.helpers;
 
 import java.io.Serializable;
 import java.util.Collection;

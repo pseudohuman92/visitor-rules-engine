@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.set1.blue.UI01;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 
 
 /**

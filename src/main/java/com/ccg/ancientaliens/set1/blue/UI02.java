@@ -12,7 +12,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.card.types.Junk;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import java.util.ArrayList;
 
 

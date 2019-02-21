@@ -6,7 +6,7 @@
 package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 
 /**
  *

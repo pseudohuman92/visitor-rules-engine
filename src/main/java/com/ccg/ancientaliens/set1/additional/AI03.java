@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Counter.CHARGE;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.set1.blue.UI08;
-import helpers.Hashmap;
+import com.ccg.ancientaliens.helpers.Hashmap;
 
 
 /**

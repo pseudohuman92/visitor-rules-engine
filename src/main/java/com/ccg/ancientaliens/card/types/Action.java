@@ -2,8 +2,9 @@
 package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.helpers.Hashmap;
 import com.ccg.ancientaliens.protocol.Types.Knowledge;
-import helpers.Hashmap;
+
 
 /**
  * Abstract class for the Action card type.
