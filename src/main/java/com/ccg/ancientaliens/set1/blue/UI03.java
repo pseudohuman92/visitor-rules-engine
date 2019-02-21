@@ -32,7 +32,7 @@ public class UI03 extends Item{
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.players.get(controller).energy > 0;
+        return !depleted && game.hasEnergy(controller, 1);
     }
     
     @Override

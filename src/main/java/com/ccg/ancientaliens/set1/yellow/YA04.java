@@ -30,7 +30,7 @@ public class YA04 extends Action {
     @Override
     public boolean canPlay (Game game){
         return super.canPlay(game) 
-                && game.players.get(controller).energy > 1
+                && game.hasEnergy(controller, 2)
                 && game.hasACardIn(controller, "scrapyard");
     }
     

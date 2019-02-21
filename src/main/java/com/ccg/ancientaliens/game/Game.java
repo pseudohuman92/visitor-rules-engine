@@ -6,6 +6,7 @@ import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Junk;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
 import com.ccg.ancientaliens.protocol.ServerGameMessages.*;
+import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.GameState;
 import com.ccg.ancientaliens.protocol.Types.Phase;
 import com.ccg.ancientaliens.server.GameEndpoint;
@@ -580,5 +581,20 @@ public class Game {
     
     public void addShield(String username, int i) {
         players.get(username).shield += i;
+    }
+
+    public boolean hasEnergy(String username, int i) {
+        return players.get(username).energy >= i;
+    }
+
+    public boolean hasKnowledge(String username, Hashmap<Types.Knowledge, Integer> knowledge) {
+         return players.get(username).hasKnowledge(knowledge);
+    }
+
+    public boolean canPlaySlow(String username) {
+         return turnPlayer.equals(username)
+                && activePlayer.equals(username)
+                && stack.isEmpty()
+                && phase == MAIN;
     }
 }

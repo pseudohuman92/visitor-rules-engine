@@ -29,8 +29,8 @@ public class UI04 extends Item implements Transforming {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.players.get(controller).hand.size() > 0
-                && game.players.get(controller).energy > 0;
+        return game.hasACardIn(controller, "hand")
+                && game.hasEnergy(controller, 1);
     }
     
     @Override

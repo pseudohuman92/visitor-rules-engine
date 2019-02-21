@@ -128,7 +128,7 @@ public abstract class Card implements Serializable {
      * @param game
      */
     public void study(Game game) {
-        Player player = game.players.get(owner);
+        Player player = game.players.get(controller);
         player.voidPile.add(this);
         player.energy++;
         player.maxEnergy++;

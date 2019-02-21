@@ -3,7 +3,6 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.protocol.Types.*;
-import static com.ccg.ancientaliens.protocol.Types.Phase.MAIN;
 import helpers.Hashmap;
 
 /**
@@ -33,10 +32,8 @@ public abstract class Passive extends Card {
     
     @Override
     public boolean canPlay(Game game){ 
-        return (game.players.get(controller).energy >= cost)
-               && game.players.get(controller).hasKnowledge(knowledge)
-               && game.turnPlayer.equals(controller)
-               && game.stack.isEmpty()
-               && game.phase == MAIN;
+        return game.hasEnergy(controller, cost)
+               && game.hasKnowledge(controller, knowledge)
+               && game.canPlaySlow(controller);
     }  
 }

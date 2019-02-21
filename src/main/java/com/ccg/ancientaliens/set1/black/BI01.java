@@ -26,7 +26,7 @@ public class BI01 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return (game.players.get(controller).energy > 0)&&(!depleted);
+        return game.hasEnergy(controller, 1)&&(!depleted);
     }
     
     @Override
