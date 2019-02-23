@@ -412,6 +412,9 @@ public class Game {
     
     
     public int selectX(String username, int maxX) {
+        if (maxX == 0){
+            return maxX;
+        }
         SelectXValue.Builder b = SelectXValue.newBuilder()
                 .setMaxXValue(maxX)
                 .setGame(toGameState(username));
@@ -429,7 +432,10 @@ public class Game {
         return 0;
     }
     
-    public ArrayList<UUID> selectFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count){        
+    public ArrayList<UUID> selectFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count){
+        if (canSelect.size() == count || (canSelect.size() < count && type == LISTUPTO)){
+            return canSelect;
+        }
         SelectFrom.Builder b = SelectFrom.newBuilder()
                 .addAllCanSelected(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
                 .addAllCandidates(candidates.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
