@@ -46,7 +46,7 @@ public class UI05 extends Item{
                 (g , c) -> { 
                     Player p = g.getPlayer(c.controller);
                     ArrayList<Card> cand = p.deck.extractFromTop(2);
-                    ArrayList<UUID> selected = g.selectFromListUpTo(controller, cand, cx->{return true;}, 2);
+                    ArrayList<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
                     p.hand.addAll(UUIDHelper.getInList(cand, selected));
                     Junk j = new Junk();
                     j.copyPropertiesFrom(UUIDHelper.getNotInList(cand, selected).get(0));

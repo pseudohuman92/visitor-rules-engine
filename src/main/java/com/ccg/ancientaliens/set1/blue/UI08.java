@@ -57,7 +57,7 @@ public class UI08 extends Item implements Transforming {
         if (game.hasAnInstanceIn(controller, Junk.class, "hand")){
             choices.add(new Activation(controller, "Discard a Junk: Charge 1.",
             (g, c) -> {
-                target = g.selectFromHand(controller, c1 -> {return c1 instanceof Junk;}, 1).get(0);
+                target = g.selectFromZone(controller, "hand", c1 -> {return c1 instanceof Junk;}, 1, false).get(0);
                 g.discard(controller, target);
                 g.addToStack(new Activation(controller, "Charge 1",
                     (g1, c2) -> {
@@ -72,7 +72,7 @@ public class UI08 extends Item implements Transforming {
         if (game.hasAnInstanceIn(controller, Item.class, "play")){
             choices.add(new Activation(controller, "Sacrifice an Item: Charge 1.",
             (g, c) -> {
-                target = g.selectFromPlay(controller, c1 -> {return c1.controller.equals(controller) && c1 instanceof Item;}, 1).get(0);
+                target = g.selectFromZone(controller, "play", c1 -> {return c1 instanceof Item;}, 1, false).get(0);
                 g.destroy(target);
                 g.addToStack(new Activation(controller, "Charge 1",
                     (g1, c2) -> {
@@ -84,7 +84,7 @@ public class UI08 extends Item implements Transforming {
                 ));
             }));
         }
-        ArrayList<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1);
+        ArrayList<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
         UUIDHelper.getInList(choices, selection).get(0).resolve(game);
     }
 

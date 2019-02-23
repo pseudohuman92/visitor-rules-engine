@@ -34,7 +34,7 @@ public class UA03 extends Action {
     public void resolve (Game game){
         Player p = game.getPlayer(controller);
         ArrayList<Card> topCards = p.deck.extractFromTop(4);
-        ArrayList<UUID> s = game.selectFromListUpTo(controller, topCards, c->{return c.subtypes.contains("Kit");}, 1);
+        ArrayList<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Kit");}, 1, true);
         ArrayList<Card> selected = UUIDHelper.getInList(topCards, s);
         ArrayList<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
         selected.forEach(c ->{c.resolve(game);});

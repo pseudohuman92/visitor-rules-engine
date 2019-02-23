@@ -37,7 +37,7 @@ public class BI02 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
+        target = game.selectFromZone(controller, "play", this::validTarget, 1, false).get(0);
         game.deplete(id);
         game.destroy(target);
         String oppName = game.getOpponentName(controller);
@@ -48,6 +48,6 @@ public class BI02 extends Item implements Targeting {
 
     @Override
     public boolean validTarget(Card c) {
-        return (c instanceof Item && c.controller.equals(controller));
+        return (c instanceof Item);
     }
 }

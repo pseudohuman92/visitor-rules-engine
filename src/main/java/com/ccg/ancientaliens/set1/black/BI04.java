@@ -6,7 +6,6 @@
 
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
@@ -20,7 +19,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class BI04 extends Item implements Targeting {
+public class BI04 extends Item {
     
     public BI04 (String owner){
         super("BI04", 3, new Hashmap(BLACK, 1), 
@@ -34,21 +33,16 @@ public class BI04 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        ArrayList<UUID> selected = game.selectFromVoid(controller, this::validTarget, 1);
+        ArrayList<UUID> selected = game.selectFromZone(controller, "void", c->{return true;}, 1, false);
         game.destroy(id);
         game.addToStack(new Activation (controller,
             "Draw a card from void, then purge acard from your hand",
             (g, c) -> {
                 if (g.isIn(c.controller, selected.get(0), "void")){
                     g.drawByID(c.controller, selected.get(0));
-                    ArrayList<UUID> selection = g.selectFromHand(c.controller, (cx-> {return true;}), 1);
+                    ArrayList<UUID> selection = g.selectFromZone(c.controller, "hand", cx-> {return true;}, 1, false);
                     g.purgeByID(c.controller, selection.get(0));
                 }
             }));
-    }
-
-    @Override
-    public boolean validTarget(Card c) {
-        return c.controller.equals(controller);
     }
 }

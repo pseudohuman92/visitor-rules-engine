@@ -9,6 +9,7 @@ import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -29,9 +30,11 @@ public class BA05 extends Action {
     @Override
     public void resolve (Game game){
         //This needs to be UpTo
-        UUID selected = game.selectFromHand(game.getOpponentName(controller), c->{return c instanceof Action;}, 1).get(0);
-        game.discard(game.getOpponentName(controller), selected);
-        game.putTo(controller, this, "scrapyard");
+        ArrayList<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "hand", c->{return c instanceof Action;}, 1, true);
+        if(!selected.isEmpty()){
+            game.discard(game.getOpponentName(controller), selected.get(0));
+            game.putTo(controller, this, "scrapyard");
+        }
     }
     
 }

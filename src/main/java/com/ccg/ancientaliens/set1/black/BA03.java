@@ -35,7 +35,7 @@ public class BA03 extends Action implements Targeting {
     
     @Override
     public void play(Game game) {
-        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
+        target = game.selectFromZone(controller, "play", this::validTarget, 1, false).get(0);
         game.spendEnergy(controller, cost);
         game.destroy(target);
         game.addToStack(this);
@@ -49,7 +49,7 @@ public class BA03 extends Action implements Targeting {
 
     @Override
     public boolean validTarget(Card c) {
-        return (c.controller.equals(controller) && c instanceof Item);
+        return (c instanceof Item);
     }    
     
 }

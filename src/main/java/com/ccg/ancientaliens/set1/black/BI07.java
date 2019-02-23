@@ -36,7 +36,7 @@ public class BI07 extends Item implements Targeting {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        ArrayList<UUID> selected = game.selectFromPlay(controller, this::validTarget, 1);
+        ArrayList<UUID> selected = game.selectFromZone(controller, "both play", this::validTarget, 1, false);
         game.destroy(id);
         game.addToStack(new Activation (controller,
             "Possess target item",

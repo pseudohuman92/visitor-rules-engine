@@ -44,7 +44,7 @@ public class YA04 extends Action {
     
     @Override
     public void resolve (Game game){
-        ArrayList<UUID> selected = game.selectFromScrapyard(controller, c->{return true;}, x);
+        ArrayList<UUID> selected = game.selectFromZone(controller, "scrapyard", c->{return true;}, x, false);
         ArrayList<Card> cards = game.extractAll(selected);
         game.shuffleIntoDeck(controller, cards);
         game.putTo(controller, this, "void");

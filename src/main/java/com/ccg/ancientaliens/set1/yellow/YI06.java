@@ -35,7 +35,7 @@ public class YI06 extends Item {
     
     @Override
     public void activate(Game game) {
-        UUID selection = game.selectFromPlay(controller, c->{return c.controller.equals(controller) && c instanceof Item;}, 1).get(0);
+        UUID selection = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
         int x = game.getCard(selection).counters.get(CHARGE);
         game.destroy(selection);
         game.deplete(id);

@@ -48,7 +48,7 @@ public class YI03 extends Item {
                 (g2, c2) -> {
                     g2.putTo(controller, new YI02(controller), "hand");
             }));
-            ArrayList<UUID> selection = g.selectFromList(controller, choices, cx->{return true;}, 1);
+            ArrayList<UUID> selection = g.selectFromList(controller, choices, cx->{return true;}, 1, false);
             UUIDHelper.getInList(choices, selection).get(0).resolve(g);
         }));
     }

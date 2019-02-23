@@ -40,10 +40,10 @@ public class UA05 extends Action {
     
     @Override
     public void play(Game game) {
-        targets = game.selectFromScrapyard(controller, c->{return c instanceof Item;}, 5);
-        ArrayList<UUID> sel = game.selectFromVoid(controller, c->{return c instanceof Item;}, 1);
+        targets = game.selectFromZone(controller, "scrapyard", c->{return c instanceof Item;}, 5, false);
+        ArrayList<UUID> sel = game.selectFromZone(controller, "void", c->{return c instanceof Item;}, 1, false);
         targets.addAll(sel);
-        ArrayList<UUID> sel2 = game.selectFromPlay(controller, c->{return (c instanceof Item) && (c.controller.equals(controller));}, 1);
+        ArrayList<UUID> sel2 = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false);
         targets.addAll(sel2);
         game.spendEnergy(controller, cost);
         game.addToStack(this);

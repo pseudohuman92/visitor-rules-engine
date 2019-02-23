@@ -35,7 +35,7 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        target = game.selectFromPlay(controller, this::validTarget, 1).get(0);
+        target = game.selectFromZone(controller, "play", this::validTarget, 1, false).get(0);
         game.destroy(target);
         game.addToStack(new Activation(controller, 
             (game.ownedByOpponent(target)?"Gain 2 energy":"Gain 1 energy"),
@@ -44,6 +44,6 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public boolean validTarget(Card c) {
-        return (c instanceof Item && c.controller.equals(controller));
+        return (c instanceof Item);
     }
 }

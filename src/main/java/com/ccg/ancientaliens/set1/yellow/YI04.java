@@ -35,7 +35,7 @@ public class YI04 extends Item {
     @Override
     public void activate(Game game) {
         int x = game.selectX(controller, game.getPlayer(controller).energy/2);
-        UUID selection = game.selectFromPlay(controller, c->{return c instanceof Item;}, 1).get(0);
+        UUID selection = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false).get(0);
         game.spendEnergy(controller, 2 * x);
         game.deplete(id);
         game.addToStack(new Activation(controller, "Target item charge " + x,

@@ -314,7 +314,7 @@ public class Game {
     }
     
     public void discard(String username, int count){
-        players.get(username).discard(selectFromHand(username, (c -> {return true;}), count));
+        players.get(username).discard(selectFromZone(username, "hand", c -> {return true;}, count, false));
     }
     
     public void discard(String username, UUID cardID){
@@ -409,7 +409,23 @@ public class Game {
     
     
     
-    
+    private SelectFromType getZoneLabel(String zone){
+        switch(zone){
+            case "hand":
+                return HAND;
+            case "both play":
+            case "play":
+                return PLAY;
+            case "scrapyard":
+                return SCRAPYARD;
+            case "void":
+                return VOID;
+            case "stack":
+                return STACK;
+            default:
+                return NOTYPE;
+        }
+    }
     
     public int selectX(String username, int maxX) {
         if (maxX == 0){
@@ -432,15 +448,18 @@ public class Game {
         return 0;
     }
     
-    public ArrayList<UUID> selectFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count){
-        if (canSelect.size() == count || (canSelect.size() < count && type == LISTUPTO)){
+    public ArrayList<UUID> selectFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count, boolean upTo){
+        /*
+        if (canSelect.size() == count || (canSelect.size() < count && upTo)){
             return canSelect;
         }
+        */
         SelectFrom.Builder b = SelectFrom.newBuilder()
                 .addAllCanSelected(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
                 .addAllCandidates(candidates.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .setMessageType(type)
                 .setSelectionCount(count)
+                .setUpTo(upTo)
                 .setGame(toGameState(username));
         try {
             connections.get(username).send(
@@ -455,55 +474,16 @@ public class Game {
         return null;
     }
     
-    public ArrayList<UUID> selectFromPlay(String username, Predicate<Card> validTarget, int count){        
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        for (Player player : players.values()) {
-            canSelect.addAll(player.playArea.parallelStream()
-                    .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        } 
-        return selectFrom(username, PLAY, null, canSelect, count);
+    public ArrayList<UUID> selectFromZone(String username, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
+        ArrayList<UUID> canSelect = new ArrayList<>(getZone(username, zone).parallelStream()
+                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
+        return selectFrom(username, getZoneLabel(zone), new ArrayList<>(), canSelect, count, upTo);
     }
 
-    public ArrayList<UUID> selectFromHand(String username, Predicate<Card> validTarget, int count) {
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        canSelect.addAll(players.get(username).hand.parallelStream()
-                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return selectFrom(username, HAND, null, canSelect, count);
-    }
-    
-     public ArrayList<UUID> selectFromScrapyard(String username, Predicate<Card> validTarget, int count) {
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        canSelect.addAll(players.get(username).scrapyard.parallelStream()
-                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return selectFrom(username, SCRAPYARD, null, canSelect, count);
-    }
-    
-    public ArrayList<UUID> selectFromVoid(String username, Predicate<Card> validTarget, int count) {
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        canSelect.addAll(players.get(username).voidPile.parallelStream()
-                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return selectFrom(username, VOID, null, canSelect, count);
-    }
-    
-    public ArrayList<UUID> selectFromStack(String username, Predicate<Card> validTarget, int count) {
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        canSelect.addAll(stack.parallelStream()
-                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return selectFrom(username, STACK, null, canSelect, count);
-    }
-
-    public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, Predicate<Card> validTarget, int count) {
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        canSelect.addAll(candidates.parallelStream()
-                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return selectFrom(username, LIST, candidates, canSelect, count);
-    }
-    
-    public ArrayList<UUID> selectFromListUpTo(String username, ArrayList<Card> candidates, Predicate<Card> validTarget, int count) {
-        ArrayList<UUID> canSelect = new ArrayList<>();
-        canSelect.addAll(candidates.parallelStream()
-                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
-        return selectFrom(username, LISTUPTO, candidates, canSelect, count);
+    public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
+        ArrayList<UUID> canSelect = new ArrayList<>(candidates.parallelStream()
+                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
+        return selectFrom(username, LIST, candidates, canSelect, count, upTo);
     }
     
     public String selectPlayer(String username) {

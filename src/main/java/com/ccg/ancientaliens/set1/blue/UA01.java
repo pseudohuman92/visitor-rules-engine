@@ -32,7 +32,7 @@ public class UA01 extends Action {
     
     @Override
     public void play(Game game) {
-        target = game.selectFromScrapyard(controller, c->{return true;}, 1).get(0);
+        target = game.selectFromZone(controller, "scrapyard", c->{return true;}, 1, false).get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     }

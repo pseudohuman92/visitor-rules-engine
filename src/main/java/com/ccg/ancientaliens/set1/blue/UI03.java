@@ -44,7 +44,7 @@ public class UI03 extends Item{
                 (g , c) -> { 
                     Player p = g.getPlayer(c.controller);
                     ArrayList<Card> cand = p.deck.extractFromTop(2);
-                    ArrayList<UUID> selected = g.selectFromListUpTo(controller, cand, cx->{return true;}, 2);
+                    ArrayList<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
                     p.deck.putToTop(UUIDHelper.getNotInList(cand, selected));
                     p.scrapyard.addAll(UUIDHelper.getInList(cand, selected));
                 }));

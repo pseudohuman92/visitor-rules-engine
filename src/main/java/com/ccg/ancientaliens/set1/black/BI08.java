@@ -43,9 +43,9 @@ public class BI08 extends Item {
             "They discard it.",
             (g, cx) -> {
                 ArrayList<UUID> selected = 
-                        game.selectFromListUpTo(controller, 
+                        game.selectFromList(controller, 
                                 g.getZone(g.getOpponentName(controller), "hand"), 
-                        c->{return c instanceof Action;},1);
+                        c->{return c instanceof Action;}, 1, true);
                 if(!selected.isEmpty()){
                     g.discard(g.getOpponentName(controller), selected.get(0));
                 }
