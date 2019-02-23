@@ -17,7 +17,6 @@ enum Phase {
 enum SelectFromType {
     NOTYPE = 0;
     LIST = 1;
-    LISTUPTO = 2;
     HAND = 3;
     PLAY = 4;
     SCRAPYARD = 5;

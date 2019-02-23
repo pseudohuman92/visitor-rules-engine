@@ -33,6 +33,7 @@ message SelectFrom {
     int32 selectionCount = 3;
     repeated Card candidates = 4;
     repeated string canSelected = 5;
+    bool upTo = 6;
 }
 
 message SelectXValue {
