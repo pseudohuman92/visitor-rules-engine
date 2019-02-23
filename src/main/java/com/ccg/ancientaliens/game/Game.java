@@ -492,11 +492,17 @@ public class Game {
         return selectFrom(username, STACK, null, canSelect, count);
     }
 
-    public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
+    public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, Predicate<Card> validTarget, int count) {
+        ArrayList<UUID> canSelect = new ArrayList<>();
+        canSelect.addAll(candidates.parallelStream()
+                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
         return selectFrom(username, LIST, candidates, canSelect, count);
     }
     
-    public ArrayList<UUID> selectFromListUpTo(String username, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count) {
+    public ArrayList<UUID> selectFromListUpTo(String username, ArrayList<Card> candidates, Predicate<Card> validTarget, int count) {
+        ArrayList<UUID> canSelect = new ArrayList<>();
+        canSelect.addAll(candidates.parallelStream()
+                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList())); 
         return selectFrom(username, LISTUPTO, candidates, canSelect, count);
     }
     

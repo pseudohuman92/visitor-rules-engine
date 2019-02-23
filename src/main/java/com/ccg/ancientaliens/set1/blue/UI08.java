@@ -19,7 +19,6 @@ import com.ccg.ancientaliens.set1.additional.AI03;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 /**
@@ -85,7 +84,7 @@ public class UI08 extends Item implements Transforming {
                 ));
             }));
         }
-        ArrayList<UUID> selection = game.selectFromList(controller, choices, new ArrayList(choices.parallelStream().map(ca->{return ca.id;}).collect(Collectors.toList())), 1);
+        ArrayList<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1);
         UUIDHelper.getInList(choices, selection).get(0).resolve(game);
     }
 

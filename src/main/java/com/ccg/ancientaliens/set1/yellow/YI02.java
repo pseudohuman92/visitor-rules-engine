@@ -21,7 +21,7 @@ import com.ccg.ancientaliens.helpers.Hashmap;
 public class YI02 extends Item {
     
     public YI02 (String owner){
-        super("YI01", 1, new Hashmap(YELLOW, 1), 
+        super("YI01", 1, new Hashmap(YELLOW, 2), 
                 "Charge 2.\n" +
                 "\n" +
                 "3, Sacrifice ~: \n" +

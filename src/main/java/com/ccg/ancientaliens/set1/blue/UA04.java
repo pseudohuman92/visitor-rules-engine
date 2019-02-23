@@ -30,13 +30,7 @@ public class UA04 extends Action {
     
     @Override
     public void resolve (Game game){
-        ArrayList <UUID> canSelected = new ArrayList<>();
-        game.getZone(game.getOpponentName(controller), "hand").forEach(c -> {
-            if (c instanceof Item){
-                canSelected.add(c.id);
-            }
-        });
-        ArrayList<UUID> s = game.selectFromListUpTo(controller, game.getZone(game.getOpponentName(controller), "hand"), canSelected, 1);
+        ArrayList<UUID> s = game.selectFromListUpTo(controller, game.getZone(game.getOpponentName(controller), "hand"), c->{return c instanceof Item;}, 1);
         if (!s.isEmpty()){
             game.transformToJunk(s.get(0));
         }

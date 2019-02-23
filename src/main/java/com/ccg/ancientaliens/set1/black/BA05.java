@@ -6,13 +6,9 @@
 package com.ccg.ancientaliens.set1.black;
 
 import com.ccg.ancientaliens.card.types.Action;
-import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.game.Game;
-import com.ccg.ancientaliens.game.Player;
-import com.ccg.ancientaliens.helpers.UUIDHelper;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -27,24 +23,14 @@ public class BA05 extends Action {
      */
     public BA05(String owner) {
         super("BA05", 1, new Hashmap(BLACK, 1), 
-        "Look at the top 4 cards of your deck. Draw a trap among them. Put rest to the bottom.", owner);
+        "Opponent discards an action.", owner);
     }
     
     @Override
     public void resolve (Game game){
-        Player p = game.getPlayer(controller);
-        ArrayList<Card> topCards = p.deck.extractFromTop(4);
-        ArrayList <UUID> canSelected = new ArrayList<>();
-        topCards.forEach(c -> {
-            if (c.subtypes.contains("Trap")){
-                canSelected.add(c.id);
-            }
-        });
-        ArrayList<UUID> s = game.selectFromListUpTo(controller, topCards, canSelected, 1);
-        ArrayList<Card> selected = UUIDHelper.getInList(topCards, s);
-        ArrayList<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
-        p.hand.addAll(selected);
-        p.deck.putToBottom(notSelected);
+        //This needs to be UpTo
+        UUID selected = game.selectFromHand(game.getOpponentName(controller), c->{return c instanceof Action;}, 1).get(0);
+        game.discard(game.getOpponentName(controller), selected);
         game.putTo(controller, this, "scrapyard");
     }
     

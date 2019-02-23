@@ -15,7 +15,6 @@ import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 /**
@@ -49,7 +48,7 @@ public class YI03 extends Item {
                 (g2, c2) -> {
                     g2.putTo(controller, new YI02(controller), "hand");
             }));
-            ArrayList<UUID> selection = g.selectFromList(controller, choices, new ArrayList(choices.parallelStream().map(ca->{return ca.id;}).collect(Collectors.toList())), 1);
+            ArrayList<UUID> selection = g.selectFromList(controller, choices, cx->{return true;}, 1);
             UUIDHelper.getInList(choices, selection).get(0).resolve(g);
         }));
     }
