@@ -29,7 +29,8 @@ public abstract class Action extends Card {
     @Override
     public boolean canPlay(Game game){ 
         return game.hasEnergy(controller, cost)
-               && game.hasKnowledge(controller, knowledge);
+               && game.hasKnowledge(controller, knowledge)
+               && game.isActive(controller);
     }
     
     @Override
