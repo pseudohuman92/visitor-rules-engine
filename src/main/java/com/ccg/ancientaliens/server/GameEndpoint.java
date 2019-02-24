@@ -37,6 +37,7 @@ public class GameEndpoint {
         this.gameID = UUID.fromString(gameID);
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
+        session.setMaxIdleTimeout(0);
         gameServer.addGameConnection(this.gameID, username, this);
     }
  

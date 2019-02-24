@@ -5,6 +5,7 @@ import com.ccg.ancientaliens.card.properties.Activatable;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.protocol.Types.Knowledge;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import com.ccg.ancientaliens.protocol.Types;
 
 /**
  * Abstract class for the Item card type.
@@ -37,5 +38,11 @@ public abstract class Item extends Card implements Activatable {
         return game.hasEnergy(controller, cost)
                && game.hasKnowledge(controller, knowledge)
                && game.canPlaySlow(controller);
-    }  
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setType("Item");
+    }
 }

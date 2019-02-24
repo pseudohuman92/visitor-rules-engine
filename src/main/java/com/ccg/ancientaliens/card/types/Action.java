@@ -3,6 +3,7 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.Knowledge;
 
 
@@ -29,5 +30,11 @@ public abstract class Action extends Card {
     public boolean canPlay(Game game){ 
         return game.hasEnergy(controller, cost)
                && game.hasKnowledge(controller, knowledge);
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setType("Action");
     }
 }
