@@ -37,6 +37,13 @@ export class PlayerDisplay extends React.Component {
       handSize = this.props.player.handSize;
     }
 
+    const knowledgeMap = {};
+    knowledgeMap[proto.Knowledge.BLACK] = 'B';
+    knowledgeMap[proto.Knowledge.GREEN] = 'G';
+    knowledgeMap[proto.Knowledge.RED] = 'R';
+    knowledgeMap[proto.Knowledge.BLUE] = 'U';
+    knowledgeMap[proto.Knowledge.YELLOW] = 'Y';
+
     let scrapyardOnClick, voidOnClick, playerOnClick;
     const style = {};
     if (selectPlayer) {
@@ -67,7 +74,7 @@ export class PlayerDisplay extends React.Component {
             <Grid container spacing={16} justify="space-evenly">
               {knowledgePool.map(knowledge => (
                 <Grid item xs={2} key={knowledge.knowledge}>
-                  {knowledge.count}
+                  {`${knowledgeMap[knowledge.knowledge]}${knowledge.count}`}
                 </Grid>
               ))}
             </Grid>
