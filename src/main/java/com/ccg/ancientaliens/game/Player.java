@@ -106,7 +106,7 @@ public class Player implements Serializable {
     public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
         boolean result = true; 
         for (Knowledge k : cardKnowledge.keySet()){
-            result = result && cardKnowledge.get(k) <= knowledgePool.get(k);
+            result = result && cardKnowledge.get(k) <= knowledgePool.getOrDefault(k, 0);
         }
         return result;
     }

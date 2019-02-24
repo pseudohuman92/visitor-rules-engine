@@ -7,6 +7,7 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import com.ccg.ancientaliens.protocol.Types;
 
 /**
  *
@@ -31,6 +32,12 @@ public class Junk extends Card {
     @Override
     public void resolve(Game game) {
         game.putTo(controller, this, "scrapyard");
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setType("Junk");
     }
     
 }

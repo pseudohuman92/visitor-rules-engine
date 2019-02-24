@@ -610,9 +610,8 @@ public class Game {
     }
 
     public boolean canStudy(String username) {
-        return activePlayer.equals(username) 
-            && players.get(username).numOfStudiesLeft > 0 
-            && stack.isEmpty();
+        return canPlaySlow(username)
+            && players.get(username).numOfStudiesLeft > 0;
     }
 
     //Eventually get rid of this

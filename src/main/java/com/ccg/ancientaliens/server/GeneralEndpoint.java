@@ -30,6 +30,7 @@ public class GeneralEndpoint {
         this.username = username;
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
+        session.setMaxIdleTimeout(0);
         if (gameServer == null) {
             gameServer = new GameServer();
         }

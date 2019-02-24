@@ -7,6 +7,7 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import com.ccg.ancientaliens.protocol.Types;
 import java.util.function.BiConsumer;
 
 /**
@@ -27,5 +28,11 @@ public class Activation extends Card {
 
     @Override
     public void resolve(Game game) { effect.accept(game, this); }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setType("Activation");
+    }
     
 }

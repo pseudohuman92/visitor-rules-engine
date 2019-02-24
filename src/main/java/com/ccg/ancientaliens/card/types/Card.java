@@ -185,10 +185,18 @@ public abstract class Card implements Serializable {
                 .setId(id.toString())
                 .setName(name)
                 .setDepleted(depleted)
-                .setDescription(text);
+                .setDescription(text)
+                .setCost(cost)
+                .setType("Card")
+                .addAllSubtypes(subtypes);
         counters.forEach((k, i) -> {
             b.addCounters(CounterGroup.newBuilder()
                     .setCounter(k)
+                    .setCount(i).build());
+        });
+        knowledge.forEach((k, i) -> {
+            b.addKnowledgeCost(KnowledgeGroup.newBuilder()
+                    .setKnowledge(k)
                     .setCount(i).build());
         });
         //TODO: add targets
