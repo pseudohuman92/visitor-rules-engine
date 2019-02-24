@@ -487,7 +487,7 @@ public class Game {
     public Arraylist<UUID> selectFromZone(String username, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
         Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(username, getZoneLabel(zone), new Arraylist<>(), canSelect, count, upTo);
+        return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, count, upTo);
     }
 
     public Arraylist<UUID> selectFromList(String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
