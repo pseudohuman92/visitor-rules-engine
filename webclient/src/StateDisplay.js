@@ -38,14 +38,14 @@ export class PlayerDisplay extends React.Component {
 
     return (
       <Paper className="player-display">
-        <Grid container spacing={0}>
-          <Grid item xs={12} className="grid-elem">
+        <Grid container spacing={0} style={{height: '100%'}}>
+          <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
             {name}
           </Grid>
-          <Grid item xs={12} className="grid-elem">
+          <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
             {energy + '/' + maxEnergy}
           </Grid>
-          <Grid item xs={12} className="grid-elem">
+          <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
             <Grid container spacing={16} justify="space-evenly">
               {knowledgePool.map(knowledge => (
                 <Grid item xs={2} key={knowledge.knowledge}>
@@ -54,16 +54,26 @@ export class PlayerDisplay extends React.Component {
               ))}
             </Grid>
           </Grid>
-          <Grid item xs={6} className="grid-elem">
+          <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
             {deckSize}
           </Grid>
-          <Grid item xs={6} className="grid-elem">
+          <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
             {handSize}
           </Grid>
-          <Grid item xs={6} className="grid-elem" onClick={scrapyardOnClick}>
+          <Grid
+            item
+            xs={6}
+            className="grid-elem"
+            onClick={scrapyardOnClick}
+            style={{height: '20%'}}>
             {scrapyard.length}
           </Grid>
-          <Grid item xs={6} className="grid-elem" onClick={voidOnClick}>
+          <Grid
+            item
+            xs={6}
+            className="grid-elem"
+            onClick={voidOnClick}
+            style={{height: '20%'}}>
             {void_.length}
           </Grid>
         </Grid>
@@ -90,14 +100,14 @@ export class MessageDisplay extends React.Component {
       this.props.game.activePlayer === this.props.game.player.name;
 
     const activeDisplay = (
-      <Grid container spacing={0} direction="column" style={{height: '100%'}}>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+      <Grid container spacing={0} style={{height: '100%'}}>
+        <Grid item xs={12} style={{height: '33%'}}>
           {`Phase: ${gamePhaseStr}`}
         </Grid>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs={12} style={{height: '33%'}}>
           {`Turn: ${turnPlayer}`}
         </Grid>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs={12} style={{height: '33%'}}>
           {`Active: ${activePlayer}`}
         </Grid>
       </Grid>
@@ -109,8 +119,8 @@ export class MessageDisplay extends React.Component {
       gamePhase === proto.Phase.MULLIGAN
     ) {
       buttonMenu = (
-        <Grid container spacing={0} direction="column" style={{height: '100%'}}>
-          <Grid item xs={6} className="grid-col-item no-max-width">
+        <Grid container spacing={0} style={{height: '100%'}}>
+          <Grid item xs={12} style={{height: '50%'}}>
             <Button
               color="secondary"
               variant="contained"
@@ -119,7 +129,7 @@ export class MessageDisplay extends React.Component {
               Mulligan
             </Button>
           </Grid>
-          <Grid item xs={6} className="grid-col-item no-max-width">
+          <Grid item xs={12} style={{height: '50%'}}>
             <Button
               color="primary"
               variant="contained"
@@ -132,13 +142,13 @@ export class MessageDisplay extends React.Component {
       );
     } else {
       buttonMenu = (
-        <Grid container spacing={0} direction="column" style={{height: '100%'}}>
-          <Grid item xs={6} className="grid-col-item no-max-width">
+        <Grid container spacing={0} style={{height: '100%'}}>
+          <Grid item xs={12} style={{height: '50%'}}>
             {/* <Button color="secondary" variant="contained" onClick={Concede}>
               Concede
             </Button> */}
           </Grid>
-          <Grid item xs={6} className="grid-col-item no-max-width">
+          <Grid item xs={12} style={{height: '50%'}}>
             <Button
               color="primary"
               variant="contained"
@@ -153,11 +163,11 @@ export class MessageDisplay extends React.Component {
 
     return (
       <Paper className="message-display">
-        <Grid container spacing={0} direction="column" style={{height: '100%'}}>
-          <Grid item xs={6} className="grid-col-item no-max-width">
+        <Grid container spacing={0} style={{height: '100%', color: 'black'}}>
+          <Grid item xs={12} style={{height: '60%'}}>
             {activeDisplay}
           </Grid>
-          <Grid item xs={6} className="grid-col-item no-max-width">
+          <Grid item xs={12} style={{height: '40%'}}>
             {buttonMenu}
           </Grid>
         </Grid>
