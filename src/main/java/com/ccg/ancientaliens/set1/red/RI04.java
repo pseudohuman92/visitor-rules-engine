@@ -17,20 +17,29 @@ import static com.ccg.ancientaliens.protocol.Types.Knowledge.RED;
  *
  * @author pseudo
  */
-public class RI03 extends Item {
+public class RI04 extends Item {
     
-    public RI03 (String owner){
-        super("RI03", 2, new Hashmap(RED, 2), 
-            "Charge 3. \n" +
+    int x;
+    
+    public RI04 (String owner){
+        super("RI04", 1, new Hashmap(RED, 1), 
+            "Charge X.\n" +
             "\n" +
-            "Discharge 1, Activate: \n" +
-            "  Opponent purges 3", owner);
+            "Dischage 1, Activate:\n" +
+            "  Opponent purges 2.", owner);
+    }
+    
+    @Override
+    public void play (Game game) {
+        x = game.selectX(controller, game.getEnergy(controller) - 1);
+        game.spendEnergy(controller, x);
+        super.play(game);
     }
     
     @Override
     public void resolve (Game game) {
         super.resolve(game);
-        addCounters(CHARGE, 3);
+        addCounters(CHARGE, x);
     }
 
     @Override
@@ -43,9 +52,9 @@ public class RI03 extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         game.addToStack(new Activation (controller,
-            "Opponent purges 3.",
+            "Opponent purges 2.",
             (g, cx) -> {
-                g.purge(g.getOpponentName(controller), 3);
+                g.purge(g.getOpponentName(controller), 2);
             })
         );
     }

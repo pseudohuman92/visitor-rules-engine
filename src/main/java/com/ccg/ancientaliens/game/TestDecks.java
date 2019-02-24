@@ -9,12 +9,31 @@ import com.ccg.ancientaliens.set1.black.*;
 import com.ccg.ancientaliens.set1.blue.*;
 import com.ccg.ancientaliens.set1.yellow.*;
 import com.ccg.ancientaliens.set1.red.*;
+import java.util.Random;
 
 /**
  *
  * @author pseudo
  */
 public class TestDecks {
+    
+    static final int numOfDecks = 4;
+    
+    public static Deck randomDeck(String username){
+        Random r = new Random();
+        switch (r.nextInt(numOfDecks)){
+            case 0:
+                return blackDeck(username);
+            case 1:
+                return blueDeck(username);
+            case 2:
+                return yellowDeck(username);
+            case 3:
+                return redDeck(username);
+            default:
+                return null;
+        }
+    }
     
     public static Deck blackDeck(String username){
         Deck d = new Deck(username);
@@ -33,6 +52,7 @@ public class TestDecks {
             d.add(new BI05(username));
             d.add(new BI06(username));
             d.add(new BI07(username));
+            d.add(new BI08(username));
         }
         return d;
     }
@@ -94,6 +114,7 @@ public class TestDecks {
             d.add(new RI01(username));
             d.add(new RI02(username));
             d.add(new RI03(username));
+            d.add(new RI04(username));
             d.add(new RI05(username));
             d.add(new RI06(username));
             d.add(new RI07(username));
