@@ -181,3 +181,11 @@ export function SelectXValue(xVal) {
   });
   gameState.updateViewHandler(gameState.lastMsg, GamePhases.DONE_SELECT, null);
 }
+
+export function SelectPlayer(playerName) {
+  gameState.send('SelectPlayerResponse', {
+    gameID: gameState.gameID,
+    selectedPlayerName: playerName,
+  });
+  gameState.updateViewHandler(gameState.lastMsg, GamePhases.DONE_SELECT, null);
+}

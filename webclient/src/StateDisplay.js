@@ -13,6 +13,7 @@ import {
   Keep,
   Pass,
   SelectDone,
+  SelectPlayer,
 } from './Game.js';
 import './StateDisplay.css';
 import './Utils.css';
@@ -28,7 +29,7 @@ export class PlayerDisplay extends React.Component {
       scrapyard,
     } = this.props.player;
     const void_ = this.props.player.void;
-    const updateDialog = this.props.updateDialog;
+    const {updateDialog, selectPlayer} = this.props;
     let handSize;
     if (this.props.player.hasOwnProperty('hand')) {
       handSize = this.props.player.hand.length;
@@ -36,16 +37,25 @@ export class PlayerDisplay extends React.Component {
       handSize = this.props.player.handSize;
     }
 
-    const scrapyardOnClick = event => {
-      updateDialog(true, `${name}'s Scrapyard`, scrapyard);
-    };
+    let scrapyardOnClick, voidOnClick, playerOnClick;
+    const style = {};
+    if (selectPlayer) {
+      style.border = '5px green solid';
+      playerOnClick = event => {
+        SelectPlayer(name);
+      };
+    } else {
+      scrapyardOnClick = event => {
+        updateDialog(true, `${name}'s Scrapyard`, scrapyard);
+      };
 
-    const voidOnClick = event => {
-      updateDialog(true, `${name}'s Void`, void_);
-    };
+      voidOnClick = event => {
+        updateDialog(true, `${name}'s Void`, void_);
+      };
+    }
 
     return (
-      <Paper className="player-display">
+      <Paper className="player-display" onClick={playerOnClick} style={style}>
         <Grid container spacing={0} style={{height: '100%'}}>
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
             {name}
@@ -208,7 +218,7 @@ export default class StateDisplay extends React.Component {
     const gary = this.props.game.opponent;
     const me = this.props.game.player;
     const {phase, updateDialog, upTo, game} = this.props;
-    console.log('upTo', upTo);
+    const selectPlayer = phase === GamePhases.SELECT_PLAYER;
 
     return (
       <Grid
@@ -220,13 +230,21 @@ export default class StateDisplay extends React.Component {
         className="state-display"
         direction="column">
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <PlayerDisplay player={gary} updateDialog={updateDialog} />
+          <PlayerDisplay
+            player={gary}
+            updateDialog={updateDialog}
+            selectPlayer={selectPlayer}
+          />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
           <MessageDisplay game={game} phase={phase} upTo={upTo} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <PlayerDisplay player={me} updateDialog={updateDialog} />
+          <PlayerDisplay
+            player={me}
+            updateDialog={updateDialog}
+            selectPlayer={selectPlayer}
+          />
         </Grid>
       </Grid>
     );

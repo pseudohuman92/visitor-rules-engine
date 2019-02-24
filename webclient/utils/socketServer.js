@@ -224,20 +224,20 @@ function handleMulligan(ws, params) {
 }
 function handleKeep(ws, params) {
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
-  sendGameMsg(ws, 'SelectFrom', {
-    game: gameState,
-    messageType: 4,
-    selectionCount: 2,
-    candidates: [],
-    canSelected: [
-      myPlayCards[0].id,
-      myPlayCards[2].id,
-      myPlayCards[3].id,
-      garyPlayCards[0].id,
-      garyPlayCards[2].id,
-    ],
-    upTo: true,
-  });
+  //sendGameMsg(ws, 'SelectFrom', {
+  //  game: gameState,
+  //  messageType: 4,
+  //  selectionCount: 2,
+  //  candidates: [],
+  //  canSelected: [
+  //    myPlayCards[0].id,
+  //    myPlayCards[2].id,
+  //    myPlayCards[3].id,
+  //    garyPlayCards[0].id,
+  //    garyPlayCards[2].id,
+  //  ],
+  //  upTo: true,
+  //});
   //  sendGameMsg(ws, 'SelectFromHand', {
   //    game: gameState,
   //    selectionCount: 2,
@@ -265,6 +265,9 @@ function handleKeep(ws, params) {
   //  game: gameState,
   //  maxXValue: 6,
   //});
+  sendGameMsg(ws, 'SelectPlayer', {
+    game: gameState,
+  });
 }
 function handleConcede(ws, params) {}
 function handleOrderCardsResponse(ws, params) {}

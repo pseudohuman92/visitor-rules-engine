@@ -227,6 +227,7 @@ class App extends Component {
     }
 
     if (
+      game.phase !== proto.Phase.MULLIGAN &&
       phase === GamePhases.UPDATE_GAME &&
       game.activePlayer === game.player.name &&
       game.canStudy.length === 0 &&
