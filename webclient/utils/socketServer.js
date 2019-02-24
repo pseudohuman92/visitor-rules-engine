@@ -250,11 +250,13 @@ function handleKeep(ws, params) {
   //  selectionCount: 2,
   //  candidates: [myVoidCards[0], myVoidCards[1]],
   //});
-  //sendGameMsg(ws, 'SelectFromList', {
-  //  game: gameState,
-  //  selectionCount: 2,
-  //  candidates: cards.slice(0, 4),
-  //});
+  sendGameMsg(ws, 'SelectFrom', {
+    game: gameState,
+    selectionCount: 2,
+    candidates: cards.slice(0, 4),
+    canSelected: ['1', '3'],
+    upTo: false,
+  });
 }
 function handleConcede(ws, params) {}
 function handleOrderCardsResponse(ws, params) {}

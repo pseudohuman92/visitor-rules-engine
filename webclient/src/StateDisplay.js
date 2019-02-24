@@ -76,8 +76,32 @@ export class MessageDisplay extends React.Component {
   render() {
     const phase = this.props.phase;
     const gamePhase = this.props.game.phase;
+    const gamePhaseStr = {
+      0: 'NOPHASE',
+      1: 'MULLIGAN',
+      2: 'BEGIN',
+      3: 'MAIN',
+      4: 'MAIN_RESOLVING',
+      5: 'END',
+    }[gamePhase];
+    const {activePlayer, turnPlayer} = this.props.game;
+
     const amActive =
       this.props.game.activePlayer === this.props.game.player.name;
+
+    const activeDisplay = (
+      <Grid container spacing={0} direction="column" style={{height: '100%'}}>
+        <Grid item xs={4} className="grid-col-item no-max-width">
+          {`Phase: ${gamePhaseStr}`}
+        </Grid>
+        <Grid item xs={4} className="grid-col-item no-max-width">
+          {`Turn: ${turnPlayer}`}
+        </Grid>
+        <Grid item xs={4} className="grid-col-item no-max-width">
+          {`Active: ${activePlayer}`}
+        </Grid>
+      </Grid>
+    );
 
     let buttonMenu;
     if (
@@ -131,7 +155,7 @@ export class MessageDisplay extends React.Component {
       <Paper className="message-display">
         <Grid container spacing={0} direction="column" style={{height: '100%'}}>
           <Grid item xs={6} className="grid-col-item no-max-width">
-            Hi
+            {activeDisplay}
           </Grid>
           <Grid item xs={6} className="grid-col-item no-max-width">
             {buttonMenu}

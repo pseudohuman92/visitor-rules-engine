@@ -1,5 +1,7 @@
 import {GameProtoSocket} from './ProtoSocket.js';
 
+const proto = require('./protojs/compiled.js');
+
 export const GamePhases = {
   NOT_STARTED: 'NotStarted',
   UPDATE_GAME: 'UpdateGame',
@@ -11,6 +13,7 @@ export const GamePhases = {
   SELECT_FROM_HAND: 'SelectFromHand',
   SELECT_FROM_SCRAPYARD: 'SelectFromScrapyard',
   SELECT_FROM_VOID: 'SelectFromVoid',
+  SELECT_X_VALUE: 'SelectXValue',
   SELECT_PLAYER: 'SelectPlayer',
   DONE_SELECT: 'DoneSelect',
 };
@@ -37,25 +40,31 @@ export class GameState {
 
   handleMsg = (msgType, params) => {
     // XXX Remember to update this with the protocol updates
-    const phase = {
+    let phase = {
       UpdateGameState: GamePhases.UPDATE_GAME,
       Loss: GamePhases.LOSS,
       Win: GamePhases.WIN,
       OrderCards: GamePhases.ORDER_CARDS,
-      SelectFromList: GamePhases.SELECT_FROM_LIST,
-      SelectFromPlay: GamePhases.SELECT_FROM_PLAY,
-      SelectFromHand: GamePhases.SELECT_FROM_HAND,
-      SelectFromScrapyard: GamePhases.SELECT_FROM_SCRAPYARD,
-      SelectFromVoid: GamePhases.SELECT_FROM_VOID,
+      SelectFrom: GamePhases.SELECT_FROM_LIST,
+      SelectXValue: GameState.SELECT_X_VALUE,
       SelectPlayer: GamePhases.SELECT_PLAYER,
     }[msgType];
     this.lastMsg = params;
     this.phase = phase;
     this.selectedCards = [];
 
-    if (phase === GamePhases.SELECT_FROM_HAND) {
-      params.candidates = params.game.player.hand;
+    if (msgType === 'SelectFrom') {
+      const selectPhase = {};
+      selectPhase[proto.SelectFromType.LIST] = GamePhases.SELECT_FROM_LIST;
+      selectPhase[proto.SelectFromType.HAND] = GamePhases.SELECT_FROM_HAND;
+      selectPhase[proto.SelectFromType.PLAY] = GamePhases.SELECT_FROM_PLAY;
+      selectPhase[proto.SelectFromType.SCRAPYARD] =
+        GamePhases.SELECT_FROM_SCRAPYARD;
+      selectPhase[proto.SelectFromType.VOID] = GamePhases.SELECT_FROM_VOID;
+      selectPhase[proto.SelectFromType.STACK] = GamePhases.SELECT_FROM_STACK;
+      phase = selectPhase[params.messageType];
     }
+
     this.updateViewHandler(params, phase, null);
   };
 

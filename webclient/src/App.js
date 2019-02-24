@@ -70,6 +70,7 @@ class App extends Component {
       turnPlayer: me.id,
       activePlayer: me.id,
       stack: [],
+      phase: 0,
     };
 
     SetBasicGameInfo('best game', me.id, gary.id);
@@ -169,7 +170,7 @@ class App extends Component {
     }
 
     if (IsSelectCardPhase(phase) && selectedCards === null) {
-      toUpdate.selectableCards = params.candidates.map(card => card.id);
+      toUpdate.selectableCards = params.canSelected;
     }
 
     if (this.state.waiting) {
