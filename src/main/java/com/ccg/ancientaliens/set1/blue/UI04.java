@@ -29,7 +29,7 @@ public class UI04 extends Item implements Transforming {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasACardIn(controller, "hand")
+        return game.hasCardsIn(controller, "hand", 1)
                 && game.hasEnergy(controller, 1);
     }
     

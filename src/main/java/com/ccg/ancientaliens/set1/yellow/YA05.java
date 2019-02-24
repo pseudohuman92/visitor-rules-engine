@@ -28,7 +28,7 @@ public class YA05 extends Action {
     @Override
     public boolean canPlay (Game game){
         return super.canPlay(game) 
-                && game.hasAnInstanceIn(controller, Action.class, "scrapyard");
+                && game.hasInstancesIn(controller, Action.class, "scrapyard", 1);
     }
     
     @Override

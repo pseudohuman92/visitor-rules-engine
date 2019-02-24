@@ -14,7 +14,7 @@ import com.ccg.ancientaliens.game.Player;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 
@@ -43,8 +43,8 @@ public class UI03 extends Item{
                 + "You may discard any number of them. Put the rest in the same order.",
                 (g , c) -> { 
                     Player p = g.getPlayer(c.controller);
-                    ArrayList<Card> cand = p.deck.extractFromTop(2);
-                    ArrayList<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
+                    Arraylist<Card> cand = p.deck.extractFromTop(2);
+                    Arraylist<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
                     p.deck.putToTop(UUIDHelper.getNotInList(cand, selected));
                     p.scrapyard.addAll(UUIDHelper.getInList(cand, selected));
                 }));

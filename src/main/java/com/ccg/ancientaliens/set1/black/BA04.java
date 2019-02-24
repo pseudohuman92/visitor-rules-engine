@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -34,12 +34,12 @@ public class BA04 extends Action implements Targeting {
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
-            game.hasAnInstanceIn(game.getOpponentName(controller), Item.class, "play");
+            game.hasInstancesIn(game.getOpponentName(controller), Item.class, "play", 1);
     }
     
     @Override
     public void resolve (Game game){
-        ArrayList<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "play", this::validTarget, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "play", this::validTarget, 1, false);
         game.possessTo(controller, selected.get(0), "play");
         game.putTo(controller, this, "scrapyard");
     }

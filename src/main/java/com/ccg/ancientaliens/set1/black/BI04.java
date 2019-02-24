@@ -12,7 +12,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -28,19 +28,19 @@ public class BI04 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasAnInstanceIn(controller, Card.class, "void");
+        return !depleted && game.hasInstancesIn(controller, Card.class, "void", 1);
     }
 
     @Override
     public void activate(Game game) {
-        ArrayList<UUID> selected = game.selectFromZone(controller, "void", c->{return true;}, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, "void", c->{return true;}, 1, false);
         game.destroy(id);
         game.addToStack(new Activation (controller,
             "Draw a card from void, then purge acard from your hand",
             (g, c) -> {
                 if (g.isIn(c.controller, selected.get(0), "void")){
                     g.drawByID(c.controller, selected.get(0));
-                    ArrayList<UUID> selection = g.selectFromZone(c.controller, "hand", cx-> {return true;}, 1, false);
+                    Arraylist<UUID> selection = g.selectFromZone(c.controller, "hand", cx-> {return true;}, 1, false);
                     g.purgeByID(c.controller, selection.get(0));
                 }
             }));

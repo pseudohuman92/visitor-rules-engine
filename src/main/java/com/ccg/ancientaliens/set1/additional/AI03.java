@@ -37,7 +37,7 @@ public class AI03 extends Item implements Transforming {
     
     @Override
     public void activate(Game game) {
-        counters.put(CHARGE, counters.get(CHARGE) - 1);
+        counters.putIn(CHARGE, counters.get(CHARGE) - 1);
         game.addToStack(new Activation(controller, 
                 "Opponent purges 4. \n" +
                 "If ~ has no counters on it, transform ~ to UI08",

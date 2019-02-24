@@ -12,7 +12,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -42,7 +42,7 @@ public class BI08 extends Item {
             "Look at opponent's hand and choose an action from it. \n" +
             "They discard it.",
             (g, cx) -> {
-                ArrayList<UUID> selected = 
+                Arraylist<UUID> selected = 
                         game.selectFromList(controller, 
                                 g.getZone(g.getOpponentName(controller), "hand"), 
                         c->{return c instanceof Action;}, 1, true);

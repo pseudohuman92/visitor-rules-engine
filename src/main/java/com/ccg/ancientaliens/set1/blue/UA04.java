@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -30,7 +30,7 @@ public class UA04 extends Action {
     
     @Override
     public void resolve (Game game){
-        ArrayList<UUID> s = game.selectFromList(controller, 
+        Arraylist<UUID> s = game.selectFromList(controller, 
                 game.getZone(game.getOpponentName(controller), "hand"), 
                 c->{return c instanceof Item;}, 1, true);
         if (!s.isEmpty()){

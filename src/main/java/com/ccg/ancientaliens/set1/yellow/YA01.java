@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -30,7 +30,7 @@ public class YA01 extends Action {
     @Override
     public void resolve (Game game){
         game.addReflect(controller, 2);
-        ArrayList<Card> tmp = new ArrayList<>();
+        Arraylist<Card> tmp = new Arraylist<>();
         tmp.add(this);
         game.shuffleIntoDeck(controller, tmp);
     }    

@@ -6,7 +6,7 @@
 package com.ccg.ancientaliens.helpers;
 
 import com.ccg.ancientaliens.card.types.Card;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -19,8 +19,8 @@ public abstract class UUIDHelper {
      * @param cards
      * @return
      */
-    public static ArrayList<UUID> toUUIDList(ArrayList<Card> cards) {
-        ArrayList<UUID> uuids = new ArrayList<>();
+    public static Arraylist<UUID> toUUIDList(Arraylist<Card> cards) {
+        Arraylist<UUID> uuids = new Arraylist<>();
         while (!cards.isEmpty()){
             Card c = cards.remove(0);
             uuids.add(c.id);
@@ -28,8 +28,8 @@ public abstract class UUIDHelper {
         return uuids;
     }
     
-    public static ArrayList<UUID> toUUIDList(String[] cards) {
-        ArrayList<UUID> uuids = new ArrayList<>();
+    public static Arraylist<UUID> toUUIDList(String[] cards) {
+        Arraylist<UUID> uuids = new Arraylist<>();
         for (int i =0; i < cards.length; i++){
             uuids.add(UUID.fromString(cards[i]));
         }
@@ -44,8 +44,8 @@ public abstract class UUIDHelper {
      * @param uuids
      * @return
      */
-    public static ArrayList<Card> sortByID(ArrayList<Card> cards, ArrayList<UUID> uuids) {
-        ArrayList<Card> sorted = new ArrayList<>();
+    public static Arraylist<Card> sortByID(Arraylist<Card> cards, Arraylist<UUID> uuids) {
+        Arraylist<Card> sorted = new Arraylist<>();
         while (!uuids.isEmpty()){
             UUID u = uuids.remove(0);
             for (Card c : cards){
@@ -59,8 +59,8 @@ public abstract class UUIDHelper {
     }
 
     
-    public static ArrayList<Card> getInList(ArrayList<Card> cards, ArrayList<UUID> uuids) {
-        ArrayList<Card> selected = new ArrayList<>();
+    public static Arraylist<Card> getInList(Arraylist<Card> cards, Arraylist<UUID> uuids) {
+        Arraylist<Card> selected = new Arraylist<>();
         for (int i =0; i < cards.size(); i++){
             if(uuids.contains(cards.get(i).id))
                 selected.add(cards.get(i));
@@ -68,8 +68,8 @@ public abstract class UUIDHelper {
         return selected;
     }
 
-    public static ArrayList<Card> getNotInList(ArrayList<Card> cards, ArrayList<UUID> uuids) {
-        ArrayList<Card> selected = new ArrayList<>();
+    public static Arraylist<Card> getNotInList(Arraylist<Card> cards, Arraylist<UUID> uuids) {
+        Arraylist<Card> selected = new Arraylist<>();
         for (int i =0; i < cards.size(); i++){
             if(!uuids.contains(cards.get(i).id))
                 selected.add(cards.get(i));

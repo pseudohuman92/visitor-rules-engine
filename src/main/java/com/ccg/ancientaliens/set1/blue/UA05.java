@@ -12,7 +12,7 @@ import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class UA05 extends Action {
 
-    ArrayList<UUID> targets;
+    Arraylist<UUID> targets;
     
     public UA05(String owner) {
         super("UA01", 1, new Hashmap(BLUE, 2), 
@@ -41,9 +41,9 @@ public class UA05 extends Action {
     @Override
     public void play(Game game) {
         targets = game.selectFromZone(controller, "scrapyard", c->{return c instanceof Item;}, 5, false);
-        ArrayList<UUID> sel = game.selectFromZone(controller, "void", c->{return c instanceof Item;}, 1, false);
+        Arraylist<UUID> sel = game.selectFromZone(controller, "void", c->{return c instanceof Item;}, 1, false);
         targets.addAll(sel);
-        ArrayList<UUID> sel2 = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false);
+        Arraylist<UUID> sel2 = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false);
         targets.addAll(sel2);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -55,7 +55,7 @@ public class UA05 extends Action {
             && game.isIn(controller, targets.get(5), "void")
             && game.isIn(controller, targets.get(6), "play")){
             try {
-                ArrayList<Card> fromScrap = game.extractAll(targets.subList(0, 5));
+                Arraylist<Card> fromScrap = game.extractAll(targets.subList(0, 5));
                 game.putAllTo(controller, fromScrap, "void");
                 Card voidCard = game.getCard(targets.get(5));
                 Card playCard = game.getCard(targets.get(6));

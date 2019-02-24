@@ -30,7 +30,7 @@ public class BA03 extends Action implements Targeting {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasAnInstanceIn(controller, Item.class, "play");
+        return super.canPlay(game) && game.hasInstancesIn(controller, Item.class, "play", 1);
     }
     
     @Override

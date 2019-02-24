@@ -12,7 +12,7 @@ import com.ccg.ancientaliens.game.Player;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -33,10 +33,10 @@ public class BA05 extends Action {
     @Override
     public void resolve (Game game){
         Player p = game.getPlayer(controller);
-        ArrayList<Card> topCards = p.deck.extractFromTop(4);
-        ArrayList<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Trap");}, 1, true);
-        ArrayList<Card> selected = UUIDHelper.getInList(topCards, s);
-        ArrayList<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
+        Arraylist<Card> topCards = p.deck.extractFromTop(4);
+        Arraylist<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Trap");}, 1, true);
+        Arraylist<Card> selected = UUIDHelper.getInList(topCards, s);
+        Arraylist<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
         p.hand.addAll(selected);
         p.deck.putToBottom(notSelected);
         game.putTo(controller, this, "scrapyard");

@@ -2,11 +2,11 @@ package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import com.ccg.ancientaliens.protocol.Types;
 import com.ccg.ancientaliens.protocol.Types.*;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 
@@ -43,7 +43,7 @@ public abstract class Card implements Serializable {
      */
     public String text;
     
-    public ArrayList<String> subtypes;
+    public Arraylist<String> subtypes;
 
     /**
      * Owner of the card. This is the player who started the game with the card in his deck.
@@ -78,7 +78,7 @@ public abstract class Card implements Serializable {
             String text, String owner) {
         id = randomUUID();
         counters = new Hashmap<>();
-        subtypes = new ArrayList<>();
+        subtypes = new Arraylist<>();
         this.name = name;
         this.cost = cost;
         this.knowledge = knowledge;
@@ -135,7 +135,7 @@ public abstract class Card implements Serializable {
 
     public Hashmap<Knowledge, Integer> getKnowledgeType() {
         Hashmap<Knowledge, Integer> knowledgeType = new Hashmap<>();
-        knowledge.forEach((k, i) -> { knowledgeType.put(k, 1);});
+        knowledge.forEach((k, i) -> { knowledgeType.putIn(k, 1);});
         return knowledgeType;
     }
     /**

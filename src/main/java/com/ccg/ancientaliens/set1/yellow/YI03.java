@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 
@@ -39,7 +39,7 @@ public class YI03 extends Item {
         game.spendEnergy(controller, 2);
         game.addToStack(new Activation(controller, "Create and draw YI01 or YI02",
         (g, c) -> {
-            ArrayList<Card> choices = new ArrayList<>();
+            Arraylist<Card> choices = new Arraylist<>();
             choices.add(new Activation(controller, "Create and draw YI01",
                 (g1, c1) -> {
                     g1.putTo(controller, new YI01(controller), "hand");
@@ -48,7 +48,7 @@ public class YI03 extends Item {
                 (g2, c2) -> {
                     g2.putTo(controller, new YI02(controller), "hand");
             }));
-            ArrayList<UUID> selection = g.selectFromList(controller, choices, cx->{return true;}, 1, false);
+            Arraylist<UUID> selection = g.selectFromList(controller, choices, cx->{return true;}, 1, false);
             UUIDHelper.getInList(choices, selection).get(0).resolve(g);
         }));
     }

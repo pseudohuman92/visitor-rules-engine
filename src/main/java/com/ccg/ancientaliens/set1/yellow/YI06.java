@@ -30,7 +30,7 @@ public class YI06 extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasAnInstanceIn(controller, Item.class, "play");
+        return !depleted && game.hasInstancesIn(controller, Item.class, "play", 1);
     }
     
     @Override

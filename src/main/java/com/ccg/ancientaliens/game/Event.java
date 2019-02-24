@@ -7,7 +7,7 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.enums.EventLabel;
 import static com.ccg.ancientaliens.enums.EventLabel.*;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -17,11 +17,11 @@ import java.util.UUID;
 public class Event {
     
     public EventLabel label;
-    public ArrayList<Object> eventData;
+    public Arraylist<Object> eventData;
     
     private Event(EventLabel l){
         label = l;
-        eventData = new ArrayList<>();
+        eventData = new Arraylist<>();
     }
     
     public static Event draw (String username, int count){

@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.set1.blue.UI04;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 
@@ -31,12 +31,12 @@ public class AI02 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasAnInstanceIn(controller, Junk.class, "hand");
+        return game.hasInstancesIn(controller, Junk.class, "hand", 1);
     }
     
     @Override
     public void activate(Game game) {
-        ArrayList<UUID> selected = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false);
         game.purgeByID(controller, selected.get(0));
         game.addToStack(new Activation(controller, 
                 "Opponent purges 5",

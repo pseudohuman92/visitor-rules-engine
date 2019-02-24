@@ -17,7 +17,7 @@ import static com.ccg.ancientaliens.protocol.Types.Counter.CHARGE;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.set1.additional.AI03;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 
@@ -47,14 +47,14 @@ public class UI08 extends Item implements Transforming {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasAnInstanceIn(controller, Junk.class, "hand") 
-            || game.hasAnInstanceIn(controller, Item.class, "play");
+        return game.hasInstancesIn(controller, Junk.class, "hand", 1) 
+            || game.hasInstancesIn(controller, Item.class, "play", 1);
     }
     
     @Override
     public void activate(Game game) {
-        ArrayList<Card> choices = new ArrayList<>();
-        if (game.hasAnInstanceIn(controller, Junk.class, "hand")){
+        Arraylist<Card> choices = new Arraylist<>();
+        if (game.hasInstancesIn(controller, Junk.class, "hand", 1)){
             choices.add(new Activation(controller, "Discard a Junk: Charge 1.",
             (g, c) -> {
                 target = g.selectFromZone(controller, "hand", c1 -> {return c1 instanceof Junk;}, 1, false).get(0);
@@ -69,7 +69,7 @@ public class UI08 extends Item implements Transforming {
                 ));
             }));
         }
-        if (game.hasAnInstanceIn(controller, Item.class, "play")){
+        if (game.hasInstancesIn(controller, Item.class, "play", 1)){
             choices.add(new Activation(controller, "Sacrifice an Item: Charge 1.",
             (g, c) -> {
                 target = g.selectFromZone(controller, "play", c1 -> {return c1 instanceof Item;}, 1, false).get(0);
@@ -84,7 +84,7 @@ public class UI08 extends Item implements Transforming {
                 ));
             }));
         }
-        ArrayList<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
+        Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
         UUIDHelper.getInList(choices, selection).get(0).resolve(game);
     }
 

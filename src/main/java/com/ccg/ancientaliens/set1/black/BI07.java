@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -36,7 +36,7 @@ public class BI07 extends Item implements Targeting {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        ArrayList<UUID> selected = game.selectFromZone(controller, "both play", this::validTarget, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, "both play", this::validTarget, 1, false);
         game.destroy(id);
         game.addToStack(new Activation (controller,
             "Possess target item",

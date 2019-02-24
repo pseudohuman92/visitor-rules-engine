@@ -3,25 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ccg.ancientaliens.set1.yellow;
+package com.ccg.ancientaliens.set1.red;
 
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.game.Game;
-import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import static com.ccg.ancientaliens.protocol.Types.Knowledge.RED;
 import java.util.UUID;
 
 /**
  *
  * @author pseudo
  */
-public class YA02 extends Action {
+public class RA06 extends Action {
 
     UUID target; 
     
-    public YA02(String owner) {
-        super("YA02", 2, new Hashmap(YELLOW, 1), 
+    public RA06(String owner) {
+        super("RA06", 2, new Hashmap(RED, 1), 
                 "Cancel target action.", owner);
     }
     
@@ -40,7 +40,7 @@ public class YA02 extends Action {
     @Override
     public void resolve (Game game){
         Card c = game.extractCard(target);
-        game.putTo(c.controller, c, "scrapyard");
+        game.putTo(c.controller, c, "hand");
         game.putTo(controller, this, "scrapyard");
     }    
 }

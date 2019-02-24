@@ -1,6 +1,6 @@
 package com.ccg.ancientaliens.helpers;
 
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 
 
 /**
@@ -28,7 +28,7 @@ public class Debug {
      * @param indentation
      * @return
      */
-    public static String list(ArrayList<? extends Object> list, String indentation){
+    public static String list(Arraylist<? extends Object> list, String indentation){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++){
             sb.append(indentation).append(list.get(i)).append("\n");

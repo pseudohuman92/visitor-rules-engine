@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.protocol.ServerMessages.NewGame;
 import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,15 +25,15 @@ public class GameServer {
     public Hashmap<String, GeneralEndpoint> playerConnections;
     public Hashmap<UUID, Table> tables;
     public Hashmap<UUID, Game> games;
-    public ArrayList<String> chatLog;
-    public ArrayList<String> gameQueue;
+    public Arraylist<String> chatLog;
+    public Arraylist<String> gameQueue;
 
     public GameServer() {
         playerConnections = new Hashmap<>();
         tables = new Hashmap<>();
-        chatLog = new ArrayList<>();
+        chatLog = new Arraylist<>();
         games = new Hashmap<>();
-        gameQueue = new ArrayList<>();
+        gameQueue = new Arraylist<>();
     }
 
 
@@ -72,11 +72,11 @@ public class GameServer {
     }
 
     synchronized void addConnection(String username, GeneralEndpoint connection) {
-        playerConnections.put(username, connection);
+        playerConnections.putIn(username, connection);
     }
 
     synchronized void removeConnection(String username) {
-        playerConnections.remove(username);
+        playerConnections.removeFrom(username);
         gameQueue.remove(username);
     }
 
@@ -98,7 +98,7 @@ public class GameServer {
             String p1 = gameQueue.remove(0);
             System.out.println("Starting a new game with " + username + " and " + p1);
             Game g = new Game(p1, username);
-            games.put(g.getId(), g);
+            games.putIn(g.getId(), g);
             try {
                 playerConnections.get(p1).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()

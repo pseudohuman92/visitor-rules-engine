@@ -45,7 +45,7 @@ public class YI02 extends Item {
     public void activate(Game game) {
         game.spendEnergy(controller, 3);
         int x = counters.get(CHARGE);
-        counters.remove(CHARGE);
+        counters.removeFrom(CHARGE);
         game.destroy(id);
         
         game.addToStack(new Activation(controller, "Gain reflect " + x,

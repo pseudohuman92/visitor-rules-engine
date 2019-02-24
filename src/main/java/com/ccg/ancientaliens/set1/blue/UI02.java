@@ -13,7 +13,7 @@ import com.ccg.ancientaliens.card.types.Junk;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 
 
 /**
@@ -35,7 +35,7 @@ public class UI02 extends Item {
     
     @Override
     public void activate(Game game) {
-        ArrayList<Card> junks = new ArrayList<>();
+        Arraylist<Card> junks = new Arraylist<>();
         junks.add(new Junk(controller));
         game.shuffleIntoDeck(controller, junks);
         game.deplete(id);

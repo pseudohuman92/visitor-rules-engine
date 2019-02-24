@@ -26,7 +26,7 @@ public class UI06 extends Item{
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasACardIn(controller, "hand");
+        return game.hasCardsIn(controller, "hand", 1);
     }
     
     @Override

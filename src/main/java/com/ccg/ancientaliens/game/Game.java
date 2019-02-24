@@ -16,7 +16,7 @@ import static com.ccg.ancientaliens.protocol.Types.SelectFromType.*;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.List;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
@@ -36,7 +36,7 @@ public class Game {
     Hashmap<String, GameEndpoint> connections;
     String turnPlayer;
     String activePlayer;
-    ArrayList<Card> stack;
+    Arraylist<Card> stack;
     Phase phase;
     int turnCount;
     int passCount;
@@ -46,13 +46,13 @@ public class Game {
         id = randomUUID();
         players = new Hashmap<>();
         connections = new Hashmap<>();
-        stack = new ArrayList<>();
+        stack = new Arraylist<>();
         
         table.creatorDeck.shuffle();
         table.opponentDeck.shuffle();
         
-        players.put(table.creator, new Player(table.creator, table.creatorDeck));
-        players.put(table.opponent, new Player(table.opponent, table.opponentDeck));
+        players.putIn(table.creator, new Player(table.creator, table.creatorDeck));
+        players.putIn(table.opponent, new Player(table.opponent, table.opponentDeck));
         
         phase = MULLIGAN;
         turnPlayer = (random() < 0.5)?table.creator:table.opponent;
@@ -67,10 +67,10 @@ public class Game {
         id = randomUUID();
         players = new Hashmap<>();
         connections = new Hashmap<>();
-        stack = new ArrayList<>();
+        stack = new Arraylist<>();
         
-        players.put(p1, new Player(p1, TestDecks.blackDeck(p1)));
-        players.put(p2, new Player(p2, TestDecks.blueDeck(p2)));
+        players.putIn(p1, new Player(p1, TestDecks.blackDeck(p1)));
+        players.putIn(p2, new Player(p2, TestDecks.blueDeck(p2)));
         
         players.get(p1).deck.shuffle();
         players.get(p2).deck.shuffle();
@@ -85,11 +85,11 @@ public class Game {
     }
 
     public void addConnection(String username, GameEndpoint connection) {
-        connections.put(username, connection);
+        connections.putIn(username, connection);
     }
 
     public void removeConnection(String username) {
-            connections.remove(username);
+            connections.removeFrom(username);
     }
 
     public Card extractCard(UUID targetID) {
@@ -205,7 +205,7 @@ public class Game {
     private void resolveStack() {
         if (passCount == 2) {
             activePlayer = "";
-            Card c = stack.remove(0);
+            Card c = stack.removeFrom(0);
             c.resolve(this);
             updatePlayers();
             if (!stack.isEmpty()){
@@ -243,7 +243,7 @@ public class Game {
     }
     
     //Eventually make this private.
-    public ArrayList<Card> getZone(String username, String zone){
+    public Arraylist<Card> getZone(String username, String zone){
         switch(zone){
             case "deck":
                 return players.get(username).deck;
@@ -258,7 +258,7 @@ public class Game {
             case "stack":
                 return stack;
             case "both play":
-                ArrayList<Card> total = new ArrayList<>();
+                Arraylist<Card> total = new Arraylist<>();
                 total.addAll(players.get(username).playArea);
                 total.addAll(players.get(getOpponentName(username)).playArea);
                 return total;
@@ -271,12 +271,16 @@ public class Game {
         return getZone(username, zone).parallelStream().filter(validTarget).count() >= count;
     }
     
-     public boolean hasACardIn(String username, String zone) {
-         return !getZone(username, zone).isEmpty();
+     public boolean hasCardsIn(String username, String zone, int count) {
+         return getZone(username, zone).size() >= count;
     }
     
     public void putTo(String username, Card c, String zone) {
         getZone(username, zone).add(c);
+    }
+    
+    public void putTo(String username, Card c, String zone, int index) {
+        getZone(username, zone).add(index, c);
     }
     
     public void addEnergy(String username, int i) {
@@ -318,7 +322,7 @@ public class Game {
     }
     
     public void discard(String username, UUID cardID){
-        ArrayList<UUID> temp = new ArrayList<>();
+        Arraylist<UUID> temp = new Arraylist<>();
         temp.add(cardID);
         players.get(username).discard(temp);
     }
@@ -366,8 +370,8 @@ public class Game {
         return getZone(username, zone).parallelStream().anyMatch(getCard(cardID)::equals);
     }
     
-    public boolean hasAnInstanceIn(String username, Class c, String zone) {
-        return getZone(username, zone).parallelStream().anyMatch(c::isInstance);
+    public boolean hasInstancesIn(String username, Class c, String zone, int count) {
+        return getZone(username, zone).parallelStream().filter(c::isInstance).count() >= count;
     }
 
     public void replaceWith(Card oldCard, Card newCard) {
@@ -380,14 +384,14 @@ public class Game {
         }
     }
 
-    public ArrayList<Card> extractAllCopiesFrom(String username, String cardName, String zone) {
-        ArrayList<Card> cards = new ArrayList<>(getZone(username, zone).parallelStream()
+    public Arraylist<Card> extractAllCopiesFrom(String username, String cardName, String zone) {
+        Arraylist<Card> cards = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(c -> { return c.name.equals(cardName);}).collect(Collectors.toList()));
         getZone(username, zone).removeAll(cards);
         return cards;
     }
 
-    public void putAllTo(String username, ArrayList<Card> cards, String zone) {
+    public void putAllTo(String username, Arraylist<Card> cards, String zone) {
         getZone(username, zone).addAll(cards);
     }
     
@@ -398,11 +402,11 @@ public class Game {
         replaceWith(c, j);
     }
 
-    public ArrayList<Card> extractAll(List<UUID> list) {
-        return new ArrayList<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
+    public Arraylist<Card> extractAll(List<UUID> list) {
+        return new Arraylist<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
     }
     
-    public void shuffleIntoDeck(String username, ArrayList<Card> cards) {
+    public void shuffleIntoDeck(String username, Arraylist<Card> cards) {
         players.get(username).deck.shuffleInto(cards);
     }
 
@@ -438,9 +442,7 @@ public class Game {
             connections.get(username).send(
                     ServerGameMessage.newBuilder().setSelectXValue(b));
             
-            System.out.println("Waiting discard!");
             int l = (int)connections.get(username).getResponse();
-            System.out.println("Done waiting!");
             return l;
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -448,7 +450,7 @@ public class Game {
         return 0;
     }
     
-    public ArrayList<UUID> selectFrom(String username, SelectFromType type, ArrayList<Card> candidates, ArrayList<UUID> canSelect, int count, boolean upTo){
+    public Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, int count, boolean upTo){
         /*
         if (canSelect.size() == count || (canSelect.size() < count && upTo)){
             return canSelect;
@@ -474,14 +476,14 @@ public class Game {
         return null;
     }
     
-    public ArrayList<UUID> selectFromZone(String username, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
-        ArrayList<UUID> canSelect = new ArrayList<>(getZone(username, zone).parallelStream()
+    public Arraylist<UUID> selectFromZone(String username, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
+        Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(username, getZoneLabel(zone), new ArrayList<>(), canSelect, count, upTo);
+        return selectFrom(username, getZoneLabel(zone), new Arraylist<>(), canSelect, count, upTo);
     }
 
-    public ArrayList<UUID> selectFromList(String username, ArrayList<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
-        ArrayList<UUID> canSelect = new ArrayList<>(candidates.parallelStream()
+    public Arraylist<UUID> selectFromList(String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
+        Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
         return selectFrom(username, LIST, candidates, canSelect, count, upTo);
     }
@@ -492,9 +494,7 @@ public class Game {
         try {
             connections.get(username).send(
                     ServerGameMessage.newBuilder().setSelectPlayer(b));
-            System.out.println("Waiting targets!");
             String selection = (String)connections.get(username).getResponse();
-            System.out.println("Done waiting!");
             return selection;
         } catch (IOException | EncodeException | InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);

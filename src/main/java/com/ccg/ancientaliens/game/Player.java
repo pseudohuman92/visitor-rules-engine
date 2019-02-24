@@ -6,7 +6,7 @@ import com.ccg.ancientaliens.protocol.Types.KnowledgeGroup;
 import com.ccg.ancientaliens.protocol.Types.*;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.Serializable;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
@@ -23,10 +23,10 @@ public class Player implements Serializable {
     public int maxEnergy;
     public int numOfStudiesLeft;
     public Deck deck;
-    public ArrayList<Card> hand;
-    public ArrayList<Card> scrapyard;
-    public ArrayList<Card> voidPile;
-    public ArrayList<Card> playArea;
+    public Arraylist<Card> hand;
+    public Arraylist<Card> scrapyard;
+    public Arraylist<Card> voidPile;
+    public Arraylist<Card> playArea;
     public Hashmap<Knowledge, Integer> knowledgePool;
     
     public int shield;
@@ -44,10 +44,10 @@ public class Player implements Serializable {
         energy = 0;
         maxEnergy = 0;
         numOfStudiesLeft = 1;
-        hand = new ArrayList<>();
-        scrapyard = new ArrayList<>();
-        voidPile = new ArrayList<>();
-        playArea = new ArrayList<>();
+        hand = new Arraylist<>();
+        scrapyard = new Arraylist<>();
+        voidPile = new Arraylist<>();
+        playArea = new Arraylist<>();
         knowledgePool = new Hashmap<>();
         shield = 0;
         reflect = 0;
@@ -75,7 +75,7 @@ public class Player implements Serializable {
         return temp;
     }
 
-    public void discard(ArrayList<UUID> cards){
+    public void discard(Arraylist<UUID> cards){
         cards.stream().map((cardID) -> extractCardFrom(cardID, hand))
                 .forEachOrdered((card) -> { scrapyard.add(card); });     
     }
@@ -84,7 +84,7 @@ public class Player implements Serializable {
         int size = hand.size();
         if(size > 0){
             deck.addAll(hand);
-            hand = new ArrayList<>();
+            hand = new Arraylist<>();
             deck.shuffle();
             draw(size -1);
         }
@@ -111,7 +111,7 @@ public class Player implements Serializable {
         return result;
     }
 
-    public Card extractCardFrom (UUID cardID, ArrayList<Card> list){
+    public Card extractCardFrom (UUID cardID, Arraylist<Card> list){
         for (Card card : list) {
             if(card.id.equals(cardID)){
                 list.remove(card);
@@ -123,13 +123,13 @@ public class Player implements Serializable {
     
     public Card extractCard(UUID cardID) {
         Card c; 
-        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
         lists.add(scrapyard); 
         lists.add(voidPile);
         lists.add(deck);
-        for (ArrayList<Card> list : lists){ 
+        for (Arraylist<Card> list : lists){ 
             c = extractCardFrom (cardID, list);
             if (c != null) {
                 return c;
@@ -138,7 +138,7 @@ public class Player implements Serializable {
         return null;
     }
     
-    public Card getCardFrom (UUID cardID, ArrayList<Card> list){
+    public Card getCardFrom (UUID cardID, Arraylist<Card> list){
         for (Card card : list) {
             if(card.id.equals(cardID)){ 
                 return card;
@@ -149,13 +149,13 @@ public class Player implements Serializable {
     
     public Card getCard(UUID cardID) {
         Card c; 
-        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
         lists.add(scrapyard); 
         lists.add(voidPile);
         lists.add(deck);
-        for (ArrayList<Card> list : lists){ 
+        for (Arraylist<Card> list : lists){ 
             c = getCardFrom (cardID, list);
             if (c != null) {
                 return c;
@@ -165,13 +165,13 @@ public class Player implements Serializable {
     }
     
     void replaceWith(Card oldCard, Card newCard) {
-        ArrayList<ArrayList<Card>> lists = new ArrayList<>();
+        Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
         lists.add(scrapyard); 
         lists.add(voidPile);
         lists.add(deck);
-        for (ArrayList<Card> list : lists){ 
+        for (Arraylist<Card> list : lists){ 
             for (int i = 0; i < list.size(); i++){
                 if(list.get(i).equals(oldCard)){
                     list.remove(i);

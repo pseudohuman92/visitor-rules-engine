@@ -15,7 +15,7 @@ import com.ccg.ancientaliens.game.Player;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 
@@ -45,12 +45,12 @@ public class UI05 extends Item{
                 + "Draw one, transform other into junk and shuffle into the deck.",
                 (g , c) -> { 
                     Player p = g.getPlayer(c.controller);
-                    ArrayList<Card> cand = p.deck.extractFromTop(2);
-                    ArrayList<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
+                    Arraylist<Card> cand = p.deck.extractFromTop(2);
+                    Arraylist<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
                     p.hand.addAll(UUIDHelper.getInList(cand, selected));
                     Junk j = new Junk();
                     j.copyPropertiesFrom(UUIDHelper.getNotInList(cand, selected).get(0));
-                    ArrayList<Card> cards = new ArrayList<>();
+                    Arraylist<Card> cards = new Arraylist<>();
                     cards.add(j);
                     g.shuffleIntoDeck(j.controller, cards);
                 }));

@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import static java.lang.Integer.parseInt;
 import java.security.SecureRandom;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -15,7 +15,7 @@ import java.util.Scanner;
  *
  * @author pseudo
  */
-public class Deck extends ArrayList<Card> implements Serializable {
+public class Deck extends Arraylist<Card> implements Serializable {
 
     public Deck(String username){
     }
@@ -41,8 +41,8 @@ public class Deck extends ArrayList<Card> implements Serializable {
         deckFile.close();
     }
   
-    public ArrayList<Card> extractFromTop(int count){
-        ArrayList<Card> cards = new ArrayList<>();
+    public Arraylist<Card> extractFromTop(int count){
+        Arraylist<Card> cards = new Arraylist<>();
         for (int i = 0; i < count && !isEmpty(); i++){
             cards.add(remove(0));
         }
@@ -58,8 +58,8 @@ public class Deck extends ArrayList<Card> implements Serializable {
         return null;
     }
     
-    public ArrayList<Card> getFromTop(int count){
-        ArrayList<Card> cards = new ArrayList<>();
+    public Arraylist<Card> getFromTop(int count){
+        Arraylist<Card> cards = new Arraylist<>();
         for (int i = 0; i < count && i < size(); i++){
             cards.add(get(i));
         }
@@ -74,19 +74,19 @@ public class Deck extends ArrayList<Card> implements Serializable {
         return true;
     }
 
-    public void putTo(ArrayList<Card> cards, int index){
+    public void putTo(Arraylist<Card> cards, int index){
         addAll(index, cards);
     }
     
-    public void putToBottom(ArrayList<Card> cards){
+    public void putToBottom(Arraylist<Card> cards){
         putTo(cards, size()-1);
     }
     
-    public void putToTop(ArrayList<Card> cards){
+    public void putToTop(Arraylist<Card> cards){
         putTo(cards, 0);
     }
  
-    public void shuffleInto(ArrayList<Card> cards) {
+    public void shuffleInto(Arraylist<Card> cards) {
         SecureRandom rand = new SecureRandom();
         for (int i = 0; i < cards.size(); i++){
             add(rand.nextInt(size()), cards.get(i));

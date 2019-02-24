@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -27,7 +27,7 @@ public class UA01 extends Action {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasACardIn(controller, "scrapyard");
+        return super.canPlay(game) && game.hasCardsIn(controller, "scrapyard", 1);
     }
     
     @Override
@@ -41,7 +41,7 @@ public class UA01 extends Action {
     public void resolve (Game game){
         if(game.isIn(controller, target, "scrapyard")){
             Card c = game.getCard(target);
-            ArrayList<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
+            Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
             game.putAllTo(controller, cards, "void");
             game.purge(game.getOpponentName(controller), cards.size());
         }

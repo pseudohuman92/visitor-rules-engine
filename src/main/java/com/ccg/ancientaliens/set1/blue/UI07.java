@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.ArrayList;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 
 /**
@@ -43,7 +43,7 @@ public class UI07 extends Item {
             "  Choose a card that costs X or less from it. \n" +
             "  Transform chosen card into junk.",
         (g, cx) -> {
-            ArrayList<UUID> s = g.selectFromList(controller, g.getZone(g.getOpponentName(controller), "deck"), c->{return c.cost <= x;}, 1, true);
+            Arraylist<UUID> s = g.selectFromList(controller, g.getZone(g.getOpponentName(controller), "deck"), c->{return c.cost <= x;}, 1, true);
             if (!s.isEmpty()){
                 game.transformToJunk(s.get(0));
             }
