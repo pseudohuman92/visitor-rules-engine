@@ -252,14 +252,16 @@ function handleKeep(ws, params) {
   //});
   sendGameMsg(ws, 'SelectFrom', {
     game: gameState,
+    messageType: 1,
     selectionCount: 2,
     candidates: cards.slice(0, 4),
-    canSelected: ['1', '3'],
-    upTo: false,
+    canSelected: ['b', 'd'],
+    upTo: true,
   });
 }
 function handleConcede(ws, params) {}
 function handleOrderCardsResponse(ws, params) {}
+function handleSelectFromResponse(ws, params) {}
 function handleSelectFromHandResponse(ws, params) {}
 function handleSelectFromListResponse(ws, params) {}
 function handleSelectFromPlayResponse(ws, params) {}
@@ -286,11 +288,7 @@ gameSocket.on('connection', function connection(ws) {
       keep: handleKeep,
       concede: handleConcede,
       orderCardsResponse: handleOrderCardsResponse,
-      selectFromHandResponse: handleSelectFromHandResponse,
-      selectFromListResponse: handleSelectFromListResponse,
-      selectFromPlayResponse: handleSelectFromPlayResponse,
-      selectFromScrapyardResponse: handleSelectFromScrapyardResponse,
-      selectFromVoidResponse: handleSelectFromVoidResponse,
+      selectFromResponse: handleSelectFromResponse,
       selectPlayerResponse: handleSelectPlayerResponse,
     }[msg.payload];
     console.log('[recvGameMsg]', msg[msg.payload]);

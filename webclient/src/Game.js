@@ -144,20 +144,32 @@ export function StudyCard(cardID) {
   });
 }
 
-export function SelectCard(cardID) {
-  const selectCount = gameState.lastMsg.selectionCount;
-  gameState.selectedCards.push(cardID);
-  if (gameState.selectedCards.length === selectCount) {
-    gameState.send(gameState.phase + 'Response', {
-      gameID: gameState.gameID,
-      selectedCards: gameState.selectedCards,
-    });
-    gameState.selectedCards = [];
-    gameState.phase = GamePhases.DONE_SELECT;
-  }
+export function SelectDone() {
+  gameState.send('SelectFromResponse', {
+    gameID: gameState.gameID,
+    messageType: gameState.lastMsg.messageType,
+    selectedCards: gameState.selectedCards,
+  });
+  gameState.selectedCards = [];
+  gameState.phase = GamePhases.DONE_SELECT;
+
   gameState.updateViewHandler(
     gameState.lastMsg,
     gameState.phase,
     gameState.selectedCards,
   );
+}
+
+export function SelectCard(cardID) {
+  const selectCount = gameState.lastMsg.selectionCount;
+  gameState.selectedCards.push(cardID);
+  if (gameState.selectedCards.length === selectCount) {
+    SelectDone();
+  } else {
+    gameState.updateViewHandler(
+      gameState.lastMsg,
+      gameState.phase,
+      gameState.selectedCards,
+    );
+  }
 }

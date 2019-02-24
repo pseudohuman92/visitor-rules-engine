@@ -30,7 +30,7 @@ class App extends Component {
     this.state = {
       game: {},
       phase: GamePhases.NOT_STARTED,
-      dialog: {title: '', cards: [], open: false},
+      dialog: {title: '', cards: [], open: false, upTo: false},
       waiting: false,
       selectedCards: [],
       selectableCards: [],
@@ -199,6 +199,7 @@ class App extends Component {
           open: true,
           title: `Select ${params.selectionCount} from the following`,
           cards: params.candidates,
+          upTo: params.upTo,
         };
       }
     }
@@ -257,6 +258,7 @@ class App extends Component {
         title={dialog.title}
         cards={dialog.cards}
         open={dialog.open}
+        upTo={dialog.upTo}
         selectedCards={selectedCards}
         selectableCards={selectableCards}
         onClose={event => {
