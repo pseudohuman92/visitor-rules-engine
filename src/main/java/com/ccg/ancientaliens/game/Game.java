@@ -354,6 +354,14 @@ public class Game {
             current = getOpponentName(current);
         } while(ret > 0);
     }
+    
+    public void purgeSelf(String username, int count){
+        Player player = players.get(username);
+        player.purgeSelf(count);
+        if (player.deck.isEmpty()){
+            lose(username);
+        }
+    }
 
     public void possessTo(String newController, UUID cardID, String zone) {
         Card c = extractCard(cardID);
@@ -610,5 +618,9 @@ public class Game {
     //Eventually get rid of this
     public Player getPlayer(String username) {
         return players.get(username);
+    }
+
+    public int getEnergy(String controller) {
+        return players.get(controller).energy;
     }
 }

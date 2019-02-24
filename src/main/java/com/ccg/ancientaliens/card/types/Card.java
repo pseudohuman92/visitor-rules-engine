@@ -153,6 +153,15 @@ public abstract class Card implements Serializable {
     public void addCounters(Counter name, int count) {
         counters.merge(name, count, (a, b) -> a + b);
     }
+    
+    public void removeCounters(Counter name, int count) {
+        int k = counters.get(name);
+        if (k <= count){
+            counters.remove(name);
+        } else {
+            counters.put(name, k - count);
+        }
+    }
 
     /**
      * Function that clears status flags and supplementary data of the card.

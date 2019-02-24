@@ -35,15 +35,13 @@ public class RI03 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted 
-                && counters.containsKey(CHARGE)
-                && counters.get(CHARGE) > 0;
+        return !depleted && counters.getOrDefault(CHARGE, 0) > 0;
     }
 
     @Override
     public void activate(Game game) {
         game.deplete(id);
-        counters.put(CHARGE, counters.get(CHARGE) - 1);
+        removeCounters(CHARGE, 1);
         game.addToStack(new Activation (controller,
             "Opponent purges 3.",
             (g, cx) -> {

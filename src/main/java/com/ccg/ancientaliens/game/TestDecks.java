@@ -8,6 +8,7 @@ package com.ccg.ancientaliens.game;
 import com.ccg.ancientaliens.set1.black.*;
 import com.ccg.ancientaliens.set1.blue.*;
 import com.ccg.ancientaliens.set1.yellow.*;
+import com.ccg.ancientaliens.set1.red.*;
 
 /**
  *
@@ -67,10 +68,35 @@ public class TestDecks {
             d.add(new YA03(username));
             d.add(new YA04(username));
             d.add(new YA05(username));
+            d.add(new YA06(username));
             
             d.add(new YI01(username));
             d.add(new YI02(username));
             d.add(new YI03(username));
+            d.add(new YI04(username));
+            d.add(new YI05(username));
+            d.add(new YI06(username));
+        }
+        return d;
+    }
+    
+    public static Deck redDeck(String username){
+        Deck d = new Deck(username);
+        for (int i = 0; i < 3; i++){
+            
+            d.add(new RA01(username));
+            d.add(new RA02(username));
+            d.add(new RA03(username));
+            d.add(new RA04(username));
+            d.add(new RA05(username));
+            d.add(new RA06(username));
+            
+            d.add(new RI01(username));
+            d.add(new RI02(username));
+            d.add(new RI03(username));
+            d.add(new RI05(username));
+            d.add(new RI06(username));
+            d.add(new RI07(username));
         }
         return d;
     }

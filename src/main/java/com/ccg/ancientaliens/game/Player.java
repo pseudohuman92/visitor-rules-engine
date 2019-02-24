@@ -224,4 +224,9 @@ public class Player implements Serializable {
         });
         return b;
     }
+
+    void purgeSelf(int count) {
+        voidPile.addAll(deck.extractFromTop(count));    
+    }
+    
 }
