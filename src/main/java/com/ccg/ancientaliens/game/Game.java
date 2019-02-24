@@ -35,7 +35,7 @@ public class Game {
     Hashmap<String, Player> players;
     Hashmap<String, GameEndpoint> connections;
     String turnPlayer;
-    String activePlayer;
+    public String activePlayer;
     Arraylist<Card> stack;
     Phase phase;
     int turnCount;
@@ -553,19 +553,21 @@ public class Game {
             b.addStack(stack.get(i).toCardMessage());
         }
         players.forEach((s, p) -> {
-            p.hand.forEach(c -> {
-                if(c.canPlay(this)){
-                    b.addCanPlay(c.id.toString());
-                }
-                if(c.canStudy(this)){
-                    b.addCanStudy(c.id.toString());
-                }
-            });
-            p.playArea.forEach(c -> {
-                if(c instanceof Activatable && ((Activatable)c).canActivate(this)){
-                    b.addCanActivate(c.id.toString());
-                }
-            });
+            if(isActive(s)){
+                p.hand.forEach(c -> {
+                    if(c.canPlay(this)){
+                        b.addCanPlay(c.id.toString());
+                    }
+                    if(c.canStudy(this)){
+                        b.addCanStudy(c.id.toString());
+                    }
+                });
+                p.playArea.forEach(c -> {
+                    if(c instanceof Activatable && ((Activatable)c).canActivate(this)){
+                        b.addCanActivate(c.id.toString());
+                    }
+                });
+            }
         });
         return b;
     }
@@ -621,5 +623,9 @@ public class Game {
 
     public int getEnergy(String controller) {
         return players.get(controller).energy;
+    }
+
+    public boolean isActive(String username) {
+        return activePlayer.equals(username);
     }
 }
