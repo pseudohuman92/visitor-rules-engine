@@ -69,8 +69,8 @@ public class Game {
         connections = new Hashmap<>();
         stack = new Arraylist<>();
         
-        players.putIn(p1, new Player(p1, TestDecks.blackDeck(p1)));
-        players.putIn(p2, new Player(p2, TestDecks.blueDeck(p2)));
+        players.putIn(p1, new Player(p1, TestDecks.randomDeck(p1)));
+        players.putIn(p2, new Player(p2, TestDecks.randomDeck(p2)));
         
         players.get(p1).deck.shuffle();
         players.get(p2).deck.shuffle();
