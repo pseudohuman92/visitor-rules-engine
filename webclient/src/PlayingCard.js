@@ -5,10 +5,15 @@ import {DragSource, DropTarget} from 'react-dnd';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
 import './PlayingCard.css';
+
+import proto from './protojs/compiled.js';
 
 const cardSource = {
   beginDrag(props) {
@@ -67,6 +72,9 @@ export class PlayingCard extends React.Component {
       connectDropTarget,
       selectable,
       selected,
+      cost,
+      knowledgeCost,
+      counters,
     } = this.props;
 
     var opacity = 1,
@@ -95,6 +103,16 @@ export class PlayingCard extends React.Component {
       opacity = 0.7;
     }
 
+    const knowledgeMap = {};
+    knowledgeMap[proto.Knowledge.BLACK] = 'B';
+    knowledgeMap[proto.Knowledge.GREEN] = 'G';
+    knowledgeMap[proto.Knowledge.RED] = 'R';
+    knowledgeMap[proto.Knowledge.BLUE] = 'U';
+    knowledgeMap[proto.Knowledge.YELLOW] = 'Y';
+
+    const counterMap = {};
+    counterMap[proto.Counter.CHARGE] = 'Charge';
+
     return connectDropTarget(
       connectDragSource(
         <div>
@@ -103,9 +121,34 @@ export class PlayingCard extends React.Component {
               opacity: opacity,
               border: border,
             }}
-            onClick={clickHandler}>
-            <CardHeader title={name} />
-            <CardContent>{/*description*/}</CardContent>
+            onClick={clickHandler}
+            className="playing-card">
+            <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
+            <CardContent>
+              <Grid container spacing={8}>
+                <Grid item xs={4}>
+                  <TextField
+                    variant="filled"
+                    InputProps={{readOnly: true}}
+                    value={knowledgeCost.map(
+                      knowledge =>
+                        `${knowledgeMap[knowledge.knowledge]}${
+                          knowledge.count
+                        }`,
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={8}>
+                  <TextField
+                    variant="filled"
+                    InputProps={{readOnly: true}}
+                    value={counters.map(
+                      c => `${counterMap[c.counter]}: ${c.count}`,
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
           </Card>
         </div>,
       ),

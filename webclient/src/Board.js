@@ -3,6 +3,8 @@ import React from 'react';
 import {DropTarget} from 'react-dnd';
 
 import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 import PlayingCard from './PlayingCard.js';
 import {ItemTypes, FieldIDs} from './Constants.js';
@@ -48,9 +50,9 @@ class BoardSide extends React.Component {
 
     return connectDropTarget(
       <div style={{height: '100%'}}>
-        <Grid container spacing={0} style={style} className="board-side">
+        <GridList cols={1} className="board-side">
           {cards.map(card => (
-            <Grid item xs={1} key={card.id}>
+            <GridListTile key={card.id}>
               <PlayingCard
                 playable={false}
                 activatable={activatableCards.includes(card.id)}
@@ -59,9 +61,9 @@ class BoardSide extends React.Component {
                 studyable={false}
                 {...card}
               />
-            </Grid>
+            </GridListTile>
           ))}
-        </Grid>
+        </GridList>
       </div>,
     );
   }
@@ -83,9 +85,9 @@ class Hand extends React.Component {
       studyableCards,
     } = this.props;
     return (
-      <Grid container spacing={0} className="hand">
+      <GridList cols={1} className="hand">
         {this.props.cards.map(card => (
-          <Grid item xs={1} key={card.id}>
+          <GridListTile key={card.id}>
             <PlayingCard
               playable={playableCards.includes(card.id)}
               activatable={false}
@@ -94,9 +96,9 @@ class Hand extends React.Component {
               studyable={studyableCards.includes(card.id)}
               {...card}
             />
-          </Grid>
+          </GridListTile>
         ))}
-      </Grid>
+      </GridList>
     );
   }
 }

@@ -15,6 +15,14 @@ const cards = 'abcdefghijklmnopqrstuvwxyz'.split('').map(l => ({
   depleted: false,
   marked: false,
   targets: [],
+  cost: 4,
+  knowledgeCost: [
+    {
+      knowledge: 2,
+      count: 2,
+    },
+  ],
+  counters: [{counter: 1, count: 5}],
 }));
 const myHandCards = cards.slice(0, 3);
 const garyHandSize = 4;
