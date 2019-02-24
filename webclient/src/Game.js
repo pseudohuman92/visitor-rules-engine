@@ -13,6 +13,7 @@ export const GamePhases = {
   SELECT_FROM_HAND: 'SelectFromHand',
   SELECT_FROM_SCRAPYARD: 'SelectFromScrapyard',
   SELECT_FROM_VOID: 'SelectFromVoid',
+  SELECT_FROM_STACK: 'SelectFromStack',
   SELECT_X_VALUE: 'SelectXValue',
   SELECT_PLAYER: 'SelectPlayer',
   DONE_SELECT: 'DoneSelect',
@@ -25,6 +26,7 @@ export function IsSelectCardPhase(phase) {
     GamePhases.SELECT_FROM_HAND,
     GamePhases.SELECT_FROM_SCRAPYARD,
     GamePhases.SELECT_FROM_VOID,
+    GamePhases.SELECT_FROM_STACK,
   ].includes(phase);
 }
 

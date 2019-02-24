@@ -303,7 +303,7 @@ class App extends Component {
                 upTo={upTo}
               />
             </Grid>
-            <Grid item xs={9} className="display-col">
+            <Grid item xs={8} className="display-col">
               <Board
                 game={game}
                 phase={phase}
@@ -311,23 +311,22 @@ class App extends Component {
                 selectableCards={selectableCards}
               />
             </Grid>
-            <Grid item xs={1} className="display-col">
+            <Grid item xs={2} className="display-col">
               <Grid
                 container
                 spacing={24}
                 style={{
-                  padding: 0,
+                  //padding: 0,
                   height: '100%',
-                }}
-                direction="column">
-                <Grid item xs={9} className="grid-col-item no-max-width">
+                }}>
+                <Grid item xs={12} style={{height: '75%'}}>
                   <Stack
                     cards={game.stack}
                     selectedCards={selectedCards}
                     selectableCards={selectableCards}
                   />
                 </Grid>
-                <Grid item xs={3} className="grid-col-item no-max-width">
+                <Grid item xs={12} style={{height: '25%'}}>
                   <Altar hasStudyable={hasStudyable} />
                 </Grid>
               </Grid>

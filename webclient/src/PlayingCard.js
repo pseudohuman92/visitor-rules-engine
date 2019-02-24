@@ -113,45 +113,41 @@ export class PlayingCard extends React.Component {
     const counterMap = {};
     counterMap[proto.Counter.CHARGE] = 'Charge';
 
-    return connectDropTarget(
-      connectDragSource(
-        <div>
-          <Card
-            style={{
-              opacity: opacity,
-              border: border,
-            }}
-            onClick={clickHandler}
-            className="playing-card">
-            <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
-            <CardContent>
-              <Grid container spacing={8}>
-                <Grid item xs={4}>
-                  <TextField
-                    variant="filled"
-                    InputProps={{readOnly: true}}
-                    value={knowledgeCost.map(
-                      knowledge =>
-                        `${knowledgeMap[knowledge.knowledge]}${
-                          knowledge.count
-                        }`,
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    variant="filled"
-                    InputProps={{readOnly: true}}
-                    value={counters.map(
-                      c => `${counterMap[c.counter]}: ${c.count}`,
-                    )}
-                  />
-                </Grid>
+    return connectDragSource(
+      <div style={{display: 'inline-block'}}>
+        <Card
+          style={{
+            opacity: opacity,
+            border: border,
+          }}
+          onClick={clickHandler}
+          className="playing-card">
+          <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
+          <CardContent>
+            <Grid container spacing={8}>
+              <Grid item xs={4}>
+                <TextField
+                  variant="filled"
+                  InputProps={{readOnly: true}}
+                  value={knowledgeCost.map(
+                    knowledge =>
+                      `${knowledgeMap[knowledge.knowledge]}${knowledge.count}`,
+                  )}
+                />
               </Grid>
-            </CardContent>
-          </Card>
-        </div>,
-      ),
+              <Grid item xs={8}>
+                <TextField
+                  variant="filled"
+                  InputProps={{readOnly: true}}
+                  value={counters.map(
+                    c => `${counterMap[c.counter]}: ${c.count}`,
+                  )}
+                />
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </div>,
     );
   }
 }

@@ -24,7 +24,7 @@ const cards = 'abcdefghijklmnopqrstuvwxyz'.split('').map(l => ({
   ],
   counters: [{counter: 1, count: 5}],
 }));
-const myHandCards = cards.slice(0, 3);
+const myHandCards = cards.slice(0, 10);
 const garyHandSize = 4;
 const myScrapCards = cards.slice(7, 9);
 const garyScrapCards = cards.slice(9, 10);
@@ -32,7 +32,7 @@ const myVoidCards = cards.slice(10, 12);
 const garyVoidCards = [];
 const myPlayCards = cards.slice(12, 16);
 const garyPlayCards = cards.slice(16, 19);
-const stackCards = cards.slice(19, 23);
+const stackCards = cards.slice(10, 23);
 
 const me = {
   id: 'me',
@@ -88,7 +88,7 @@ const gameState = {
   opponent: gary,
   turnPlayer: me.name,
   activePlayer: me.name,
-  stackCards: stackCards,
+  stack: stackCards,
   canActivate: [myPlayCards[0].id, myPlayCards[2].id],
   canPlay: [myHandCards[0].id, myHandCards[2].id],
   canStudy: [myHandCards[0].id, myHandCards[1].id],
@@ -273,8 +273,16 @@ function handleKeep(ws, params) {
   //  game: gameState,
   //  maxXValue: 6,
   //});
-  sendGameMsg(ws, 'SelectPlayer', {
+  //sendGameMsg(ws, 'SelectPlayer', {
+  //  game: gameState,
+  //});
+  sendGameMsg(ws, 'SelectFrom', {
     game: gameState,
+    messageType: 7,
+    selectionCount: 2,
+    candidates: stackCards,
+    canSelected: ['n', 'p', 's', 't', 'w'],
+    upTo: true,
   });
 }
 function handleConcede(ws, params) {}

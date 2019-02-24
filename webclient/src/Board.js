@@ -50,9 +50,12 @@ class BoardSide extends React.Component {
 
     return connectDropTarget(
       <div style={{height: '100%'}}>
-        <GridList cols={1} className="board-side">
+        <GridList
+          cols={6}
+          className="board-side"
+          style={{flexWrap: 'nowrap', ...style}}>
           {cards.map(card => (
-            <GridListTile key={card.id}>
+            <GridListTile key={card.id} style={{height: '100%'}}>
               <PlayingCard
                 playable={false}
                 activatable={activatableCards.includes(card.id)}
@@ -85,9 +88,9 @@ class Hand extends React.Component {
       studyableCards,
     } = this.props;
     return (
-      <GridList cols={1} className="hand">
+      <GridList cols={6} className="hand" style={{flexWrap: 'nowrap'}}>
         {this.props.cards.map(card => (
-          <GridListTile key={card.id}>
+          <GridListTile key={card.id} style={{height: '100%'}}>
             <PlayingCard
               playable={playableCards.includes(card.id)}
               activatable={false}
@@ -133,13 +136,12 @@ export default class Board extends React.Component {
     return (
       <Grid
         container
-        direction="column"
         spacing={0}
         style={{
           margin: '-12px 0px',
           height: '100%',
         }}>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs={12} style={{height: '32%'}}>
           <BoardSide
             id={FieldIDs.GARY_FIELD}
             cards={garyPlayCards}
@@ -148,7 +150,7 @@ export default class Board extends React.Component {
             activatableCards={[]}
           />
         </Grid>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs={12} style={{height: '32%'}}>
           <BoardSide
             id={FieldIDs.MY_FIELD}
             cards={myPlayCards}
@@ -157,7 +159,7 @@ export default class Board extends React.Component {
             activatableCards={activatableCards}
           />
         </Grid>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs={12} style={{height: '32%'}}>
           <Hand
             cards={myHandCards}
             selectableCards={selectableCards}
