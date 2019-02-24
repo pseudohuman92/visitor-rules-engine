@@ -31,11 +31,12 @@ class App extends Component {
     this.state = {
       game: {},
       phase: GamePhases.NOT_STARTED,
-      dialog: {title: '', cards: [], open: false, upTo: false},
+      dialog: {title: '', cards: [], open: false},
       waiting: false,
       selectedCards: [],
       selectableCards: [],
       maxXValue: 0,
+      upTo: false,
     };
 
     const me = {
@@ -173,6 +174,7 @@ class App extends Component {
 
     if (IsSelectCardPhase(phase) && selectedCards === null) {
       toUpdate.selectableCards = params.canSelected;
+      toUpdate.upTo = params.upTo;
     }
 
     if (this.state.waiting) {
@@ -201,7 +203,6 @@ class App extends Component {
           open: true,
           title: `Select ${params.selectionCount} from the following`,
           cards: params.candidates,
-          upTo: params.upTo,
         };
       }
     }
@@ -254,6 +255,7 @@ class App extends Component {
       phase,
       game,
       selectableCards,
+      upTo,
       maxXValue,
     } = this.state;
     const hasStudyable =
@@ -266,7 +268,7 @@ class App extends Component {
         title={dialog.title}
         cards={dialog.cards}
         open={dialog.open}
-        upTo={dialog.upTo}
+        upTo={upTo}
         selectedCards={selectedCards}
         selectableCards={selectableCards}
         onClose={event => {
@@ -297,6 +299,7 @@ class App extends Component {
                 game={game}
                 phase={phase}
                 updateDialog={this.updateDialog}
+                upTo={upTo}
               />
             </Grid>
             <Grid item xs={9} className="display-col">

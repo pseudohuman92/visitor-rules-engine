@@ -5,7 +5,15 @@ import Button from '@material-ui/core/Button';
 
 import proto from './protojs/compiled.js';
 
-import {GamePhases, Concede, Mulligan, Keep, Pass} from './Game.js';
+import {
+  GamePhases,
+  IsSelectCardPhase,
+  Concede,
+  Mulligan,
+  Keep,
+  Pass,
+  SelectDone,
+} from './Game.js';
 import './StateDisplay.css';
 import './Utils.css';
 
@@ -84,7 +92,7 @@ export class PlayerDisplay extends React.Component {
 
 export class MessageDisplay extends React.Component {
   render() {
-    const phase = this.props.phase;
+    const {phase, upTo} = this.props;
     const gamePhase = this.props.game.phase;
     const gamePhaseStr = {
       0: 'NOPHASE',
@@ -140,6 +148,25 @@ export class MessageDisplay extends React.Component {
           </Grid>
         </Grid>
       );
+    } else if (IsSelectCardPhase(phase)) {
+      buttonMenu = (
+        <Grid container spacing={0} style={{height: '100%'}}>
+          <Grid item xs={12} style={{height: '50%'}}>
+            {/* <Button color="secondary" variant="contained" onClick={Concede}>
+              Concede
+            </Button> */}
+          </Grid>
+          <Grid item xs={12} style={{height: '50%'}}>
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={!upTo}
+              onClick={SelectDone}>
+              Done
+            </Button>
+          </Grid>
+        </Grid>
+      );
     } else {
       buttonMenu = (
         <Grid container spacing={0} style={{height: '100%'}}>
@@ -180,8 +207,8 @@ export default class StateDisplay extends React.Component {
   render() {
     const gary = this.props.game.opponent;
     const me = this.props.game.player;
-    const phase = this.props.phase;
-    const updateDialog = this.props.updateDialog;
+    const {phase, updateDialog, upTo, game} = this.props;
+    console.log('upTo', upTo);
 
     return (
       <Grid
@@ -196,7 +223,7 @@ export default class StateDisplay extends React.Component {
           <PlayerDisplay player={gary} updateDialog={updateDialog} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
-          <MessageDisplay game={this.props.game} phase={phase} />
+          <MessageDisplay game={game} phase={phase} upTo={upTo} />
         </Grid>
         <Grid item xs={4} className="grid-col-item no-max-width">
           <PlayerDisplay player={me} updateDialog={updateDialog} />
