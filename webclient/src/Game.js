@@ -46,7 +46,7 @@ export class GameState {
       Win: GamePhases.WIN,
       OrderCards: GamePhases.ORDER_CARDS,
       SelectFrom: GamePhases.SELECT_FROM_LIST,
-      SelectXValue: GameState.SELECT_X_VALUE,
+      SelectXValue: GamePhases.SELECT_X_VALUE,
       SelectPlayer: GamePhases.SELECT_PLAYER,
     }[msgType];
     this.lastMsg = params;
@@ -172,4 +172,12 @@ export function SelectCard(cardID) {
       gameState.selectedCards,
     );
   }
+}
+
+export function SelectXValue(xVal) {
+  gameState.send('SelectXValueResponse', {
+    gameID: gameState.gameID,
+    selectedXValue: xVal,
+  });
+  gameState.updateViewHandler(gameState.lastMsg, GamePhases.DONE_SELECT, null);
 }

@@ -11,6 +11,7 @@ import StateDisplay from './StateDisplay.js';
 import ChooseDialog from './ChooseDialog.js';
 import InfoEntryDialog from './InfoEntryDialog.js';
 import LoadingDialog from './LoadingDialog.js';
+import SelectXDialog from './SelectXDialog.js';
 import {
   Keep,
   Pass,
@@ -34,6 +35,7 @@ class App extends Component {
       waiting: false,
       selectedCards: [],
       selectableCards: [],
+      maxXValue: 0,
     };
 
     const me = {
@@ -203,6 +205,11 @@ class App extends Component {
         };
       }
     }
+
+    if (phase === GamePhases.SELECT_X_VALUE) {
+      toUpdate.maxXValue = params.maxXValue;
+    }
+
     if (phase !== this.state.phase) {
       toUpdate.phase = phase;
     }
@@ -247,6 +254,7 @@ class App extends Component {
       phase,
       game,
       selectableCards,
+      maxXValue,
     } = this.state;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
@@ -267,10 +275,13 @@ class App extends Component {
       />
     );
 
+    const selectXDialogOpen = phase === GamePhases.SELECT_X_VALUE;
+
     return (
       <div className="App">
         <header className="App-header">
           <LoadingDialog open={waiting} />
+          <SelectXDialog open={selectXDialogOpen} maxValue={maxXValue} />
           <InfoEntryDialog open={true} onSubmit={this.updateInfoUpdate} />
           {chooseDialog}
           <Grid
