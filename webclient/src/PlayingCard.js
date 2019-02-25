@@ -166,6 +166,7 @@ export class PlayingCard extends React.Component {
                     variant="outlined"
                     InputProps={{readOnly: true}}
                     style={{width: '100%'}}
+                    multiline={true}
                     label="Description"
                     value={description}
                   />

@@ -24,7 +24,7 @@ const cards = 'abcdefghijklmnopqrstuvwxyz'.split('').map(l => ({
   ],
   counters: [{counter: 1, count: 5}],
   type: 'Action',
-  description: 'The best card ever.',
+  description: 'The best card ever. and ever and ever and ever and ever',
 }));
 const myHandCards = cards.slice(0, 10);
 const garyHandSize = 4;
