@@ -70,7 +70,7 @@ export class PlayingCard extends React.Component {
     const that = this;
     const timer = setTimeout(function() {
       that.setState({openPopover: true});
-    }, 2000);
+    }, 1000);
     this.setState({timer: timer, anchorEl: event.currentTarget});
   };
 
