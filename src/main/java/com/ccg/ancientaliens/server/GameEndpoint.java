@@ -51,7 +51,7 @@ public class GameEndpoint {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
                 if(writer == null) {
-                    writer = new BufferedWriter(new FileWriter(gameID.toString()+".log", true));
+                    writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
                 }
                 writer.append("[FROM: " + username + "] " + cgm);
                 writer.flush();
