@@ -5,9 +5,12 @@ import {DragSource, DropTarget} from 'react-dnd';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+//import Popover from '@material-ui/core/Popover';
+import Popper from '@material-ui/core/Popper';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
@@ -57,6 +60,34 @@ const cardTarget = {
 };
 
 export class PlayingCard extends React.Component {
+  state = {
+    timer: null,
+    anchorEl: null,
+    openPopover: false,
+  };
+
+  onMouseEnter = event => {
+    const that = this;
+    const timer = setTimeout(function() {
+      that.setState({openPopover: true});
+    }, 2000);
+    this.setState({timer: timer, anchorEl: event.currentTarget});
+  };
+
+  //onMouseOut = event => {
+  //  if (this.state.timer) {
+  //    clearTimeout(this.state.timer);
+  //    this.setState({time: null});
+  //  }
+  //};
+
+  onMouseLeave = event => {
+    clearTimeout(this.state.timer);
+    if (this.state.openPopover) {
+      this.setState({openPopover: false});
+    }
+  };
+
   render() {
     const {
       id,
@@ -75,7 +106,10 @@ export class PlayingCard extends React.Component {
       cost,
       knowledgeCost,
       counters,
+      type,
     } = this.props;
+
+    const {anchorEl, openPopover} = this.state;
 
     var opacity = 1,
       border = 'none';
@@ -115,13 +149,69 @@ export class PlayingCard extends React.Component {
 
     return connectDragSource(
       <div style={{display: 'inline-block'}}>
+        <Popper open={openPopover} anchorEl={anchorEl}>
+          <Card className="playing-card-detail">
+            <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
+            <CardMedia
+              image={process.env.PUBLIC_URL + '/img/doggy.jpg'}
+              style={{
+                height: 0,
+                paddingTop: '56.25%', // 16:9
+              }}
+            />
+            <CardContent>
+              <Grid container spacing={16}>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    InputProps={{readOnly: true}}
+                    style={{width: '100%'}}
+                    label="Description"
+                    value={description}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    variant="filled"
+                    InputProps={{readOnly: true}}
+                    value={knowledgeCost.map(
+                      knowledge =>
+                        `${knowledgeMap[knowledge.knowledge]}${
+                          knowledge.count
+                        }`,
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={8}>
+                  <TextField
+                    variant="filled"
+                    InputProps={{readOnly: true}}
+                    value={counters.map(
+                      c => `${counterMap[c.counter]}: ${c.count}`,
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="filled"
+                    InputProps={{readOnly: true}}
+                    style={{width: '100%'}}
+                    value={type}
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Popper>
         <Card
           style={{
             opacity: opacity,
             border: border,
           }}
           onClick={clickHandler}
-          className="playing-card">
+          className="playing-card"
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}>
           <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
           <CardContent>
             <Grid container spacing={8}>

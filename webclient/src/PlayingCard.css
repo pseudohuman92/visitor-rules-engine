@@ -3,3 +3,8 @@
   height: 250px;
   background-color: black;
 }
+
+.playing-card-detail {
+  width: 250px;
+  min-height: 400px;
+}
