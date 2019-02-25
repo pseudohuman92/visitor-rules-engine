@@ -8,6 +8,8 @@ import com.ccg.ancientaliens.protocol.ServerGameMessages.ServerGameMessage;
 import com.ccg.ancientaliens.protocol.Types.SelectFromType;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
 import com.google.protobuf.InvalidProtocolBufferException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -29,6 +31,8 @@ public class GameEndpoint {
     PayloadCase responseType;
     SelectFromType selectFromType;
     ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
+    BufferedWriter writer;
+
     
     @OnOpen
     public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException {
@@ -46,13 +50,20 @@ public class GameEndpoint {
         new Thread (() -> {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
-                System.out.println(username + " sent a game message: " + cgm);
+                if(writer == null) {
+                    writer = new BufferedWriter(new FileWriter(gameID.toString()+".log", true));
+                }
+                writer.append("[FROM: " + username + "] " + cgm);
+                writer.flush();
+                
                 if (waitingResponse){
                     processResponse(cgm);
                 } else {
                     processMessage(cgm);
                 }
             } catch (InvalidProtocolBufferException ex) {
+                Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
@@ -61,18 +72,21 @@ public class GameEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         gameServer.removeGameConnection(gameID, username);
+        writer.close();
+        writer = null;
         this.session = null;
     }
  
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println("Game " + username + " ERROR!: " + throwable.getMessage());
+        System.out.println("[ERROR: " + username + "] " + throwable.getMessage());
         throwable.printStackTrace();
     }
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
-        System.out.println("Server sending a game message to " + username + ": " + message);
+        writer.append("[TO: " + username + "] "  + message);
+        writer.flush();
         checkResponseType(message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
