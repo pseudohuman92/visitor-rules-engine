@@ -85,6 +85,9 @@ public class GameEndpoint {
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
+        if(writer == null) {
+            writer = new BufferedWriter(new FileWriter(gameID.toString()+".log", true));
+        }
         writer.append("[TO: " + username + "] "  + message);
         writer.flush();
         checkResponseType(message);
