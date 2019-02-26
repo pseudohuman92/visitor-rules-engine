@@ -11,6 +11,8 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 //import Popover from '@material-ui/core/Popover';
 import Popper from '@material-ui/core/Popper';
+import Textfit  from 'react-textfit';
+import Typography from '@material-ui/core/Typography';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
@@ -213,28 +215,56 @@ export class PlayingCard extends React.Component {
           className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
-          <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
+          
           <CardContent>
-            <Grid container spacing={8}>
-              <Grid item xs={4}>
-                <TextField
-                  variant="filled"
-                  InputProps={{readOnly: true}}
-                  value={knowledgeCost.map(
-                    knowledge =>
-                      `${knowledgeMap[knowledge.knowledge]}${knowledge.count}`,
-                  )}
-                />
-              </Grid>
-              <Grid item xs={8}>
-                <TextField
-                  variant="filled"
-                  InputProps={{readOnly: true}}
-                  value={counters.map(
-                    c => `${counterMap[c.counter]}: ${c.count}`,
-                  )}
-                />
-              </Grid>
+            <Grid container spacing={0}>
+                <Grid item xs={2}>
+                    <Textfit mode="single">
+                     <Typography>
+                          {cost}
+                        </Typography>
+                    </Textfit>
+                </Grid>
+                <Grid item xs={2}>
+                    <Textfit mode="single">
+                     <Typography>
+                          {knowledgeCost.map(
+                            knowledge =>
+                              `${knowledgeMap[knowledge.knowledge]}: ${knowledge.count}`,
+                          )}
+                      </Typography>
+                    </Textfit>
+                </Grid>
+                <Grid item xs={8}>
+                    <Textfit mode="single">
+                     <Typography>
+                        {name}
+                     </Typography>
+                  </Textfit>
+                </Grid>
+                <Grid item zeroMinWidth xs={12} style={{maxHeight: '80%'}} >
+                  <Textfit>
+                     <Typography>
+                        {description}
+                     </Typography>
+                  </Textfit>
+                </Grid>
+                <Grid item xs={10}>
+                  <Textfit mode="single">
+                     <Typography>
+                      {type}
+                    </Typography>
+                  </Textfit>
+                </Grid>
+                <Grid item xs={2}>
+                  <Textfit mode="single">
+                     <Typography>
+                      {counters.map(
+                      c => `C: ${c.count}`,
+                      )}
+                    </Typography>
+                  </Textfit>
+                </Grid>
             </Grid>
           </CardContent>
         </Card>
