@@ -216,13 +216,7 @@ export class PlayingCard extends React.Component {
           className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
-          <CardMedia
-              image={process.env.PUBLIC_URL + '/img/doggy.jpg'}
-              style={{
-                height: 0,
-                paddingTop: '56.25%', // 16:9
-              }}
-            />
+          
           <CardContent>
             <Grid container spacing={8}>
                 <Grid item xs={2} border={1}>
@@ -251,7 +245,7 @@ export class PlayingCard extends React.Component {
                 </Grid>
                 <Grid item xs={12} style={{maxHeight: '80%'}} >
                   <Textfit>
-                     <Typography align="left">
+                     <Typography align="left" variant="caption" color="textPrimary">
                         {description}
                      </Typography>
                   </Textfit>
