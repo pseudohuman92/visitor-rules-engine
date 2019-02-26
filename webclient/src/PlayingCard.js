@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Popper from '@material-ui/core/Popper';
 import Textfit  from 'react-textfit';
 import Typography from '@material-ui/core/Typography';
+import { borders } from '@material-ui/system';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
@@ -147,7 +148,7 @@ export class PlayingCard extends React.Component {
     knowledgeMap[proto.Knowledge.YELLOW] = 'Y';
 
     const counterMap = {};
-    counterMap[proto.Counter.CHARGE] = 'Charge';
+    counterMap[proto.Counter.CHARGE] = 'C';
 
     return connectDragSource(
       <div style={{display: 'inline-block'}}>
@@ -215,19 +216,25 @@ export class PlayingCard extends React.Component {
           className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
-          
+          <CardMedia
+              image={process.env.PUBLIC_URL + '/img/doggy.jpg'}
+              style={{
+                height: 0,
+                paddingTop: '56.25%', // 16:9
+              }}
+            />
           <CardContent>
-            <Grid container spacing={0}>
-                <Grid item xs={2}>
+            <Grid container spacing={8}>
+                <Grid item xs={2} border={1}>
                     <Textfit mode="single">
-                     <Typography>
-                          {cost}
-                        </Typography>
+                     <Typography align="left">
+                        {cost}
+                     </Typography>
                     </Textfit>
                 </Grid>
                 <Grid item xs={2}>
                     <Textfit mode="single">
-                     <Typography>
+                     <Typography align="left">
                           {knowledgeCost.map(
                             knowledge =>
                               `${knowledgeMap[knowledge.knowledge]}: ${knowledge.count}`,
@@ -237,30 +244,30 @@ export class PlayingCard extends React.Component {
                 </Grid>
                 <Grid item xs={8}>
                     <Textfit mode="single">
-                     <Typography>
+                     <Typography align="center">
                         {name}
                      </Typography>
                   </Textfit>
                 </Grid>
-                <Grid item zeroMinWidth xs={12} style={{maxHeight: '80%'}} >
+                <Grid item xs={12} style={{maxHeight: '80%'}} >
                   <Textfit>
-                     <Typography>
+                     <Typography align="left">
                         {description}
                      </Typography>
                   </Textfit>
                 </Grid>
                 <Grid item xs={10}>
                   <Textfit mode="single">
-                     <Typography>
+                     <Typography align="left">
                       {type}
                     </Typography>
                   </Textfit>
                 </Grid>
                 <Grid item xs={2}>
                   <Textfit mode="single">
-                     <Typography>
+                     <Typography align="left">
                       {counters.map(
-                      c => `C: ${c.count}`,
+                      c => `${counterMap[c.counter]}: ${c.count}`,
                       )}
                     </Typography>
                   </Textfit>
