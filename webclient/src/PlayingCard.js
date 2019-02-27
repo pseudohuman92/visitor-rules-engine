@@ -152,40 +152,47 @@ export class PlayingCard extends React.Component {
     const counterMap = {};
     counterMap[proto.Counter.CHARGE] = 'C';
 
+    function knowledgeString (knowledgeCost) {
+        var str = "";
+        
+        for (var i = 0; i < knowledgeCost.length; i++) {                     
+        for(var j = 0; j < knowledgeCost[i].count; j++){
+        str = str + knowledgeMap[knowledgeCost[i].knowledge];
+         }
+         }
+         return str;
+     };
+        
 
     return connectDragSource(
-      <div>
+      <div style={{width: '100%', color: 'black'}}>
         <Paper
           style={{
             opacity: opacity,
-            border: border,
-            height: '100%'
+            border: border
           }}
           onClick={clickHandler}
           className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
           
-            <Grid container style={{height: '100%'}}>
-                <Grid item xs={4} style={{padding: '0 0 0 5%', height: '10%'}}> 
-                   <Textfit mode="single" forceSingleModeWidth={false}>{name}</Textfit>
-                </Grid>
-                <Grid item xs={4}></Grid>
-                <Grid item xs={4} style={{padding: '0 5% 0 0', height: '10%'}}>
-                  <Textfit mode="single" forceSingleModeWidth={false}>
-                    {cost} | {knowledgeCost.map(knowledge => ` ${knowledgeMap[knowledge.knowledge]}: ${knowledge.count}`,).join()}
-                  </Textfit>
-                </Grid>
-                <Grid item xs={2} style={{padding: '0 0 0 5%'}}></Grid>
-                <Grid item xs={8}>
-                    <Textfit mode="single" forceSingleModeWidth={false}>
-                      {type} | {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}
-                    </Textfit>
-                </Grid>
-                <Grid item xs={2} style={{padding: '0 5% 0 0'}}></Grid>
-                <Grid item xs={12} style={{padding: '0 5% 0 5%'}}>
+            <Grid container style={{width: '100%'}}
+            justify="space-around"
+            align-content="space-around"
+            align-items="flex-start">
+                <Grid item xs={12} style={{padding: '5% 0 0 0'}}>
                   <Fittext>
-                      <p>{description}</p>
+                      <div>{cost} [{knowledgeString(knowledgeCost)}] --- {name}</div>
+                  </Fittext>
+                </Grid>
+                <Grid item xs={12} style={{padding: '5% 0 0 0'}}>
+                    <Fittext>
+                      <div>{type} | {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}</div>
+                  </Fittext>
+                </Grid>
+                <Grid item xs={12} style={{padding: '5% 5% 5% 5%'}}>
+                  <Fittext>
+                      <div>{description}</div>
                   </Fittext>
                 </Grid>
             </Grid>
