@@ -54,7 +54,8 @@ class BoardSide extends React.Component {
         <GridList
           cols={6}
           className="board-side"
-          style={{flexWrap: 'nowrap', ...style}}>
+          style={{flexWrap: 'nowrap', ...style}}
+          cellHeight="auto">
           {cards.map(card => (
             <GridListTile key={card.id} style={{maxWidth: '100%', maxHeight: '100%'}}>
               <PlayingCard
@@ -89,7 +90,7 @@ class Hand extends React.Component {
       studyableCards,
     } = this.props;
     return (
-      <GridList cols={7} className="hand" style={{flexWrap: 'nowrap'}}>
+      <GridList cols={7} className="hand" style={{flexWrap: 'nowrap'}} cellHeight="auto">
         {this.props.cards.map(card => (
           <GridListTile key={card.id} style={{maxWidth: '100%', maxHeight: '100%'}}>
             <PlayingCard

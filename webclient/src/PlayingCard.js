@@ -165,7 +165,7 @@ export class PlayingCard extends React.Component {
         
 
     return connectDragSource(
-      <div style={{width: '100%', color: 'black'}}>
+      <div>
         <Paper
           style={{
             opacity: opacity,
@@ -176,21 +176,21 @@ export class PlayingCard extends React.Component {
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
           
-            <Grid container style={{width: '100%'}}
-            justify="space-around"
+            <Grid container className="card-grid"
+            justify="flex-start"
             align-content="space-around"
-            align-items="flex-start">
-                <Grid item xs={12} style={{padding: '5% 0 0 0'}}>
+            align-items="space-around">
+                <Grid item xs={12} style={{padding: '5% 0 0 5%'}}>
                   <Fittext>
                       <div>{cost} [{knowledgeString(knowledgeCost)}] --- {name}</div>
                   </Fittext>
                 </Grid>
-                <Grid item xs={12} style={{padding: '5% 0 0 0'}}>
+                <Grid item xs={12} style={{padding: '0 0 0 5%'}}>
                     <Fittext>
                       <div>{type} | {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}</div>
                   </Fittext>
                 </Grid>
-                <Grid item xs={12} style={{padding: '5% 5% 5% 5%'}}>
+                <Grid item xs={12} style={{padding: '0 5% 0 5%'}}>
                   <Fittext>
                       <div>{description}</div>
                   </Fittext>
