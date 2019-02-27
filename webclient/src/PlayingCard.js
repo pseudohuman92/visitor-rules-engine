@@ -180,19 +180,24 @@ export class PlayingCard extends React.Component {
             justify="flex-start"
             align-content="space-around"
             align-items="space-around">
-                <Grid item xs={12} style={{padding: '5% 0 0 5%'}}>
+                <Grid item xs={12} style={{padding: '5% 0 0 5%', height: '15%'}}>
                   <Fittext>
-                      <div>{cost} [{knowledgeString(knowledgeCost)}] --- {name}</div>
+                      <div>{cost} [{knowledgeString(knowledgeCost)}]</div>
                   </Fittext>
                 </Grid>
-                <Grid item xs={12} style={{padding: '0 0 0 5%'}}>
-                    <Fittext>
-                      <div>{type} | {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}</div>
+                <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
+                  <Fittext>
+                      <div>{name}</div>
                   </Fittext>
                 </Grid>
-                <Grid item xs={12} style={{padding: '0 5% 0 5%'}}>
+                <Grid item xs={12} style={{padding: '0 5% 0 5%', height: '55%'}}>
                   <Fittext>
                       <div>{description}</div>
+                  </Fittext>
+                </Grid>
+                <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
+                    <Fittext>
+                      <div>{type} --- {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}</div>
                   </Fittext>
                 </Grid>
             </Grid>
