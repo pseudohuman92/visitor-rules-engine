@@ -15,7 +15,7 @@ import Textfit  from 'react-textfit';
 import Typography from '@material-ui/core/Typography';
 import { borders } from '@material-ui/system';
 import Paper from '@material-ui/core/Paper';
-import Fittext  from 'react-fittext';
+import Fittext  from '@kennethormandy/react-fittext';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';

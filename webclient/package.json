@@ -10,7 +10,7 @@
     "react-dom": "^16.8.2",
     "react-scripts": "2.1.5",
 	  "react-textfit": "1.1.0",
-    "react-fittext": "1.0.0",
+    "@kennethormandy/react-fittext": "0.6.0",
     "react-scale-text": "1.2.2"
   },
   "scripts": {
