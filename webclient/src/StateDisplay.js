@@ -73,17 +73,17 @@ export class PlayerDisplay extends React.Component {
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
             <Grid container spacing={16} justify="space-evenly">
               {knowledgePool.map(knowledge => (
-                <Grid item xs={2} key={knowledge.knowledge}>
-                  {`${knowledgeMap[knowledge.knowledge]}${knowledge.count}`}
+                <Grid item xs key={knowledge.knowledge}>
+                  {`${knowledgeMap[knowledge.knowledge]}: ${knowledge.count}`}
                 </Grid>
               ))}
             </Grid>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
-            {deckSize}
+            Deck: {deckSize}
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
-            {handSize}
+            Hand: {handSize}
           </Grid>
           <Grid
             item
@@ -91,7 +91,7 @@ export class PlayerDisplay extends React.Component {
             className="grid-elem"
             onClick={scrapyardOnClick}
             style={{height: '20%'}}>
-            {scrapyard.length}
+            Scrap: {scrapyard.length}
           </Grid>
           <Grid
             item
@@ -99,7 +99,7 @@ export class PlayerDisplay extends React.Component {
             className="grid-elem"
             onClick={voidOnClick}
             style={{height: '20%'}}>
-            {void_.length}
+            Void: {void_.length}
           </Grid>
         </Grid>
       </Paper>

@@ -1,33 +1,10 @@
 .playing-card {
-  width: 180px;
-  height: 250px;
-  background-color: black;
+  height: 100%;
+  background-color: white;
+  color: black;
 }
 
 .playing-card-detail {
   width: 250px;
   min-height: 400px;
-}
-
-
-.fluid-box {
-  max-width: 36px;
-  max-height: 50px;
-  background-color: black;
-}
-
-@media screen and (min-width: 320px) {
-  .fluid-box {
-    max-width: calc(36px + 324 * ((100vw - 320px) / 960));
-    max-height: calc(50px + 450 * ((100vw - 320px) / 960));
-    background-color: black;
-  }
-}
-
-@media screen and (min-width: 1280px) {
-  .fluid-box {
-    max-width: 360px;
-    max-height: 500px;
-    background-color: black;
-  }
 }
