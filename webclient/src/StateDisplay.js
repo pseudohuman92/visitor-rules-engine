@@ -82,12 +82,12 @@ export class PlayerDisplay extends React.Component {
       <Paper className="player-display" onClick={playerOnClick} style={style}>
         <Grid container spacing={0} style={{height: '100%'}}>
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%', height: '100%'}}>
                 {name}
             </Textfit>
           </Grid>
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%', height: '100%'}}>
                 {energy + '/' + maxEnergy}
             </Textfit>
           </Grid>
@@ -97,12 +97,12 @@ export class PlayerDisplay extends React.Component {
             </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%', height: '100%'}}>
                 Deck: {deckSize}
             </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%', height: '100%'}}>
                 Hand: {handSize}
             </Textfit>
           </Grid>
@@ -112,7 +112,7 @@ export class PlayerDisplay extends React.Component {
             className="grid-elem"
             onClick={scrapyardOnClick}
             style={{height: '20%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%', height: '100%'}}>
                 Scrap: {scrapyard.length}
             </Textfit>
           </Grid>
@@ -122,7 +122,7 @@ export class PlayerDisplay extends React.Component {
             className="grid-elem"
             onClick={voidOnClick}
             style={{height: '20%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '0 5% 0 5%', height: '100%'}}>
                 Void: {void_.length}
             </Textfit>
           </Grid>
@@ -152,17 +152,17 @@ export class MessageDisplay extends React.Component {
     const activeDisplay = (
       <Grid container spacing={0} style={{height: '100%'}}>
         <Grid item xs={12} style={{height: '33%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{margin: '5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{margin: '5%', height: '100%'}}>
                 Phase: {gamePhaseStr}
             </Textfit>
         </Grid>
         <Grid item xs={12} style={{height: '33%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{margin: '5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{margin: '5%', height: '100%'}}>
                 Turn: {turnPlayer}
             </Textfit>
         </Grid>
         <Grid item xs={12} style={{height: '33%'}}>
-            <Textfit mode="single" forceSingleModeWidth={false} style={{margin: '5%'}}>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{margin: '5%', height: '100%'}}>
                 Active: {activePlayer}
             </Textfit>
         </Grid>
