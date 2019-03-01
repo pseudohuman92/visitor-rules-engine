@@ -5,6 +5,7 @@
  */
 .grid-col-item.no-max-width {
   width: 100%;
+  max-width: none;
 }
 
 .grid-elem {

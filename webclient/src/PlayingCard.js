@@ -156,12 +156,12 @@ export class PlayingCard extends React.Component {
         var str = "";
         
         for (var i = 0; i < knowledgeCost.length; i++) {                     
-        for(var j = 0; j < knowledgeCost[i].count; j++){
-        str = str + knowledgeMap[knowledgeCost[i].knowledge];
-         }
-         }
-         return str;
-     };
+            for(var j = 0; j < knowledgeCost[i].count; j++){
+                str = str + knowledgeMap[knowledgeCost[i].knowledge];
+            }
+        }
+        return str;
+    };
         
 
     return connectDragSource(
