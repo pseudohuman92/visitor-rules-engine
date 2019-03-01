@@ -13,6 +13,9 @@ import TextField from '@material-ui/core/TextField';
 import Popper from '@material-ui/core/Popper';
 import Textfit  from 'react-textfit';
 import Typography from '@material-ui/core/Typography';
+import { borders } from '@material-ui/system';
+import Paper from '@material-ui/core/Paper';
+import Fittext  from '@kennethormandy/react-fittext';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
@@ -147,127 +150,58 @@ export class PlayingCard extends React.Component {
     knowledgeMap[proto.Knowledge.YELLOW] = 'Y';
 
     const counterMap = {};
-    counterMap[proto.Counter.CHARGE] = 'Charge';
+    counterMap[proto.Counter.CHARGE] = 'C';
+
+    function knowledgeString (knowledgeCost) {
+        var str = "";
+        
+        for (var i = 0; i < knowledgeCost.length; i++) {                     
+            for(var j = 0; j < knowledgeCost[i].count; j++){
+                str = str + knowledgeMap[knowledgeCost[i].knowledge];
+            }
+        }
+        return str;
+    };
+        
 
     return connectDragSource(
-      <div style={{display: 'inline-block'}}>
-        <Popper open={openPopover} anchorEl={anchorEl}>
-          <Card className="playing-card-detail">
-            <CardHeader avatar={<Avatar>{cost}</Avatar>} title={name} />
-            <CardMedia
-              image={process.env.PUBLIC_URL + '/img/doggy.jpg'}
-              style={{
-                height: 0,
-                paddingTop: '56.25%', // 16:9
-              }}
-            />
-            <CardContent>
-              <Grid container spacing={16}>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    InputProps={{readOnly: true}}
-                    style={{width: '100%'}}
-                    multiline={true}
-                    label="Description"
-                    value={description}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    variant="filled"
-                    InputProps={{readOnly: true}}
-                    value={knowledgeCost.map(
-                      knowledge =>
-                        `${knowledgeMap[knowledge.knowledge]}${
-                          knowledge.count
-                        }`,
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    variant="filled"
-                    InputProps={{readOnly: true}}
-                    value={counters.map(
-                      c => `${counterMap[c.counter]}: ${c.count}`,
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="filled"
-                    InputProps={{readOnly: true}}
-                    style={{width: '100%'}}
-                    value={type}
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Popper>
-        <Card
+      <div>
+        <Paper
           style={{
             opacity: opacity,
-            border: border,
+            border: border
           }}
           onClick={clickHandler}
           className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
           
-          <CardContent>
-            <Grid container spacing={0}>
-                <Grid item xs={2}>
-                    <Textfit mode="single">
-                     <Typography>
-                          {cost}
-                        </Typography>
-                    </Textfit>
+            <Grid container className="card-grid"
+            justify="flex-start"
+            align-content="space-around"
+            align-items="space-around">
+                <Grid item xs={12} style={{padding: '5% 0 0 5%', height: '15%'}}>
+                  <Fittext>
+                      <div>{cost} [{knowledgeString(knowledgeCost)}]</div>
+                  </Fittext>
                 </Grid>
-                <Grid item xs={2}>
-                    <Textfit mode="single">
-                     <Typography>
-                          {knowledgeCost.map(
-                            knowledge =>
-                              `${knowledgeMap[knowledge.knowledge]}: ${knowledge.count}`,
-                          )}
-                      </Typography>
-                    </Textfit>
+                <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
+                  <Fittext>
+                      <div>{name}</div>
+                  </Fittext>
                 </Grid>
-                <Grid item xs={8}>
-                    <Textfit mode="single">
-                     <Typography>
-                        {name}
-                     </Typography>
-                  </Textfit>
+                <Grid item xs={12} style={{padding: '0 5% 0 5%', height: '55%'}}>
+                  <Fittext>
+                      <div>{description}</div>
+                  </Fittext>
                 </Grid>
-                <Grid item zeroMinWidth xs={12} style={{maxHeight: '80%'}} >
-                  <Textfit>
-                     <Typography>
-                        {description}
-                     </Typography>
-                  </Textfit>
-                </Grid>
-                <Grid item xs={10}>
-                  <Textfit mode="single">
-                     <Typography>
-                      {type}
-                    </Typography>
-                  </Textfit>
-                </Grid>
-                <Grid item xs={2}>
-                  <Textfit mode="single">
-                     <Typography>
-                      {counters.map(
-                      c => `C: ${c.count}`,
-                      )}
-                    </Typography>
-                  </Textfit>
+                <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
+                    <Fittext>
+                      <div>{type} --- {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}</div>
+                  </Fittext>
                 </Grid>
             </Grid>
-          </CardContent>
-        </Card>
+        </Paper>
       </div>,
     );
   }
