@@ -52,7 +52,7 @@ class BoardSide extends React.Component {
     return connectDropTarget(
       <div style={{height: '100%'}}>
         <GridList
-          cols={6}
+          cols={6.25}
           className="board-side"
           style={{flexWrap: 'nowrap', ...style}}
           cellHeight="auto">
@@ -90,7 +90,7 @@ class Hand extends React.Component {
       studyableCards,
     } = this.props;
     return (
-      <GridList cols={7} className="hand" style={{flexWrap: 'nowrap'}} cellHeight="auto">
+      <GridList cols={7.25} className="hand" style={{flexWrap: 'nowrap'}} cellHeight="auto">
         {this.props.cards.map(card => (
           <GridListTile key={card.id} style={{maxWidth: '100%', maxHeight: '100%'}}>
             <PlayingCard

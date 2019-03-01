@@ -4,7 +4,6 @@
  * https://github.com/mui-org/material-ui/issues/13277
  */
 .grid-col-item.no-max-width {
-  max-width: none;
   width: 100%;
 }
 

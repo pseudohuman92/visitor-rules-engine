@@ -2,6 +2,8 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Fittext  from '@kennethormandy/react-fittext';
+import Textfit  from 'react-textfit';
 
 import proto from './protojs/compiled.js';
 
@@ -65,25 +67,31 @@ export class PlayerDisplay extends React.Component {
       <Paper className="player-display" onClick={playerOnClick} style={style}>
         <Grid container spacing={0} style={{height: '100%'}}>
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
-            {name}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                {name}
+            </Textfit>
           </Grid>
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
-            {energy + '/' + maxEnergy}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                {energy + '/' + maxEnergy}
+            </Textfit>
           </Grid>
           <Grid item xs={12} className="grid-elem" style={{height: '20%'}}>
-            <Grid container spacing={16} justify="space-evenly">
-              {knowledgePool.map(knowledge => (
-                <Grid item xs key={knowledge.knowledge}>
-                  {`${knowledgeMap[knowledge.knowledge]}: ${knowledge.count}`}
-                </Grid>
-              ))}
-            </Grid>
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                {knowledgePool.map(knowledge => (
+                  ` ${knowledgeMap[knowledge.knowledge]}: ${knowledge.count} `))
+                  .join()}
+            </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
-            Deck: {deckSize}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Deck: {deckSize}
+            </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{height: '20%'}}>
-            Hand: {handSize}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Hand: {handSize}
+            </Textfit>
           </Grid>
           <Grid
             item
@@ -91,7 +99,9 @@ export class PlayerDisplay extends React.Component {
             className="grid-elem"
             onClick={scrapyardOnClick}
             style={{height: '20%'}}>
-            Scrap: {scrapyard.length}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Scrap: {scrapyard.length}
+            </Textfit>
           </Grid>
           <Grid
             item
@@ -99,7 +109,9 @@ export class PlayerDisplay extends React.Component {
             className="grid-elem"
             onClick={voidOnClick}
             style={{height: '20%'}}>
-            Void: {void_.length}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Void: {void_.length}
+            </Textfit>
           </Grid>
         </Grid>
       </Paper>
@@ -127,13 +139,19 @@ export class MessageDisplay extends React.Component {
     const activeDisplay = (
       <Grid container spacing={0} style={{height: '100%'}}>
         <Grid item xs={12} style={{height: '33%'}}>
-          {`Phase: ${gamePhaseStr}`}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Phase: {gamePhaseStr}
+            </Textfit>
         </Grid>
         <Grid item xs={12} style={{height: '33%'}}>
-          {`Turn: ${turnPlayer}`}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Turn: {turnPlayer}
+            </Textfit>
         </Grid>
         <Grid item xs={12} style={{height: '33%'}}>
-          {`Active: ${activePlayer}`}
+            <Textfit mode="single" forceSingleModeWidth={false} style={{padding: '5%'}}>
+                Active: {activePlayer}
+            </Textfit>
         </Grid>
       </Grid>
     );
@@ -230,23 +248,23 @@ export default class StateDisplay extends React.Component {
     return (
       <Grid
         container
-        spacing={24}
+        spacing={8}
         style={{
           padding: 0,
         }}
         className="state-display"
         direction="column">
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs className="grid-col-item no-max-width" style={{height: '33%'}}>
           <PlayerDisplay
             player={gary}
             updateDialog={updateDialog}
             selectPlayer={selectPlayer}
           />
         </Grid>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs className="grid-col-item no-max-width" style={{height: '33%'}}>
           <MessageDisplay game={game} phase={phase} upTo={upTo} />
         </Grid>
-        <Grid item xs={4} className="grid-col-item no-max-width">
+        <Grid item xs className="grid-col-item no-max-width" style={{height: '33%'}}>
           <PlayerDisplay
             player={me}
             updateDialog={updateDialog}
