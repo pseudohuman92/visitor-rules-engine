@@ -231,6 +231,7 @@ public class Game {
     private void resolveStack() {
         if (passCount == 2) {
             activePlayer = " ";
+            updatePlayers();
             Card c = stack.remove(0);
             c.resolve(this);
             passCount = 0;
