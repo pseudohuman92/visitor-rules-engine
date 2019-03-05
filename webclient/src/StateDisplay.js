@@ -297,24 +297,15 @@ export default class StateDisplay extends React.Component {
         style={{
           padding: 0,
         }}
-        className="state-display"
-        direction="column">
-        <Grid
-          item
-          xs
-          className="grid-col-item no-max-width"
-          style={{height: '33%'}}>
+        className="state-display">
+        <Grid item xs={12} style={{height: '32%'}}>
           <PlayerDisplay
             player={gary}
             updateDialog={updateDialog}
             selectPlayer={selectPlayer}
           />
         </Grid>
-        <Grid
-          item
-          xs
-          className="grid-col-item no-max-width"
-          style={{height: '33%'}}>
+        <Grid item xs={12} style={{height: '32%'}}>
           <MessageDisplay
             game={game}
             phase={phase}
@@ -322,11 +313,7 @@ export default class StateDisplay extends React.Component {
             autoPass={autoPass}
           />
         </Grid>
-        <Grid
-          item
-          xs
-          className="grid-col-item no-max-width"
-          style={{height: '33%'}}>
+        <Grid item xs={12} style={{height: '32%'}}>
           <PlayerDisplay
             player={me}
             updateDialog={updateDialog}
