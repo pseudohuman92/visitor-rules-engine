@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {DragDropContextProvider} from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <DragDropContextProvider backend={HTML5Backend}>
+  <DragDropContextProvider backend={MultiBackend(HTML5toTouch)}>
     <App />
   </DragDropContextProvider>,
   document.getElementById('root'),

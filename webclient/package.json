@@ -8,6 +8,8 @@
     "react": "^16.8.2",
     "react-dnd": "^7.0.2",
     "react-dnd-html5-backend": "^7.0.2",
+    "react-dnd-multi-backend": "^3.1.11",
+    "react-dnd-touch-backend": "^0.8.0",
     "react-dom": "^16.8.2",
     "react-fittext": "^1.0.0",
     "react-scale-text": "1.2.2",
