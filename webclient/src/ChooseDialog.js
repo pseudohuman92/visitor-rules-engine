@@ -20,6 +20,7 @@ export default class ChooseDialog extends Component {
       selectedCards,
       selectableCards,
       upTo,
+      isSelectPhase,
     } = this.props;
 
     let doneButton = null;
@@ -40,8 +41,8 @@ export default class ChooseDialog extends Component {
         onClose={onClose}
         maxWidth={false}
         fullWidth={true}
-        disableBackdropClick={true}
-        disableEscapeKeyDown={true}>
+        disableBackdropClick={isSelectPhase}
+        disableEscapeKeyDown={isSelectPhase}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <Grid container spacing={0} className="choose-dialog">

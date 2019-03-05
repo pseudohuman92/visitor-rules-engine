@@ -286,6 +286,7 @@ class App extends Component {
         upTo={upTo}
         selectedCards={selectedCards}
         selectableCards={selectableCards}
+        isSelectPhase={IsSelectCardPhase(phase)}
         onClose={event => {
           this.setState({dialog: {...dialog, open: false}});
         }}
