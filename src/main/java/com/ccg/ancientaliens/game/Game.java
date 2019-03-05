@@ -148,18 +148,27 @@ public class Game {
                 newTurn();
                 break;
             case BEGIN:
+                /*
                 passCount = 0;
                 activePlayer = turnPlayer;
                 phase = MAIN;
+                */
                 break;
             case MAIN:
                 passCount = 0;
-                activePlayer = turnPlayer;
-                phase = END;
-                break;
-            case END:
+                activePlayer = "";
+                endTurn();
                 newTurn();
                 break;
+            case END:
+                break;
+        }
+    }
+    
+    private void endTurn() {
+        players.values().forEach(p->{ p.shield = 0; p.reflect = 0;});
+        if(players.get(turnPlayer).hand.size() > 7){
+            selectFromZone(turnPlayer, "hand", c->{return true;}, players.get(turnPlayer).hand.size()-7, false);
         }
     }
     
@@ -174,7 +183,7 @@ public class Game {
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
         turnCount++;
-        players.values().forEach(p->{ p.shield = 0; p.reflect = 0;});
+        
     }
     
 
