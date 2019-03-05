@@ -186,7 +186,7 @@ public abstract class Card implements Serializable {
                 .setName(name)
                 .setDepleted(depleted)
                 .setDescription(text)
-                .setCost(cost)
+                .setCost(Integer.toString(cost))
                 .setType("Card")
                 .addAllSubtypes(subtypes);
         counters.forEach((k, i) -> {

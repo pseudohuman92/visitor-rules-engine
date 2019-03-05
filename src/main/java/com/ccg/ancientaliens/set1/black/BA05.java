@@ -6,6 +6,7 @@
 package com.ccg.ancientaliens.set1.black;
 
 import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
@@ -29,8 +30,8 @@ public class BA05 extends Action {
     
     @Override
     public void resolve (Game game){
-        //This needs to be UpTo
-        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "hand", c->{return c instanceof Action;}, 1, true);
+        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "hand", c->{return c instanceof Action;}, 1, 
+                    !game.hasInstancesIn(game.getOpponentName(controller), Item.class, "hand", 1));
         if(!selected.isEmpty()){
             game.discard(game.getOpponentName(controller), selected.get(0));
             game.putTo(controller, this, "scrapyard");

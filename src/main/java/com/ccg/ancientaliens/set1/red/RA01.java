@@ -43,7 +43,7 @@ public class RA01 extends Action {
     public void resolve (Game game){
         if(game.isIn(controller, target, "both play")){
             Card c = game.extractCard(target);    
-            game.putTo(controller, c, "hand");
+            game.putTo(c.controller, c, "hand");
         }
         game.purge(game.getOpponentName(controller), 2);
         game.putTo(controller, this, "scrapyard");

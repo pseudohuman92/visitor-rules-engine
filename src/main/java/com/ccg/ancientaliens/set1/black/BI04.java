@@ -23,7 +23,7 @@ public class BI04 extends Item {
     
     public BI04 (String owner){
         super("BI04", 3, new Hashmap(BLACK, 1), 
-                "Activate, Destroy Portable Gateway: Draw a card from your void, then purge a card from your hand.", owner);
+                "Activate, Sacrifice ~: Draw a card from your void, then purge a card from your hand.", owner);
     }
 
     @Override
