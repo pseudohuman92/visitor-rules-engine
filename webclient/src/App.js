@@ -296,9 +296,7 @@ class App extends Component {
 
     const amActive = game.activePlayer === game.player.name;
     let instMessage;
-    if (!amActive) {
-      instMessage = 'Waiting for opponent...';
-    } else if (game.phase === proto.Phase.MULLIGAN) {
+    if (game.phase === proto.Phase.MULLIGAN) {
       instMessage = 'Chose either to keep or mulligan your hand.';
     } else if (IsSelectCardPhase(phase)) {
       instMessage = `Select ${
@@ -317,6 +315,8 @@ class App extends Component {
       instMessage = 'Select an X value.';
     } else if (phase === GamePhases.SELECT_PLAYER) {
       instMessage = 'Select a player.';
+    } else if (!amActive) {
+      instMessage = 'Waiting for opponent...';
     } else {
       instMessage = 'Play, study, or activate a card.';
     }
