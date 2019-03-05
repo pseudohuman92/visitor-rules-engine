@@ -10,6 +10,7 @@ import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import com.ccg.ancientaliens.protocol.Types;
 
 /**
  *
@@ -37,5 +38,9 @@ public class BA02 extends Action implements XValued {
     public void resolve (Game game){
         game.loot(targetPlayer, cost);
         game.putTo(controller, this, "scrapyard");
+    }
+    
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage().setCost("X");
     }
 }

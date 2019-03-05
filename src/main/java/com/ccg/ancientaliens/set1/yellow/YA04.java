@@ -11,6 +11,7 @@ import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import com.ccg.ancientaliens.helpers.Arraylist;
+import com.ccg.ancientaliens.protocol.Types;
 import java.util.UUID;
 
 /**
@@ -48,5 +49,10 @@ public class YA04 extends Action {
         Arraylist<Card> cards = game.extractAll(selected);
         game.shuffleIntoDeck(controller, cards);
         game.putTo(controller, this, "void");
-    }    
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage().setCost("XX");
+    }
 }

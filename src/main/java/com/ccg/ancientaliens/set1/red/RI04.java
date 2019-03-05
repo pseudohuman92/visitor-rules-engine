@@ -10,6 +10,7 @@ import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.helpers.Hashmap;
+import com.ccg.ancientaliens.protocol.Types;
 import static com.ccg.ancientaliens.protocol.Types.Counter.CHARGE;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.RED;
 
@@ -57,5 +58,10 @@ public class RI04 extends Item {
                 g.purge(g.getOpponentName(controller), 2);
             })
         );
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage().setCost("X+1");
     }
 }
