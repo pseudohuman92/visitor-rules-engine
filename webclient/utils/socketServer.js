@@ -267,14 +267,14 @@ function handleKeep(ws, params) {
   //  selectionCount: 2,
   //  candidates: [myVoidCards[0], myVoidCards[1]],
   //});
-  //sendGameMsg(ws, 'SelectFrom', {
-  //  game: gameState,
-  //  messageType: 1,
-  //  selectionCount: 2,
-  //  candidates: cards.slice(0, 4),
-  //  canSelected: ['b', 'd'],
-  //  upTo: true,
-  //});
+  sendGameMsg(ws, 'SelectFrom', {
+    game: gameState,
+    messageType: 1,
+    selectionCount: 2,
+    candidates: cards.slice(0, 4),
+    canSelected: ['b', 'd'],
+    upTo: true,
+  });
   //sendGameMsg(ws, 'SelectXValue', {
   //  game: gameState,
   //  maxXValue: 6,
@@ -282,14 +282,14 @@ function handleKeep(ws, params) {
   //sendGameMsg(ws, 'SelectPlayer', {
   //  game: gameState,
   //});
-  sendGameMsg(ws, 'SelectFrom', {
-    game: gameState,
-    messageType: 7,
-    selectionCount: 2,
-    candidates: stackCards,
-    canSelected: ['n', 'p', 's', 't', 'w'],
-    upTo: true,
-  });
+  //sendGameMsg(ws, 'SelectFrom', {
+  //  game: gameState,
+  //  messageType: 7,
+  //  selectionCount: 2,
+  //  candidates: stackCards,
+  //  canSelected: ['n', 'p', 's', 't', 'w'],
+  //  upTo: true,
+  //});
 }
 function handleConcede(ws, params) {}
 function handleOrderCardsResponse(ws, params) {}

@@ -35,7 +35,13 @@ export default class ChooseDialog extends Component {
     }
 
     return (
-      <Dialog open={open} onClose={onClose} maxWidth={false} fullWidth={true}>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth={false}
+        fullWidth={true}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <Grid container spacing={0} className="choose-dialog">
