@@ -74,6 +74,7 @@ class App extends Component {
       activePlayer: me.id,
       stack: [],
       phase: 0,
+      autoPass: false,
     };
 
     SetBasicGameInfo('best game', me.id, gary.id);
@@ -215,9 +216,6 @@ class App extends Component {
       toUpdate.phase = phase;
     }
 
-    debug('[toUpdate]', phase, toUpdate);
-    this.setState(toUpdate);
-
     if (
       game.phase === proto.Phase.MULLIGAN &&
       game.activePlayer === game.player.name &&
@@ -234,8 +232,20 @@ class App extends Component {
       game.canActivate.length === 0 &&
       game.canPlay.length === 0
     ) {
-      Pass();
+      setTimeout(function() {
+        Pass();
+      }, 1000);
+      if (!this.state.autoPass) {
+        toUpdate.autoPass = true;
+      }
+    } else {
+      if (this.state.autoPass) {
+        toUpdate.autoPass = false;
+      }
     }
+
+    debug('[toUpdate]', phase, toUpdate);
+    this.setState(toUpdate);
   };
 
   updateDialog = (open, title, cards) => {
@@ -258,6 +268,7 @@ class App extends Component {
       selectableCards,
       upTo,
       maxXValue,
+      autoPass,
     } = this.state;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
@@ -301,6 +312,7 @@ class App extends Component {
                 phase={phase}
                 updateDialog={this.updateDialog}
                 upTo={upTo}
+                autoPass={autoPass}
               />
             </Grid>
             <Grid item xs={8} className="display-col">
