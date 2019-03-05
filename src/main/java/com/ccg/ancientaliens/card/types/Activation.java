@@ -19,7 +19,7 @@ public class Activation extends Card {
     BiConsumer<Game, Card> effect;
     
     public Activation (String owner, String text, BiConsumer<Game, Card> effect){
-        super(text, 0, new Hashmap<>(), text, owner);
+        super("", 0, new Hashmap<>(), text, owner);
         this.effect = effect;
     }
     
