@@ -74,6 +74,8 @@ class App extends Component {
       activePlayer: me.id,
       stack: [],
       phase: 0,
+      autoPass: false,
+      selectCountMax: 0,
     };
 
     SetBasicGameInfo('best game', me.id, gary.id);
@@ -175,6 +177,7 @@ class App extends Component {
     if (IsSelectCardPhase(phase) && selectedCards === null) {
       toUpdate.selectableCards = params.canSelected;
       toUpdate.upTo = params.upTo;
+      toUpdate.selectCountMax = params.selectionCount;
     }
 
     if (this.state.waiting) {
@@ -215,9 +218,6 @@ class App extends Component {
       toUpdate.phase = phase;
     }
 
-    debug('[toUpdate]', phase, toUpdate);
-    this.setState(toUpdate);
-
     if (
       game.phase === proto.Phase.MULLIGAN &&
       game.activePlayer === game.player.name &&
@@ -234,8 +234,20 @@ class App extends Component {
       game.canActivate.length === 0 &&
       game.canPlay.length === 0
     ) {
-      Pass();
+      setTimeout(function() {
+        Pass();
+      }, 1000);
+      if (!this.state.autoPass) {
+        toUpdate.autoPass = true;
+      }
+    } else {
+      if (this.state.autoPass) {
+        toUpdate.autoPass = false;
+      }
     }
+
+    debug('[toUpdate]', phase, toUpdate);
+    this.setState(toUpdate);
   };
 
   updateDialog = (open, title, cards) => {
@@ -258,6 +270,8 @@ class App extends Component {
       selectableCards,
       upTo,
       maxXValue,
+      autoPass,
+      selectCountMax,
     } = this.state;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
@@ -280,6 +294,33 @@ class App extends Component {
 
     const selectXDialogOpen = phase === GamePhases.SELECT_X_VALUE;
 
+    const amActive = game.activePlayer === game.player.name;
+    let instMessage;
+    if (!amActive) {
+      instMessage = 'Waiting for opponent...';
+    } else if (game.phase === proto.Phase.MULLIGAN) {
+      instMessage = 'Chose either to keep or mulligan your hand.';
+    } else if (IsSelectCardPhase(phase)) {
+      instMessage = `Select ${
+        upTo ? 'up to ' : ''
+      } ${selectCountMax} cards from ${
+        {
+          SelectFromList: 'list',
+          SelectFromPlay: 'play',
+          SelectFromHand: 'hand',
+          SelectFromScrapyard: 'scrapyard',
+          SelectFromVoid: 'void',
+          SelectFromStack: 'stack',
+        }[phase]
+      }. (${selectedCards.length} selected)`;
+    } else if (phase === GamePhases.SELECT_X_VALUE) {
+      instMessage = 'Select an X value.';
+    } else if (phase === GamePhases.SELECT_PLAYER) {
+      instMessage = 'Select a player.';
+    } else {
+      instMessage = 'Play, study, or activate a card.';
+    }
+
     return (
       <div className="App">
         <header className="App-header">
@@ -301,6 +342,7 @@ class App extends Component {
                 phase={phase}
                 updateDialog={this.updateDialog}
                 upTo={upTo}
+                autoPass={autoPass}
               />
             </Grid>
             <Grid item xs={8} className="display-col">
@@ -309,6 +351,7 @@ class App extends Component {
                 phase={phase}
                 selectedCards={selectedCards}
                 selectableCards={selectableCards}
+                instMessage={instMessage}
               />
             </Grid>
             <Grid item xs={2} className="display-col">

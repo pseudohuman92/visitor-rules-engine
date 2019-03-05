@@ -233,6 +233,10 @@ function handleMulligan(ws, params) {
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
 }
 function handleKeep(ws, params) {
+  //gameState.canActivate = [];
+  //gameState.canPlay = [];
+  //gameState.canStudy = [];
+  //gameState.phase = 3;
   sendGameMsg(ws, 'UpdateGameState', {game: gameState});
   //sendGameMsg(ws, 'SelectFrom', {
   //  game: gameState,

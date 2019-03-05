@@ -57,7 +57,9 @@ class BoardSide extends React.Component {
           style={{flexWrap: 'nowrap', ...style}}
           cellHeight="auto">
           {cards.map(card => (
-            <GridListTile key={card.id} style={{maxWidth: '100%', maxHeight: '100%'}}>
+            <GridListTile
+              key={card.id}
+              style={{maxWidth: '100%', maxHeight: '100%'}}>
               <PlayingCard
                 playable={false}
                 activatable={activatableCards.includes(card.id)}
@@ -90,9 +92,15 @@ class Hand extends React.Component {
       studyableCards,
     } = this.props;
     return (
-      <GridList cols={7.25} className="hand" style={{flexWrap: 'nowrap'}} cellHeight="auto">
+      <GridList
+        cols={7.25}
+        className="hand"
+        style={{flexWrap: 'nowrap'}}
+        cellHeight="auto">
         {this.props.cards.map(card => (
-          <GridListTile key={card.id} style={{maxWidth: '100%', maxHeight: '100%'}}>
+          <GridListTile
+            key={card.id}
+            style={{maxWidth: '100%', maxHeight: '100%'}}>
             <PlayingCard
               playable={playableCards.includes(card.id)}
               activatable={false}
@@ -127,8 +135,10 @@ export default class Board extends React.Component {
     let studyableCards = this.props.game.canStudy;
     const selectableCards = this.props.selectableCards;
     const selectedCards = this.props.selectedCards;
+    const instMessage = this.props.instMessage;
     const amActive =
       this.props.game.player.name === this.props.game.activePlayer;
+
     if (selectableCards.length > 0 || !amActive) {
       activatableCards = [];
       playableCards = [];
@@ -162,8 +172,14 @@ export default class Board extends React.Component {
           />
         </Grid>
         <Grid item xs={12} style={{height: '5%'}}>
-          <Paper style={{height: '100%', width: '100%', background: 'white'}}>
-          
+          <Paper
+            style={{
+              height: '100%',
+              width: '100%',
+              background: 'white',
+              color: 'black',
+            }}>
+            {instMessage}
           </Paper>
         </Grid>
         <Grid item xs={12} style={{height: '25%'}}>
