@@ -156,7 +156,7 @@ public class Game {
                 break;
             case MAIN:
                 passCount = 0;
-                activePlayer = "";
+                activePlayer = " ";
                 endTurn();
                 newTurn();
                 break;
@@ -230,7 +230,7 @@ public class Game {
     // This is stop after each resolution version.
     private void resolveStack() {
         if (passCount == 2) {
-            activePlayer = "";
+            activePlayer = " ";
             Card c = stack.remove(0);
             c.resolve(this);
             passCount = 0;
