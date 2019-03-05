@@ -40,6 +40,7 @@ public class BA02 extends Action implements XValued {
         game.putTo(controller, this, "scrapyard");
     }
     
+    @Override
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage().setCost("X");
     }
