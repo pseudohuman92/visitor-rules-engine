@@ -211,7 +211,8 @@ export class MessageDisplay extends React.Component {
               color="secondary"
               variant="contained"
               onClick={Mulligan}
-              disabled={!amActive}>
+              disabled={!amActive}
+              style={{maxHeight: '100%', maxWidth: '100%'}}>
               Mulligan
             </Button>
           </Grid>
@@ -220,8 +221,9 @@ export class MessageDisplay extends React.Component {
               color="primary"
               variant="contained"
               onClick={Keep}
-              disabled={!amActive}>
-              Keep
+              disabled={!amActive}
+              style={{maxHeight: '100%', maxWidth: '100%'}}>
+                Keep
             </Button>
           </Grid>
         </Grid>
@@ -241,7 +243,8 @@ export class MessageDisplay extends React.Component {
               color="primary"
               variant="contained"
               disabled={!upTo}
-              onClick={SelectDone}>
+              onClick={SelectDone}
+              style={{maxHeight: '100%', maxWidth: '100%'}}>
               Done
             </Button>
           </Grid>
@@ -260,7 +263,8 @@ export class MessageDisplay extends React.Component {
               color="primary"
               variant="contained"
               disabled={!amActive || autoPass}
-              onClick={Pass}>
+              onClick={Pass}
+              style={{maxHeight: '100%', maxWidth: '100%'}}>
               Pass
             </Button>
           </Grid>
