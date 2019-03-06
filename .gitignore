@@ -26,3 +26,4 @@ hs_err_pid*
 /build/
 /nbproject/private/
 /target/
+/game-logs/

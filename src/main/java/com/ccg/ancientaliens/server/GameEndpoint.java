@@ -9,6 +9,7 @@ import com.ccg.ancientaliens.protocol.Types.SelectFromType;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
@@ -52,22 +53,13 @@ public class GameEndpoint {
         new Thread (() -> {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
-                if(writer == null) {
-                    writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
-                }
-                writer.append("[FROM: " + username + "] " + cgm);
-                writer.flush();
-                writer.close();
-                writer = null;
-                
+                writeToLog(cgm);
                 if (waitingResponse){
                     processResponse(cgm);
                 } else {
                     processMessage(cgm);
                 }
             } catch (InvalidProtocolBufferException ex) {
-                Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
                 Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
@@ -86,14 +78,7 @@ public class GameEndpoint {
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
-        if(writer == null) {
-            writer = new BufferedWriter(new FileWriter(gameID.toString()+".log", true));
-        }
-        writer.append("[TO: " + username + "] "  + message);
-        writer.flush();
-        writer.close();
-        writer = null;
-        
+        writeToLog(message);
         checkResponseType(message);
         lastMessage = message;
         session.getBasicRemote().sendObject(message.toByteArray());
@@ -199,6 +184,32 @@ public class GameEndpoint {
             default:
                 waitingResponse = false;
                 break;
+        }
+    }
+
+    private void writeToLog(ClientGameMessage cgm) {
+        try {
+            new File("../game-logs/").mkdirs();
+            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
+            writer.append("[FROM: " + username + "] " + cgm);
+            writer.flush();
+            writer.close();
+            writer = null;
+        } catch (IOException ex) {
+            Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void writeToLog(ServerGameMessage message) {
+        try {
+            new File("../game-logs/").mkdirs();
+            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
+            writer.append("[TO: " + username + "] "  + message);
+            writer.flush();
+            writer.close();
+            writer = null;
+        } catch (IOException ex) {
+            Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
