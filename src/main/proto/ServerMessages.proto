@@ -6,7 +6,7 @@ option java_package = "com.ccg.ancientaliens.protocol";
  * Messages from server to client.
  */
 message LoginResponse {
-    //TODO
+    repeated string gameIdList = 1;
 }
 
 message RegisterUserResponse {

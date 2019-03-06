@@ -32,10 +32,11 @@ public class GameEndpoint {
     SelectFromType selectFromType;
     ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
     BufferedWriter writer;
+    ServerGameMessage lastMessage = null;
 
     
     @OnOpen
-    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException {
+    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException, EncodeException {
         this.session = session;
         this.username = username;
         this.gameID = UUID.fromString(gameID);
@@ -43,6 +44,7 @@ public class GameEndpoint {
         session.getAsyncRemote().setBatchingAllowed(false);
         session.setMaxIdleTimeout(0);
         gameServer.addGameConnection(this.gameID, username, this);
+        resendLastMessage();
     }
  
     @OnMessage
@@ -55,6 +57,8 @@ public class GameEndpoint {
                 }
                 writer.append("[FROM: " + username + "] " + cgm);
                 writer.flush();
+                writer.close();
+                writer = null;
                 
                 if (waitingResponse){
                     processResponse(cgm);
@@ -72,9 +76,6 @@ public class GameEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         gameServer.removeGameConnection(gameID, username);
-        writer.close();
-        writer = null;
-        this.session = null;
     }
  
     @OnError
@@ -90,8 +91,20 @@ public class GameEndpoint {
         }
         writer.append("[TO: " + username + "] "  + message);
         writer.flush();
+        writer.close();
+        writer = null;
+        
         checkResponseType(message);
+        lastMessage = message;
         session.getBasicRemote().sendObject(message.toByteArray());
+    }
+    
+    public void resendLastMessage() throws IOException, EncodeException {
+        if (lastMessage != null) {
+            System.out.println("Resending last message to "+username+" "+lastMessage);
+            checkResponseType(lastMessage);
+            session.getBasicRemote().sendObject(lastMessage.toByteArray());
+        }
     }
     
     public Object getResponse() throws InterruptedException {
