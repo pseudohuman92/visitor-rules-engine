@@ -8,6 +8,7 @@ import com.ccg.ancientaliens.protocol.Types.*;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.Serializable;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import static java.util.UUID.randomUUID;
 
 /**
@@ -66,6 +67,11 @@ public abstract class Card implements Serializable {
     public Hashmap<Counter, Integer> counters;
 
     /**
+     * Targets.
+     */
+    public Arraylist<UUID> targets;
+
+    /**
      * This is the default constructor for creating a card.
      * @param name
      * @param cost
@@ -79,6 +85,7 @@ public abstract class Card implements Serializable {
         id = randomUUID();
         counters = new Hashmap<>();
         subtypes = new Arraylist<>();
+        targets = new Arraylist<>();
         this.name = name;
         this.cost = cost;
         this.knowledge = knowledge;
@@ -188,7 +195,8 @@ public abstract class Card implements Serializable {
                 .setDescription(text)
                 .setCost(Integer.toString(cost))
                 .setType("Card")
-                .addAllSubtypes(subtypes);
+                .addAllSubtypes(subtypes)
+                .addAllTargets(targets.parallelStream().map(c -> { return c.toString(); }).collect(Collectors.toList()));
         counters.forEach((k, i) -> {
             b.addCounters(CounterGroup.newBuilder()
                     .setCounter(k)
