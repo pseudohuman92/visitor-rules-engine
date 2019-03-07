@@ -48,6 +48,7 @@ public class Game {
         players = new Hashmap<>();
         connections = new Hashmap<>();
         stack = new Arraylist<>();
+        lastMessages = new Hashmap<>();
         
         table.creatorDeck.shuffle();
         table.opponentDeck.shuffle();
