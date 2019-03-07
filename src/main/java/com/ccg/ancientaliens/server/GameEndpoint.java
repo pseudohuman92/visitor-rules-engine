@@ -81,10 +81,12 @@ public class GameEndpoint {
         writeToLog(message);
         checkResponseType(message);
         lastMessage = message;
+        gameServer.setLastMessage(gameID, username, message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
     public void resendLastMessage() throws IOException, EncodeException {
+        ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, username);
         if (lastMessage != null) {
             System.out.println("Resending last message to "+username+" "+lastMessage);
             checkResponseType(lastMessage);

@@ -8,6 +8,7 @@ package com.ccg.ancientaliens.server;
 import com.ccg.ancientaliens.game.*;
 import com.ccg.ancientaliens.protocol.ServerMessages.NewGame;
 import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage;
+import com.ccg.ancientaliens.protocol.ServerGameMessages.*;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
 import com.ccg.ancientaliens.helpers.Arraylist;
@@ -71,6 +72,14 @@ public class GameServer {
     void playCard(UUID gameID, String username, UUID cardID) {
         games.get(gameID).playCard(username, cardID);
         games.get(gameID).updatePlayers();
+    }
+
+    synchronized void setLastMessage(UUID gameID,  String username, ServerGameMessage message) {
+        games.get(gameID).setLastMessage(username, message);
+    }
+
+    synchronized ServerGameMessage getLastMessage(UUID gameID, String username) {
+        return games.get(gameID).getLastMessage(username);
     }
 
     synchronized void addConnection(String username, GeneralEndpoint connection) {

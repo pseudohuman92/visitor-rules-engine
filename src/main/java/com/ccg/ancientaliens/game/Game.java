@@ -34,6 +34,7 @@ public class Game {
     
     Hashmap<String, Player> players;
     Hashmap<String, GameEndpoint> connections;
+    Hashmap<String, ServerGameMessage> lastMessages;
     String turnPlayer;
     public String activePlayer;
     Arraylist<Card> stack;
@@ -90,6 +91,14 @@ public class Game {
 
     public void removeConnection(String username) {
             connections.removeFrom(username);
+    }
+
+    public void setLastMessage(String username, ServerGameMessage lastMessage) {
+        lastMessages.put(username, lastMessage);
+    }
+
+    public ServerGameMessage getLastMessage(String username) {
+        return lastMessages.get(username);
     }
 
     public Card extractCard(UUID targetID) {
