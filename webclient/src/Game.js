@@ -38,6 +38,7 @@ export class GameState {
     this.updateViewHandler = null;
     this.lastMsg = null;
     this.phase = null;
+    this.gameInfoInitialized = false;
   }
 
   handleMsg = (msgType, params) => {
@@ -65,6 +66,14 @@ export class GameState {
       selectPhase[proto.SelectFromType.VOID] = GamePhases.SELECT_FROM_VOID;
       selectPhase[proto.SelectFromType.STACK] = GamePhases.SELECT_FROM_STACK;
       phase = selectPhase[params.messageType];
+    }
+
+    if (!this.gameInfoInitialized) {
+      SetGameInfo({
+        gameID: params.game.gameID,
+        me: params.game.player.name,
+        gary: params.game.opponent.name,
+      });
     }
 
     this.updateViewHandler(params, phase, null);
@@ -99,6 +108,7 @@ export function SetGameInfo(newInfo) {
   Object.keys(newInfo).forEach(i => {
     gameState[i] = newInfo[i];
   });
+  gameState.gameInfoInitialized = true;
 }
 
 export function Mulligan() {

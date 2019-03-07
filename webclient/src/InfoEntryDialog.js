@@ -24,7 +24,6 @@ export default class InfoEntryDialog extends Component {
     const username = this.state.username;
     console.assert(username);
     this.state.onSubmit(username);
-    JoinTable(username, 'best game');
     this.setState({open: false});
   };
 

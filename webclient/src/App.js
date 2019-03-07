@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { DragDropContext } from 'react-dnd';
+import {DragDropContext} from 'react-dnd';
 import MultiBackend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 
@@ -164,7 +164,7 @@ class App extends Component {
   }
 
   updateInfoUpdate = username => {
-    SetGameInfo({me: username});
+    //SetGameInfo({me: username});
     ConnectProfile(username);
     this.setState({waiting: true});
   };
