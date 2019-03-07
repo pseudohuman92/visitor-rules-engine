@@ -70,7 +70,7 @@ export class GameState {
 
     if (!this.gameInfoInitialized) {
       SetGameInfo({
-        gameID: params.game.gameID,
+        gameID: params.game.id,
         me: params.game.player.name,
         gary: params.game.opponent.name,
       });

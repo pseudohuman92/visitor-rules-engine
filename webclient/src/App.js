@@ -34,6 +34,7 @@ class App extends Component {
     this.state = {
       game: {},
       phase: GamePhases.NOT_STARTED,
+      gameInitialized: false,
       dialog: {title: '', cards: [], open: false},
       waiting: false,
       selectedCards: [],
@@ -173,8 +174,13 @@ class App extends Component {
     const game = params.game;
     const toUpdate = {};
 
-    if (phase === GamePhases.UPDATE_GAME || phase === GamePhases.NOT_STARTED) {
+    if (
+      phase === GamePhases.UPDATE_GAME ||
+      phase === GamePhases.NOT_STARTED ||
+      !this.state.gameInitialized
+    ) {
       toUpdate.game = params.game;
+      toUpdate.gameInitialized = true;
     }
 
     if (IsSelectCardPhase(phase) && selectedCards === null) {
@@ -281,6 +287,11 @@ class App extends Component {
       game.activePlayer === game.player.name &&
       game.canStudy.length > 0;
 
+    const isSelectFromDialogPhase =
+      phase === GamePhases.SELECT_FROM_LIST ||
+      phase === GamePhases.SELECT_FROM_SCRAPYARD ||
+      phase === GamePhases.SELECT_FROM_VOID;
+
     const chooseDialog = (
       <ChooseDialog
         title={dialog.title}
@@ -289,7 +300,7 @@ class App extends Component {
         upTo={upTo}
         selectedCards={selectedCards}
         selectableCards={selectableCards}
-        isSelectPhase={IsSelectCardPhase(phase)}
+        isSelectPhase={isSelectFromDialogPhase}
         onClose={event => {
           this.setState({dialog: {...dialog, open: false}});
         }}
