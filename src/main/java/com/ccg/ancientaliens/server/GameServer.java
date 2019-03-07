@@ -74,10 +74,6 @@ public class GameServer {
         games.get(gameID).updatePlayers();
     }
 
-    synchronized void setLastMessage(UUID gameID,  String username, ServerGameMessage message) {
-        games.get(gameID).setLastMessage(username, message);
-    }
-
     synchronized ServerGameMessage getLastMessage(UUID gameID, String username) {
         return games.get(gameID).getLastMessage(username);
     }

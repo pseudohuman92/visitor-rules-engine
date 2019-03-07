@@ -468,12 +468,11 @@ public class Game {
                 .setMaxXValue(maxX)
                 .setGame(toGameState(username));
         try {
-            connections.get(username).send(
-                    ServerGameMessage.newBuilder().setSelectXValue(b));
+            send(username, ServerGameMessage.newBuilder().setSelectXValue(b));
             
             int l = (int)connections.get(username).getResponse();
             return l;
-        } catch (IOException | EncodeException | InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
@@ -493,13 +492,12 @@ public class Game {
                 .setUpTo(upTo)
                 .setGame(toGameState(username));
         try {
-            connections.get(username).send(
-                    ServerGameMessage.newBuilder().setSelectFrom(b));
+            send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
             System.out.println("Waiting targets!");
             String[] l = (String[])connections.get(username).getResponse();
             System.out.println("Done waiting!");
             return UUIDHelper.toUUIDList(l);
-        } catch (IOException | EncodeException | InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -521,11 +519,10 @@ public class Game {
         SelectPlayer.Builder b = SelectPlayer.newBuilder()
                 .setGame(toGameState(username));
         try {
-            connections.get(username).send(
-                    ServerGameMessage.newBuilder().setSelectPlayer(b));
+            send(username, ServerGameMessage.newBuilder().setSelectPlayer(b));
             String selection = (String)connections.get(username).getResponse();
             return selection;
-        } catch (IOException | EncodeException | InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -536,25 +533,13 @@ public class Game {
     
     
     public void win(String player) {
-        try {
-            GameEndpoint connection = connections.get(player);
-            connection.send(ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
-            connection = connections.get(getOpponentName(player));
-            connection.send(ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
-        } catch (IOException | EncodeException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        send(player, ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
     }
     
     public void lose(String player) {
-        try {
-            GameEndpoint connection = connections.get(player);
-            connection.send(ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
-            connection = connections.get(getOpponentName(player));
-            connection.send(ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
-        } catch (IOException | EncodeException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        send(player, ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
     }
     
     
@@ -592,16 +577,24 @@ public class Game {
         });
         return b;
     }
+
+    public void send(String username, ServerGameMessage.Builder builder) {
+        try {
+            setLastMessage(username, builder.build());
+            GameEndpoint e = connections.get(username);
+            if (e != null) {
+                e.send(builder);
+            }
+        } catch (IOException | EncodeException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public void updatePlayers(){
-        connections.forEach((p , e) -> {
-            try {
-                e.send(ServerGameMessage.newBuilder()
-                        .setUpdateGameState(UpdateGameState.newBuilder()
-                                .setGame(toGameState(p))));
-            } catch (IOException | EncodeException ex) {
-                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        players.forEach((name, player) -> {
+            send(name, ServerGameMessage.newBuilder()
+                    .setUpdateGameState(UpdateGameState.newBuilder()
+                            .setGame(toGameState(name))));
         });
     }
 

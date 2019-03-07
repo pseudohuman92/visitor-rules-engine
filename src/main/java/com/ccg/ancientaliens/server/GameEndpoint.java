@@ -33,7 +33,6 @@ public class GameEndpoint {
     SelectFromType selectFromType;
     ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
     BufferedWriter writer;
-    ServerGameMessage lastMessage = null;
 
     
     @OnOpen
@@ -80,8 +79,6 @@ public class GameEndpoint {
         ServerGameMessage message = builder.build();
         writeToLog(message);
         checkResponseType(message);
-        lastMessage = message;
-        gameServer.setLastMessage(gameID, username, message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
