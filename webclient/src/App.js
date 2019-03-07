@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import { DragDropContext } from 'react-dnd';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -382,4 +385,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default DragDropContext(MultiBackend(HTML5toTouch))(App);

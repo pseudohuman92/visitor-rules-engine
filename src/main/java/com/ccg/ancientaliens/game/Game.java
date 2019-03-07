@@ -638,4 +638,8 @@ public class Game {
     public boolean isActive(String username) {
         return activePlayer.equals(username);
     }
+
+    public boolean isAPlayer(String username) {
+        return players.getOrDefault(username, null) != null;
+    }
 }

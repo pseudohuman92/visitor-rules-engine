@@ -11,9 +11,11 @@ import com.ccg.ancientaliens.protocol.ServerMessages.ServerMessage;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
 import com.ccg.ancientaliens.helpers.Arraylist;
+import com.ccg.ancientaliens.protocol.ServerMessages.LoginResponse;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
 
 /**
@@ -72,7 +74,20 @@ public class GameServer {
     }
 
     synchronized void addConnection(String username, GeneralEndpoint connection) {
-        playerConnections.putIn(username, connection);
+        try {
+            playerConnections.putIn(username, connection);
+            Arraylist<UUID> playerGames = new Arraylist<>();
+            games.forEach((id, game) -> {
+                if(game.isAPlayer(username)){
+                    playerGames.add(id);
+                }
+            });
+            connection.send(ServerMessage.newBuilder().setLoginResponse(LoginResponse.newBuilder()
+                    .addAllGameIdList(playerGames.parallelStream()
+                        .map(u->{return u.toString();}).collect(Collectors.toList()))));
+        } catch (IOException | EncodeException ex) {
+            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     synchronized void removeConnection(String username) {

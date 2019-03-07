@@ -9,6 +9,7 @@ import com.ccg.ancientaliens.protocol.Types.SelectFromType;
 import static com.ccg.ancientaliens.server.GeneralEndpoint.gameServer;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
@@ -32,10 +33,11 @@ public class GameEndpoint {
     SelectFromType selectFromType;
     ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
     BufferedWriter writer;
+    ServerGameMessage lastMessage = null;
 
     
     @OnOpen
-    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException {
+    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException, EncodeException {
         this.session = session;
         this.username = username;
         this.gameID = UUID.fromString(gameID);
@@ -43,6 +45,7 @@ public class GameEndpoint {
         session.getAsyncRemote().setBatchingAllowed(false);
         session.setMaxIdleTimeout(0);
         gameServer.addGameConnection(this.gameID, username, this);
+        resendLastMessage();
     }
  
     @OnMessage
@@ -50,20 +53,13 @@ public class GameEndpoint {
         new Thread (() -> {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
-                if(writer == null) {
-                    writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
-                }
-                writer.append("[FROM: " + username + "] " + cgm);
-                writer.flush();
-                
+                writeToLog(cgm);
                 if (waitingResponse){
                     processResponse(cgm);
                 } else {
                     processMessage(cgm);
                 }
             } catch (InvalidProtocolBufferException ex) {
-                Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
                 Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
@@ -72,9 +68,6 @@ public class GameEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         gameServer.removeGameConnection(gameID, username);
-        writer.close();
-        writer = null;
-        this.session = null;
     }
  
     @OnError
@@ -85,13 +78,18 @@ public class GameEndpoint {
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
-        if(writer == null) {
-            writer = new BufferedWriter(new FileWriter(gameID.toString()+".log", true));
-        }
-        writer.append("[TO: " + username + "] "  + message);
-        writer.flush();
+        writeToLog(message);
         checkResponseType(message);
+        lastMessage = message;
         session.getBasicRemote().sendObject(message.toByteArray());
+    }
+    
+    public void resendLastMessage() throws IOException, EncodeException {
+        if (lastMessage != null) {
+            System.out.println("Resending last message to "+username+" "+lastMessage);
+            checkResponseType(lastMessage);
+            session.getBasicRemote().sendObject(lastMessage.toByteArray());
+        }
     }
     
     public Object getResponse() throws InterruptedException {
@@ -186,6 +184,32 @@ public class GameEndpoint {
             default:
                 waitingResponse = false;
                 break;
+        }
+    }
+
+    private void writeToLog(ClientGameMessage cgm) {
+        try {
+            new File("../game-logs/").mkdirs();
+            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
+            writer.append("[FROM: " + username + "] " + cgm);
+            writer.flush();
+            writer.close();
+            writer = null;
+        } catch (IOException ex) {
+            Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void writeToLog(ServerGameMessage message) {
+        try {
+            new File("../game-logs/").mkdirs();
+            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
+            writer.append("[TO: " + username + "] "  + message);
+            writer.flush();
+            writer.close();
+            writer = null;
+        } catch (IOException ex) {
+            Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
