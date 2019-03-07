@@ -70,6 +70,7 @@ public class Game {
         players = new Hashmap<>();
         connections = new Hashmap<>();
         stack = new Arraylist<>();
+        lastMessages = new Hashmap<>();
         
         players.putIn(p1, new Player(p1, TestDecks.randomDeck(p1)));
         players.putIn(p2, new Player(p2, TestDecks.randomDeck(p2)));
