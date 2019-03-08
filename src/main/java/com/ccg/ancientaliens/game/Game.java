@@ -88,6 +88,7 @@ public class Game {
         passCount = 0;
         players.get(p1).draw(5);
         players.get(p2).draw(5);
+        updatePlayers();
     }
 
     public void addConnection(String username, GameEndpoint connection) {
