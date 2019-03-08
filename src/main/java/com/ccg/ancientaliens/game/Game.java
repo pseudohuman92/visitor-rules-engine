@@ -20,6 +20,7 @@ import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.List;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ public class Game {
     int turnCount;
     int passCount;
     UUID id;
+    ArrayBlockingQueue<Object> response;
     
     public Game (Table table) {
         id = randomUUID();
@@ -71,6 +73,7 @@ public class Game {
         connections = new Hashmap<>();
         stack = new Arraylist<>();
         lastMessages = new Hashmap<>();
+        response = new ArrayBlockingQueue<>(1);
         
         players.putIn(p1, new Player(p1, TestDecks.randomDeck(p1)));
         players.putIn(p2, new Player(p2, TestDecks.randomDeck(p2)));
@@ -179,7 +182,8 @@ public class Game {
     private void endTurn() {
         players.values().forEach(p->{ p.shield = 0; p.reflect = 0;});
         if(players.get(turnPlayer).hand.size() > 7){
-            selectFromZone(turnPlayer, "hand", c->{return true;}, players.get(turnPlayer).hand.size()-7, false);
+            discard(turnPlayer, players.get(turnPlayer).hand.size()-7);
+            
         }
     }
     
@@ -470,7 +474,7 @@ public class Game {
         try {
             send(username, ServerGameMessage.newBuilder().setSelectXValue(b));
             
-            int l = (int)connections.get(username).getResponse();
+            int l = (int)response.take();
             return l;
         } catch (InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -494,7 +498,7 @@ public class Game {
         try {
             send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
             System.out.println("Waiting targets!");
-            String[] l = (String[])connections.get(username).getResponse();
+            String[] l = (String[])response.take();
             System.out.println("Done waiting!");
             return UUIDHelper.toUUIDList(l);
         } catch (InterruptedException ex) {
@@ -520,7 +524,7 @@ public class Game {
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectPlayer(b));
-            String selection = (String)connections.get(username).getResponse();
+            String selection = (String)response.take();
             return selection;
         } catch (InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -645,5 +649,13 @@ public class Game {
 
     public boolean isAPlayer(String username) {
         return players.getOrDefault(username, null) != null;
+    }
+
+    public void addToResponseQueue(Object o) {
+        try {
+            response.put(o);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

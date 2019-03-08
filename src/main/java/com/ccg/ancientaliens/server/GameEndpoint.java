@@ -31,7 +31,6 @@ public class GameEndpoint {
     boolean waitingResponse;
     PayloadCase responseType;
     SelectFromType selectFromType;
-    ArrayBlockingQueue<Object> response = new ArrayBlockingQueue<>(1);
     BufferedWriter writer;
 
     
@@ -90,10 +89,6 @@ public class GameEndpoint {
             session.getBasicRemote().sendObject(lastMessage.toByteArray());
         }
     }
-    
-    public Object getResponse() throws InterruptedException {
-        return response.take();
-    }
 
     private void processResponse(ClientGameMessage message) {
         if (message.getPayloadCase() == responseType){
@@ -101,7 +96,7 @@ public class GameEndpoint {
                 case ORDERCARDSRESPONSE:
                     OrderCardsResponse ocr = message.getOrderCardsResponse();
                     waitingResponse = false;
-                    response.add(ocr.getOrderedCardsList().toArray(new String[ocr.getOrderedCardsCount()]));
+                    gameServer.addToResponseQueue(gameID, ocr.getOrderedCardsList().toArray(new String[ocr.getOrderedCardsCount()]));
                     break;
                 case SELECTFROMRESPONSE:
                     SelectFromResponse sfr = message.getSelectFromResponse();
@@ -111,15 +106,15 @@ public class GameEndpoint {
                         break;
                     }
                     waitingResponse = false;
-                    response.add(sfr.getSelectedCardsList().toArray(new String[sfr.getSelectedCardsCount()]));
+                    gameServer.addToResponseQueue(gameID, sfr.getSelectedCardsList().toArray(new String[sfr.getSelectedCardsCount()]));
                     break;
                 case SELECTPLAYERRESPONSE:
                     waitingResponse = false;
-                    response.add(message.getSelectPlayerResponse().getSelectedPlayerName());
+                    gameServer.addToResponseQueue(gameID, message.getSelectPlayerResponse().getSelectedPlayerName());
                     break;
                 case SELECTXVALUERESPONSE:
                     waitingResponse = false;
-                    response.add(message.getSelectXValueResponse().getSelectedXValue());
+                    gameServer.addToResponseQueue(gameID, message.getSelectXValueResponse().getSelectedXValue());
                     break;
                 default:
                     System.out.println("Wrong Message received from " + username  

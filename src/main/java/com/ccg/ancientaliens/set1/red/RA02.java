@@ -42,7 +42,7 @@ public class RA02 extends Action {
     public void resolve (Game game){
         if(game.isIn(controller, target, "both play")){
             Card c = game.extractCard(target);    
-            game.putTo(controller, c, "deck", 0);
+            game.putTo(c.controller, c, "deck", 0);
         }
         game.putTo(controller, this, "scrapyard");
     }    

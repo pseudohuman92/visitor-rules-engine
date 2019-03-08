@@ -131,4 +131,8 @@ public class GameServer {
             }
         }
     }
+
+    void addToResponseQueue(UUID gameID, Object o) {
+        games.get(gameID).addToResponseQueue(o);
+    }
 }
