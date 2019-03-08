@@ -32,7 +32,7 @@ public class BI01 extends Item {
     @Override
     public void activate(Game game) {
         game.deplete(id);
-        game.addToStack(new Activation(controller, "Loot 1", 
+        game.addToStack(new Activation(controller, controller + " loots 1", 
                 (g , c) -> { g.loot(controller, 1); }));
     }
 }

@@ -38,7 +38,7 @@ public class BI03 extends Item implements Targeting {
         target = game.selectFromZone(controller, "play", this::validTarget, 1, false).get(0);
         game.destroy(target);
         game.addToStack(new Activation(controller, 
-            (game.ownedByOpponent(target)?"Gain 2 energy":"Gain 1 energy"),
+            controller + " gains " + (game.ownedByOpponent(target)?2:1) + " energy",
             (g, c) -> { g.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
     }
 

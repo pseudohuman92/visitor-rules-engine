@@ -31,13 +31,17 @@ public class BA02 extends Action implements XValued {
         int x = game.selectX(controller, game.getPlayer(controller).energy);
         cost = x;
         game.spendEnergy(controller, cost);
+        text = targetPlayer + " loots " + x;
         game.addToStack(this);
     }
     
     @Override
     public void resolve (Game game){
         game.loot(targetPlayer, cost);
+        text = "Target player loots X.";
+        cost = 0;
         game.putTo(controller, this, "scrapyard");
+        
     }
     
     @Override

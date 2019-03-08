@@ -39,7 +39,7 @@ public class BI08 extends Item {
         game.deplete(id);
         game.destroy(id);
         game.addToStack(new Activation (controller,
-            "Look at opponent's hand and choose an action from it. \n" +
+            "Look at "+game.getOpponentName(controller)+"'s hand and choose an action from it. \n" +
             "They discard it.",
             (g, cx) -> {
                 Arraylist<UUID> selected = 

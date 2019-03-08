@@ -43,6 +43,6 @@ public class BI04 extends Item {
                     Arraylist<UUID> selection = g.selectFromZone(c.controller, "hand", cx-> {return true;}, 1, false);
                     g.purgeByID(c.controller, selection.get(0));
                 }
-            }));
+            }, selected));
     }
 }

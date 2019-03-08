@@ -12,6 +12,7 @@ import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class BI02 extends Item implements Targeting {
         game.destroy(target);
         String oppName = game.getOpponentName(controller);
         game.addToStack(new Activation(controller, 
-            (game.ownedByOpponent(target)?"Purge 10":"Purge 5"),
+            game.getOpponentName(controller) + (game.ownedByOpponent(target)?" purges 10":" purges 5"),
             (g, c) -> { g.purge(oppName, (game.ownedByOpponent(target)?10:5)); }));
     }
 
