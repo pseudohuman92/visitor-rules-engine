@@ -32,7 +32,8 @@ public class RA06 extends Action {
     
     @Override
     public void play (Game game){
-        target = game.selectFromZone(controller, "stack", c->{return c instanceof Action;}, 1, false).get(0);
+        targets = game.selectFromZone(controller, "stack", c->{return c instanceof Action;}, 1, false);
+        target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     } 

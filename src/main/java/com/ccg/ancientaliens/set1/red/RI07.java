@@ -36,7 +36,7 @@ public class RI07 extends Item {
         game.purgeSelf(controller, x);
         game.spendEnergy(controller, x);
         game.deplete(id);
-        game.addToStack(new Activation(controller, "Opponent purges " + x,
+        game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
         (g, c) -> {
             g.purge(g.getOpponentName(controller), x);
         }));

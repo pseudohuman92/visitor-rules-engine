@@ -34,6 +34,10 @@ public class RI04 extends Item {
     public void play (Game game) {
         x = game.selectX(controller, game.getEnergy(controller) - 1);
         game.spendEnergy(controller, x);
+        text = "Charge "+x+".\n" +
+            "\n" +
+            "Dischage 1, Activate:\n" +
+            "  Opponent purges 2.";
         super.play(game);
     }
     
@@ -41,6 +45,10 @@ public class RI04 extends Item {
     public void resolve (Game game) {
         super.resolve(game);
         addCounters(CHARGE, x);
+        text = "Charge X.\n" +
+            "\n" +
+            "Dischage 1, Activate:\n" +
+            "  Opponent purges 2.";
     }
 
     @Override
@@ -53,7 +61,7 @@ public class RI04 extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         game.addToStack(new Activation (controller,
-            "Opponent purges 2.",
+            game.getOpponentName(controller)+" purges 2.",
             (g, cx) -> {
                 g.purge(g.getOpponentName(controller), 2);
             })

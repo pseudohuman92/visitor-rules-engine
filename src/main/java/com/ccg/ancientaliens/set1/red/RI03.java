@@ -43,7 +43,7 @@ public class RI03 extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         game.addToStack(new Activation (controller,
-            "Opponent purges 3.",
+            game.getOpponentName(controller)+" purges 3.",
             (g, cx) -> {
                 g.purge(g.getOpponentName(controller), 3);
             })

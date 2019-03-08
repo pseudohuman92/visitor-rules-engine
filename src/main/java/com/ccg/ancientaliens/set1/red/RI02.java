@@ -10,6 +10,7 @@ import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.RED;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class RI02 extends Item {
                 Card c = g.extractCard(target);
                 g.putTo(controller, g.extractCard(id), "hand");
                 g.putTo(c.controller, c, "hand");
-            })
+            }, new Arraylist<>(target).putIn(id))
         );
     }
 }

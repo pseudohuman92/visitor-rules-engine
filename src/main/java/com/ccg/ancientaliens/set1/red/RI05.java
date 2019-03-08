@@ -49,15 +49,15 @@ public class RI05 extends Item{
                 g.addToStack(new Activation(controller, "Charge 1",
                     (g1, c2) -> {
                         addCounters(CHARGE, 1);
-                    }
-                ));
+                    },
+                new Arraylist<>(id)));
             }));
         }
         if (!depleted && counters.getOrDefault(CHARGE, 0) > 0){
             choices.add(new Activation(controller, "Discharge 1, Activate: Opponent purges 4",
             (g, c) -> {
                 removeCounters(CHARGE, 1);
-                g.addToStack(new Activation(controller, "Opponent purges 4",
+                g.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges 4",
                     (g1, c2) -> {
                         g1.purge(g1.getOpponentName(c2.controller), 4);
                     }

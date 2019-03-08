@@ -38,7 +38,7 @@ public class RI06 extends Item {
         int x = game.getCard(selection).cost;
         game.destroy(selection);
         game.deplete(id);
-        game.addToStack(new Activation(controller, "Opponent purges " + x,
+        game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
         (g, c) -> {
             g.purge(g.getOpponentName(controller), x);
         }));
