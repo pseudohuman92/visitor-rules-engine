@@ -41,6 +41,7 @@ class App extends Component {
       selectableCards: [],
       maxXValue: 0,
       upTo: false,
+      targets: [],
     };
 
     const me = {
@@ -164,6 +165,13 @@ class App extends Component {
     };
   }
 
+  updateTargets = targets => {
+    if (targets !== this.state.targets) {
+      console.log(targets);
+      this.setState({targets: targets});
+    }
+  };
+
   updateInfoUpdate = username => {
     //SetGameInfo({me: username});
     ConnectProfile(username);
@@ -281,6 +289,7 @@ class App extends Component {
       maxXValue,
       autoPass,
       selectCountMax,
+      targets,
     } = this.state;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
@@ -367,6 +376,8 @@ class App extends Component {
                 selectedCards={selectedCards}
                 selectableCards={selectableCards}
                 instMessage={instMessage}
+                targets={targets}
+                updateTargets={this.updateTargets}
               />
             </Grid>
             <Grid item xs={2} className="display-col">
@@ -382,6 +393,8 @@ class App extends Component {
                     cards={game.stack}
                     selectedCards={selectedCards}
                     selectableCards={selectableCards}
+                    targets={targets}
+                    updateTargets={this.updateTargets}
                   />
                 </Grid>
                 <Grid item xs={12} style={{height: '25%'}}>

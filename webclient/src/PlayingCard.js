@@ -11,11 +11,11 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 //import Popover from '@material-ui/core/Popover';
 import Popper from '@material-ui/core/Popper';
-import Textfit  from 'react-textfit';
+import Textfit from 'react-textfit';
 import Typography from '@material-ui/core/Typography';
-import { borders } from '@material-ui/system';
+import {borders} from '@material-ui/system';
 import Paper from '@material-ui/core/Paper';
-import Fittext  from '@kennethormandy/react-fittext';
+import Fittext from '@kennethormandy/react-fittext';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
@@ -65,31 +65,30 @@ const cardTarget = {
 };
 
 export class PlayingCard extends React.Component {
-  state = {
-    timer: null,
-    anchorEl: null,
-    openPopover: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      updateTargets: props.updateTargets,
+      targets: props.targets,
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.targets !== prevProps.targets) {
+      this.setState({targets: this.props.targets});
+    }
+  }
 
   onMouseEnter = event => {
-    const that = this;
-    const timer = setTimeout(function() {
-      that.setState({openPopover: true});
-    }, 1000);
-    this.setState({timer: timer, anchorEl: event.currentTarget});
+    if (this.state.updateTargets) {
+      this.state.updateTargets(this.state.targets);
+    }
   };
 
-  //onMouseOut = event => {
-  //  if (this.state.timer) {
-  //    clearTimeout(this.state.timer);
-  //    this.setState({time: null});
-  //  }
-  //};
-
   onMouseLeave = event => {
-    clearTimeout(this.state.timer);
-    if (this.state.openPopover) {
-      this.setState({openPopover: false});
+    if (this.state.updateTargets) {
+      this.state.updateTargets([]);
     }
   };
 
@@ -112,6 +111,7 @@ export class PlayingCard extends React.Component {
       knowledgeCost,
       counters,
       type,
+      targeted,
     } = this.props;
 
     const {anchorEl, openPopover} = this.state;
@@ -124,6 +124,8 @@ export class PlayingCard extends React.Component {
       border = '5px yellow solid';
     } else if (canDrop && isOver) {
       border = '5px red solid';
+    } else if (targeted) {
+      border = '5px yellow solid';
     } else if (selected) {
       border = '5px magenta solid';
     } else if (selectable) {
@@ -152,55 +154,62 @@ export class PlayingCard extends React.Component {
     const counterMap = {};
     counterMap[proto.Counter.CHARGE] = 'C';
 
-    function knowledgeString (knowledgeCost) {
-        var str = "";
-        
-        for (var i = 0; i < knowledgeCost.length; i++) {                     
-            for(var j = 0; j < knowledgeCost[i].count; j++){
-                str = str + knowledgeMap[knowledgeCost[i].knowledge];
-            }
+    function knowledgeString(knowledgeCost) {
+      var str = '';
+
+      for (var i = 0; i < knowledgeCost.length; i++) {
+        for (var j = 0; j < knowledgeCost[i].count; j++) {
+          str = str + knowledgeMap[knowledgeCost[i].knowledge];
         }
-        return str;
-    };
-        
+      }
+      return str;
+    }
 
     return connectDragSource(
       <div>
         <Paper
           style={{
             opacity: opacity,
-            border: border
+            border: border,
           }}
           onClick={clickHandler}
           className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
-          
-            <Grid container className="card-grid"
+          <Grid
+            container
+            className="card-grid"
             justify="flex-start"
             align-content="space-around"
             align-items="space-around">
-                <Grid item xs={12} style={{padding: '5% 0 0 5%', height: '15%'}}>
-                  <Fittext>
-                      <div>{cost} [{knowledgeString(knowledgeCost)}]</div>
-                  </Fittext>
-                </Grid>
-                <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
-                  <Fittext>
-                      <div>{name}</div>
-                  </Fittext>
-                </Grid>
-                <Grid item xs={12} style={{padding: '0 5% 0 5%', height: '55%'}}>
-                  <Fittext>
-                      <div>{description}</div>
-                  </Fittext>
-                </Grid>
-                <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
-                    <Fittext>
-                      <div>{type} --- {counters.map( c => `${counterMap[c.counter]}: ${c.count}`,).join()}</div>
-                  </Fittext>
-                </Grid>
+            <Grid item xs={12} style={{padding: '5% 0 0 5%', height: '15%'}}>
+              <Fittext>
+                <div>
+                  {cost} [{knowledgeString(knowledgeCost)}]
+                </div>
+              </Fittext>
             </Grid>
+            <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
+              <Fittext>
+                <div>{name}</div>
+              </Fittext>
+            </Grid>
+            <Grid item xs={12} style={{padding: '0 5% 0 5%', height: '55%'}}>
+              <Fittext>
+                <div>{description}</div>
+              </Fittext>
+            </Grid>
+            <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
+              <Fittext>
+                <div>
+                  {type} ---{' '}
+                  {counters
+                    .map(c => `${counterMap[c.counter]}: ${c.count}`)
+                    .join()}
+                </div>
+              </Fittext>
+            </Grid>
+          </Grid>
         </Paper>
       </div>,
     );

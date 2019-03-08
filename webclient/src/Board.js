@@ -43,6 +43,8 @@ class BoardSide extends React.Component {
       activatableCards,
       selectableCards,
       selectedCards,
+      targets,
+      updateTargets,
     } = this.props;
     var style = {};
     if (canDrop && isOverCurrent) {
@@ -66,6 +68,8 @@ class BoardSide extends React.Component {
                 selectable={selectableCards.includes(card.id)}
                 selected={selectedCards.includes(card.id)}
                 studyable={false}
+                targeted={targets.includes(card.id)}
+                updateTargets={updateTargets}
                 {...card}
               />
             </GridListTile>
@@ -136,6 +140,7 @@ export default class Board extends React.Component {
     const selectableCards = this.props.selectableCards;
     const selectedCards = this.props.selectedCards;
     const instMessage = this.props.instMessage;
+    const {targets, updateTargets} = this.props;
     const otherActive =
       this.props.game.opponent.name === this.props.game.activePlayer;
 
@@ -160,6 +165,8 @@ export default class Board extends React.Component {
             selectableCards={selectableCards}
             selectedCards={selectedCards}
             activatableCards={[]}
+            targets={targets}
+            updateTargets={updateTargets}
           />
         </Grid>
         <Grid item xs={12} style={{height: '35%'}}>
@@ -169,6 +176,8 @@ export default class Board extends React.Component {
             selectableCards={selectableCards}
             selectedCards={selectedCards}
             activatableCards={activatableCards}
+            targets={targets}
+            updateTargets={updateTargets}
           />
         </Grid>
         <Grid item xs={12} style={{height: '5%'}}>

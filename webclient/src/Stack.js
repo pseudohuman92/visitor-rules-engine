@@ -7,7 +7,13 @@ import './Utils.css';
 
 export default class Stack extends React.Component {
   render() {
-    const {cards, selectedCards, selectableCards} = this.props;
+    const {
+      cards,
+      selectedCards,
+      selectableCards,
+      targets,
+      updateTargets,
+    } = this.props;
 
     return (
       <GridList
@@ -27,6 +33,8 @@ export default class Stack extends React.Component {
                 selectable={selectableCards.includes(card.id)}
                 selected={selectedCards.includes(card.id)}
                 studyable={false}
+                targetd={targets.includes(card.id)}
+                updateTargets={updateTargets}
               />
             </GridListTile>
           ))}
