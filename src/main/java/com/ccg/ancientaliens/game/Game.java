@@ -538,18 +538,17 @@ public class Game {
     
     
     public void win(String player) {
-        send(player, ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
+        send(player, ServerGameMessage.newBuilder().setWin(Win.newBuilder().setGameID(id.toString())));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setLoss(Loss.newBuilder().setGameID(id.toString())));
+        connections = new Hashmap<>();
     }
+    
     
     public void lose(String player) {
-        send(player, ServerGameMessage.newBuilder().setLoss(Loss.newBuilder()));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setWin(Win.newBuilder()));
+        send(player, ServerGameMessage.newBuilder().setLoss(Loss.newBuilder().setGameID(id.toString())));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setWin(Win.newBuilder().setGameID(id.toString())));
+        connections = new Hashmap<>();
     }
-    
-    
-    
-    
     
     public GameState.Builder toGameState(String username){
         GameState.Builder b = 
