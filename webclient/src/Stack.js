@@ -21,23 +21,20 @@ export default class Stack extends React.Component {
         className="stack"
         cellHeight="auto"
         style={{margin: -12}}>
-        {cards
-          .slice(0)
-          .reverse()
-          .map(card => (
-            <GridListTile key={card.id}>
-              <PlayingCard
-                {...card}
-                activatable={false}
-                playable={false}
-                selectable={selectableCards.includes(card.id)}
-                selected={selectedCards.includes(card.id)}
-                studyable={false}
-                targetd={targets.includes(card.id)}
-                updateTargets={updateTargets}
-              />
-            </GridListTile>
-          ))}
+        {cards.slice(0).map(card => (
+          <GridListTile key={card.id}>
+            <PlayingCard
+              {...card}
+              activatable={false}
+              playable={false}
+              selectable={selectableCards.includes(card.id)}
+              selected={selectedCards.includes(card.id)}
+              studyable={false}
+              targetd={targets.includes(card.id)}
+              updateTargets={updateTargets}
+            />
+          </GridListTile>
+        ))}
       </GridList>
     );
   }
