@@ -21,8 +21,8 @@ public class YI05 extends Item {
     
     public YI05 (String owner){
         super("YI05", 2, new Hashmap(YELLOW, 2), 
-                "\"2, Activate:\n" +
-                "  Gain reflect 2.\"", owner);
+                "2, Activate:\n" +
+                "  Gain reflect 2.", owner);
     }
     
     @Override
@@ -33,6 +33,7 @@ public class YI05 extends Item {
     @Override
     public void activate(Game game) {
         game.spendEnergy(controller, 2);
+        game.deplete(id);
         game.addToStack(new Activation(controller, controller+" gains reflect 2",
         (g, c) -> {
             game.addReflect(controller, 2);

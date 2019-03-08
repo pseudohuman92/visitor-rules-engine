@@ -37,6 +37,8 @@ public class UI02 extends Item {
     public void activate(Game game) {
         Arraylist<Card> junks = new Arraylist<>();
         junks.add(new Junk(controller));
+        junks.add(new Junk(controller));
+        junks.add(new Junk(controller));
         game.shuffleIntoDeck(controller, junks);
         game.deplete(id);
         game.addToStack(new Activation(controller, game.getOpponentName(controller) + " purges 3",
