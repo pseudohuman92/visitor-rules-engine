@@ -34,6 +34,6 @@ public class AI01 extends Item {
     public void activate(Game game) {
         game.destroy(id);
         game.addToStack(new Activation(controller, 
-                "Opponent purges 6",
+                game.getOpponentName(controller) + " purges 6",
                 (g , c) -> { g.purge(g.getOpponentName(c.controller), 6); }));    }
 }

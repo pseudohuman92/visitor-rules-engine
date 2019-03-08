@@ -39,7 +39,7 @@ public class AI03 extends Item implements Transforming {
     public void activate(Game game) {
         counters.putIn(CHARGE, counters.get(CHARGE) - 1);
         game.addToStack(new Activation(controller, 
-                "Opponent purges 4. \n" +
+                game.getOpponentName(controller) + " purges 4. \n" +
                 "If ~ has no counters on it, transform ~ to UI08",
             (g, c) -> {
                 g.purge(g.getOpponentName(controller), 4);
