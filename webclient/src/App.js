@@ -14,6 +14,7 @@ import StateDisplay from './StateDisplay.js';
 import ChooseDialog from './ChooseDialog.js';
 import InfoEntryDialog from './InfoEntryDialog.js';
 import LoadingDialog from './LoadingDialog.js';
+import WinLoseDialog from './WinLoseDialog.js';
 import SelectXDialog from './SelectXDialog.js';
 import {
   Keep,
@@ -300,6 +301,9 @@ class App extends Component {
       phase === GamePhases.SELECT_FROM_SCRAPYARD ||
       phase === GamePhases.SELECT_FROM_VOID;
 
+    const gameOver = phase === GamePhases.WIN || phase === GamePhases.LOSE;
+    const isWin = phase === GamePhases.WIN;
+
     const chooseDialog = (
       <ChooseDialog
         title={dialog.title}
@@ -347,6 +351,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <WinLoseDialog open={gameOver} win={isWin} />
           <LoadingDialog open={waiting} />
           <SelectXDialog open={selectXDialogOpen} maxValue={maxXValue} />
           <InfoEntryDialog open={true} onSubmit={this.updateInfoUpdate} />
