@@ -10,6 +10,7 @@ import com.ccg.ancientaliens.card.properties.Transforming;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
 import com.ccg.ancientaliens.set1.additional.AI02;
 import com.ccg.ancientaliens.helpers.Hashmap;
@@ -41,7 +42,7 @@ public class UI04 extends Item implements Transforming {
             (g , c) -> { 
                 if(g.isIn(controller, id, "play"))
                     transform(g); 
-        }));
+        }, new Arraylist<>(id)));
     }
 
     @Override

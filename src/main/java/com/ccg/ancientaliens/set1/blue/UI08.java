@@ -65,8 +65,8 @@ public class UI08 extends Item implements Transforming {
                         if (counters.get(CHARGE) >= 3){
                             transform(g1);
                         }
-                    }
-                ));
+                    },
+                new Arraylist<>(id)));
             }));
         }
         if (game.hasInstancesIn(controller, Item.class, "play", 1)){
@@ -80,8 +80,8 @@ public class UI08 extends Item implements Transforming {
                         if (counters.get(CHARGE) >= 3){
                             transform(g1);
                         }
-                    }
-                ));
+                    },
+                new Arraylist<>(id)));
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);

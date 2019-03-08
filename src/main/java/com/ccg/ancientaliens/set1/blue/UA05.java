@@ -23,10 +23,9 @@ import java.util.logging.Logger;
  */
 public class UA05 extends Action {
 
-    Arraylist<UUID> targets;
     
     public UA05(String owner) {
-        super("UA01", 1, new Hashmap(BLUE, 2), 
+        super("UA05", 1, new Hashmap(BLUE, 2), 
                 "Additional Cost - Purge 5 items from your scrapyard. Transform target item you control into a copy of target item in your void.", owner);
     }
     

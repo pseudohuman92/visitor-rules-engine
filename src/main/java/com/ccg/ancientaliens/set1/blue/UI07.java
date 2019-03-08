@@ -22,7 +22,7 @@ public class UI07 extends Item {
     int x;
     
     public UI07(String owner) {
-        super("UA07", 1, new Hashmap(BLUE, 2), 
+        super("UI07", 1, new Hashmap(BLUE, 2), 
         "X, Sacrifice ~: \n" +
         "  Look at opponent's deck. \n" +
         "  Choose a card that costs X or less from it. \n" +
@@ -40,7 +40,7 @@ public class UI07 extends Item {
         game.destroy(id);
         game.addToStack(new Activation(controller, 
             "  Look at opponent's deck. \n" +
-            "  Choose a card that costs X or less from it. \n" +
+            "  Choose a card that costs "+x+" or less from it. \n" +
             "  Transform chosen card into junk.",
         (g, cx) -> {
             Arraylist<UUID> s = g.selectFromList(controller, g.getZone(g.getOpponentName(controller), "deck"), c->{return c.cost <= x;}, 1, true);
