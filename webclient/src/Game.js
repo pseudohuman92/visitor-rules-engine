@@ -186,6 +186,17 @@ export function SelectCard(cardID) {
   }
 }
 
+export function UnselectCard(cardID) {
+  if (gameState.selectedCards.includes(cardID)) {
+    gameState.selectedCards.splice(gameState.selectedCards.indexOf(cardID), 1);
+    gameState.updateViewHandler(
+      gameState.lastMsg,
+      gameState.phase,
+      gameState.selectedCards,
+    );
+  }
+}
+
 export function SelectXValue(xVal) {
   gameState.send('SelectXValueResponse', {
     gameID: gameState.gameID,

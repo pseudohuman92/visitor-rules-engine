@@ -18,7 +18,13 @@ import Paper from '@material-ui/core/Paper';
 import Fittext from '@kennethormandy/react-fittext';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
-import {PlayCard, ActivateCard, SelectCard, StudyCard} from './Game.js';
+import {
+  PlayCard,
+  ActivateCard,
+  UnselectCard,
+  SelectCard,
+  StudyCard,
+} from './Game.js';
 import './PlayingCard.css';
 
 import proto from './protojs/compiled.js';
@@ -128,6 +134,9 @@ export class PlayingCard extends React.Component {
       border = '5px yellow solid';
     } else if (selected) {
       border = '5px magenta solid';
+      clickHandler = event => {
+        UnselectCard(id);
+      };
     } else if (selectable) {
       clickHandler = event => {
         SelectCard(id);

@@ -167,7 +167,6 @@ class App extends Component {
 
   updateTargets = targets => {
     if (targets !== this.state.targets) {
-      console.log(targets);
       this.setState({targets: targets});
     }
   };
