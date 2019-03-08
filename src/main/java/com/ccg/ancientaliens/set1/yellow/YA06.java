@@ -9,15 +9,12 @@ import com.ccg.ancientaliens.card.types.Action;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
-import java.util.UUID;
 
 /**
  *
  * @author pseudo
  */
 public class YA06 extends Action {
-    
-    UUID selected;
 
     public YA06(String owner) {
         super("YA06", 3, new Hashmap(YELLOW, 2), 

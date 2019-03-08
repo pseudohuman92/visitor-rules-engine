@@ -9,6 +9,7 @@ package com.ccg.ancientaliens.set1.yellow;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
+import com.ccg.ancientaliens.helpers.Arraylist;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import static com.ccg.ancientaliens.protocol.Types.Counter.CHARGE;
@@ -38,11 +39,11 @@ public class YI04 extends Item {
         UUID selection = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false).get(0);
         game.spendEnergy(controller, 2 * x);
         game.deplete(id);
-        game.addToStack(new Activation(controller, "Target item charge " + x,
+        game.addToStack(new Activation(controller, "Charge " + x,
         (g, c) -> {
             if(g.isIn(controller, selection, "both play")){
                 g.getCard(selection).addCounters(CHARGE, x);
             }
-        }));
+        }, new Arraylist<>(selection)));
     }
 }

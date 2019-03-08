@@ -196,7 +196,9 @@ public abstract class Card implements Serializable {
                 .setCost(Integer.toString(cost))
                 .setType("Card")
                 .addAllSubtypes(subtypes)
-                .addAllTargets(targets.parallelStream().map(c -> { return c.toString(); }).collect(Collectors.toList()));
+                .addAllTargets(targets.parallelStream()
+                        .map(c -> { return c.toString(); })
+                        .collect(Collectors.toList()));
         counters.forEach((k, i) -> {
             b.addCounters(CounterGroup.newBuilder()
                     .setCounter(k)

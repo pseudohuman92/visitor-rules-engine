@@ -33,7 +33,7 @@ public class YI05 extends Item {
     @Override
     public void activate(Game game) {
         game.spendEnergy(controller, 2);
-        game.addToStack(new Activation(controller, "Gain reflect 2",
+        game.addToStack(new Activation(controller, controller+" gains reflect 2",
         (g, c) -> {
             game.addReflect(controller, 2);
         }));

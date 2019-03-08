@@ -48,7 +48,7 @@ public class YI01 extends Item {
         counters.removeFrom(CHARGE);
         game.destroy(id);
         
-        game.addToStack(new Activation(controller, "Gain shield " + x,
+        game.addToStack(new Activation(controller, controller+" gains shield " + x,
             (g , c) -> { 
                 g.addShield(controller, x);
         }));

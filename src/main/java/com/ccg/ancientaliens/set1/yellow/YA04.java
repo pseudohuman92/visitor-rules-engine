@@ -40,6 +40,8 @@ public class YA04 extends Action {
         x = game.selectX(controller, Math.min(game.getPlayer(controller).energy/2, 
                                               game.getZone(controller, "scrapyard").size()));
         game.spendEnergy(controller, 2 * x);
+        text = "Recover "+x+". \n" +
+                "Purge ~.";
         game.addToStack(this);
     } 
     
@@ -48,6 +50,8 @@ public class YA04 extends Action {
         Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", c->{return true;}, x, false);
         Arraylist<Card> cards = game.extractAll(selected);
         game.shuffleIntoDeck(controller, cards);
+        text = "Recover X. \n" +
+                "Purge ~.";
         game.putTo(controller, this, "void");
     }
     

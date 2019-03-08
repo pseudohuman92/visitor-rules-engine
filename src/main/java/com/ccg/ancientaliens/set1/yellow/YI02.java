@@ -48,7 +48,7 @@ public class YI02 extends Item {
         counters.removeFrom(CHARGE);
         game.destroy(id);
         
-        game.addToStack(new Activation(controller, "Gain reflect " + x,
+        game.addToStack(new Activation(controller, controller+" gains reflect " + x,
             (g , c) -> { 
                 g.addReflect(controller, x);
         }));

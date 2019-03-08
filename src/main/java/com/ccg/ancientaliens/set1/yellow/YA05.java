@@ -33,7 +33,8 @@ public class YA05 extends Action {
     
     @Override
     public void play (Game game){
-        selected = game.selectFromZone(controller, "scrapyard", c->{return c instanceof Action;}, 1, false).get(0);
+        targets = game.selectFromZone(controller, "scrapyard", c->{return c instanceof Action;}, 1, false);
+        selected = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
     } 
