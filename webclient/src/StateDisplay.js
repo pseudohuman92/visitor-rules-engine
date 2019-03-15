@@ -232,11 +232,11 @@ export class MessageDisplay extends React.Component {
       buttonMenu = (
         <Grid container spacing={0} style={{height: '100%'}}>
           <Grid item xs={12} style={{height: '50%'}}>
-            {/*
+            {
               <Button color="secondary" variant="contained" onClick={Concede}>
                 Concede
               </Button>
-              */}
+            }
           </Grid>
           <Grid item xs={12} style={{height: '50%'}}>
             <Button
@@ -254,9 +254,9 @@ export class MessageDisplay extends React.Component {
       buttonMenu = (
         <Grid container spacing={0} style={{height: '100%'}}>
           <Grid item xs={12} style={{height: '50%'}}>
-            {/* <Button color="secondary" variant="contained" onClick={Concede}>
+            {<Button color="secondary" variant="contained" onClick={Concede}>
               Concede
-            </Button> */}
+            </Button>}
           </Grid>
           <Grid item xs={12} style={{height: '50%'}}>
             <Button

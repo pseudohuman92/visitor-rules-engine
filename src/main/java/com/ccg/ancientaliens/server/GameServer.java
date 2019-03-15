@@ -46,7 +46,7 @@ public class GameServer {
     }
 
     void concede(UUID gameID, String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        games.get(gameID).lose(username);
     }
     
     void mulligan(UUID gameID, String username) {
@@ -134,5 +134,9 @@ public class GameServer {
 
     void addToResponseQueue(UUID gameID, Object o) {
         games.get(gameID).addToResponseQueue(o);
+    }
+
+    public void removeGame(UUID gameID) {
+        games.remove(gameID);
     }
 }

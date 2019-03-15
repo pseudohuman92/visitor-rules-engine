@@ -20,9 +20,9 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value="/profiles/{username}")
 public class GeneralEndpoint {
   
-    static GameServer gameServer = null;
-    Session session;
-    String username;
+    public static GameServer gameServer = null;
+    private Session session;
+    private String username;
     
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {

@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.*;
@@ -79,6 +78,10 @@ public class GameEndpoint {
         writeToLog(message);
         checkResponseType(message);
         session.getBasicRemote().sendObject(message.toByteArray());
+    }
+    
+    public void close(){
+        session = null;
     }
     
     public void resendLastMessage() throws IOException, EncodeException {

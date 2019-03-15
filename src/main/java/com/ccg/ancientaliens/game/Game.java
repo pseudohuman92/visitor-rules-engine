@@ -17,6 +17,7 @@ import com.ccg.ancientaliens.helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
 import com.ccg.ancientaliens.helpers.Arraylist;
+import com.ccg.ancientaliens.server.GeneralEndpoint;
 import java.util.List;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
@@ -96,7 +97,7 @@ public class Game {
     }
 
     public void removeConnection(String username) {
-            connections.removeFrom(username);
+        connections.removeFrom(username);
     }
 
     public void setLastMessage(String username, ServerGameMessage lastMessage) {
@@ -541,14 +542,18 @@ public class Game {
     public void win(String player) {
         send(player, ServerGameMessage.newBuilder().setWin(Win.newBuilder().setGameID(id.toString())));
         send(getOpponentName(player), ServerGameMessage.newBuilder().setLoss(Loss.newBuilder().setGameID(id.toString())));
+        connections.forEach((s, c) -> {c.close();});
         connections = new Hashmap<>();
+        GeneralEndpoint.gameServer.removeGame(id);
     }
     
     
     public void lose(String player) {
         send(player, ServerGameMessage.newBuilder().setLoss(Loss.newBuilder().setGameID(id.toString())));
         send(getOpponentName(player), ServerGameMessage.newBuilder().setWin(Win.newBuilder().setGameID(id.toString())));
+        connections.forEach((s, c) -> {c.close();});
         connections = new Hashmap<>();
+        GeneralEndpoint.gameServer.removeGame(id);
     }
     
     public GameState.Builder toGameState(String username){
