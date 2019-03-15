@@ -19,6 +19,9 @@ public abstract class Tome extends Card {
     public boolean canPlay(Game game){ return false; }
     
     @Override
+    abstract public Hashmap<Knowledge, Integer> getKnowledgeType();
+    
+    @Override
     public void resolve(Game game){
         game.putTo(controller, this, "scrapyard");
     }
