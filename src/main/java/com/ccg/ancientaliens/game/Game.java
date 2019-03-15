@@ -225,24 +225,24 @@ public class Game {
         }
     }
 
-    /*
+    
     //This is resolve until something new is added version
     private void resolveStack() {
-        if (passCount == 2) {
-            activePlayer = "";
-            Card c = stack.removeFrom(0);
+        activePlayer = " ";
+        updatePlayers();    
+        while (!stack.isEmpty() && passCount == 2) {
+            Card c = stack.remove(0);
             c.resolve(this);
-            updatePlayers();
-            if (!stack.isEmpty()){
-                resolveStack();
-            } else {
+            if(stack.isEmpty()){
                 passCount = 0;
                 activePlayer = turnPlayer;
+            } else {
+                updatePlayers();
             }
         }
     }
-    */
     
+    /*
     // This is stop after each resolution version.
     private void resolveStack() {
         if (passCount == 2) {
@@ -254,6 +254,7 @@ public class Game {
             activePlayer = turnPlayer;
         }
     }
+    */
 
     public void mulligan(String username) {
         players.get(username).mulligan();
