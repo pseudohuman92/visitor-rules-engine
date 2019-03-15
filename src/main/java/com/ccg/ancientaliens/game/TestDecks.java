@@ -21,15 +21,16 @@ public class TestDecks {
     
     public static Deck randomDeck(String username){
         Random r = new Random();
-        switch (r.nextInt(numOfDecks)){
+        switch (r.nextInt(numOfDecks - 1)){
             case 0:
                 return blackDeck(username);
             case 1:
                 return blueDeck(username);
             case 2:
-                return yellowDeck(username);
-            case 3:
                 return redDeck(username);
+            case 3:
+                return yellowDeck(username);
+                
             default:
                 return null;
         }
