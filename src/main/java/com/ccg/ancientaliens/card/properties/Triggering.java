@@ -14,11 +14,5 @@ import com.ccg.ancientaliens.game.Game;
  */
 public interface Triggering {
     
-    /**
-     * CALLER: Server<br>
-     * BEHAVIOR: Check if the passed event satisfies the trigger conditions and execute the trigger if it does.
-     * @param game
-     * @param event
-     */
     public void checkEvent(Game game, Event event);
 }

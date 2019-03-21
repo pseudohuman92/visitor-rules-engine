@@ -2,6 +2,7 @@
 package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.properties.Activatable;
+import com.ccg.ancientaliens.card.properties.Triggering;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Junk;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
@@ -45,29 +46,9 @@ public class Game {
     int passCount;
     UUID id;
     ArrayBlockingQueue<Object> response;
-    
-    public Game (Table table) {
-        id = randomUUID();
-        players = new Hashmap<>();
-        connections = new Hashmap<>();
-        stack = new Arraylist<>();
-        lastMessages = new Hashmap<>();
-        
-        table.creatorDeck.shuffle();
-        table.opponentDeck.shuffle();
-        
-        players.putIn(table.creator, new Player(table.creator, table.creatorDeck));
-        players.putIn(table.opponent, new Player(table.opponent, table.opponentDeck));
-        
-        phase = MULLIGAN;
-        turnPlayer = (random() < 0.5)?table.creator:table.opponent;
-        activePlayer = turnPlayer;
-        turnCount = 0;
-        passCount = 0;
-        players.get(table.creator).draw(5);
-        players.get(table.opponent).draw(5);
-    }
-    
+    Hashmap<String, Arraylist<Triggering>> triggeringCards;
+    Arraylist<Event> eventQueue;
+
     public Game (String p1, String p2) {
         id = randomUUID();
         players = new Hashmap<>();
@@ -75,6 +56,10 @@ public class Game {
         stack = new Arraylist<>();
         lastMessages = new Hashmap<>();
         response = new ArrayBlockingQueue<>(1);
+        triggeringCards = new Hashmap<>();
+        triggeringCards.put(p1, new Arraylist<>());
+        triggeringCards.put(p2, new Arraylist<>());
+        eventQueue = new Arraylist();
         
         players.putIn(p1, new Player(p1, TestDecks.randomDeck(p1)));
         players.putIn(p2, new Player(p2, TestDecks.randomDeck(p2)));
@@ -158,6 +143,14 @@ public class Game {
         extractCard(cardID).study(this);
     }
     
+    public void processEvents(){
+        while(!eventQueue.isEmpty()){
+            Event e = eventQueue.remove(0);
+            triggeringCards.get(turnPlayer).forEachInOrder(c ->{ c.checkEvent(this, e);});
+            triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c ->{ c.checkEvent(this, e);});
+        }
+    }
+    
     public void changePhase(){
         switch(phase) {
             case MULLIGAN:
@@ -234,7 +227,9 @@ public class Game {
         while (!stack.isEmpty() && passCount == 2) {
             Card c = stack.remove(0);
             c.resolve(this);
-            if(stack.isEmpty()){
+            int prevSize = stack.size();
+            processEvents();
+            if(stack.isEmpty() || prevSize != stack.size()){
                 passCount = 0;
                 activePlayer = turnPlayer;
             } else {
@@ -300,7 +295,7 @@ public class Game {
     }
     
      public boolean hasCardsIn(String username, String zone, int count) {
-         return getZone(username, zone).size() >= count;
+        return getZone(username, zone).size() >= count;
     }
     
     public void putTo(String username, Card c, String zone) {
@@ -600,7 +595,7 @@ public class Game {
         }
     }
     
-    public void updatePlayers(){
+    public final void updatePlayers(){
         players.forEach((name, player) -> {
             send(name, ServerGameMessage.newBuilder()
                     .setUpdateGameState(UpdateGameState.newBuilder()

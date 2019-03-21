@@ -7,6 +7,7 @@ package com.ccg.ancientaliens.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  *
@@ -44,6 +45,12 @@ public class Arraylist<T> extends ArrayList<T> {
     public Arraylist<T> removeFrom(int index){
         remove(index);
         return this;
+    }
+    
+    public void forEachInOrder(Consumer<? super T> c){
+        for (int i = 0; i < size(); i++){
+            c.accept(get(i));
+        }
     }
     
 }

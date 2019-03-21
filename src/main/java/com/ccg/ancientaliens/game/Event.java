@@ -5,10 +5,8 @@
  */
 package com.ccg.ancientaliens.game;
 
-import com.ccg.ancientaliens.enums.EventLabel;
-import static com.ccg.ancientaliens.enums.EventLabel.*;
+import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.helpers.Arraylist;
-import java.util.UUID;
 
 /**
  *
@@ -16,26 +14,38 @@ import java.util.UUID;
  */
 public class Event {
     
-    public EventLabel label;
+    public String label;
     public Arraylist<Object> eventData;
     
-    private Event(EventLabel l){
+    private Event(String l){
         label = l;
         eventData = new Arraylist<>();
     }
     
-    public static Event draw (String username, int count){
-        Event e = new Event(DRAW);
+    public static Event draw (String username, Arraylist<Card> drawn){
+        Event e = new Event("Draw");
         e.eventData.add(username);
-        e.eventData.add(count);
+        e.eventData.add(drawn);
         return e;
     }
     
-    public static Event possess (String oldController, String newController, UUID cardID){
-        Event e = new Event(POSSESS);
+    public static Event possess (String oldController, String newController, Card c){
+        Event e = new Event("Possess");
         e.eventData.add(oldController);
         e.eventData.add(newController);
-        e.eventData.add(cardID);
+        e.eventData.add(c);
+        return e;
+    }
+    
+    public static Event turnStart (String turnPlayer){
+        Event e = new Event("Turn Start");
+        e.eventData.add(turnPlayer);
+        return e;
+    }
+    
+    public static Event turnEnd (String turnPlayer){
+        Event e = new Event("Turn End");
+        e.eventData.add(turnPlayer);
         return e;
     }
 
