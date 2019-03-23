@@ -59,7 +59,3 @@ NT03	Tome		Study:   Gain UR	-	-
 NT04	Tome		Study:   Gain BB	-	-
 NT05	Tome		Study:   Gain UU	-	-
 NT06	Tome		Study:   Gain RR	-	-
-					
-AI01	Item	Bomb	Destroy:    Target player Purge 6.	1	-
-AI02	Item	Weapon	Purge a Junk from your hand, Activate:    Target opponent Purges 5	3	UUU
-AI03	Item		Discharge 1:    Opponent purges 4.    If ~ has no counters on it, transform ~ to UI08	0	U
