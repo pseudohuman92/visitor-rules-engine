@@ -124,6 +124,33 @@ class DeckBuilder extends React.Component {
   render() {
     return (
       <Grid container spacing={16} style={{ maxHeight: "90vh" }}>
+        <Grid item style={{ maxHeight: "5%" }}>
+          <ReactFileReader
+            fileTypes={[".deck"]}
+            multipleFiles={false}
+            handleFiles={this.loadDeck}
+          >
+            <Button variant="contained">Load</Button>
+          </ReactFileReader>
+        </Grid>
+        <Grid item  style={{ maxHeight: "5%" }}>
+          <Button variant="contained" onClick={this.saveDeck}>
+            Save
+          </Button>
+        </Grid>
+        <Grid item  style={{ maxHeight: "5%" }}>
+          <Button variant="contained" onClick={this.clearDeck}>
+            New
+          </Button>
+        </Grid>
+        <Grid item  style={{ maxHeight: "5%" }}>
+          <TextField
+            value={this.state.name}
+            onChange={event => {
+              this.changeName(event.target.value);
+            }}
+          />
+        </Grid>
         <Grid item xs={9} style={{ height: "95%" }}>
           <GridList
             cols={2}
@@ -135,7 +162,7 @@ class DeckBuilder extends React.Component {
             cellHeight="auto"
             spacing={8}
           >
-            {spliceToSubarrays(this.state.collection, 9).map((arr, i) => (
+            {spliceToSubarrays(this.state.collection, 6).map((arr, i) => (
               <GridListTile key={i}>
                 <Grid container justify="flex-start" spacing={8}>
                   {arr.map((card, i) => (
@@ -164,7 +191,7 @@ class DeckBuilder extends React.Component {
             cellHeight="auto"
             spacing={8}
           >
-            {spliceToSubarrays(this.state.deck, 16).map((arr, i) => (
+            {spliceToSubarrays(this.state.deck, 9).map((arr, i) => (
               <GridListTile key={i}>
                 <Grid
                   container
@@ -177,7 +204,7 @@ class DeckBuilder extends React.Component {
                     <Grid
                       container
                       item
-		              key={i}
+		      key={i}
                       xs={12}
                       onClick={() => this.removeFromDeck(card.card)}
                     >
@@ -195,33 +222,7 @@ class DeckBuilder extends React.Component {
             ))}
           </GridList>
         </Grid>
-        <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          <ReactFileReader
-            fileTypes={[".deck"]}
-            multipleFiles={false}
-            handleFiles={this.loadDeck}
-          >
-            <Button variant="contained">Load</Button>
-          </ReactFileReader>
-        </Grid>
-        <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          <Button variant="contained" onClick={this.saveDeck}>
-            Save
-          </Button>
-        </Grid>
-        <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          <Button variant="contained" onClick={this.clearDeck}>
-            New
-          </Button>
-        </Grid>
-        <Grid item xs={6} style={{ maxHeight: "5%" }}>
-          <TextField
-            value={this.state.name}
-            onChange={event => {
-              this.changeName(event.target.value);
-            }}
-          />
-        </Grid>
+        
       </Grid>
     );
   }
