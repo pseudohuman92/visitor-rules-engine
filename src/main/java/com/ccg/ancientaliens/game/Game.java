@@ -48,6 +48,7 @@ public class Game {
     ArrayBlockingQueue<Object> response;
     Hashmap<String, Arraylist<Triggering>> triggeringCards;
     Arraylist<Event> eventQueue;
+    boolean endProcessed;
 
     public Game (String p1, String p2) {
         id = randomUUID();
@@ -157,11 +158,11 @@ public class Game {
                 newTurn();
                 break;
             case BEGIN:
-                /*
+                
                 passCount = 0;
                 activePlayer = turnPlayer;
                 phase = MAIN;
-                */
+                
                 break;
             case MAIN:
                 passCount = 0;
@@ -175,6 +176,11 @@ public class Game {
     }
     
     private void endTurn() {
+        if (!endProcessed){
+            endProcessed = true;
+            processEndEvents();
+            resolveStack(); //TODO: figure out logic here
+        }
         players.values().forEach(p->{ p.shield = 0; p.reflect = 0;});
         if(players.get(turnPlayer).hand.size() > 7){
             discard(turnPlayer, players.get(turnPlayer).hand.size()-7);
@@ -193,7 +199,7 @@ public class Game {
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
         turnCount++;
-        
+        processBeginEvents();
     }
     
 
@@ -658,5 +664,15 @@ public class Game {
         } catch (InterruptedException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void processBeginEvents() {
+        eventQueue.add(Event.turnStart(turnPlayer));
+        processEvents();
+    }
+
+    private void processEndEvents() {
+        eventQueue.add(Event.turnEnd(turnPlayer));
+        processEvents();
     }
 }

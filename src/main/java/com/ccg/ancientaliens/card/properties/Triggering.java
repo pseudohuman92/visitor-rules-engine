@@ -13,6 +13,6 @@ import com.ccg.ancientaliens.game.Game;
  * @author pseudo
  */
 public interface Triggering {
-    
+
     public void checkEvent(Game game, Event event);
 }
