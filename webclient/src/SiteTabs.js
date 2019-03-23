@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {DragDropContext} from 'react-dnd';
 import {DragDropContextProvider} from 'react-dnd';
 import MultiBackend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
@@ -76,4 +77,4 @@ class SiteTabs extends React.Component {
   }
 }
 
-export default SiteTabs; 
+export default DragDropContext(MultiBackend(HTML5toTouch))(SiteTabs);

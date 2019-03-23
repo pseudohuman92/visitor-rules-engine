@@ -97,6 +97,20 @@ export class PlayingCard extends React.Component {
       this.state.updateTargets([]);
     }
   };
+  
+  getCardColor(knowlString){
+      if(knowlString.startsWith("B")){
+          return "#666666";
+      } else if (knowlString.startsWith("U")) {
+          return "#0066ff";
+      } else if (knowlString.startsWith("R")) {
+          return "#ff1a1a";
+      } else if (knowlString.startsWith("Y")) {
+          return "#ffff00";
+      } else {
+          return "#e6e6e6";
+      }
+  };
 
   render() {
     const {
@@ -150,7 +164,7 @@ export class PlayingCard extends React.Component {
     } else if (playable) {
       border = '5px blue solid';
     } else if (depleted) {
-      opacity = 0.7;
+      opacity = 0.5;
     }
 
     const knowledgeMap = {};
@@ -180,6 +194,7 @@ export class PlayingCard extends React.Component {
           style={{
             opacity: opacity,
             border: border,
+            backgroundColor: this.getCardColor(knowledgeString(knowledgeCost))
           }}
           onClick={clickHandler}
           className="playing-card"

@@ -6,6 +6,21 @@ import Fittext from "@kennethormandy/react-fittext";
 import "./DisplayCard.css";
 
 export class DisplayCard extends React.Component {
+    
+  getCardColor(knowlString){
+      if(knowlString.startsWith("B")){
+          return "#666666";
+      } else if (knowlString.startsWith("U")) {
+          return "#0066ff";
+      } else if (knowlString.startsWith("R")) {
+          return "#ff1a1a";
+      } else if (knowlString.startsWith("Y")) {
+          return "#ffff00";
+      } else {
+          return "#e6e6e6";
+      }
+  };
+  
   render() {
     const {
       small,
@@ -19,7 +34,7 @@ export class DisplayCard extends React.Component {
     if (small) {
       return (
         <div>
-          <Paper className="playing-card-small">
+          <Paper className="playing-card-small" style={{backgroundColor: this.getCardColor(knowledge)}}>
             <div className="card-grid">
               <Fittext>
                 <div>
@@ -36,7 +51,7 @@ export class DisplayCard extends React.Component {
 
     return (
       <div>
-        <Paper className="playing-card" style={{ opacity: opacity }}>
+        <Paper className="playing-card" style={{ opacity: opacity, backgroundColor: this.getCardColor(knowledge) }}>
           <Grid
             container
             className="card-grid"

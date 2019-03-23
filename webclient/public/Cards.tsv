@@ -48,7 +48,7 @@ RA06	Action		Return target action to its controller's hand.	2	R
 RI01	Item		1, Activate:    Opponent purges 2.	2	R
 RI02	Item		Activate:    Return ~ and target item to controller's hand.	1	RR
 RI03	Item		Charge 3.   Discharge 1, Activate:    Opponent purges 3	2	RR
-RI04	Item		Charge X.  Dischage 1, Activate:   Opponent purges 3.	X + 1	RR
+RI04	Item		Charge X.  Dischage 1, Activate:   Opponent purges 3.	X+1	RR
 RI05	Item		Discard a card:    Charge 1.   Discharge 1, Activate:    Opponent purges 4	2	RRR
 RI06	Item		Sacrifice an Item, Activate:    Opponent purges X.    X = cost of sacrificed item.	1	RR
 RI07	Item		X, Purge X, Activate:    Opponent purge X	1	RR

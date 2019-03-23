@@ -123,7 +123,7 @@ class DeckBuilder extends React.Component {
 
   render() {
     return (
-      <Grid container spacing={16} style={{ maxHeight: "100vh" }}>
+      <Grid container spacing={16} style={{ maxHeight: "90vh" }}>
         <Grid item xs={9} style={{ height: "95%" }}>
           <GridList
             cols={2}
@@ -156,7 +156,7 @@ class DeckBuilder extends React.Component {
           <GridList
             cols={2}
             style={{
-              backgroundColor: "red",
+              backgroundColor: "#ffe6ff",
               border: "2px black solid",
               flexWrap: "nowrap",
               height: "100%"
@@ -181,7 +181,7 @@ class DeckBuilder extends React.Component {
                       xs={12}
                       onClick={() => this.removeFromDeck(card.card)}
                     >
-                      <Grid item xs={1} style={{ backgroundColor: "white" }}>
+                      <Grid item xs={1}>
                         {card.count}
                       </Grid>
                       <Grid item xs={1} />
