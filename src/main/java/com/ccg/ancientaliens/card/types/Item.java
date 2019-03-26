@@ -19,7 +19,6 @@ public abstract class Item extends Card implements Activatable {
      * @param cost
      * @param knowledge
      * @param text
-     * @param image
      * @param owner
      */
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {

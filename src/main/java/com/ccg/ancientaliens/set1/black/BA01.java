@@ -5,8 +5,6 @@
  */
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
@@ -18,7 +16,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class BA01 extends Spell implements Targeting {
+public class BA01 extends Spell {
 
     UUID target;
     
@@ -28,12 +26,12 @@ public class BA01 extends Spell implements Targeting {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, this::validTarget, 1, "both play");
+        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && c.cost <= 3);}, 1, "both play");
     }
     
     @Override
     public void play(Game game) {
-        targets = game.selectFromZone(controller, "both play", this::validTarget, 1, false);
+        targets = game.selectFromZone(controller, "both play", c->{return (c instanceof Item && c.cost <= 3);}, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -46,9 +44,4 @@ public class BA01 extends Spell implements Targeting {
         }
         game.putTo(controller, this, "scrapyard");
     }
-
-    @Override
-    public boolean validTarget(Card c) {
-        return (c instanceof Item && c.cost <= 3);
-    } 
 }

@@ -6,7 +6,6 @@
 
 package com.ccg.ancientaliens.set1.blue;
 
-import com.ccg.ancientaliens.card.properties.Transforming;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
@@ -20,7 +19,7 @@ import com.ccg.ancientaliens.helpers.Hashmap;
  *
  * @author pseudo
  */
-public class UI04 extends Item implements Transforming {
+public class UI04 extends Item {
     
     public UI04 (String owner){
         super("UI04", 1, new Hashmap(BLUE, 1), 
@@ -41,12 +40,7 @@ public class UI04 extends Item implements Transforming {
         game.addToStack(new Activation(controller, "Transform ~ into AI02.",
             (g , c) -> { 
                 if(g.isIn(controller, id, "play"))
-                    transform(g); 
+                    g.replaceWith(this, new AI02(this));
         }, new Arraylist<>(id)));
-    }
-
-    @Override
-    public void transform(Game game) {
-        game.replaceWith(this, new AI02(this));
     }
 }

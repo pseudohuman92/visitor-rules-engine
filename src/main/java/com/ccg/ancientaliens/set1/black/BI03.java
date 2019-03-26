@@ -6,7 +6,6 @@
 
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.properties.Targeting;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
@@ -19,7 +18,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class BI03 extends Item implements Targeting {
+public class BI03 extends Item {
     
     UUID target;
     
@@ -35,15 +34,10 @@ public class BI03 extends Item implements Targeting {
 
     @Override
     public void activate(Game game) {
-        target = game.selectFromZone(controller, "play", this::validTarget, 1, false).get(0);
+        target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
         game.destroy(target);
         game.addToStack(new Activation(controller, 
             controller + " gains " + (game.ownedByOpponent(target)?2:1) + " energy",
             (g, c) -> { g.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
-    }
-
-    @Override
-    public boolean validTarget(Card c) {
-        return (c instanceof Item);
     }
 }

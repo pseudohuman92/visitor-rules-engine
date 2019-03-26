@@ -6,7 +6,6 @@
 
 package com.ccg.ancientaliens.set1.additional;
 
-import com.ccg.ancientaliens.card.properties.Transforming;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
@@ -20,7 +19,7 @@ import com.ccg.ancientaliens.helpers.Hashmap;
  *
  * @author pseudo
  */
-public class AI03 extends Item implements Transforming {
+public class AI03 extends Item {
     
     public AI03 (UI08 c){
         super("AI03", 0, new Hashmap(BLUE, 1), 
@@ -44,13 +43,8 @@ public class AI03 extends Item implements Transforming {
             (g, c) -> {
                 g.purge(g.getOpponentName(controller), 4);
                 if (counters.get(CHARGE) == 0){
-                    transform(g);
+                    g.replaceWith(this, new UI08(this));
                 }
             }));
-    }
-
-    @Override
-    public void transform(Game game) {
-        game.replaceWith(this, new UI08(this));
     }
 }

@@ -48,7 +48,7 @@ public class UI05 extends Item{
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
                     Arraylist<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 1, false);
                     p.hand.addAll(UUIDHelper.getInList(cand, selected));
-                    Junk j = new Junk();
+                    Junk j = new Junk(c.controller);
                     j.copyPropertiesFrom(UUIDHelper.getNotInList(cand, selected).get(0));
                     Arraylist<Card> cards = new Arraylist<>();
                     cards.add(j);

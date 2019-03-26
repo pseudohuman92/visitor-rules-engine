@@ -19,9 +19,6 @@ public class Junk extends Card {
         super("Junk", 0, new Hashmap<>(), "Junk can't be played or studied.", owner);
     }
     
-     public Junk(){
-        super("Junk", 0, new Hashmap<>(), "Junk can't be played or studied.", "");
-    }
 
     @Override
     public boolean canPlay(Game game) { return false; }

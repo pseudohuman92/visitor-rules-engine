@@ -6,7 +6,6 @@
 
 package com.ccg.ancientaliens.set1.blue;
 
-import com.ccg.ancientaliens.card.properties.Transforming;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
@@ -25,7 +24,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class UI08 extends Item implements Transforming {
+public class UI08 extends Item {
 
     
     UUID target;
@@ -63,7 +62,7 @@ public class UI08 extends Item implements Transforming {
                     (g1, c2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            transform(g1);
+                            g1.replaceWith(this, new AI03(this));
                         }
                     },
                 new Arraylist<>(id)));
@@ -78,7 +77,7 @@ public class UI08 extends Item implements Transforming {
                     (g1, c2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            transform(g1);
+                            g1.replaceWith(this, new AI03(this));
                         }
                     },
                 new Arraylist<>(id)));
@@ -86,10 +85,5 @@ public class UI08 extends Item implements Transforming {
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
         UUIDHelper.getInList(choices, selection).get(0).resolve(game);
-    }
-
-    @Override
-    public void transform(Game game) {
-        game.replaceWith(this, new AI03(this));
     }
 }
