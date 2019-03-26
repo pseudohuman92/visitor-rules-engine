@@ -6,7 +6,7 @@
 package com.ccg.ancientaliens.set1.yellow;
 
 import com.ccg.ancientaliens.card.types.Card;
-import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class YA01 extends Action {
+public class YA01 extends Spell {
 
     UUID target; 
     

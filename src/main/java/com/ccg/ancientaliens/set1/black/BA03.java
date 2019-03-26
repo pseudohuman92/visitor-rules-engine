@@ -7,7 +7,7 @@ package com.ccg.ancientaliens.set1.black;
 
 
 import com.ccg.ancientaliens.card.properties.Targeting;
-import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
@@ -19,7 +19,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class BA03 extends Action implements Targeting {
+public class BA03 extends Spell implements Targeting {
     
     UUID target;
     

@@ -8,10 +8,10 @@ import com.ccg.ancientaliens.protocol.Types.Knowledge;
 
 
 /**
- * Abstract class for the Action card type.
+ * Abstract class for the Spell card type.
  * @author pseudo
  */
-public abstract class Action extends Card {
+public abstract class Spell extends Card {
     
     /**
      *
@@ -22,7 +22,7 @@ public abstract class Action extends Card {
      * @param image
      * @param owner
      */
-    public Action(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
+    public Spell(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
     }
 
@@ -36,6 +36,6 @@ public abstract class Action extends Card {
     @Override
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
-                .setType("Action");
+                .setType("Spell");
     }
 }

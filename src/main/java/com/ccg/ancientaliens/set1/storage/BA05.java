@@ -5,7 +5,7 @@
  */
 package com.ccg.ancientaliens.set1.storage;
 
-import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.game.Game;
 import com.ccg.ancientaliens.game.Player;
@@ -19,7 +19,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class BA05 extends Action {
+public class BA05 extends Spell {
     
     /**
      *

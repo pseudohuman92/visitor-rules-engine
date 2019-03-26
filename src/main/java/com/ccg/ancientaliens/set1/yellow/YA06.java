@@ -5,7 +5,7 @@
  */
 package com.ccg.ancientaliens.set1.yellow;
 
-import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.YELLOW;
 import com.ccg.ancientaliens.helpers.Hashmap;
@@ -14,7 +14,7 @@ import com.ccg.ancientaliens.helpers.Hashmap;
  *
  * @author pseudo
  */
-public class YA06 extends Action {
+public class YA06 extends Spell {
 
     public YA06(String owner) {
         super("YA06", 3, new Hashmap(YELLOW, 2), 

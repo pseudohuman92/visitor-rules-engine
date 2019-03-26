@@ -6,7 +6,7 @@
 
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.card.types.Activation;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
@@ -24,7 +24,7 @@ public class BI08 extends Item {
     public BI08 (String owner){
         super("BI08", 1, new Hashmap(BLACK, 1), 
                 "1, Activate, Sacrifice ~: \n" +
-                "  Look at opponent's hand and choose an action from it. \n" +
+                "  Look at opponent's hand and choose an spell from it. \n" +
                 "  They discard it.", owner);
     }
 
@@ -39,13 +39,13 @@ public class BI08 extends Item {
         game.deplete(id);
         game.destroy(id);
         game.addToStack(new Activation (controller,
-            "Look at "+game.getOpponentName(controller)+"'s hand and choose an action from it. \n" +
+            "Look at "+game.getOpponentName(controller)+"'s hand and choose an spell from it. \n" +
             "They discard it.",
             (g, cx) -> {
                 Arraylist<UUID> selected = 
                         game.selectFromList(controller, 
                                 g.getZone(g.getOpponentName(controller), "hand"), 
-                        c->{return c instanceof Action;}, 1, true);
+                        c->{return c instanceof Spell;}, 1, true);
                 if(!selected.isEmpty()){
                     g.discard(g.getOpponentName(controller), selected.get(0));
                 }

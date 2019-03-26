@@ -5,7 +5,7 @@
  */
 package com.ccg.ancientaliens.set1.blue;
 
-import com.ccg.ancientaliens.card.types.Action;
+import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLUE;
@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class UA04 extends Action {
+public class UA04 extends Spell {
     
     /**
      *
