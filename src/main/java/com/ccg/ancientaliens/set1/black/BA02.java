@@ -5,7 +5,6 @@
  */
 package com.ccg.ancientaliens.set1.black;
 
-import com.ccg.ancientaliens.card.properties.XValued;
 import com.ccg.ancientaliens.card.types.Spell;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
@@ -16,7 +15,7 @@ import com.ccg.ancientaliens.protocol.Types;
  *
  * @author pseudo
  */
-public class BA02 extends Spell implements XValued {
+public class BA02 extends Spell {
     
     String targetPlayer;
     
