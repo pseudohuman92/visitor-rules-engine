@@ -361,7 +361,7 @@ public class Game {
     }
     
     public void ready(UUID id){
-        getCard(id).depleted = false;
+        getCard(id).ready();
     }
     
     public boolean ownedByOpponent(UUID targetID) {
@@ -674,5 +674,9 @@ public class Game {
     private void processEndEvents() {
         eventQueue.add(Event.turnEnd(turnPlayer));
         processEvents();
+    }
+
+    public void registerTriggeringCard(String username, Triggering t) {
+        triggeringCards.get(username).add(t);
     }
 }

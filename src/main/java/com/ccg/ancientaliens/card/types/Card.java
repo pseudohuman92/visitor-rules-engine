@@ -169,6 +169,10 @@ public abstract class Card implements Serializable {
             counters.put(name, k - count);
         }
     }
+    
+    public void ready(){
+        depleted = false;
+    }
 
     /**
      * Function that clears status flags and supplementary data of the card.

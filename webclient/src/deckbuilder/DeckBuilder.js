@@ -5,6 +5,7 @@ import ReactFileReader from "react-file-reader";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import TextField from "@material-ui/core/TextField";
+import Center from "react-center";
 
 import DisplayCard from "./DisplayCard.js";
 
@@ -164,7 +165,7 @@ class DeckBuilder extends React.Component {
           >
             {spliceToSubarrays(this.state.collection, 6).map((arr, i) => (
               <GridListTile key={i}>
-                <Grid container justify="flex-start" spacing={8}>
+                <Grid container alignContent="space-around" justify="flex-start" spacing={8}>
                   {arr.map((card, i) => (
                     <Grid item key={i} xs={4} onClick={() => this.addToDeck(card.card)}>
                       <center>{card.count}</center>
@@ -181,7 +182,7 @@ class DeckBuilder extends React.Component {
         </Grid>
         <Grid item xs={3} style={{ height: "95%" }}>
           <GridList
-            cols={2}
+            cols={1}
             style={{
               backgroundColor: "#ffe6ff",
               border: "2px black solid",
@@ -195,10 +196,9 @@ class DeckBuilder extends React.Component {
               <GridListTile key={i}>
                 <Grid
                   container
-                  alignContent="flex-start"
+                  alignItems="center"
                   justify="flex-start"
                   spacing={8}
-                  style={{ height: "100%", width: "100%" }}
                 >
                   {arr.map((card, i) => (
                     <Grid
@@ -208,9 +208,11 @@ class DeckBuilder extends React.Component {
                       xs={12}
                       onClick={() => this.removeFromDeck(card.card)}
                     >
-                      <Grid item xs={1}>
-                        {card.count}
-                      </Grid>
+                      <Center>
+                        <Grid item xs={1}>
+                          {card.count}
+                        </Grid>
+                      </Center>
                       <Grid item xs={1} />
                       <Grid item xs={10}>
                         <DisplayCard small={true} {...card.card} />

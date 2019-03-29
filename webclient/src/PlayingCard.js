@@ -1,21 +1,8 @@
 import React from 'react';
-
 import {DragSource, DropTarget} from 'react-dnd';
-
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-//import Popover from '@material-ui/core/Popover';
-import Popper from '@material-ui/core/Popper';
-import Textfit from 'react-textfit';
-import Typography from '@material-ui/core/Typography';
-import {borders} from '@material-ui/system';
-import Paper from '@material-ui/core/Paper';
 import Fittext from '@kennethormandy/react-fittext';
+import Rectangle from 'react-rectangle';
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {
@@ -190,14 +177,13 @@ export class PlayingCard extends React.Component {
 
     return connectDragSource(
       <div>
-        <Paper
+        <Rectangle aspectRatio={[25, 35]} 
           style={{
             opacity: opacity,
             border: border,
             backgroundColor: this.getCardColor(knowledgeString(knowledgeCost))
           }}
           onClick={clickHandler}
-          className="playing-card"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}>
           <Grid
@@ -234,7 +220,7 @@ export class PlayingCard extends React.Component {
               </Fittext>
             </Grid>
           </Grid>
-        </Paper>
+        </Rectangle>
       </div>,
     );
   }

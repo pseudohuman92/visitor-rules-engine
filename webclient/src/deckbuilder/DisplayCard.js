@@ -1,9 +1,8 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Fittext from "@kennethormandy/react-fittext";
-
-import "./DisplayCard.css";
+import Rectangle from "react-rectangle";
+import Image from "react-image";
 
 export class DisplayCard extends React.Component {
     
@@ -31,59 +30,70 @@ export class DisplayCard extends React.Component {
       type,
       knowledge
     } = this.props;
+    
+    const marginSize = "2%";
+    const border = "5px black solid";
+    const borderRadius = "10px";
+    const smallBorder = "3px black solid";
+    
+    
     if (small) {
       return (
         <div>
-          <Paper className="playing-card-small" style={{backgroundColor: this.getCardColor(knowledge)}}>
-            <div className="card-grid">
-              <Fittext>
-                <div>
+          <Rectangle aspectRatio={[22, 4]} 
+          style={{border: smallBorder, borderRadius: borderRadius, 
+              backgroundColor: this.getCardColor(knowledge), overflow: "hidden"}}>
+            <Fittext>
+                <div style={{margin : marginSize}}>
                   {cost !== "-" ? cost : ""}{" "}
                   {knowledge !== "-" ? "[" + knowledge + "]" : ""} {" | "}
                   {name}
                 </div>
               </Fittext>
-            </div>
-          </Paper>
+          </Rectangle>
         </div>
       );
     }
 
     return (
       <div>
-        <Paper className="playing-card" style={{ opacity: opacity, backgroundColor: this.getCardColor(knowledge) }}>
+        <Rectangle aspectRatio={[22, 32]} style={{ opacity: opacity, border: border, 
+            borderRadius: borderRadius, backgroundColor: this.getCardColor(knowledge),
+            overflow: "hidden" }}>
           <Grid
             container
-            className="card-grid"
             justify="flex-start"
-            align-content="space-around"
-            align-items="space-around"
+            alignItems="flex-start"
+            overflow="hidden"
           >
-            <Grid item xs={12} style={{ padding: "5% 0 0 5%", height: "15%" }}>
+            <Grid item xs={12} style={{ margin: marginSize }}>
               <Fittext>
                 <div>
-                  {cost !== "-" ? cost : ""}{" "}
-                  {knowledge !== "-" ? "[" + knowledge + "]" : ""}
+                  {((cost !== "-" || knowledge !== "-")? 
+                  ((cost !== "-" ? cost : "") + " " +
+                  (knowledge !== "-" ? "[" + knowledge + "]" : "") + " | ") : "") + name}
                 </div>
               </Fittext>
             </Grid>
-            <Grid item xs={12} style={{ padding: "0 0 0 5%", height: "15%" }}>
-              <Fittext>
-                <div>{name}</div>
-              </Fittext>
+            <Grid item xs={12} style={{ margin: marginSize }}>
+                <div>
+                    <Image src={[process.env.PUBLIC_URL + "/img/" + name + ".jpg", 
+                                 process.env.PUBLIC_URL + "/img/" + type + ".jpg"]} 
+                           style={{maxWidth: "70%"}} decode={false}/>
+                </div>
             </Grid>
-            <Grid item xs={12} style={{ padding: "0 5% 0 5%", height: "55%" }}>
+            <Grid item xs={12} style={{ margin: marginSize }}>
               <Fittext>
                 <div>{description}</div>
               </Fittext>
             </Grid>
-            <Grid item xs={12} style={{ padding: "0 0 0 5%", height: "15%" }}>
+            <Grid item xs={12} style={{ margin: marginSize }}>
               <Fittext>
                 <div>{type}</div>
               </Fittext>
             </Grid>
           </Grid>
-        </Paper>
+        </Rectangle>
       </div>
     );
   }

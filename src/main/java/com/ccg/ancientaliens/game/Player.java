@@ -93,7 +93,7 @@ public class Player implements Serializable {
     public void newTurn(){
         energy = maxEnergy;
         numOfStudiesLeft = 1;
-        playArea.forEach((card) -> card.depleted = false);
+        playArea.forEach((card) -> card.ready());
     }
     
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
