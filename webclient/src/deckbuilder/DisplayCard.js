@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Fittext from "@kennethormandy/react-fittext";
+import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 import Image from "react-image";
 
@@ -32,9 +33,15 @@ export class DisplayCard extends React.Component {
     } = this.props;
     
     const marginSize = "2%";
-    const border = "5px black solid";
-    const borderRadius = "10px";
+    const border = "1px black solid";
+    const borderRadius = "3px";
     const smallBorder = "3px black solid";
+
+    const cardWidth = 63;
+    const cardHeight = 88;
+    const outerMargin = 2;
+    const innerWidth = cardWidth - 2 * outermargin;
+    const innerHeight = cardHeight - 2 * outermargin;
     
     
     if (small) {
@@ -43,13 +50,15 @@ export class DisplayCard extends React.Component {
           <Rectangle aspectRatio={[22, 4]} 
           style={{border: smallBorder, borderRadius: borderRadius, 
               backgroundColor: this.getCardColor(knowledge), overflow: "hidden"}}>
-            <Fittext>
-                <div style={{margin : marginSize}}>
+            <Textfit
+              		mode="single"
+              		forceSingleModeWidth={false}
+              		style={{maxHeight: '100%',
+              		margin : marginSize}}>
                   {cost !== "-" ? cost : ""}{" "}
                   {knowledge !== "-" ? "[" + knowledge + "]" : ""} {" | "}
                   {name}
-                </div>
-              </Fittext>
+                </Textfit>
           </Rectangle>
         </div>
       );
@@ -57,42 +66,70 @@ export class DisplayCard extends React.Component {
 
     return (
       <div>
-        <Rectangle aspectRatio={[22, 32]} style={{ opacity: opacity, border: border, 
-            borderRadius: borderRadius, backgroundColor: this.getCardColor(knowledge),
+      	<Rectangle aspectRatio={[63, 88]} style={{ opacity: opacity,
+            borderRadius: borderRadius, backgroundColor: "black",
             overflow: "hidden" }}>
-          <Grid
-            container
-            justify="flex-start"
-            alignItems="flex-start"
-            overflow="hidden"
-          >
-            <Grid item xs={12} style={{ margin: marginSize }}>
-              <Fittext>
-                <div>
-                  {((cost !== "-" || knowledge !== "-")? 
-                  ((cost !== "-" ? cost : "") + " " +
-                  (knowledge !== "-" ? "[" + knowledge + "]" : "") + " | ") : "") + name}
-                </div>
-              </Fittext>
-            </Grid>
-            <Grid item xs={12} style={{ margin: marginSize }}>
-                <div>
-                    <Image src={[process.env.PUBLIC_URL + "/img/" + name + ".jpg", 
-                                 process.env.PUBLIC_URL + "/img/" + type + ".jpg"]} 
-                           style={{maxWidth: "70%"}} decode={false}/>
-                </div>
-            </Grid>
-            <Grid item xs={12} style={{ margin: marginSize }}>
-              <Fittext>
-                <div>{description}</div>
-              </Fittext>
-            </Grid>
-            <Grid item xs={12} style={{ margin: marginSize }}>
-              <Fittext>
-                <div>{type}</div>
-              </Fittext>
-            </Grid>
-          </Grid>
+	        <div style={{ opacity: opacity,
+	        	margin: "3.1746% 3.9683% 3.1746% 3.9683%", 
+	        	backgroundColor: this.getCardColor(knowledge),
+	            overflow: "hidden",
+	            height: "93.6508%" }}>
+
+		        <div style={{ 
+		        	margin: "3.4483% 3.4483% 0 3.4483%",
+		        	border: border,
+		        	borderRadius: "3px",  
+		        	backgroundColor: "beige",
+		            overflow: "hidden",
+		            height: "5.9524%" }}>
+		            <Textfit
+              		mode="single"
+              		forceSingleModeWidth={false}
+              		style={{ maxWidth: '96%', maxHeight: '100%'}}>
+				            {" " + ((cost !== "-" || knowledge !== "-")? 
+			                  ((cost !== "-" ? cost : "") + " " +
+			                  (knowledge !== "-" ? "[" + knowledge + "]" : "") + " | ") : "") + 
+				            name}
+		            </Textfit>
+	            </div>
+
+	            <div style={{ 
+		        	margin: "0.8621% 3.4483% 0 3.4483%",
+		            overflow: "hidden",
+		            height: "47.6190%" }}>
+		            <Image src={[process.env.PUBLIC_URL + "/img/" + name + ".jpg", 
+	                                 process.env.PUBLIC_URL + "/img/" + type + ".jpg"]} 
+	                           style={{maxWidth: "100%"}} decode={false}/>
+	            </div>
+
+	            <div style={{ 
+		        	margin: "0.8621% 3.4483% 0 3.4483%",
+		        	border: border,
+		        	borderRadius: "3px",  
+		        	backgroundColor: "beige",
+		            overflow: "hidden",
+		            height: "5.9524%" }}>
+		            <Textfit
+              		mode="single"
+              		forceSingleModeWidth={false}
+              		style={{maxHeight: '100%'}}>
+			            {" " + type}
+		            </Textfit>
+	            </div>
+
+	            <div style={{ 
+		        	margin: "0.8621% 3.4483% 3.4483% 3.4483%",
+		        	border: border,
+		        	borderRadius: "3px",  
+		        	backgroundColor: "beige",
+		            overflow: "hidden",
+		            height: "33.9286%" }}>
+	            	<Textfit style={{maxHeight: '100%'}}>
+			            {description}
+		            </Textfit>
+
+	            </div>
+	        </div>
         </Rectangle>
       </div>
     );
