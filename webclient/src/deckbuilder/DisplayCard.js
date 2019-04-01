@@ -40,8 +40,8 @@ export class DisplayCard extends React.Component {
     const cardWidth = 63;
     const cardHeight = 88;
     const outerMargin = 2;
-    const innerWidth = cardWidth - 2 * outermargin;
-    const innerHeight = cardHeight - 2 * outermargin;
+    const innerWidth = cardWidth - 2 * outerMargin;
+    const innerHeight = cardHeight - 2 * outerMargin;
     
     
     if (small) {
