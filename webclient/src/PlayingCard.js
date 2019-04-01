@@ -3,6 +3,8 @@ import {DragSource, DropTarget} from 'react-dnd';
 import Grid from '@material-ui/core/Grid';
 import Fittext from '@kennethormandy/react-fittext';
 import Rectangle from 'react-rectangle';
+import Textfit from "react-textfit";
+import Image from "react-image";
 
 import {ItemTypes, FieldIDs} from './Constants.js';
 import {
@@ -12,7 +14,7 @@ import {
   SelectCard,
   StudyCard,
 } from './Game.js';
-import './PlayingCard.css';
+import './deckbuilder/Card.css';
 
 import proto from './protojs/compiled.js';
 
@@ -85,7 +87,8 @@ export class PlayingCard extends React.Component {
     }
   };
   
-  getCardColor(knowlString){
+  getCardColor(knowledgeCost){
+      var knowlString = this.toKnowledgeString(knowledgeCost);
       if(knowlString.startsWith("B")){
           return "#666666";
       } else if (knowlString.startsWith("U")) {
@@ -98,6 +101,38 @@ export class PlayingCard extends React.Component {
           return "#e6e6e6";
       }
   };
+  
+  toKnowledgeString(knowledgeCost) {
+       var knowledgeMap = {};
+            knowledgeMap[proto.Knowledge.BLACK] = 'B';
+            knowledgeMap[proto.Knowledge.GREEN] = 'G';
+            knowledgeMap[proto.Knowledge.RED] = 'R';
+            knowledgeMap[proto.Knowledge.BLUE] = 'U';
+            knowledgeMap[proto.Knowledge.YELLOW] = 'Y';
+        var str = "";
+      
+      for (var i = 0; i < knowledgeCost.length; i++) {
+        for (var j = 0; j < knowledgeCost[i].count; j++) {
+          str = str + knowledgeMap[knowledgeCost[i].knowledge];
+        }
+      }
+      return str;
+    };
+    
+    getCostLine(cost, knowledge){
+        var str = "";
+        
+        if(cost !== "-"){
+           str += cost + " ";
+        }
+        if (!knowledge.startsWith("-")){
+            str += "[" + knowledge + "] ";
+        }
+        if (cost !== "-" || !knowledge.startsWith("-")){
+            str += "| ";
+        }
+        return str;
+    }
 
   render() {
     const {
@@ -124,17 +159,17 @@ export class PlayingCard extends React.Component {
     const {anchorEl, openPopover} = this.state;
 
     var opacity = 1,
-      border = 'none';
+      borderColor = "black";
     let clickHandler = undefined;
     if (isDragging) {
       opacity = 0.5;
-      border = '5px yellow solid';
+      borderColor = "yellow";
     } else if (canDrop && isOver) {
-      border = '5px red solid';
+      borderColor = "red";
     } else if (targeted) {
-      border = '5px yellow solid';
+      borderColor = "yellow";
     } else if (selected) {
-      border = '5px magenta solid';
+      borderColor = "magenta";
       clickHandler = event => {
         UnselectCard(id);
       };
@@ -142,86 +177,69 @@ export class PlayingCard extends React.Component {
       clickHandler = event => {
         SelectCard(id);
       };
-      border = '5px green solid';
+      borderColor = "green";
     } else if (activatable) {
       clickHandler = event => {
         ActivateCard(id);
       };
-      border = '5px blue solid';
+      borderColor = "blue";
     } else if (playable) {
-      border = '5px blue solid';
+      borderColor = "blue";
     } else if (depleted) {
       opacity = 0.5;
     }
 
-    const knowledgeMap = {};
-    knowledgeMap[proto.Knowledge.BLACK] = 'B';
-    knowledgeMap[proto.Knowledge.GREEN] = 'G';
-    knowledgeMap[proto.Knowledge.RED] = 'R';
-    knowledgeMap[proto.Knowledge.BLUE] = 'U';
-    knowledgeMap[proto.Knowledge.YELLOW] = 'Y';
+    
 
     const counterMap = {};
     counterMap[proto.Counter.CHARGE] = 'C';
-
-    function knowledgeString(knowledgeCost) {
-      var str = '';
-
-      for (var i = 0; i < knowledgeCost.length; i++) {
-        for (var j = 0; j < knowledgeCost[i].count; j++) {
-          str = str + knowledgeMap[knowledgeCost[i].knowledge];
-        }
-      }
-      return str;
-    }
+    
+    const cardColor = this.getCardColor(knowledgeCost);
+    const knowledge = this.toKnowledgeString(knowledgeCost);
 
     return connectDragSource(
-      <div>
-        <Rectangle aspectRatio={[25, 35]} 
-          style={{
-            opacity: opacity,
-            border: border,
-            backgroundColor: this.getCardColor(knowledgeString(knowledgeCost))
-          }}
-          onClick={clickHandler}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}>
-          <Grid
-            container
-            className="card-grid"
-            justify="flex-start"
-            align-content="space-around"
-            align-items="space-around">
-            <Grid item xs={12} style={{padding: '5% 0 0 5%', height: '15%'}}>
-              <Fittext>
-                <div>
-                  {cost} [{knowledgeString(knowledgeCost)}]
-                </div>
-              </Fittext>
-            </Grid>
-            <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
-              <Fittext>
-                <div>{name}</div>
-              </Fittext>
-            </Grid>
-            <Grid item xs={12} style={{padding: '0 5% 0 5%', height: '55%'}}>
-              <Fittext>
-                <div>{description}</div>
-              </Fittext>
-            </Grid>
-            <Grid item xs={12} style={{padding: '0 0 0 5%', height: '15%'}}>
-              <Fittext>
-                <div>
-                  {type} ---{' '}
-                  {counters
-                    .map(c => `${counterMap[c.counter]}: ${c.count}`)
-                    .join()}
-                </div>
-              </Fittext>
-            </Grid>
-          </Grid>
-        </Rectangle>
-      </div>,
+    <div>
+          <Rectangle aspectRatio={[63, 88]} 
+                     style={{opacity: opacity,
+                     borderRadius: "3px",
+                     backgroundColor: borderColor,
+                     overflow: "hidden"}}>
+              <div className="card-inner"
+                   style={{backgroundColor: cardColor}}>
+                  <div className="card-name">
+                      <Textfit
+                          mode="single"
+                          forceSingleModeWidth={false}
+                          style={{maxWidth: '96%', maxHeight: '100%'}}>
+                          {this.getCostLine(cost, knowledge) + name}
+                      </Textfit>
+                  </div>
+
+                  <div className="card-image">
+                      <Image src={[process.env.PUBLIC_URL + "/img/" + name + ".jpg",
+                                                       process.env.PUBLIC_URL + "/img/" + type + ".jpg"]} 
+                             style={{maxWidth: "100%"}} decode={false}/>
+                  </div>
+
+                  <div className="card-type">
+                      <Textfit
+                          mode="single"
+                          forceSingleModeWidth={false}
+                          style={{maxHeight: '100%'}}>
+                          {" " + type}
+                      </Textfit>
+                  </div>
+
+                  <div className="card-description">
+                      <Textfit style={{maxHeight: '100%'}}>
+                        {description}
+                        {counters.toString() !== "" &&
+                        ("\n-----\n" + counters.map(c => `${counterMap[c.counter]}: ${c.count}`).join())}
+                      </Textfit>
+                  </div>
+              </div>
+          </Rectangle>
+    </div>,
     );
   }
 }

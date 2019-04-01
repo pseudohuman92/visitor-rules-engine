@@ -1,0 +1,33 @@
+.card-inner {
+    margin: 3.1746% 3.9683% 3.1746% 3.9683%; 
+    height: 93.6508%; 
+    color: black;
+    overflow: hidden;
+}
+
+.card-name {
+    margin: 3.4483% 3.4483% 0 3.4483%;
+    background-color: beige;
+    overflow: hidden;
+    height: 5.9524%;
+}
+
+.card-image {
+    margin: 1.6949% 3.4483% 0 3.4483%;
+    overflow: hidden;
+    height: 47.6190%;
+}
+
+.card-type {
+    margin: 1.6949% 3.4483% 0 3.4483%;
+    background-color: beige;
+    overflow: hidden;
+    height: 5.9524%;
+}
+
+.card-description{
+    margin: 1.6949% 3.4483% 3.4483% 3.4483%;
+    background-color: beige;
+    overflow: hidden;
+    height: 32.1429%
+}
