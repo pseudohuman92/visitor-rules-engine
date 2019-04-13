@@ -10,12 +10,13 @@ import com.ccg.ancientaliens.helpers.Arraylist;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
+import com.ccg.ancientaliens.card.properties.Damageable;
 
 /**
  *
  * @author pseudo
  */
-public class Player implements Serializable {
+public class Player implements Serializable, Damageable {
 
     public String name;
     public UUID id;
@@ -57,7 +58,8 @@ public class Player implements Serializable {
         hand.addAll(deck.extractFromTop(count));
     }
     
-    public int purgeFromDeck(int count) {
+    @Override
+    public int dealDamage(Game game, int count) {
         if(shield >= count){
             shield -= count;
             return 0;

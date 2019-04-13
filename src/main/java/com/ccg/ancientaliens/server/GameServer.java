@@ -26,14 +26,12 @@ import javax.websocket.EncodeException;
 public class GameServer {
     
     public Hashmap<String, GeneralEndpoint> playerConnections;
-    public Hashmap<UUID, Table> tables;
     public Hashmap<UUID, Game> games;
     public Arraylist<String> chatLog;
     public Arraylist<String> gameQueue;
 
     public GameServer() {
         playerConnections = new Hashmap<>();
-        tables = new Hashmap<>();
         chatLog = new Arraylist<>();
         games = new Hashmap<>();
         gameQueue = new Arraylist<>();

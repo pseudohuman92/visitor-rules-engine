@@ -6,6 +6,7 @@
 package com.ccg.ancientaliens.card.types;
 
 import com.ccg.ancientaliens.card.properties.Activatable;
+import com.ccg.ancientaliens.card.properties.Damageable;
 import com.ccg.ancientaliens.card.properties.Triggering;
 import com.ccg.ancientaliens.game.Event;
 import com.ccg.ancientaliens.game.Game;
@@ -16,7 +17,8 @@ import com.ccg.ancientaliens.protocol.Types;
  *
  * @author pseudo
  */
-public abstract class Ally extends Card implements Activatable, Triggering {
+public abstract class Ally extends Card 
+        implements Activatable, Triggering, Damageable {
     
     int favorCount;
     Activation favorAbility;
@@ -72,9 +74,23 @@ public abstract class Ally extends Card implements Activatable, Triggering {
     }
     
     @Override
+    public int dealDamage(Game game, int damageAmount) {
+        int tmp = Math.min(health, damageAmount);
+        if (health <= damageAmount){
+            health = 0;
+            game.extractCard(id);
+            game.putTo(controller, this, "scrapyard");
+        } else {
+            health -= damageAmount;
+        }
+        return tmp;
+    }
+    
+    @Override
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
-                .setType("Ally");
+                .setType("Ally")
+                .setHealth(health);
     }
     
 }

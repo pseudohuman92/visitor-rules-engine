@@ -67,6 +67,7 @@ message Card {
     repeated KnowledgeGroup knowledgeCost = 9;
     string type = 10;
     repeated string subtypes = 11;
+    int32 health = 12;
 }
 
 message Player {

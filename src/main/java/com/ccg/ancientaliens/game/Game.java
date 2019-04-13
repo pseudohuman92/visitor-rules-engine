@@ -3,7 +3,6 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.properties.Activatable;
 import com.ccg.ancientaliens.card.properties.Triggering;
-import com.ccg.ancientaliens.card.types.Ally;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Junk;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
@@ -383,7 +382,7 @@ public class Game {
         
         do {
             player = players.get(current);
-            ret = player.purgeFromDeck(ret);
+            ret = player.dealDamage(this, ret);
             if (player.deck.isEmpty()){
                 lose(current);
             }
