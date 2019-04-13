@@ -22,7 +22,7 @@ public class YA06 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         game.draw(controller, 3);
         game.draw(game.getOpponentName(controller), 3);
     }    

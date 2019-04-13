@@ -6,7 +6,7 @@ import com.ccg.ancientaliens.protocol.Types.*;
 import com.ccg.ancientaliens.helpers.Hashmap;
 
 /**
- * Abstract class for the Item card type.
+ * Abstract class for the Passive card type.
  * @author pseudo
  */
 public abstract class Passive extends Card {

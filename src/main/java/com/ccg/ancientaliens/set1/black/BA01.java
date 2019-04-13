@@ -38,10 +38,9 @@ public class BA01 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         if(game.isIn(controller, target, "both play")){
             game.possessTo(controller, target, "play");
         }
-        game.putTo(controller, this, "scrapyard");
     }
 }

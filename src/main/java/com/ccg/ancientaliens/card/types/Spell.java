@@ -25,6 +25,14 @@ public abstract class Spell extends Card {
     public Spell(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
     }
+    
+    public abstract void resolveEffect(Game game);
+       
+    public void resolve (Game game){ 
+        resolveEffect(game);
+        game.extractCard(id);
+        game.putTo(controller, this, "scrapyard");
+    }    
 
     @Override
     public boolean canPlay(Game game){ 

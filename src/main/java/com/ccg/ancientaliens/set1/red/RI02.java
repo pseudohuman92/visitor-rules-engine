@@ -40,10 +40,10 @@ public class RI02 extends Item {
         target = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false).get(0);
         game.addToStack(new Activation (controller,
             "Return ~ and target item to controller's hand.",
-            (g, cx) -> {
-                Card c = g.extractCard(target);
-                g.putTo(controller, g.extractCard(id), "hand");
-                g.putTo(c.controller, c, "hand");
+            (x) -> {
+                Card c = game.extractCard(target);
+                game.putTo(controller, game.extractCard(id), "hand");
+                game.putTo(c.controller, c, "hand");
             }, new Arraylist<>(target).putIn(id))
         );
     }

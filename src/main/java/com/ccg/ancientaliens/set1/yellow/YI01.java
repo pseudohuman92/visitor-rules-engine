@@ -49,8 +49,8 @@ public class YI01 extends Item {
         game.destroy(id);
         
         game.addToStack(new Activation(controller, controller+" gains shield " + x,
-            (g , c) -> { 
-                g.addShield(controller, x);
+            (y) -> { 
+                game.addShield(controller, x);
         }));
     }
 }

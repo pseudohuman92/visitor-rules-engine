@@ -10,7 +10,7 @@ import com.ccg.ancientaliens.helpers.Arraylist;
 import com.ccg.ancientaliens.helpers.Hashmap;
 import com.ccg.ancientaliens.protocol.Types;
 import java.util.UUID;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  *
@@ -18,14 +18,14 @@ import java.util.function.BiConsumer;
  */
 public class Activation extends Card {
     
-    BiConsumer<Game, Card> effect;
+    Consumer<Void> effect;
     
-    public Activation (String owner, String text, BiConsumer<Game, Card> effect){
+    public Activation (String owner, String text, Consumer<Void> effect){
         super("", 0, new Hashmap<>(), text, owner);
         this.effect = effect;
     }
     
-    public Activation (String owner, String text, BiConsumer<Game, Card> effect, Arraylist<UUID> targets){
+    public Activation (String owner, String text, Consumer<Void> effect, Arraylist<UUID> targets){
         super("", 0, new Hashmap<>(), text, owner);
         this.effect = effect;
         this.targets = targets;
@@ -35,7 +35,7 @@ public class Activation extends Card {
     public boolean canPlay(Game game) { return false; }
 
     @Override
-    public void resolve(Game game) { effect.accept(game, this); }
+    public void resolve(Game game) { effect.accept(null); }
     
     @Override
     public Types.Card.Builder toCardMessage() {

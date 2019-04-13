@@ -28,6 +28,9 @@ public class YA01 extends Spell {
     }
     
     @Override
+    public void resolveEffect (Game game){}
+    
+    @Override
     public void resolve (Game game){
         game.addReflect(controller, 2);
         Arraylist<Card> tmp = new Arraylist<>();

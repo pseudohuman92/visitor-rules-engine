@@ -3,6 +3,7 @@ package com.ccg.ancientaliens.game;
 
 import com.ccg.ancientaliens.card.properties.Activatable;
 import com.ccg.ancientaliens.card.properties.Triggering;
+import com.ccg.ancientaliens.card.types.Ally;
 import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Junk;
 import com.ccg.ancientaliens.helpers.UUIDHelper;
@@ -64,6 +65,12 @@ public class Game {
         
         players.putIn(p1, new Player(p1, TestDecks.randomDeck(p1)));
         players.putIn(p2, new Player(p2, TestDecks.randomDeck(p2)));
+        
+        System.out.println("Example Class Names");
+        System.out.println("\tName: " + players.get(p1).deck.get(0).getClass().getName());
+        System.out.println("\tCanonical Name: " + players.get(p1).deck.get(0).getClass().getCanonicalName());
+        System.out.println("\tSimple Name: " + players.get(p1).deck.get(0).getClass().getSimpleName());
+        System.out.println("\tType Name: " + players.get(p1).deck.get(0).getClass().getTypeName());
         
         players.get(p1).deck.shuffle();
         players.get(p2).deck.shuffle();
@@ -338,7 +345,7 @@ public class Game {
 
     public void destroy(UUID id){
         Card item = extractCard(id);
-        players.get(item.controller).scrapyard.add(item);
+        item.destroy(this);
     }
     
     public void loot(String username, int x) {
@@ -428,7 +435,7 @@ public class Game {
         return cards;
     }
 
-    public void putAllTo(String username, Arraylist<Card> cards, String zone) {
+    public void putTo(String username, Arraylist<Card> cards, String zone) {
         getZone(username, zone).addAll(cards);
     }
     
@@ -486,7 +493,7 @@ public class Game {
         return 0;
     }
     
-    public Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, int count, boolean upTo){
+    private Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, int count, boolean upTo){
         /*
         if (canSelect.size() == count || (canSelect.size() < count && upTo)){
             return canSelect;
@@ -678,5 +685,9 @@ public class Game {
 
     public void registerTriggeringCard(String username, Triggering t) {
         triggeringCards.get(username).add(t);
+    }
+
+    public void removeTriggeringCard(Triggering card) {
+        triggeringCards.values().forEach(l->{l.remove(card);});
     }
 }

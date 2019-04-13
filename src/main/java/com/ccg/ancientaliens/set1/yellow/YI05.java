@@ -35,7 +35,7 @@ public class YI05 extends Item {
         game.spendEnergy(controller, 2);
         game.deplete(id);
         game.addToStack(new Activation(controller, controller+" gains reflect 2",
-        (g, c) -> {
+        (x) -> {
             game.addReflect(controller, 2);
         }));
     }

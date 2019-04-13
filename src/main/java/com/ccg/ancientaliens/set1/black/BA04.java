@@ -7,7 +7,6 @@ package com.ccg.ancientaliens.set1.black;
 
 
 import com.ccg.ancientaliens.card.types.Spell;
-import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
@@ -37,9 +36,8 @@ public class BA04 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "play", c->{return c instanceof Item;}, 1, false);
         game.possessTo(controller, selected.get(0), "play");
-        game.putTo(controller, this, "scrapyard");
     }
 }

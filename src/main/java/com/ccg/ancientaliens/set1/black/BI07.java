@@ -7,7 +7,6 @@
 package com.ccg.ancientaliens.set1.black;
 
 import com.ccg.ancientaliens.card.types.Activation;
-import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
@@ -39,9 +38,9 @@ public class BI07 extends Item {
         game.destroy(id);
         game.addToStack(new Activation (controller,
             "Possess target item",
-            (g, c) -> {
-                if (g.isIn(c.controller, selected.get(0), "both play"))
-                    g.possessTo(c.controller, selected.get(0), "play");
+            (x) -> {
+                if (game.isIn(controller, selected.get(0), "both play"))
+                    game.possessTo(controller, selected.get(0), "play");
             }, selected));
     }
 }

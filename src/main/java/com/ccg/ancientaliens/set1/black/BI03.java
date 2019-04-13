@@ -7,7 +7,6 @@
 package com.ccg.ancientaliens.set1.black;
 
 import com.ccg.ancientaliens.card.types.Activation;
-import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
@@ -38,6 +37,6 @@ public class BI03 extends Item {
         game.destroy(target);
         game.addToStack(new Activation(controller, 
             controller + " gains " + (game.ownedByOpponent(target)?2:1) + " energy",
-            (g, c) -> { g.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
+            (x) -> { game.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
     }
 }

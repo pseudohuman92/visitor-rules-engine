@@ -43,16 +43,16 @@ public class UI05 extends Item{
         game.addToStack(new Activation(controller, 
                 "Look at the top two cards of your deck. "
                 + "Draw one, transform other into junk and shuffle into the deck.",
-                (g , c) -> { 
-                    Player p = g.getPlayer(c.controller);
+                (x) -> { 
+                    Player p = game.getPlayer(controller);
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
-                    Arraylist<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 1, false);
+                    Arraylist<UUID> selected = game.selectFromList(controller, cand, cx->{return true;}, 1, false);
                     p.hand.addAll(UUIDHelper.getInList(cand, selected));
-                    Junk j = new Junk(c.controller);
+                    Junk j = new Junk(controller);
                     j.copyPropertiesFrom(UUIDHelper.getNotInList(cand, selected).get(0));
                     Arraylist<Card> cards = new Arraylist<>();
                     cards.add(j);
-                    g.shuffleIntoDeck(j.controller, cards);
+                    game.shuffleIntoDeck(j.controller, cards);
                 }));
     }
 }

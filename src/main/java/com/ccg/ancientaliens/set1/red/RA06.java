@@ -39,9 +39,8 @@ public class RA06 extends Spell {
     } 
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Card c = game.extractCard(target);
         game.putTo(c.controller, c, "hand");
-        game.putTo(controller, this, "scrapyard");
     }    
 }

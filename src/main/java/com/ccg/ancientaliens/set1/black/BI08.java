@@ -41,13 +41,13 @@ public class BI08 extends Item {
         game.addToStack(new Activation (controller,
             "Look at "+game.getOpponentName(controller)+"'s hand and choose an spell from it. \n" +
             "They discard it.",
-            (g, cx) -> {
+            (x) -> {
                 Arraylist<UUID> selected = 
                         game.selectFromList(controller, 
-                                g.getZone(g.getOpponentName(controller), "hand"), 
+                                game.getZone(game.getOpponentName(controller), "hand"), 
                         c->{return c instanceof Spell;}, 1, true);
                 if(!selected.isEmpty()){
-                    g.discard(g.getOpponentName(controller), selected.get(0));
+                    game.discard(game.getOpponentName(controller), selected.get(0));
                 }
             })
         );

@@ -18,17 +18,19 @@ import com.ccg.ancientaliens.protocol.Types;
  */
 public abstract class Ally extends Card implements Activatable, Triggering {
     
-    int favor;
+    int favorCount;
     Activation favorAbility;
     int loyalty;
+    int health;
 
     public Ally(String name, int cost, 
             Hashmap<Types.Knowledge, Integer> knowledge, 
-            String text, String owner) {
+            String text, int health, String owner) {
         super(name, cost, knowledge, text, owner);
-        favor = 0;
+        favorCount = 0;
         loyalty = 0;
         favorAbility = null;
+        this.health = health; 
     }
     
     @Override
@@ -46,9 +48,9 @@ public abstract class Ally extends Card implements Activatable, Triggering {
     
     @Override
     public void checkEvent(Game game, Event event){
-        if (event.label.equals("Begin Turn") && favor > 0){
-            favor--;
-            if (favor == 0){
+        if (event.label.equals("Begin Turn") && favorCount > 0){
+            favorCount--;
+            if (favorCount == 0){
                 game.addToStack(favorAbility);
                 favorAbility = null;
             }
@@ -57,9 +59,16 @@ public abstract class Ally extends Card implements Activatable, Triggering {
     
     @Override
     public void ready(){
-        if (favor == 0){
+        if (favorCount == 0){
             depleted = false;
         }
+    }
+    
+    @Override
+    public void destroy(Game game) {
+        game.extractCard(id);
+        game.putTo(controller, this, "scrapyard");
+        game.removeTriggeringCard(this);
     }
     
     @Override

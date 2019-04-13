@@ -37,11 +37,11 @@ public class BI04 extends Item {
         game.destroy(id);
         game.addToStack(new Activation (controller,
             "Draw a card from void, then purge acard from your hand",
-            (g, c) -> {
-                if (g.isIn(c.controller, selected.get(0), "void")){
-                    g.drawByID(c.controller, selected.get(0));
-                    Arraylist<UUID> selection = g.selectFromZone(c.controller, "hand", cx-> {return true;}, 1, false);
-                    g.purgeByID(c.controller, selection.get(0));
+            (x) -> {
+                if (game.isIn(controller, selected.get(0), "void")){
+                    game.drawByID(controller, selected.get(0));
+                    Arraylist<UUID> selection = game.selectFromZone(controller, "hand", cx-> {return true;}, 1, false);
+                    game.purgeByID(controller, selection.get(0));
                 }
             }, selected));
     }

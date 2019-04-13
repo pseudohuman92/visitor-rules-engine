@@ -38,10 +38,9 @@ public class UA02 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         if(game.isIn(controller, target, "both play")){
             game.transformToJunk(target);
         }
-        game.putTo(controller, this, "scrapyard");
     }    
 }

@@ -33,8 +33,8 @@ public class BI06 extends Item {
         game.deplete(id);
         game.addToStack(new Activation (controller,
             game.getOpponentName(controller) + " purges 3",
-            (g, c) -> {
-                g.purge(g.getOpponentName(c.controller), 3);
+            (x) -> {
+                game.purge(game.getOpponentName(controller), 3);
             }));
     }
 }

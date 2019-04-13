@@ -41,12 +41,11 @@ public class RA01 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         if(game.isIn(controller, target, "both play")){
             Card c = game.extractCard(target);    
             game.putTo(c.controller, c, "hand");
         }
         game.purge(game.getOpponentName(controller), 2);
-        game.putTo(controller, this, "scrapyard");
     }    
 }

@@ -40,8 +40,7 @@ public class RA05 extends Spell {
     }  
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         game.purge(game.getOpponentName(controller), 4);
-        game.putTo(controller, this, "scrapyard");
     }    
 }

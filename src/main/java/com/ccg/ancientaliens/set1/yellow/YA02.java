@@ -39,9 +39,8 @@ public class YA02 extends Spell {
     } 
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Card c = game.extractCard(target);
         game.putTo(c.controller, c, "scrapyard");
-        game.putTo(controller, this, "scrapyard");
     }    
 }

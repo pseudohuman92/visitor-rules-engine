@@ -13,16 +13,11 @@ import com.ccg.ancientaliens.protocol.Types;
  */
 public abstract class Item extends Card implements Activatable {
     
-    /**
-     *
-     * @param name
-     * @param cost
-     * @param knowledge
-     * @param text
-     * @param owner
-     */
+    int health;
+    
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
+        health = 5;
     }
     
     

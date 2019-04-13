@@ -55,14 +55,14 @@ public class UI08 extends Item {
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasInstancesIn(controller, Junk.class, "hand", 1)){
             choices.add(new Activation(controller, "Discard a Junk: Charge 1.",
-            (g, c) -> {
-                target = g.selectFromZone(controller, "hand", c1 -> {return c1 instanceof Junk;}, 1, false).get(0);
-                g.discard(controller, target);
-                g.addToStack(new Activation(controller, "Charge 1",
-                    (g1, c2) -> {
+            (x1) -> {
+                target = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false).get(0);
+                game.discard(controller, target);
+                game.addToStack(new Activation(controller, "Charge 1",
+                    (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            g1.replaceWith(this, new AI03(this));
+                            game.replaceWith(this, new AI03(this));
                         }
                     },
                 new Arraylist<>(id)));
@@ -70,14 +70,14 @@ public class UI08 extends Item {
         }
         if (game.hasInstancesIn(controller, Item.class, "play", 1)){
             choices.add(new Activation(controller, "Sacrifice an Item: Charge 1.",
-            (g, c) -> {
-                target = g.selectFromZone(controller, "play", c1 -> {return c1 instanceof Item;}, 1, false).get(0);
-                g.destroy(target);
-                g.addToStack(new Activation(controller, "Charge 1",
-                    (g1, c2) -> {
+            (x1) -> {
+                target = game.selectFromZone(controller, "play", c -> {return c instanceof Item;}, 1, false).get(0);
+                game.destroy(target);
+                game.addToStack(new Activation(controller, "Charge 1",
+                    (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            g1.replaceWith(this, new AI03(this));
+                            game.replaceWith(this, new AI03(this));
                         }
                     },
                 new Arraylist<>(id)));

@@ -46,6 +46,9 @@ public class YA04 extends Spell {
     } 
     
     @Override
+    public void resolveEffect (Game game){}
+    
+    @Override
     public void resolve (Game game){
         Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", c->{return true;}, x, false);
         Arraylist<Card> cards = game.extractAll(selected);

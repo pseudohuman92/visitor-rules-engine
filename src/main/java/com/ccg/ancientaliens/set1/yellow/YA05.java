@@ -40,10 +40,13 @@ public class YA05 extends Spell {
     } 
     
     @Override
+    public void resolveEffect (Game game){}
+    
+    @Override
     public void resolve (Game game){
         if(game.isIn(controller, selected, "scrapyard")){
             game.putTo(controller, game.extractCard(selected), "hand");
-            game.putTo(controller, this, "void");
         }
+        game.putTo(controller, this, "void");
     }    
 }

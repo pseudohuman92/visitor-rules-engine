@@ -41,10 +41,10 @@ public class UI03 extends Item{
         game.spendEnergy(controller, 1);
         game.addToStack(new Activation(controller, "Look at the top 2 cards of your library. "
                 + "You may discard any number of them. Put the rest in the same order.",
-                (g , c) -> { 
-                    Player p = g.getPlayer(c.controller);
+                (x) -> { 
+                    Player p = game.getPlayer(controller);
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
-                    Arraylist<UUID> selected = g.selectFromList(controller, cand, cx->{return true;}, 2, true);
+                    Arraylist<UUID> selected = game.selectFromList(controller, cand, cx->{return true;}, 2, true);
                     p.deck.putToTop(UUIDHelper.getNotInList(cand, selected));
                     p.scrapyard.addAll(UUIDHelper.getInList(cand, selected));
                 }));

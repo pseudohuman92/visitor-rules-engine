@@ -7,7 +7,6 @@ package com.ccg.ancientaliens.set1.black;
 
 
 import com.ccg.ancientaliens.card.types.Spell;
-import com.ccg.ancientaliens.card.types.Card;
 import com.ccg.ancientaliens.card.types.Item;
 import com.ccg.ancientaliens.game.Game;
 import static com.ccg.ancientaliens.protocol.Types.Knowledge.BLACK;
@@ -41,8 +40,7 @@ public class BA03 extends Spell{
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         game.draw(controller, 2);
-        game.putTo(controller, this, "scrapyard");
     }   
 }

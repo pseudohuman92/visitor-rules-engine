@@ -31,7 +31,7 @@ public class UA03 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Player p = game.getPlayer(controller);
         Arraylist<Card> topCards = p.deck.extractFromTop(4);
         Arraylist<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Kit");}, 1, true);
@@ -39,7 +39,6 @@ public class UA03 extends Spell {
         Arraylist<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
         selected.forEach(c ->{c.resolve(game);});
         p.deck.putToBottom(notSelected);
-        game.putTo(controller, this, "scrapyard");
     }
     
 }

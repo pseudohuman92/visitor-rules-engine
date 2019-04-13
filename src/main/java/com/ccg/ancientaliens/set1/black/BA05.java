@@ -28,12 +28,11 @@ public class BA05 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "hand", c->{return c instanceof Spell;}, 1, 
                     !game.hasInstancesIn(game.getOpponentName(controller), Spell.class, "hand", 1));
         if(!selected.isEmpty()){
             game.discard(game.getOpponentName(controller), selected.get(0));
-            game.putTo(controller, this, "scrapyard");
         }
     }
     

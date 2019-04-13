@@ -39,8 +39,8 @@ public class RI06 extends Item {
         game.destroy(selection);
         game.deplete(id);
         game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
-        (g, c) -> {
-            g.purge(g.getOpponentName(controller), x);
+        (y) -> {
+            game.purge(game.getOpponentName(controller), x);
         }));
     }
 }

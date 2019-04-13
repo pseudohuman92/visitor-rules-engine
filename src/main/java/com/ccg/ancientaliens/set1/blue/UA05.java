@@ -49,13 +49,13 @@ public class UA05 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         if(targets.subList(0, 5).parallelStream().allMatch(i -> { return game.isIn(controller, i, "scrapyard");})
             && game.isIn(controller, targets.get(5), "void")
             && game.isIn(controller, targets.get(6), "play")){
             try {
                 Arraylist<Card> fromScrap = game.extractAll(targets.subList(0, 5));
-                game.putAllTo(controller, fromScrap, "void");
+                game.putTo(controller, fromScrap, "void");
                 Card voidCard = game.getCard(targets.get(5));
                 Card playCard = game.getCard(targets.get(6));
                 Card newCard = voidCard.getClass().getDeclaredConstructor(String.class).newInstance(playCard.controller);
@@ -65,6 +65,5 @@ public class UA05 extends Spell {
                 Logger.getLogger(UA05.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        game.putTo(controller, this, "scrapyard");
     }    
 }

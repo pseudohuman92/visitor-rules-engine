@@ -40,5 +40,5 @@ public class AI02 extends Item {
         game.purgeByID(controller, selected.get(0));
         game.addToStack(new Activation(controller, 
                 game.getOpponentName(controller) + " purges 5",
-                (g , c) -> { g.purge(g.getOpponentName(c.controller), 5); }));    }
+                (x) -> { game.purge(game.getOpponentName(controller), 5); }));    }
 }

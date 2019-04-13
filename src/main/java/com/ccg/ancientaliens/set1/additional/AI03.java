@@ -40,10 +40,10 @@ public class AI03 extends Item {
         game.addToStack(new Activation(controller, 
                 game.getOpponentName(controller) + " purges 4. \n" +
                 "If ~ has no counters on it, transform ~ to UI08",
-            (g, c) -> {
-                g.purge(g.getOpponentName(controller), 4);
+            (x) -> {
+                game.purge(game.getOpponentName(controller), 4);
                 if (counters.get(CHARGE) == 0){
-                    g.replaceWith(this, new UI08(this));
+                    game.replaceWith(this, new UI08(this));
                 }
             }));
     }

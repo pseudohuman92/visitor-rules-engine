@@ -39,13 +39,12 @@ public class UA01 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         if(game.isIn(controller, target, "scrapyard")){
             Card c = game.getCard(target);
             Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
-            game.putAllTo(controller, cards, "void");
+            game.putTo(controller, cards, "void");
             game.purge(game.getOpponentName(controller), cards.size());
         }
-        game.putTo(controller, this, "scrapyard");
     }    
 }

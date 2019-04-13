@@ -36,13 +36,13 @@ public class BI05 extends Item {
         game.spendEnergy(controller, 3);
         game.addToStack(new Activation (controller,
             "Draw top item of " + game.getOpponentName(controller) + "'s deck",
-            (g, cx) -> {
-                Card c = g.getPlayer(g.getOpponentName(cx.controller))
+            (x) -> {
+                Card c = game.getPlayer(game.getOpponentName(controller))
                         .deck.extractInstanceFromTop(Item.class);
                 if(c != null){
-                    c.controller = cx.controller;
+                    c.controller = controller;
                     c.knowledge = new Hashmap<>();
-                    g.putTo(c.controller, c, "hand");
+                    game.putTo(c.controller, c, "hand");
                 }
             }));
     }

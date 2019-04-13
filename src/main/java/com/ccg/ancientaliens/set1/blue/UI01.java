@@ -36,9 +36,9 @@ public class UI01 extends Item {
     public void activate(Game game) {
         game.discard(controller, 2);
         game.addToStack(new Activation(controller, "Transform ~ into AI01.",
-            (g , c) -> { 
-                if(g.isIn(controller, id, "play")) 
-                    g.replaceWith(this, new AI01(this));
+            (x) -> { 
+                if(game.isIn(controller, id, "play")) 
+                    game.replaceWith(this, new AI01(this));
         }, new Arraylist<>(id)));
     }
 }

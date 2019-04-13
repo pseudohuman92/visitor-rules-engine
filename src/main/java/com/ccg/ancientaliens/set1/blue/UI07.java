@@ -42,8 +42,10 @@ public class UI07 extends Item {
             "  Look at opponent's deck. \n" +
             "  Choose a card that costs "+x+" or less from it. \n" +
             "  Transform chosen card into junk.",
-        (g, cx) -> {
-            Arraylist<UUID> s = g.selectFromList(controller, g.getZone(g.getOpponentName(controller), "deck"), c->{return c.cost <= x;}, 1, true);
+        (y) -> {
+            Arraylist<UUID> s = game.selectFromList(controller, 
+                    game.getZone(game.getOpponentName(controller), "deck"), 
+                    c->{return c.cost <= x;}, 1, true);
             if (!s.isEmpty()){
                 game.transformToJunk(s.get(0));
             }

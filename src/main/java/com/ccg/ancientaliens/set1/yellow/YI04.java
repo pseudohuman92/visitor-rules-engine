@@ -40,9 +40,9 @@ public class YI04 extends Item {
         game.spendEnergy(controller, 2 * x);
         game.deplete(id);
         game.addToStack(new Activation(controller, "Charge " + x,
-        (g, c) -> {
-            if(g.isIn(controller, selection, "both play")){
-                g.getCard(selection).addCounters(CHARGE, x);
+        (y) -> {
+            if(game.isIn(controller, selection, "both play")){
+                game.getCard(selection).addCounters(CHARGE, x);
             }
         }, new Arraylist<>(selection)));
     }

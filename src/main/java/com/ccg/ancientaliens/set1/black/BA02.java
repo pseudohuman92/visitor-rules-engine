@@ -35,12 +35,10 @@ public class BA02 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         game.loot(targetPlayer, cost);
         text = "Target player loots X.";
         cost = 0;
-        game.putTo(controller, this, "scrapyard");
-        
     }
     
     @Override

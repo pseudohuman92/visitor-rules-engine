@@ -35,8 +35,8 @@ public class RI01 extends Item {
         game.spendEnergy(controller, 1);
         game.addToStack(new Activation (controller,
             game.getOpponentName(controller) + " purges 2.",
-            (g, cx) -> {
-                g.purge(g.getOpponentName(controller), 2);
+            (x) -> {
+                game.purge(game.getOpponentName(controller), 2);
             }));
     }
 }

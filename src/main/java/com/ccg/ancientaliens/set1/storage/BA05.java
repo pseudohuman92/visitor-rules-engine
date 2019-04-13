@@ -31,7 +31,7 @@ public class BA05 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Player p = game.getPlayer(controller);
         Arraylist<Card> topCards = p.deck.extractFromTop(4);
         Arraylist<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Trap");}, 1, true);
@@ -39,7 +39,6 @@ public class BA05 extends Spell {
         Arraylist<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
         p.hand.addAll(selected);
         p.deck.putToBottom(notSelected);
-        game.putTo(controller, this, "scrapyard");
     }
     
 }

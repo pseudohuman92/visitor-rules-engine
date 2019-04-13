@@ -34,6 +34,6 @@ public class UI06 extends Item{
         game.discard(controller, 1);
         game.purgeSelf(controller, 1);
         game.addToStack(new Activation(controller, controller + " gains 1 energy",
-                (g , c) -> { g.addEnergy(c.controller, 1); }));
+                (x) -> { game.addEnergy(controller, 1); }));
     }
 }

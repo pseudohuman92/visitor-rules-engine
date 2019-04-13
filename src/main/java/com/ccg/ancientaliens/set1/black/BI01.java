@@ -33,6 +33,6 @@ public class BI01 extends Item {
     public void activate(Game game) {
         game.deplete(id);
         game.addToStack(new Activation(controller, controller + " loots 1", 
-                (g , c) -> { g.loot(controller, 1); }));
+                (x) -> { game.loot(controller, 1); }));
     }
 }

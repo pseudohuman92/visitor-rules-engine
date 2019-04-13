@@ -29,14 +29,13 @@ public class UA04 extends Spell {
     }
     
     @Override
-    public void resolve (Game game){
+    public void resolveEffect (Game game){
         Arraylist<UUID> s = game.selectFromList(controller, 
                 game.getZone(game.getOpponentName(controller), "hand"), 
                 c->{return c instanceof Item;}, 1, true);
         if (!s.isEmpty()){
             game.transformToJunk(s.get(0));
         }
-        game.putTo(controller, this, "scrapyard");
     }
     
 }

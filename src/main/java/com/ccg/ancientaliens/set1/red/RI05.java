@@ -44,10 +44,10 @@ public class RI05 extends Item{
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasCardsIn(controller, "hand", 1)){
             choices.add(new Activation(controller, "Discard a card: Charge 1.",
-            (g, c) -> {
-                g.discard(controller, 1);
-                g.addToStack(new Activation(controller, "Charge 1",
-                    (g1, c2) -> {
+            (x1) -> {
+                game.discard(controller, 1);
+                game.addToStack(new Activation(controller, "Charge 1",
+                    (x2) -> {
                         addCounters(CHARGE, 1);
                     },
                 new Arraylist<>(id)));
@@ -55,11 +55,11 @@ public class RI05 extends Item{
         }
         if (!depleted && counters.getOrDefault(CHARGE, 0) > 0){
             choices.add(new Activation(controller, "Discharge 1, Activate: Opponent purges 4",
-            (g, c) -> {
+            (x1) -> {
                 removeCounters(CHARGE, 1);
-                g.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges 4",
-                    (g1, c2) -> {
-                        g1.purge(g1.getOpponentName(c2.controller), 4);
+                game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges 4",
+                    (x2) -> {
+                        game.purge(game.getOpponentName(controller), 4);
                     }
                 ));
             }));

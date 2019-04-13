@@ -173,6 +173,11 @@ public abstract class Card implements Serializable {
     public void ready(){
         depleted = false;
     }
+    
+    public void destroy(Game game){
+        game.extractCard(this.id);
+        game.putTo(controller, this, "scrapyard");
+    }
 
     /**
      * Function that clears status flags and supplementary data of the card.
@@ -213,7 +218,6 @@ public abstract class Card implements Serializable {
                     .setKnowledge(k)
                     .setCount(i).build());
         });
-        //TODO: add targets
         return b;
     }
     
