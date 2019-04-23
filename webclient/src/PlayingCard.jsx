@@ -182,7 +182,10 @@ export class PlayingCard extends React.Component {
     const knowledge = this.toKnowledgeString(knowledgeCost);
 
     return connectDragSource(
-      <div>
+      <div
+	onClick={clickHandler}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}>
         <CardDisplay
           opacity={opacity}
           knowledge={knowledge}
