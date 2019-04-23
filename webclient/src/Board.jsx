@@ -1,17 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import {DropTarget} from 'react-dnd';
+import { DropTarget } from "react-dnd";
 
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import Paper from '@material-ui/core/Paper';
+import Grid from "@material-ui/core/Grid";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import Paper from "@material-ui/core/Paper";
 
-import PlayingCard from './PlayingCard.js';
-import {ItemTypes, FieldIDs} from './Constants.js';
-import './Board.css';
-import './Board.css';
-import './Utils.css';
+import PlayingCard from "./PlayingCard.jsx";
+import Hand from "./Hand";
+
+import { ItemTypes, FieldIDs } from "./Constants.js";
+import "./css/Board.css";
+import "./css/Utils.css";
 
 // From now on field is an alias for board side.
 const fieldTarget = {
@@ -20,7 +21,7 @@ const fieldTarget = {
       return;
     }
 
-    return {targetType: ItemTypes.FIELD, id: props.id};
+    return { targetType: ItemTypes.FIELD, id: props.id };
   },
 
   canDrop(props, monitor) {
@@ -30,7 +31,7 @@ const fieldTarget = {
       item.playable &&
       props.id !== FieldIDs.GARY_FIELD
     );
-  },
+  }
 };
 
 class BoardSide extends React.Component {
@@ -44,24 +45,26 @@ class BoardSide extends React.Component {
       selectableCards,
       selectedCards,
       targets,
-      updateTargets,
+      updateTargets
     } = this.props;
     var style = {};
     if (canDrop && isOverCurrent) {
-      style.border = '5px red solid';
+      style.border = "5px red solid";
     }
 
     return connectDropTarget(
-      <div style={{height: '100%'}}>
+      <div style={{ height: "100%" }}>
         <GridList
           cols={6.25}
           className="board-side"
-          style={{flexWrap: 'nowrap', ...style}}
-          cellHeight="auto">
+          style={{ flexWrap: "nowrap", ...style }}
+          cellHeight="auto"
+        >
           {cards.map(card => (
             <GridListTile
               key={card.id}
-              style={{maxWidth: '100%', maxHeight: '100%'}}>
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
+            >
               <PlayingCard
                 playable={false}
                 activatable={activatableCards.includes(card.id)}
@@ -75,7 +78,7 @@ class BoardSide extends React.Component {
             </GridListTile>
           ))}
         </GridList>
-      </div>,
+      </div>
     );
   }
 }
@@ -83,42 +86,9 @@ class BoardSide extends React.Component {
 BoardSide = DropTarget(ItemTypes.CARD, fieldTarget, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
-  isOverCurrent: monitor.isOver({shallow: true}),
-  canDrop: monitor.canDrop(),
+  isOverCurrent: monitor.isOver({ shallow: true }),
+  canDrop: monitor.canDrop()
 }))(BoardSide);
-
-class Hand extends React.Component {
-  render() {
-    const {
-      playableCards,
-      selectableCards,
-      selectedCards,
-      studyableCards,
-    } = this.props;
-    return (
-      <GridList
-        cols={7.25}
-        className="hand"
-        style={{flexWrap: 'nowrap'}}
-        cellHeight="auto">
-        {this.props.cards.map(card => (
-          <GridListTile
-            key={card.id}
-            style={{maxWidth: '100%', maxHeight: '100%'}}>
-            <PlayingCard
-              playable={playableCards.includes(card.id)}
-              activatable={false}
-              selectable={selectableCards.includes(card.id)}
-              selected={selectedCards.includes(card.id)}
-              studyable={studyableCards.includes(card.id)}
-              {...card}
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-    );
-  }
-}
 
 export default class Board extends React.Component {
   //constructor(props) {
@@ -140,7 +110,7 @@ export default class Board extends React.Component {
     const selectableCards = this.props.selectableCards;
     const selectedCards = this.props.selectedCards;
     const instMessage = this.props.instMessage;
-    const {targets, updateTargets} = this.props;
+    const { targets, updateTargets } = this.props;
     const otherActive =
       this.props.game.opponent.name === this.props.game.activePlayer;
 
@@ -155,10 +125,11 @@ export default class Board extends React.Component {
         container
         spacing={0}
         style={{
-          margin: '-12px 0px',
-          height: '100%',
-        }}>
-        <Grid item xs={12} style={{height: '35%'}}>
+          margin: "-12px 0px",
+          height: "100%"
+        }}
+      >
+        <Grid item xs={12} style={{ height: "35%" }}>
           <BoardSide
             id={FieldIDs.GARY_FIELD}
             cards={garyPlayCards}
@@ -169,7 +140,7 @@ export default class Board extends React.Component {
             updateTargets={updateTargets}
           />
         </Grid>
-        <Grid item xs={12} style={{height: '35%'}}>
+        <Grid item xs={12} style={{ height: "35%" }}>
           <BoardSide
             id={FieldIDs.MY_FIELD}
             cards={myPlayCards}
@@ -180,18 +151,19 @@ export default class Board extends React.Component {
             updateTargets={updateTargets}
           />
         </Grid>
-        <Grid item xs={12} style={{height: '5%'}}>
+        <Grid item xs={12} style={{ height: "5%" }}>
           <Paper
             style={{
-              height: '100%',
-              width: '100%',
-              background: 'white',
-              color: 'black',
-            }}>
+              height: "100%",
+              width: "100%",
+              background: "white",
+              color: "black"
+            }}
+          >
             {instMessage}
           </Paper>
         </Grid>
-        <Grid item xs={12} style={{height: '25%'}}>
+        <Grid item xs={12} style={{ height: "25%" }}>
           <Hand
             cards={myHandCards}
             selectableCards={selectableCards}

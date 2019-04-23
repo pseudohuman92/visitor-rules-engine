@@ -1,9 +1,9 @@
-import React from 'react';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import PlayingCard from './PlayingCard.js';
-import './Stack.css';
-import './Utils.css';
+import React from "react";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import PlayingCard from "./PlayingCard.jsx";
+import "./css/Stack.css";
+import "./css/Utils.css";
 
 export default class Stack extends React.Component {
   render() {
@@ -12,7 +12,7 @@ export default class Stack extends React.Component {
       selectedCards,
       selectableCards,
       targets,
-      updateTargets,
+      updateTargets
     } = this.props;
 
     return (
@@ -20,11 +20,13 @@ export default class Stack extends React.Component {
         cols={1}
         className="stack"
         cellHeight="auto"
-        style={{margin: -12}}>
+        style={{ margin: -12 }}
+      >
         {cards.slice(0).map(card => (
           <GridListTile key={card.id}>
             <PlayingCard
               {...card}
+              small={true}
               activatable={false}
               playable={false}
               selectable={selectableCards.includes(card.id)}

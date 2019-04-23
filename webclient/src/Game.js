@@ -1,22 +1,22 @@
-import {GameProtoSocket} from './ProtoSocket.js';
+import { GameProtoSocket } from "./ProtoSocket.js";
 
-const proto = require('./protojs/compiled.js');
+const proto = require("./protojs/compiled.js");
 
 export const GamePhases = {
-  NOT_STARTED: 'NotStarted',
-  UPDATE_GAME: 'UpdateGame',
-  WIN: 'Win',
-  LOSE: 'Lose',
-  ORDER_CARDS: 'OrderCards',
-  SELECT_FROM_LIST: 'SelectFromList',
-  SELECT_FROM_PLAY: 'SelectFromPlay',
-  SELECT_FROM_HAND: 'SelectFromHand',
-  SELECT_FROM_SCRAPYARD: 'SelectFromScrapyard',
-  SELECT_FROM_VOID: 'SelectFromVoid',
-  SELECT_FROM_STACK: 'SelectFromStack',
-  SELECT_X_VALUE: 'SelectXValue',
-  SELECT_PLAYER: 'SelectPlayer',
-  DONE_SELECT: 'DoneSelect',
+  NOT_STARTED: "NotStarted",
+  UPDATE_GAME: "UpdateGame",
+  WIN: "Win",
+  LOSE: "Lose",
+  ORDER_CARDS: "OrderCards",
+  SELECT_FROM_LIST: "SelectFromList",
+  SELECT_FROM_PLAY: "SelectFromPlay",
+  SELECT_FROM_HAND: "SelectFromHand",
+  SELECT_FROM_SCRAPYARD: "SelectFromScrapyard",
+  SELECT_FROM_VOID: "SelectFromVoid",
+  SELECT_FROM_STACK: "SelectFromStack",
+  SELECT_X_VALUE: "SelectXValue",
+  SELECT_PLAYER: "SelectPlayer",
+  DONE_SELECT: "DoneSelect"
 };
 
 export function IsSelectCardPhase(phase) {
@@ -26,7 +26,7 @@ export function IsSelectCardPhase(phase) {
     GamePhases.SELECT_FROM_HAND,
     GamePhases.SELECT_FROM_SCRAPYARD,
     GamePhases.SELECT_FROM_VOID,
-    GamePhases.SELECT_FROM_STACK,
+    GamePhases.SELECT_FROM_STACK
   ].includes(phase);
 }
 
@@ -50,13 +50,13 @@ export class GameState {
       OrderCards: GamePhases.ORDER_CARDS,
       SelectFrom: GamePhases.SELECT_FROM_LIST,
       SelectXValue: GamePhases.SELECT_X_VALUE,
-      SelectPlayer: GamePhases.SELECT_PLAYER,
+      SelectPlayer: GamePhases.SELECT_PLAYER
     }[msgType];
     this.lastMsg = params;
     this.phase = phase;
     this.selectedCards = [];
 
-    if (msgType === 'SelectFrom') {
+    if (msgType === "SelectFrom") {
       const selectPhase = {};
       selectPhase[proto.SelectFromType.LIST] = GamePhases.SELECT_FROM_LIST;
       selectPhase[proto.SelectFromType.HAND] = GamePhases.SELECT_FROM_HAND;
@@ -71,8 +71,8 @@ export class GameState {
     if (!this.gameInfoInitialized) {
       SetGameInfo({
         gameID: params.game.id,
-        me: params.game.player.name,
-        gary: params.game.opponent.name,
+        player: params.game.player.name,
+        opponent: params.game.opponent.name
       });
     }
 
@@ -90,10 +90,10 @@ export function InitiateConnection(url) {
   gameState.protoSocket = new GameProtoSocket(url, gameState.handleMsg);
 }
 
-export function SetBasicGameInfo(gameID, me, gary) {
+export function SetBasicGameInfo(gameID, player, opponent) {
   gameState.gameID = gameID;
-  gameState.me = me;
-  gameState.gary = gary;
+  gameState.player = player;
+  gameState.opponent = opponent;
 }
 
 export function RegisterUpdateGameHandler(updateViewHandler) {
@@ -101,7 +101,7 @@ export function RegisterUpdateGameHandler(updateViewHandler) {
 }
 
 export function Pass() {
-  gameState.send('Pass', {gameID: gameState.gameID, username: gameState.me});
+  gameState.send("Pass", { gameID: gameState.gameID, username: gameState.me });
 }
 
 export function SetGameInfo(newInfo) {
@@ -112,55 +112,55 @@ export function SetGameInfo(newInfo) {
 }
 
 export function Mulligan() {
-  gameState.send('Mulligan', {
+  gameState.send("Mulligan", {
     gameID: gameState.gameID,
-    username: gameState.me,
+    username: gameState.me
   });
 }
 
 export function Keep() {
-  gameState.send('Keep', {
+  gameState.send("Keep", {
     gameID: gameState.gameID,
-    username: gameState.me,
+    username: gameState.me
   });
 }
 
 export function Concede() {
-  gameState.send('Concede', {
+  gameState.send("Concede", {
     gameID: gameState.gameID,
-    username: gameState.me,
+    username: gameState.me
   });
 }
 
 export function PlayCard(cardID) {
-  gameState.send('PlayCard', {
+  gameState.send("PlayCard", {
     gameID: gameState.gameID,
     username: gameState.me,
-    cardID: cardID,
+    cardID: cardID
   });
 }
 
 export function ActivateCard(cardID) {
-  gameState.send('ActivateCard', {
+  gameState.send("ActivateCard", {
     gameID: gameState.gameID,
     username: gameState.me,
-    cardID: cardID,
+    cardID: cardID
   });
 }
 
 export function StudyCard(cardID) {
-  gameState.send('StudyCard', {
+  gameState.send("StudyCard", {
     gameID: gameState.gameID,
     username: gameState.me,
-    cardID: cardID,
+    cardID: cardID
   });
 }
 
 export function SelectDone() {
-  gameState.send('SelectFromResponse', {
+  gameState.send("SelectFromResponse", {
     gameID: gameState.gameID,
     messageType: gameState.lastMsg.messageType,
-    selectedCards: gameState.selectedCards,
+    selectedCards: gameState.selectedCards
   });
   gameState.selectedCards = [];
   gameState.phase = GamePhases.DONE_SELECT;
@@ -168,7 +168,7 @@ export function SelectDone() {
   gameState.updateViewHandler(
     gameState.lastMsg,
     gameState.phase,
-    gameState.selectedCards,
+    gameState.selectedCards
   );
 }
 
@@ -181,7 +181,7 @@ export function SelectCard(cardID) {
     gameState.updateViewHandler(
       gameState.lastMsg,
       gameState.phase,
-      gameState.selectedCards,
+      gameState.selectedCards
     );
   }
 }
@@ -192,23 +192,23 @@ export function UnselectCard(cardID) {
     gameState.updateViewHandler(
       gameState.lastMsg,
       gameState.phase,
-      gameState.selectedCards,
+      gameState.selectedCards
     );
   }
 }
 
 export function SelectXValue(xVal) {
-  gameState.send('SelectXValueResponse', {
+  gameState.send("SelectXValueResponse", {
     gameID: gameState.gameID,
-    selectedXValue: xVal,
+    selectedXValue: xVal
   });
   gameState.updateViewHandler(gameState.lastMsg, GamePhases.DONE_SELECT, null);
 }
 
 export function SelectPlayer(playerName) {
-  gameState.send('SelectPlayerResponse', {
+  gameState.send("SelectPlayerResponse", {
     gameID: gameState.gameID,
-    selectedPlayerName: playerName,
+    selectedPlayerName: playerName
   });
   gameState.updateViewHandler(gameState.lastMsg, GamePhases.DONE_SELECT, null);
 }

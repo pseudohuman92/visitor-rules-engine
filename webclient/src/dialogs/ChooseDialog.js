@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
-import {SelectDone} from './Game.js';
-import PlayingCard from './PlayingCard.js';
-import './ChooseDialog.css';
+import { SelectDone } from "../Game.js";
+import PlayingCard from "../PlayingCard.jsx";
+import "../css/ChooseDialog.css";
 
 export default class ChooseDialog extends Component {
   render = () => {
@@ -20,7 +20,7 @@ export default class ChooseDialog extends Component {
       selectedCards,
       selectableCards,
       upTo,
-      isSelectPhase,
+      isSelectPhase
     } = this.props;
 
     let doneButton = null;
@@ -29,7 +29,8 @@ export default class ChooseDialog extends Component {
         <Button
           color="primary"
           variant="contained"
-          onClick={event => SelectDone()}>
+          onClick={event => SelectDone()}
+        >
           Done
         </Button>
       );
@@ -42,7 +43,8 @@ export default class ChooseDialog extends Component {
         maxWidth={false}
         fullWidth={true}
         disableBackdropClick={isSelectPhase}
-        disableEscapeKeyDown={isSelectPhase}>
+        disableEscapeKeyDown={isSelectPhase}
+      >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <Grid container spacing={0} className="choose-dialog">

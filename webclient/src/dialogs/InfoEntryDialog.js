@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 
-import {JoinTable} from './Manage.js';
+import {JoinTable} from '../Manage.js';
 
 export default class InfoEntryDialog extends Component {
   constructor(props) {

@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
-import {DragDropContext} from 'react-dnd';
-import MultiBackend from 'react-dnd-multi-backend';
-import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
+import React, { Component } from "react";
+import { DragDropContext } from "react-dnd";
+import MultiBackend from "react-dnd-multi-backend";
+import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 
-import proto from './protojs/compiled.js';
+import proto from "./protojs/compiled.js";
 
-import Board from './Board.js';
-import Stack from './Stack.js';
-import Altar from './Altar.js';
-import StateDisplay from './StateDisplay.js';
-import ChooseDialog from './ChooseDialog.js';
-import InfoEntryDialog from './InfoEntryDialog.js';
-import LoadingDialog from './LoadingDialog.js';
-import WinLoseDialog from './WinLoseDialog.js';
-import SelectXDialog from './SelectXDialog.js';
+import Board from "./Board.jsx";
+import Stack from "./Stack.jsx";
+import Altar from "./Altar.jsx";
+import StateDisplay from "./StateDisplay.js";
+import ChooseDialog from "./dialogs/ChooseDialog.js";
+import InfoEntryDialog from "./dialogs/InfoEntryDialog.js";
+import LoadingDialog from "./dialogs/LoadingDialog.js";
+import WinLoseDialog from "./dialogs/WinLoseDialog.js";
+import SelectXDialog from "./dialogs/SelectXDialog.js";
 import {
   Keep,
   Pass,
@@ -23,31 +23,31 @@ import {
   SetGameInfo,
   SetBasicGameInfo,
   RegisterUpdateGameHandler,
-  IsSelectCardPhase,
-} from './Game.js';
-import {ConnectProfile, RegisterUpdateViewHandler} from './Manage.js';
-import {debug} from './Utils.js';
-import './App.css';
+  IsSelectCardPhase
+} from "./Game.js";
+import { ConnectProfile, RegisterUpdateViewHandler } from "./Manage.js";
+import { debug } from "./Utils.js";
+import "./css/App.css";
 
-class App extends Component {
+class PlayArea extends Component {
   constructor(props) {
     super(props);
     this.state = {
       game: {},
       phase: GamePhases.NOT_STARTED,
       gameInitialized: false,
-      dialog: {title: '', cards: [], open: false},
+      dialog: { title: "", cards: [], open: false },
       waiting: false,
       selectedCards: [],
       selectableCards: [],
       maxXValue: 0,
       upTo: false,
-      targets: [],
+      targets: []
     };
 
-    const me = {
-      id: 'me',
-      name: 'me',
+    const player = {
+      id: "player",
+      name: "player",
       deckSize: 0,
       energy: 0,
       maxEnergy: 0,
@@ -55,12 +55,12 @@ class App extends Component {
       hand: [],
       scrapyard: [],
       void: [],
-      knowledgePool: [],
+      knowledgePool: []
     };
 
-    const gary = {
-      id: 'gary',
-      name: 'gary',
+    const opponent = {
+      id: "opponent",
+      name: "opponent",
       deckSize: 0,
       energy: 0,
       maxEnergy: 0,
@@ -69,113 +69,36 @@ class App extends Component {
       hand: [],
       scrapyard: [],
       void: [],
-      knowledgePool: [],
+      knowledgePool: []
     };
 
     this.state.game = {
-      id: 'best game',
-      player: me,
-      opponent: gary,
-      turnPlayer: me.id,
-      activePlayer: me.id,
+      id: "Empty Game",
+      player: player,
+      opponent: opponent,
+      turnPlayer: player.id,
+      activePlayer: player.id,
       stack: [],
       phase: 0,
       autoPass: false,
-      selectCountMax: 0,
+      selectCountMax: 0
     };
 
-    SetBasicGameInfo('best game', me.id, gary.id);
+    SetBasicGameInfo(this.state.game.id, player.id, opponent.id);
     RegisterUpdateGameHandler(this.updateView);
     RegisterUpdateViewHandler(this.updateView);
   }
 
-  setDummyData(state) {
-    const cards = 'abcdefghijklmnopqrstuvwxyz'.split('').map(l => ({
-      id: l,
-      name: l,
-      counters: [],
-      depleted: false,
-      marked: false,
-      targets: [],
-    }));
-    const myHandCards = cards.slice(0, 3);
-    const garyHandSize = 4;
-    const myScrapCards = cards.slice(7, 9);
-    const garyScrapCards = cards.slice(9, 10);
-    const myVoidCards = cards.slice(10, 12);
-    const garyVoidCards = [];
-    const myPlayCards = cards.slice(12, 16);
-    const garyPlayCards = cards.slice(16, 19);
-    const stackCards = cards.slice(19, 23);
-
-    const me = {
-      id: 'me',
-      name: 'me',
-      deckSize: 45,
-      energy: 3,
-      maxEnergy: 7,
-      play: myPlayCards,
-      hand: myHandCards,
-      scrapyard: myScrapCards,
-      void: myVoidCards,
-      knowledgePool: [
-        {
-          knowledge: 1,
-          count: 3,
-        },
-        {
-          knowledge: 3,
-          count: 2,
-        },
-      ],
-    };
-
-    const gary = {
-      id: 'gary',
-      name: 'gary',
-      deckSize: 39,
-      energy: 2,
-      maxEnergy: 12,
-      play: garyPlayCards,
-      handSize: garyHandSize,
-      scrapyard: garyScrapCards,
-      void: garyVoidCards,
-      knowledgePool: [
-        {
-          knowledge: 1,
-          count: 6,
-        },
-        {
-          knowledge: 3,
-          count: 2,
-        },
-        {
-          knowledge: 4,
-          count: 1,
-        },
-      ],
-    };
-
-    state.game = {
-      id: 'best game',
-      player: me,
-      opponent: gary,
-      turnPlayer: me.id,
-      activePlayer: me.id,
-      stack: stackCards,
-    };
-  }
-
   updateTargets = targets => {
     if (targets !== this.state.targets) {
-      this.setState({targets: targets});
+      this.setState({ targets: targets });
     }
   };
 
   updateInfoUpdate = username => {
     //SetGameInfo({me: username});
     ConnectProfile(username);
-    this.setState({waiting: true});
+    this.setState({ waiting: true });
   };
 
   updateView = (params, phase, selectedCards = null) => {
@@ -205,7 +128,7 @@ class App extends Component {
 
     if (phase === GamePhases.DONE_SELECT) {
       if (this.state.dialog.open) {
-        toUpdate['dialog'] = {...this.state.dialog, open: false};
+        toUpdate["dialog"] = { ...this.state.dialog, open: false };
       }
       toUpdate.selectableCards = [];
       toUpdate.selectedCards = [];
@@ -219,10 +142,10 @@ class App extends Component {
         phase === GamePhases.SELECT_FROM_SCRAPYARD ||
         phase === GamePhases.SELECT_FROM_VOID
       ) {
-        toUpdate['dialog'] = {
+        toUpdate["dialog"] = {
           open: true,
           title: `Select ${params.selectionCount} from the following`,
-          cards: params.candidates,
+          cards: params.candidates
         };
       }
     }
@@ -263,7 +186,7 @@ class App extends Component {
       }
     }
 
-    debug('[toUpdate]', phase, toUpdate);
+    debug("[toUpdate]", phase, toUpdate);
     this.setState(toUpdate);
   };
 
@@ -272,8 +195,8 @@ class App extends Component {
       dialog: {
         open: open,
         title: title,
-        cards: cards,
-      },
+        cards: cards
+      }
     });
   };
 
@@ -289,7 +212,7 @@ class App extends Component {
       maxXValue,
       autoPass,
       selectCountMax,
-      targets,
+      targets
     } = this.state;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
@@ -314,7 +237,7 @@ class App extends Component {
         selectableCards={selectableCards}
         isSelectPhase={isSelectFromDialogPhase}
         onClose={event => {
-          this.setState({dialog: {...dialog, open: false}});
+          this.setState({ dialog: { ...dialog, open: false } });
         }}
       />
     );
@@ -324,46 +247,47 @@ class App extends Component {
     const amActive = game.activePlayer === game.player.name;
     let instMessage;
     if (game.phase === proto.Phase.MULLIGAN) {
-      instMessage = 'Chose either to keep or mulligan your hand.';
+      instMessage = "Chose either to keep or mulligan your hand.";
     } else if (IsSelectCardPhase(phase)) {
       instMessage = `Select ${
-        upTo ? 'up to ' : ''
+        upTo ? "up to " : ""
       } ${selectCountMax} cards from ${
         {
-          SelectFromList: 'list',
-          SelectFromPlay: 'play',
-          SelectFromHand: 'hand',
-          SelectFromScrapyard: 'scrapyard',
-          SelectFromVoid: 'void',
-          SelectFromStack: 'stack',
+          SelectFromList: "list",
+          SelectFromPlay: "play",
+          SelectFromHand: "hand",
+          SelectFromScrapyard: "scrapyard",
+          SelectFromVoid: "void",
+          SelectFromStack: "stack"
         }[phase]
       }. (${selectedCards.length} selected)`;
     } else if (phase === GamePhases.SELECT_X_VALUE) {
-      instMessage = 'Select an X value.';
+      instMessage = "Select an X value.";
     } else if (phase === GamePhases.SELECT_PLAYER) {
-      instMessage = 'Select a player.';
+      instMessage = "Select a player.";
     } else if (!amActive) {
-      instMessage = 'Waiting for opponent...';
+      instMessage = "Waiting for opponent...";
     } else {
-      instMessage = 'Play, study, or activate a card.';
+      instMessage = "Play, study, or activate a card.";
     }
 
     return (
       <div className="App">
         <header className="App-header">
           <WinLoseDialog open={gameOver} win={isWin} />
-          <LoadingDialog open={waiting} />
+          { <LoadingDialog open={waiting} /> }
           <SelectXDialog open={selectXDialogOpen} maxValue={maxXValue} />
-          <InfoEntryDialog open={true} onSubmit={this.updateInfoUpdate} />
+          { <InfoEntryDialog open={true} onSubmit={this.updateInfoUpdate} /> }
           {chooseDialog}
           <Grid
             container
             spacing={24}
             style={{
-              padding: '12px 24px',
-              height: '100vh',
+              padding: "12px 24px",
+              height: "100vh"
             }}
-            justify="space-between">
+            justify="space-between"
+          >
             <Grid item xs={2} className="display-col">
               <StateDisplay
                 game={game}
@@ -390,9 +314,10 @@ class App extends Component {
                 spacing={24}
                 style={{
                   //padding: 0,
-                  height: '100%',
-                }}>
-                <Grid item xs={12} style={{height: '75%'}}>
+                  height: "100%"
+                }}
+              >
+                <Grid item xs={12} style={{ height: "75%" }}>
                   <Stack
                     cards={game.stack}
                     selectedCards={selectedCards}
@@ -401,7 +326,7 @@ class App extends Component {
                     updateTargets={this.updateTargets}
                   />
                 </Grid>
-                <Grid item xs={12} style={{height: '25%'}}>
+                <Grid item xs={12} style={{ height: "25%" }}>
                   <Altar hasStudyable={hasStudyable} />
                 </Grid>
               </Grid>
@@ -413,4 +338,4 @@ class App extends Component {
   }
 }
 
-export default DragDropContext(MultiBackend(HTML5toTouch))(App);
+export default DragDropContext(MultiBackend(HTML5toTouch))(PlayArea);
