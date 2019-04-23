@@ -5,6 +5,7 @@ import { DropTarget } from "react-dnd";
 import Paper from "@material-ui/core/Paper";
 
 import { ItemTypes } from "./Constants.js";
+import "./css/StudyArea.css";
 
 const altarTarget = {
   drop(props, monitor) {
@@ -28,15 +29,10 @@ class Altar extends Component {
       style.backgroundColor = "red";
       style.height = "20%";
     }
-    /*
-    if (isOver && canDrop) {
-      style.border = "5px red solid";
-    }
-    */
 
     return connectDropTarget(
       <div style={{ height: "100%" }}>
-        <Paper style={style} />
+        <section id="studyArea" className="study-area" />
       </div>
     );
   }

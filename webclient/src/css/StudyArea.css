@@ -1,0 +1,36 @@
+.study-area {
+  background-color: #adea99;
+   
+    min-height: 200px;
+    min-width: 150px;
+  
+  /*  width: 100px; 
+  */
+  position: relative;
+}
+
+.study-area::before {
+  content: "";
+  position: absolute;
+
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 50px solid white;
+
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) rotateZ(180deg);
+}
+
+.study-area::after {
+  content: "";
+  position: absolute;
+
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 50px solid white;
+
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}

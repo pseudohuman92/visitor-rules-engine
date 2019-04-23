@@ -17,9 +17,11 @@ import {
   SelectDone,
   SelectPlayer
 } from "./Game.js";
+
+import { knowledgeMap } from "./Constants.js";
 import "./css/StateDisplay.css";
 import "./css/Utils.css";
-
+ 
 export class PlayerDisplay extends React.Component {
   render() {
     const {
@@ -39,23 +41,17 @@ export class PlayerDisplay extends React.Component {
       handSize = this.props.player.handSize;
     }
 
-    const knowledgeMap = {};
-    knowledgeMap[proto.Knowledge.BLACK] = "B";
-    knowledgeMap[proto.Knowledge.GREEN] = "G";
-    knowledgeMap[proto.Knowledge.RED] = "R";
-    knowledgeMap[proto.Knowledge.BLUE] = "U";
-    knowledgeMap[proto.Knowledge.YELLOW] = "Y";
 
-    function knowledgeString(knowledgeCost) {
+    function knowledgeString(knowledgePool) {
       var str = "";
 
-      for (var i = 0; i < knowledgeCost.length; i++) {
+      for (var i = 0; i < knowledgePool.length; i++) {
         str =
           str +
           " " +
-          knowledgeMap[knowledgeCost[i].knowledge] +
+          knowledgeMap[knowledgePool[i].knowledge] +
           ": " +
-          knowledgeCost[i].count +
+          knowledgePool[i].count +
           " ";
       }
       return str;
@@ -88,24 +84,6 @@ export class PlayerDisplay extends React.Component {
               style={{ padding: "0 5% 0 5%", height: "100%" }}
             >
               {name}
-            </Textfit>
-          </Grid>
-          <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              {energy + "/" + maxEnergy}
-            </Textfit>
-          </Grid>
-          <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              {knowledgeString(knowledgePool)}
             </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{ height: "20%" }}>

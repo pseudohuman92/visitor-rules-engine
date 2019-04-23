@@ -4,23 +4,11 @@ import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 import Image from "react-image";
 
+import { getCardColor } from "./Constants.js";
 import "./css/Card.css";
 
 export class CardDisplay extends Component {
-  getCardColor(knowlString) {
-    if (knowlString.startsWith("B")) {
-      return "#666666";
-    } else if (knowlString.startsWith("U")) {
-      return "#0066ff";
-    } else if (knowlString.startsWith("R")) {
-      return "#ff1a1a";
-    } else if (knowlString.startsWith("Y")) {
-      return "#ffff00";
-    } else {
-      return "#e6e6e6";
-    }
-  }
-
+  
   getCostLine(cost, knowledge) {
     var str = "";
 
@@ -59,7 +47,7 @@ export class CardDisplay extends Component {
           style={{
             border: smallBorder,
             borderRadius: borderRadius,
-            backgroundColor: this.getCardColor(knowledge),
+            backgroundColor: getCardColor(knowledge),
             overflow: "hidden"
           }}
         >
@@ -85,7 +73,7 @@ export class CardDisplay extends Component {
         >
           <div
             className="card-inner"
-            style={{ backgroundColor: this.getCardColor(knowledge) }}
+            style={{ backgroundColor: getCardColor(knowledge) }}
           >
             <div className="card-name">
               <Textfit

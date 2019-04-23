@@ -10,6 +10,7 @@ import proto from "./protojs/compiled.js";
 import Board from "./Board.jsx";
 import Stack from "./Stack.jsx";
 import Altar from "./Altar.jsx";
+import ResourceArea from "./ResourceArea.jsx";
 import StateDisplay from "./StateDisplay.js";
 import ChooseDialog from "./dialogs/ChooseDialog.js";
 import InfoEntryDialog from "./dialogs/InfoEntryDialog.js";
@@ -311,13 +312,18 @@ class PlayArea extends Component {
             <Grid item xs={2} className="display-col">
               <Grid
                 container
-                spacing={24}
+                spacing={8}
+                justify="center"
+                alignItems="center"
                 style={{
-                  //padding: 0,
                   height: "100%"
                 }}
               >
-                <Grid item xs={12} style={{ height: "75%" }}>
+                <Grid item xs={12} style={{ height: "5%" }}>
+                  <ResourceArea player={game.opponent} />
+                </Grid>
+
+                <Grid item xs={12} style={{ height: "70%" }}>
                   <Stack
                     cards={game.stack}
                     selectedCards={selectedCards}
@@ -326,7 +332,10 @@ class PlayArea extends Component {
                     updateTargets={this.updateTargets}
                   />
                 </Grid>
-                <Grid item xs={12} style={{ height: "25%" }}>
+                <Grid item xs={12} style={{ height: "5%" }}>
+                  <ResourceArea player={game.player} />
+                </Grid>
+                <Grid item xs={12} style={{ height: "20%" }}>
                   <Altar hasStudyable={hasStudyable} />
                 </Grid>
               </Grid>

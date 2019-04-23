@@ -1,0 +1,17 @@
+.discard-pile {
+  background-color: #b1b1b1;
+  min-height: 200px;
+  min-width: 150px;
+  width: 100px;
+  position: relative;
+  display: flex;
+}
+
+.discard-pile-icon {
+  display: block;
+  width: 75px;
+  height: 75px;
+  margin: auto;
+  border-radius: 50px;
+  background: #ccbf97;
+}
