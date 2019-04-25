@@ -1,4 +1,4 @@
-# Ancient Aliens CCG
+# Visitor: the Card Game
 
 ## To run the server
 
