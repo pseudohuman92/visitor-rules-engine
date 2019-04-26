@@ -1,4 +1,4 @@
-const cards = "abcdefghijklmnopqrstuvwxyz".split("").map(l => ({
+export const cards = "abcdefghijklmnopqrstuvwxyz".split("").map(l => ({
   id: l,
   name: l,
   depleted: false,
@@ -15,17 +15,17 @@ const cards = "abcdefghijklmnopqrstuvwxyz".split("").map(l => ({
   type: "Action",
   description: "The best card ever. and ever and ever and ever and ever"
 }));
-const p1HandCards = cards.slice(0, 10);
-const p2HandSize = 4;
-const p1ScrapCards = cards.slice(7, 9);
-const p2ScrapCards = cards.slice(9, 10);
-const p1VoidCards = cards.slice(10, 12);
-const p2VoidCards = [];
-const p1PlayCards = cards.slice(12, 16);
-const p2PlayCards = cards.slice(16, 19);
-const stackCards = cards.slice(10, 23);
+export const p1HandCards = cards.slice(0, 10);
+export const p2HandSize = 4;
+export const p1ScrapCards = cards.slice(7, 9);
+export const p2ScrapCards = cards.slice(9, 10);
+export const p1VoidCards = cards.slice(10, 12);
+export const p2VoidCards = [];
+export const p1PlayCards = cards.slice(12, 16);
+export const p2PlayCards = cards.slice(16, 19);
+export const stackCards = cards.slice(10, 23);
 
-const p1 = {
+export const p1 = {
   id: "p1",
   name: "Player 1",
   deckSize: 45,
@@ -47,7 +47,7 @@ const p1 = {
   ]
 };
 
-const p2 = {
+export const p2 = {
   id: "p2",
   name: "Player 2",
   deckSize: 39,
@@ -73,7 +73,7 @@ const p2 = {
   ]
 };
 
-const gameState = {
+export const gameState = {
   id: "Empty Game",
   player: p1,
   opponent: p2,

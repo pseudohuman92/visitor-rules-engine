@@ -4,7 +4,7 @@ import { DropTarget } from "react-dnd";
 
 import Paper from "@material-ui/core/Paper";
 
-import { ItemTypes } from "./Constants.js";
+import { ItemTypes } from "./constants/Constants";
 import "./css/StudyArea.css";
 
 const altarTarget = {

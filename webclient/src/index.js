@@ -1,7 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
-
-import PlayArea from "./PlayArea.jsx";
+import SiteTabs from "./SiteTabs";
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<PlayArea />, rootElement);
+ReactDOM.render( < SiteTabs / > , rootElement);

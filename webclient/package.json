@@ -19,7 +19,11 @@
     "react-image": "2.1.1",
     "react-rectangle": "1.3.3",
     "react-scripts": "3.0.0",
-    "react-textfit": "1.1.0"
+    "react-textfit": "1.1.0",
+    "react-router-dom": "^5.0.0",
+    "file-saver":"^2.0.1",
+    "react-center":"^1.1.1",
+    "react-file-reader":"^1.1.4"
   },
   "devDependencies": {
     "typescript": "3.3.3"

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { knowledgeMap } from "./Constants.js";
+import { knowledgeMap } from "./constants/Constants";
 
 import "./css/ResourceArea.css";
 
@@ -21,8 +21,8 @@ class ResourceArea extends Component {
             </span>
           </div>
           <div className="knowledge-area">
-            {knowledgePool.map(k => (
-              <div className="knowledge">
+            {knowledgePool.map((k, i) => (
+              <div className="knowledge" key={i}>
                 <span className={"knowledge-stone " + knowledgeMap[k.knowledge] + "-knowledge"} />
                 {k.count}
               </div>))

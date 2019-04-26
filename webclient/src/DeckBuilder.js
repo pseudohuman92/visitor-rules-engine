@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import TextField from "@material-ui/core/TextField";
 import Center from "react-center";
 
-import DisplayCard from "./DisplayCard.js";
+import CardDisplay from "./CardDisplay";
 
 
 function spliceToSubarrays(arr, len) {
@@ -169,7 +169,7 @@ class DeckBuilder extends React.Component {
                   {arr.map((card, i) => (
                     <Grid item key={i} xs={4} onClick={() => this.addToDeck(card.card)}>
                       <center>{card.count}</center>
-                      <DisplayCard
+                      <CardDisplay
                         opacity={card.count > 0 ? 1 : 0.5}
                         {...card.card}
                       />
@@ -215,7 +215,7 @@ class DeckBuilder extends React.Component {
                       </Center>
                       <Grid item xs={1} />
                       <Grid item xs={10}>
-                        <DisplayCard small={true} {...card.card} />
+                        <CardDisplay small={true} {...card.card} />
                       </Grid>
                     </Grid>
                   ))}

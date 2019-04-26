@@ -4,25 +4,14 @@ import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 import Image from "react-image";
 
-import { getCardColor } from "./Constants.js";
+import { getCardColor, getIconColor, 
+  knowledgeMap, toKnowledgeString, toIconString } from "./constants/Constants";
 import "./css/Card.css";
+import "./css/Utils.css";
+import "./css/ResourceArea.css";
 
 export class CardDisplay extends Component {
   
-  getCostLine(cost, knowledge) {
-    var str = "";
-
-    if (cost !== "-") {
-      str += cost + " ";
-    }
-    if (!knowledge.startsWith("-")) {
-      str += "[" + knowledge + "] ";
-    }
-    if (cost !== "-" || !knowledge.startsWith("-")) {
-      str += "| ";
-    }
-    return str;
-  }
 
   render() {
     const {
@@ -32,22 +21,21 @@ export class CardDisplay extends Component {
       description,
       cost,
       type,
-      knowledge,
+      knowledgeCost,
       borderColor
     } = this.props;
 
+
     const marginSize = "2%";
     const borderRadius = "3px";
-    const smallBorder = "3px black solid";
 
     return small ? (
       <div>
         <Rectangle
           aspectRatio={[22, 4]}
           style={{
-            border: smallBorder,
             borderRadius: borderRadius,
-            backgroundColor: getCardColor(knowledge),
+            backgroundColor: getCardColor(knowledgeCost),
             overflow: "hidden"
           }}
         >
@@ -56,7 +44,9 @@ export class CardDisplay extends Component {
             forceSingleModeWidth={false}
             style={{ maxHeight: "100%", margin: marginSize }}
           >
-            {this.getCostLine(cost, knowledge) + name}
+            {cost}
+            <span style={{fontWeight: "500", color: getIconColor(knowledgeCost)}}>{toIconString(toKnowledgeString(knowledgeCost))}</span>
+            {" | " + name}
           </Textfit>
         </Rectangle>
       </div>
@@ -73,7 +63,7 @@ export class CardDisplay extends Component {
         >
           <div
             className="card-inner"
-            style={{ backgroundColor: getCardColor(knowledge) }}
+            style={{ backgroundColor: getCardColor(knowledgeCost) }}
           >
             <div className="card-name">
               <Textfit
@@ -81,7 +71,10 @@ export class CardDisplay extends Component {
                 forceSingleModeWidth={false}
                 style={{ maxWidth: "96%", maxHeight: "100%" }}
               >
-                {this.getCostLine(cost, knowledge) + name}
+                <span style={{fontWeight: "500"}}>{cost}</span>
+                <span style={{fontWeight: "500", color: getIconColor(knowledgeCost)}}>{toIconString(toKnowledgeString(knowledgeCost))}</span>
+                {" | " + name}
+                
               </Textfit>
             </div>
 
