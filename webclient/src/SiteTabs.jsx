@@ -28,11 +28,12 @@ class SiteTabs extends React.Component {
                     let fields = line.split("\t");
                     if (fields[0] !== "" && !fields[0].startsWith("Code") && !fields[0].startsWith("A")) {
                         result.push({
-                            name: fields[1],
-                            type: fields[2],
-                            description: fields[4],
-                            cost: fields[6],
-                            knowledgeCost: toKnowledgeCost(fields[7])
+                            name: fields[0],
+                            type: fields[1],
+                            description: fields[3],
+                            health : fields[4],
+                            cost: fields[5],
+                            knowledgeCost: toKnowledgeCost(fields[6])
                         });
                     }
                 });

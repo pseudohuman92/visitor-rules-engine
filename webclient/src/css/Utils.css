@@ -12,10 +12,3 @@
 .grid-elem {
     border: 1px black solid;
 }
-
-@font-face {
-    font-family: 'mtg';
-    src: url('../fonts/magic-webfont.woff2') format('woff2'), url('../fonts/MAGIC.TTF') format('truetype'), url('../fonts/magic-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
