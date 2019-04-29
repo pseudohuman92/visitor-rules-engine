@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { knowledgeMap } from "./constants/Constants";
+import { knowledgeMap } from "../../Constants/Constants";
 
-import "./css/ResourceArea.css";
+import "../../css/ResourceArea.css";
 
 class ResourceArea extends Component {
   

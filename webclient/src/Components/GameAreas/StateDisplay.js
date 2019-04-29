@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Fittext from "@kennethormandy/react-fittext";
 import Textfit from "react-textfit";
 
-import proto from "./protojs/compiled.js";
+import proto from "../../protojs/compiled.js";
 
 import {
     GamePhases,
@@ -16,11 +16,11 @@ import {
     Pass,
     SelectDone,
     SelectPlayer
-} from "./Game.js";
+} from "../Game/Game";
 
-import { knowledgeMap } from "./constants/Constants";
-import "./css/StateDisplay.css";
-import "./css/Utils.css";
+import { knowledgeMap } from "../../Constants/Constants";
+import "../../css/StateDisplay.css";
+import "../../css/Utils.css";
 
 export class PlayerDisplay extends React.Component {
     render() {

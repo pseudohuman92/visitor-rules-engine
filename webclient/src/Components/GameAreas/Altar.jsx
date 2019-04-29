@@ -2,10 +2,8 @@ import React from "react";
 import { Component } from "react";
 import { DropTarget } from "react-dnd";
 
-import Paper from "@material-ui/core/Paper";
-
-import { ItemTypes } from "./constants/Constants";
-import "./css/StudyArea.css";
+import { ItemTypes } from "../../Constants/Constants";
+import "../../css/StudyArea.css";
 
 const altarTarget = {
   drop(props, monitor) {

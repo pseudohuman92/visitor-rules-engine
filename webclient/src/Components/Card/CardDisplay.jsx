@@ -8,11 +8,10 @@ import {
   getCardColor, getIconColor,
   toKnowledgeString,
   toIconString
-} from "./constants/Constants";
-import Fonts from "./fonts/Fonts";
-import "./css/Card.css";
-import "./css/Utils.css";
-import "./css/ResourceArea.css";
+} from "../../Constants/Constants";
+import Fonts from "../Fonts/Fonts";
+import "../../css/Card.css";
+import "../../css/Utils.css";
 
 export class CardDisplay extends Component {
 

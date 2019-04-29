@@ -4,9 +4,9 @@ import { Component } from "react";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 
-import PlayingCard from "./PlayingCard.jsx";
-import "./css/Board.css";
-import "./css/Utils.css";
+import PlayingCard from "../Card/PlayingCard";
+import "../../css/Board.css";
+import "../../css/Utils.css";
 
 class Hand extends Component {
   render() {

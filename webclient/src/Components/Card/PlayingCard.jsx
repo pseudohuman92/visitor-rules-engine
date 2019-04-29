@@ -2,16 +2,16 @@ import React from "react";
 import { DragSource, DropTarget } from "react-dnd";
 import CardDisplay from "./CardDisplay";
 
-import { ItemTypes, FieldIDs } from "./constants/Constants";
+import { ItemTypes, FieldIDs } from "../../Constants/Constants";
 import {
   PlayCard,
   ActivateCard,
   UnselectCard,
   SelectCard,
   StudyCard
-} from "./Game.js";
+} from "../Game/Game";
 
-import proto from "./protojs/compiled.js";
+import proto from "../../protojs/compiled.js";
 
 const cardSource = {
   beginDrag(props) {

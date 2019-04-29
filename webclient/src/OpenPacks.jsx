@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
-import CardDisplay from "./CardDisplay.jsx";
+import CardDisplay from "./Components/Card/CardDisplay";
 import { Button } from "@material-ui/core";
 
 class OpenPacks extends Component {

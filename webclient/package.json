@@ -24,7 +24,8 @@
         "file-saver": "^2.0.1",
         "react-center": "^1.1.1",
         "react-file-reader": "^1.1.4",
-        "react-google-font-loader": "^1.0.5"
+        "react-google-font-loader": "^1.0.5",
+        "firebase": "^5.10.1"
     },
     "devDependencies": {
         "typescript": "3.3.3"

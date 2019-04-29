@@ -1,9 +1,9 @@
 import React from "react";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import PlayingCard from "./PlayingCard.jsx";
-import "./css/Stack.css";
-import "./css/Utils.css";
+import PlayingCard from "../Card/PlayingCard";
+import "../../css/Stack.css";
+import "../../css/Utils.css";
 
 export default class Stack extends React.Component {
   render() {

@@ -5,18 +5,19 @@ import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 
 import Grid from "@material-ui/core/Grid";
 
-import proto from "./protojs/compiled.js";
+import proto from "../../protojs/compiled.js";
 
-import Board from "./Board.jsx";
-import Stack from "./Stack.jsx";
-import Altar from "./Altar.jsx";
+import Board from "./Board";
+import Stack from "./Stack";
+import Altar from "./Altar";
 import ResourceArea from "./ResourceArea.jsx";
-import StateDisplay from "./StateDisplay.js";
-import ChooseDialog from "./dialogs/ChooseDialog.js";
-import InfoEntryDialog from "./dialogs/InfoEntryDialog.js";
-import LoadingDialog from "./dialogs/LoadingDialog.js";
-import WinLoseDialog from "./dialogs/WinLoseDialog.js";
-import SelectXDialog from "./dialogs/SelectXDialog.js";
+import StateDisplay from "./StateDisplay";
+
+import ChooseDialog from "../Dialogs/ChooseDialog.js";
+import InfoEntryDialog from "../Dialogs/InfoEntryDialog.js";
+import LoadingDialog from "../Dialogs/LoadingDialog.js";
+import WinLoseDialog from "../Dialogs/WinLoseDialog.js";
+import SelectXDialog from "../Dialogs/SelectXDialog.js";
 import {
   Keep,
   Pass,
@@ -25,10 +26,10 @@ import {
   SetBasicGameInfo,
   RegisterUpdateGameHandler,
   IsSelectCardPhase
-} from "./Game.js";
-import { ConnectProfile, RegisterUpdateViewHandler } from "./Manage.js";
-import { debug } from "./Utils.js";
-import "./css/App.css";
+} from "../Game/Game";
+import { ConnectProfile, RegisterUpdateViewHandler } from "../../Manage.js";
+import { debug } from "../../Utils.js";
+import "../../css/App.css";
 
 class PlayArea extends Component {
   constructor(props) {

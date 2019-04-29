@@ -7,12 +7,12 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import Paper from "@material-ui/core/Paper";
 
-import PlayingCard from "./PlayingCard.jsx";
+import PlayingCard from "../Card/PlayingCard";
 import Hand from "./Hand";
 
-import { ItemTypes, FieldIDs } from "./constants/Constants";
-import "./css/Board.css";
-import "./css/Utils.css";
+import { ItemTypes, FieldIDs } from "../../Constants/Constants";
+import "../../css/Board.css";
+import "../../css/Utils.css";
 
 // From now on field is an alias for board side.
 const fieldTarget = {

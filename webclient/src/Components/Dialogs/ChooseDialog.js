@@ -6,9 +6,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
-import { SelectDone } from "../Game.js";
-import PlayingCard from "../PlayingCard.jsx";
-import "../css/ChooseDialog.css";
+import { SelectDone } from "../Game/Game";
+import PlayingCard from "../Card/PlayingCard";
+import "../../css/ChooseDialog.css";
 
 export default class ChooseDialog extends Component {
   render = () => {
@@ -31,7 +31,7 @@ export default class ChooseDialog extends Component {
           variant="contained"
           onClick={event => SelectDone()}
         >
-          Done
+          Done{" "}
         </Button>
       );
     }
@@ -45,21 +45,22 @@ export default class ChooseDialog extends Component {
         disableBackdropClick={isSelectPhase}
         disableEscapeKeyDown={isSelectPhase}
       >
-        <DialogTitle>{title}</DialogTitle>
+        <DialogTitle> {title} </DialogTitle>{" "}
         <DialogContent>
           <Grid container spacing={0} className="choose-dialog">
+            {" "}
             {cards.map(card => (
               <Grid item xs={1} key={card.id}>
                 <PlayingCard
                   selectable={selectableCards.includes(card.id)}
                   selected={selectedCards.includes(card.id)}
                   {...card}
-                />
+                />{" "}
               </Grid>
-            ))}
-          </Grid>
-          {doneButton}
-        </DialogContent>
+            ))}{" "}
+          </Grid>{" "}
+          {doneButton}{" "}
+        </DialogContent>{" "}
       </Dialog>
     );
   };
