@@ -1,5 +1,5 @@
 syntax = "proto3";
-option java_package = "com.ccg.ancientaliens.protocol";
+option java_package = "com.visitor.protocol";
 
 
 /**

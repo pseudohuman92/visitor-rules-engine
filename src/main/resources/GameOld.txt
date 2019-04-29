@@ -1,15 +1,15 @@
 
 
 
-import com.ccg.ancientaliens.game.*;
-import com.ccg.ancientaliens.card.Card;
-import com.ccg.ancientaliens.server.GameEndpoint;
+import com.visitor.game.*;
+import com.visitor.card.Card;
+import com.visitor.server.GameEndpoint;
 import enums.Phase;
 import static enums.Phase.BEGIN;
 import static enums.Phase.END;
 import static enums.Phase.MAIN;
 import static enums.Phase.MULLIGAN;
-import com.ccg.ancientaliens.helpers.Hashmap;
+import com.visitor.helpers.Hashmap;
 import static java.lang.Math.random;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
