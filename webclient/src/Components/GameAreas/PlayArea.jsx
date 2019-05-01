@@ -27,7 +27,8 @@ import {
   RegisterUpdateGameHandler,
   IsSelectCardPhase
 } from "../Game/Game";
-import { ConnectProfile, RegisterUpdateViewHandler } from "../../Manage.js";
+import { ConnectProfile, RegisterUpdateViewHandler } from "../../PlayerManager.js";
+import { emptyGame } from "../../Constants/Constants";
 import { debug } from "../../Utils.js";
 import "../../css/App.css";
 
@@ -47,46 +48,9 @@ class PlayArea extends Component {
       targets: []
     };
 
-    const player = {
-      id: "player",
-      name: "player",
-      deckSize: 0,
-      energy: 0,
-      maxEnergy: 0,
-      play: [],
-      hand: [],
-      scrapyard: [],
-      void: [],
-      knowledgePool: []
-    };
+    this.state.game = emptyGame;
 
-    const opponent = {
-      id: "opponent",
-      name: "opponent",
-      deckSize: 0,
-      energy: 0,
-      maxEnergy: 0,
-      play: [],
-      handSize: 0,
-      hand: [],
-      scrapyard: [],
-      void: [],
-      knowledgePool: []
-    };
-
-    this.state.game = {
-      id: "Empty Game",
-      player: player,
-      opponent: opponent,
-      turnPlayer: player.id,
-      activePlayer: player.id,
-      stack: [],
-      phase: 0,
-      autoPass: false,
-      selectCountMax: 0
-    };
-
-    SetBasicGameInfo(this.state.game.id, player.id, opponent.id);
+    SetBasicGameInfo(this.state.game.id, this.state.game.player.id, this.state.game.opponent.id);
     RegisterUpdateGameHandler(this.updateView);
     RegisterUpdateViewHandler(this.updateView);
   }
@@ -160,6 +124,7 @@ class PlayArea extends Component {
       toUpdate.phase = phase;
     }
 
+    //Auto keep function
     if (
       game.phase === proto.Phase.MULLIGAN &&
       game.activePlayer === game.player.name &&
@@ -168,6 +133,7 @@ class PlayArea extends Component {
       Keep();
     }
 
+    //Auto pass function
     if (
       game.phase !== proto.Phase.MULLIGAN &&
       phase === GamePhases.UPDATE_GAME &&

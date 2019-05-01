@@ -133,3 +133,42 @@ export function getIconColor(knowledgeCost) {
         return "beige";
     }
 };
+
+const player = {
+    id: "player",
+    name: "player",
+    deckSize: 0,
+    energy: 0,
+    maxEnergy: 0,
+    play: [],
+    hand: [],
+    scrapyard: [],
+    void: [],
+    knowledgePool: []
+  };
+
+  const opponent = {
+    id: "opponent",
+    name: "opponent",
+    deckSize: 0,
+    energy: 0,
+    maxEnergy: 0,
+    play: [],
+    handSize: 0,
+    hand: [],
+    scrapyard: [],
+    void: [],
+    knowledgePool: []
+  };
+
+ export const emptyGame = {
+    id: "Empty Game",
+    player: player,
+    opponent: opponent,
+    turnPlayer: player.id,
+    activePlayer: player.id,
+    stack: [],
+    phase: 0,
+    autoPass: false,
+    selectCountMax: 0
+  };

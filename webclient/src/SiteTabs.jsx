@@ -11,6 +11,7 @@ import DeckBuilder from "./DeckBuilder";
 import OpenPacks from "./OpenPacks";
 import { toKnowledgeCost } from "./Constants/Constants";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 class SiteTabs extends React.Component {
   constructor(props) {
@@ -60,14 +61,16 @@ class SiteTabs extends React.Component {
       <div style={{ maxHeight: "100vh", maxWidth: "100vw" }}>
         <AppBar position="static">
           <Tabs value={value} onChange={this.handleChange}>
-            <Tab label="Home" />
+            <Tab label="Sign In" />
+            <Tab label="Sign Up" />
             <Tab label="Deck Builder" />
             <Tab label="Game" />
             <Tab label="Open Packs" />
           </Tabs>
         </AppBar>
         {value === 0 && <SignIn />}
-        {value === 1 &&
+        {value === 1 && <SignUp />}
+        {value === 2 &&
           (collection ? (
             <DeckBuilder
               collection={collection}
@@ -76,8 +79,8 @@ class SiteTabs extends React.Component {
           ) : (
             <div>LOADING DATABASE</div>
           ))}
-        {value === 2 && <PlayArea />}
-        {value === 3 &&
+        {value === 3 && <PlayArea />}
+        {value === 4 &&
           (collection ? (
             <OpenPacks collection={collection} value={999} />
           ) : (

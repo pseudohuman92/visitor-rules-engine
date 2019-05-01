@@ -10,12 +10,13 @@ import Typography from "@material-ui/core/Typography";
 import { withFirebase } from "./Components/Firebase";
 
 const INITIAL_STATE = {
+  username: "",
   email: "",
   password: "",
   error: null
 };
 
-class SignIn extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
 
@@ -26,12 +27,13 @@ class SignIn extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  Signin = event => {
-    const { email, password } = this.state;
+  Signup = event => {
+    const { username, email, password } = this.state;
 
     this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .doCreateUserWithEmailAndPassword(email, password)
+      .then(authUser => {
+        //TODO: Create new database entry for the user here
         this.setState({ ...INITIAL_STATE });
       })
       .catch(error => {
@@ -49,15 +51,24 @@ class SignIn extends Component {
     return (
       <Paper>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
+        <FormControl margin="normal" required fullWidth>
+          <InputLabel htmlFor="username">Username</InputLabel>
+          <Input
+            id="username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            onChange={this.onChange}
+          />
+        </FormControl>
         <FormControl margin="normal" required fullWidth>
           <InputLabel htmlFor="email">Email Address</InputLabel>
           <Input
             id="email"
             name="email"
             autoComplete="email"
-            autoFocus
             onChange={this.onChange}
           />
         </FormControl>
@@ -71,17 +82,14 @@ class SignIn extends Component {
             onChange={this.onChange}
           />
         </FormControl>
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
         <Button
           disabled={isInvalid}
           type="submit"
           variant="contained"
-          onClick={this.Signin}
+          color="primary"
+          onClick={this.Signup}
         >
-          Sign in
+          Sign Up
         </Button>
         {error && <p>{error.message}</p>}
       </Paper>
@@ -89,4 +97,4 @@ class SignIn extends Component {
   }
 }
 
-export default withFirebase(SignIn);
+export default withFirebase(SignUp);
