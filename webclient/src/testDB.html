@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Testing db connection</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+    <script>
+    </script>
+
+</head>
+
+<body>
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-firestore.js"></script>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyB1X6yCjyKa37D_9wktANnCF30REXWtCzg",
+            authDomain: "visitor-development-2.firebaseapp.com",
+            databaseURL: "https://visitor-development-2.firebaseio.com",
+            projectId: "visitor-development-2",
+            storageBucket: "visitor-development-2.appspot.com",
+            messagingSenderId: "6949138190"
+        }
+       // const firebase = require("firebase");
+        firebase.initializeApp(firebaseConfig);
+
+        var db = firebase.firestore();
+        console.log(db)
+
+        function signin() {
+            console.log('Clicked');
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let usersDisplay = document.getElementById("usersDisplay");
+            console.log(`Email: ${email} Password: ${password}`);
+
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+                console.log(error);
+            });
+
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    console.log('Signed in!')
+                    // User is signed in.
+                    var displayName = user.displayName;
+                    var email = user.email;
+                    var emailVerified = user.emailVerified;
+                    var photoURL = user.photoURL;
+                    var isAnonymous = user.isAnonymous;
+                    var uid = user.uid;
+                    var providerData = user.providerData;
+
+                    // display existing users
+                    //var docRef = db.collection("users");
+                    //docRef.get().then(function(querySnapshot) {
+                    //    usersDisplay.innerHTML = '';
+                    //    querySnapshot.forEach(function(doc) {
+                            // doc.data() is never undefined for query doc snapshots
+                    //        console.log(doc.id, " => ", doc.data());
+                    //        usersDisplay.innerHTML += `<p>Id: ${doc.id} | Name: ${doc.data().name} | no of packs: ${doc.data().noOfPacks}</p>`;
+                            
+                    //    });
+                
+
+                    //}).catch(function(error) {
+                    //    console.log(error)
+                    //})
+
+                    // display user Info
+                    usersDisplay.innerHTML = '';
+                    var docRef = db.collection("users").doc(uid);
+                    docRef.get().then(function(doc){
+                        usersDisplay.innerHTML += `<p>Id: ${doc.id} | Name: ${doc.data().name} | no of packs: ${doc.data().noOfPacks}</p>`;
+                    })
+
+
+                }
+                else{
+
+                }
+            })
+
+        }
+    </script>
+
+    <div>
+        
+            <input type="text" name="email" placeholder="Email" id="email" />
+            <br />
+            <input type="password" name="password" placeholder="Password" id="password" />
+
+            <br>
+            <Button onClick="signin();">Sign in</Button>
+       
+
+
+    </div>
+
+    <div>
+        <h2>User Info</h2>
+        <div id="usersDisplay">
+
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+</html>
