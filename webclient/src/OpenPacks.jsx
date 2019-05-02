@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import CardDisplay from "./Components/Card/CardDisplay";
 import { Button } from "@material-ui/core";
+import Centered from "./Centered";
 
 class OpenPacks extends Component {
   constructor(props) {
@@ -76,22 +77,25 @@ class OpenPacks extends Component {
             </Button>
           </Dialog>
         )}
-
-        <div style={{ maxHeight: "100vh", maxWidth: "100vw" }}>
-          {<div>
-              <div
-                onClick={this.openPack}
-                style={{
-                  backgroundColor: "blue",
-                  height: "350px",
-                  maxWidth: "250px"
-                }}
-              >
-                PACK
+        <Centered>
+          <div style={{ height: "350px", width: "250px" }}>
+            {
+              <div>
+                <div
+                  onClick={this.openPack}
+                  style={{
+                    backgroundColor: "blue",
+                    height: "350px",
+                    maxWidth: "250px"
+                  }}
+                >
+                  PACK
+                </div>
+                <div style={{ color: "black" }}>{value}</div>
               </div>
-              <div style={{ color: "black" }}>{value}</div>
-            </div>}
-        </div>
+            }
+          </div>
+        </Centered>
       </div>
     );
   }

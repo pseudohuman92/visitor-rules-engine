@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import SiteTabs from "./SiteTabs";
+import MainPage from "./MainPage"
 import Firebase, { FirebaseContext } from "./Components/Firebase";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
-    <SiteTabs />
+    <MainPage />
   </FirebaseContext.Provider>,
   rootElement
 );

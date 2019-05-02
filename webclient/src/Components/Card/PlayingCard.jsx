@@ -9,7 +9,7 @@ import {
   UnselectCard,
   SelectCard,
   StudyCard
-} from "../Game/Game";
+} from "../../MessageHandlers/ServerGameMessageHandler";
 
 import proto from "../../protojs/compiled.js";
 

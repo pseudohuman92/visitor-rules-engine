@@ -1,5 +1,21 @@
 import proto from "../protojs/compiled.js";
 
+export const GamePhases = {
+    NOT_STARTED: "NotStarted",
+    UPDATE_GAME: "UpdateGame",
+    WIN: "Win",
+    LOSE: "Lose",
+    ORDER_CARDS: "OrderCards",
+    SELECT_FROM_LIST: "SelectFromList",
+    SELECT_FROM_PLAY: "SelectFromPlay",
+    SELECT_FROM_HAND: "SelectFromHand",
+    SELECT_FROM_SCRAPYARD: "SelectFromScrapyard",
+    SELECT_FROM_VOID: "SelectFromVoid",
+    SELECT_FROM_STACK: "SelectFromStack",
+    SELECT_X_VALUE: "SelectXValue",
+    DONE_SELECT: "DoneSelect"
+};
+
 export const ItemTypes = {
     CARD: 'card',
     FIELD: 'field',
@@ -161,7 +177,7 @@ const player = {
     knowledgePool: []
   };
 
- export const emptyGame = {
+ const emptyGame = {
     id: "Empty Game",
     player: player,
     opponent: opponent,
@@ -171,4 +187,17 @@ const player = {
     phase: 0,
     autoPass: false,
     selectCountMax: 0
+  };
+
+  export const emptyGameState = {
+    game: emptyGame,
+    phase: GamePhases.NOT_STARTED,
+    gameInitialized: false,
+    dialog: { title: "", cards: [], open: false },
+    waiting: false,
+    selectedCards: [],
+    selectableCards: [],
+    maxXValue: 0,
+    upTo: false,
+    targets: []
   };

@@ -21,39 +21,29 @@ import SelectXDialog from "../Dialogs/SelectXDialog.js";
 import {
   Keep,
   Pass,
-  GamePhases,
-  SetGameInfo,
   SetBasicGameInfo,
   RegisterUpdateGameHandler,
   IsSelectCardPhase
-} from "../Game/Game";
-import { ConnectProfile, RegisterUpdateViewHandler } from "../../PlayerManager.js";
-import { emptyGame } from "../../Constants/Constants";
+} from "../../MessageHandlers/ServerGameMessageHandler";
+import { ConnectProfile, RegisterUpdateViewHandler } from "../../MessageHandlers/ServerMessageHandler";
+import { emptyGameState, GamePhases } from "../../Constants/Constants";
 import { debug } from "../../Utils.js";
 import "../../css/App.css";
 
 class PlayArea extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      game: {},
-      phase: GamePhases.NOT_STARTED,
-      gameInitialized: false,
-      dialog: { title: "", cards: [], open: false },
-      waiting: false,
-      selectedCards: [],
-      selectableCards: [],
-      maxXValue: 0,
-      upTo: false,
-      targets: []
-    };
-
-    this.state.game = emptyGame;
+    this.state = emptyGameState;
 
     SetBasicGameInfo(this.state.game.id, this.state.game.player.id, this.state.game.opponent.id);
+    
+    //This is for callback from ServerGameMessage handling
     RegisterUpdateGameHandler(this.updateView);
+    
+    //This is for callback from ServerMessage handling
     RegisterUpdateViewHandler(this.updateView);
   }
+
 
   updateTargets = targets => {
     if (targets !== this.state.targets) {
@@ -61,16 +51,19 @@ class PlayArea extends Component {
     }
   };
 
+  //???
   updateInfoUpdate = username => {
-    //SetGameInfo({me: username});
     ConnectProfile(username);
     this.setState({ waiting: true });
   };
 
+  //Callback function to update game area
   updateView = (params, phase, selectedCards = null) => {
     const game = params.game;
     const toUpdate = {};
 
+    //Only updates changed parts of the state for performance reasons.
+    // Check if we can avoid such complicated logic via react mechanisms
     if (
       phase === GamePhases.UPDATE_GAME ||
       phase === GamePhases.NOT_STARTED ||
@@ -80,11 +73,13 @@ class PlayArea extends Component {
       toUpdate.gameInitialized = true;
     }
 
+
     if (IsSelectCardPhase(phase) && selectedCards === null) {
       toUpdate.selectableCards = params.canSelected;
       toUpdate.upTo = params.upTo;
       toUpdate.selectCountMax = params.selectionCount;
     }
+
 
     if (this.state.waiting) {
       // XXX This will not be true in the future when we have server messages
@@ -158,6 +153,7 @@ class PlayArea extends Component {
     this.setState(toUpdate);
   };
 
+  //Updates state for Material UI Dialog component.
   updateDialog = (open, title, cards) => {
     this.setState({
       dialog: {
@@ -182,17 +178,21 @@ class PlayArea extends Component {
       selectCountMax,
       targets
     } = this.state;
+
+    //Determine if player can study cards
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
       game.activePlayer === game.player.name &&
       game.canStudy.length > 0;
 
+    //Determine if the things that will be selected 
+    //will be selected from a Dialog component
     const isSelectFromDialogPhase =
       phase === GamePhases.SELECT_FROM_LIST ||
       phase === GamePhases.SELECT_FROM_SCRAPYARD ||
       phase === GamePhases.SELECT_FROM_VOID;
 
-    const gameOver = phase === GamePhases.WIN || phase === GamePhases.LOSE;
+    const gameOver = (phase === GamePhases.WIN || phase === GamePhases.LOSE);
     const isWin = phase === GamePhases.WIN;
 
     const chooseDialog = (
@@ -213,6 +213,8 @@ class PlayArea extends Component {
     const selectXDialogOpen = phase === GamePhases.SELECT_X_VALUE;
 
     const amActive = game.activePlayer === game.player.name;
+
+    //Determine which message to display here
     let instMessage;
     if (game.phase === proto.Phase.MULLIGAN) {
       instMessage = "Chose either to keep or mulligan your hand.";
@@ -236,7 +238,7 @@ class PlayArea extends Component {
     } else if (!amActive) {
       instMessage = "Waiting for opponent...";
     } else {
-      instMessage = "Play, study, or activate a card.";
+      instMessage = "Play" + (hasStudyable? ", study," : "") + " or activate a card.";
     }
 
     return (

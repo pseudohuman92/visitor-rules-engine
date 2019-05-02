@@ -3,9 +3,11 @@ import { Component } from "react";
 import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 import Image from "react-image";
+import VisibilitySensor from "react-visibility-sensor";
 
 import {
-  getCardColor, getIconColor,
+  getCardColor,
+  getIconColor,
   toKnowledgeString,
   toIconString
 } from "../../Constants/Constants";
@@ -14,8 +16,6 @@ import "../../css/Card.css";
 import "../../css/Utils.css";
 
 export class CardDisplay extends Component {
-
-
   render() {
     const {
       small,
@@ -28,12 +28,10 @@ export class CardDisplay extends Component {
       borderColor
     } = this.props;
 
-
     const marginSize = "2%";
     const borderRadius = "3px";
 
     return small ? (
-
       <div>
         <Fonts />
         <Rectangle
@@ -50,70 +48,101 @@ export class CardDisplay extends Component {
             style={{ maxHeight: "100%", margin: marginSize }}
           >
             {cost}
-            <span style={{ fontWeight: "500", color: getIconColor(knowledgeCost) }}>{toIconString(toKnowledgeString(knowledgeCost))}</span>
+            <span
+              style={{ fontWeight: "500", color: getIconColor(knowledgeCost) }}
+            >
+              {toIconString(toKnowledgeString(knowledgeCost))}
+            </span>
             {" | " + name}
           </Textfit>
         </Rectangle>
       </div>
     ) : (
-        <div>
-          <Fonts />
-          <Rectangle
-            aspectRatio={[63, 88]}
-            style={{
-              opacity: opacity,
-              borderRadius: borderRadius,
-              backgroundColor: borderColor,
-              overflow: "hidden"
-            }}
+      <div>
+        <Fonts />
+        <Rectangle
+          aspectRatio={[63, 88]}
+          style={{
+            opacity: opacity,
+            borderRadius: borderRadius,
+            backgroundColor: borderColor,
+            overflow: "hidden"
+          }}
+        >
+          <div
+            className="card-inner"
+            style={{ backgroundColor: getCardColor(knowledgeCost) }}
           >
-            <div
-              className="card-inner"
-              style={{ backgroundColor: getCardColor(knowledgeCost) }}
-            >
-              <div className="card-name">
-                <Textfit
-                  mode="single"
-                  forceSingleModeWidth={false}
-                  style={{ fontFamily: 'Open Sans, sans-serif', maxWidth: "96%", maxHeight: "100%" }}
+            <div className="card-name">
+              <Textfit
+                mode="single"
+                forceSingleModeWidth={false}
+                style={{
+                  fontFamily: "Open Sans, sans-serif",
+                  maxWidth: "96%",
+                  maxHeight: "100%"
+                }}
+              >
+                <span style={{ fontWeight: "500" }}>{cost}</span>
+                <span
+                  style={{
+                    fontWeight: "500",
+                    color: getIconColor(knowledgeCost)
+                  }}
                 >
-                  <span style={{ fontWeight: "500" }}>{cost}</span>
-                  <span style={{ fontWeight: "500", color: getIconColor(knowledgeCost) }}>{toIconString(toKnowledgeString(knowledgeCost))}</span>
-                  {" | " + name}
+                  {toIconString(toKnowledgeString(knowledgeCost))}
+                </span>
+                {" | " + name}
+              </Textfit>
+            </div>
 
-                </Textfit>
-              </div>
-
-              <div className="card-image">
+            <div className="card-image">
+              <VisibilitySensor>
+                <img
+                  src={process.env.PUBLIC_URL + "/img/" + type + ".png"}
+                  style={{ maxWidth: "100%" }}
+                  alt =""
+                />
+                {/*
                 <Image
                   src={[
                     process.env.PUBLIC_URL + "/img/" + name + ".jpg",
-                    process.env.PUBLIC_URL + "/img/" + type + ".jpg"
+                    process.env.PUBLIC_URL + "/img/" + type + ".png"
                   ]}
                   style={{ maxWidth: "100%" }}
                   decode={false}
                 />
-              </div>
-
-              <div className="card-type">
-                <Textfit
-                  mode="single"
-                  forceSingleModeWidth={false}
-                  style={{ fontFamily: 'Open Sans, sans-serif', maxHeight: "100%" }}
-                >
-                  {" " + type}
-                </Textfit>
-              </div>
-
-              <div className="card-description">
-                <Textfit style={{
-                  fontFamily: 'Open Sans, sans-serif', maxHeight: "100%"
-                }}>{description}</Textfit>
-              </div>
+                */}
+              </VisibilitySensor>
             </div>
-          </Rectangle>
-        </div>
-      );
+
+            <div className="card-type">
+              <Textfit
+                mode="single"
+                forceSingleModeWidth={false}
+                style={{
+                  fontFamily: "Open Sans, sans-serif",
+                  maxHeight: "100%"
+                }}
+              >
+                {" " + type}
+              </Textfit>
+            </div>
+
+            <div className="card-description">
+              <Textfit
+                style={{
+                  fontFamily: "Open Sans, sans-serif",
+                  maxHeight: "100%"
+                }}
+              >
+                {description}
+              </Textfit>
+            </div>
+          </div>
+        </Rectangle>
+      </div>
+    );
   }
 }
 

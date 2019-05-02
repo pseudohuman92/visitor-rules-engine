@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-import { SelectXValue } from '../Game/Game';
+import { SelectXValue } from '../../MessageHandlers/ServerGameMessageHandler';
 
 export default class SelectXDialog extends Component {
     constructor(props) {

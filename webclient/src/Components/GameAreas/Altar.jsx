@@ -18,7 +18,7 @@ const altarTarget = {
 
 class Altar extends Component {
   render() {
-    const { connectDropTarget, canDrop, hasStudyable } = this.props;
+    const { connectDropTarget, hasStudyable } = this.props;
     const style = {};
     if (hasStudyable) {
       style.backgroundColor = "green";

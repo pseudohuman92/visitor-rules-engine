@@ -8,18 +8,20 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { withFirebase } from "./Components/Firebase";
-
-const INITIAL_STATE = {
-  email: "",
-  password: "",
-  error: null
-};
+import Centered from "./Centered";
+import Profile from "./Profile";
+import PasswordReset from "./PasswordReset";
 
 class SignIn extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { ...INITIAL_STATE };
+    this.state = {
+      value: 0,
+      email: "",
+      password: "",
+      error: null
+    };
   }
 
   onChange = event => {
@@ -32,7 +34,7 @@ class SignIn extends Component {
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
-        this.setState({ ...INITIAL_STATE });
+        this.setState({ value: 1 });
       })
       .catch(error => {
         this.setState({ error });
@@ -41,50 +43,63 @@ class SignIn extends Component {
     event.preventDefault();
   };
 
+  forgotPassword = event => {
+    this.setState({ value: 2 });
+  };
+
   render() {
-    const { email, password, error } = this.state;
+    const { value, email, password, error } = this.state;
 
     const isInvalid = password === "" || email === "";
 
     return (
-      <Paper>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <FormControl margin="normal" required fullWidth>
-          <InputLabel htmlFor="email">Email Address</InputLabel>
-          <Input
-            id="email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={this.onChange}
-          />
-        </FormControl>
-        <FormControl margin="normal" required fullWidth>
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <Input
-            name="password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={this.onChange}
-          />
-        </FormControl>
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
-        <Button
-          disabled={isInvalid}
-          type="submit"
-          variant="contained"
-          onClick={this.Signin}
-        >
-          Sign in
-        </Button>
-        {error && <p>{error.message}</p>}
-      </Paper>
+      <div>
+        {value === 0 && (
+          <Centered>
+            <Paper>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email Address</InputLabel>
+                <Input
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={this.onChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.onChange}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                disabled={isInvalid}
+                type="submit"
+                variant="contained"
+                onClick={this.Signin}
+              >
+                Sign in
+              </Button>
+              <Button color="primary" onClick={this.forgotPassword}>Forgot password?</Button>
+              {error && <p>{error.message}</p>}
+            </Paper>
+          </Centered>
+        )}
+        {value === 1 && <Profile />}
+        {value === 2 && <PasswordReset />}
+      </div>
     );
   }
 }

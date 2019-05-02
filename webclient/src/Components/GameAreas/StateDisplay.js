@@ -8,17 +8,15 @@ import Textfit from "react-textfit";
 import proto from "../../protojs/compiled.js";
 
 import {
-    GamePhases,
     IsSelectCardPhase,
     Concede,
     Mulligan,
     Keep,
     Pass,
-    SelectDone,
-    SelectPlayer
-} from "../Game/Game";
+    SelectDone
+} from "../../MessageHandlers/ServerGameMessageHandler";
 
-import { knowledgeMap } from "../../Constants/Constants";
+import { GamePhases, knowledgeMap } from "../../Constants/Constants";
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
 
@@ -62,7 +60,7 @@ export class PlayerDisplay extends React.Component {
         if (selectPlayer) {
             style.border = "5px green solid";
             playerOnClick = event => {
-                SelectPlayer(name);
+                //SelectPlayer(name);
             };
         } else {
             scrapyardOnClick = event => {
