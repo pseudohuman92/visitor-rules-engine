@@ -5,8 +5,9 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { withFirebase } from "./Components/Firebase";
-import Centered from "./Centered";
+import Center from "react-center";
+
+import { withFirebase } from "../Firebase";
 
 class PasswordReset extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class PasswordReset extends Component {
     const isInvalid = email === "" || value !== 0;
 
     return (
-      <Centered>
+      <Center>
         <Paper>
           <Typography component="h1" variant="h5">
             Reset Password
@@ -67,7 +68,7 @@ class PasswordReset extends Component {
           {error && <p>{error.message}</p>}
           {value === 1 && <p>{"Password reset email sent to "+email}</p>}
         </Paper>
-      </Centered>
+      </Center>
     );
   }
 }

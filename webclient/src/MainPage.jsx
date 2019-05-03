@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Center from "react-center";
 
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import Centered from "./Centered";
+import SignIn from "./Components/Auth/SignIn";
+import SignUp from "./Components/Auth/SignUp";
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export default class MainPage extends Component {
     return (
       <div>
         {value === 0 && (
-          <Centered>
+          <Center>
             <Paper>
               <Typography component="h1" variant="h1">
                 Visitor: The Card Game
@@ -40,7 +40,7 @@ export default class MainPage extends Component {
                 Sign Up
               </Button>
             </Paper>
-          </Centered>
+          </Center>
         )}
         {value === 1 && <SignIn />}
         {value === 2 && <SignUp />}

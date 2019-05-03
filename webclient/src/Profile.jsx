@@ -5,18 +5,26 @@ import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Centered from "./Centered";
+import Center from "react-center";
+import { connect } from "react-redux";
 
 import PlayArea from "./Components/GameAreas/PlayArea";
 import DeckBuilder from "./DeckBuilder";
 import OpenPacks from "./OpenPacks";
 import { toKnowledgeCost } from "./Constants/Constants";
+import { initialize } from "./Redux/Actions";
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addCollection: collection => dispatch(initialize(collection))
+  };
+}
 
 class Profile extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 0, collection: null };
+    this.state = { value: 0 };
   }
 
   componentDidMount() {
@@ -43,59 +51,55 @@ class Profile extends Component {
         });
       })
       .then(() => {
-        this.setState({ collection: result.map(c => ({ count: 3, card: c })) });
+        this.props.addCollection({
+          collection: result.map(c => ({ count: 3, card: c })),
+          fullCollection: result.map(c => ({ count: 3, card: c }))
+        });
       });
   }
 
-  Play = event => {
-    this.setState({ value: 1 });
-  };
-
-  Signup = event => {
-    this.setState({ value: 2 });
-  };
-
   render() {
-    const { value, collection } = this.state;
+    const { value } = this.state;
     return (
       <div>
         {value === 0 && (
-          <Centered>
+          <Center>
             <Paper>
               <Typography component="h1" variant="h1">
                 Profile Page
               </Typography>
-              <Button variant="contained" onClick={event => this.setState({ value: 1 })}>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 1 })}
+              >
                 Play
               </Button>
-              <Button variant="contained" onClick={event => this.setState({ value: 2 })}>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 2 })}
+              >
                 Deck Builder
               </Button>
-              <Button variant="contained" onClick={event => this.setState({ value: 3 })}>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 3 })}
+              >
                 Open Packs
               </Button>
             </Paper>
-          </Centered>
+          </Center>
         )}
         {value === 1 && <PlayArea />}
-        {value === 2 &&
-          (collection ? (
-            <DeckBuilder
-              collection={collection}
-              style={{ maxHeight: "100vh", maxWidth: "100vw" }}
-            />
-          ) : (
-            <div>LOADING DATABASE</div>
-        ))}
-        {value === 3 &&
-          (collection ? (
-            <OpenPacks collection={collection} value={999} />
-          ) : (
-            <div>LOADING DATABASE</div>
-          ))}
+        {value === 2 && (
+          <DeckBuilder style={{ maxHeight: "100vh", maxWidth: "100vw" }} />
+        )}
+        {value === 3 && <OpenPacks value={999}/>}
       </div>
     );
   }
 }
 
-export default DragDropContext(MultiBackend(HTML5toTouch))(Profile);
+export default connect(
+  null,
+  mapDispatchToProps
+)(DragDropContext(MultiBackend(HTML5toTouch))(Profile));

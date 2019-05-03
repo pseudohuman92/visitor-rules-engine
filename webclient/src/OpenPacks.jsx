@@ -3,15 +3,20 @@ import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import CardDisplay from "./Components/Card/CardDisplay";
 import { Button } from "@material-ui/core";
-import Centered from "./Centered";
+import { connect } from "react-redux";
+import Center from "react-center";
+
+
+const mapStateToProps = state => {
+  return { collection: state.fullCollection };
+};
 
 class OpenPacks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
-      value: props.value,
-      collection: props.collection
+      value: props.value
     };
     this.openPack = this.openPack.bind(this);
     this.hideDialog = this.hideDialog.bind(this);
@@ -26,7 +31,7 @@ class OpenPacks extends Component {
   }
 
   generateRandomCard() {
-    const collection = this.state.collection;
+    const collection = this.props.collection;
     if (collection) {
       return collection[Math.floor(Math.random() * collection.length)].card;
     }
@@ -77,7 +82,7 @@ class OpenPacks extends Component {
             </Button>
           </Dialog>
         )}
-        <Centered>
+        <Center>
           <div style={{ height: "350px", width: "250px" }}>
             {
               <div>
@@ -95,10 +100,10 @@ class OpenPacks extends Component {
               </div>
             }
           </div>
-        </Centered>
+        </Center>
       </div>
     );
   }
 }
 
-export default OpenPacks;
+export default connect(mapStateToProps)(OpenPacks);
