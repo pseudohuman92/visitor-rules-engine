@@ -12,13 +12,9 @@ message UpdateGameState {
 }
 
 //This will be send when a player loses a game
-message Loss {
-    string GameID = 1;
-}
-
-//This will be send when a player wins the game
-message Win {
-    string GameID = 1;
+message GameEnd {
+    GameState game = 1;
+    bool win = 2;
 }
 
 //This will be send when a player needs order a list of cards
@@ -33,6 +29,7 @@ message SelectFrom {
     int32 selectionCount = 3;
     repeated Card candidates = 4;
     repeated string canSelected = 5;
+    repeated string canSelectedPlayers = 7;
     bool upTo = 6;
 }
 
@@ -41,19 +38,13 @@ message SelectXValue {
     int32 maxXValue = 2;
 }
 
-//This will be send when a player needs to be selected
-message SelectPlayer {
-    GameState game = 1;
-}
 
 message ServerGameMessage {
     oneof payload {
         UpdateGameState         updateGameState = 8;
-        Loss                    loss = 10;
-        Win                     win = 11;
+        GameEnd                 gameEnd = 10;
         OrderCards              orderCards = 12;
         SelectFrom              selectFrom = 13;
-        SelectPlayer            selectPlayer = 18;
         SelectXValue            selectXValue = 19;
     }
 }

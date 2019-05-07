@@ -6,7 +6,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
-import { SelectDone } from "../../MessageHandlers/ServerGameMessageHandler";
 import PlayingCard from "../Card/PlayingCard";
 import "../../css/ChooseDialog.css";
 
@@ -29,7 +28,8 @@ export default class ChooseDialog extends Component {
         <Button
           color="primary"
           variant="contained"
-          onClick={event => SelectDone()}
+          //TODO: fix this
+          //onClick={event => SelectDone()}
         >
           Done{" "}
         </Button>

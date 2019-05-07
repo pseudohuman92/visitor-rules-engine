@@ -1,8 +1,9 @@
 import React from "react";
 import { Component } from "react";
 import { DropTarget } from "react-dnd";
+import { connect } from "react-redux";
 
-import { ItemTypes } from "../../Constants/Constants";
+import { ItemTypes, GamePhases } from "../Constants/Constants";
 import "../../css/StudyArea.css";
 
 const altarTarget = {
@@ -16,9 +17,18 @@ const altarTarget = {
   }
 };
 
+const mapStateToProps = state => {
+  return { phase: state.extendedGameState.phase, game: state.extendedGameState.game };
+};
+
 class Altar extends Component {
   render() {
-    const { connectDropTarget, hasStudyable } = this.props;
+    const { connectDropTarget, phase, game } = this.props;
+    const hasStudyable =
+      phase === GamePhases.UPDATE_GAME &&
+      game.activePlayer === game.player.name &&
+      game.canStudy.length > 0;
+
     const style = {};
     if (hasStudyable) {
       style.backgroundColor = "green";
@@ -42,4 +52,4 @@ Altar = DropTarget(ItemTypes.CARD, altarTarget, (connect, monitor) => ({
   canDrop: monitor.canDrop()
 }))(Altar);
 
-export default Altar;
+export default connect(mapStateToProps)(Altar);

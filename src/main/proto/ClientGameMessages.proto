@@ -64,12 +64,6 @@ message SelectFromResponse {
     repeated string selectedCards = 3;
 }
 
-//This will be send as a response to SelectPlayer message from server
-message SelectPlayerResponse {
-    string gameID = 1;
-    string selectedPlayerName = 2;
-}
-
 message SelectXValueResponse {
     string gameID = 1;
     int32 selectedXValue = 2;
@@ -86,7 +80,6 @@ message ClientGameMessage {
         Concede                         concede = 16;
         OrderCardsResponse              orderCardsResponse = 17;
         SelectFromResponse              selectFromResponse = 15;
-        SelectPlayerResponse            selectPlayerResponse = 22;
         SelectXValueResponse            selectXValueResponse = 23;
     }
 };

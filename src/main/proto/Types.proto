@@ -83,27 +83,13 @@ message Player {
     repeated KnowledgeGroup knowledgePool = 10;
     int32 reflect = 11;
     int32 shield = 12;
-}
-
-message Opponent {
-    string id = 1;
-    string name = 2;
-    int32 deckSize = 3;
-    int32 energy = 4;
-    int32 maxEnergy = 5;
-    int32 handSize = 6;
-    repeated Card play = 7;
-    repeated Card scrapyard = 8;
-    repeated Card void = 9;
-    repeated KnowledgeGroup knowledgePool = 10;
-    int32 reflect = 11;
-    int32 shield = 12;
+    int32 handSize = 13;
 }
 
 message GameState {
     string id = 1;
     Player player = 2;
-    Opponent opponent = 3;
+    Player opponent = 3;
     string turnPlayer =  4;
     string activePlayer = 5;
     repeated Card stack = 6;

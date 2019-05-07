@@ -1,19 +1,19 @@
 import React from "react";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
+import { connect } from "react-redux";
+
 import PlayingCard from "../Card/PlayingCard";
 import "../../css/Stack.css";
 import "../../css/Utils.css";
 
-export default class Stack extends React.Component {
+const mapStateToProps = state => {
+  return { cards: state.extendedGameState.game.stack };
+};
+
+class Stack extends React.Component {
   render() {
-    const {
-      cards,
-      selectedCards,
-      selectableCards,
-      targets,
-      updateTargets
-    } = this.props;
+    const { cards } = this.props;
 
     return (
       <GridList
@@ -27,13 +27,6 @@ export default class Stack extends React.Component {
             <PlayingCard
               {...card}
               small={true}
-              activatable={false}
-              playable={false}
-              selectable={selectableCards.includes(card.id)}
-              selected={selectedCards.includes(card.id)}
-              studyable={false}
-              targetd={targets.includes(card.id)}
-              updateTargets={updateTargets}
             />
           </GridListTile>
         ))}
@@ -41,3 +34,5 @@ export default class Stack extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(Stack);

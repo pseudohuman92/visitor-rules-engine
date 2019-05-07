@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import PlayingCard from "../Card/PlayingCard";
 import Hand from "./Hand";
 
-import { ItemTypes, FieldIDs } from "../../Constants/Constants";
+import { ItemTypes, FieldIDs } from "../Constants/Constants";
 import "../../css/Board.css";
 import "../../css/Utils.css";
 

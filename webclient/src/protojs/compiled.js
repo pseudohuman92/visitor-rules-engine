@@ -2059,216 +2059,6 @@ $root.SelectFromResponse = (function() {
     return SelectFromResponse;
 })();
 
-$root.SelectPlayerResponse = (function() {
-
-    /**
-     * Properties of a SelectPlayerResponse.
-     * @exports ISelectPlayerResponse
-     * @interface ISelectPlayerResponse
-     * @property {string|null} [gameID] SelectPlayerResponse gameID
-     * @property {string|null} [selectedPlayerName] SelectPlayerResponse selectedPlayerName
-     */
-
-    /**
-     * Constructs a new SelectPlayerResponse.
-     * @exports SelectPlayerResponse
-     * @classdesc Represents a SelectPlayerResponse.
-     * @implements ISelectPlayerResponse
-     * @constructor
-     * @param {ISelectPlayerResponse=} [properties] Properties to set
-     */
-    function SelectPlayerResponse(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * SelectPlayerResponse gameID.
-     * @member {string} gameID
-     * @memberof SelectPlayerResponse
-     * @instance
-     */
-    SelectPlayerResponse.prototype.gameID = "";
-
-    /**
-     * SelectPlayerResponse selectedPlayerName.
-     * @member {string} selectedPlayerName
-     * @memberof SelectPlayerResponse
-     * @instance
-     */
-    SelectPlayerResponse.prototype.selectedPlayerName = "";
-
-    /**
-     * Creates a new SelectPlayerResponse instance using the specified properties.
-     * @function create
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {ISelectPlayerResponse=} [properties] Properties to set
-     * @returns {SelectPlayerResponse} SelectPlayerResponse instance
-     */
-    SelectPlayerResponse.create = function create(properties) {
-        return new SelectPlayerResponse(properties);
-    };
-
-    /**
-     * Encodes the specified SelectPlayerResponse message. Does not implicitly {@link SelectPlayerResponse.verify|verify} messages.
-     * @function encode
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {ISelectPlayerResponse} message SelectPlayerResponse message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    SelectPlayerResponse.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.selectedPlayerName != null && message.hasOwnProperty("selectedPlayerName"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.selectedPlayerName);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified SelectPlayerResponse message, length delimited. Does not implicitly {@link SelectPlayerResponse.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {ISelectPlayerResponse} message SelectPlayerResponse message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    SelectPlayerResponse.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a SelectPlayerResponse message from the specified reader or buffer.
-     * @function decode
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {SelectPlayerResponse} SelectPlayerResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    SelectPlayerResponse.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectPlayerResponse();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.selectedPlayerName = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a SelectPlayerResponse message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SelectPlayerResponse} SelectPlayerResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    SelectPlayerResponse.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a SelectPlayerResponse message.
-     * @function verify
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    SelectPlayerResponse.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.selectedPlayerName != null && message.hasOwnProperty("selectedPlayerName"))
-            if (!$util.isString(message.selectedPlayerName))
-                return "selectedPlayerName: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a SelectPlayerResponse message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {SelectPlayerResponse} SelectPlayerResponse
-     */
-    SelectPlayerResponse.fromObject = function fromObject(object) {
-        if (object instanceof $root.SelectPlayerResponse)
-            return object;
-        var message = new $root.SelectPlayerResponse();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.selectedPlayerName != null)
-            message.selectedPlayerName = String(object.selectedPlayerName);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a SelectPlayerResponse message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof SelectPlayerResponse
-     * @static
-     * @param {SelectPlayerResponse} message SelectPlayerResponse
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    SelectPlayerResponse.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.selectedPlayerName = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.selectedPlayerName != null && message.hasOwnProperty("selectedPlayerName"))
-            object.selectedPlayerName = message.selectedPlayerName;
-        return object;
-    };
-
-    /**
-     * Converts this SelectPlayerResponse to JSON.
-     * @function toJSON
-     * @memberof SelectPlayerResponse
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    SelectPlayerResponse.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return SelectPlayerResponse;
-})();
-
 $root.SelectXValueResponse = (function() {
 
     /**
@@ -2494,7 +2284,6 @@ $root.ClientGameMessage = (function() {
      * @property {IConcede|null} [concede] ClientGameMessage concede
      * @property {IOrderCardsResponse|null} [orderCardsResponse] ClientGameMessage orderCardsResponse
      * @property {ISelectFromResponse|null} [selectFromResponse] ClientGameMessage selectFromResponse
-     * @property {ISelectPlayerResponse|null} [selectPlayerResponse] ClientGameMessage selectPlayerResponse
      * @property {ISelectXValueResponse|null} [selectXValueResponse] ClientGameMessage selectXValueResponse
      */
 
@@ -2586,14 +2375,6 @@ $root.ClientGameMessage = (function() {
     ClientGameMessage.prototype.selectFromResponse = null;
 
     /**
-     * ClientGameMessage selectPlayerResponse.
-     * @member {ISelectPlayerResponse|null|undefined} selectPlayerResponse
-     * @memberof ClientGameMessage
-     * @instance
-     */
-    ClientGameMessage.prototype.selectPlayerResponse = null;
-
-    /**
      * ClientGameMessage selectXValueResponse.
      * @member {ISelectXValueResponse|null|undefined} selectXValueResponse
      * @memberof ClientGameMessage
@@ -2606,12 +2387,12 @@ $root.ClientGameMessage = (function() {
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"mulligan"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectPlayerResponse"|"selectXValueResponse"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"mulligan"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "mulligan", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectPlayerResponse", "selectXValueResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "mulligan", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2657,8 +2438,6 @@ $root.ClientGameMessage = (function() {
             $root.Concede.encode(message.concede, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
         if (message.orderCardsResponse != null && message.hasOwnProperty("orderCardsResponse"))
             $root.OrderCardsResponse.encode(message.orderCardsResponse, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
-        if (message.selectPlayerResponse != null && message.hasOwnProperty("selectPlayerResponse"))
-            $root.SelectPlayerResponse.encode(message.selectPlayerResponse, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
         if (message.selectXValueResponse != null && message.hasOwnProperty("selectXValueResponse"))
             $root.SelectXValueResponse.encode(message.selectXValueResponse, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
         return writer;
@@ -2721,9 +2500,6 @@ $root.ClientGameMessage = (function() {
                 break;
             case 15:
                 message.selectFromResponse = $root.SelectFromResponse.decode(reader, reader.uint32());
-                break;
-            case 22:
-                message.selectPlayerResponse = $root.SelectPlayerResponse.decode(reader, reader.uint32());
                 break;
             case 23:
                 message.selectXValueResponse = $root.SelectXValueResponse.decode(reader, reader.uint32());
@@ -2852,16 +2628,6 @@ $root.ClientGameMessage = (function() {
                     return "selectFromResponse." + error;
             }
         }
-        if (message.selectPlayerResponse != null && message.hasOwnProperty("selectPlayerResponse")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.SelectPlayerResponse.verify(message.selectPlayerResponse);
-                if (error)
-                    return "selectPlayerResponse." + error;
-            }
-        }
         if (message.selectXValueResponse != null && message.hasOwnProperty("selectXValueResponse")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
@@ -2932,11 +2698,6 @@ $root.ClientGameMessage = (function() {
                 throw TypeError(".ClientGameMessage.selectFromResponse: object expected");
             message.selectFromResponse = $root.SelectFromResponse.fromObject(object.selectFromResponse);
         }
-        if (object.selectPlayerResponse != null) {
-            if (typeof object.selectPlayerResponse !== "object")
-                throw TypeError(".ClientGameMessage.selectPlayerResponse: object expected");
-            message.selectPlayerResponse = $root.SelectPlayerResponse.fromObject(object.selectPlayerResponse);
-        }
         if (object.selectXValueResponse != null) {
             if (typeof object.selectXValueResponse !== "object")
                 throw TypeError(".ClientGameMessage.selectXValueResponse: object expected");
@@ -3002,11 +2763,6 @@ $root.ClientGameMessage = (function() {
             object.orderCardsResponse = $root.OrderCardsResponse.toObject(message.orderCardsResponse, options);
             if (options.oneofs)
                 object.payload = "orderCardsResponse";
-        }
-        if (message.selectPlayerResponse != null && message.hasOwnProperty("selectPlayerResponse")) {
-            object.selectPlayerResponse = $root.SelectPlayerResponse.toObject(message.selectPlayerResponse, options);
-            if (options.oneofs)
-                object.payload = "selectPlayerResponse";
         }
         if (message.selectXValueResponse != null && message.hasOwnProperty("selectXValueResponse")) {
             object.selectXValueResponse = $root.SelectXValueResponse.toObject(message.selectXValueResponse, options);
@@ -3827,6 +3583,7 @@ $root.Card = (function() {
      * @property {Array.<IKnowledgeGroup>|null} [knowledgeCost] Card knowledgeCost
      * @property {string|null} [type] Card type
      * @property {Array.<string>|null} [subtypes] Card subtypes
+     * @property {number|null} [health] Card health
      */
 
     /**
@@ -3937,6 +3694,14 @@ $root.Card = (function() {
     Card.prototype.subtypes = $util.emptyArray;
 
     /**
+     * Card health.
+     * @member {number} health
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.health = 0;
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -3986,6 +3751,8 @@ $root.Card = (function() {
         if (message.subtypes != null && message.subtypes.length)
             for (var i = 0; i < message.subtypes.length; ++i)
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.subtypes[i]);
+        if (message.health != null && message.hasOwnProperty("health"))
+            writer.uint32(/* id 12, wireType 0 =*/96).int32(message.health);
         return writer;
     };
 
@@ -4060,6 +3827,9 @@ $root.Card = (function() {
                 if (!(message.subtypes && message.subtypes.length))
                     message.subtypes = [];
                 message.subtypes.push(reader.string());
+                break;
+            case 12:
+                message.health = reader.int32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4149,6 +3919,9 @@ $root.Card = (function() {
                 if (!$util.isString(message.subtypes[i]))
                     return "subtypes: string[] expected";
         }
+        if (message.health != null && message.hasOwnProperty("health"))
+            if (!$util.isInteger(message.health))
+                return "health: integer expected";
         return null;
     };
 
@@ -4212,6 +3985,8 @@ $root.Card = (function() {
             for (var i = 0; i < object.subtypes.length; ++i)
                 message.subtypes[i] = String(object.subtypes[i]);
         }
+        if (object.health != null)
+            message.health = object.health | 0;
         return message;
     };
 
@@ -4242,6 +4017,7 @@ $root.Card = (function() {
             object.description = "";
             object.cost = "";
             object.type = "";
+            object.health = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -4277,6 +4053,8 @@ $root.Card = (function() {
             for (var j = 0; j < message.subtypes.length; ++j)
                 object.subtypes[j] = message.subtypes[j];
         }
+        if (message.health != null && message.hasOwnProperty("health"))
+            object.health = message.health;
         return object;
     };
 
@@ -4312,6 +4090,7 @@ $root.Player = (function() {
      * @property {Array.<IKnowledgeGroup>|null} [knowledgePool] Player knowledgePool
      * @property {number|null} [reflect] Player reflect
      * @property {number|null} [shield] Player shield
+     * @property {number|null} [handSize] Player handSize
      */
 
     /**
@@ -4431,6 +4210,14 @@ $root.Player = (function() {
     Player.prototype.shield = 0;
 
     /**
+     * Player handSize.
+     * @member {number} handSize
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.handSize = 0;
+
+    /**
      * Creates a new Player instance using the specified properties.
      * @function create
      * @memberof Player
@@ -4483,6 +4270,8 @@ $root.Player = (function() {
             writer.uint32(/* id 11, wireType 0 =*/88).int32(message.reflect);
         if (message.shield != null && message.hasOwnProperty("shield"))
             writer.uint32(/* id 12, wireType 0 =*/96).int32(message.shield);
+        if (message.handSize != null && message.hasOwnProperty("handSize"))
+            writer.uint32(/* id 13, wireType 0 =*/104).int32(message.handSize);
         return writer;
     };
 
@@ -4562,6 +4351,9 @@ $root.Player = (function() {
                 break;
             case 12:
                 message.shield = reader.int32();
+                break;
+            case 13:
+                message.handSize = reader.int32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4664,6 +4456,9 @@ $root.Player = (function() {
         if (message.shield != null && message.hasOwnProperty("shield"))
             if (!$util.isInteger(message.shield))
                 return "shield: integer expected";
+        if (message.handSize != null && message.hasOwnProperty("handSize"))
+            if (!$util.isInteger(message.handSize))
+                return "handSize: integer expected";
         return null;
     };
 
@@ -4743,6 +4538,8 @@ $root.Player = (function() {
             message.reflect = object.reflect | 0;
         if (object.shield != null)
             message.shield = object.shield | 0;
+        if (object.handSize != null)
+            message.handSize = object.handSize | 0;
         return message;
     };
 
@@ -4774,6 +4571,7 @@ $root.Player = (function() {
             object.maxEnergy = 0;
             object.reflect = 0;
             object.shield = 0;
+            object.handSize = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -4814,6 +4612,8 @@ $root.Player = (function() {
             object.reflect = message.reflect;
         if (message.shield != null && message.hasOwnProperty("shield"))
             object.shield = message.shield;
+        if (message.handSize != null && message.hasOwnProperty("handSize"))
+            object.handSize = message.handSize;
         return object;
     };
 
@@ -4831,522 +4631,6 @@ $root.Player = (function() {
     return Player;
 })();
 
-$root.Opponent = (function() {
-
-    /**
-     * Properties of an Opponent.
-     * @exports IOpponent
-     * @interface IOpponent
-     * @property {string|null} [id] Opponent id
-     * @property {string|null} [name] Opponent name
-     * @property {number|null} [deckSize] Opponent deckSize
-     * @property {number|null} [energy] Opponent energy
-     * @property {number|null} [maxEnergy] Opponent maxEnergy
-     * @property {number|null} [handSize] Opponent handSize
-     * @property {Array.<ICard>|null} [play] Opponent play
-     * @property {Array.<ICard>|null} [scrapyard] Opponent scrapyard
-     * @property {Array.<ICard>|null} ["void"] Opponent void
-     * @property {Array.<IKnowledgeGroup>|null} [knowledgePool] Opponent knowledgePool
-     * @property {number|null} [reflect] Opponent reflect
-     * @property {number|null} [shield] Opponent shield
-     */
-
-    /**
-     * Constructs a new Opponent.
-     * @exports Opponent
-     * @classdesc Represents an Opponent.
-     * @implements IOpponent
-     * @constructor
-     * @param {IOpponent=} [properties] Properties to set
-     */
-    function Opponent(properties) {
-        this.play = [];
-        this.scrapyard = [];
-        this["void"] = [];
-        this.knowledgePool = [];
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Opponent id.
-     * @member {string} id
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.id = "";
-
-    /**
-     * Opponent name.
-     * @member {string} name
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.name = "";
-
-    /**
-     * Opponent deckSize.
-     * @member {number} deckSize
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.deckSize = 0;
-
-    /**
-     * Opponent energy.
-     * @member {number} energy
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.energy = 0;
-
-    /**
-     * Opponent maxEnergy.
-     * @member {number} maxEnergy
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.maxEnergy = 0;
-
-    /**
-     * Opponent handSize.
-     * @member {number} handSize
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.handSize = 0;
-
-    /**
-     * Opponent play.
-     * @member {Array.<ICard>} play
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.play = $util.emptyArray;
-
-    /**
-     * Opponent scrapyard.
-     * @member {Array.<ICard>} scrapyard
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.scrapyard = $util.emptyArray;
-
-    /**
-     * Opponent void.
-     * @member {Array.<ICard>} void
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype["void"] = $util.emptyArray;
-
-    /**
-     * Opponent knowledgePool.
-     * @member {Array.<IKnowledgeGroup>} knowledgePool
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.knowledgePool = $util.emptyArray;
-
-    /**
-     * Opponent reflect.
-     * @member {number} reflect
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.reflect = 0;
-
-    /**
-     * Opponent shield.
-     * @member {number} shield
-     * @memberof Opponent
-     * @instance
-     */
-    Opponent.prototype.shield = 0;
-
-    /**
-     * Creates a new Opponent instance using the specified properties.
-     * @function create
-     * @memberof Opponent
-     * @static
-     * @param {IOpponent=} [properties] Properties to set
-     * @returns {Opponent} Opponent instance
-     */
-    Opponent.create = function create(properties) {
-        return new Opponent(properties);
-    };
-
-    /**
-     * Encodes the specified Opponent message. Does not implicitly {@link Opponent.verify|verify} messages.
-     * @function encode
-     * @memberof Opponent
-     * @static
-     * @param {IOpponent} message Opponent message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Opponent.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.name != null && message.hasOwnProperty("name"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-        if (message.deckSize != null && message.hasOwnProperty("deckSize"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.deckSize);
-        if (message.energy != null && message.hasOwnProperty("energy"))
-            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.energy);
-        if (message.maxEnergy != null && message.hasOwnProperty("maxEnergy"))
-            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.maxEnergy);
-        if (message.handSize != null && message.hasOwnProperty("handSize"))
-            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.handSize);
-        if (message.play != null && message.play.length)
-            for (var i = 0; i < message.play.length; ++i)
-                $root.Card.encode(message.play[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-        if (message.scrapyard != null && message.scrapyard.length)
-            for (var i = 0; i < message.scrapyard.length; ++i)
-                $root.Card.encode(message.scrapyard[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-        if (message["void"] != null && message["void"].length)
-            for (var i = 0; i < message["void"].length; ++i)
-                $root.Card.encode(message["void"][i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-        if (message.knowledgePool != null && message.knowledgePool.length)
-            for (var i = 0; i < message.knowledgePool.length; ++i)
-                $root.KnowledgeGroup.encode(message.knowledgePool[i], writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            writer.uint32(/* id 11, wireType 0 =*/88).int32(message.reflect);
-        if (message.shield != null && message.hasOwnProperty("shield"))
-            writer.uint32(/* id 12, wireType 0 =*/96).int32(message.shield);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified Opponent message, length delimited. Does not implicitly {@link Opponent.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof Opponent
-     * @static
-     * @param {IOpponent} message Opponent message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Opponent.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes an Opponent message from the specified reader or buffer.
-     * @function decode
-     * @memberof Opponent
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {Opponent} Opponent
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Opponent.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Opponent();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.id = reader.string();
-                break;
-            case 2:
-                message.name = reader.string();
-                break;
-            case 3:
-                message.deckSize = reader.int32();
-                break;
-            case 4:
-                message.energy = reader.int32();
-                break;
-            case 5:
-                message.maxEnergy = reader.int32();
-                break;
-            case 6:
-                message.handSize = reader.int32();
-                break;
-            case 7:
-                if (!(message.play && message.play.length))
-                    message.play = [];
-                message.play.push($root.Card.decode(reader, reader.uint32()));
-                break;
-            case 8:
-                if (!(message.scrapyard && message.scrapyard.length))
-                    message.scrapyard = [];
-                message.scrapyard.push($root.Card.decode(reader, reader.uint32()));
-                break;
-            case 9:
-                if (!(message["void"] && message["void"].length))
-                    message["void"] = [];
-                message["void"].push($root.Card.decode(reader, reader.uint32()));
-                break;
-            case 10:
-                if (!(message.knowledgePool && message.knowledgePool.length))
-                    message.knowledgePool = [];
-                message.knowledgePool.push($root.KnowledgeGroup.decode(reader, reader.uint32()));
-                break;
-            case 11:
-                message.reflect = reader.int32();
-                break;
-            case 12:
-                message.shield = reader.int32();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes an Opponent message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof Opponent
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Opponent} Opponent
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Opponent.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies an Opponent message.
-     * @function verify
-     * @memberof Opponent
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    Opponent.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.name != null && message.hasOwnProperty("name"))
-            if (!$util.isString(message.name))
-                return "name: string expected";
-        if (message.deckSize != null && message.hasOwnProperty("deckSize"))
-            if (!$util.isInteger(message.deckSize))
-                return "deckSize: integer expected";
-        if (message.energy != null && message.hasOwnProperty("energy"))
-            if (!$util.isInteger(message.energy))
-                return "energy: integer expected";
-        if (message.maxEnergy != null && message.hasOwnProperty("maxEnergy"))
-            if (!$util.isInteger(message.maxEnergy))
-                return "maxEnergy: integer expected";
-        if (message.handSize != null && message.hasOwnProperty("handSize"))
-            if (!$util.isInteger(message.handSize))
-                return "handSize: integer expected";
-        if (message.play != null && message.hasOwnProperty("play")) {
-            if (!Array.isArray(message.play))
-                return "play: array expected";
-            for (var i = 0; i < message.play.length; ++i) {
-                var error = $root.Card.verify(message.play[i]);
-                if (error)
-                    return "play." + error;
-            }
-        }
-        if (message.scrapyard != null && message.hasOwnProperty("scrapyard")) {
-            if (!Array.isArray(message.scrapyard))
-                return "scrapyard: array expected";
-            for (var i = 0; i < message.scrapyard.length; ++i) {
-                var error = $root.Card.verify(message.scrapyard[i]);
-                if (error)
-                    return "scrapyard." + error;
-            }
-        }
-        if (message["void"] != null && message.hasOwnProperty("void")) {
-            if (!Array.isArray(message["void"]))
-                return "void: array expected";
-            for (var i = 0; i < message["void"].length; ++i) {
-                var error = $root.Card.verify(message["void"][i]);
-                if (error)
-                    return "void." + error;
-            }
-        }
-        if (message.knowledgePool != null && message.hasOwnProperty("knowledgePool")) {
-            if (!Array.isArray(message.knowledgePool))
-                return "knowledgePool: array expected";
-            for (var i = 0; i < message.knowledgePool.length; ++i) {
-                var error = $root.KnowledgeGroup.verify(message.knowledgePool[i]);
-                if (error)
-                    return "knowledgePool." + error;
-            }
-        }
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            if (!$util.isInteger(message.reflect))
-                return "reflect: integer expected";
-        if (message.shield != null && message.hasOwnProperty("shield"))
-            if (!$util.isInteger(message.shield))
-                return "shield: integer expected";
-        return null;
-    };
-
-    /**
-     * Creates an Opponent message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof Opponent
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Opponent} Opponent
-     */
-    Opponent.fromObject = function fromObject(object) {
-        if (object instanceof $root.Opponent)
-            return object;
-        var message = new $root.Opponent();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.name != null)
-            message.name = String(object.name);
-        if (object.deckSize != null)
-            message.deckSize = object.deckSize | 0;
-        if (object.energy != null)
-            message.energy = object.energy | 0;
-        if (object.maxEnergy != null)
-            message.maxEnergy = object.maxEnergy | 0;
-        if (object.handSize != null)
-            message.handSize = object.handSize | 0;
-        if (object.play) {
-            if (!Array.isArray(object.play))
-                throw TypeError(".Opponent.play: array expected");
-            message.play = [];
-            for (var i = 0; i < object.play.length; ++i) {
-                if (typeof object.play[i] !== "object")
-                    throw TypeError(".Opponent.play: object expected");
-                message.play[i] = $root.Card.fromObject(object.play[i]);
-            }
-        }
-        if (object.scrapyard) {
-            if (!Array.isArray(object.scrapyard))
-                throw TypeError(".Opponent.scrapyard: array expected");
-            message.scrapyard = [];
-            for (var i = 0; i < object.scrapyard.length; ++i) {
-                if (typeof object.scrapyard[i] !== "object")
-                    throw TypeError(".Opponent.scrapyard: object expected");
-                message.scrapyard[i] = $root.Card.fromObject(object.scrapyard[i]);
-            }
-        }
-        if (object["void"]) {
-            if (!Array.isArray(object["void"]))
-                throw TypeError(".Opponent.void: array expected");
-            message["void"] = [];
-            for (var i = 0; i < object["void"].length; ++i) {
-                if (typeof object["void"][i] !== "object")
-                    throw TypeError(".Opponent.void: object expected");
-                message["void"][i] = $root.Card.fromObject(object["void"][i]);
-            }
-        }
-        if (object.knowledgePool) {
-            if (!Array.isArray(object.knowledgePool))
-                throw TypeError(".Opponent.knowledgePool: array expected");
-            message.knowledgePool = [];
-            for (var i = 0; i < object.knowledgePool.length; ++i) {
-                if (typeof object.knowledgePool[i] !== "object")
-                    throw TypeError(".Opponent.knowledgePool: object expected");
-                message.knowledgePool[i] = $root.KnowledgeGroup.fromObject(object.knowledgePool[i]);
-            }
-        }
-        if (object.reflect != null)
-            message.reflect = object.reflect | 0;
-        if (object.shield != null)
-            message.shield = object.shield | 0;
-        return message;
-    };
-
-    /**
-     * Creates a plain object from an Opponent message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof Opponent
-     * @static
-     * @param {Opponent} message Opponent
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Opponent.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.arrays || options.defaults) {
-            object.play = [];
-            object.scrapyard = [];
-            object["void"] = [];
-            object.knowledgePool = [];
-        }
-        if (options.defaults) {
-            object.id = "";
-            object.name = "";
-            object.deckSize = 0;
-            object.energy = 0;
-            object.maxEnergy = 0;
-            object.handSize = 0;
-            object.reflect = 0;
-            object.shield = 0;
-        }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.name != null && message.hasOwnProperty("name"))
-            object.name = message.name;
-        if (message.deckSize != null && message.hasOwnProperty("deckSize"))
-            object.deckSize = message.deckSize;
-        if (message.energy != null && message.hasOwnProperty("energy"))
-            object.energy = message.energy;
-        if (message.maxEnergy != null && message.hasOwnProperty("maxEnergy"))
-            object.maxEnergy = message.maxEnergy;
-        if (message.handSize != null && message.hasOwnProperty("handSize"))
-            object.handSize = message.handSize;
-        if (message.play && message.play.length) {
-            object.play = [];
-            for (var j = 0; j < message.play.length; ++j)
-                object.play[j] = $root.Card.toObject(message.play[j], options);
-        }
-        if (message.scrapyard && message.scrapyard.length) {
-            object.scrapyard = [];
-            for (var j = 0; j < message.scrapyard.length; ++j)
-                object.scrapyard[j] = $root.Card.toObject(message.scrapyard[j], options);
-        }
-        if (message["void"] && message["void"].length) {
-            object["void"] = [];
-            for (var j = 0; j < message["void"].length; ++j)
-                object["void"][j] = $root.Card.toObject(message["void"][j], options);
-        }
-        if (message.knowledgePool && message.knowledgePool.length) {
-            object.knowledgePool = [];
-            for (var j = 0; j < message.knowledgePool.length; ++j)
-                object.knowledgePool[j] = $root.KnowledgeGroup.toObject(message.knowledgePool[j], options);
-        }
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            object.reflect = message.reflect;
-        if (message.shield != null && message.hasOwnProperty("shield"))
-            object.shield = message.shield;
-        return object;
-    };
-
-    /**
-     * Converts this Opponent to JSON.
-     * @function toJSON
-     * @memberof Opponent
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    Opponent.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return Opponent;
-})();
-
 $root.GameState = (function() {
 
     /**
@@ -5355,7 +4639,7 @@ $root.GameState = (function() {
      * @interface IGameState
      * @property {string|null} [id] GameState id
      * @property {IPlayer|null} [player] GameState player
-     * @property {IOpponent|null} [opponent] GameState opponent
+     * @property {IPlayer|null} [opponent] GameState opponent
      * @property {string|null} [turnPlayer] GameState turnPlayer
      * @property {string|null} [activePlayer] GameState activePlayer
      * @property {Array.<ICard>|null} [stack] GameState stack
@@ -5402,7 +4686,7 @@ $root.GameState = (function() {
 
     /**
      * GameState opponent.
-     * @member {IOpponent|null|undefined} opponent
+     * @member {IPlayer|null|undefined} opponent
      * @memberof GameState
      * @instance
      */
@@ -5493,7 +4777,7 @@ $root.GameState = (function() {
         if (message.player != null && message.hasOwnProperty("player"))
             $root.Player.encode(message.player, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.opponent != null && message.hasOwnProperty("opponent"))
-            $root.Opponent.encode(message.opponent, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            $root.Player.encode(message.opponent, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.turnPlayer != null && message.hasOwnProperty("turnPlayer"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.turnPlayer);
         if (message.activePlayer != null && message.hasOwnProperty("activePlayer"))
@@ -5553,7 +4837,7 @@ $root.GameState = (function() {
                 message.player = $root.Player.decode(reader, reader.uint32());
                 break;
             case 3:
-                message.opponent = $root.Opponent.decode(reader, reader.uint32());
+                message.opponent = $root.Player.decode(reader, reader.uint32());
                 break;
             case 4:
                 message.turnPlayer = reader.string();
@@ -5628,7 +4912,7 @@ $root.GameState = (function() {
                 return "player." + error;
         }
         if (message.opponent != null && message.hasOwnProperty("opponent")) {
-            var error = $root.Opponent.verify(message.opponent);
+            var error = $root.Player.verify(message.opponent);
             if (error)
                 return "opponent." + error;
         }
@@ -5705,7 +4989,7 @@ $root.GameState = (function() {
         if (object.opponent != null) {
             if (typeof object.opponent !== "object")
                 throw TypeError(".GameState.opponent: object expected");
-            message.opponent = $root.Opponent.fromObject(object.opponent);
+            message.opponent = $root.Player.fromObject(object.opponent);
         }
         if (object.turnPlayer != null)
             message.turnPlayer = String(object.turnPlayer);
@@ -5803,7 +5087,7 @@ $root.GameState = (function() {
         if (message.player != null && message.hasOwnProperty("player"))
             object.player = $root.Player.toObject(message.player, options);
         if (message.opponent != null && message.hasOwnProperty("opponent"))
-            object.opponent = $root.Opponent.toObject(message.opponent, options);
+            object.opponent = $root.Player.toObject(message.opponent, options);
         if (message.turnPlayer != null && message.hasOwnProperty("turnPlayer"))
             object.turnPlayer = message.turnPlayer;
         if (message.activePlayer != null && message.hasOwnProperty("activePlayer"))
@@ -8131,24 +7415,25 @@ $root.UpdateGameState = (function() {
     return UpdateGameState;
 })();
 
-$root.Loss = (function() {
+$root.GameEnd = (function() {
 
     /**
-     * Properties of a Loss.
-     * @exports ILoss
-     * @interface ILoss
-     * @property {string|null} [GameID] Loss GameID
+     * Properties of a GameEnd.
+     * @exports IGameEnd
+     * @interface IGameEnd
+     * @property {IGameState|null} [game] GameEnd game
+     * @property {boolean|null} [win] GameEnd win
      */
 
     /**
-     * Constructs a new Loss.
-     * @exports Loss
-     * @classdesc Represents a Loss.
-     * @implements ILoss
+     * Constructs a new GameEnd.
+     * @exports GameEnd
+     * @classdesc Represents a GameEnd.
+     * @implements IGameEnd
      * @constructor
-     * @param {ILoss=} [properties] Properties to set
+     * @param {IGameEnd=} [properties] Properties to set
      */
-    function Loss(properties) {
+    function GameEnd(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -8156,75 +7441,88 @@ $root.Loss = (function() {
     }
 
     /**
-     * Loss GameID.
-     * @member {string} GameID
-     * @memberof Loss
+     * GameEnd game.
+     * @member {IGameState|null|undefined} game
+     * @memberof GameEnd
      * @instance
      */
-    Loss.prototype.GameID = "";
+    GameEnd.prototype.game = null;
 
     /**
-     * Creates a new Loss instance using the specified properties.
-     * @function create
-     * @memberof Loss
-     * @static
-     * @param {ILoss=} [properties] Properties to set
-     * @returns {Loss} Loss instance
+     * GameEnd win.
+     * @member {boolean} win
+     * @memberof GameEnd
+     * @instance
      */
-    Loss.create = function create(properties) {
-        return new Loss(properties);
+    GameEnd.prototype.win = false;
+
+    /**
+     * Creates a new GameEnd instance using the specified properties.
+     * @function create
+     * @memberof GameEnd
+     * @static
+     * @param {IGameEnd=} [properties] Properties to set
+     * @returns {GameEnd} GameEnd instance
+     */
+    GameEnd.create = function create(properties) {
+        return new GameEnd(properties);
     };
 
     /**
-     * Encodes the specified Loss message. Does not implicitly {@link Loss.verify|verify} messages.
+     * Encodes the specified GameEnd message. Does not implicitly {@link GameEnd.verify|verify} messages.
      * @function encode
-     * @memberof Loss
+     * @memberof GameEnd
      * @static
-     * @param {ILoss} message Loss message or plain object to encode
+     * @param {IGameEnd} message GameEnd message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Loss.encode = function encode(message, writer) {
+    GameEnd.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.GameID != null && message.hasOwnProperty("GameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.GameID);
+        if (message.game != null && message.hasOwnProperty("game"))
+            $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.win != null && message.hasOwnProperty("win"))
+            writer.uint32(/* id 2, wireType 0 =*/16).bool(message.win);
         return writer;
     };
 
     /**
-     * Encodes the specified Loss message, length delimited. Does not implicitly {@link Loss.verify|verify} messages.
+     * Encodes the specified GameEnd message, length delimited. Does not implicitly {@link GameEnd.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof Loss
+     * @memberof GameEnd
      * @static
-     * @param {ILoss} message Loss message or plain object to encode
+     * @param {IGameEnd} message GameEnd message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Loss.encodeDelimited = function encodeDelimited(message, writer) {
+    GameEnd.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a Loss message from the specified reader or buffer.
+     * Decodes a GameEnd message from the specified reader or buffer.
      * @function decode
-     * @memberof Loss
+     * @memberof GameEnd
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {Loss} Loss
+     * @returns {GameEnd} GameEnd
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Loss.decode = function decode(reader, length) {
+    GameEnd.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Loss();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GameEnd();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.GameID = reader.string();
+                message.game = $root.GameState.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.win = reader.bool();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -8235,274 +7533,101 @@ $root.Loss = (function() {
     };
 
     /**
-     * Decodes a Loss message from the specified reader or buffer, length delimited.
+     * Decodes a GameEnd message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof Loss
+     * @memberof GameEnd
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Loss} Loss
+     * @returns {GameEnd} GameEnd
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Loss.decodeDelimited = function decodeDelimited(reader) {
+    GameEnd.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a Loss message.
+     * Verifies a GameEnd message.
      * @function verify
-     * @memberof Loss
+     * @memberof GameEnd
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Loss.verify = function verify(message) {
+    GameEnd.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.GameID != null && message.hasOwnProperty("GameID"))
-            if (!$util.isString(message.GameID))
-                return "GameID: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a Loss message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof Loss
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Loss} Loss
-     */
-    Loss.fromObject = function fromObject(object) {
-        if (object instanceof $root.Loss)
-            return object;
-        var message = new $root.Loss();
-        if (object.GameID != null)
-            message.GameID = String(object.GameID);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a Loss message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof Loss
-     * @static
-     * @param {Loss} message Loss
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Loss.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.GameID = "";
-        if (message.GameID != null && message.hasOwnProperty("GameID"))
-            object.GameID = message.GameID;
-        return object;
-    };
-
-    /**
-     * Converts this Loss to JSON.
-     * @function toJSON
-     * @memberof Loss
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    Loss.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return Loss;
-})();
-
-$root.Win = (function() {
-
-    /**
-     * Properties of a Win.
-     * @exports IWin
-     * @interface IWin
-     * @property {string|null} [GameID] Win GameID
-     */
-
-    /**
-     * Constructs a new Win.
-     * @exports Win
-     * @classdesc Represents a Win.
-     * @implements IWin
-     * @constructor
-     * @param {IWin=} [properties] Properties to set
-     */
-    function Win(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Win GameID.
-     * @member {string} GameID
-     * @memberof Win
-     * @instance
-     */
-    Win.prototype.GameID = "";
-
-    /**
-     * Creates a new Win instance using the specified properties.
-     * @function create
-     * @memberof Win
-     * @static
-     * @param {IWin=} [properties] Properties to set
-     * @returns {Win} Win instance
-     */
-    Win.create = function create(properties) {
-        return new Win(properties);
-    };
-
-    /**
-     * Encodes the specified Win message. Does not implicitly {@link Win.verify|verify} messages.
-     * @function encode
-     * @memberof Win
-     * @static
-     * @param {IWin} message Win message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Win.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.GameID != null && message.hasOwnProperty("GameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.GameID);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified Win message, length delimited. Does not implicitly {@link Win.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof Win
-     * @static
-     * @param {IWin} message Win message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Win.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a Win message from the specified reader or buffer.
-     * @function decode
-     * @memberof Win
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {Win} Win
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Win.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Win();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.GameID = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
+        if (message.game != null && message.hasOwnProperty("game")) {
+            var error = $root.GameState.verify(message.game);
+            if (error)
+                return "game." + error;
         }
-        return message;
-    };
-
-    /**
-     * Decodes a Win message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof Win
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Win} Win
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Win.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a Win message.
-     * @function verify
-     * @memberof Win
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    Win.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.GameID != null && message.hasOwnProperty("GameID"))
-            if (!$util.isString(message.GameID))
-                return "GameID: string expected";
+        if (message.win != null && message.hasOwnProperty("win"))
+            if (typeof message.win !== "boolean")
+                return "win: boolean expected";
         return null;
     };
 
     /**
-     * Creates a Win message from a plain object. Also converts values to their respective internal types.
+     * Creates a GameEnd message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof Win
+     * @memberof GameEnd
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {Win} Win
+     * @returns {GameEnd} GameEnd
      */
-    Win.fromObject = function fromObject(object) {
-        if (object instanceof $root.Win)
+    GameEnd.fromObject = function fromObject(object) {
+        if (object instanceof $root.GameEnd)
             return object;
-        var message = new $root.Win();
-        if (object.GameID != null)
-            message.GameID = String(object.GameID);
+        var message = new $root.GameEnd();
+        if (object.game != null) {
+            if (typeof object.game !== "object")
+                throw TypeError(".GameEnd.game: object expected");
+            message.game = $root.GameState.fromObject(object.game);
+        }
+        if (object.win != null)
+            message.win = Boolean(object.win);
         return message;
     };
 
     /**
-     * Creates a plain object from a Win message. Also converts values to other types if specified.
+     * Creates a plain object from a GameEnd message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof Win
+     * @memberof GameEnd
      * @static
-     * @param {Win} message Win
+     * @param {GameEnd} message GameEnd
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Win.toObject = function toObject(message, options) {
+    GameEnd.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults)
-            object.GameID = "";
-        if (message.GameID != null && message.hasOwnProperty("GameID"))
-            object.GameID = message.GameID;
+        if (options.defaults) {
+            object.game = null;
+            object.win = false;
+        }
+        if (message.game != null && message.hasOwnProperty("game"))
+            object.game = $root.GameState.toObject(message.game, options);
+        if (message.win != null && message.hasOwnProperty("win"))
+            object.win = message.win;
         return object;
     };
 
     /**
-     * Converts this Win to JSON.
+     * Converts this GameEnd to JSON.
      * @function toJSON
-     * @memberof Win
+     * @memberof GameEnd
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Win.prototype.toJSON = function toJSON() {
+    GameEnd.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return Win;
+    return GameEnd;
 })();
 
 $root.OrderCards = (function() {
@@ -8752,6 +7877,7 @@ $root.SelectFrom = (function() {
      * @property {number|null} [selectionCount] SelectFrom selectionCount
      * @property {Array.<ICard>|null} [candidates] SelectFrom candidates
      * @property {Array.<string>|null} [canSelected] SelectFrom canSelected
+     * @property {Array.<string>|null} [canSelectedPlayers] SelectFrom canSelectedPlayers
      * @property {boolean|null} [upTo] SelectFrom upTo
      */
 
@@ -8766,6 +7892,7 @@ $root.SelectFrom = (function() {
     function SelectFrom(properties) {
         this.candidates = [];
         this.canSelected = [];
+        this.canSelectedPlayers = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -8813,6 +7940,14 @@ $root.SelectFrom = (function() {
     SelectFrom.prototype.canSelected = $util.emptyArray;
 
     /**
+     * SelectFrom canSelectedPlayers.
+     * @member {Array.<string>} canSelectedPlayers
+     * @memberof SelectFrom
+     * @instance
+     */
+    SelectFrom.prototype.canSelectedPlayers = $util.emptyArray;
+
+    /**
      * SelectFrom upTo.
      * @member {boolean} upTo
      * @memberof SelectFrom
@@ -8858,6 +7993,9 @@ $root.SelectFrom = (function() {
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.canSelected[i]);
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             writer.uint32(/* id 6, wireType 0 =*/48).bool(message.upTo);
+        if (message.canSelectedPlayers != null && message.canSelectedPlayers.length)
+            for (var i = 0; i < message.canSelectedPlayers.length; ++i)
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.canSelectedPlayers[i]);
         return writer;
     };
 
@@ -8910,6 +8048,11 @@ $root.SelectFrom = (function() {
                 if (!(message.canSelected && message.canSelected.length))
                     message.canSelected = [];
                 message.canSelected.push(reader.string());
+                break;
+            case 7:
+                if (!(message.canSelectedPlayers && message.canSelectedPlayers.length))
+                    message.canSelectedPlayers = [];
+                message.canSelectedPlayers.push(reader.string());
                 break;
             case 6:
                 message.upTo = reader.bool();
@@ -8986,6 +8129,13 @@ $root.SelectFrom = (function() {
                 if (!$util.isString(message.canSelected[i]))
                     return "canSelected: string[] expected";
         }
+        if (message.canSelectedPlayers != null && message.hasOwnProperty("canSelectedPlayers")) {
+            if (!Array.isArray(message.canSelectedPlayers))
+                return "canSelectedPlayers: array expected";
+            for (var i = 0; i < message.canSelectedPlayers.length; ++i)
+                if (!$util.isString(message.canSelectedPlayers[i]))
+                    return "canSelectedPlayers: string[] expected";
+        }
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             if (typeof message.upTo !== "boolean")
                 return "upTo: boolean expected";
@@ -9058,6 +8208,13 @@ $root.SelectFrom = (function() {
             for (var i = 0; i < object.canSelected.length; ++i)
                 message.canSelected[i] = String(object.canSelected[i]);
         }
+        if (object.canSelectedPlayers) {
+            if (!Array.isArray(object.canSelectedPlayers))
+                throw TypeError(".SelectFrom.canSelectedPlayers: array expected");
+            message.canSelectedPlayers = [];
+            for (var i = 0; i < object.canSelectedPlayers.length; ++i)
+                message.canSelectedPlayers[i] = String(object.canSelectedPlayers[i]);
+        }
         if (object.upTo != null)
             message.upTo = Boolean(object.upTo);
         return message;
@@ -9079,6 +8236,7 @@ $root.SelectFrom = (function() {
         if (options.arrays || options.defaults) {
             object.candidates = [];
             object.canSelected = [];
+            object.canSelectedPlayers = [];
         }
         if (options.defaults) {
             object.messageType = options.enums === String ? "NOTYPE" : 0;
@@ -9104,6 +8262,11 @@ $root.SelectFrom = (function() {
         }
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             object.upTo = message.upTo;
+        if (message.canSelectedPlayers && message.canSelectedPlayers.length) {
+            object.canSelectedPlayers = [];
+            for (var j = 0; j < message.canSelectedPlayers.length; ++j)
+                object.canSelectedPlayers[j] = message.canSelectedPlayers[j];
+        }
         return object;
     };
 
@@ -9336,198 +8499,6 @@ $root.SelectXValue = (function() {
     return SelectXValue;
 })();
 
-$root.SelectPlayer = (function() {
-
-    /**
-     * Properties of a SelectPlayer.
-     * @exports ISelectPlayer
-     * @interface ISelectPlayer
-     * @property {IGameState|null} [game] SelectPlayer game
-     */
-
-    /**
-     * Constructs a new SelectPlayer.
-     * @exports SelectPlayer
-     * @classdesc Represents a SelectPlayer.
-     * @implements ISelectPlayer
-     * @constructor
-     * @param {ISelectPlayer=} [properties] Properties to set
-     */
-    function SelectPlayer(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * SelectPlayer game.
-     * @member {IGameState|null|undefined} game
-     * @memberof SelectPlayer
-     * @instance
-     */
-    SelectPlayer.prototype.game = null;
-
-    /**
-     * Creates a new SelectPlayer instance using the specified properties.
-     * @function create
-     * @memberof SelectPlayer
-     * @static
-     * @param {ISelectPlayer=} [properties] Properties to set
-     * @returns {SelectPlayer} SelectPlayer instance
-     */
-    SelectPlayer.create = function create(properties) {
-        return new SelectPlayer(properties);
-    };
-
-    /**
-     * Encodes the specified SelectPlayer message. Does not implicitly {@link SelectPlayer.verify|verify} messages.
-     * @function encode
-     * @memberof SelectPlayer
-     * @static
-     * @param {ISelectPlayer} message SelectPlayer message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    SelectPlayer.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
-            $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        return writer;
-    };
-
-    /**
-     * Encodes the specified SelectPlayer message, length delimited. Does not implicitly {@link SelectPlayer.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof SelectPlayer
-     * @static
-     * @param {ISelectPlayer} message SelectPlayer message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    SelectPlayer.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a SelectPlayer message from the specified reader or buffer.
-     * @function decode
-     * @memberof SelectPlayer
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {SelectPlayer} SelectPlayer
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    SelectPlayer.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectPlayer();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.game = $root.GameState.decode(reader, reader.uint32());
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a SelectPlayer message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof SelectPlayer
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {SelectPlayer} SelectPlayer
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    SelectPlayer.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a SelectPlayer message.
-     * @function verify
-     * @memberof SelectPlayer
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    SelectPlayer.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.game != null && message.hasOwnProperty("game")) {
-            var error = $root.GameState.verify(message.game);
-            if (error)
-                return "game." + error;
-        }
-        return null;
-    };
-
-    /**
-     * Creates a SelectPlayer message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof SelectPlayer
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {SelectPlayer} SelectPlayer
-     */
-    SelectPlayer.fromObject = function fromObject(object) {
-        if (object instanceof $root.SelectPlayer)
-            return object;
-        var message = new $root.SelectPlayer();
-        if (object.game != null) {
-            if (typeof object.game !== "object")
-                throw TypeError(".SelectPlayer.game: object expected");
-            message.game = $root.GameState.fromObject(object.game);
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a SelectPlayer message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof SelectPlayer
-     * @static
-     * @param {SelectPlayer} message SelectPlayer
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    SelectPlayer.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.game = null;
-        if (message.game != null && message.hasOwnProperty("game"))
-            object.game = $root.GameState.toObject(message.game, options);
-        return object;
-    };
-
-    /**
-     * Converts this SelectPlayer to JSON.
-     * @function toJSON
-     * @memberof SelectPlayer
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    SelectPlayer.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return SelectPlayer;
-})();
-
 $root.ServerGameMessage = (function() {
 
     /**
@@ -9535,11 +8506,9 @@ $root.ServerGameMessage = (function() {
      * @exports IServerGameMessage
      * @interface IServerGameMessage
      * @property {IUpdateGameState|null} [updateGameState] ServerGameMessage updateGameState
-     * @property {ILoss|null} [loss] ServerGameMessage loss
-     * @property {IWin|null} [win] ServerGameMessage win
+     * @property {IGameEnd|null} [gameEnd] ServerGameMessage gameEnd
      * @property {IOrderCards|null} [orderCards] ServerGameMessage orderCards
      * @property {ISelectFrom|null} [selectFrom] ServerGameMessage selectFrom
-     * @property {ISelectPlayer|null} [selectPlayer] ServerGameMessage selectPlayer
      * @property {ISelectXValue|null} [selectXValue] ServerGameMessage selectXValue
      */
 
@@ -9567,20 +8536,12 @@ $root.ServerGameMessage = (function() {
     ServerGameMessage.prototype.updateGameState = null;
 
     /**
-     * ServerGameMessage loss.
-     * @member {ILoss|null|undefined} loss
+     * ServerGameMessage gameEnd.
+     * @member {IGameEnd|null|undefined} gameEnd
      * @memberof ServerGameMessage
      * @instance
      */
-    ServerGameMessage.prototype.loss = null;
-
-    /**
-     * ServerGameMessage win.
-     * @member {IWin|null|undefined} win
-     * @memberof ServerGameMessage
-     * @instance
-     */
-    ServerGameMessage.prototype.win = null;
+    ServerGameMessage.prototype.gameEnd = null;
 
     /**
      * ServerGameMessage orderCards.
@@ -9599,14 +8560,6 @@ $root.ServerGameMessage = (function() {
     ServerGameMessage.prototype.selectFrom = null;
 
     /**
-     * ServerGameMessage selectPlayer.
-     * @member {ISelectPlayer|null|undefined} selectPlayer
-     * @memberof ServerGameMessage
-     * @instance
-     */
-    ServerGameMessage.prototype.selectPlayer = null;
-
-    /**
      * ServerGameMessage selectXValue.
      * @member {ISelectXValue|null|undefined} selectXValue
      * @memberof ServerGameMessage
@@ -9619,12 +8572,12 @@ $root.ServerGameMessage = (function() {
 
     /**
      * ServerGameMessage payload.
-     * @member {"updateGameState"|"loss"|"win"|"orderCards"|"selectFrom"|"selectPlayer"|"selectXValue"|undefined} payload
+     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|undefined} payload
      * @memberof ServerGameMessage
      * @instance
      */
     Object.defineProperty(ServerGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "loss", "win", "orderCards", "selectFrom", "selectPlayer", "selectXValue"]),
+        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -9654,16 +8607,12 @@ $root.ServerGameMessage = (function() {
             writer = $Writer.create();
         if (message.updateGameState != null && message.hasOwnProperty("updateGameState"))
             $root.UpdateGameState.encode(message.updateGameState, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-        if (message.loss != null && message.hasOwnProperty("loss"))
-            $root.Loss.encode(message.loss, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
-        if (message.win != null && message.hasOwnProperty("win"))
-            $root.Win.encode(message.win, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+        if (message.gameEnd != null && message.hasOwnProperty("gameEnd"))
+            $root.GameEnd.encode(message.gameEnd, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
         if (message.orderCards != null && message.hasOwnProperty("orderCards"))
             $root.OrderCards.encode(message.orderCards, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
         if (message.selectFrom != null && message.hasOwnProperty("selectFrom"))
             $root.SelectFrom.encode(message.selectFrom, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
-        if (message.selectPlayer != null && message.hasOwnProperty("selectPlayer"))
-            $root.SelectPlayer.encode(message.selectPlayer, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
         if (message.selectXValue != null && message.hasOwnProperty("selectXValue"))
             $root.SelectXValue.encode(message.selectXValue, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
         return writer;
@@ -9704,19 +8653,13 @@ $root.ServerGameMessage = (function() {
                 message.updateGameState = $root.UpdateGameState.decode(reader, reader.uint32());
                 break;
             case 10:
-                message.loss = $root.Loss.decode(reader, reader.uint32());
-                break;
-            case 11:
-                message.win = $root.Win.decode(reader, reader.uint32());
+                message.gameEnd = $root.GameEnd.decode(reader, reader.uint32());
                 break;
             case 12:
                 message.orderCards = $root.OrderCards.decode(reader, reader.uint32());
                 break;
             case 13:
                 message.selectFrom = $root.SelectFrom.decode(reader, reader.uint32());
-                break;
-            case 18:
-                message.selectPlayer = $root.SelectPlayer.decode(reader, reader.uint32());
                 break;
             case 19:
                 message.selectXValue = $root.SelectXValue.decode(reader, reader.uint32());
@@ -9765,24 +8708,14 @@ $root.ServerGameMessage = (function() {
                     return "updateGameState." + error;
             }
         }
-        if (message.loss != null && message.hasOwnProperty("loss")) {
+        if (message.gameEnd != null && message.hasOwnProperty("gameEnd")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
             properties.payload = 1;
             {
-                var error = $root.Loss.verify(message.loss);
+                var error = $root.GameEnd.verify(message.gameEnd);
                 if (error)
-                    return "loss." + error;
-            }
-        }
-        if (message.win != null && message.hasOwnProperty("win")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.Win.verify(message.win);
-                if (error)
-                    return "win." + error;
+                    return "gameEnd." + error;
             }
         }
         if (message.orderCards != null && message.hasOwnProperty("orderCards")) {
@@ -9803,16 +8736,6 @@ $root.ServerGameMessage = (function() {
                 var error = $root.SelectFrom.verify(message.selectFrom);
                 if (error)
                     return "selectFrom." + error;
-            }
-        }
-        if (message.selectPlayer != null && message.hasOwnProperty("selectPlayer")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.SelectPlayer.verify(message.selectPlayer);
-                if (error)
-                    return "selectPlayer." + error;
             }
         }
         if (message.selectXValue != null && message.hasOwnProperty("selectXValue")) {
@@ -9845,15 +8768,10 @@ $root.ServerGameMessage = (function() {
                 throw TypeError(".ServerGameMessage.updateGameState: object expected");
             message.updateGameState = $root.UpdateGameState.fromObject(object.updateGameState);
         }
-        if (object.loss != null) {
-            if (typeof object.loss !== "object")
-                throw TypeError(".ServerGameMessage.loss: object expected");
-            message.loss = $root.Loss.fromObject(object.loss);
-        }
-        if (object.win != null) {
-            if (typeof object.win !== "object")
-                throw TypeError(".ServerGameMessage.win: object expected");
-            message.win = $root.Win.fromObject(object.win);
+        if (object.gameEnd != null) {
+            if (typeof object.gameEnd !== "object")
+                throw TypeError(".ServerGameMessage.gameEnd: object expected");
+            message.gameEnd = $root.GameEnd.fromObject(object.gameEnd);
         }
         if (object.orderCards != null) {
             if (typeof object.orderCards !== "object")
@@ -9864,11 +8782,6 @@ $root.ServerGameMessage = (function() {
             if (typeof object.selectFrom !== "object")
                 throw TypeError(".ServerGameMessage.selectFrom: object expected");
             message.selectFrom = $root.SelectFrom.fromObject(object.selectFrom);
-        }
-        if (object.selectPlayer != null) {
-            if (typeof object.selectPlayer !== "object")
-                throw TypeError(".ServerGameMessage.selectPlayer: object expected");
-            message.selectPlayer = $root.SelectPlayer.fromObject(object.selectPlayer);
         }
         if (object.selectXValue != null) {
             if (typeof object.selectXValue !== "object")
@@ -9896,15 +8809,10 @@ $root.ServerGameMessage = (function() {
             if (options.oneofs)
                 object.payload = "updateGameState";
         }
-        if (message.loss != null && message.hasOwnProperty("loss")) {
-            object.loss = $root.Loss.toObject(message.loss, options);
+        if (message.gameEnd != null && message.hasOwnProperty("gameEnd")) {
+            object.gameEnd = $root.GameEnd.toObject(message.gameEnd, options);
             if (options.oneofs)
-                object.payload = "loss";
-        }
-        if (message.win != null && message.hasOwnProperty("win")) {
-            object.win = $root.Win.toObject(message.win, options);
-            if (options.oneofs)
-                object.payload = "win";
+                object.payload = "gameEnd";
         }
         if (message.orderCards != null && message.hasOwnProperty("orderCards")) {
             object.orderCards = $root.OrderCards.toObject(message.orderCards, options);
@@ -9915,11 +8823,6 @@ $root.ServerGameMessage = (function() {
             object.selectFrom = $root.SelectFrom.toObject(message.selectFrom, options);
             if (options.oneofs)
                 object.payload = "selectFrom";
-        }
-        if (message.selectPlayer != null && message.hasOwnProperty("selectPlayer")) {
-            object.selectPlayer = $root.SelectPlayer.toObject(message.selectPlayer, options);
-            if (options.oneofs)
-                object.payload = "selectPlayer";
         }
         if (message.selectXValue != null && message.hasOwnProperty("selectXValue")) {
             object.selectXValue = $root.SelectXValue.toObject(message.selectXValue, options);
@@ -9949,7 +8852,7 @@ $root.LoginResponse = (function() {
      * Properties of a LoginResponse.
      * @exports ILoginResponse
      * @interface ILoginResponse
-     * @property {Array.<string>|null} [gameIdList] LoginResponse gameIdList
+     * @property {string|null} [gameId] LoginResponse gameId
      */
 
     /**
@@ -9961,7 +8864,6 @@ $root.LoginResponse = (function() {
      * @param {ILoginResponse=} [properties] Properties to set
      */
     function LoginResponse(properties) {
-        this.gameIdList = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -9969,12 +8871,12 @@ $root.LoginResponse = (function() {
     }
 
     /**
-     * LoginResponse gameIdList.
-     * @member {Array.<string>} gameIdList
+     * LoginResponse gameId.
+     * @member {string} gameId
      * @memberof LoginResponse
      * @instance
      */
-    LoginResponse.prototype.gameIdList = $util.emptyArray;
+    LoginResponse.prototype.gameId = "";
 
     /**
      * Creates a new LoginResponse instance using the specified properties.
@@ -10000,9 +8902,8 @@ $root.LoginResponse = (function() {
     LoginResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameIdList != null && message.gameIdList.length)
-            for (var i = 0; i < message.gameIdList.length; ++i)
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameIdList[i]);
+        if (message.gameId != null && message.hasOwnProperty("gameId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameId);
         return writer;
     };
 
@@ -10038,9 +8939,7 @@ $root.LoginResponse = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                if (!(message.gameIdList && message.gameIdList.length))
-                    message.gameIdList = [];
-                message.gameIdList.push(reader.string());
+                message.gameId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -10077,13 +8976,9 @@ $root.LoginResponse = (function() {
     LoginResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameIdList != null && message.hasOwnProperty("gameIdList")) {
-            if (!Array.isArray(message.gameIdList))
-                return "gameIdList: array expected";
-            for (var i = 0; i < message.gameIdList.length; ++i)
-                if (!$util.isString(message.gameIdList[i]))
-                    return "gameIdList: string[] expected";
-        }
+        if (message.gameId != null && message.hasOwnProperty("gameId"))
+            if (!$util.isString(message.gameId))
+                return "gameId: string expected";
         return null;
     };
 
@@ -10099,13 +8994,8 @@ $root.LoginResponse = (function() {
         if (object instanceof $root.LoginResponse)
             return object;
         var message = new $root.LoginResponse();
-        if (object.gameIdList) {
-            if (!Array.isArray(object.gameIdList))
-                throw TypeError(".LoginResponse.gameIdList: array expected");
-            message.gameIdList = [];
-            for (var i = 0; i < object.gameIdList.length; ++i)
-                message.gameIdList[i] = String(object.gameIdList[i]);
-        }
+        if (object.gameId != null)
+            message.gameId = String(object.gameId);
         return message;
     };
 
@@ -10122,13 +9012,10 @@ $root.LoginResponse = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
-            object.gameIdList = [];
-        if (message.gameIdList && message.gameIdList.length) {
-            object.gameIdList = [];
-            for (var j = 0; j < message.gameIdList.length; ++j)
-                object.gameIdList[j] = message.gameIdList[j];
-        }
+        if (options.defaults)
+            object.gameId = "";
+        if (message.gameId != null && message.hasOwnProperty("gameId"))
+            object.gameId = message.gameId;
         return object;
     };
 

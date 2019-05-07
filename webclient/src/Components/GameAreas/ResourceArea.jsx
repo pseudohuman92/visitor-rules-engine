@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { knowledgeMap } from "../../Constants/Constants";
+import { knowledgeMap } from "../Constants/Constants";
 
 import "../../css/ResourceArea.css";
 
 class ResourceArea extends Component {
-  
-
   render() {
     const {
       energy,

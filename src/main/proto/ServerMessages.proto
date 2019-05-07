@@ -6,7 +6,7 @@ option java_package = "com.visitor.protocol";
  * Messages from server to client.
  */
 message LoginResponse {
-    repeated string gameIdList = 1;
+    string gameId = 1;
 }
 
 message RegisterUserResponse {

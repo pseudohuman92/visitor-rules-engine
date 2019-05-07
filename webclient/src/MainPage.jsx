@@ -13,15 +13,7 @@ export default class MainPage extends Component {
 
     this.state = { value: 0 };
   }
-
-  Signin = event => {
-    this.setState({ value: 1 });
-  };
-
-  Signup = event => {
-    this.setState({ value: 2 });
-  };
-
+  
   render() {
     const { value } = this.state;
 
@@ -33,10 +25,16 @@ export default class MainPage extends Component {
               <Typography component="h1" variant="h1">
                 Visitor: The Card Game
               </Typography>
-              <Button variant="contained" onClick={this.Signin}>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 1 })}
+              >
                 Sign In
               </Button>
-              <Button variant="contained" onClick={this.Signup}>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 2 })}
+              >
                 Sign Up
               </Button>
             </Paper>

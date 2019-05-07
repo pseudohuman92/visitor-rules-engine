@@ -10,7 +10,7 @@ import {
   getIconColor,
   toKnowledgeString,
   toIconString
-} from "../../Constants/Constants";
+} from "../Constants/Constants";
 import Fonts from "../Fonts/Fonts";
 import "../../css/Card.css";
 import "../../css/Utils.css";

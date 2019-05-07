@@ -8,10 +8,12 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
+import {connect} from "react-redux";
 
 import { withFirebase } from "../Firebase";
 import Profile from "../../Profile";
 import PasswordReset from "./PasswordReset";
+import { mapDispatchToProps } from "../Redux/Store";
 
 class SignIn extends Component {
   constructor(props) {
@@ -35,6 +37,9 @@ class SignIn extends Component {
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
+        // Get data from db and put it to the store
+        let username =  "Player-" + Math.floor(Math.random() * 10000);
+        this.props.updateState({ username: username });
         this.setState({ value: 1 });
       })
       .catch(error => {
@@ -42,10 +47,6 @@ class SignIn extends Component {
       });
 
     event.preventDefault();
-  };
-
-  forgotPassword = event => {
-    this.setState({ value: 2 });
   };
 
   render() {
@@ -93,7 +94,12 @@ class SignIn extends Component {
               >
                 Sign in
               </Button>
-              <Button color="primary" onClick={this.forgotPassword}>Forgot password?</Button>
+              <Button
+                color="primary"
+                onClick={event => this.setState({ value: 2 })}
+              >
+                Forgot password?
+              </Button>
               {error && <p>{error.message}</p>}
             </Paper>
           </Center>
@@ -105,4 +111,4 @@ class SignIn extends Component {
   }
 }
 
-export default withFirebase(SignIn);
+export default connect(null, mapDispatchToProps)(withFirebase(SignIn));

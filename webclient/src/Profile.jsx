@@ -11,14 +11,14 @@ import { connect } from "react-redux";
 import PlayArea from "./Components/GameAreas/PlayArea";
 import DeckBuilder from "./DeckBuilder";
 import OpenPacks from "./OpenPacks";
-import { toKnowledgeCost } from "./Constants/Constants";
-import { initialize } from "./Redux/Actions";
+import { toKnowledgeCost } from "./Components/Constants/Constants";
+import { mapDispatchToProps } from "./Components/Redux/Store";
+import ServerMessageHandler from "./Components/MessageHandlers/ServerMessageHandler";
+import { withHandlers } from "./Components/MessageHandlers/HandlerContext";
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addCollection: collection => dispatch(initialize(collection))
-  };
-}
+const mapStateToProps = state => {
+  return { username: state.username };
+};
 
 class Profile extends Component {
   constructor(props) {
@@ -51,11 +51,17 @@ class Profile extends Component {
         });
       })
       .then(() => {
-        this.props.addCollection({
+        this.props.updateState({
           collection: result.map(c => ({ count: 3, card: c })),
           fullCollection: result.map(c => ({ count: 3, card: c }))
         });
       });
+  }
+
+  play = event => {
+    const {username, updateHandlers, updateExtendedGameState} = this.props;
+    updateHandlers({serverMessage : new ServerMessageHandler(username, updateHandlers, updateExtendedGameState)});
+    this.setState({ value: 1 });
   }
 
   render() {
@@ -70,7 +76,7 @@ class Profile extends Component {
               </Typography>
               <Button
                 variant="contained"
-                onClick={event => this.setState({ value: 1 })}
+                onClick={this.play}
               >
                 Play
               </Button>
@@ -100,6 +106,6 @@ class Profile extends Component {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(DragDropContext(MultiBackend(HTML5toTouch))(Profile));
+)(DragDropContext(MultiBackend(HTML5toTouch))(withHandlers (Profile)));
