@@ -25,7 +25,7 @@
         "react-center": "^1.1.1",
         "react-file-reader": "^1.1.4",
         "react-google-font-loader": "^1.0.5",
-        "firebase": "^5.10.1",
+        "firebase": "^6.0.1",
         "@firebase/app-types":"^0.3.10",
         "@firebase/util":"^0.2.14",
         "react-visibility-sensor":"^5.0.2",
