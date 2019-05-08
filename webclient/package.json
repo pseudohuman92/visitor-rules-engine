@@ -26,7 +26,7 @@
         "react-file-reader": "^1.1.4",
         "react-google-font-loader": "^1.0.5",
         "firebase": "^5.10.1",
-        "@firebase/app-types":"^0.3.10",
+        "@firebase/app-types":"^0.4.0",
         "@firebase/util":"^0.2.14",
         "react-visibility-sensor":"^5.0.2",
         "redux":"^4.0.1",
