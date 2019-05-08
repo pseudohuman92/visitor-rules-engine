@@ -13,10 +13,10 @@ import Altar from "./Altar";
 import ResourceArea from "./ResourceArea";
 import StateDisplay from "./StateDisplay";
 
-import ChooseDialog from "../Dialogs/ChooseDialog.js";
-import LoadingDialog from "../Dialogs/LoadingDialog.js";
-import WinLoseDialog from "../Dialogs/WinLoseDialog.js";
-import SelectXDialog from "../Dialogs/SelectXDialog.js";
+import ChooseDialog from "../Dialogs/ChooseDialog";
+import LoadingDialog from "../Dialogs/LoadingDialog";
+import WinLoseDialog from "../Dialogs/WinLoseDialog";
+import SelectXDialog from "../Dialogs/SelectXDialog";
 import { GamePhases } from "../Constants/Constants";
 import { debug } from "../../Utils.js";
 import "../../css/App.css";
@@ -117,44 +117,13 @@ class PlayArea extends Component {
     const {
       game,
       phase,
-      dialog,
       upTo,
       selectedCards,
       selectableCards,
-      selectCountMax,
-      gameInitialized,
-      maxXValue,
       autoPass,
       targets,
-      candidateCards
     } = this.props;
 
-    const isSelectFromDialogPhase =
-      phase === GamePhases.SELECT_FROM_LIST ||
-      phase === GamePhases.SELECT_FROM_SCRAPYARD ||
-      phase === GamePhases.SELECT_FROM_VOID;
-
-    const gameOver = phase === GamePhases.GAME_END;
-    const isWin = this.props.win;
-
-    const chooseDialog = (
-      <ChooseDialog
-        title={dialog.title}
-        cards={candidateCards}
-        open={dialog.open}
-        upTo={upTo}
-        selectedCards={selectedCards}
-        selectableCards={selectableCards}
-        isSelectPhase={isSelectFromDialogPhase}
-        onClose={event => {
-          this.setState({ dialog: { ...dialog, open: false } });
-        }}
-      />
-    );
-
-    const selectXDialogOpen = phase === GamePhases.SELECT_X_VALUE;
-
-    const amActive = game.activePlayer === game.player.name;
 
     //Determine which message to display here
     let instMessage = "FLALALALLA";
@@ -188,11 +157,10 @@ class PlayArea extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <WinLoseDialog open={gameOver} win={isWin} />
-          {<LoadingDialog open={!gameInitialized} />}
-          <SelectXDialog open={selectXDialogOpen} maxValue={maxXValue} />
-          {/*<InfoEntryDialog open={true} onSubmit={this.updateInfoUpdate} />*/}
-          {chooseDialog}
+          <WinLoseDialog />
+          <LoadingDialog />
+          <SelectXDialog />
+          <ChooseDialog/>
           <Grid
             container
             spacing={24}

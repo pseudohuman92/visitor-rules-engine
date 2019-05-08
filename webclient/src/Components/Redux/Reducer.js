@@ -1,4 +1,4 @@
-import { UPDATE_STATE, UPDATE_GAME_STATE, UPDATE_EXTENDED_GAME_STATE, UPDATE_HANDLERS } from "./Actions";
+import { UPDATE_STATE, UPDATE_GAME_STATE, UPDATE_EXTENDED_GAME_STATE } from "./Actions";
 import { initialState } from "../Constants/Constants";
 
 function rootReducer(state = initialState, action) {

@@ -7,7 +7,8 @@ import Textfit from "react-textfit";
 
 import proto from "../../protojs/compiled.js";
 
-import { GamePhases, knowledgeMap } from "../Constants/Constants";
+import { GamePhases, knowledgeMap, IsSelectCardPhase } from "../Constants/Constants";
+import {withHandlers} from "../MessageHandlers/HandlerContext";
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
 
@@ -131,7 +132,7 @@ export class PlayerDisplay extends React.Component {
 
 export class MessageDisplay extends React.Component {
   render() {
-    const { phase, upTo, autoPass } = this.props;
+    const { phase, upTo, autoPass, gameHandler } = this.props;
     const gamePhase = this.props.game.phase;
     const gamePhaseStr = {
       0: "NOPHASE",
@@ -179,18 +180,18 @@ export class MessageDisplay extends React.Component {
     );
 
     let buttonMenu = <div/>;
-    /*
+    
     if (
       phase === GamePhases.NOT_STARTED ||
       gamePhase === proto.Phase.MULLIGAN
     ) {
-      buttonMenu = (
+      buttonMenu = (gameHandler &&
         <Grid container spacing={0} style={{ height: "100%" }}>
           <Grid item xs={12} style={{ height: "50%" }}>
             <Button
               color="secondary"
               variant="contained"
-              onClick={Mulligan}
+              onClick={gameHandler.Mulligan}
               disabled={!amActive}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
             >
@@ -201,7 +202,7 @@ export class MessageDisplay extends React.Component {
             <Button
               color="primary"
               variant="contained"
-              onClick={Keep}
+              onClick={gameHandler.Keep}
               disabled={!amActive}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
             >
@@ -211,12 +212,12 @@ export class MessageDisplay extends React.Component {
         </Grid>
       );
     } else if (IsSelectCardPhase(phase)) {
-      buttonMenu = (
+      buttonMenu = (gameHandler &&
         <Grid container spacing={0} style={{ height: "100%" }}>
           <Grid item xs={12} style={{ height: "50%" }}>
             {" "}
             {
-              <Button color="secondary" variant="contained" onClick={Concede}>
+              <Button color="secondary" variant="contained" onClick={gameHandler.Concede}>
                 Concede{" "}
               </Button>
             }{" "}
@@ -226,7 +227,7 @@ export class MessageDisplay extends React.Component {
               color="primary"
               variant="contained"
               disabled={!upTo}
-              onClick={SelectDone}
+              onClick={gameHandler.SelectDone}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
             >
               Done{" "}
@@ -235,12 +236,12 @@ export class MessageDisplay extends React.Component {
         </Grid>
       );
     } else {
-      buttonMenu = (
+      buttonMenu = (gameHandler &&
         <Grid container spacing={0} style={{ height: "100%" }}>
           <Grid item xs={12} style={{ height: "50%" }}>
             {" "}
             {
-              <Button color="secondary" variant="contained" onClick={Concede}>
+              <Button color="secondary" variant="contained" onClick={gameHandler.Concede}>
                 Concede{" "}
               </Button>
             }{" "}
@@ -250,7 +251,7 @@ export class MessageDisplay extends React.Component {
               color="primary"
               variant="contained"
               disabled={!amActive || autoPass}
-              onClick={Pass}
+              onClick={gameHandler.Pass}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
             >
               Pass{" "}
@@ -258,7 +259,7 @@ export class MessageDisplay extends React.Component {
           </Grid>{" "}
         </Grid>
       );
-    }*/
+    }
 
     return (
       <Paper className="message-display">
@@ -269,7 +270,7 @@ export class MessageDisplay extends React.Component {
           </Grid>{" "}
           <Grid item xs={12} style={{ height: "40%" }}>
             {" "}
-            {buttonMenu}{" "}
+            {gameHandler && buttonMenu}{" "}
           </Grid>{" "}
         </Grid>{" "}
       </Paper>
@@ -277,7 +278,7 @@ export class MessageDisplay extends React.Component {
   }
 }
 
-export default class StateDisplay extends React.Component {
+class StateDisplay extends React.Component {
   render() {
     const gary = this.props.game.opponent;
     const me = this.props.game.player;
@@ -319,3 +320,5 @@ export default class StateDisplay extends React.Component {
     );
   }
 }
+
+export default withHandlers(StateDisplay);

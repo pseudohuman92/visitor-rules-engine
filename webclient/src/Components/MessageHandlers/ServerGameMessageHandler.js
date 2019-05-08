@@ -2,14 +2,12 @@ import { GameProtoSocket } from "../../protojs/ProtoSocket";
 import { GamePhases, toGamePhase, toSelectFromType } from "../Constants/Constants";
 import { GetGameURL } from "../../Utils";
 
-const proto = require("../../protojs/compiled.js");
-
 export default class ServerGameMessageHandler {
   constructor(username, gameId, updateExtendedGameState) {
     this.username = username;
-    this.protoSocket = new GameProtoSocket(GetGameURL(username, gameId), this.handleMsg);
     this.updateExtendedGameState = updateExtendedGameState;
     this.gameId = gameId;
+    this.protoSocket = new GameProtoSocket(GetGameURL(username, gameId), this.handleMsg);
   }
 
   //This is a message handler for ServerGameMessage messages
@@ -43,6 +41,8 @@ export default class ServerGameMessageHandler {
         break;
       case "SelectXValue":
         newState["maxXValue"] = params.maxXValue;
+        break;
+      default:
         break;
     }
     newState["game"] = params.game;

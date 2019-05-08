@@ -6,7 +6,7 @@ import CardDisplay from "./CardDisplay";
 import { ItemTypes } from "../Constants/Constants";
 import { cardSource, cardTarget } from "./PlayingCardDnd";
 
-import proto, { ClientGameMessage } from "../../protojs/compiled.js";
+import proto from "../../protojs/compiled.js";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 
@@ -23,9 +23,6 @@ const mapStateToProps = state => {
 };
 
 export class PlayingCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   onMouseEnter = event => {
     this.props.updateExtendedGameState({ targets: this.props.targets });

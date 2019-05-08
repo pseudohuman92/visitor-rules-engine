@@ -13,15 +13,14 @@ export default class ServerMessageHandler {
   }
   
   handleMsg = (msgType, params) => {
-    const { username } = this.username;
     debug("handleMsg is called");
     if (msgType === "LoginResponse") {
       if (params.gameId !== "") {
         this.gameId = params.gameId;
         this.updateHandlers({
           gameMessage: new ServerGameMessageHandler(
-            username,
-            params.gameId,
+            this.username,
+            this.gameId,
             this.updateExtendedGameState
           )
         });
@@ -37,8 +36,8 @@ export default class ServerMessageHandler {
       });
       this.updateHandlers({
         gameMessage: new ServerGameMessageHandler(
-          username,
-          params.gameId,
+          this.username,
+          this.gameId,
           this.updateExtendedGameState
         )
       });

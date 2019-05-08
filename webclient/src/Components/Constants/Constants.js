@@ -183,7 +183,6 @@ const emptyGameState = {
   phase: GamePhases.NOT_STARTED,
   gameInitialized: false,
   dialog: { title: "", open: false },
-  waiting: false,
   selectedCards: [],
   candidateCards: [],
   selectableCards: [],
@@ -235,7 +234,10 @@ export function toGamePhase(msgType, selectType) {
           return GamePhases.SELECT_FROM_VOID;
         case proto.SelectFromType.STACK:
           return GamePhases.SELECT_FROM_STACK;
+        default:
+          break;
       }
+      break;
     case "UpdateGameState":
       return GamePhases.UPDATE_GAME;
     case "GameEnd":
@@ -244,6 +246,8 @@ export function toGamePhase(msgType, selectType) {
       return GamePhases.ORDER_CARDS;
     case "SelectXValue":
       return GamePhases.SELECT_X_VALUE;
+    default:
+      return GamePhases.NOT_STARTED;
   }
 }
 
@@ -261,5 +265,7 @@ export function toSelectFromType(phase) {
       return proto.SelectFromType.VOID;
     case GamePhases.SELECT_FROM_STACK:
       return proto.SelectFromType.STACK;
+    default:
+      return proto.SelectFromType.NONE;
   }
 }
