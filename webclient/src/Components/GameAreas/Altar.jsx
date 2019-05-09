@@ -18,7 +18,10 @@ const altarTarget = {
 };
 
 const mapStateToProps = state => {
-  return { phase: state.extendedGameState.phase, game: state.extendedGameState.game };
+  return {
+    phase: state.extendedGameState.phase,
+    game: state.extendedGameState.game
+  };
 };
 
 class Altar extends Component {
@@ -31,16 +34,14 @@ class Altar extends Component {
 
     const style = {};
     if (hasStudyable) {
-      style.backgroundColor = "green";
-      style.height = "100%";
+      style.backgroundColor = "#adea99";
     } else {
       style.backgroundColor = "red";
-      style.height = "20%";
     }
 
     return connectDropTarget(
       <div style={{ height: "100%" }}>
-        <section id="studyArea" className="study-area" />
+        <section id="studyArea" className="study-area" style={style}/>
       </div>
     );
   }

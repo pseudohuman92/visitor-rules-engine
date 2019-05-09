@@ -10,7 +10,7 @@ import { GamePhases } from "../Constants/Constants";
 const mapStateToProps = state => {
   return {
     phase: state.extendedGameState.phase,
-    win: state.extendedGameState.WinLoseDialog
+    win: state.extendedGameState.win
   };
 };
 
@@ -25,7 +25,7 @@ class WinLoseDialog extends Component {
         <DialogTitle>{win ? "You Win!" : "You Lose..."}</DialogTitle>
         <DialogContent>
           <img
-            src={process.env.PUBLIC_URL + `/img/${win ? "win" : "lose"}.jpg`}
+            src={process.env.PUBLIC_URL + "/img/" +(win ? "win" : "lose")+".jpg"}
             alt=""
           />
         </DialogContent>

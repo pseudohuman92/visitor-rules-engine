@@ -16,26 +16,31 @@ import "../../css/ChooseDialog.css";
 const mapStateToProps = state => {
   return {
     phase: state.extendedGameState.phase,
-    title: state.extendedGameState.dialog.title,
-    open: state.extendedGameState.dialog.open,
+    selectedCards: state.extendedGameState.selectedCards,
+    dialog: state.extendedGameState.dialog,
     upTo: state.extendedGameState.upTo,
-    cards: state.extendedGameState.candidateCards
   };
 };
 
-//You need to pass onClose to this.
 class ChooseDialog extends Component {
   onClose = event => {
     this.props.updateExtendedGameState({
       dialog: {
-        title: this.props.title,
+        title: "",
+        cards: [],
         open: false
       }
     });
   };
 
+  selectDone = event => {
+    let selected = [...this.props.selectedCards];
+    let phase = this.props.phase;
+    this.props.gameHandler.SelectDone(phase, selected);
+  };
+
   render = () => {
-    const { phase, open, title, cards, upTo, gameHandler } = this.props;
+    const { phase, dialog, upTo } = this.props;
 
     const isSelectPhase =
       phase === GamePhases.SELECT_FROM_LIST ||
@@ -44,17 +49,17 @@ class ChooseDialog extends Component {
 
     return (
       <Dialog
-        open={open}
+        open={dialog.open}
         onClose={this.onClose}
         maxWidth={false}
         fullWidth={true}
         disableBackdropClick={isSelectPhase}
         disableEscapeKeyDown={isSelectPhase}
       >
-        <DialogTitle> {title} </DialogTitle>
+        <DialogTitle> {dialog.title} </DialogTitle>
         <DialogContent>
           <Grid container spacing={0} className="choose-dialog">
-            {cards.map(card => (
+            {dialog.cards.map(card => (
               <Grid item xs={1} key={card.id}>
                 <PlayingCard {...card} />
               </Grid>
@@ -64,7 +69,7 @@ class ChooseDialog extends Component {
             <Button
               color="primary"
               variant="contained"
-              onClick={gameHandler.SelectDone}
+              onClick={this.selectDone}
             >
               Done
             </Button>

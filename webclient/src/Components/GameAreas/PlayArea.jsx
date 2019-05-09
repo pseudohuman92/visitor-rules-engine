@@ -5,8 +5,6 @@ import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 
-import proto from "../../protojs/compiled.js";
-
 import Board from "./Board";
 import Stack from "./Stack";
 import Altar from "./Altar";
@@ -17,52 +15,27 @@ import ChooseDialog from "../Dialogs/ChooseDialog";
 import LoadingDialog from "../Dialogs/LoadingDialog";
 import WinLoseDialog from "../Dialogs/WinLoseDialog";
 import SelectXDialog from "../Dialogs/SelectXDialog";
-import { GamePhases } from "../Constants/Constants";
-import { debug } from "../../Utils.js";
-import "../../css/App.css";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
+import { GamePhases } from "../Constants/Constants";
+import proto from "../../protojs/compiled";
+
+import "../../css/App.css";
+
 
 const mapStateToProps = state => {
   return {
-    username: state.username,
-    game: state.extendedGameState.game,
     phase: state.extendedGameState.phase,
-    dialog: state.extendedGameState.dialog,
-    upTo: state.extendedGameState.upTo,
-    selectedCards: state.extendedGameState.selectedCards,
-    selectableCards: state.extendedGameState.selectableCards,
-    selectCountMax: state.extendedGameState.selectCountMax,
-    gameInitialized: state.extendedGameState.gameInitialized,
-    maxXValue: state.extendedGameState.maxXValue,
-    autoPass: state.extendedGameState.autoPass,
-    targets: state.extendedGameState.targets,
-    candidateCards: state.extendedGameState.candidateCards,
+    game: state.extendedGameState.game
   };
 };
 
 class PlayArea extends Component {
-  updateTargets = targets => {
-    if (targets !== this.state.targets) {
-      this.setState({ targets: targets });
-    }
-  };
 
-  //???
-  updateInfoUpdate = () => {
-    this.setState({ waiting: true });
-  };
-
-  //Callback function to update game area (This may not be necessary anymore)
-  updateView = (params, phase, selectedCards = null) => {
-    const game = params.game;
-    const toUpdate = {};
-
-    if (this.state.waiting) {
-      // XXX This will not be true in the future when we have server messages
-      // as well.
-      toUpdate.waiting = false;
-    }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let gameHandler = this.props.gameHandler;
+    let game = this.props.game;
+    let phase = this.props.phase;
 
     //Auto keep function
     if (
@@ -70,8 +43,7 @@ class PlayArea extends Component {
       game.activePlayer === game.player.name &&
       game.player.hand.length === 0
     ) {
-      //TODO: fix this
-      //Keep();
+      gameHandler.Keep();
     }
 
     //Auto pass function
@@ -84,83 +56,23 @@ class PlayArea extends Component {
       game.canPlay.length === 0
     ) {
       setTimeout(function() {
-        //TODO: fix this
-        //Pass();
+        gameHandler.Pass();
       }, 1000);
-      if (!this.state.autoPass) {
-        toUpdate.autoPass = true;
-      }
+      this.props.updateExtendedGameState({ autoPass: true });
     } else {
-      if (this.state.autoPass) {
-        toUpdate.autoPass = false;
-      }
+      this.props.updateExtendedGameState({ autoPass: false });
     }
-
-    debug("[toUpdate]", phase, toUpdate);
-    this.setState(toUpdate);
-  };
-
-  //Updates state for Material UI Dialog component.
-  updateDialog = (open, title, cards) => {
-    this.props.updateExtendedGameState({
-      dialog: {
-        open: open,
-        title: title
-      },
-      candidateCards: cards
-    });
-  };
+  }
 
   render() {
-    //Determine if the things that will be selected
-    //will be selected from a Dialog component
-    const {
-      game,
-      phase,
-      upTo,
-      selectedCards,
-      selectableCards,
-      autoPass,
-      targets,
-    } = this.props;
-
-
-    //Determine which message to display here
-    let instMessage = "FLALALALLA";
-    /*
-    if (game.phase === proto.Phase.MULLIGAN) {
-      instMessage = "Chose either to keep or mulligan your hand.";
-    } else if (IsSelectCardPhase(phase)) {
-      instMessage = `Select ${
-        upTo ? "up to " : ""
-      } ${selectCountMax} cards from ${
-        {
-          SelectFromList: "list",
-          SelectFromPlay: "play",
-          SelectFromHand: "hand",
-          SelectFromScrapyard: "scrapyard",
-          SelectFromVoid: "void",
-          SelectFromStack: "stack"
-        }[phase]
-      }. (${selectedCards.length} selected)`;
-    } else if (phase === GamePhases.SELECT_X_VALUE) {
-      instMessage = "Select an X value.";
-    } else if (phase === GamePhases.SELECT_PLAYER) {
-      instMessage = "Select a player.";
-    } else if (!amActive) {
-      instMessage = "Waiting for opponent...";
-    } else {
-      instMessage =
-        "Play" + (hasStudyable ? ", study," : "") + " or activate a card.";
-    }
-    */
+    
     return (
       <div className="App">
         <header className="App-header">
           <WinLoseDialog />
           <LoadingDialog />
           <SelectXDialog />
-          <ChooseDialog/>
+          <ChooseDialog />
           <Grid
             container
             spacing={24}
@@ -171,24 +83,10 @@ class PlayArea extends Component {
             justify="space-between"
           >
             <Grid item xs={2} className="display-col">
-              <StateDisplay
-                game={game}
-                phase={phase}
-                updateDialog={this.updateDialog}
-                upTo={upTo}
-                autoPass={autoPass}
-              />
+              <StateDisplay />
             </Grid>
             <Grid item xs={8} className="display-col">
-              <Board
-                game={game}
-                phase={phase}
-                selectedCards={selectedCards}
-                selectableCards={selectableCards}
-                instMessage={instMessage}
-                targets={targets}
-                updateTargets={this.updateTargets}
-              />
+              <Board/>
             </Grid>
             <Grid item xs={2} className="display-col">
               <Grid
@@ -201,13 +99,13 @@ class PlayArea extends Component {
                 }}
               >
                 <Grid item xs={12} style={{ height: "5%" }}>
-                  <ResourceArea player={game.opponent} />
+                  <ResourceArea isPlayer={false} />
                 </Grid>
                 <Grid item xs={12} style={{ height: "70%" }}>
                   <Stack />
                 </Grid>
                 <Grid item xs={12} style={{ height: "5%" }}>
-                  <ResourceArea player={game.player} />
+                  <ResourceArea isPlayer={true} />
                 </Grid>
                 <Grid item xs={12} style={{ height: "20%" }}>
                   <Altar />
@@ -221,6 +119,7 @@ class PlayArea extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  DragDropContext(MultiBackend(HTML5toTouch))(withHandlers (PlayArea))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DragDropContext(MultiBackend(HTML5toTouch))(withHandlers(PlayArea)));

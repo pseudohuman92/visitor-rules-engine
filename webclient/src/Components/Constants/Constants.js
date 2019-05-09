@@ -165,8 +165,8 @@ const initialPlayer = {
   reflect: 0
 };
 
-const emptyGame = {
-  id: "Empty Game",
+const initialGame = {
+  id: "Initial Game",
   player: initialPlayer,
   opponent: initialPlayer,
   turnPlayer: initialPlayer.id,
@@ -178,13 +178,12 @@ const emptyGame = {
   canStudy: []
 };
 
-const emptyGameState = {
-  game: emptyGame,
+const initialExtendedGameState = {
+  game: initialGame,
   phase: GamePhases.NOT_STARTED,
   gameInitialized: false,
-  dialog: { title: "", open: false },
+  dialog: { title: "", open: false, cards: [] },
   selectedCards: [],
-  candidateCards: [],
   selectableCards: [],
   selectablePlayers: [],
   selectCountMax: 0,
@@ -204,7 +203,7 @@ export const initialState = {
   dust: 0,
   username: "",
   packs: {},
-  extendedGameState: emptyGameState
+  extendedGameState: initialExtendedGameState
 };
 
 export function IsSelectCardPhase(phase) {

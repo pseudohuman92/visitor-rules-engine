@@ -8,12 +8,12 @@ import "../../css/Stack.css";
 import "../../css/Utils.css";
 
 const mapStateToProps = state => {
-  return { cards: state.extendedGameState.game.stack };
+  return { stack: state.extendedGameState.game.stack };
 };
 
 class Stack extends React.Component {
   render() {
-    const { cards } = this.props;
+    const { stack } = this.props;
 
     return (
       <GridList
@@ -22,7 +22,7 @@ class Stack extends React.Component {
         cellHeight="auto"
         style={{ margin: -12 }}
       >
-        {cards.slice(0).map(card => (
+        {stack.slice(0).map(card => (
           <GridListTile key={card.id}>
             <PlayingCard
               {...card}

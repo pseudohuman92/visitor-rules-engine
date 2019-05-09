@@ -1,4 +1,4 @@
-import { ItemTypes, FieldIDs } from "../Constants/Constants";
+import { ItemTypes } from "../Constants/Constants";
 
 export const cardSource = {
   beginDrag(props) {
@@ -24,12 +24,11 @@ export const cardSource = {
     const targetProps = monitor.getDropResult();
     if (
       props.playableCards.includes(props.id) &&
-      (targetProps.targetType === ItemTypes.FIELD &&
-        targetProps.id === FieldIDs.MY_FIELD)
+      (targetProps.targetType === ItemTypes.FIELD)
     ) {
-      props.gameMessage.PlayCard(props.id);
+      props.gameHandler.PlayCard(props.id);
     } else if (targetProps.targetType === ItemTypes.ALTAR) {
-      props.gameMessage.StudyCard(props.id);
+      props.gameHandler.StudyCard(props.id);
     }
   }
 };

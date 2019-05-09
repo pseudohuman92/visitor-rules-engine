@@ -21,7 +21,6 @@ export default class ServerGameMessageHandler {
         newState["selectablePlayers"] = params.canSelectedPlayers;
         newState["upTo"] = params.upTo;
         newState["selectCountMax"] = params.selectionCount;
-        newState["candidateCards"] = params.candidates;
         if (
           newState["phase"] === GamePhases.SELECT_FROM_LIST ||
           newState["phase"] === GamePhases.SELECT_FROM_SCRAPYARD ||
@@ -29,7 +28,8 @@ export default class ServerGameMessageHandler {
         ) {
           newState["dialog"] = {
             open: true,
-            title: `Select ${params.selectionCount} from the following`
+            title: `Select ${params.selectionCount} from the following`,
+            cards: params.candidates
           };
         }
         break;
@@ -37,7 +37,11 @@ export default class ServerGameMessageHandler {
         newState["win"] = params.win;
         break;
       case "OrderCards":
-        newState["candidateCards"] = params.cardsToOrder;
+        newState["dialog"] = {
+          open: true,
+          title: "Order following cards",
+          cards: params.cardsToOrder
+        };
         break;
       case "SelectXValue":
         newState["maxXValue"] = params.maxXValue;
@@ -114,36 +118,10 @@ export default class ServerGameMessageHandler {
       phase: GamePhases.DONE_SELECT,
       selectedCards: [],
       selectableCards: [],
-      dialog: { text: "", open: false }
+      dialog: { text: "", open: false, cards: [] }
     });
   };
-
-  /*
-  export function SelectCard(cardID) {
-    const selectCount = gameState.lastMsg.selectionCount;
-    gameState.selectedCards.push(cardID);
-    if (gameState.selectedCards.length === selectCount) {
-      SelectDone();
-    } else {
-      gameState.updateViewHandler(
-        gameState.lastMsg,
-        gameState.phase,
-        gameState.selectedCards
-      );
-    }
-  }
   
-  export function UnselectCard(cardID) {
-    if (gameState.selectedCards.includes(cardID)) {
-      gameState.selectedCards.splice(gameState.selectedCards.indexOf(cardID), 1);
-      gameState.updateViewHandler(
-        gameState.lastMsg,
-        gameState.phase,
-        gameState.selectedCards
-      );
-    }
-  }
-  */
   SelectXValue = xVal => {
     this.send("SelectXValueResponse", {
       gameID: this.gameId,

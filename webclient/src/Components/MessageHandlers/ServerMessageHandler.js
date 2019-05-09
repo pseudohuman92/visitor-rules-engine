@@ -13,12 +13,11 @@ export default class ServerMessageHandler {
   }
   
   handleMsg = (msgType, params) => {
-    debug("handleMsg is called");
     if (msgType === "LoginResponse") {
       if (params.gameId !== "") {
         this.gameId = params.gameId;
         this.updateHandlers({
-          gameMessage: new ServerGameMessageHandler(
+          gameHandler: new ServerGameMessageHandler(
             this.username,
             this.gameId,
             this.updateExtendedGameState
@@ -35,7 +34,7 @@ export default class ServerMessageHandler {
         game: params.game
       });
       this.updateHandlers({
-        gameMessage: new ServerGameMessageHandler(
+        gameHandler: new ServerGameMessageHandler(
           this.username,
           this.gameId,
           this.updateExtendedGameState

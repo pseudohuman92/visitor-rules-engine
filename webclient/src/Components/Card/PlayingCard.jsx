@@ -13,12 +13,14 @@ import { withHandlers } from "../MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
   return {
+    phase : state.extendedGameState.phase,
     playableCards: state.extendedGameState.game.canPlay,
     studyableCards : state.extendedGameState.game.canStudy,
-    activatableCards : state.extendedGameState.game.canStudy,
+    activatableCards : state.extendedGameState.game.canActivate,
     selectedCards: state.extendedGameState.selectedCards,
     selectableCards: state.extendedGameState.selectableCards,
-    displayTargets: state.extendedGameState.targets
+    displayTargets: state.extendedGameState.targets,
+    selectCountMax: state.extendedGameState.selectCountMax,
   };
 };
 
@@ -31,6 +33,32 @@ export class PlayingCard extends React.Component {
   onMouseLeave = event => {
     this.props.updateExtendedGameState({ targets: [] });
   };
+
+  select = event => {
+    let id = this.props.id;
+    let selected = [...this.props.selectedCards];
+    let maxCount = this.props.selectCountMax;
+    let phase = this.props.phase;
+
+    selected.push(id); 
+    this.props.updateExtendedGameState({ selectedCards: selected });
+    if (selected.length === maxCount) {
+      this.props.gameHandler.SelectDone(phase, selected);
+    }
+  };
+
+  unselect = event => {
+    let id = this.props.id;
+    let selected = [...this.props.selectedCards];
+
+    if (selected.includes(id)) {
+      selected.splice(selected.indexOf(id), 1);
+      this.props.updateExtendedGameState({ 
+        selectedCards: selected
+      });
+    }
+  };
+  
 
   render() {
     const {
@@ -45,7 +73,7 @@ export class PlayingCard extends React.Component {
       displayTargets,
       activatableCards,
       playableCards,
-      gameMessage
+      gameHandler,
     } = this.props;
 
     const activatable = activatableCards.includes(id);
@@ -66,22 +94,20 @@ export class PlayingCard extends React.Component {
       borderColor = "yellow";
     } else if (selected) {
       borderColor = "magenta";
-      clickHandler = event => {
-        gameMessage.UnselectCard(id);
-      };
+      clickHandler = this.unselect;
     } else if (selectable) {
-      clickHandler = event => {
-        gameMessage.SelectCard(id);
-      };
+      clickHandler = this.select;
       borderColor = "green";
     } else if (activatable) {
       clickHandler = event => {
-        gameMessage.ActivateCard(id);
+        gameHandler.ActivateCard(id);
       };
       borderColor = "blue";
     } else if (playable) {
       borderColor = "blue";
-    } else if (depleted) {
+    } 
+    
+    if (depleted) {
       opacity = 0.5;
     }
 

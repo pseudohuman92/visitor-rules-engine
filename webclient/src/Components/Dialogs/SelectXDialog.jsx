@@ -26,7 +26,7 @@ class SelectXDialog extends Component {
   }
 
   onChange = event => {
-    if (event.target.value <= this.props.maxXValue) {
+    if (event.target.value <= this.props.maxXValue && 0 <= event.target.value) {
       this.setState({ xVal: event.target.value });
     }
   };
