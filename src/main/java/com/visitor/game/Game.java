@@ -575,7 +575,7 @@ public class Game {
             b.addStack(stack.get(i).toCardMessage());
         }
         players.forEach((s, p) -> {
-            if(isActive(s)){
+            if(username.equals(s) && isActive(s)){
                 p.hand.forEach(c -> {
                     if(c.canPlay(this)){
                         b.addCanPlay(c.id.toString());

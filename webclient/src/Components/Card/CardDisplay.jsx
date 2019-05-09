@@ -4,6 +4,8 @@ import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 import Image from "react-image";
 import VisibilitySensor from "react-visibility-sensor";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
 
 import {
   getCardColor,
@@ -16,6 +18,8 @@ import "../../css/Card.css";
 import "../../css/Utils.css";
 
 export class CardDisplay extends Component {
+  state = { showDialog: false };
+
   render() {
     const {
       small,
@@ -31,7 +35,7 @@ export class CardDisplay extends Component {
     const marginSize = "2%";
     const borderRadius = "3px";
 
-    return small ? (
+    let smallCard = (
       <div>
         <Fonts />
         <Rectangle
@@ -41,6 +45,7 @@ export class CardDisplay extends Component {
             backgroundColor: getCardColor(knowledgeCost),
             overflow: "hidden"
           }}
+          onDoubleClick={event => this.setState({ showDialog: true })}
         >
           <Textfit
             mode="single"
@@ -57,7 +62,9 @@ export class CardDisplay extends Component {
           </Textfit>
         </Rectangle>
       </div>
-    ) : (
+    );
+
+    let fullCard = (
       <div>
         <Fonts />
         <Rectangle
@@ -68,6 +75,7 @@ export class CardDisplay extends Component {
             backgroundColor: borderColor,
             overflow: "hidden"
           }}
+          onDoubleClick={event => this.setState({ showDialog: true })}
         >
           <div
             className="card-inner"
@@ -101,18 +109,18 @@ export class CardDisplay extends Component {
                 <img
                   src={process.env.PUBLIC_URL + "/img/" + type + ".png"}
                   style={{ maxWidth: "100%" }}
-                  alt =""
+                  alt=""
                 />
                 {/*
-                <Image
-                  src={[
-                    process.env.PUBLIC_URL + "/img/" + name + ".jpg",
-                    process.env.PUBLIC_URL + "/img/" + type + ".png"
-                  ]}
-                  style={{ maxWidth: "100%" }}
-                  decode={false}
-                />
-                */}
+              <Image
+                src={[
+                  process.env.PUBLIC_URL + "/img/" + name + ".jpg",
+                  process.env.PUBLIC_URL + "/img/" + type + ".png"
+                ]}
+                style={{ maxWidth: "100%" }}
+                decode={false}
+              />
+              */}
               </VisibilitySensor>
             </div>
 
@@ -141,6 +149,20 @@ export class CardDisplay extends Component {
             </div>
           </div>
         </Rectangle>
+      </div>
+    );
+
+    return (
+      <div>
+        <Dialog
+          open={this.state.showDialog}
+          onClose={event => this.setState({ showDialog: false })}
+          maxWidth="xs"
+          fullWidth={true}
+        >
+          <DialogContent>{fullCard}</DialogContent>
+        </Dialog>
+        {small ? smallCard : fullCard}
       </div>
     );
   }

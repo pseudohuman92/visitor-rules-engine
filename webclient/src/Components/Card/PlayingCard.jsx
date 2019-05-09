@@ -119,6 +119,7 @@ export class PlayingCard extends React.Component {
         onClick={clickHandler}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
+        style={this.props.style}
       >
         <CardDisplay
           opacity={opacity}

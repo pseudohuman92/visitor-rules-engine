@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { knowledgeMap } from "../Constants/Constants";
 
 import "../../css/ResourceArea.css";
+import { Grid, Divider } from "@material-ui/core";
 
 const mapStateToProps = state => {
   return {
@@ -35,29 +36,31 @@ class ResourceArea extends Component {
       : opponentKnowledgePool;
 
     return (
-      <div>
-        <section id="resourceArea" className="resource-area">
-          <div className="mana-area">
-            <span>
-              {energy} / {maxEnergy}
-            </span>
-          </div>
-          <div className="knowledge-area">
-            {knowledgePool.map((k, i) => (
-              <div className="knowledge" key={i}>
-                <span
-                  className={
-                    "knowledge-stone " +
-                    knowledgeMap[k.knowledge] +
-                    "-knowledge"
-                  }
-                />
-                {k.count}
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        style={{ width: "100%", height: "100%", backgroundColor: "#b1b1b1" }}
+      >
+        <Grid item xs={12} justify="center" alignItems="center" style={{height: "50%"}}>
+          {energy} / {maxEnergy}
+        </Grid>
+        <Grid item xs={12} justify="center" alignItems="center">
+          <Divider/>
+        </Grid>
+        <Grid item xs={12} justify="center" alignItems="center" style={{height: "50%" }}>
+          {knowledgePool.map((k, i) => (
+            <div key={i}>
+              <span
+                className={
+                  "knowledge-stone " + knowledgeMap[k.knowledge] + "-knowledge"
+                }
+              />
+              {": " + k.count}
+            </div>
+          ))}
+        </Grid>
+      </Grid>
     );
   }
 }

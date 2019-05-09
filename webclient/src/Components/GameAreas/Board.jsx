@@ -26,7 +26,7 @@ export default class Board extends React.Component {
         <Grid item xs={12} style={{ height: "5%" }}>
           <InfoMessage/>
         </Grid>
-        <Grid item xs={12} style={{ height: "25%" }}>
+        <Grid item xs={12} style={{ height: "25%"}}>
           <Hand />
         </Grid>
       </Grid>

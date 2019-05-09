@@ -20,7 +20,6 @@ class Stack extends React.Component {
         cols={1}
         className="stack"
         cellHeight="auto"
-        style={{ margin: -12 }}
       >
         {stack.slice(0).map(card => (
           <GridListTile key={card.id}>

@@ -30,7 +30,9 @@
         "@firebase/util":"^0.2.14",
         "react-visibility-sensor":"^5.0.2",
         "redux":"^4.0.1",
-        "react-redux":"^7.0.3"
+        "react-redux":"^7.0.3",
+        "react-sizeme":"^2.6.7",
+        "prop-types":"^15.7.2"
     },
     "devDependencies": {
         "typescript": "3.4.5"

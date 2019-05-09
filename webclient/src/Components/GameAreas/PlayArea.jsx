@@ -65,19 +65,24 @@ class PlayArea extends Component {
   }
 
   render() {
-    
+    const { phase, game } = this.props;
+    const hasStudyable =
+      phase === GamePhases.UPDATE_GAME &&
+      game.activePlayer === game.player.name &&
+      game.canStudy.length > 0;
+
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="App" >
+        <header className="App-header" >
           <WinLoseDialog />
           <LoadingDialog />
           <SelectXDialog />
           <ChooseDialog />
           <Grid
             container
-            spacing={24}
+            spacing={8}
             style={{
-              padding: "12px 24px",
+              padding: "12px 12px",
               height: "100vh"
             }}
             justify="space-between"
@@ -98,16 +103,16 @@ class PlayArea extends Component {
                   height: "100%"
                 }}
               >
-                <Grid item xs={12} style={{ height: "5%" }}>
+                <Grid item xs={12} style={{ height: "10%" }}>
                   <ResourceArea isPlayer={false} />
                 </Grid>
-                <Grid item xs={12} style={{ height: "70%" }}>
+                <Grid item xs={12} style={{ height: (hasStudyable? "50%" : "65%") }}>
                   <Stack />
                 </Grid>
-                <Grid item xs={12} style={{ height: "5%" }}>
+                <Grid item xs={12} style={{ height: "10%" }}>
                   <ResourceArea isPlayer={true} />
                 </Grid>
-                <Grid item xs={12} style={{ height: "20%" }}>
+                <Grid item xs={12} style={{ height: (hasStudyable ? "30%" : "15%") }}>
                   <Altar />
                 </Grid>
               </Grid>

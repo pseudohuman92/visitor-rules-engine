@@ -32,7 +32,7 @@ class Altar extends Component {
       game.activePlayer === game.player.name &&
       game.canStudy.length > 0;
 
-    const style = {};
+    const style = {height: "100%"};
     if (hasStudyable) {
       style.backgroundColor = "#adea99";
     } else {
