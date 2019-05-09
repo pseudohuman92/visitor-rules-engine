@@ -192,6 +192,7 @@ public class Player implements Serializable, Damageable {
                 .setMaxEnergy(maxEnergy)
                 .setShield(shield)
                 .setReflect(reflect)
+                .setHandSize(hand.size())
                 .addAllHand(hand.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
@@ -205,8 +206,8 @@ public class Player implements Serializable, Damageable {
         return b;
     }
     
-    public Types.Opponent.Builder toOpponentMessage() {
-        Types.Opponent.Builder b = Types.Opponent.newBuilder()
+    public Types.Player.Builder toOpponentMessage() {
+        Types.Player.Builder b = Types.Player.newBuilder()
                 .setId(id.toString())
                 .setName(name)
                 .setDeckSize(deck.size())

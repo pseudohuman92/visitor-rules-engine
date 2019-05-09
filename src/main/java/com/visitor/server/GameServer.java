@@ -16,7 +16,6 @@ import com.visitor.protocol.ServerMessages.LoginResponse;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
 
 /**
@@ -86,8 +85,7 @@ public class GameServer {
                 }
             });
             connection.send(ServerMessage.newBuilder().setLoginResponse(LoginResponse.newBuilder()
-                    .addAllGameIdList(playerGames.parallelStream()
-                        .map(u->{return u.toString();}).collect(Collectors.toList()))));
+                    .setGameId(playerGames.size()>0?playerGames.get(0).toString():"")));
         } catch (IOException | EncodeException ex) {
             Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
         }

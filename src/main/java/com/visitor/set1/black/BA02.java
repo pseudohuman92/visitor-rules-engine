@@ -10,6 +10,7 @@ import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
+import java.util.UUID;
 
 /**
  *
@@ -26,7 +27,8 @@ public class BA02 extends Spell {
 
     @Override
     public void play(Game game) {
-        targetPlayer = game.selectPlayer(controller);
+        UUID targetPlayerId = game.selectPlayers(controller, p->{return true;}, 1, false).get(0);
+        targetPlayer = game.getUsername(targetPlayerId);
         int x = game.selectX(controller, game.getPlayer(controller).energy);
         cost = x;
         game.spendEnergy(controller, cost);

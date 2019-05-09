@@ -492,14 +492,10 @@ public class Game {
         return 0;
     }
     
-    private Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, int count, boolean upTo){
-        /*
-        if (canSelect.size() == count || (canSelect.size() < count && upTo)){
-            return canSelect;
-        }
-        */
+    private Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo){
         SelectFrom.Builder b = SelectFrom.newBuilder()
                 .addAllCanSelected(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
+                .addAllCanSelectedPlayers(canSelectPlayers.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
                 .addAllCandidates(candidates.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .setMessageType(type)
                 .setSelectionCount(count)
@@ -520,35 +516,38 @@ public class Game {
     public Arraylist<UUID> selectFromZone(String username, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
         Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, count, upTo);
+        return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, new Arraylist<>(), count, upTo);
+    }
+    
+    public Arraylist<UUID> selectFromZoneWithPlayers(String username, String zone, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
+        Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
+                .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
+        Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
+                .filter(validPlayer).map(c->{return c.id;}).collect(Collectors.toList()));
+        return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, canSelectPlayers, count, upTo);
     }
 
     public Arraylist<UUID> selectFromList(String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
         Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(username, LIST, candidates, canSelect, count, upTo);
+        return selectFrom(username, LIST, candidates, canSelect, new Arraylist<>(), count, upTo);
     }
     
-    public String selectPlayer(String username) {
-        SelectPlayer.Builder b = SelectPlayer.newBuilder()
-                .setGame(toGameState(username));
-        try {
-            send(username, ServerGameMessage.newBuilder().setSelectPlayer(b));
-            String selection = (String)response.take();
-            return selection;
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+    public Arraylist<UUID> selectPlayers(String username, Predicate<Player> validPlayer, int count, boolean upTo) {        
+        Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
+                .filter(validPlayer).map(c->{return c.id;}).collect(Collectors.toList()));
+        return selectFrom(username, getZoneLabel("play"), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo);
     }
     
-    
+    public Arraylist<UUID> selectDamageTargets(String username, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
+        return selectFromZoneWithPlayers(username, "both play", validTarget, validPlayer, count, upTo);
+    }
     
     
     
     public void win(String player) {
-        send(player, ServerGameMessage.newBuilder().setWin(Win.newBuilder().setGameID(id.toString())));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setLoss(Loss.newBuilder().setGameID(id.toString())));
+        send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(true)));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(getOpponentName(player))).setWin(false)));
         connections.forEach((s, c) -> {c.close();});
         connections = new Hashmap<>();
         GeneralEndpoint.gameServer.removeGame(id);
@@ -556,8 +555,8 @@ public class Game {
     
     
     public void lose(String player) {
-        send(player, ServerGameMessage.newBuilder().setLoss(Loss.newBuilder().setGameID(id.toString())));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setWin(Win.newBuilder().setGameID(id.toString())));
+        send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(false)));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(getOpponentName(player))).setWin(true)));
         connections.forEach((s, c) -> {c.close();});
         connections = new Hashmap<>();
         GeneralEndpoint.gameServer.removeGame(id);
@@ -688,5 +687,15 @@ public class Game {
 
     public void removeTriggeringCard(Triggering card) {
         triggeringCards.values().forEach(l->{l.remove(card);});
+    }
+
+    public String getUsername(UUID targetPlayerId) {
+            for (int i = 0; i < players.size(); i++){
+                Player p = players.values().toArray(new Player[0])[i];
+                if (p.id.equals(targetPlayerId)) {
+                    return p.name;
+                }
+            }
+            return "";
     }
 }

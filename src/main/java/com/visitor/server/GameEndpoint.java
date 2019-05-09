@@ -111,10 +111,6 @@ public class GameEndpoint {
                     waitingResponse = false;
                     gameServer.addToResponseQueue(gameID, sfr.getSelectedCardsList().toArray(new String[sfr.getSelectedCardsCount()]));
                     break;
-                case SELECTPLAYERRESPONSE:
-                    waitingResponse = false;
-                    gameServer.addToResponseQueue(gameID, message.getSelectPlayerResponse().getSelectedPlayerName());
-                    break;
                 case SELECTXVALUERESPONSE:
                     waitingResponse = false;
                     gameServer.addToResponseQueue(gameID, message.getSelectXValueResponse().getSelectedXValue());
@@ -169,10 +165,6 @@ public class GameEndpoint {
                 waitingResponse = true;
                 responseType = SELECTFROMRESPONSE;
                 selectFromType = message.getSelectFrom().getMessageType();
-                break;
-            case SELECTPLAYER:
-                waitingResponse = true;
-                responseType = SELECTPLAYERRESPONSE;
                 break;
             case SELECTXVALUE:
                 waitingResponse = true;
