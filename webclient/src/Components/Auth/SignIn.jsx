@@ -8,7 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import { withFirebase } from "../Firebase";
 import Profile from "../../Profile";
@@ -33,13 +33,13 @@ class SignIn extends Component {
 
   Signin = event => {
     const { email, password } = this.state;
+    const { firebase, updateState } = this.props;
 
-    this.props.firebase
+    firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        // Get data from db and put it to the store
-        let username =  "Player-" + Math.floor(Math.random() * 10000);
-        this.props.updateState({ username: username });
+      .then(authUser => {
+        updateState({ authUser: authUser });
+        firebase.fetchUserData(authUser.user.uid, updateState);
         this.setState({ value: 1 });
       })
       .catch(error => {
@@ -111,4 +111,7 @@ class SignIn extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(withFirebase(SignIn));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withFirebase(SignIn));

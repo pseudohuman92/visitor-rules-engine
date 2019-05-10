@@ -42,13 +42,13 @@ class ResourceArea extends Component {
         alignItems="center"
         style={{ width: "100%", height: "100%", backgroundColor: "#b1b1b1" }}
       >
-        <Grid item xs={12} justify="center" alignItems="center" style={{height: "50%"}}>
+        <Grid item xs={12} style={{height: "50%"}}>
           {energy} / {maxEnergy}
         </Grid>
-        <Grid item xs={12} justify="center" alignItems="center">
+        <Grid item xs={12}>
           <Divider/>
         </Grid>
-        <Grid item xs={12} justify="center" alignItems="center" style={{height: "50%" }}>
+        <Grid item xs={12} style={{height: "50%" }}>
           {knowledgePool.map((k, i) => (
             <div key={i}>
               <span

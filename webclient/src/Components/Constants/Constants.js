@@ -195,6 +195,7 @@ const initialExtendedGameState = {
 };
 
 export const initialState = {
+  authUser: {},
   coins: 0,
   fullCollection: [],
   collection: [],

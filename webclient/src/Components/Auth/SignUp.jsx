@@ -5,10 +5,12 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { withFirebase } from "../Firebase";
+import {connect} from "react-redux";
 import Center from "react-center";
 
 import Profile from "../../Profile";
+import { mapDispatchToProps } from "../Redux/Store";
+import { withFirebase } from "../Firebase";
 
 class SignUp extends Component {
   constructor(props) {
@@ -29,11 +31,14 @@ class SignUp extends Component {
 
   Signup = event => {
     const { username, email, password } = this.state;
+    const { firebase, updateState } = this.props;
 
-    this.props.firebase
+    firebase
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
-        //TODO: Create new database entry for the user here
+        updateState({ authUser: authUser});
+        firebase.createNewUser(authUser.user.uid, username);
+        firebase.fetchUserData(authUser.user.uid, updateState);
         this.setState({ value: 1 });
       })
       .catch(error => {
@@ -105,4 +110,4 @@ class SignUp extends Component {
   }
 }
 
-export default withFirebase(SignUp);
+export default connect(null, mapDispatchToProps)(withFirebase(SignUp));
