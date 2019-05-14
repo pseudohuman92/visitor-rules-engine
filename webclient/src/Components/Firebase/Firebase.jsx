@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { getNewUserCollection } from "../Constants/Constants";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -30,12 +31,14 @@ class Firebase {
 
   user = uid => this.db.doc(`users/${uid}`);
   users = () => this.db.collection("users");
+  deck = did => this.db.doc(`decks/${did}`);
+  decks = () => this.db.collection("decks");
   collection = cid => this.db.doc(`collections/${cid}`);
   collections = () => this.db.collection("collections");
 
   createNewCollection = () => {
     let coll = this.db.collection("collections").doc();
-    coll.set({ cards: [] });
+    coll.set({ cards: getNewUserCollection() });
     return coll;
   };
 
@@ -46,12 +49,12 @@ class Firebase {
     this.user(uid).set(
       {
         username: username,
-        coins: 0,
+        coins: 1000000,
         collectionId: collection.id,
         dailyWins: 0,
         deckIds: [],
-        dust: 0,
-        packs: {}
+        dust: 1234567,
+        packs: {Set1 : 999}
       },
       { merge: true }
     );
@@ -63,6 +66,16 @@ class Firebase {
       this.collection(data.collectionId).get().then(coll => {
         setState (data);
         setState ({collection: coll.data().cards});
+      });
+    });
+  };
+
+  fetchDeck = (deckId, setState) => {
+    this.deck(deckId).get().then(deck => {
+      let data = deck.data();
+      this.collection(data.collectionId).get().then(coll => {
+        let cards = coll.data().cards;
+        return ({name: data.name, cards: cards});
       });
     });
   };

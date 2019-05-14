@@ -6,9 +6,11 @@ import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import Center from "react-center";
 
+import { withFirebase } from "./Components/Firebase/index";
+
 
 const mapStateToProps = state => {
-  return { collection: state.fullCollection };
+  return { fullCollection: state.fullCollection };
 };
 
 class OpenPacks extends Component {
@@ -18,26 +20,27 @@ class OpenPacks extends Component {
       show: false,
       value: props.value
     };
-    this.openPack = this.openPack.bind(this);
-    this.hideDialog = this.hideDialog.bind(this);
-    this.generateRandomCard = this.generateRandomCard.bind(this);
-    this.generatePack = this.generatePack.bind(this);
   }
 
-  openPack() {
+  openPack = () => {
     if (this.state.value > 0) {
+      /* TODO: This will replace the pack open code. Must do it transactionally.
+      let cards = this.generatePack(10, true);
+      this.props.firebase.addCardsToCollection(collectionId, cards);
+      this.props.firebase.decreasePackCount(userId);
+      */
       this.setState((state, props) => ({ show: true, value: state.value - 1 }));
     }
   }
 
-  generateRandomCard() {
-    const collection = this.props.collection;
+  generateRandomCard = () => {
+    const collection = this.props.fullCollection;
     if (collection) {
       return collection[Math.floor(Math.random() * collection.length)].card;
     }
   }
 
-  generatePack(size, unique) {
+  generatePack = (size, unique) => {
     var result = [];
     for (var i = 0; i < size; i++) {
       let c = this.generateRandomCard();
@@ -50,7 +53,7 @@ class OpenPacks extends Component {
     return result;
   }
 
-  hideDialog() {
+  hideDialog = () => {
     this.setState({ show: false });
   }
 
@@ -106,4 +109,4 @@ class OpenPacks extends Component {
   }
 }
 
-export default connect(mapStateToProps)(OpenPacks);
+export default connect(mapStateToProps)(withFirebase(OpenPacks));

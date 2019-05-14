@@ -197,8 +197,8 @@ const initialExtendedGameState = {
 export const initialState = {
   authUser: {},
   coins: 0,
-  fullCollection: [],
-  collection: [],
+  collection: {},
+  collectionId: "",
   dailyWins: 0,
   decks: {},
   dust: 0,
@@ -268,4 +268,48 @@ export function toSelectFromType(phase) {
     default:
       return proto.SelectFromType.NONE;
   }
+}
+
+function initializeFullCOllection (){
+  var result ={};
+  fetch("/Cards.tsv")
+  .then(r => r.text())
+  .then(file => {
+    file.split("\n").forEach(line => {
+      let fields = line.split("\t");
+      if (
+        fields[0] !== "" &&
+        !fields[0].startsWith("Code") &&
+        !fields[0].startsWith("A")
+      ) {
+        result[fields[0]] = {
+          name: fields[0],
+          type: fields[1],
+          description: fields[3],
+          health: fields[4],
+          cost: fields[5],
+          knowledgeCost: toKnowledgeCost(fields[6])
+        };
+      }
+    });
+  })
+  return result;
+};
+
+export const fullCollection = initializeFullCOllection();
+
+export function toCollectionArray(collection) {
+  var col = [];
+  Object.keys(collection).map(function(key) {
+    col.push({ count: collection[key], card: fullCollection[key] });
+  });
+  return col;
+}
+
+export function getNewUserCollection() {
+  let newUserCollection = {};
+  Object.keys(fullCollection).map(function(key) {
+    newUserCollection[key] = 3;
+  });
+  return newUserCollection;
 }

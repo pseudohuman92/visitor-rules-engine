@@ -9,8 +9,8 @@ import Center from "react-center";
 import { connect } from "react-redux";
 
 import CardDisplay from "./Components/Card/CardDisplay";
-import {copy, spliceToSubarrays }  from "./Utils";
-
+import { copy, spliceToSubarrays } from "./Utils";
+import { toCollectionArray } from "./Components/Constants/Constants"
 
 const mapStateToProps = state => {
   return { collection: state.collection };
@@ -20,17 +20,11 @@ class DeckBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialCollection: copy(props.collection),
-      collection: props.collection,
+      initialCollection: toCollectionArray(props.collection),
+      collection: toCollectionArray(props.collection),
       name: "New Deck",
-      deck: []
+      deck: [],
     };
-    this.clearDeck = this.clearDeck.bind(this);
-    this.addToDeck = this.addToDeck.bind(this);
-    this.changeName = this.changeName.bind(this);
-    this.removeFromDeck = this.removeFromDeck.bind(this);
-    this.loadDeck = this.loadDeck.bind(this);
-    this.saveDeck = this.saveDeck.bind(this);
     this.fileReader = new FileReader();
     this.fileReader.onload = event => {
       var cards = this.fileReader.result.split("\n");
@@ -44,7 +38,7 @@ class DeckBuilder extends React.Component {
     };
   }
 
-  addToDeck(card) {
+  addToDeck = card => {
     var collection = this.state.collection;
     var colPos = collection.map(c => c.card.name).indexOf(card.name);
     var deck = this.state.deck;
@@ -62,7 +56,7 @@ class DeckBuilder extends React.Component {
     }
   }
 
-  removeFromDeck(card) {
+  removeFromDeck = card => {
     var collection = this.state.collection;
     var colPos = collection.map(c => c.card.name).indexOf(card.name);
     var deck = this.state.deck;
@@ -81,7 +75,7 @@ class DeckBuilder extends React.Component {
     console.log(card.name + " removed");
   }
 
-  clearDeck() {
+  clearDeck = () => {
     this.setState((state, props) => ({
       name: "New Deck",
       deck: [],
@@ -89,17 +83,17 @@ class DeckBuilder extends React.Component {
     }));
   }
 
-  changeName(name) {
+  changeName = name => {
     this.setState({ name: name });
   }
 
-  loadDeck(files) {
+  loadDeck = files => {
     this.clearDeck();
     this.fileReader.readAsText(files[0]);
     this.setState({ name: files[0].name.split(".")[0] });
   }
 
-  saveDeck() {
+  saveDeck = () => {
     let FileSaver = require("file-saver");
     let blob = new Blob(
       this.state.deck.map(c => c.count + "\t" + c.card.name + "\n"),
@@ -119,27 +113,27 @@ class DeckBuilder extends React.Component {
             multipleFiles={false}
             handleFiles={this.loadDeck}
           >
-            <Button variant="contained"> Load </Button>{" "}
-          </ReactFileReader>{" "}
-        </Grid>{" "}
+            <Button variant="contained"> Load </Button>
+          </ReactFileReader>
+        </Grid>
         <Grid item style={{ maxHeight: "5%" }}>
           <Button variant="contained" onClick={this.saveDeck}>
-            Save{" "}
-          </Button>{" "}
-        </Grid>{" "}
+            Save
+          </Button>
+        </Grid>
         <Grid item style={{ maxHeight: "5%" }}>
           <Button variant="contained" onClick={this.clearDeck}>
-            New{" "}
-          </Button>{" "}
-        </Grid>{" "}
+            New
+          </Button>
+        </Grid>
         <Grid item style={{ maxHeight: "5%" }}>
           <TextField
             value={this.state.name}
             onChange={event => {
               this.changeName(event.target.value);
             }}
-          />{" "}
-        </Grid>{" "}
+          />
+        </Grid>
         <Grid item xs={9} style={{ height: "95%" }}>
           <GridList
             cols={2}
@@ -151,6 +145,7 @@ class DeckBuilder extends React.Component {
             cellHeight="auto"
             spacing={8}
           >
+            
             {spliceToSubarrays(this.state.collection, 6).map((arr, i) => (
               <GridListTile key={i}>
                 <Grid
@@ -159,7 +154,6 @@ class DeckBuilder extends React.Component {
                   justify="flex-start"
                   spacing={8}
                 >
-                  {" "}
                   {arr.map((card, i) => (
                     <Grid
                       item
@@ -167,18 +161,18 @@ class DeckBuilder extends React.Component {
                       xs={4}
                       onClick={() => this.addToDeck(card.card)}
                     >
-                      <center> {card.count} </center>{" "}
+                      <center> {card.count} </center>
                       <CardDisplay
                         opacity={card.count > 0 ? 1 : 0.5}
                         {...card.card}
-                      />{" "}
+                      />
                     </Grid>
-                  ))}{" "}
-                </Grid>{" "}
+                  ))}
+                </Grid>
               </GridListTile>
-            ))}{" "}
-          </GridList>{" "}
-        </Grid>{" "}
+            ))}
+          </GridList>
+        </Grid>
         <Grid item xs={3} style={{ height: "95%" }}>
           <GridList
             cols={1}
@@ -209,20 +203,19 @@ class DeckBuilder extends React.Component {
                     >
                       <Center>
                         <Grid item xs={1}>
-                          {" "}
-                          {card.count}{" "}
-                        </Grid>{" "}
-                      </Center>{" "}
-                      <Grid item xs={1} />{" "}
+                          {card.count}
+                        </Grid>
+                      </Center>
+                      <Grid item xs={1} />
                       <Grid item xs={10}>
-                        <CardDisplay small={true} {...card.card} />{" "}
-                      </Grid>{" "}
+                        <CardDisplay small={true} {...card.card} />
+                      </Grid>
                     </Grid>
-                  ))}{" "}
-                </Grid>{" "}
+                  ))}
+                </Grid>
               </GridListTile>
-            ))}{" "}
-          </GridList>{" "}
+            ))}
+          </GridList>
         </Grid>
       </Grid>
     );

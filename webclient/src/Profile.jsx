@@ -23,39 +23,7 @@ const mapStateToProps = state => {
 class Profile extends Component {
   constructor(props) {
     super(props);
-
     this.state = { value: 0 };
-  }
-
-  componentDidMount() {
-    var result = [];
-    fetch("/Cards.tsv")
-      .then(r => r.text())
-      .then(file => {
-        file.split("\n").forEach(line => {
-          let fields = line.split("\t");
-          if (
-            fields[0] !== "" &&
-            !fields[0].startsWith("Code") &&
-            !fields[0].startsWith("A")
-          ) {
-            result.push({
-              name: fields[0],
-              type: fields[1],
-              description: fields[3],
-              health: fields[4],
-              cost: fields[5],
-              knowledgeCost: toKnowledgeCost(fields[6])
-            });
-          }
-        });
-      })
-      .then(() => {
-        this.props.updateState({
-          collection: result.map(c => ({ count: 3, card: c })),
-          fullCollection: result.map(c => ({ count: 3, card: c }))
-        });
-      });
   }
 
   play = event => {
@@ -97,7 +65,7 @@ class Profile extends Component {
         )}
         {value === 1 && <PlayArea />}
         {value === 2 && (
-          <DeckBuilder style={{ maxHeight: "100vh", maxWidth: "100vw" }} />
+          <DeckBuilder style={{ maxHeight: "100vh", maxWidth: "100vw" }} deck={{name: "asd", cards:[]}}/>
         )}
         {value === 3 && <OpenPacks value={999}/>}
       </div>
