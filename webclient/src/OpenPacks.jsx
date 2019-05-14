@@ -1,44 +1,45 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
-import CardDisplay from "./Components/Card/CardDisplay";
 import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import Center from "react-center";
 
 import { withFirebase } from "./Components/Firebase/index";
-
+import CardDisplay from "./Components/Card/CardDisplay";
+import { fullCollection } from "./Components/Helpers/Constants";
 
 const mapStateToProps = state => {
-  return { fullCollection: state.fullCollection };
+  return {
+    packs: state.packs
+  };
 };
 
 class OpenPacks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false,
-      value: props.value
+      show: false
     };
   }
 
-  openPack = () => {
-    if (this.state.value > 0) {
+  openPack = packName => {
+    if (this.props.packs[packName] > 0) {
       /* TODO: This will replace the pack open code. Must do it transactionally.
       let cards = this.generatePack(10, true);
       this.props.firebase.addCardsToCollection(collectionId, cards);
       this.props.firebase.decreasePackCount(userId);
       */
-      this.setState((state, props) => ({ show: true, value: state.value - 1 }));
+      this.setState((state, props) => ({ show: true }));
     }
-  }
+  };
 
   generateRandomCard = () => {
-    const collection = this.props.fullCollection;
+    const collection = Object.values(fullCollection);
     if (collection) {
-      return collection[Math.floor(Math.random() * collection.length)].card;
+      return collection[Math.floor(Math.random() * collection.length)];
     }
-  }
+  };
 
   generatePack = (size, unique) => {
     var result = [];
@@ -51,14 +52,15 @@ class OpenPacks extends Component {
       }
     }
     return result;
-  }
+  };
 
   hideDialog = () => {
     this.setState({ show: false });
-  }
+  };
 
   render() {
-    const { show, value } = this.state;
+    const { packs } = this.props;
+    const { show } = this.state;
 
     return (
       <div>
@@ -85,25 +87,34 @@ class OpenPacks extends Component {
             </Button>
           </Dialog>
         )}
-        <Center>
-          <div style={{ height: "350px", width: "250px" }}>
-            {
-              <div>
-                <div
-                  onClick={this.openPack}
-                  style={{
-                    backgroundColor: "blue",
-                    height: "350px",
-                    maxWidth: "250px"
-                  }}
-                >
-                  PACK
-                </div>
-                <div style={{ color: "black" }}>{value}</div>
-              </div>
-            }
-          </div>
-        </Center>
+        <Grid
+          container
+          alignContent="space-around"
+          justify="flex-start"
+          spacing={8}
+        >
+          {Object.keys(packs).map(key => {
+            return (
+              <Grid item xs key={key}>
+                <Center>
+                  <div style={{ height: "350px", width: "250px" }}>
+                      <div
+                        onClick={event => this.openPack(key)}
+                        style={{
+                          backgroundColor: "blue",
+                          height: "350px",
+                          maxWidth: "250px"
+                        }}
+                      >
+                        {key}
+                      </div>
+                      <div style={{ color: "black" }}>{packs[key]}</div>
+                  </div>
+                </Center>
+              </Grid>
+            );
+          })}
+        </Grid>
       </div>
     );
   }
