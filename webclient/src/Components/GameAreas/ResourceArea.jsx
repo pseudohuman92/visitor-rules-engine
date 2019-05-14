@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { knowledgeMap } from "../Constants/Constants";
+import { knowledgeMap } from "../Helpers/Constants";
 
 import "../../css/ResourceArea.css";
 import { Grid, Divider } from "@material-ui/core";

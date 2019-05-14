@@ -17,7 +17,7 @@ import WinLoseDialog from "../Dialogs/WinLoseDialog";
 import SelectXDialog from "../Dialogs/SelectXDialog";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
-import { GamePhases } from "../Constants/Constants";
+import { GamePhases } from "../Helpers/Constants";
 import proto from "../../protojs/compiled";
 
 import "../../css/App.css";

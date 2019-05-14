@@ -1,4 +1,4 @@
-import { debug } from '../Utils.js';
+import { debug } from "../Components/Helpers/Helpers";
 
 const proto = require('./compiled.js');
 

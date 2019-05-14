@@ -3,7 +3,9 @@ import Paper from "@material-ui/core/Paper";
 import Textfit from "react-textfit";
 import { connect } from "react-redux";
 
-import { GamePhases, IsSelectCardPhase } from "../Constants/Constants";
+
+import { GamePhases } from "../Helpers/Constants";
+import { IsSelectCardPhase } from "../Helpers/Helpers";
 import proto from "../../protojs/compiled";
 
 const mapStateToProps = state => {

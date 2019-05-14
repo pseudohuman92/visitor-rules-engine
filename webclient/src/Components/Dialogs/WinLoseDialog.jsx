@@ -5,7 +5,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import { connect } from "react-redux";
 
-import { GamePhases } from "../Constants/Constants";
+import { GamePhases } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {

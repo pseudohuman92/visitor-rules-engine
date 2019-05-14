@@ -1,5 +1,5 @@
 import { UPDATE_STATE, UPDATE_GAME_STATE, UPDATE_EXTENDED_GAME_STATE } from "./Actions";
-import { initialState } from "../Constants/Constants";
+import { initialState } from "../Helpers/Constants";
 
 function rootReducer(state = initialState, action) {
   if (action.type === UPDATE_STATE) {

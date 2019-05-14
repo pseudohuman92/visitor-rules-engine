@@ -3,7 +3,7 @@ import { DragSource, DropTarget } from "react-dnd";
 import { connect } from "react-redux";
 
 import CardDisplay from "./CardDisplay";
-import { ItemTypes } from "../Constants/Constants";
+import { ItemTypes } from "../Helpers/Constants";
 import { cardSource, cardTarget } from "./PlayingCardDnd";
 
 import proto from "../../protojs/compiled.js";

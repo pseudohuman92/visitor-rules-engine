@@ -3,7 +3,7 @@ import { Component } from "react";
 import { DropTarget } from "react-dnd";
 import { connect } from "react-redux";
 
-import { ItemTypes, GamePhases } from "../Constants/Constants";
+import { ItemTypes, GamePhases } from "../Helpers/Constants";
 import "../../css/StudyArea.css";
 
 const altarTarget = {

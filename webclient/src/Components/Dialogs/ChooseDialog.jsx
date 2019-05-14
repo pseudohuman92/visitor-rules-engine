@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import PlayingCard from "../Card/PlayingCard";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
-import { GamePhases } from "../Constants/Constants";
+import { GamePhases } from "../Helpers/Constants";
 
 import "../../css/ChooseDialog.css";
 

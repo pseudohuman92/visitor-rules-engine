@@ -1,12 +1,12 @@
 // Handles ServerMessage messages.
 import { ProtoSocket } from "../../protojs/ProtoSocket.js";
-import { GetProfileURL, debug } from "../../Utils.js";
+import { GetProfileURL, debug } from "../Helpers/Helpers";
 import ServerGameMessageHandler from "./ServerGameMessageHandler";
 
 export default class ServerMessageHandler {
-  constructor(username, updateHandlers, updateExtendedGameState) {
-    this.username = username;
-    this.protoSocket = new ProtoSocket(GetProfileURL(this.username), this.handleMsg);
+  constructor(userId, updateHandlers, updateExtendedGameState) {
+    this.userId = userId;
+    this.protoSocket = new ProtoSocket(GetProfileURL(this.userId), this.handleMsg);
     this.updateHandlers = updateHandlers;
     this.updateExtendedGameState = updateExtendedGameState;
     this.gameId = "";
@@ -18,7 +18,7 @@ export default class ServerMessageHandler {
         this.gameId = params.gameId;
         this.updateHandlers({
           gameHandler: new ServerGameMessageHandler(
-            this.username,
+            this.userId,
             this.gameId,
             this.updateExtendedGameState
           )
@@ -35,7 +35,7 @@ export default class ServerMessageHandler {
       });
       this.updateHandlers({
         gameHandler: new ServerGameMessageHandler(
-          this.username,
+          this.userId,
           this.gameId,
           this.updateExtendedGameState
         )
@@ -46,7 +46,7 @@ export default class ServerMessageHandler {
   JoinTable = tableID => {
     this.protoSocket.send("JoinTable", {
       tableID: tableID,
-      username: this.username,
+      username: this.userId,
       decklist: []
     });
   };
@@ -54,7 +54,7 @@ export default class ServerMessageHandler {
   RegisterGameConnection = () => {
     this.protoSocket.send("RegisterGameConnection", {
       gameID: this.gameId,
-      username: this.username
+      username: this.userId
     });
   };
 }

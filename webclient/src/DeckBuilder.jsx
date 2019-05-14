@@ -9,8 +9,8 @@ import Center from "react-center";
 import { connect } from "react-redux";
 
 import CardDisplay from "./Components/Card/CardDisplay";
-import { copy, spliceToSubarrays } from "./Utils";
-import { toCollectionArray } from "./Components/Constants/Constants"
+import { copy, spliceToSubarrays } from "./Components/Helpers/Helpers";
+import { toCollectionArray } from "./Components/Helpers/Constants"
 
 const mapStateToProps = state => {
   return { collection: state.collection };

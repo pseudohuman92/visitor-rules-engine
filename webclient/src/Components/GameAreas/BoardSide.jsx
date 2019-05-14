@@ -5,7 +5,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import { connect } from "react-redux";
 
 import PlayingCard from "../Card/PlayingCard";
-import { ItemTypes } from "../Constants/Constants";
+import { ItemTypes } from "../Helpers/Constants";
 
 import "../../css/Board.css";
 import "../../css/Utils.css";

@@ -1,13 +1,14 @@
 import { GameProtoSocket } from "../../protojs/ProtoSocket";
-import { GamePhases, toGamePhase, toSelectFromType } from "../Constants/Constants";
-import { GetGameURL } from "../../Utils";
+import { GamePhases } from "../Helpers/Constants";
+import { toGamePhase, toSelectFromType } from "../Helpers/Helpers";
+import { GetGameURL } from "../Helpers/Helpers";
 
 export default class ServerGameMessageHandler {
-  constructor(username, gameId, updateExtendedGameState) {
-    this.username = username;
+  constructor(userId, gameId, updateExtendedGameState) {
+    this.userId = userId;
     this.updateExtendedGameState = updateExtendedGameState;
     this.gameId = gameId;
-    this.protoSocket = new GameProtoSocket(GetGameURL(username, gameId), this.handleMsg);
+    this.protoSocket = new GameProtoSocket(GetGameURL(userId, gameId), this.handleMsg);
   }
 
   //This is a message handler for ServerGameMessage messages
@@ -60,34 +61,34 @@ export default class ServerGameMessageHandler {
   };
 
   Pass = () => {
-    this.send("Pass", { gameID: this.gameId, username: this.username });
+    this.send("Pass", { gameID: this.gameId, username: this.userId });
   };
 
   Mulligan = () => {
     this.send("Mulligan", {
       gameID: this.gameId,
-      username: this.username
+      username: this.userId
     });
   };
 
   Keep = () => {
     this.send("Keep", {
       gameID: this.gameId,
-      username: this.username
+      username: this.userId
     });
   };
 
   Concede = () => {
     this.send("Concede", {
       gameID: this.gameId,
-      username: this.username
+      username: this.userId
     });
   };
 
   PlayCard = cardID => {
     this.send("PlayCard", {
       gameID: this.gameId,
-      username: this.username,
+      username: this.userId,
       cardID: cardID
     });
   };
@@ -95,7 +96,7 @@ export default class ServerGameMessageHandler {
   ActivateCard = cardID => {
     this.send("ActivateCard", {
       gameID: this.gameId,
-      username: this.username,
+      username: this.userId,
       cardID: cardID
     });
   };
@@ -103,7 +104,7 @@ export default class ServerGameMessageHandler {
   StudyCard = cardID => {
     this.send("StudyCard", {
       gameID: this.gameId,
-      username: this.username,
+      username: this.userId,
       cardID: cardID
     });
   };

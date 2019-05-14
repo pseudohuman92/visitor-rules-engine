@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import {GamePhases} from "../Constants/Constants";
+import {GamePhases} from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {

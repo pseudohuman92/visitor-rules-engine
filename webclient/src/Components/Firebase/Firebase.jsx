@@ -1,7 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { getNewUserCollection } from "../Constants/Constants";
+import { newUserCollection } from "../Helpers/Constants";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -38,7 +38,7 @@ class Firebase {
 
   createNewCollection = () => {
     let coll = this.db.collection("collections").doc();
-    coll.set({ cards: getNewUserCollection() });
+    coll.set({ cards: newUserCollection });
     return coll;
   };
 

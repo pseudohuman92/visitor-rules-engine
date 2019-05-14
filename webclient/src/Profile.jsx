@@ -11,13 +11,14 @@ import { connect } from "react-redux";
 import PlayArea from "./Components/GameAreas/PlayArea";
 import DeckBuilder from "./DeckBuilder";
 import OpenPacks from "./OpenPacks";
-import { toKnowledgeCost } from "./Components/Constants/Constants";
+import { toKnowledgeCost } from "./Components/Helpers/Constants";
 import { mapDispatchToProps } from "./Components/Redux/Store";
 import ServerMessageHandler from "./Components/MessageHandlers/ServerMessageHandler";
 import { withHandlers } from "./Components/MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
-  return { username: state.username };
+  return { username: state.username,
+           userId : state.authUser.user.uid };
 };
 
 class Profile extends Component {
@@ -27,8 +28,8 @@ class Profile extends Component {
   }
 
   play = event => {
-    const {username, updateHandlers, updateExtendedGameState} = this.props;
-    updateHandlers({serverMessage : new ServerMessageHandler(username, updateHandlers, updateExtendedGameState)});
+    const {userId, updateHandlers, updateExtendedGameState} = this.props;
+    updateHandlers({serverMessage : new ServerMessageHandler(userId, updateHandlers, updateExtendedGameState)});
     this.setState({ value: 1 });
   }
 

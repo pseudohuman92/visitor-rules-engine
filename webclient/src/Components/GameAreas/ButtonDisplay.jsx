@@ -7,7 +7,8 @@ import { connect } from "react-redux";
 
 import proto from "../../protojs/compiled.js";
 
-import { GamePhases, IsSelectCardPhase } from "../Constants/Constants";
+import { GamePhases } from "../Helpers/Constants";
+import { IsSelectCardPhase } from "../Helpers/Helpers";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
