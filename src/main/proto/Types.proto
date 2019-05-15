@@ -84,6 +84,7 @@ message Player {
     int32 reflect = 11;
     int32 shield = 12;
     int32 handSize = 13;
+    int32 health = 14;
 }
 
 message GameState {

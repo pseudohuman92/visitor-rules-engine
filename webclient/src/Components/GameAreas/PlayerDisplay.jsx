@@ -18,6 +18,7 @@ const mapStateToProps = state => {
     playerScrapyard: state.extendedGameState.game.player.scrapyard,
     playerVoid: state.extendedGameState.game.player.void,
     playerHand: state.extendedGameState.game.player.hand,
+    playerHealth: state.extendedGameState.game.player.health,
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,
@@ -25,6 +26,7 @@ const mapStateToProps = state => {
     opponentScrapyard: state.extendedGameState.game.opponent.scrapyard,
     opponentVoid: state.extendedGameState.game.opponent.void,
     opponentHandSize: state.extendedGameState.game.opponent.handSize,
+    opponentHealth: state.extendedGameState.game.opponent.health,
     selectedCards: state.extendedGameState.selectedCards,
     selectableCards: state.extendedGameState.selectableCards,
     displayTargets: state.extendedGameState.targets,
@@ -62,6 +64,8 @@ class PlayerDisplay extends React.Component {
       opponentVoid,
       playerHand,
       opponentHandSize,
+      playerHealth,
+      opponentHealth,
       selectedCards,
       selectableCards,
       displayTargets,
@@ -76,6 +80,7 @@ class PlayerDisplay extends React.Component {
     const scrapyard = isPlayer ? playerScrapyard : opponentScrapyard;
     const void_ = isPlayer ? playerVoid : opponentVoid;
     const handSize = isPlayer ? playerHand.length : opponentHandSize;
+    const health = isPlayer ? playerHealth : opponentHealth;
 
     const selectable = selectableCards.includes(id);
     const selected = selectedCards.includes(id);
@@ -161,6 +166,15 @@ class PlayerDisplay extends React.Component {
               style={{ padding: "0 5% 0 5%", height: "100%" }}
             >
               {name}
+            </Textfit>
+          </Grid>
+          <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
+            <Textfit
+              mode="single"
+              forceSingleModeWidth={false}
+              style={{ padding: "0 5% 0 5%", height: "100%" }}
+            >
+              Health: {health}
             </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{ height: "20%" }}>

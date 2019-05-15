@@ -195,6 +195,7 @@ public class Player implements Serializable, Damageable {
                 .setShield(shield)
                 .setReflect(reflect)
                 .setHandSize(hand.size())
+                .setHealth(health)
                 .addAllHand(hand.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
@@ -218,6 +219,7 @@ public class Player implements Serializable, Damageable {
                 .setHandSize(hand.size())
                 .setShield(shield)
                 .setReflect(reflect)
+                .setHealth(health)
                 .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));

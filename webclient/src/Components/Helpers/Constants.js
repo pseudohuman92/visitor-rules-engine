@@ -74,7 +74,8 @@ const initialPlayer = {
   void: [],
   knowledgePool: [],
   shield: 0,
-  reflect: 0
+  reflect: 0,
+  health: 0
 };
 
 const initialGame = {
