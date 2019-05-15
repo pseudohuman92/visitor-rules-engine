@@ -22,7 +22,7 @@ public class UA01 extends Spell {
     UUID target; 
     
     public UA01(String owner) {
-        super("UA01", 1, new Hashmap(BLUE, 2), "Purge all copies of a target card from your scrapyard. Opponent Purge as many cards.", owner);
+        super("UA01", 1, new Hashmap(BLUE, 2), "Purge all copies of a target card from your scrapyard. Deal that many damage.", owner);
     }
     
     @Override
@@ -44,7 +44,8 @@ public class UA01 extends Spell {
             Card c = game.getCard(target);
             Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
             game.putTo(controller, cards, "void");
-            game.damagePlayer(game.getOpponentName(controller), cards.size());
+            UUID target = game.selectDamageTargets(controller, 1, false).get(0);
+            game.dealDamage(target, cards.size());
         }
     }    
 }

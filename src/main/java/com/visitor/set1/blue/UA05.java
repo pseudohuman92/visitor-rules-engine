@@ -26,7 +26,7 @@ public class UA05 extends Spell {
     
     public UA05(String owner) {
         super("UA05", 1, new Hashmap(BLUE, 2), 
-                "Additional Cost - Purge 5 items from your scrapyard. Transform target item you control into a copy of target item in your void.", owner);
+                "Additional Cost - Purge 3 items from your scrapyard. Transform target item you control into a copy of target item in your void.", owner);
     }
     
     @Override
@@ -50,14 +50,14 @@ public class UA05 extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        if(targets.subList(0, 5).parallelStream().allMatch(i -> { return game.isIn(controller, i, "scrapyard");})
-            && game.isIn(controller, targets.get(5), "void")
-            && game.isIn(controller, targets.get(6), "play")){
+        if(targets.subList(0, 3).parallelStream().allMatch(i -> { return game.isIn(controller, i, "scrapyard");})
+            && game.isIn(controller, targets.get(3), "void")
+            && game.isIn(controller, targets.get(4), "play")){
             try {
-                Arraylist<Card> fromScrap = game.extractAll(targets.subList(0, 5));
+                Arraylist<Card> fromScrap = game.extractAll(targets.subList(0, 3));
                 game.putTo(controller, fromScrap, "void");
-                Card voidCard = game.getCard(targets.get(5));
-                Card playCard = game.getCard(targets.get(6));
+                Card voidCard = game.getCard(targets.get(3));
+                Card playCard = game.getCard(targets.get(4));
                 Card newCard = voidCard.getClass().getDeclaredConstructor(String.class).newInstance(playCard.controller);
                 newCard.copyPropertiesFrom(playCard);
                 game.replaceWith(playCard, newCard);

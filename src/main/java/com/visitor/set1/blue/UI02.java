@@ -14,6 +14,7 @@ import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import java.util.UUID;
 
 
 /**
@@ -24,7 +25,7 @@ public class UI02 extends Item {
     
     public UI02 (String owner){
         super("UI02", 2, new Hashmap(BLUE, 1), 
-                "Shuffle 3 Junk into your deck, Activate: Opponent purges 3.", owner);
+                "Shuffle 3 Junk into your deck, Activate: Deal 3 damage.", owner);
         subtypes.add("Kit");
     }
 
@@ -41,8 +42,12 @@ public class UI02 extends Item {
         junks.add(new Junk(controller));
         game.shuffleIntoDeck(controller, junks);
         game.deplete(id);
-        game.addToStack(new Activation(controller, game.getOpponentName(controller) + " purges 3",
-            (x) -> { game.damagePlayer(game.getOpponentName(controller), 3);
-        }));
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
+        game.addToStack(new Activation (controller,
+            "Deal 3 damage",
+            (y) -> {
+                game.dealDamage(target, 3);
+            }, new Arraylist<>(target).putIn(id))
+        );
     }
 }

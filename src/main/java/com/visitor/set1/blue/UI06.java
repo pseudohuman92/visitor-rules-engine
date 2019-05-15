@@ -11,6 +11,7 @@ import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
+import java.util.UUID;
 
 
 /**
@@ -26,13 +27,14 @@ public class UI06 extends Item{
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasCardsIn(controller, "hand", 1);
+        return game.hasCardsIn(controller, "hand", 1) && game.hasCardsIn(controller, "scrapyard", 1);
     }
     
     @Override
     public void activate(Game game) {
         game.discard(controller, 1);
-        game.damageSelf(controller, 1);
+        UUID target = game.selectFromZone(controller, "scrapyard", c->{return true;}, 1, false).get(0);
+        game.purge(controller, target);
         game.addToStack(new Activation(controller, controller + " gains 1 energy",
                 (x) -> { game.addEnergy(controller, 1); }));
     }

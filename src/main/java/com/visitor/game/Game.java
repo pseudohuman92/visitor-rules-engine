@@ -339,7 +339,7 @@ public class Game {
         players.get(userId).hand.add(extractCard(id));
     }
     
-    public void purgeByID(String userId, UUID cardID) {
+    public void purge(String userId, UUID cardID) {
         players.get(userId).voidPile.add(extractCard(id));
     }
 
