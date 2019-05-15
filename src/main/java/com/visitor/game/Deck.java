@@ -17,10 +17,10 @@ import java.util.Scanner;
  */
 public class Deck extends Arraylist<Card> implements Serializable {
 
-    public Deck(String username){
+    public Deck(String userId){
     }
 
-    public Deck(File file, String username) {
+    public Deck(File file, String userId) {
 
         Scanner deckFile = null;
         try {

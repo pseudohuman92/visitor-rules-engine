@@ -36,14 +36,14 @@ class Firebase {
   collection = cid => this.db.doc(`collections/${cid}`);
   collections = () => this.db.collection("collections");
 
-  createNewCollection = () => {
+  createNewCollection = cards => {
     let coll = this.db.collection("collections").doc();
-    coll.set({ cards: newUserCollection });
+    coll.set({ cards:  cards});
     return coll;
   };
 
   createNewUser = (uid, username) => {
-    let collection = this.createNewCollection();
+    let collection = this.createNewCollection(newUserCollection);
     console.log("Collection: ", collection);
     console.log("ID: ", collection.id);
     this.user(uid).set(
@@ -60,25 +60,36 @@ class Firebase {
     );
   };
 
-  fetchUserData = (uid, setState) => {
+  setUserData = (uid, updateState) => {
     this.user(uid).get().then(user => {
       let data = user.data();
       this.collection(data.collectionId).get().then(coll => {
-        setState (data);
-        setState ({collection: coll.data().cards});
+        updateState (data);
+        updateState ({collection: coll.data().cards});
       });
     });
   };
 
-  fetchDeck = (deckId, setState) => {
+  //TODO Fix this. Return doesn't work with async
+  fetchDeck = deckId => {
+    let ret = {};
     this.deck(deckId).get().then(deck => {
       let data = deck.data();
       this.collection(data.collectionId).get().then(coll => {
         let cards = coll.data().cards;
-        return ({name: data.name, cards: cards});
+        ret = {name: data.name, cards: cards};
       });
     });
+    return ret;
   };
+
+  setOpponentUsername = (uid, updateExtendedGameState) => {
+    this.user(uid).get().then(user => {
+      let data = user.data();
+      updateExtendedGameState({opponentUsername: data.username});
+    });
+  };
+
 }
 
 export default Firebase;

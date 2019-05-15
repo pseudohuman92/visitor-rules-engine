@@ -41,6 +41,6 @@ public class RA05 extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        game.purge(game.getOpponentName(controller), 4);
+        game.damagePlayer(game.getOpponentName(controller), 4);
     }    
 }

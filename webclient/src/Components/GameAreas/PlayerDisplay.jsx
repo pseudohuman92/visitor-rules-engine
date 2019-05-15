@@ -8,17 +8,19 @@ import Image from "react-image";
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
 import { mapDispatchToProps } from "../Redux/Store";
+import { withFirebase } from "../Firebase";
 
 const mapStateToProps = state => {
   return {
     playerId: state.extendedGameState.game.player.id,
-    playerName: state.extendedGameState.game.player.name,
+    playerName: state.username,
     playerDeckSize: state.extendedGameState.game.player.deckSize,
     playerScrapyard: state.extendedGameState.game.player.scrapyard,
     playerVoid: state.extendedGameState.game.player.void,
     playerHand: state.extendedGameState.game.player.hand,
     opponentId: state.extendedGameState.game.opponent.id,
-    opponentName: state.extendedGameState.game.opponent.name,
+    opponentUserId: state.extendedGameState.game.opponent.userId,
+    opponentName: state.extendedGameState.opponentUsername,
     opponentDeckSize: state.extendedGameState.game.opponent.deckSize,
     opponentScrapyard: state.extendedGameState.game.opponent.scrapyard,
     opponentVoid: state.extendedGameState.game.opponent.void,
@@ -26,12 +28,25 @@ const mapStateToProps = state => {
     selectedCards: state.extendedGameState.selectedCards,
     selectableCards: state.extendedGameState.selectableCards,
     displayTargets: state.extendedGameState.targets,
-    phase : state.extendedGameState.phase,
-    selectCountMax: state.extendedGameState.selectCountMax,
+    phase: state.extendedGameState.phase,
+    selectCountMax: state.extendedGameState.selectCountMax
   };
 };
 
 class PlayerDisplay extends React.Component {
+  componentDidMount() {
+    const {
+      isPlayer,
+      opponentName,
+      opponentUserId,
+      firebase,
+      updateExtendedGameState
+    } = this.props;
+    if (!isPlayer && opponentName === "") {
+      firebase.setOpponentUsername(opponentUserId, updateExtendedGameState);
+    }
+  }
+
   render() {
     const {
       isPlayer,
@@ -98,10 +113,10 @@ class PlayerDisplay extends React.Component {
 
     let unselect = event => {
       let selected = [...selectedCards];
-  
+
       if (selected.includes(id)) {
         selected.splice(selected.indexOf(id), 1);
-        this.props.updateExtendedGameState({ 
+        this.props.updateExtendedGameState({
           selectedCards: selected
         });
       }
@@ -119,12 +134,14 @@ class PlayerDisplay extends React.Component {
       clickHandler = unselect;
     }
 
-
     return (
       <Paper className="player-display">
         <Grid container spacing={0} style={{ height: "100%" }}>
           <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
-            <div style={{backgroundColor: borderColor}} onClick={clickHandler}>
+            <div
+              style={{ backgroundColor: borderColor }}
+              onClick={clickHandler}
+            >
               <Image
                 src={[
                   process.env.PUBLIC_URL +
@@ -203,4 +220,4 @@ class PlayerDisplay extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PlayerDisplay);
+)(withFirebase(PlayerDisplay));

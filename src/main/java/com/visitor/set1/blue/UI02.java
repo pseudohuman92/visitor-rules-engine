@@ -42,7 +42,7 @@ public class UI02 extends Item {
         game.shuffleIntoDeck(controller, junks);
         game.deplete(id);
         game.addToStack(new Activation(controller, game.getOpponentName(controller) + " purges 3",
-            (x) -> { game.purge(game.getOpponentName(controller), 3);
+            (x) -> { game.damagePlayer(game.getOpponentName(controller), 3);
         }));
     }
 }

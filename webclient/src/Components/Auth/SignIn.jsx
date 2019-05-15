@@ -39,7 +39,7 @@ class SignIn extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
         updateState({ authUser: authUser });
-        firebase.fetchUserData(authUser.user.uid, updateState);
+        firebase.setUserData(authUser.user.uid, updateState);
         this.setState({ value: 1 });
       })
       .catch(error => {

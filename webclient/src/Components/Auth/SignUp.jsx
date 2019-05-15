@@ -38,7 +38,7 @@ class SignUp extends Component {
       .then(authUser => {
         updateState({ authUser: authUser});
         firebase.createNewUser(authUser.user.uid, username);
-        firebase.fetchUserData(authUser.user.uid, updateState);
+        firebase.setUserData(authUser.user.uid, updateState);
         this.setState({ value: 1 });
       })
       .catch(error => {

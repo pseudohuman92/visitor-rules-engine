@@ -46,6 +46,6 @@ public class RA01 extends Spell {
             Card c = game.extractCard(target);    
             game.putTo(c.controller, c, "hand");
         }
-        game.purge(game.getOpponentName(controller), 2);
+        game.damagePlayer(game.getOpponentName(controller), 2);
     }    
 }

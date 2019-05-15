@@ -20,7 +20,8 @@ export default class ServerMessageHandler {
           gameHandler: new ServerGameMessageHandler(
             this.userId,
             this.gameId,
-            this.updateExtendedGameState
+            this.updateExtendedGameState,
+            true
           )
         });
       } else {
@@ -37,7 +38,8 @@ export default class ServerMessageHandler {
         gameHandler: new ServerGameMessageHandler(
           this.userId,
           this.gameId,
-          this.updateExtendedGameState
+          this.updateExtendedGameState,
+          false
         )
       });
     }
@@ -46,7 +48,6 @@ export default class ServerMessageHandler {
   JoinTable = tableID => {
     this.protoSocket.send("JoinTable", {
       tableID: tableID,
-      username: this.userId,
       decklist: []
     });
   };
@@ -54,7 +55,6 @@ export default class ServerMessageHandler {
   RegisterGameConnection = () => {
     this.protoSocket.send("RegisterGameConnection", {
       gameID: this.gameId,
-      username: this.userId
     });
   };
 }

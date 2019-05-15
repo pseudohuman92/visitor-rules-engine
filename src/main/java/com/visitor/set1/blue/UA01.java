@@ -44,7 +44,7 @@ public class UA01 extends Spell {
             Card c = game.getCard(target);
             Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
             game.putTo(controller, cards, "void");
-            game.purge(game.getOpponentName(controller), cards.size());
+            game.damagePlayer(game.getOpponentName(controller), cards.size());
         }
     }    
 }

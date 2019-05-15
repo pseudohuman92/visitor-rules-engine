@@ -33,12 +33,12 @@ public class RI07 extends Item {
     @Override
     public void activate(Game game) {
         int x = game.selectX(controller, Math.min(game.getEnergy(controller), game.getZone(controller, "deck").size()));
-        game.purgeSelf(controller, x);
+        game.damageSelf(controller, x);
         game.spendEnergy(controller, x);
         game.deplete(id);
         game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
         (y) -> {
-            game.purge(game.getOpponentName(controller), x);
+            game.damagePlayer(game.getOpponentName(controller), x);
         }));
     }
 }

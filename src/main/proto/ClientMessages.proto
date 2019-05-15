@@ -4,50 +4,32 @@ option java_package = "com.visitor.protocol";
 /**
  * Messages from client to server.
  */
-message RegisterUser {
-    string username = 1;
-}
-
-message Login {
-    string username = 1;
-}
-
-message Logout {
-    string username = 1;
-}
 
 message ChatMessage {
     string msg = 1;
 }
 
 message CreateTable {
-    string username = 1;
     repeated string decklist = 2;
 }
 
 message JoinTable {
     string tableID = 1;
-    string username = 2;
     repeated string decklist = 3;
 }
 
 message RegisterGameConnection {
     string gameID = 1;
-    string username = 2;
 }
 
 message RegisterInteractionConnection {
     string gameID = 1;
-    string username = 2;
 }
 
 
 
 message ClientMessage {
     oneof payload {
-        RegisterUser                    registerUser = 1;
-        Login                           login = 2;
-        Logout                          logout = 3;
         ChatMessage                     chatMessage = 4;
         CreateTable                     createTable = 5;
         JoinTable                       joinTable = 6;

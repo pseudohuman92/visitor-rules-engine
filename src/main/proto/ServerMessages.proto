@@ -9,10 +9,6 @@ message LoginResponse {
     string gameId = 1;
 }
 
-message RegisterUserResponse {
-    //TODO
-}
-
 message UpdateChatLog {
     repeated string chatLog = 1;
 }
@@ -32,7 +28,6 @@ message NewGame {
 message ServerMessage {
     oneof payload {
         LoginResponse           loginResponse = 2;
-        RegisterUserResponse    registerUserResponse = 3;
         UpdateChatLog           updateChatLog = 4;
         UpdateTableList         updateTableList = 5;
         UpdatePlayerList        updatePlayerList = 6;

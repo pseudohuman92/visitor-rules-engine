@@ -4,10 +4,11 @@ import { toGamePhase, toSelectFromType } from "../Helpers/Helpers";
 import { GetGameURL } from "../Helpers/Helpers";
 
 export default class ServerGameMessageHandler {
-  constructor(userId, gameId, updateExtendedGameState) {
+  constructor(userId, gameId, updateExtendedGameState, continueGame) {
     this.userId = userId;
     this.updateExtendedGameState = updateExtendedGameState;
     this.gameId = gameId;
+    this.continueGame = continueGame;
     this.protoSocket = new GameProtoSocket(GetGameURL(userId, gameId), this.handleMsg);
   }
 
@@ -52,6 +53,10 @@ export default class ServerGameMessageHandler {
     }
     newState["game"] = params.game;
     newState["selectedCards"] = [];
+    if (this.continueGame){
+      newState["gameInitialized"] = true;
+      this.continueGame = false;
+    }
 
     this.updateExtendedGameState(newState);
   };
@@ -61,57 +66,41 @@ export default class ServerGameMessageHandler {
   };
 
   Pass = () => {
-    this.send("Pass", { gameID: this.gameId, username: this.userId });
+    this.send("Pass", {});
   };
 
   Mulligan = () => {
-    this.send("Mulligan", {
-      gameID: this.gameId,
-      username: this.userId
-    });
+    this.send("Mulligan", {});
   };
 
   Keep = () => {
-    this.send("Keep", {
-      gameID: this.gameId,
-      username: this.userId
-    });
+    this.send("Keep", {});
   };
 
   Concede = () => {
-    this.send("Concede", {
-      gameID: this.gameId,
-      username: this.userId
-    });
+    this.send("Concede", {});
   };
 
   PlayCard = cardID => {
     this.send("PlayCard", {
-      gameID: this.gameId,
-      username: this.userId,
       cardID: cardID
     });
   };
 
   ActivateCard = cardID => {
     this.send("ActivateCard", {
-      gameID: this.gameId,
-      username: this.userId,
       cardID: cardID
     });
   };
 
   StudyCard = cardID => {
     this.send("StudyCard", {
-      gameID: this.gameId,
-      username: this.userId,
       cardID: cardID
     });
   };
 
   SelectDone = (phase, selectedCards) => {
     this.send("SelectFromResponse", {
-      gameID: this.gameId,
       messageType: toSelectFromType(phase),
       selectedCards: selectedCards
     });
@@ -125,7 +114,6 @@ export default class ServerGameMessageHandler {
   
   SelectXValue = xVal => {
     this.send("SelectXValueResponse", {
-      gameID: this.gameId,
       selectedXValue: xVal
     });
     this.props.updateExtendedGameState({ phase: GamePhases.DONE_SELECT });

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 import Board from "./Board";
 import Stack from "./Stack";
-import Altar from "./Altar";
+import StudyArea from "./StudyArea";
 import ResourceArea from "./ResourceArea";
 import StateDisplay from "./StateDisplay";
 
@@ -40,7 +40,7 @@ class PlayArea extends Component {
     //Auto keep function
     if (
       game.phase === proto.Phase.MULLIGAN &&
-      game.activePlayer === game.player.name &&
+      game.activePlayer === game.player.userId &&
       game.player.hand.length === 0
     ) {
       gameHandler.Keep();
@@ -50,7 +50,7 @@ class PlayArea extends Component {
     if (
       game.phase !== proto.Phase.MULLIGAN &&
       phase === GamePhases.UPDATE_GAME &&
-      game.activePlayer === game.player.name &&
+      game.activePlayer === game.player.userId &&
       game.canStudy.length === 0 &&
       game.canActivate.length === 0 &&
       game.canPlay.length === 0
@@ -68,7 +68,7 @@ class PlayArea extends Component {
     const { phase, game } = this.props;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
-      game.activePlayer === game.player.name &&
+      game.activePlayer === game.player.userId &&
       game.canStudy.length > 0;
 
     return (
@@ -113,7 +113,7 @@ class PlayArea extends Component {
                   <ResourceArea isPlayer={true} />
                 </Grid>
                 <Grid item xs={12} style={{ height: (hasStudyable ? "30%" : "15%") }}>
-                  <Altar />
+                  <StudyArea />
                 </Grid>
               </Grid>
             </Grid>

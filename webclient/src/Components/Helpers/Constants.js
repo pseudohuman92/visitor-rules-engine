@@ -62,8 +62,8 @@ export const fontMap = {
 };
 
 const initialPlayer = {
-  id: "player",
-  name: "player",
+  id: "",
+  userId: "",
   deckSize: 0,
   energy: 0,
   maxEnergy: 0,
@@ -78,7 +78,7 @@ const initialPlayer = {
 };
 
 const initialGame = {
-  id: "Initial Game",
+  id: "",
   player: initialPlayer,
   opponent: initialPlayer,
   turnPlayer: initialPlayer.id,
@@ -103,7 +103,8 @@ const initialExtendedGameState = {
   upTo: false,
   targets: [],
   autoPass: false,
-  win: false
+  win: false,
+  opponentUsername: "",
 };
 
 export const initialState = {

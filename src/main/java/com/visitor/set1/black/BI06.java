@@ -34,7 +34,7 @@ public class BI06 extends Item {
         game.addToStack(new Activation (controller,
             game.getOpponentName(controller) + " purges 3",
             (x) -> {
-                game.purge(game.getOpponentName(controller), 3);
+                game.damagePlayer(game.getOpponentName(controller), 3);
             }));
     }
 }

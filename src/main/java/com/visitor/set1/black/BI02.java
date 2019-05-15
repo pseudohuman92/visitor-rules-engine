@@ -41,6 +41,6 @@ public class BI02 extends Item {
         String oppName = game.getOpponentName(controller);
         game.addToStack(new Activation(controller, 
             game.getOpponentName(controller) + (game.ownedByOpponent(target)?" purges 10":" purges 5"),
-            (x) -> { game.purge(oppName, (game.ownedByOpponent(target)?10:5)); }));
+            (x) -> { game.damagePlayer(oppName, (game.ownedByOpponent(target)?10:5)); }));
     }
 }

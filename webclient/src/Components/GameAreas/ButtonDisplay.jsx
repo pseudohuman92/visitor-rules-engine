@@ -16,7 +16,9 @@ import "../../css/Utils.css";
 const mapStateToProps = state => {
   return {
     gamePhase: state.extendedGameState.game.phase,
-    playerName: state.extendedGameState.game.player.name,
+    playerName: state.username,
+    playerUserId: state.extendedGameState.game.player.userId,
+    opponentName: state.extendedGameState.opponentUsername,
     activePlayer: state.extendedGameState.game.activePlayer,
     turnPlayer: state.extendedGameState.game.turnPlayer,
     phase: state.extendedGameState.phase,
@@ -54,10 +56,12 @@ class ButtonDisplay extends Component {
       phase,
       gamePhase,
       playerName,
+      playerUserId,
       activePlayer,
       turnPlayer,
       upTo,
-      autoPass
+      autoPass,
+      opponentName
     } = this.props;
     const gamePhaseStr = {
       0: "NOPHASE",
@@ -68,7 +72,10 @@ class ButtonDisplay extends Component {
       5: "END"
     }[gamePhase];
 
-    const amIActive = activePlayer === playerName;
+
+    const amIActive = activePlayer === playerUserId;
+    const actPlayer = amIActive ? playerName : opponentName;
+    const turPlayer = turnPlayer === playerUserId ? playerName : opponentName;
 
     const activeDisplay = (
       <Grid container spacing={0} style={{ height: "100%" }}>
@@ -87,7 +94,7 @@ class ButtonDisplay extends Component {
             forceSingleModeWidth={false}
             style={{ margin: "5%", height: "100%" }}
           >
-            Turn: {turnPlayer}
+            Turn: {turPlayer}
           </Textfit>
         </Grid>
         <Grid item xs={12} style={{ height: "33%" }}>
@@ -96,7 +103,7 @@ class ButtonDisplay extends Component {
             forceSingleModeWidth={false}
             style={{ margin: "5%", height: "100%" }}
           >
-            Active: {activePlayer}
+            Active: {actPlayer}
           </Textfit>
         </Grid>
       </Grid>

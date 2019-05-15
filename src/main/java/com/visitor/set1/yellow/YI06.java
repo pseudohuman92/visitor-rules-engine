@@ -41,7 +41,7 @@ public class YI06 extends Item {
         game.deplete(id);
         game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
         (y) -> {
-            game.purge(game.getOpponentName(controller), x);
+            game.damagePlayer(game.getOpponentName(controller), x);
         }));
     }
 }

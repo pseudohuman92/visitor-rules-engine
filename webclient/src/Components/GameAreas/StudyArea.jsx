@@ -29,7 +29,7 @@ class Altar extends Component {
     const { connectDropTarget, phase, game } = this.props;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
-      game.activePlayer === game.player.name &&
+      game.activePlayer === game.player.userId &&
       game.canStudy.length > 0;
 
     const style = {height: "100%"};

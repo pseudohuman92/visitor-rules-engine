@@ -16,8 +16,6 @@ $root.PlayCard = (function() {
      * Properties of a PlayCard.
      * @exports IPlayCard
      * @interface IPlayCard
-     * @property {string|null} [gameID] PlayCard gameID
-     * @property {string|null} [username] PlayCard username
      * @property {string|null} [cardID] PlayCard cardID
      */
 
@@ -35,22 +33,6 @@ $root.PlayCard = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * PlayCard gameID.
-     * @member {string} gameID
-     * @memberof PlayCard
-     * @instance
-     */
-    PlayCard.prototype.gameID = "";
-
-    /**
-     * PlayCard username.
-     * @member {string} username
-     * @memberof PlayCard
-     * @instance
-     */
-    PlayCard.prototype.username = "";
 
     /**
      * PlayCard cardID.
@@ -84,10 +66,6 @@ $root.PlayCard = (function() {
     PlayCard.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.cardID);
         return writer;
@@ -124,12 +102,6 @@ $root.PlayCard = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             case 3:
                 message.cardID = reader.string();
                 break;
@@ -168,12 +140,6 @@ $root.PlayCard = (function() {
     PlayCard.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             if (!$util.isString(message.cardID))
                 return "cardID: string expected";
@@ -192,10 +158,6 @@ $root.PlayCard = (function() {
         if (object instanceof $root.PlayCard)
             return object;
         var message = new $root.PlayCard();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
         if (object.cardID != null)
             message.cardID = String(object.cardID);
         return message;
@@ -214,15 +176,8 @@ $root.PlayCard = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
+        if (options.defaults)
             object.cardID = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             object.cardID = message.cardID;
         return object;
@@ -248,8 +203,6 @@ $root.ActivateCard = (function() {
      * Properties of an ActivateCard.
      * @exports IActivateCard
      * @interface IActivateCard
-     * @property {string|null} [gameID] ActivateCard gameID
-     * @property {string|null} [username] ActivateCard username
      * @property {string|null} [cardID] ActivateCard cardID
      */
 
@@ -267,22 +220,6 @@ $root.ActivateCard = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * ActivateCard gameID.
-     * @member {string} gameID
-     * @memberof ActivateCard
-     * @instance
-     */
-    ActivateCard.prototype.gameID = "";
-
-    /**
-     * ActivateCard username.
-     * @member {string} username
-     * @memberof ActivateCard
-     * @instance
-     */
-    ActivateCard.prototype.username = "";
 
     /**
      * ActivateCard cardID.
@@ -316,10 +253,6 @@ $root.ActivateCard = (function() {
     ActivateCard.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.cardID);
         return writer;
@@ -356,12 +289,6 @@ $root.ActivateCard = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             case 3:
                 message.cardID = reader.string();
                 break;
@@ -400,12 +327,6 @@ $root.ActivateCard = (function() {
     ActivateCard.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             if (!$util.isString(message.cardID))
                 return "cardID: string expected";
@@ -424,10 +345,6 @@ $root.ActivateCard = (function() {
         if (object instanceof $root.ActivateCard)
             return object;
         var message = new $root.ActivateCard();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
         if (object.cardID != null)
             message.cardID = String(object.cardID);
         return message;
@@ -446,15 +363,8 @@ $root.ActivateCard = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
+        if (options.defaults)
             object.cardID = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             object.cardID = message.cardID;
         return object;
@@ -480,8 +390,6 @@ $root.StudyCard = (function() {
      * Properties of a StudyCard.
      * @exports IStudyCard
      * @interface IStudyCard
-     * @property {string|null} [gameID] StudyCard gameID
-     * @property {string|null} [username] StudyCard username
      * @property {string|null} [cardID] StudyCard cardID
      */
 
@@ -499,22 +407,6 @@ $root.StudyCard = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * StudyCard gameID.
-     * @member {string} gameID
-     * @memberof StudyCard
-     * @instance
-     */
-    StudyCard.prototype.gameID = "";
-
-    /**
-     * StudyCard username.
-     * @member {string} username
-     * @memberof StudyCard
-     * @instance
-     */
-    StudyCard.prototype.username = "";
 
     /**
      * StudyCard cardID.
@@ -548,10 +440,6 @@ $root.StudyCard = (function() {
     StudyCard.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.cardID);
         return writer;
@@ -588,12 +476,6 @@ $root.StudyCard = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             case 3:
                 message.cardID = reader.string();
                 break;
@@ -632,12 +514,6 @@ $root.StudyCard = (function() {
     StudyCard.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             if (!$util.isString(message.cardID))
                 return "cardID: string expected";
@@ -656,10 +532,6 @@ $root.StudyCard = (function() {
         if (object instanceof $root.StudyCard)
             return object;
         var message = new $root.StudyCard();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
         if (object.cardID != null)
             message.cardID = String(object.cardID);
         return message;
@@ -678,15 +550,8 @@ $root.StudyCard = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
+        if (options.defaults)
             object.cardID = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         if (message.cardID != null && message.hasOwnProperty("cardID"))
             object.cardID = message.cardID;
         return object;
@@ -712,8 +577,6 @@ $root.Pass = (function() {
      * Properties of a Pass.
      * @exports IPass
      * @interface IPass
-     * @property {string|null} [gameID] Pass gameID
-     * @property {string|null} [username] Pass username
      */
 
     /**
@@ -730,22 +593,6 @@ $root.Pass = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * Pass gameID.
-     * @member {string} gameID
-     * @memberof Pass
-     * @instance
-     */
-    Pass.prototype.gameID = "";
-
-    /**
-     * Pass username.
-     * @member {string} username
-     * @memberof Pass
-     * @instance
-     */
-    Pass.prototype.username = "";
 
     /**
      * Creates a new Pass instance using the specified properties.
@@ -771,10 +618,6 @@ $root.Pass = (function() {
     Pass.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         return writer;
     };
 
@@ -809,12 +652,6 @@ $root.Pass = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -850,12 +687,6 @@ $root.Pass = (function() {
     Pass.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         return null;
     };
 
@@ -870,12 +701,7 @@ $root.Pass = (function() {
     Pass.fromObject = function fromObject(object) {
         if (object instanceof $root.Pass)
             return object;
-        var message = new $root.Pass();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
+        return new $root.Pass();
     };
 
     /**
@@ -887,19 +713,8 @@ $root.Pass = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Pass.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
+    Pass.toObject = function toObject() {
+        return {};
     };
 
     /**
@@ -922,8 +737,6 @@ $root.Mulligan = (function() {
      * Properties of a Mulligan.
      * @exports IMulligan
      * @interface IMulligan
-     * @property {string|null} [gameID] Mulligan gameID
-     * @property {string|null} [username] Mulligan username
      */
 
     /**
@@ -940,22 +753,6 @@ $root.Mulligan = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * Mulligan gameID.
-     * @member {string} gameID
-     * @memberof Mulligan
-     * @instance
-     */
-    Mulligan.prototype.gameID = "";
-
-    /**
-     * Mulligan username.
-     * @member {string} username
-     * @memberof Mulligan
-     * @instance
-     */
-    Mulligan.prototype.username = "";
 
     /**
      * Creates a new Mulligan instance using the specified properties.
@@ -981,10 +778,6 @@ $root.Mulligan = (function() {
     Mulligan.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         return writer;
     };
 
@@ -1019,12 +812,6 @@ $root.Mulligan = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -1060,12 +847,6 @@ $root.Mulligan = (function() {
     Mulligan.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         return null;
     };
 
@@ -1080,12 +861,7 @@ $root.Mulligan = (function() {
     Mulligan.fromObject = function fromObject(object) {
         if (object instanceof $root.Mulligan)
             return object;
-        var message = new $root.Mulligan();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
+        return new $root.Mulligan();
     };
 
     /**
@@ -1097,19 +873,8 @@ $root.Mulligan = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Mulligan.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
+    Mulligan.toObject = function toObject() {
+        return {};
     };
 
     /**
@@ -1132,8 +897,6 @@ $root.Keep = (function() {
      * Properties of a Keep.
      * @exports IKeep
      * @interface IKeep
-     * @property {string|null} [gameID] Keep gameID
-     * @property {string|null} [username] Keep username
      */
 
     /**
@@ -1150,22 +913,6 @@ $root.Keep = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * Keep gameID.
-     * @member {string} gameID
-     * @memberof Keep
-     * @instance
-     */
-    Keep.prototype.gameID = "";
-
-    /**
-     * Keep username.
-     * @member {string} username
-     * @memberof Keep
-     * @instance
-     */
-    Keep.prototype.username = "";
 
     /**
      * Creates a new Keep instance using the specified properties.
@@ -1191,10 +938,6 @@ $root.Keep = (function() {
     Keep.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         return writer;
     };
 
@@ -1229,12 +972,6 @@ $root.Keep = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -1270,12 +1007,6 @@ $root.Keep = (function() {
     Keep.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         return null;
     };
 
@@ -1290,12 +1021,7 @@ $root.Keep = (function() {
     Keep.fromObject = function fromObject(object) {
         if (object instanceof $root.Keep)
             return object;
-        var message = new $root.Keep();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
+        return new $root.Keep();
     };
 
     /**
@@ -1307,19 +1033,8 @@ $root.Keep = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Keep.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
+    Keep.toObject = function toObject() {
+        return {};
     };
 
     /**
@@ -1342,8 +1057,6 @@ $root.Concede = (function() {
      * Properties of a Concede.
      * @exports IConcede
      * @interface IConcede
-     * @property {string|null} [gameID] Concede gameID
-     * @property {string|null} [username] Concede username
      */
 
     /**
@@ -1360,22 +1073,6 @@ $root.Concede = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * Concede gameID.
-     * @member {string} gameID
-     * @memberof Concede
-     * @instance
-     */
-    Concede.prototype.gameID = "";
-
-    /**
-     * Concede username.
-     * @member {string} username
-     * @memberof Concede
-     * @instance
-     */
-    Concede.prototype.username = "";
 
     /**
      * Creates a new Concede instance using the specified properties.
@@ -1401,10 +1098,6 @@ $root.Concede = (function() {
     Concede.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         return writer;
     };
 
@@ -1439,12 +1132,6 @@ $root.Concede = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
-                break;
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -1480,12 +1167,6 @@ $root.Concede = (function() {
     Concede.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         return null;
     };
 
@@ -1500,12 +1181,7 @@ $root.Concede = (function() {
     Concede.fromObject = function fromObject(object) {
         if (object instanceof $root.Concede)
             return object;
-        var message = new $root.Concede();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
+        return new $root.Concede();
     };
 
     /**
@@ -1517,19 +1193,8 @@ $root.Concede = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Concede.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults) {
-            object.gameID = "";
-            object.username = "";
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
+    Concede.toObject = function toObject() {
+        return {};
     };
 
     /**
@@ -1552,7 +1217,6 @@ $root.OrderCardsResponse = (function() {
      * Properties of an OrderCardsResponse.
      * @exports IOrderCardsResponse
      * @interface IOrderCardsResponse
-     * @property {string|null} [gameID] OrderCardsResponse gameID
      * @property {Array.<string>|null} [orderedCards] OrderCardsResponse orderedCards
      */
 
@@ -1571,14 +1235,6 @@ $root.OrderCardsResponse = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * OrderCardsResponse gameID.
-     * @member {string} gameID
-     * @memberof OrderCardsResponse
-     * @instance
-     */
-    OrderCardsResponse.prototype.gameID = "";
 
     /**
      * OrderCardsResponse orderedCards.
@@ -1612,8 +1268,6 @@ $root.OrderCardsResponse = (function() {
     OrderCardsResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
         if (message.orderedCards != null && message.orderedCards.length)
             for (var i = 0; i < message.orderedCards.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.orderedCards[i]);
@@ -1651,9 +1305,6 @@ $root.OrderCardsResponse = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
             case 2:
                 if (!(message.orderedCards && message.orderedCards.length))
                     message.orderedCards = [];
@@ -1694,9 +1345,6 @@ $root.OrderCardsResponse = (function() {
     OrderCardsResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
         if (message.orderedCards != null && message.hasOwnProperty("orderedCards")) {
             if (!Array.isArray(message.orderedCards))
                 return "orderedCards: array expected";
@@ -1719,8 +1367,6 @@ $root.OrderCardsResponse = (function() {
         if (object instanceof $root.OrderCardsResponse)
             return object;
         var message = new $root.OrderCardsResponse();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
         if (object.orderedCards) {
             if (!Array.isArray(object.orderedCards))
                 throw TypeError(".OrderCardsResponse.orderedCards: array expected");
@@ -1746,10 +1392,6 @@ $root.OrderCardsResponse = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.orderedCards = [];
-        if (options.defaults)
-            object.gameID = "";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
         if (message.orderedCards && message.orderedCards.length) {
             object.orderedCards = [];
             for (var j = 0; j < message.orderedCards.length; ++j)
@@ -1779,7 +1421,6 @@ $root.SelectFromResponse = (function() {
      * @exports ISelectFromResponse
      * @interface ISelectFromResponse
      * @property {SelectFromType|null} [messageType] SelectFromResponse messageType
-     * @property {string|null} [gameID] SelectFromResponse gameID
      * @property {Array.<string>|null} [selectedCards] SelectFromResponse selectedCards
      */
 
@@ -1806,14 +1447,6 @@ $root.SelectFromResponse = (function() {
      * @instance
      */
     SelectFromResponse.prototype.messageType = 0;
-
-    /**
-     * SelectFromResponse gameID.
-     * @member {string} gameID
-     * @memberof SelectFromResponse
-     * @instance
-     */
-    SelectFromResponse.prototype.gameID = "";
 
     /**
      * SelectFromResponse selectedCards.
@@ -1849,8 +1482,6 @@ $root.SelectFromResponse = (function() {
             writer = $Writer.create();
         if (message.messageType != null && message.hasOwnProperty("messageType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.messageType);
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.gameID);
         if (message.selectedCards != null && message.selectedCards.length)
             for (var i = 0; i < message.selectedCards.length; ++i)
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.selectedCards[i]);
@@ -1890,9 +1521,6 @@ $root.SelectFromResponse = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.messageType = reader.int32();
-                break;
-            case 2:
-                message.gameID = reader.string();
                 break;
             case 3:
                 if (!(message.selectedCards && message.selectedCards.length))
@@ -1947,9 +1575,6 @@ $root.SelectFromResponse = (function() {
             case 7:
                 break;
             }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
         if (message.selectedCards != null && message.hasOwnProperty("selectedCards")) {
             if (!Array.isArray(message.selectedCards))
                 return "selectedCards: array expected";
@@ -2002,8 +1627,6 @@ $root.SelectFromResponse = (function() {
             message.messageType = 7;
             break;
         }
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
         if (object.selectedCards) {
             if (!Array.isArray(object.selectedCards))
                 throw TypeError(".SelectFromResponse.selectedCards: array expected");
@@ -2029,14 +1652,10 @@ $root.SelectFromResponse = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.selectedCards = [];
-        if (options.defaults) {
+        if (options.defaults)
             object.messageType = options.enums === String ? "NOTYPE" : 0;
-            object.gameID = "";
-        }
         if (message.messageType != null && message.hasOwnProperty("messageType"))
             object.messageType = options.enums === String ? $root.SelectFromType[message.messageType] : message.messageType;
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
         if (message.selectedCards && message.selectedCards.length) {
             object.selectedCards = [];
             for (var j = 0; j < message.selectedCards.length; ++j)
@@ -2065,7 +1684,6 @@ $root.SelectXValueResponse = (function() {
      * Properties of a SelectXValueResponse.
      * @exports ISelectXValueResponse
      * @interface ISelectXValueResponse
-     * @property {string|null} [gameID] SelectXValueResponse gameID
      * @property {number|null} [selectedXValue] SelectXValueResponse selectedXValue
      */
 
@@ -2083,14 +1701,6 @@ $root.SelectXValueResponse = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * SelectXValueResponse gameID.
-     * @member {string} gameID
-     * @memberof SelectXValueResponse
-     * @instance
-     */
-    SelectXValueResponse.prototype.gameID = "";
 
     /**
      * SelectXValueResponse selectedXValue.
@@ -2124,8 +1734,6 @@ $root.SelectXValueResponse = (function() {
     SelectXValueResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
         if (message.selectedXValue != null && message.hasOwnProperty("selectedXValue"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.selectedXValue);
         return writer;
@@ -2162,9 +1770,6 @@ $root.SelectXValueResponse = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
             case 2:
                 message.selectedXValue = reader.int32();
                 break;
@@ -2203,9 +1808,6 @@ $root.SelectXValueResponse = (function() {
     SelectXValueResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
         if (message.selectedXValue != null && message.hasOwnProperty("selectedXValue"))
             if (!$util.isInteger(message.selectedXValue))
                 return "selectedXValue: integer expected";
@@ -2224,8 +1826,6 @@ $root.SelectXValueResponse = (function() {
         if (object instanceof $root.SelectXValueResponse)
             return object;
         var message = new $root.SelectXValueResponse();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
         if (object.selectedXValue != null)
             message.selectedXValue = object.selectedXValue | 0;
         return message;
@@ -2244,12 +1844,8 @@ $root.SelectXValueResponse = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
-            object.gameID = "";
+        if (options.defaults)
             object.selectedXValue = 0;
-        }
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
         if (message.selectedXValue != null && message.hasOwnProperty("selectedXValue"))
             object.selectedXValue = message.selectedXValue;
         return object;
@@ -4079,7 +3675,7 @@ $root.Player = (function() {
      * @exports IPlayer
      * @interface IPlayer
      * @property {string|null} [id] Player id
-     * @property {string|null} [name] Player name
+     * @property {string|null} [userId] Player userId
      * @property {number|null} [deckSize] Player deckSize
      * @property {number|null} [energy] Player energy
      * @property {number|null} [maxEnergy] Player maxEnergy
@@ -4122,12 +3718,12 @@ $root.Player = (function() {
     Player.prototype.id = "";
 
     /**
-     * Player name.
-     * @member {string} name
+     * Player userId.
+     * @member {string} userId
      * @memberof Player
      * @instance
      */
-    Player.prototype.name = "";
+    Player.prototype.userId = "";
 
     /**
      * Player deckSize.
@@ -4243,8 +3839,8 @@ $root.Player = (function() {
             writer = $Writer.create();
         if (message.id != null && message.hasOwnProperty("id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.name != null && message.hasOwnProperty("name"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
         if (message.deckSize != null && message.hasOwnProperty("deckSize"))
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.deckSize);
         if (message.energy != null && message.hasOwnProperty("energy"))
@@ -4310,7 +3906,7 @@ $root.Player = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.name = reader.string();
+                message.userId = reader.string();
                 break;
             case 3:
                 message.deckSize = reader.int32();
@@ -4393,9 +3989,9 @@ $root.Player = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
-        if (message.name != null && message.hasOwnProperty("name"))
-            if (!$util.isString(message.name))
-                return "name: string expected";
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            if (!$util.isString(message.userId))
+                return "userId: string expected";
         if (message.deckSize != null && message.hasOwnProperty("deckSize"))
             if (!$util.isInteger(message.deckSize))
                 return "deckSize: integer expected";
@@ -4476,8 +4072,8 @@ $root.Player = (function() {
         var message = new $root.Player();
         if (object.id != null)
             message.id = String(object.id);
-        if (object.name != null)
-            message.name = String(object.name);
+        if (object.userId != null)
+            message.userId = String(object.userId);
         if (object.deckSize != null)
             message.deckSize = object.deckSize | 0;
         if (object.energy != null)
@@ -4565,7 +4161,7 @@ $root.Player = (function() {
         }
         if (options.defaults) {
             object.id = "";
-            object.name = "";
+            object.userId = "";
             object.deckSize = 0;
             object.energy = 0;
             object.maxEnergy = 0;
@@ -4575,8 +4171,8 @@ $root.Player = (function() {
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
-        if (message.name != null && message.hasOwnProperty("name"))
-            object.name = message.name;
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            object.userId = message.userId;
         if (message.deckSize != null && message.hasOwnProperty("deckSize"))
             object.deckSize = message.deckSize;
         if (message.energy != null && message.hasOwnProperty("energy"))
@@ -5131,567 +4727,6 @@ $root.GameState = (function() {
     return GameState;
 })();
 
-$root.RegisterUser = (function() {
-
-    /**
-     * Properties of a RegisterUser.
-     * @exports IRegisterUser
-     * @interface IRegisterUser
-     * @property {string|null} [username] RegisterUser username
-     */
-
-    /**
-     * Constructs a new RegisterUser.
-     * @exports RegisterUser
-     * @classdesc Messages from client to server.
-     * @implements IRegisterUser
-     * @constructor
-     * @param {IRegisterUser=} [properties] Properties to set
-     */
-    function RegisterUser(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * RegisterUser username.
-     * @member {string} username
-     * @memberof RegisterUser
-     * @instance
-     */
-    RegisterUser.prototype.username = "";
-
-    /**
-     * Creates a new RegisterUser instance using the specified properties.
-     * @function create
-     * @memberof RegisterUser
-     * @static
-     * @param {IRegisterUser=} [properties] Properties to set
-     * @returns {RegisterUser} RegisterUser instance
-     */
-    RegisterUser.create = function create(properties) {
-        return new RegisterUser(properties);
-    };
-
-    /**
-     * Encodes the specified RegisterUser message. Does not implicitly {@link RegisterUser.verify|verify} messages.
-     * @function encode
-     * @memberof RegisterUser
-     * @static
-     * @param {IRegisterUser} message RegisterUser message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    RegisterUser.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.username);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified RegisterUser message, length delimited. Does not implicitly {@link RegisterUser.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof RegisterUser
-     * @static
-     * @param {IRegisterUser} message RegisterUser message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    RegisterUser.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a RegisterUser message from the specified reader or buffer.
-     * @function decode
-     * @memberof RegisterUser
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {RegisterUser} RegisterUser
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    RegisterUser.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RegisterUser();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.username = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a RegisterUser message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof RegisterUser
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RegisterUser} RegisterUser
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    RegisterUser.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a RegisterUser message.
-     * @function verify
-     * @memberof RegisterUser
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    RegisterUser.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a RegisterUser message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof RegisterUser
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {RegisterUser} RegisterUser
-     */
-    RegisterUser.fromObject = function fromObject(object) {
-        if (object instanceof $root.RegisterUser)
-            return object;
-        var message = new $root.RegisterUser();
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a RegisterUser message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof RegisterUser
-     * @static
-     * @param {RegisterUser} message RegisterUser
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    RegisterUser.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.username = "";
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
-    };
-
-    /**
-     * Converts this RegisterUser to JSON.
-     * @function toJSON
-     * @memberof RegisterUser
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    RegisterUser.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return RegisterUser;
-})();
-
-$root.Login = (function() {
-
-    /**
-     * Properties of a Login.
-     * @exports ILogin
-     * @interface ILogin
-     * @property {string|null} [username] Login username
-     */
-
-    /**
-     * Constructs a new Login.
-     * @exports Login
-     * @classdesc Represents a Login.
-     * @implements ILogin
-     * @constructor
-     * @param {ILogin=} [properties] Properties to set
-     */
-    function Login(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Login username.
-     * @member {string} username
-     * @memberof Login
-     * @instance
-     */
-    Login.prototype.username = "";
-
-    /**
-     * Creates a new Login instance using the specified properties.
-     * @function create
-     * @memberof Login
-     * @static
-     * @param {ILogin=} [properties] Properties to set
-     * @returns {Login} Login instance
-     */
-    Login.create = function create(properties) {
-        return new Login(properties);
-    };
-
-    /**
-     * Encodes the specified Login message. Does not implicitly {@link Login.verify|verify} messages.
-     * @function encode
-     * @memberof Login
-     * @static
-     * @param {ILogin} message Login message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Login.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.username);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified Login message, length delimited. Does not implicitly {@link Login.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof Login
-     * @static
-     * @param {ILogin} message Login message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Login.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a Login message from the specified reader or buffer.
-     * @function decode
-     * @memberof Login
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {Login} Login
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Login.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Login();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.username = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a Login message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof Login
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Login} Login
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Login.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a Login message.
-     * @function verify
-     * @memberof Login
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    Login.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a Login message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof Login
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Login} Login
-     */
-    Login.fromObject = function fromObject(object) {
-        if (object instanceof $root.Login)
-            return object;
-        var message = new $root.Login();
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a Login message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof Login
-     * @static
-     * @param {Login} message Login
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Login.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.username = "";
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
-    };
-
-    /**
-     * Converts this Login to JSON.
-     * @function toJSON
-     * @memberof Login
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    Login.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return Login;
-})();
-
-$root.Logout = (function() {
-
-    /**
-     * Properties of a Logout.
-     * @exports ILogout
-     * @interface ILogout
-     * @property {string|null} [username] Logout username
-     */
-
-    /**
-     * Constructs a new Logout.
-     * @exports Logout
-     * @classdesc Represents a Logout.
-     * @implements ILogout
-     * @constructor
-     * @param {ILogout=} [properties] Properties to set
-     */
-    function Logout(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Logout username.
-     * @member {string} username
-     * @memberof Logout
-     * @instance
-     */
-    Logout.prototype.username = "";
-
-    /**
-     * Creates a new Logout instance using the specified properties.
-     * @function create
-     * @memberof Logout
-     * @static
-     * @param {ILogout=} [properties] Properties to set
-     * @returns {Logout} Logout instance
-     */
-    Logout.create = function create(properties) {
-        return new Logout(properties);
-    };
-
-    /**
-     * Encodes the specified Logout message. Does not implicitly {@link Logout.verify|verify} messages.
-     * @function encode
-     * @memberof Logout
-     * @static
-     * @param {ILogout} message Logout message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Logout.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.username);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified Logout message, length delimited. Does not implicitly {@link Logout.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof Logout
-     * @static
-     * @param {ILogout} message Logout message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Logout.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a Logout message from the specified reader or buffer.
-     * @function decode
-     * @memberof Logout
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {Logout} Logout
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Logout.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Logout();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.username = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a Logout message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof Logout
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Logout} Logout
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Logout.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a Logout message.
-     * @function verify
-     * @memberof Logout
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    Logout.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a Logout message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof Logout
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Logout} Logout
-     */
-    Logout.fromObject = function fromObject(object) {
-        if (object instanceof $root.Logout)
-            return object;
-        var message = new $root.Logout();
-        if (object.username != null)
-            message.username = String(object.username);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a Logout message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof Logout
-     * @static
-     * @param {Logout} message Logout
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Logout.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.username = "";
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
-        return object;
-    };
-
-    /**
-     * Converts this Logout to JSON.
-     * @function toJSON
-     * @memberof Logout
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    Logout.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return Logout;
-})();
-
 $root.ChatMessage = (function() {
 
     /**
@@ -5885,7 +4920,6 @@ $root.CreateTable = (function() {
      * Properties of a CreateTable.
      * @exports ICreateTable
      * @interface ICreateTable
-     * @property {string|null} [username] CreateTable username
      * @property {Array.<string>|null} [decklist] CreateTable decklist
      */
 
@@ -5904,14 +4938,6 @@ $root.CreateTable = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * CreateTable username.
-     * @member {string} username
-     * @memberof CreateTable
-     * @instance
-     */
-    CreateTable.prototype.username = "";
 
     /**
      * CreateTable decklist.
@@ -5945,8 +4971,6 @@ $root.CreateTable = (function() {
     CreateTable.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.username);
         if (message.decklist != null && message.decklist.length)
             for (var i = 0; i < message.decklist.length; ++i)
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.decklist[i]);
@@ -5984,9 +5008,6 @@ $root.CreateTable = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.username = reader.string();
-                break;
             case 2:
                 if (!(message.decklist && message.decklist.length))
                     message.decklist = [];
@@ -6027,9 +5048,6 @@ $root.CreateTable = (function() {
     CreateTable.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         if (message.decklist != null && message.hasOwnProperty("decklist")) {
             if (!Array.isArray(message.decklist))
                 return "decklist: array expected";
@@ -6052,8 +5070,6 @@ $root.CreateTable = (function() {
         if (object instanceof $root.CreateTable)
             return object;
         var message = new $root.CreateTable();
-        if (object.username != null)
-            message.username = String(object.username);
         if (object.decklist) {
             if (!Array.isArray(object.decklist))
                 throw TypeError(".CreateTable.decklist: array expected");
@@ -6079,10 +5095,6 @@ $root.CreateTable = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.decklist = [];
-        if (options.defaults)
-            object.username = "";
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         if (message.decklist && message.decklist.length) {
             object.decklist = [];
             for (var j = 0; j < message.decklist.length; ++j)
@@ -6112,7 +5124,6 @@ $root.JoinTable = (function() {
      * @exports IJoinTable
      * @interface IJoinTable
      * @property {string|null} [tableID] JoinTable tableID
-     * @property {string|null} [username] JoinTable username
      * @property {Array.<string>|null} [decklist] JoinTable decklist
      */
 
@@ -6139,14 +5150,6 @@ $root.JoinTable = (function() {
      * @instance
      */
     JoinTable.prototype.tableID = "";
-
-    /**
-     * JoinTable username.
-     * @member {string} username
-     * @memberof JoinTable
-     * @instance
-     */
-    JoinTable.prototype.username = "";
 
     /**
      * JoinTable decklist.
@@ -6182,8 +5185,6 @@ $root.JoinTable = (function() {
             writer = $Writer.create();
         if (message.tableID != null && message.hasOwnProperty("tableID"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.tableID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         if (message.decklist != null && message.decklist.length)
             for (var i = 0; i < message.decklist.length; ++i)
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.decklist[i]);
@@ -6223,9 +5224,6 @@ $root.JoinTable = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.tableID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
                 break;
             case 3:
                 if (!(message.decklist && message.decklist.length))
@@ -6270,9 +5268,6 @@ $root.JoinTable = (function() {
         if (message.tableID != null && message.hasOwnProperty("tableID"))
             if (!$util.isString(message.tableID))
                 return "tableID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         if (message.decklist != null && message.hasOwnProperty("decklist")) {
             if (!Array.isArray(message.decklist))
                 return "decklist: array expected";
@@ -6297,8 +5292,6 @@ $root.JoinTable = (function() {
         var message = new $root.JoinTable();
         if (object.tableID != null)
             message.tableID = String(object.tableID);
-        if (object.username != null)
-            message.username = String(object.username);
         if (object.decklist) {
             if (!Array.isArray(object.decklist))
                 throw TypeError(".JoinTable.decklist: array expected");
@@ -6324,14 +5317,10 @@ $root.JoinTable = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.decklist = [];
-        if (options.defaults) {
+        if (options.defaults)
             object.tableID = "";
-            object.username = "";
-        }
         if (message.tableID != null && message.hasOwnProperty("tableID"))
             object.tableID = message.tableID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         if (message.decklist && message.decklist.length) {
             object.decklist = [];
             for (var j = 0; j < message.decklist.length; ++j)
@@ -6361,7 +5350,6 @@ $root.RegisterGameConnection = (function() {
      * @exports IRegisterGameConnection
      * @interface IRegisterGameConnection
      * @property {string|null} [gameID] RegisterGameConnection gameID
-     * @property {string|null} [username] RegisterGameConnection username
      */
 
     /**
@@ -6386,14 +5374,6 @@ $root.RegisterGameConnection = (function() {
      * @instance
      */
     RegisterGameConnection.prototype.gameID = "";
-
-    /**
-     * RegisterGameConnection username.
-     * @member {string} username
-     * @memberof RegisterGameConnection
-     * @instance
-     */
-    RegisterGameConnection.prototype.username = "";
 
     /**
      * Creates a new RegisterGameConnection instance using the specified properties.
@@ -6421,8 +5401,6 @@ $root.RegisterGameConnection = (function() {
             writer = $Writer.create();
         if (message.gameID != null && message.hasOwnProperty("gameID"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         return writer;
     };
 
@@ -6459,9 +5437,6 @@ $root.RegisterGameConnection = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6501,9 +5476,6 @@ $root.RegisterGameConnection = (function() {
         if (message.gameID != null && message.hasOwnProperty("gameID"))
             if (!$util.isString(message.gameID))
                 return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         return null;
     };
 
@@ -6521,8 +5493,6 @@ $root.RegisterGameConnection = (function() {
         var message = new $root.RegisterGameConnection();
         if (object.gameID != null)
             message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
         return message;
     };
 
@@ -6539,14 +5509,10 @@ $root.RegisterGameConnection = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
+        if (options.defaults)
             object.gameID = "";
-            object.username = "";
-        }
         if (message.gameID != null && message.hasOwnProperty("gameID"))
             object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         return object;
     };
 
@@ -6571,7 +5537,6 @@ $root.RegisterInteractionConnection = (function() {
      * @exports IRegisterInteractionConnection
      * @interface IRegisterInteractionConnection
      * @property {string|null} [gameID] RegisterInteractionConnection gameID
-     * @property {string|null} [username] RegisterInteractionConnection username
      */
 
     /**
@@ -6596,14 +5561,6 @@ $root.RegisterInteractionConnection = (function() {
      * @instance
      */
     RegisterInteractionConnection.prototype.gameID = "";
-
-    /**
-     * RegisterInteractionConnection username.
-     * @member {string} username
-     * @memberof RegisterInteractionConnection
-     * @instance
-     */
-    RegisterInteractionConnection.prototype.username = "";
 
     /**
      * Creates a new RegisterInteractionConnection instance using the specified properties.
@@ -6631,8 +5588,6 @@ $root.RegisterInteractionConnection = (function() {
             writer = $Writer.create();
         if (message.gameID != null && message.hasOwnProperty("gameID"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        if (message.username != null && message.hasOwnProperty("username"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         return writer;
     };
 
@@ -6669,9 +5624,6 @@ $root.RegisterInteractionConnection = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.gameID = reader.string();
-                break;
-            case 2:
-                message.username = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6711,9 +5663,6 @@ $root.RegisterInteractionConnection = (function() {
         if (message.gameID != null && message.hasOwnProperty("gameID"))
             if (!$util.isString(message.gameID))
                 return "gameID: string expected";
-        if (message.username != null && message.hasOwnProperty("username"))
-            if (!$util.isString(message.username))
-                return "username: string expected";
         return null;
     };
 
@@ -6731,8 +5680,6 @@ $root.RegisterInteractionConnection = (function() {
         var message = new $root.RegisterInteractionConnection();
         if (object.gameID != null)
             message.gameID = String(object.gameID);
-        if (object.username != null)
-            message.username = String(object.username);
         return message;
     };
 
@@ -6749,14 +5696,10 @@ $root.RegisterInteractionConnection = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
+        if (options.defaults)
             object.gameID = "";
-            object.username = "";
-        }
         if (message.gameID != null && message.hasOwnProperty("gameID"))
             object.gameID = message.gameID;
-        if (message.username != null && message.hasOwnProperty("username"))
-            object.username = message.username;
         return object;
     };
 
@@ -6780,9 +5723,6 @@ $root.ClientMessage = (function() {
      * Properties of a ClientMessage.
      * @exports IClientMessage
      * @interface IClientMessage
-     * @property {IRegisterUser|null} [registerUser] ClientMessage registerUser
-     * @property {ILogin|null} [login] ClientMessage login
-     * @property {ILogout|null} [logout] ClientMessage logout
      * @property {IChatMessage|null} [chatMessage] ClientMessage chatMessage
      * @property {ICreateTable|null} [createTable] ClientMessage createTable
      * @property {IJoinTable|null} [joinTable] ClientMessage joinTable
@@ -6804,30 +5744,6 @@ $root.ClientMessage = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * ClientMessage registerUser.
-     * @member {IRegisterUser|null|undefined} registerUser
-     * @memberof ClientMessage
-     * @instance
-     */
-    ClientMessage.prototype.registerUser = null;
-
-    /**
-     * ClientMessage login.
-     * @member {ILogin|null|undefined} login
-     * @memberof ClientMessage
-     * @instance
-     */
-    ClientMessage.prototype.login = null;
-
-    /**
-     * ClientMessage logout.
-     * @member {ILogout|null|undefined} logout
-     * @memberof ClientMessage
-     * @instance
-     */
-    ClientMessage.prototype.logout = null;
 
     /**
      * ClientMessage chatMessage.
@@ -6874,12 +5790,12 @@ $root.ClientMessage = (function() {
 
     /**
      * ClientMessage payload.
-     * @member {"registerUser"|"login"|"logout"|"chatMessage"|"createTable"|"joinTable"|"registerGameConnection"|"registerInteractionConnection"|undefined} payload
+     * @member {"chatMessage"|"createTable"|"joinTable"|"registerGameConnection"|"registerInteractionConnection"|undefined} payload
      * @memberof ClientMessage
      * @instance
      */
     Object.defineProperty(ClientMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerUser", "login", "logout", "chatMessage", "createTable", "joinTable", "registerGameConnection", "registerInteractionConnection"]),
+        get: $util.oneOfGetter($oneOfFields = ["chatMessage", "createTable", "joinTable", "registerGameConnection", "registerInteractionConnection"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -6907,12 +5823,6 @@ $root.ClientMessage = (function() {
     ClientMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.registerUser != null && message.hasOwnProperty("registerUser"))
-            $root.RegisterUser.encode(message.registerUser, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.login != null && message.hasOwnProperty("login"))
-            $root.Login.encode(message.login, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.logout != null && message.hasOwnProperty("logout"))
-            $root.Logout.encode(message.logout, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.chatMessage != null && message.hasOwnProperty("chatMessage"))
             $root.ChatMessage.encode(message.chatMessage, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         if (message.createTable != null && message.hasOwnProperty("createTable"))
@@ -6957,15 +5867,6 @@ $root.ClientMessage = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.registerUser = $root.RegisterUser.decode(reader, reader.uint32());
-                break;
-            case 2:
-                message.login = $root.Login.decode(reader, reader.uint32());
-                break;
-            case 3:
-                message.logout = $root.Logout.decode(reader, reader.uint32());
-                break;
             case 4:
                 message.chatMessage = $root.ChatMessage.decode(reader, reader.uint32());
                 break;
@@ -7017,37 +5918,7 @@ $root.ClientMessage = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         var properties = {};
-        if (message.registerUser != null && message.hasOwnProperty("registerUser")) {
-            properties.payload = 1;
-            {
-                var error = $root.RegisterUser.verify(message.registerUser);
-                if (error)
-                    return "registerUser." + error;
-            }
-        }
-        if (message.login != null && message.hasOwnProperty("login")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.Login.verify(message.login);
-                if (error)
-                    return "login." + error;
-            }
-        }
-        if (message.logout != null && message.hasOwnProperty("logout")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.Logout.verify(message.logout);
-                if (error)
-                    return "logout." + error;
-            }
-        }
         if (message.chatMessage != null && message.hasOwnProperty("chatMessage")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
             properties.payload = 1;
             {
                 var error = $root.ChatMessage.verify(message.chatMessage);
@@ -7110,21 +5981,6 @@ $root.ClientMessage = (function() {
         if (object instanceof $root.ClientMessage)
             return object;
         var message = new $root.ClientMessage();
-        if (object.registerUser != null) {
-            if (typeof object.registerUser !== "object")
-                throw TypeError(".ClientMessage.registerUser: object expected");
-            message.registerUser = $root.RegisterUser.fromObject(object.registerUser);
-        }
-        if (object.login != null) {
-            if (typeof object.login !== "object")
-                throw TypeError(".ClientMessage.login: object expected");
-            message.login = $root.Login.fromObject(object.login);
-        }
-        if (object.logout != null) {
-            if (typeof object.logout !== "object")
-                throw TypeError(".ClientMessage.logout: object expected");
-            message.logout = $root.Logout.fromObject(object.logout);
-        }
         if (object.chatMessage != null) {
             if (typeof object.chatMessage !== "object")
                 throw TypeError(".ClientMessage.chatMessage: object expected");
@@ -7166,21 +6022,6 @@ $root.ClientMessage = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (message.registerUser != null && message.hasOwnProperty("registerUser")) {
-            object.registerUser = $root.RegisterUser.toObject(message.registerUser, options);
-            if (options.oneofs)
-                object.payload = "registerUser";
-        }
-        if (message.login != null && message.hasOwnProperty("login")) {
-            object.login = $root.Login.toObject(message.login, options);
-            if (options.oneofs)
-                object.payload = "login";
-        }
-        if (message.logout != null && message.hasOwnProperty("logout")) {
-            object.logout = $root.Logout.toObject(message.logout, options);
-            if (options.oneofs)
-                object.payload = "logout";
-        }
         if (message.chatMessage != null && message.hasOwnProperty("chatMessage")) {
             object.chatMessage = $root.ChatMessage.toObject(message.chatMessage, options);
             if (options.oneofs)
@@ -9033,166 +7874,6 @@ $root.LoginResponse = (function() {
     return LoginResponse;
 })();
 
-$root.RegisterUserResponse = (function() {
-
-    /**
-     * Properties of a RegisterUserResponse.
-     * @exports IRegisterUserResponse
-     * @interface IRegisterUserResponse
-     */
-
-    /**
-     * Constructs a new RegisterUserResponse.
-     * @exports RegisterUserResponse
-     * @classdesc Represents a RegisterUserResponse.
-     * @implements IRegisterUserResponse
-     * @constructor
-     * @param {IRegisterUserResponse=} [properties] Properties to set
-     */
-    function RegisterUserResponse(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Creates a new RegisterUserResponse instance using the specified properties.
-     * @function create
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {IRegisterUserResponse=} [properties] Properties to set
-     * @returns {RegisterUserResponse} RegisterUserResponse instance
-     */
-    RegisterUserResponse.create = function create(properties) {
-        return new RegisterUserResponse(properties);
-    };
-
-    /**
-     * Encodes the specified RegisterUserResponse message. Does not implicitly {@link RegisterUserResponse.verify|verify} messages.
-     * @function encode
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {IRegisterUserResponse} message RegisterUserResponse message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    RegisterUserResponse.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        return writer;
-    };
-
-    /**
-     * Encodes the specified RegisterUserResponse message, length delimited. Does not implicitly {@link RegisterUserResponse.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {IRegisterUserResponse} message RegisterUserResponse message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    RegisterUserResponse.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a RegisterUserResponse message from the specified reader or buffer.
-     * @function decode
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {RegisterUserResponse} RegisterUserResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    RegisterUserResponse.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RegisterUserResponse();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a RegisterUserResponse message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RegisterUserResponse} RegisterUserResponse
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    RegisterUserResponse.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a RegisterUserResponse message.
-     * @function verify
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    RegisterUserResponse.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        return null;
-    };
-
-    /**
-     * Creates a RegisterUserResponse message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {RegisterUserResponse} RegisterUserResponse
-     */
-    RegisterUserResponse.fromObject = function fromObject(object) {
-        if (object instanceof $root.RegisterUserResponse)
-            return object;
-        return new $root.RegisterUserResponse();
-    };
-
-    /**
-     * Creates a plain object from a RegisterUserResponse message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof RegisterUserResponse
-     * @static
-     * @param {RegisterUserResponse} message RegisterUserResponse
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    RegisterUserResponse.toObject = function toObject() {
-        return {};
-    };
-
-    /**
-     * Converts this RegisterUserResponse to JSON.
-     * @function toJSON
-     * @memberof RegisterUserResponse
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    RegisterUserResponse.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return RegisterUserResponse;
-})();
-
 $root.UpdateChatLog = (function() {
 
     /**
@@ -10006,7 +8687,6 @@ $root.ServerMessage = (function() {
      * @exports IServerMessage
      * @interface IServerMessage
      * @property {ILoginResponse|null} [loginResponse] ServerMessage loginResponse
-     * @property {IRegisterUserResponse|null} [registerUserResponse] ServerMessage registerUserResponse
      * @property {IUpdateChatLog|null} [updateChatLog] ServerMessage updateChatLog
      * @property {IUpdateTableList|null} [updateTableList] ServerMessage updateTableList
      * @property {IUpdatePlayerList|null} [updatePlayerList] ServerMessage updatePlayerList
@@ -10035,14 +8715,6 @@ $root.ServerMessage = (function() {
      * @instance
      */
     ServerMessage.prototype.loginResponse = null;
-
-    /**
-     * ServerMessage registerUserResponse.
-     * @member {IRegisterUserResponse|null|undefined} registerUserResponse
-     * @memberof ServerMessage
-     * @instance
-     */
-    ServerMessage.prototype.registerUserResponse = null;
 
     /**
      * ServerMessage updateChatLog.
@@ -10081,12 +8753,12 @@ $root.ServerMessage = (function() {
 
     /**
      * ServerMessage payload.
-     * @member {"loginResponse"|"registerUserResponse"|"updateChatLog"|"updateTableList"|"updatePlayerList"|"newGame"|undefined} payload
+     * @member {"loginResponse"|"updateChatLog"|"updateTableList"|"updatePlayerList"|"newGame"|undefined} payload
      * @memberof ServerMessage
      * @instance
      */
     Object.defineProperty(ServerMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["loginResponse", "registerUserResponse", "updateChatLog", "updateTableList", "updatePlayerList", "newGame"]),
+        get: $util.oneOfGetter($oneOfFields = ["loginResponse", "updateChatLog", "updateTableList", "updatePlayerList", "newGame"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -10116,8 +8788,6 @@ $root.ServerMessage = (function() {
             writer = $Writer.create();
         if (message.loginResponse != null && message.hasOwnProperty("loginResponse"))
             $root.LoginResponse.encode(message.loginResponse, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.registerUserResponse != null && message.hasOwnProperty("registerUserResponse"))
-            $root.RegisterUserResponse.encode(message.registerUserResponse, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.updateChatLog != null && message.hasOwnProperty("updateChatLog"))
             $root.UpdateChatLog.encode(message.updateChatLog, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         if (message.updateTableList != null && message.hasOwnProperty("updateTableList"))
@@ -10162,9 +8832,6 @@ $root.ServerMessage = (function() {
             switch (tag >>> 3) {
             case 2:
                 message.loginResponse = $root.LoginResponse.decode(reader, reader.uint32());
-                break;
-            case 3:
-                message.registerUserResponse = $root.RegisterUserResponse.decode(reader, reader.uint32());
                 break;
             case 4:
                 message.updateChatLog = $root.UpdateChatLog.decode(reader, reader.uint32());
@@ -10220,16 +8887,6 @@ $root.ServerMessage = (function() {
                 var error = $root.LoginResponse.verify(message.loginResponse);
                 if (error)
                     return "loginResponse." + error;
-            }
-        }
-        if (message.registerUserResponse != null && message.hasOwnProperty("registerUserResponse")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.RegisterUserResponse.verify(message.registerUserResponse);
-                if (error)
-                    return "registerUserResponse." + error;
             }
         }
         if (message.updateChatLog != null && message.hasOwnProperty("updateChatLog")) {
@@ -10292,11 +8949,6 @@ $root.ServerMessage = (function() {
                 throw TypeError(".ServerMessage.loginResponse: object expected");
             message.loginResponse = $root.LoginResponse.fromObject(object.loginResponse);
         }
-        if (object.registerUserResponse != null) {
-            if (typeof object.registerUserResponse !== "object")
-                throw TypeError(".ServerMessage.registerUserResponse: object expected");
-            message.registerUserResponse = $root.RegisterUserResponse.fromObject(object.registerUserResponse);
-        }
         if (object.updateChatLog != null) {
             if (typeof object.updateChatLog !== "object")
                 throw TypeError(".ServerMessage.updateChatLog: object expected");
@@ -10337,11 +8989,6 @@ $root.ServerMessage = (function() {
             object.loginResponse = $root.LoginResponse.toObject(message.loginResponse, options);
             if (options.oneofs)
                 object.payload = "loginResponse";
-        }
-        if (message.registerUserResponse != null && message.hasOwnProperty("registerUserResponse")) {
-            object.registerUserResponse = $root.RegisterUserResponse.toObject(message.registerUserResponse, options);
-            if (options.oneofs)
-                object.payload = "registerUserResponse";
         }
         if (message.updateChatLog != null && message.hasOwnProperty("updateChatLog")) {
             object.updateChatLog = $root.UpdateChatLog.toObject(message.updateChatLog, options);

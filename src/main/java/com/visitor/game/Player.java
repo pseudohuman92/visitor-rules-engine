@@ -18,7 +18,7 @@ import com.visitor.card.properties.Damageable;
  */
 public class Player implements Serializable, Damageable {
 
-    public String name;
+    public String userId;
     public UUID id;
     public int energy;
     public int maxEnergy;
@@ -29,17 +29,17 @@ public class Player implements Serializable, Damageable {
     public Arraylist<Card> voidPile;
     public Arraylist<Card> playArea;
     public Hashmap<Knowledge, Integer> knowledgePool;
-    
+    public int health;
     public int shield;
     public int reflect;
     
     /**
      *
-     * @param name
+     * @param userId
      * @param deck
      */
-    public Player (String name, Deck deck){
-        this.name = name;
+    public Player (String userId, Deck deck){
+        this.userId = userId;
         id = randomUUID();
         this.deck = deck;
         energy = 0;
@@ -50,6 +50,7 @@ public class Player implements Serializable, Damageable {
         voidPile = new Arraylist<>();
         playArea = new Arraylist<>();
         knowledgePool = new Hashmap<>();
+        health = 30; 
         shield = 0;
         reflect = 0;
     }
@@ -60,20 +61,21 @@ public class Player implements Serializable, Damageable {
     
     @Override
     public int dealDamage(Game game, int count) {
-        if(shield >= count){
-            shield -= count;
+        int damage = count;
+        if(shield >= damage){
+            shield -= damage;
             return 0;
         }
-        count -= shield;
+        damage -= shield;
         shield = 0;
-        if(reflect >= count){
-            reflect -= count;
-            return count;
+        if(reflect >= damage){
+            reflect -= damage;
+            return damage;
         }
         int temp = reflect;
-        count -= reflect;
+        damage -= reflect;
         reflect = 0;
-        voidPile.addAll(deck.extractFromTop(count));
+        health -= damage;
         return temp;
     }
 
@@ -186,7 +188,7 @@ public class Player implements Serializable, Damageable {
     public Types.Player.Builder toPlayerMessage() {
         Types.Player.Builder b = Types.Player.newBuilder()
                 .setId(id.toString())
-                .setName(name)
+                .setUserId(userId)
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
@@ -209,7 +211,7 @@ public class Player implements Serializable, Damageable {
     public Types.Player.Builder toOpponentMessage() {
         Types.Player.Builder b = Types.Player.newBuilder()
                 .setId(id.toString())
-                .setName(name)
+                .setUserId(userId)
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
@@ -228,8 +230,8 @@ public class Player implements Serializable, Damageable {
         return b;
     }
 
-    void purgeSelf(int count) {
-        voidPile.addAll(deck.extractFromTop(count));    
+    public void damageSelf(int damage) {
+        health -= damage;
     }
     
 }

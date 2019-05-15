@@ -37,50 +37,50 @@ public class GameServer {
     }
 
 
-    void activateCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).activateCard(username, cardID);
+    void activateCard(UUID gameID, String userId, UUID cardID) {
+        games.get(gameID).activateCard(userId, cardID);
         games.get(gameID).updatePlayers();
     }
 
-    void concede(UUID gameID, String username) {
-        games.get(gameID).lose(username);
+    void concede(UUID gameID, String userId) {
+        games.get(gameID).lose(userId);
     }
     
-    void mulligan(UUID gameID, String username) {
-        games.get(gameID).mulligan(username);
+    void mulligan(UUID gameID, String userId) {
+        games.get(gameID).mulligan(userId);
         games.get(gameID).updatePlayers();
     }
     
-    void keep(UUID gameID, String username) {
-        games.get(gameID).keep(username);
+    void keep(UUID gameID, String userId) {
+        games.get(gameID).keep(userId);
         games.get(gameID).updatePlayers();
     }
     
-    void pass(UUID gameID, String username) {
-        games.get(gameID).pass(username);
+    void pass(UUID gameID, String userId) {
+        games.get(gameID).pass(userId);
         games.get(gameID).updatePlayers();
     }
     
-    void studyCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).studyCard(username, cardID);
+    void studyCard(UUID gameID, String userId, UUID cardID) {
+        games.get(gameID).studyCard(userId, cardID);
         games.get(gameID).updatePlayers();
     }
     
-    void playCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).playCard(username, cardID);
+    void playCard(UUID gameID, String userId, UUID cardID) {
+        games.get(gameID).playCard(userId, cardID);
         games.get(gameID).updatePlayers();
     }
 
-    synchronized ServerGameMessage getLastMessage(UUID gameID, String username) {
-        return games.get(gameID).getLastMessage(username);
+    synchronized ServerGameMessage getLastMessage(UUID gameID, String userId) {
+        return games.get(gameID).getLastMessage(userId);
     }
 
-    synchronized void addConnection(String username, GeneralEndpoint connection) {
+    synchronized void addConnection(String userId, GeneralEndpoint connection) {
         try {
-            playerConnections.putIn(username, connection);
+            playerConnections.putIn(userId, connection);
             Arraylist<UUID> playerGames = new Arraylist<>();
             games.forEach((id, game) -> {
-                if(game.isAPlayer(username)){
+                if(game.isAPlayer(userId)){
                     playerGames.add(id);
                 }
             });
@@ -91,37 +91,37 @@ public class GameServer {
         }
     }
 
-    synchronized void removeConnection(String username) {
-        playerConnections.removeFrom(username);
-        gameQueue.remove(username);
+    synchronized void removeConnection(String userId) {
+        playerConnections.removeFrom(userId);
+        gameQueue.remove(userId);
     }
 
-    synchronized void addGameConnection(UUID gameID, String username, GameEndpoint connection) {
-        games.get(gameID).addConnection(username, connection);
+    synchronized void addGameConnection(UUID gameID, String userId, GameEndpoint connection) {
+        games.get(gameID).addConnection(userId, connection);
     }
     
-    synchronized void removeGameConnection(UUID gameID, String username) {
-        games.get(gameID).removeConnection(username);
+    synchronized void removeGameConnection(UUID gameID, String userId) {
+        games.get(gameID).removeConnection(userId);
     }
 
-    synchronized void joinTable(String username) {
+    synchronized void joinTable(String userId) {
         if (gameQueue.isEmpty()){
-            System.out.println("Adding " + username + " to game queue!");
-            gameQueue.add(username);
+            System.out.println("Adding " + userId + " to game queue!");
+            gameQueue.add(userId);
         } else {
-            if(gameQueue.get(0).equals(username))
+            if(gameQueue.get(0).equals(userId))
                     return;
             String p1 = gameQueue.remove(0);
-            System.out.println("Starting a new game with " + username + " and " + p1);
-            Game g = new Game(p1, username);
+            System.out.println("Starting a new game with " + userId + " and " + p1);
+            Game g = new Game(p1, userId);
             games.putIn(g.getId(), g);
             try {
                 playerConnections.get(p1).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
                                 .setGame(g.toGameState(p1))));
-                playerConnections.get(username).send(ServerMessage.newBuilder()
+                playerConnections.get(userId).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
-                                .setGame(g.toGameState(username))));
+                                .setGame(g.toGameState(userId))));
             } catch (IOException | EncodeException ex) {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
             }

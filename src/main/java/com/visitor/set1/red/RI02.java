@@ -31,13 +31,13 @@ public class RI02 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted;
+        return !depleted && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && !c.id.equals(id));}, 1, "both play");
     }
 
     @Override
     public void activate(Game game) {
         game.deplete(id);
-        target = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false).get(0);
+        target = game.selectFromZone(controller, "both play", c->{return (c instanceof Item && !c.id.equals(id));}, 1, false).get(0);
         game.addToStack(new Activation (controller,
             "Return ~ and target item to controller's hand.",
             (x) -> {

@@ -22,9 +22,9 @@ public class Event {
         eventData = new Arraylist<>();
     }
     
-    public static Event draw (String username, Arraylist<Card> drawn){
+    public static Event draw (String userId, Arraylist<Card> drawn){
         Event e = new Event("Draw");
-        e.eventData.add(username);
+        e.eventData.add(userId);
         e.eventData.add(drawn);
         return e;
     }

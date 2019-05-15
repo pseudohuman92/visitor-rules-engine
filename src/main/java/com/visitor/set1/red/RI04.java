@@ -63,7 +63,7 @@ public class RI04 extends Item {
         game.addToStack(new Activation (controller,
             game.getOpponentName(controller)+" purges 2.",
             (x) -> {
-                game.purge(game.getOpponentName(controller), 2);
+                game.damagePlayer(game.getOpponentName(controller), 2);
             })
         );
     }

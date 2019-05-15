@@ -18,7 +18,8 @@ import { withHandlers } from "./Components/MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
   return { username: state.username,
-           userId : state.authUser.user.uid };
+           userId : state.authUser.user.uid,
+          gameInitialized: state.extendedGameState.gameInitialized };
 };
 
 class Profile extends Component {
@@ -35,6 +36,7 @@ class Profile extends Component {
 
   render() {
     const { value } = this.state;
+    const { gameInitialized } = this.props;
     return (
       <div>
         {value === 0 && (
@@ -64,7 +66,7 @@ class Profile extends Component {
             </Paper>
           </Center>
         )}
-        {value === 1 && <PlayArea />}
+        {value === 1 && (gameInitialized ? <PlayArea /> : <div>WAITING FOR THE GAME</div>)}
         {value === 2 && (
           <DeckBuilder style={{ maxHeight: "100vh", maxWidth: "100vw" }} deck={{name: "asd", cards:[]}}/>
         )}

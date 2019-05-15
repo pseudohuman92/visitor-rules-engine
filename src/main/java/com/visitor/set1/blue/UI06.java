@@ -32,7 +32,7 @@ public class UI06 extends Item{
     @Override
     public void activate(Game game) {
         game.discard(controller, 1);
-        game.purgeSelf(controller, 1);
+        game.damageSelf(controller, 1);
         game.addToStack(new Activation(controller, controller + " gains 1 energy",
                 (x) -> { game.addEnergy(controller, 1); }));
     }

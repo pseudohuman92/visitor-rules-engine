@@ -31,7 +31,7 @@ public class RA03 extends Spell {
     
     @Override
     public void resolve (Game game){
-        game.purge(game.getOpponentName(controller), 2);
+        game.damagePlayer(game.getOpponentName(controller), 2);
         game.shuffleIntoDeck(controller, new Arraylist<>(this));
     }    
 }

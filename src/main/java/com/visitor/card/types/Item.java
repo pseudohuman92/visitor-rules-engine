@@ -18,7 +18,7 @@ public abstract class Item extends Card implements Activatable, Damageable {
     
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
-        health = 5;
+        health = 2;
     }
     
     

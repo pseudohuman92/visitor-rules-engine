@@ -41,7 +41,7 @@ public class AI03 extends Item {
                 game.getOpponentName(controller) + " purges 4. \n" +
                 "If ~ has no counters on it, transform ~ to UI08",
             (x) -> {
-                game.purge(game.getOpponentName(controller), 4);
+                game.damagePlayer(game.getOpponentName(controller), 4);
                 if (counters.get(CHARGE) == 0){
                     game.replaceWith(this, new UI08(this));
                 }
