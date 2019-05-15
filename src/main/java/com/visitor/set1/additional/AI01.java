@@ -9,8 +9,10 @@ package com.visitor.set1.additional;
 import com.visitor.card.types.Activation;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import com.visitor.helpers.Arraylist;
 import com.visitor.set1.blue.UI01;
 import com.visitor.helpers.Hashmap;
+import java.util.UUID;
 
 
 /**
@@ -19,9 +21,11 @@ import com.visitor.helpers.Hashmap;
  */
 public class AI01 extends Item {
     
+    UUID target;
+    
     public AI01 (UI01 c){
         super("AI01", 1, new Hashmap(), 
-                "Sacrifice ~: Opponent purges 6.", c.controller);
+                "Sacrifice ~: Deal 5 damage.", c.controller);
         copyPropertiesFrom(c);
     }
 
@@ -33,7 +37,10 @@ public class AI01 extends Item {
     @Override
     public void activate(Game game) {
         game.destroy(id);
-        game.addToStack(new Activation(controller, 
-                game.getOpponentName(controller) + " purges 6",
-                (x) -> { game.damagePlayer(game.getOpponentName(controller), 6); }));    }
+        target = game.selectDamageTargets(controller, 1, false).get(0);
+        game.addToStack(new Activation(controller, "Deal 5 damage",
+        (y) -> {
+            game.dealDamage(target, 5);
+        }, new Arraylist(target).putIn(id)));
+    }
 }

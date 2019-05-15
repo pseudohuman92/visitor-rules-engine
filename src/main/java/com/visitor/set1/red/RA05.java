@@ -24,7 +24,7 @@ public class RA05 extends Spell {
         super("RA05", 1, new Hashmap(RED, 2), 
             "Additional Cost \n" +
             "  Return an item you control to your hand. \n" +
-            "Opponent purges 4.", owner);
+            "Deal 4 damage.", owner);
     }
     
     @Override
@@ -41,6 +41,7 @@ public class RA05 extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        game.damagePlayer(game.getOpponentName(controller), 4);
+        target = game.selectDamageTargets(controller, 1, false).get(0);
+        game.dealDamage(target, 4);
     }    
 }

@@ -7,10 +7,13 @@
 package com.visitor.set1.red;
 
 import com.visitor.card.types.Activation;
+import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.RED;
+import java.util.UUID;
 
 
 /**
@@ -27,18 +30,21 @@ public class RI07 extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasEnergy(controller, 1);
+        return !depleted && game.hasEnergy(controller, 1)&&game.hasCardsIn(controller, "scrapyard", 1);
     }
     
     @Override
     public void activate(Game game) {
-        int x = game.selectX(controller, Math.min(game.getEnergy(controller), game.getZone(controller, "deck").size()));
-        game.damageSelf(controller, x);
+        int x = game.selectX(controller, Math.min(game.getEnergy(controller), game.getZone(controller, "scrapyard").size()));
+        Arraylist<UUID> selection = game.selectFromZone(controller, "scrapyard", c->{return true;}, x, false);
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.spendEnergy(controller, x);
+        Arraylist<Card> cards = game.extractAll(selection);
+        game.putTo(controller, cards, "void");
         game.deplete(id);
-        game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
+        game.addToStack(new Activation(controller, "Deal " + x + " damage",
         (y) -> {
-            game.damagePlayer(game.getOpponentName(controller), x);
-        }));
+            game.dealDamage(target, x);
+        }, new Arraylist(selection).putIn(target).putIn(id)));
     }
 }

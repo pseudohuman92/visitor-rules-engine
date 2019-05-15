@@ -9,6 +9,7 @@ package com.visitor.set1.red;
 import com.visitor.card.types.Activation;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import java.util.UUID;
@@ -38,9 +39,12 @@ public class RI06 extends Item {
         int x = game.getCard(selection).cost;
         game.destroy(selection);
         game.deplete(id);
-        game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
-        (y) -> {
-            game.damagePlayer(game.getOpponentName(controller), x);
-        }));
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
+        game.addToStack(new Activation (controller,
+            "Deal "+x+" damage",
+            (y) -> {
+                game.dealDamage(target, x);
+            }, new Arraylist<>(selection))
+        );
     }
 }

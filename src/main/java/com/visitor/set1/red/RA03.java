@@ -21,8 +21,8 @@ public class RA03 extends Spell {
     UUID target; 
     
     public RA03(String owner) {
-        super("RA03", 1, new Hashmap(RED, 2), 
-                "Opponent purges 2. \n" +
+        super("RA03", 2, new Hashmap(RED, 2), 
+                "Deal 2 damage \n" +
                 "Shuffle ~ to your deck.", owner);
     }
     
@@ -31,7 +31,8 @@ public class RA03 extends Spell {
     
     @Override
     public void resolve (Game game){
-        game.damagePlayer(game.getOpponentName(controller), 2);
+        target = game.selectDamageTargets(controller, 1, false).get(0);
+        game.dealDamage(target, 2);
         game.shuffleIntoDeck(controller, new Arraylist<>(this));
     }    
 }

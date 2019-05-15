@@ -170,6 +170,11 @@ public abstract class Card implements Serializable {
         }
     }
     
+    public int removeAllCounters(Counter name) {
+        return counters.remove(name);
+    }
+    
+    
     public void ready(){
         depleted = false;
     }

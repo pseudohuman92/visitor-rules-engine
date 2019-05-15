@@ -11,6 +11,7 @@ import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
+import java.util.UUID;
 
 /**
  *
@@ -20,7 +21,7 @@ public class BI06 extends Item {
     
     public BI06 (String owner){
         super("BI06", 1, new Hashmap(BLACK, 1), 
-                "Condition - Control a card you don't own in play. Activate: Opponent purges 3.", owner);
+                "Condition - Control a card you don't own in play. Activate: Deal 2 damage", owner);
     }
 
     @Override
@@ -30,11 +31,12 @@ public class BI06 extends Item {
 
     @Override
     public void activate(Game game) {
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.deplete(id);
         game.addToStack(new Activation (controller,
-            game.getOpponentName(controller) + " purges 3",
+            "deal 2 damage.",
             (x) -> {
-                game.damagePlayer(game.getOpponentName(controller), 3);
+                game.dealDamage(target, 2);
             }));
     }
 }

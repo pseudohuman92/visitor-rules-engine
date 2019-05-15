@@ -11,6 +11,7 @@ import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.RED;
+import java.util.UUID;
 
 /**
  *
@@ -21,7 +22,7 @@ public class RI01 extends Item {
     public RI01 (String owner){
         super("RI01", 2, new Hashmap(RED, 1), 
                 "1, Activate: \n" +
-                "  Opponent purges 2.", owner);
+                "  Deal 2 damage", owner);
     }
 
     @Override
@@ -33,10 +34,9 @@ public class RI01 extends Item {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 1);
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Activation (controller,
-            game.getOpponentName(controller) + " purges 2.",
-            (x) -> {
-                game.damagePlayer(game.getOpponentName(controller), 2);
-            }));
+            "Deal 2 damage",
+            (x) -> { game.dealDamage(target, 2); }));
     }
 }

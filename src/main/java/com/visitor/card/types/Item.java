@@ -18,7 +18,7 @@ public abstract class Item extends Card implements Activatable, Damageable {
     
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
-        health = 2;
+        health = 3;
     }
     
     
@@ -46,6 +46,14 @@ public abstract class Item extends Card implements Activatable, Damageable {
         return game.hasEnergy(controller, cost)
                && game.hasKnowledge(controller, knowledge)
                && game.canPlaySlow(controller);
+    }
+    
+    @Override
+    public void copyPropertiesFrom(Card c){
+        super.copyPropertiesFrom(c);
+        if (c instanceof Item){
+            health = ((Item) c).health;
+        }
     }
     
     @Override

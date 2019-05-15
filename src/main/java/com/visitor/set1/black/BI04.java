@@ -23,7 +23,9 @@ public class BI04 extends Item {
     
     public BI04 (String owner){
         super("BI04", 3, new Hashmap(BLACK, 1), 
-                "Activate, Sacrifice ~: Draw a card from your void, then purge a card from your hand.", owner);
+                "Activate, Sacrifice ~:\n" +
+"Draw a card from your scrapyard then\n" +
+"discard a card.", owner);
     }
 
     @Override
@@ -33,15 +35,14 @@ public class BI04 extends Item {
 
     @Override
     public void activate(Game game) {
-        Arraylist<UUID> selected = game.selectFromZone(controller, "void", c->{return true;}, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", c->{return true;}, 1, false);
         game.destroy(id);
         game.addToStack(new Activation (controller,
-            "Draw a card from void, then purge acard from your hand",
+            "Draw a card from your scrapyard then discard a card.",
             (x) -> {
-                if (game.isIn(controller, selected.get(0), "void")){
+                if (game.isIn(controller, selected.get(0), "scrapyard")){
                     game.drawByID(controller, selected.get(0));
-                    Arraylist<UUID> selection = game.selectFromZone(controller, "hand", cx-> {return true;}, 1, false);
-                    game.purgeByID(controller, selection.get(0));
+                    game.discard(controller, 1);
                 }
             }, selected));
     }

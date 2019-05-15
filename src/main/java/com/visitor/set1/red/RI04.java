@@ -13,6 +13,7 @@ import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import static com.visitor.protocol.Types.Knowledge.RED;
+import java.util.UUID;
 
 /**
  *
@@ -26,8 +27,8 @@ public class RI04 extends Item {
         super("RI04", 1, new Hashmap(RED, 1), 
             "Charge X.\n" +
             "\n" +
-            "Dischage 1, Activate:\n" +
-            "  Opponent purges 2.", owner);
+            "1, Activate, Sacrifice:\n" +
+            "  Deal X damage, X = # of charge counters.", owner);
     }
     
     @Override
@@ -53,17 +54,19 @@ public class RI04 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && counters.getOrDefault(CHARGE, 0) > 0;
+        return !depleted && game.hasEnergy(controller, 1);
     }
 
     @Override
     public void activate(Game game) {
-        game.deplete(id);
-        removeCounters(CHARGE, 1);
+        game.spendEnergy(controller, 1);
+        game.destroy(id);
+        int c = removeAllCounters(CHARGE);
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Activation (controller,
-            game.getOpponentName(controller)+" purges 2.",
+            "Deal "+c+" damage",
             (x) -> {
-                game.damagePlayer(game.getOpponentName(controller), 2);
+                game.dealDamage(target, c);
             })
         );
     }

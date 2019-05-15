@@ -25,7 +25,7 @@ public class AI02 extends Item {
     
     public AI02 (UI04 c){
         super("AI02", 3, new Hashmap(BLUE, 3), 
-                "Purge a Junk from your hand: Opponent Purges 5", c.controller);
+                "Purge a Junk from your hand: Deal 3 damage", c.controller);
         copyPropertiesFrom(c);
     }
 
@@ -38,7 +38,9 @@ public class AI02 extends Item {
     public void activate(Game game) {
         Arraylist<UUID> selected = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false);
         game.purgeByID(controller, selected.get(0));
-        game.addToStack(new Activation(controller, 
-                game.getOpponentName(controller) + " purges 5",
-                (x) -> { game.damagePlayer(game.getOpponentName(controller), 5); }));    }
+        UUID target = game.selectDamageTargets(controller, 1, false).get(0);
+        game.addToStack(new Activation(controller, "Deal 3 damage",
+        (y) -> {
+            game.dealDamage(target, 3);
+        }, new Arraylist(target).putIn(id)));   }
 }

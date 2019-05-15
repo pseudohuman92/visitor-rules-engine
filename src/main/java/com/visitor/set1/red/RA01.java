@@ -24,7 +24,7 @@ public class RA01 extends Spell {
     public RA01(String owner) {
         super("RA01", 2, new Hashmap(RED, 1), 
                 "Return target item to controller's hand. \n" +
-                "Opponent purges 2", owner);
+                "Deal 1 damage to opponent.", owner);
     }
     
     @Override
@@ -46,6 +46,6 @@ public class RA01 extends Spell {
             Card c = game.extractCard(target);    
             game.putTo(c.controller, c, "hand");
         }
-        game.damagePlayer(game.getOpponentName(controller), 2);
+        game.damagePlayer(game.getOpponentName(controller), 1);
     }    
 }

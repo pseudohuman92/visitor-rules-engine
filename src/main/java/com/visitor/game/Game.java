@@ -537,8 +537,12 @@ public class Game {
         return selectFrom(userId, getZoneLabel("play"), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo);
     }
     
-    public Arraylist<UUID> selectDamageTargets(String userId, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
+    public Arraylist<UUID> selectDamageTargetsConditional(String userId, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
         return selectFromZoneWithPlayers(userId, "both play", validTarget, validPlayer, count, upTo);
+    }
+    
+    public Arraylist<UUID> selectDamageTargets(String userId, int count, boolean upTo) {        
+        return selectFromZoneWithPlayers(userId, "both play", c->{return c instanceof Damageable;}, p->{return true;}, count, upTo);
     }
     
     

@@ -30,7 +30,7 @@ public class RI05 extends Item{
                 "  Charge 1. \n" +
                 "\n" +
                 "Discharge 1, Activate: \n" +
-                "  Opponent purges 4\"", owner);
+                "  Deal 2 damage", owner);
     }
 
     @Override
@@ -54,14 +54,17 @@ public class RI05 extends Item{
             }));
         }
         if (!depleted && counters.getOrDefault(CHARGE, 0) > 0){
-            choices.add(new Activation(controller, "Discharge 1, Activate: Opponent purges 4",
+            choices.add(new Activation(controller, "Discharge 1, Activate: Deal 2 damage",
             (x1) -> {
                 removeCounters(CHARGE, 1);
-                game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges 4",
-                    (x2) -> {
-                        game.damagePlayer(game.getOpponentName(controller), 4);
-                    }
-                ));
+                game.deplete(id);
+                UUID target = game.selectDamageTargets(controller, 1, false).get(0);
+                game.addToStack(new Activation (controller,
+                    "Deal 2 damage",
+                    (x) -> {
+                        game.dealDamage(target, 2);
+                    })
+                );
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);

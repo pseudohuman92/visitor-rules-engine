@@ -24,7 +24,9 @@ public class BI02 extends Item {
     
     public BI02 (String owner){
         super("BI02", 4, new Hashmap(BLACK, 3), 
-        "Sacrifice an item, Activate: Opponent purges 5. If sacrificed item belongs to him, he purges 10 instead.", owner);
+        "Sacrifice an item, Activate:\n" +
+        "Deal 2 damage to your opponent.\n" +
+        "If sacrificed item belongs to him, deal 3 damage instead.", owner);
         subtypes.add("Weapon");
     }
 
@@ -38,9 +40,8 @@ public class BI02 extends Item {
         target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
         game.deplete(id);
         game.destroy(target);
-        String oppName = game.getOpponentName(controller);
-        game.addToStack(new Activation(controller, 
-            game.getOpponentName(controller) + (game.ownedByOpponent(target)?" purges 10":" purges 5"),
-            (x) -> { game.damagePlayer(oppName, (game.ownedByOpponent(target)?10:5)); }));
+        game.addToStack(new Activation(controller, "deal " + (game.ownedByOpponent(target)? 3:2) +  
+            " damage to " + game.getOpponentName(controller),
+            (x) -> { game.dealDamage(target, (game.ownedByOpponent(target)?3:2)); }));
     }
 }
