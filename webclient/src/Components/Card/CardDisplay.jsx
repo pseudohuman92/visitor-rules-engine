@@ -29,7 +29,8 @@ export class CardDisplay extends Component {
       cost,
       type,
       knowledgeCost,
-      borderColor
+      borderColor,
+      health,
     } = this.props;
 
     const marginSize = "2%";
@@ -146,6 +147,7 @@ export class CardDisplay extends Component {
               >
                 {description}
               </Textfit>
+              {health? "\nHealth:" + health : ""}
             </div>
           </div>
         </Rectangle>
