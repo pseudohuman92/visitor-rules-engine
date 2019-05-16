@@ -116,6 +116,6 @@ export default class ServerGameMessageHandler {
     this.send("SelectXValueResponse", {
       selectedXValue: xVal
     });
-    this.props.updateExtendedGameState({ phase: GamePhases.DONE_SELECT });
+    this.updateExtendedGameState({ phase: GamePhases.DONE_SELECT });
   };
 }

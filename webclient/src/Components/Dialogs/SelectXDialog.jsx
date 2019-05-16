@@ -9,6 +9,8 @@ import { connect } from "react-redux";
 
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import {GamePhases} from "../Helpers/Constants";
+import { updateExtendedGameState } from "../Redux/Actions";
+import { mapDispatchToProps } from "../Redux/Store";
 
 const mapStateToProps = state => {
   return {
@@ -36,8 +38,8 @@ class SelectXDialog extends Component {
   };
 
   render = () => {
-    const { phase, xVal } = this.state;
-
+    const { xVal } = this.state;
+    const {phase} = this.props;
     let open = phase === GamePhases.SELECT_X_VALUE;
 
     return (

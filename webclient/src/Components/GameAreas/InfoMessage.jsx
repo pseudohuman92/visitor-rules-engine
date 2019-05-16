@@ -28,7 +28,7 @@ class InfoMessage extends Component {
     } else if (IsSelectCardPhase(phase)) {
       instMessage = `Select ${
         upTo ? "up to " : ""
-      } ${selectCountMax} cards from ${
+      } ${selectCountMax} cards/players from ${
         {
           SelectFromList: "list",
           SelectFromPlay: "play",

@@ -9,6 +9,7 @@ import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
+import { withHandlers } from "../MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
   return {
@@ -28,7 +29,7 @@ const mapStateToProps = state => {
     opponentHandSize: state.extendedGameState.game.opponent.handSize,
     opponentHealth: state.extendedGameState.game.opponent.health,
     selectedCards: state.extendedGameState.selectedCards,
-    selectableCards: state.extendedGameState.selectableCards,
+    selectablePlayers: state.extendedGameState.selectablePlayers,
     displayTargets: state.extendedGameState.targets,
     phase: state.extendedGameState.phase,
     selectCountMax: state.extendedGameState.selectCountMax
@@ -67,7 +68,7 @@ class PlayerDisplay extends React.Component {
       playerHealth,
       opponentHealth,
       selectedCards,
-      selectableCards,
+      selectablePlayers,
       displayTargets,
       phase,
       selectCountMax,
@@ -82,7 +83,7 @@ class PlayerDisplay extends React.Component {
     const handSize = isPlayer ? playerHand.length : opponentHandSize;
     const health = isPlayer ? playerHealth : opponentHealth;
 
-    const selectable = selectableCards.includes(id);
+    const selectable = selectablePlayers.includes(id);
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
 
@@ -109,8 +110,10 @@ class PlayerDisplay extends React.Component {
     let select = event => {
       let maxCount = selectCountMax;
       let selected = [...selectedCards];
-      selected.push(id);
-      this.props.updateExtendedGameState({ selectedCards: selected });
+      if (selected.length < maxCount) {
+        selected.push(id);
+        this.props.updateExtendedGameState({ selectedCards: selected });
+      }
       if (selected.length === maxCount) {
         this.props.gameHandler.SelectDone(phase, selected);
       }
@@ -234,4 +237,4 @@ class PlayerDisplay extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withFirebase(PlayerDisplay));
+)(withHandlers(withFirebase(PlayerDisplay)));

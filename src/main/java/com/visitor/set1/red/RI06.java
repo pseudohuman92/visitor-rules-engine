@@ -24,7 +24,7 @@ public class RI06 extends Item {
     public RI06 (String owner){
         super("RI06", 1, new Hashmap(RED, 2), 
                 "Sacrifice an Item, Activate: \n" +
-                "  Opponent purges X. \n" +
+                "  Deal X damage. \n" +
                 "  X = cost of sacrificed item.", owner);
     }
     

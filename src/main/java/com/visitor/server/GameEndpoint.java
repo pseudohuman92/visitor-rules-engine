@@ -94,6 +94,10 @@ public class GameEndpoint {
     }
 
     private void processResponse(ClientGameMessage message) {
+        if (message.getPayloadCase() == CONCEDE){
+                gameServer.concede(gameID, userId);
+                return;
+        }
         if (message.getPayloadCase() == responseType){
             switch(message.getPayloadCase()){
                 case ORDERCARDSRESPONSE:

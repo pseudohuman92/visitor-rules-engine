@@ -40,8 +40,10 @@ export class PlayingCard extends React.Component {
     let maxCount = this.props.selectCountMax;
     let phase = this.props.phase;
 
-    selected.push(id); 
-    this.props.updateExtendedGameState({ selectedCards: selected });
+    if (selected.length < maxCount) {
+      selected.push(id);
+      this.props.updateExtendedGameState({ selectedCards: selected });
+    }
     if (selected.length === maxCount) {
       this.props.gameHandler.SelectDone(phase, selected);
     }
