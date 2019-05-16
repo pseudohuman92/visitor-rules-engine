@@ -5,55 +5,55 @@ BA02	Spell		Target player loots X		X	B
 BA03	Spell		Additional Cost - Sacrifice an item. Draw 2 cards.		1	B
 BA04	Spell		Opponent chooses an item he controls, posses that item.		2	BB
 BA05	Spell		Opponent discards an Spell.		1	B
-BI01	Item		Activate:   Loot 1	5	1	B
-BI02	Item	Weapon	Sacrifice an item, Activate:    Deal 5 damage.    If sacrificed item belongs to him, deal 10 damage instead.	5	4	BBB
-BI03	Item		Sacrifice an Item:    Gain 1 Energy.    If that item is owned by the opponent gain 1 additional energy.	5	4	BB
-BI04	Item		Activate, Sacrifice ~:    Draw a card from your void then    purge a card from your hand	5	3	B
-BI06	Item		Condition - Control a card you don't own.    Activate:      Deal 3 damage.	5	1	B
-BI05	Item		3, Activate:    Draw top item of opponent's deck.	5	3	BB
-BI07	Item		3, Sacrifice ~, Activate:    Possess target item.	5	2	BB
-BI08	Item		1, Activate, Sacrifice ~:    Look at opponent's hand and choose an Spell from it.    They discard it.	5	1	B
+BI01	Item		Activate:   Loot 1	3	1	B
+BI02	Item	Weapon	Sacrifice an item, Activate:    Deal 2 damage to your opponent.    If sacrificed item belongs to him, deal 3 damage instead.	3	4	BBB
+BI03	Item		Sacrifice an Item:    Gain 1 Energy.    If that item is owned by the opponent gain 1 additional energy.	3	4	BB
+BI04	Item		Activate, Sacrifice ~:    Draw a card from your scrapyard then    discard a card.	3	3	B
+BI06	Item		Condition - Control a card you don't own.    Activate:      Deal 2 damage.	3	1	B
+BI05	Item		3, Activate:    Draw top item of opponent's deck.	3	3	BB
+BI07	Item		3, Sacrifice ~, Activate:    Possess target item.	3	2	BB
+BI08	Item		1, Activate, Sacrifice ~:    Look at opponent's hand and choose an Spell from it.    They discard it.	3	1	B
 						
 UA01	Spell		Purge all copies of a target card from your scrapyard.  Deal that many damage.		1	UU
 UA02	Spell		Transmute target item into Junk		3	U
 UA03	Spell		Search top 4 cards of your deck for a kit card and put into play.  Put rest to the bottom of your library.		1	U
 UA04	Spell		Choose an item from opponent's hand and transform it into Junk		2	UU
-UA05	Spell		Additional Cost - Purge 5 items from your scrapyard.  Transmute target item you control into a copy of target item in your void.		2	UUU
-UI01	Item	Kit	Discard 2:    Transform ~ into AI01.	5	2	UU
-UI02	Item		Shuffle 3 Junk into your deck, Activate:    Deal 3 damage.	5	2	U
-UI03	Item		1, Activate:    Look at the top 2 cards of your library.    You may discard any number of them.    Put the rest in the same order.	5	1	U
-UI04	Item	Kit	1, Discard 1:    Transform ~ into AI02.	5	1	U
-UI05	Item		1, Activate:    Look at the top 2 cards of your deck.    Draw one.    Transform other into junk and shuffle into the deck.	5	2	UU
-UI06	Item		Discard 1, Purge 1:    Gain 1 Energy	5	2	UU
-UI07	Item		X, Sacrifice ~:    Look at opponent's deck.    Choose a card that costs X or less from it.    Transform chosen card into junk.	5	1	UU
-UI08	Item		Discard a Junk: Charge 1. Sacrifice an Item: Charge 1.  If it has 3 charges, transform ~ into AI03	5	3	U
+UA05	Spell		Additional Cost - Purge 3 items from your scrapyard.  Transmute target item you control into a copy of target item in your scrapyard.		2	UUU
+UI01	Item	Kit	Discard 2:    Transform ~ into AI01.	3	2	UU
+UI02	Item		Shuffle 3 Junk into your deck, Activate:    Deal 3 damage.	3	2	U
+UI03	Item		1, Activate:    Look at the top 2 cards of your library.    You may discard any number of them.    Put the rest in the same order.	3	1	U
+UI04	Item	Kit	1, Discard 1:    Transform ~ into AI02.	3	1	U
+UI05	Item		1, Activate:    Look at the top 2 cards of your deck.    Draw one.    Transform other into junk and shuffle into the deck.	3	2	UU
+UI06	Item		Discard 1, Purge 1:    Gain 1 Energy	3	2	UU
+UI07	Item		X, Sacrifice ~:    Look at opponent's deck.    Choose a card that costs X or less from it.    Transform chosen card into junk.	3	1	UU
+UI08	Item		Discard a Junk: Charge 1. Sacrifice an Item: Charge 1.  If it has 3 charges, transform ~ into AI03	3	3	U
 						
-YA01	Spell		Gain reflect 2. Shuffle ~ back into your deck.		2	YYY
+YA01	Spell		Gain reflect 1. Shuffle ~ back into your deck.		2	YYY
 YA02	Spell		Cancel target Spell.		2	Y
 YA03	Spell		Cancel target card.		3	YY
 YA04	Spell		Recover X.  Purge ~		2X	YY
 YA05	Spell		Return target Spell from scrapyard to your hand. Purge ~		1	Y
 YA06	Spell		Each player draws 3 cards		3	YY
-YI01	Item	Barrier	Charge 4.  3, Sacrifice ~:    Gain shield X.   X = # of charge counters	5	1	Y
-YI02	Item	Barrier	Charge 2.  3, Sacrifice ~:    Gain reflect X   X = # of charge counters	5	1	YY
-YI03	Item		2, Activate:    Create and draw a YI01 or YI02.	5	3	YYY
-YI04	Item		2X, Activate:    Target item Charge X.	5	2	YY
-YI05	Item		2, Activate:   Gain reflect 2.	5	2	YY
-YI06	Item		Sacrifice an item, Activate:   Deal X damage to opponent,    where X is # of charge counter on sacrificed item.	5	2	YY
+YI01	Item	Barrier	Charge 4.  3, Sacrifice ~:    Gain shield X.   X = # of charge counters	3	1	Y
+YI02	Item	Barrier	Charge 3.  3, Sacrifice ~:    Gain reflect X   X = # of charge counters	3	1	YY
+YI03	Item		2, Activate:    Create and draw a YI01 or YI02.	3	3	YYY
+YI04	Item		2X, Activate:    Target item Charge X.	3	2	YY
+YI05	Item		2, Activate:   Gain reflect 1.	3	2	YY
+YI06	Item		Sacrifice an item, Activate:   Deal X damage to opponent,    where X is # of charge counter on sacrificed item.	3	2	YY
 						
-RA01	Spell		Return target item to controller's hand.  Deal 2 damage to opponent.		2	R
+RA01	Spell		Return target item to controller's hand.  Deal 1 damage to opponent.		2	R
 RA02	Spell		Put target item on top of controller's deck		2	RR
-RA03	Spell		Deal 2 damage.  Shuffle ~ to your deck.		1	RR
+RA03	Spell		Deal 2 damage.  Shuffle ~ to your deck.		2	RR
 RA04	Spell		Additional Cost    Shuffle a card from your hand to your deck.  Draw two cards.		1	R
 RA05	Spell		Additional Cost    Return an item you control to your hand.  Deal 4 damage.		1	RR
 RA06	Spell		Return target Spell to its controller's hand.		2	R
-RI01	Item		1, Activate:    Deal 2 damage.	5	2	R
-RI02	Item		Activate:    Return ~ and target item to controller's hand.	5	1	RR
-RI03	Item		Charge 3.   Discharge 1, Activate:    Deal 3 damage	5	2	RR
-RI04	Item		Charge X.  Dischage 1, Activate:   Deal 3 damage	5	X+1	RR
-RI05	Item		Discard a card:    Charge 1.   Discharge 1, Activate:    Deal 4 damage	5	2	RRR
-RI06	Item		Sacrifice an Item, Activate:    Deal X damage.    X = cost of sacrificed item.	5	1	RR
-RI07	Item		X, Purge X, Activate:    Deal X damage.	5	1	RR
+RI01	Item		1, Activate:    Deal 2 damage.	3	2	R
+RI02	Item		Activate:    Return ~ and target item to controller's hand.	3	1	RR
+RI03	Item		Charge 3.   1, Discharge 1, Activate:    Deal 2 damage	3	2	RR
+RI04	Item		Charge X.  1, Activate, Sacrifice ~:   Deal X damage, X = # of charge counters.	3	X+1	RR
+RI05	Item		Discard a card:    Charge 1.   Discharge 1, Activate:    Deal 2 damage	3	2	RRR
+RI06	Item		Sacrifice an Item, Activate:    Deal X damage.    X = cost of sacrificed item.	3	1	RR
+RI07	Item		X, Purge X, Activate:    Deal X damage.	3	1	RR
 						
 NT01	Tome		Study:   Gain BU			
 NT02	Tome		Study:   Gain BR			
@@ -62,6 +62,6 @@ NT04	Tome		Study:   Gain BB
 NT05	Tome		Study:   Gain UU			
 NT06	Tome		Study:   Gain RR			
 						
-AI01	Item	Bomb	Destroy:    Deal 6 damage.	5	1	
-AI02	Item	Weapon	Purge a Junk from your hand, Activate:    Deal 5 damage.	5	3	UUU
-AI03	Item		Discharge 1:    Deal 4 damage.   If ~ has no counters on it, transform ~ to UI08	5	0	U
+AI01	Item	Bomb	Destroy:    Deal 5 damage.	3	1	
+AI02	Item	Weapon	Purge a Junk from your hand, Activate:    Deal 3 damage.	3	3	UUU
+AI03	Item		Discharge 1, Activate:    Deal 2 damage.   If ~ has no counters on it, transform ~ to UI08	3	0	U
