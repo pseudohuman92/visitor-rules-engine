@@ -12,7 +12,7 @@ import {
 import Fonts from "../Fonts/Fonts";
 import "../../css/Card.css";
 import "../../css/Utils.css";
-import { TextField, Grid, MenuItem } from "@material-ui/core";
+import { TextField, Grid } from "@material-ui/core";
 import { withFirebase } from "../Firebase";
 
 class DesignCard extends Component {
