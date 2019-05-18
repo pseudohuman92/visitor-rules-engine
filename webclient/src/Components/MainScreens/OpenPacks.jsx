@@ -97,19 +97,17 @@ class OpenPacks extends Component {
             return (
               <Grid item xs key={key}>
                 <Center>
-                  <div style={{ height: "350px", width: "250px" }}>
-                      <div
-                        onClick={event => this.openPack(key)}
-                        style={{
-                          backgroundColor: "blue",
-                          height: "350px",
-                          maxWidth: "250px"
-                        }}
-                      >
-                        {key}
-                      </div>
-                      <div style={{ color: "black" }}>{packs[key]}</div>
-                  </div>
+                  <img
+                    src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+                    style={{ width: "250px" }}
+                    onClick={event => this.openPack(key)}
+                    alt=""
+                  />
+                </Center>
+                <Center>
+                  <span style={{ color: "black" }}>
+                    {"" + key + ": " + packs[key]}
+                  </span>
                 </Center>
               </Grid>
             );
