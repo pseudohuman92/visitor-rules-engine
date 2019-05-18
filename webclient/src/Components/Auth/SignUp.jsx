@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import {connect} from "react-redux";
 import Center from "react-center";
 
-import Profile from "../../Profile";
+import Profile from "../MainScreens/Profile";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 

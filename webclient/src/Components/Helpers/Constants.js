@@ -157,12 +157,10 @@ export function toCollectionArray(collection) {
   return col;
 }
 
-function initializeNewUserCollection() {
+export function getNewUserCollection() {
   let newUserCollection = {};
   Object.keys(fullCollection).map(function(key) {
     newUserCollection[key] = 3;
   });
   return newUserCollection;
 }
-
-export const newUserCollection = initializeNewUserCollection();

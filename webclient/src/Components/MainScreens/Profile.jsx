@@ -8,13 +8,13 @@ import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
 import { connect } from "react-redux";
 
-import PlayArea from "./Components/GameAreas/PlayArea";
+import PlayArea from "../GameAreas/PlayArea";
 import DeckBuilder from "./DeckBuilder";
 import OpenPacks from "./OpenPacks";
-import { toKnowledgeCost } from "./Components/Helpers/Constants";
-import { mapDispatchToProps } from "./Components/Redux/Store";
-import ServerMessageHandler from "./Components/MessageHandlers/ServerMessageHandler";
-import { withHandlers } from "./Components/MessageHandlers/HandlerContext";
+import { toKnowledgeCost } from "../Helpers/Constants";
+import { mapDispatchToProps } from "../Redux/Store";
+import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
+import { withHandlers } from "../MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
   return { username: state.username,

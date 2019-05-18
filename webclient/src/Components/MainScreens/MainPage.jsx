@@ -4,8 +4,10 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
 
-import SignIn from "./Components/Auth/SignIn";
-import SignUp from "./Components/Auth/SignUp";
+import SignIn from "../Auth/SignIn";
+import SignUp from "../Auth/SignUp";
+import DesignCard from "./DesignCard";
+import CustomCardPage from "./CustomCardPage";
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -37,11 +39,25 @@ export default class MainPage extends Component {
               >
                 Sign Up
               </Button>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 3 })}
+              >
+                Design a Card
+              </Button>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 4 })}
+              >
+                Custom Cards
+              </Button>
             </Paper>
           </Center>
         )}
         {value === 1 && <SignIn />}
         {value === 2 && <SignUp />}
+        {value === 3 && <DesignCard />}
+        {value === 4 && <CustomCardPage/>}
       </div>
     );
   }

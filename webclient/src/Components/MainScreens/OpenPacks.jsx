@@ -5,9 +5,9 @@ import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import Center from "react-center";
 
-import { withFirebase } from "./Components/Firebase/index";
-import CardDisplay from "./Components/Card/CardDisplay";
-import { fullCollection } from "./Components/Helpers/Constants";
+import { withFirebase } from "../Firebase/index";
+import CardDisplay from "../Card/CardDisplay";
+import { fullCollection } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {

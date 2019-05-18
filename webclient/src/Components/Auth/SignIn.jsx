@@ -11,7 +11,7 @@ import Center from "react-center";
 import { connect } from "react-redux";
 
 import { withFirebase } from "../Firebase";
-import Profile from "../../Profile";
+import Profile from "../MainScreens/Profile";
 import PasswordReset from "./PasswordReset";
 import { mapDispatchToProps } from "../Redux/Store";
 

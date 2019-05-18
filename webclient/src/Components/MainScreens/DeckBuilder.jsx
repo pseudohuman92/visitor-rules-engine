@@ -8,9 +8,9 @@ import TextField from "@material-ui/core/TextField";
 import Center from "react-center";
 import { connect } from "react-redux";
 
-import CardDisplay from "./Components/Card/CardDisplay";
-import { copy, spliceToSubarrays } from "./Components/Helpers/Helpers";
-import { toCollectionArray } from "./Components/Helpers/Constants"
+import CardDisplay from "../Card/CardDisplay";
+import { copy, spliceToSubarrays } from "../Helpers/Helpers";
+import { toCollectionArray } from "../Helpers/Constants"
 
 const mapStateToProps = state => {
   return { collection: state.collection };
