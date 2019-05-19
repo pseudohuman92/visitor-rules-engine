@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { ItemTypes, GamePhases } from "../Helpers/Constants";
 import "../../css/StudyArea.css";
 
-const altarTarget = {
+const studyAreaTarget = {
   drop(props, monitor) {
     return { targetType: ItemTypes.ALTAR };
   },
@@ -20,11 +20,12 @@ const altarTarget = {
 const mapStateToProps = state => {
   return {
     phase: state.extendedGameState.phase,
-    game: state.extendedGameState.game
+    game: state.extendedGameState.game,
   };
 };
 
-class Altar extends Component {
+class StudyArea extends Component {
+  
   render() {
     const { connectDropTarget, phase, game } = this.props;
     const hasStudyable =
@@ -47,10 +48,10 @@ class Altar extends Component {
   }
 }
 
-Altar = DropTarget(ItemTypes.CARD, altarTarget, (connect, monitor) => ({
+StudyArea = DropTarget(ItemTypes.CARD, studyAreaTarget, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop()
-}))(Altar);
+}))(StudyArea);
 
-export default connect(mapStateToProps)(Altar);
+export default connect(mapStateToProps)(StudyArea);

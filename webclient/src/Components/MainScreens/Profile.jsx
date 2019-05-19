@@ -9,12 +9,11 @@ import Center from "react-center";
 import { connect } from "react-redux";
 
 import PlayArea from "../GameAreas/PlayArea";
-import DeckBuilder from "./DeckBuilder";
 import OpenPacks from "./OpenPacks";
-import { toKnowledgeCost } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
+import Decks from "./Decks";
 
 const mapStateToProps = state => {
   return { username: state.username,
@@ -55,7 +54,7 @@ class Profile extends Component {
                 variant="contained"
                 onClick={event => this.setState({ value: 2 })}
               >
-                Deck Builder
+                Decks
               </Button>
               <Button
                 variant="contained"
@@ -67,9 +66,7 @@ class Profile extends Component {
           </Center>
         )}
         {value === 1 && (gameInitialized ? <PlayArea /> : <div>WAITING FOR THE GAME</div>)}
-        {value === 2 && (
-          <DeckBuilder style={{ maxHeight: "100vh", maxWidth: "100vw" }} deck={{name: "asd", cards:[]}}/>
-        )}
+        {value === 2 && <Decks/>}
         {value === 3 && <OpenPacks value={999}/>}
       </div>
     );

@@ -1,19 +1,19 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import ReactFileReader from "react-file-reader";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import TextField from "@material-ui/core/TextField";
 import Center from "react-center";
 import { connect } from "react-redux";
 
+import { withFirebase } from "../Firebase";
 import CardDisplay from "../Card/CardDisplay";
-import { copy, spliceToSubarrays } from "../Helpers/Helpers";
-import { toCollectionArray } from "../Helpers/Constants"
+import { spliceToSubarrays } from "../Helpers/Helpers";
+import { toCollectionArray } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
-  return { collection: state.collection };
+  return { collection: state.collection, userId: state.authUser.user.uid };
 };
 
 class DeckBuilder extends React.Component {
@@ -22,27 +22,31 @@ class DeckBuilder extends React.Component {
     this.state = {
       initialCollection: toCollectionArray(props.collection),
       collection: toCollectionArray(props.collection),
-      name: "New Deck",
-      deck: [],
-    };
-    this.fileReader = new FileReader();
-    this.fileReader.onload = event => {
-      var cards = this.fileReader.result.split("\n");
-      cards.forEach(c => {
-        let count = c.split("\t")[0];
-        let name = c.split("\t")[1];
-        for (let i = 0; i < count; i++) {
-          this.addToDeck({ name: name });
-        }
-      });
+      name: "",
+      deck: []
     };
   }
 
-  addToDeck = card => {
+  setDeck = (name, cards) => {
+    this.setState({ name: name });
+    cards.forEach(card => {
+      for (let i = 0; i < card.count; i++) {
+        this.addToDeck(card.name);
+      }
+    });
+  };
+
+  componentWillMount() {
+    const { firebase, deckId } = this.props;
+    const setDeck = this.setDeck.bind(this);
+    firebase.getDeck(deckId, setDeck);
+  }
+
+  addToDeck = cardName => {
     var collection = this.state.collection;
-    var colPos = collection.map(c => c.card.name).indexOf(card.name);
+    var colPos = collection.map(c => c.card.name).indexOf(cardName);
     var deck = this.state.deck;
-    var deckPos = deck.map(c => c.card.name).indexOf(card.name);
+    var deckPos = deck.map(c => c.card.name).indexOf(cardName);
     if (colPos !== -1 && collection[colPos].count > 0) {
       collection[colPos].count--;
 
@@ -52,9 +56,8 @@ class DeckBuilder extends React.Component {
         deck[deckPos].count++;
       }
       this.setState({ collection: collection, deck: deck });
-      console.log(card.name + " added");
     }
-  }
+  };
 
   removeFromDeck = card => {
     var collection = this.state.collection;
@@ -72,58 +75,27 @@ class DeckBuilder extends React.Component {
       collection[colPos].count++;
     }
     this.setState({ collection: collection, deck: deck });
-    console.log(card.name + " removed");
-  }
-
-  clearDeck = () => {
-    this.setState((state, props) => ({
-      name: "New Deck",
-      deck: [],
-      collection: copy(state.initialCollection)
-    }));
-  }
+  };
 
   changeName = name => {
     this.setState({ name: name });
-  }
-
-  loadDeck = files => {
-    this.clearDeck();
-    this.fileReader.readAsText(files[0]);
-    this.setState({ name: files[0].name.split(".")[0] });
-  }
+  };
 
   saveDeck = () => {
-    let FileSaver = require("file-saver");
-    let blob = new Blob(
-      this.state.deck.map(c => c.count + "\t" + c.card.name + "\n"),
-      {
-        type: "text/plain;charset=utf-8"
-      }
-    );
-    FileSaver.saveAs(blob, this.state.name + ".deck");
-  }
+    let { name, deck } = this.state;
+    let cards = {};
+    deck.forEach(card => {
+      cards = { ...cards, [card.card.name]: card.count };
+    });
+    this.props.firebase.updateDeck(this.props.deckId, name, cards);
+  };
 
   render() {
     return (
       <Grid container spacing={16} style={{ maxHeight: "90vh" }}>
         <Grid item style={{ maxHeight: "5%" }}>
-          <ReactFileReader
-            fileTypes={[".deck"]}
-            multipleFiles={false}
-            handleFiles={this.loadDeck}
-          >
-            <Button variant="contained"> Load </Button>
-          </ReactFileReader>
-        </Grid>
-        <Grid item style={{ maxHeight: "5%" }}>
           <Button variant="contained" onClick={this.saveDeck}>
             Save
-          </Button>
-        </Grid>
-        <Grid item style={{ maxHeight: "5%" }}>
-          <Button variant="contained" onClick={this.clearDeck}>
-            New
           </Button>
         </Grid>
         <Grid item style={{ maxHeight: "5%" }}>
@@ -145,7 +117,6 @@ class DeckBuilder extends React.Component {
             cellHeight="auto"
             spacing={8}
           >
-            
             {spliceToSubarrays(this.state.collection, 6).map((arr, i) => (
               <GridListTile key={i}>
                 <Grid
@@ -159,7 +130,7 @@ class DeckBuilder extends React.Component {
                       item
                       key={i}
                       xs={4}
-                      onClick={() => this.addToDeck(card.card)}
+                      onClick={() => this.addToDeck(card.card.name)}
                     >
                       <center> {card.count} </center>
                       <CardDisplay
@@ -222,4 +193,4 @@ class DeckBuilder extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(DeckBuilder);
+export default connect(mapStateToProps)(withFirebase(DeckBuilder));

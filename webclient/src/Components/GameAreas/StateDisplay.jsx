@@ -6,6 +6,7 @@ import ButtonDisplay from "./ButtonDisplay";
 
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
+import Deck from "./Deck";
 
 class StateDisplay extends React.Component {
   render() {
@@ -18,14 +19,20 @@ class StateDisplay extends React.Component {
         }}
         className="state-display"
       >
-        <Grid item xs={12} style={{ height: "32%" }}>
+        <Grid item xs={12} style={{ height: "20%" }}>
+          <Deck isPlayer={false} />
+        </Grid>
+        <Grid item xs={12} style={{ height: "20%" }}>
           <PlayerDisplay isPlayer={false} />
         </Grid>
-        <Grid item xs={12} style={{ height: "32%" }}>
+        <Grid item xs={12} style={{ height: "20%" }}>
           <ButtonDisplay />
         </Grid>
-        <Grid item xs={12} style={{ height: "32%" }}>
+        <Grid item xs={12} style={{ height: "20%" }}>
           <PlayerDisplay isPlayer={true} />
+        </Grid>
+        <Grid item xs={12} style={{ height: "20%" }}>
+          <Deck isPlayer={true} />
         </Grid>
       </Grid>
     );

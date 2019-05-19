@@ -1,4 +1,5 @@
 import app from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import { getNewUserCollection } from "../Helpers/Constants";
@@ -47,17 +48,25 @@ class Firebase {
     let collection = this.createNewCollection(getNewUserCollection());
     console.log("Collection: ", collection);
     console.log("ID: ", collection.id);
-    this.user(uid).set(
-      {
-        username: username,
-        coins: 1000000,
-        collectionId: collection.id,
-        dailyWins: 0,
-        deckIds: [],
-        dust: 1234567,
-        packs: { Set1: 999 }
-      }
-    );
+    this.user(uid).set({
+      username: username,
+      coins: 1000000,
+      collectionId: collection.id,
+      dailyWins: 0,
+      deckIds: [],
+      dust: 1234567,
+      packs: { Set1: 999 }
+    });
+  };
+
+  createNewDeck = (uid, name, Return) => {
+    let collection = this.createNewCollection({});
+    let deck = this.db.collection("decks").doc();
+    deck.set({ name: name, collectionId: collection.id });
+    this.user(uid).update({
+      deckIds: firebase.firestore.FieldValue.arrayUnion(deck.id)
+    });
+    Return(deck.id);
   };
 
   setUserData = (uid, updateState) => {
@@ -74,21 +83,66 @@ class Firebase {
       });
   };
 
-  //TODO Fix this. Return doesn't work with async
-  fetchDeck = deckId => {
-    let ret = {};
+  updateDeck = (deckId, name, cards) => {
+    if (name) {
+      this.deck(deckId).update({ name: name });
+    }
+    if (cards) {
+      this.deck(deckId)
+        .get()
+        .then(deck => {
+          this.collection(deck.data().collectionId).update({ cards: cards });
+        });
+    }
+  };
+
+  getDeck = (deckId, Return) => {
+    let ret = [];
     this.deck(deckId)
       .get()
-      .then(deck => {
-        let data = deck.data();
-        this.collection(data.collectionId)
+      .then(deckDoc => {
+        let deck = deckDoc.data();
+        this.collection(deck.collectionId)
           .get()
           .then(coll => {
             let cards = coll.data().cards;
-            ret = { name: data.name, cards: cards };
+            Object.keys(cards).forEach(cardName => {
+              ret.push({ name: cardName, count: cards[cardName] });
+            });
+            Return(deck.name, ret);
           });
       });
-    return ret;
+  };
+
+  getAllDecks = (uid, Return) => {
+    this.user(uid)
+      .get()
+      .then(userDoc => {
+        let user = userDoc.data();
+        user.deckIds.forEach(deckId => {
+          this.deck(deckId)
+            .get()
+            .then(deckDoc => {
+              let deck = deckDoc.data();
+              if (deck) {
+                Return({ id: deckId, name: deck.name });
+              }
+            })
+            .catch(console.log("Error in ", deckId));
+        });
+      });
+  };
+
+  deleteDeck = (userId, deckId) => {
+    this.deck(deckId)
+      .get()
+      .then(deck => {
+        this.collection(deck.data().collectionId).delete();
+        this.deck(deckId).delete();
+        this.user(userId).update({
+          deckIds: firebase.firestore.FieldValue.arrayRemove(deckId)
+        });
+      });
   };
 
   setOpponentUsername = (uid, updateExtendedGameState) => {
@@ -114,12 +168,15 @@ class Firebase {
         querySnapshot.forEach(function(doc) {
           if (doc.id !== "structure") {
             let card = doc.data();
-            cards.push({ ...card, knowledgeCost: toKnowledgeCost(card.knowledge) });
+            cards.push({
+              ...card,
+              knowledgeCost: toKnowledgeCost(card.knowledge)
+            });
             console.log(doc.id, " => ", doc.data());
           }
         });
         console.log(cards);
-        Return({cards: cards});
+        Return({ cards: cards });
       });
   };
 }

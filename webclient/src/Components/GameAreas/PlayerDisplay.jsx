@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Textfit from "react-textfit";
 import { connect } from "react-redux";
-import Image from "react-image";
 
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
@@ -15,7 +14,6 @@ const mapStateToProps = state => {
   return {
     playerId: state.extendedGameState.game.player.id,
     playerName: state.username,
-    playerDeckSize: state.extendedGameState.game.player.deckSize,
     playerScrapyard: state.extendedGameState.game.player.scrapyard,
     playerVoid: state.extendedGameState.game.player.void,
     playerHand: state.extendedGameState.game.player.hand,
@@ -23,7 +21,6 @@ const mapStateToProps = state => {
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,
-    opponentDeckSize: state.extendedGameState.game.opponent.deckSize,
     opponentScrapyard: state.extendedGameState.game.opponent.scrapyard,
     opponentVoid: state.extendedGameState.game.opponent.void,
     opponentHandSize: state.extendedGameState.game.opponent.handSize,
@@ -57,8 +54,6 @@ class PlayerDisplay extends React.Component {
       opponentId,
       playerName,
       opponentName,
-      playerDeckSize,
-      opponentDeckSize,
       playerScrapyard,
       opponentScrapyard,
       playerVoid,
@@ -77,7 +72,6 @@ class PlayerDisplay extends React.Component {
 
     const id = isPlayer ? playerId : opponentId;
     const name = isPlayer ? playerName : opponentName;
-    const deckSize = isPlayer ? playerDeckSize : opponentDeckSize;
     const scrapyard = isPlayer ? playerScrapyard : opponentScrapyard;
     const void_ = isPlayer ? playerVoid : opponentVoid;
     const handSize = isPlayer ? playerHand.length : opponentHandSize;
@@ -147,18 +141,22 @@ class PlayerDisplay extends React.Component {
         <Grid container spacing={0} style={{ height: "100%" }}>
           <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
             <div
-              style={{ backgroundColor: borderColor }}
+              style={{
+                backgroundColor: borderColor,
+                maxWidth: "100%",
+                maxHeight: "100%"
+              }}
               onClick={clickHandler}
             >
-              <Image
-                src={[
+              <img
+                src={
                   process.env.PUBLIC_URL +
-                    "/img/" +
-                    (isPlayer ? "Player" : "Opponent") +
-                    ".png"
-                ]}
-                style={{ maxWidth: "100%", maxHeight: "100%", margin: "3%" }}
-                decode={false}
+                  "/img/" +
+                  (isPlayer ? "Player" : "Opponent") +
+                  ".png"
+                }
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
+                alt=""
               />
             </div>
           </Grid>
@@ -178,15 +176,6 @@ class PlayerDisplay extends React.Component {
               style={{ padding: "0 5% 0 5%", height: "100%" }}
             >
               Health: {health}
-            </Textfit>
-          </Grid>
-          <Grid item xs={6} className="grid-elem" style={{ height: "20%" }}>
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              Deck: {deckSize}
             </Textfit>
           </Grid>
           <Grid item xs={6} className="grid-elem" style={{ height: "20%" }}>

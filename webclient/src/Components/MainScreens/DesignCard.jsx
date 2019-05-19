@@ -5,10 +5,7 @@ import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import Center from "react-center";
 
-import {
-  getCardColor,
-  toKnowledgeCost,
-} from "../Helpers/Helpers";
+import { getCardColor, toKnowledgeCost } from "../Helpers/Helpers";
 import Fonts from "../Fonts/Fonts";
 import "../../css/Card.css";
 import "../../css/Utils.css";
@@ -38,22 +35,19 @@ class DesignCard extends Component {
   submit = event => {
     this.props.firebase.createNewCustomCard(this.state);
     this.setState({
-        creator: "",
-        cost: "",
-        knowledge: "",
-        name: "",
-        type: "",
-        subtype: "",
-        description: "",
-        health: ""
-      });
+      creator: "",
+      cost: "",
+      knowledge: "",
+      name: "",
+      type: "",
+      subtype: "",
+      description: "",
+      health: ""
+    });
   };
 
   render() {
-    const {
-      knowledge,
-      type,
-    } = this.state;
+    const { knowledge, type } = this.state;
     return (
       <Center>
         <div>
@@ -98,9 +92,6 @@ class DesignCard extends Component {
                       margin="dense"
                       value={this.state.cost}
                       onChange={this.onChange("cost")}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
                     />
                   </Grid>
                   <Grid item xs={4}>
@@ -111,9 +102,6 @@ class DesignCard extends Component {
                       margin="dense"
                       value={this.state.knowledge}
                       onChange={this.onChange("knowledge")}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -125,9 +113,6 @@ class DesignCard extends Component {
                       value={this.state.name}
                       fullWidth
                       onChange={this.onChange("name")}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
                     />
                   </Grid>
                 </Grid>
@@ -160,9 +145,6 @@ class DesignCard extends Component {
                   margin="dense"
                   value={this.state.type}
                   fullWidth
-                  InputLabelProps={{
-                    shrink: true
-                  }}
                 />
               </div>
 
@@ -183,9 +165,6 @@ class DesignCard extends Component {
                       fullWidth
                       multiline
                       onChange={this.onChange("description")}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
                     />
                   </Grid>
                   {this.state.type === "Item" ? (
@@ -197,9 +176,6 @@ class DesignCard extends Component {
                         margin="dense"
                         value={this.state.health}
                         onChange={this.onChange("health")}
-                        InputLabelProps={{
-                          shrink: true
-                        }}
                       />
                     </Grid>
                   ) : (
