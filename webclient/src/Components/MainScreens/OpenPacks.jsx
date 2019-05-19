@@ -8,9 +8,11 @@ import Center from "react-center";
 import { withFirebase } from "../Firebase/index";
 import CardDisplay from "../Card/CardDisplay";
 import { fullCollection } from "../Helpers/Constants";
+import { mapDispatchToProps } from "../Redux/Store";
 
 const mapStateToProps = state => {
   return {
+    userId: state.authUser.user.uid,
     packs: state.packs
   };
 };
@@ -19,18 +21,22 @@ class OpenPacks extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      generatedPack: [],
       show: false
     };
   }
 
   openPack = packName => {
-    if (this.props.packs[packName] > 0) {
-      /* TODO: This will replace the pack open code. Must do it transactionally.
-      let cards = this.generatePack(10, true);
-      this.props.firebase.addCardsToCollection(collectionId, cards);
-      this.props.firebase.decreasePackCount(userId);
-      */
-      this.setState((state, props) => ({ show: true }));
+    const {packs, userId, firebase} = this.props;
+    if (packs[packName] > 0) {
+      let genPack = this.generatePack(5, true);
+      this.setState({ generatedPack: genPack });
+      let cards = {};
+      genPack.forEach(card => {cards[card.name] = 1;});
+      firebase.openPack(userId, packName, cards);
+      packs[packName] -= 1;
+      this.props.updateState({packs: packs});
+      this.setState({ show: true });
     }
   };
 
@@ -55,12 +61,12 @@ class OpenPacks extends Component {
   };
 
   hideDialog = () => {
-    this.setState({ show: false });
+    this.setState({ generatedPack: [], show: false });
   };
 
   render() {
     const { packs } = this.props;
-    const { show } = this.state;
+    const { show, generatedPack } = this.state;
 
     return (
       <div>
@@ -72,7 +78,7 @@ class OpenPacks extends Component {
               justify="flex-start"
               spacing={8}
             >
-              {this.generatePack(10, true).map((card, i) => (
+              {generatedPack.map((card, i) => (
                 <Grid item key={i} xs={3}>
                   <CardDisplay {...card} />
                 </Grid>
@@ -118,4 +124,4 @@ class OpenPacks extends Component {
   }
 }
 
-export default connect(mapStateToProps)(withFirebase(OpenPacks));
+export default connect(mapStateToProps, mapDispatchToProps)(withFirebase(OpenPacks));

@@ -44,6 +44,49 @@ class Firebase {
     return coll;
   };
 
+  openPack = (userId, packName, cards) => {
+    let userRef = this.user(userId);
+    this.db
+      .runTransaction(transaction => {
+        return transaction.get(userRef).then(userDoc => {
+          let user = userDoc.data();
+          let collectionRef = this.collection(user.collectionId);
+          return transaction.get(collectionRef).then(collectionDoc => {
+            let packs = user.packs;
+            if(!packs[packName] || packs[packName] === 0){
+              return;
+            }
+            packs[packName] -= 1;
+            let collection = collectionDoc.data().cards;
+            Object.keys(cards).forEach(cardName => {
+              if (collection[cardName]) {
+                collection[cardName] += cards[cardName];
+              } else {
+                collection[cardName] = cards[cardName];
+              }
+            });
+            transaction.update(collectionRef, { cards: collection });
+            transaction.update(userRef, { packs: packs });
+            return;
+          });
+        });
+      })
+      .then(function() {
+        console.log("Transaction successfully committed!");
+      })
+      .catch(function(error) {
+        console.log("Transaction failed: ", error);
+      });
+  };
+
+  getPacks = (userId, Return) => {
+    this.user(userId)
+      .get()
+      .then(userDoc => {
+        Return(userDoc.data().packs);
+      });
+  };
+
   createNewUser = (uid, username) => {
     let collection = this.createNewCollection(getNewUserCollection());
     console.log("Collection: ", collection);
@@ -59,16 +102,6 @@ class Firebase {
     });
   };
 
-  createNewDeck = (uid, name, Return) => {
-    let collection = this.createNewCollection({});
-    let deck = this.db.collection("decks").doc();
-    deck.set({ name: name, collectionId: collection.id });
-    this.user(uid).update({
-      deckIds: firebase.firestore.FieldValue.arrayUnion(deck.id)
-    });
-    Return(deck.id);
-  };
-
   setUserData = (uid, updateState) => {
     this.user(uid)
       .get()
@@ -81,6 +114,16 @@ class Firebase {
             updateState({ collection: coll.data().cards });
           });
       });
+  };
+
+  createNewDeck = (uid, name, Return) => {
+    let collection = this.createNewCollection({});
+    let deck = this.db.collection("decks").doc();
+    deck.set({ name: name, collectionId: collection.id });
+    this.user(uid).update({
+      deckIds: firebase.firestore.FieldValue.arrayUnion(deck.id)
+    });
+    Return(deck.id);
   };
 
   updateDeck = (deckId, name, cards) => {

@@ -67,7 +67,7 @@ class Profile extends Component {
         )}
         {value === 1 && (gameInitialized ? <PlayArea /> : <div>WAITING FOR THE GAME</div>)}
         {value === 2 && <Decks/>}
-        {value === 3 && <OpenPacks value={999}/>}
+        {value === 3 && <OpenPacks/>}
       </div>
     );
   }
