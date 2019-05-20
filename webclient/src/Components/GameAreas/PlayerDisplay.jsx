@@ -14,14 +14,12 @@ const mapStateToProps = state => {
   return {
     playerId: state.extendedGameState.game.player.id,
     playerName: state.username,
-    playerScrapyard: state.extendedGameState.game.player.scrapyard,
     playerVoid: state.extendedGameState.game.player.void,
     playerHand: state.extendedGameState.game.player.hand,
     playerHealth: state.extendedGameState.game.player.health,
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,
-    opponentScrapyard: state.extendedGameState.game.opponent.scrapyard,
     opponentVoid: state.extendedGameState.game.opponent.void,
     opponentHandSize: state.extendedGameState.game.opponent.handSize,
     opponentHealth: state.extendedGameState.game.opponent.health,
@@ -54,8 +52,6 @@ class PlayerDisplay extends React.Component {
       opponentId,
       playerName,
       opponentName,
-      playerScrapyard,
-      opponentScrapyard,
       playerVoid,
       opponentVoid,
       playerHand,
@@ -72,7 +68,6 @@ class PlayerDisplay extends React.Component {
 
     const id = isPlayer ? playerId : opponentId;
     const name = isPlayer ? playerName : opponentName;
-    const scrapyard = isPlayer ? playerScrapyard : opponentScrapyard;
     const void_ = isPlayer ? playerVoid : opponentVoid;
     const handSize = isPlayer ? playerHand.length : opponentHandSize;
     const health = isPlayer ? playerHealth : opponentHealth;
@@ -81,15 +76,6 @@ class PlayerDisplay extends React.Component {
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
 
-    let scrapyardOnClick = event => {
-      updateExtendedGameState({
-        dialog: {
-          open: true,
-          title: `${name}'s Scrapyard`,
-          cards: scrapyard
-        }
-      });
-    };
 
     let voidOnClick = event => {
       updateExtendedGameState({
@@ -185,21 +171,6 @@ class PlayerDisplay extends React.Component {
               style={{ padding: "0 5% 0 5%", height: "100%" }}
             >
               Hand: {handSize}
-            </Textfit>
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            className="grid-elem"
-            onClick={scrapyardOnClick}
-            style={{ height: "20%" }}
-          >
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              Scrap: {scrapyard.length}
             </Textfit>
           </Grid>
           <Grid

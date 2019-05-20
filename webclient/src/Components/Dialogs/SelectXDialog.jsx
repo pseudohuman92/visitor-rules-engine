@@ -9,8 +9,6 @@ import { connect } from "react-redux";
 
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import {GamePhases} from "../Helpers/Constants";
-import { updateExtendedGameState } from "../Redux/Actions";
-import { mapDispatchToProps } from "../Redux/Store";
 
 const mapStateToProps = state => {
   return {

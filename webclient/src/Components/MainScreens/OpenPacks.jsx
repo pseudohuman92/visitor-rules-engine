@@ -7,8 +7,8 @@ import Center from "react-center";
 
 import { withFirebase } from "../Firebase/index";
 import CardDisplay from "../Card/CardDisplay";
-import { fullCollection } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
+import { withHandlers } from "../MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
   return {
@@ -41,7 +41,7 @@ class OpenPacks extends Component {
   };
 
   generateRandomCard = () => {
-    const collection = Object.values(fullCollection);
+    const collection = Object.values(this.props.fullCollection);
     if (collection) {
       return collection[Math.floor(Math.random() * collection.length)];
     }
@@ -131,4 +131,4 @@ class OpenPacks extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withFirebase(OpenPacks));
+export default connect(mapStateToProps, mapDispatchToProps)(withHandlers(withFirebase(OpenPacks)));

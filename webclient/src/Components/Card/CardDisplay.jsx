@@ -17,6 +17,24 @@ import Fonts from "../Fonts/Fonts";
 import "../../css/Card.css";
 import "../../css/Utils.css";
 
+function delayClick(onClick, onDoubleClick, delay) {
+  var timeoutID = null;
+  delay = delay || 200;
+  return function (event) {
+      if (!timeoutID) {
+          timeoutID = setTimeout(function () {
+              if(onClick){
+                onClick(event);
+              }
+              timeoutID = null
+          }, delay);
+      } else {
+          timeoutID = clearTimeout(timeoutID);
+          onDoubleClick(event);
+      }
+  };
+}
+
 export class CardDisplay extends Component {
   state = { showDialog: false };
 
@@ -31,6 +49,7 @@ export class CardDisplay extends Component {
       knowledgeCost,
       borderColor,
       health,
+      onClick,
     } = this.props;
 
     const marginSize = "2%";
@@ -46,7 +65,7 @@ export class CardDisplay extends Component {
             backgroundColor: getCardColor(knowledgeCost),
             overflow: "hidden"
           }}
-          onDoubleClick={event => this.setState({ showDialog: true })}
+          onDoubleClick={delayClick(onClick, event => this.setState({ showDialog: true }))}
         >
           <Textfit
             mode="single"
@@ -65,7 +84,7 @@ export class CardDisplay extends Component {
       </div>
     );
 
-    let fullCard = (
+    let fullCard = onClick => (
       <div>
         <Fonts />
         <Rectangle
@@ -76,7 +95,7 @@ export class CardDisplay extends Component {
             backgroundColor: borderColor,
             overflow: "hidden"
           }}
-          onDoubleClick={event => this.setState({ showDialog: true })}
+          onClick={delayClick(onClick, event => this.setState({ showDialog: true }))}
         >
           <div
             className="card-inner"
@@ -162,9 +181,9 @@ export class CardDisplay extends Component {
           maxWidth="xs"
           fullWidth={true}
         >
-          <DialogContent>{fullCard}</DialogContent>
+          <DialogContent>{fullCard()}</DialogContent>
         </Dialog>
-        {small ? smallCard : fullCard}
+        {small ? smallCard : fullCard(onClick)}
       </div>
     );
   }

@@ -7,6 +7,7 @@ import ButtonDisplay from "./ButtonDisplay";
 import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
 import Deck from "./Deck";
+import Scrapyard from "./Scrapyard";
 
 class StateDisplay extends React.Component {
   render() {
@@ -19,7 +20,10 @@ class StateDisplay extends React.Component {
         }}
         className="state-display"
       >
-        <Grid item xs={12} style={{ height: "20%" }}>
+        <Grid item xs={6} style={{ height: "20%" }}>
+          <Scrapyard isPlayer={false} />
+        </Grid>
+        <Grid item xs={6} style={{ height: "20%" }}>
           <Deck isPlayer={false} />
         </Grid>
         <Grid item xs={12} style={{ height: "20%" }}>
@@ -31,7 +35,10 @@ class StateDisplay extends React.Component {
         <Grid item xs={12} style={{ height: "20%" }}>
           <PlayerDisplay isPlayer={true} />
         </Grid>
-        <Grid item xs={12} style={{ height: "20%" }}>
+        <Grid item xs={6} style={{ height: "20%" }}>
+          <Scrapyard isPlayer={true} />
+        </Grid>
+        <Grid item xs={6} style={{ height: "20%" }}>
           <Deck isPlayer={true} />
         </Grid>
       </Grid>

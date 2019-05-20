@@ -151,7 +151,7 @@ export const fullCollection = initializeFullCollection();
 
 export function toCollectionArray(collection) {
   var col = [];
-  Object.keys(collection).map(function(key) {
+  Object.keys(collection).forEach(function(key) {
     col.push({ count: collection[key], card: fullCollection[key] });
   });
   return col;
@@ -159,7 +159,7 @@ export function toCollectionArray(collection) {
 
 export function getNewUserCollection() {
   let newUserCollection = {};
-  Object.keys(fullCollection).map(function(key) {
+  Object.keys(fullCollection).forEach(function(key) {
     newUserCollection[key] = 3;
   });
   return newUserCollection;

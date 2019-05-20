@@ -24,6 +24,8 @@ const mapStateToProps = state => {
   };
 };
 
+
+
 export class PlayingCard extends React.Component {
 
   onMouseEnter = event => {
@@ -118,7 +120,6 @@ export class PlayingCard extends React.Component {
 
     return connectDragSource(
       <div
-        onClick={clickHandler}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         style={this.props.style}
@@ -126,6 +127,7 @@ export class PlayingCard extends React.Component {
         <CardDisplay
           opacity={opacity}
           borderColor={borderColor}
+          onClick={clickHandler}
           {...this.props}
         />
       </div>

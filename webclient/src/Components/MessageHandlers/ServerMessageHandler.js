@@ -1,6 +1,6 @@
 // Handles ServerMessage messages.
 import { ProtoSocket } from "../../protojs/ProtoSocket.js";
-import { GetProfileURL, debug } from "../Helpers/Helpers";
+import { GetProfileURL } from "../Helpers/Helpers";
 import ServerGameMessageHandler from "./ServerGameMessageHandler";
 
 export default class ServerMessageHandler {
