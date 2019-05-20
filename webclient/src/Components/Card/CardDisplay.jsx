@@ -161,7 +161,8 @@ export class CardDisplay extends Component {
               <Textfit
                 style={{
                   fontFamily: "Open Sans, sans-serif",
-                  maxHeight: "100%"
+                  maxHeight: "100%",
+                  whiteSpace: "pre-wrap"
                 }}
               >
                 {description}
