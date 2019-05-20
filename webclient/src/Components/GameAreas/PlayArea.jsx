@@ -12,7 +12,6 @@ import ResourceArea from "./ResourceArea";
 import StateDisplay from "./StateDisplay";
 
 import ChooseDialog from "../Dialogs/ChooseDialog";
-import LoadingDialog from "../Dialogs/LoadingDialog";
 import WinLoseDialog from "../Dialogs/WinLoseDialog";
 import SelectXDialog from "../Dialogs/SelectXDialog";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
@@ -65,7 +64,7 @@ class PlayArea extends Component {
   }
 
   render() {
-    const { phase, game } = this.props;
+    const { phase, game, back } = this.props;
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
@@ -74,8 +73,7 @@ class PlayArea extends Component {
     return (
       <div className="App" >
         <header className="App-header" >
-          <WinLoseDialog />
-          <LoadingDialog />
+          <WinLoseDialog back={back}/>
           <SelectXDialog />
           <ChooseDialog />
           <Grid

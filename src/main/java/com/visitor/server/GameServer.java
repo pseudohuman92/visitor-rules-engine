@@ -115,7 +115,7 @@ public class GameServer {
             System.out.println("Adding " + userId + " to game queue!");
             gameQueue.add(new Player(userId, decklist));
         } else {
-            if(gameQueue.get(0).equals(userId))
+            if(gameQueue.get(0).userId.equals(userId))
                     return;
             Player p1 = gameQueue.remove(0);
             System.out.println("Starting a new game with " + userId + " and " + p1);

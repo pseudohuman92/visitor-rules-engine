@@ -38,8 +38,7 @@ class DeckSelection extends React.Component {
     const {
       userId,
       updateHandlers,
-      updateExtendedGameState,
-      gameInitialized
+      updateExtendedGameState
     } = this.props;
     updateHandlers({
       serverHandler: new ServerMessageHandler(
