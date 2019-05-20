@@ -8,8 +8,11 @@ import java.io.Serializable;
 import static java.lang.Integer.parseInt;
 import java.security.SecureRandom;
 import com.visitor.helpers.Arraylist;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,28 +20,29 @@ import java.util.Scanner;
  */
 public class Deck extends Arraylist<Card> implements Serializable {
 
-    public Deck(String userId){
-    }
+    public Deck(String userId){}
 
-    public Deck(File file, String userId) {
-
-        Scanner deckFile = null;
-        try {
-            deckFile = new Scanner(file);
-        } catch (FileNotFoundException e) {
-        }
-        //Skip file name
-        deckFile.nextLine();
-
-        while (deckFile.hasNextLine()) {
-            String card = deckFile.nextLine();
-            int count = parseInt(card.substring(0, 1));
-            String name = card.substring(2);
-            for (int i = 0; i < count; i++){
-                //add(generator.createCard(name));
+    public Deck(String userId, String[] decklist) {
+        for (int i = 0; i < decklist.length; i++){
+            String[] tokens = decklist[i].split(";");
+            int count = parseInt(tokens[0]);
+            String name = tokens[1];
+            for (int j = 0; j < count; j++){
+                add(Deck.createCard(userId, name));
             }
         }
-        deckFile.close();
+    }
+    
+    public static Card createCard(String userId, String cardName) {
+        try {
+            Class<?> cardClass = Class.forName("com.visitor.set1."+cardName);
+            Constructor<?> cardConstructor = cardClass.getConstructor(String.class);
+            Object card = cardConstructor.newInstance(new Object[] { userId });
+            return ((Card)card);
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(Deck.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
   
     public Arraylist<Card> extractFromTop(int count){
@@ -68,10 +72,6 @@ public class Deck extends Arraylist<Card> implements Serializable {
 
     public void shuffle(){
         Collections.shuffle(this, new SecureRandom());
-    }
-
-    public boolean valid() {
-        return true;
     }
 
     public void putTo(Arraylist<Card> cards, int index){

@@ -5,7 +5,9 @@ package com.visitor.server;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.visitor.helpers.Arraylist;
 import com.visitor.protocol.ClientMessages.ClientMessage;
+import com.visitor.protocol.ClientMessages.JoinQueue;
 import com.visitor.protocol.ServerMessages.ServerMessage;
 import java.io.IOException;
 import javax.websocket.EncodeException;
@@ -71,9 +73,10 @@ public class GeneralEndpoint {
 
     private void handleMessage(ClientMessage cm) {
         switch(cm.getPayloadCase()){
-            case JOINTABLE:
+            case JOINQUEUE:
                 //Temporary implementation
-                gameServer.joinTable(userId);
+                JoinQueue jqm = cm.getJoinQueue();
+                gameServer.joinQueue(userId, jqm.getDecklistList().toArray(new String[jqm.getDecklistCount()]));
                 break;
         }
     }

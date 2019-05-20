@@ -27,7 +27,7 @@ public class GameServer {
     public Hashmap<String, GeneralEndpoint> playerConnections;
     public Hashmap<UUID, Game> games;
     public Arraylist<String> chatLog;
-    public Arraylist<String> gameQueue;
+    public Arraylist<Player> gameQueue;
 
     public GameServer() {
         playerConnections = new Hashmap<>();
@@ -93,7 +93,13 @@ public class GameServer {
 
     synchronized void removeConnection(String userId) {
         playerConnections.removeFrom(userId);
-        gameQueue.remove(userId);
+        for(int i = 0; i < gameQueue.size(); i++){
+            Player p = gameQueue.get(i);
+            if(p.userId.equals(userId)){
+                gameQueue.remove(p);
+                i--;
+            }
+        }
     }
 
     synchronized void addGameConnection(UUID gameID, String userId, GameEndpoint connection) {
@@ -104,21 +110,21 @@ public class GameServer {
         games.get(gameID).removeConnection(userId);
     }
 
-    synchronized void joinTable(String userId) {
+    synchronized void joinQueue(String userId, String[] decklist) {
         if (gameQueue.isEmpty()){
             System.out.println("Adding " + userId + " to game queue!");
-            gameQueue.add(userId);
+            gameQueue.add(new Player(userId, decklist));
         } else {
             if(gameQueue.get(0).equals(userId))
                     return;
-            String p1 = gameQueue.remove(0);
+            Player p1 = gameQueue.remove(0);
             System.out.println("Starting a new game with " + userId + " and " + p1);
-            Game g = new Game(p1, userId);
+            Game g = new Game(p1, new Player(userId, decklist));
             games.putIn(g.getId(), g);
             try {
-                playerConnections.get(p1).send(ServerMessage.newBuilder()
+                playerConnections.get(p1.userId).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
-                                .setGame(g.toGameState(p1))));
+                                .setGame(g.toGameState(p1.userId))));
                 playerConnections.get(userId).send(ServerMessage.newBuilder()
                         .setNewGame(NewGame.newBuilder()
                                 .setGame(g.toGameState(userId))));

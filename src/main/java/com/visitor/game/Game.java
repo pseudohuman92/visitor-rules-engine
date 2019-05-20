@@ -51,7 +51,7 @@ public class Game {
     Arraylist<Event> eventQueue;
     boolean endProcessed;
 
-    public Game (String p1, String p2) {
+    public Game (Player p1, Player p2) {
         id = randomUUID();
         players = new Hashmap<>();
         connections = new Hashmap<>();
@@ -59,29 +59,23 @@ public class Game {
         lastMessages = new Hashmap<>();
         response = new ArrayBlockingQueue<>(1);
         triggeringCards = new Hashmap<>();
-        triggeringCards.put(p1, new Arraylist<>());
-        triggeringCards.put(p2, new Arraylist<>());
+        triggeringCards.put(p1.userId, new Arraylist<>());
+        triggeringCards.put(p2.userId, new Arraylist<>());
         eventQueue = new Arraylist();
         
-        players.putIn(p1, new Player(p1, TestDecks.randomDeck(p1)));
-        players.putIn(p2, new Player(p2, TestDecks.randomDeck(p2)));
-        
-        System.out.println("Example Class Names");
-        System.out.println("\tName: " + players.get(p1).deck.get(0).getClass().getName());
-        System.out.println("\tCanonical Name: " + players.get(p1).deck.get(0).getClass().getCanonicalName());
-        System.out.println("\tSimple Name: " + players.get(p1).deck.get(0).getClass().getSimpleName());
-        System.out.println("\tType Name: " + players.get(p1).deck.get(0).getClass().getTypeName());
-        
-        players.get(p1).deck.shuffle();
-        players.get(p2).deck.shuffle();
+        players.put(p1.userId, p1);
+        players.put(p2.userId, p2);
+
+        p1.deck.shuffle();
+        p2.deck.shuffle();
         
         phase = MULLIGAN;
-        turnPlayer = (random() < 0.5)?p1:p2;
+        turnPlayer = (random() < 0.5)?p1.userId:p2.userId;
         activePlayer = turnPlayer;
         turnCount = 0;
         passCount = 0;
-        players.get(p1).draw(5);
-        players.get(p2).draw(5);
+        p1.draw(5);
+        p2.draw(5);
         updatePlayers();
     }
 

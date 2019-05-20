@@ -38,10 +38,10 @@ public class Player implements Serializable, Damageable {
      * @param userId
      * @param deck
      */
-    public Player (String userId, Deck deck){
+    public Player (String userId, String[] decklist){
         this.userId = userId;
         id = randomUUID();
-        this.deck = deck;
+        this.deck = new Deck(userId, decklist);
         energy = 0;
         maxEnergy = 0;
         numOfStudiesLeft = 1;

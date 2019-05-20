@@ -5,10 +5,7 @@
  */
 package com.visitor.game;
 
-import com.visitor.set1.black.*;
-import com.visitor.set1.blue.*;
-import com.visitor.set1.yellow.*;
-import com.visitor.set1.red.*;
+import com.visitor.set1.*;
 import java.util.Random;
 
 /**

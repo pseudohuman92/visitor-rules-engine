@@ -8,18 +8,6 @@ option java_package = "com.visitor.protocol";
 message LoginResponse {
     string gameId = 1;
 }
-
-message UpdateChatLog {
-    repeated string chatLog = 1;
-}
-
-message UpdateTableList {
-    repeated Table tables = 1;
-}
-    
-message UpdatePlayerList {
-    repeated string players = 1;
-}
     
 message NewGame {
     GameState game = 1;
@@ -28,9 +16,6 @@ message NewGame {
 message ServerMessage {
     oneof payload {
         LoginResponse           loginResponse = 2;
-        UpdateChatLog           updateChatLog = 4;
-        UpdateTableList         updateTableList = 5;
-        UpdatePlayerList        updatePlayerList = 6;
         NewGame                 newGame = 7;
     }
 }

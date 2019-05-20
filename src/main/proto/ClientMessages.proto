@@ -5,16 +5,7 @@ option java_package = "com.visitor.protocol";
  * Messages from client to server.
  */
 
-message ChatMessage {
-    string msg = 1;
-}
-
-message CreateTable {
-    repeated string decklist = 2;
-}
-
-message JoinTable {
-    string tableID = 1;
+message JoinQueue {
     repeated string decklist = 3;
 }
 
@@ -22,18 +13,10 @@ message RegisterGameConnection {
     string gameID = 1;
 }
 
-message RegisterInteractionConnection {
-    string gameID = 1;
-}
-
-
 
 message ClientMessage {
     oneof payload {
-        ChatMessage                     chatMessage = 4;
-        CreateTable                     createTable = 5;
-        JoinTable                       joinTable = 6;
+        JoinQueue                       joinQueue = 6;
         RegisterGameConnection          registerGameConnection = 11;
-        RegisterInteractionConnection   registerInteractionConnection = 12;
     }
 };
