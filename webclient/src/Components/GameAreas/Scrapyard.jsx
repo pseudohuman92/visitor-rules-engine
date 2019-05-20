@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Tooltip } from "@material-ui/core";
 
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import { Tooltip } from "@material-ui/core";
+
 
 const mapStateToProps = state => {
   return {

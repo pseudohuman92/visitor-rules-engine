@@ -15,13 +15,11 @@ const mapStateToProps = state => {
     playerId: state.extendedGameState.game.player.id,
     playerName: state.username,
     playerVoid: state.extendedGameState.game.player.void,
-    playerHand: state.extendedGameState.game.player.hand,
     playerHealth: state.extendedGameState.game.player.health,
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,
     opponentVoid: state.extendedGameState.game.opponent.void,
-    opponentHandSize: state.extendedGameState.game.opponent.handSize,
     opponentHealth: state.extendedGameState.game.opponent.health,
     selectedCards: state.extendedGameState.selectedCards,
     selectablePlayers: state.extendedGameState.selectablePlayers,
@@ -54,8 +52,6 @@ class PlayerDisplay extends React.Component {
       opponentName,
       playerVoid,
       opponentVoid,
-      playerHand,
-      opponentHandSize,
       playerHealth,
       opponentHealth,
       selectedCards,
@@ -69,13 +65,10 @@ class PlayerDisplay extends React.Component {
     const id = isPlayer ? playerId : opponentId;
     const name = isPlayer ? playerName : opponentName;
     const void_ = isPlayer ? playerVoid : opponentVoid;
-    const handSize = isPlayer ? playerHand.length : opponentHandSize;
     const health = isPlayer ? playerHealth : opponentHealth;
-
     const selectable = selectablePlayers.includes(id);
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
-
 
     let voidOnClick = event => {
       updateExtendedGameState({
@@ -123,73 +116,56 @@ class PlayerDisplay extends React.Component {
     }
 
     return (
-      <Paper className="player-display">
-        <Grid container spacing={0} style={{ height: "100%" }}>
-          <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
-            <div
-              style={{
-                backgroundColor: borderColor,
-                maxWidth: "100%",
-                maxHeight: "100%"
-              }}
-              onClick={clickHandler}
-            >
-              <img
-                src={
-                  process.env.PUBLIC_URL +
-                  "/img/" +
-                  (isPlayer ? "Player" : "Opponent") +
-                  ".png"
-                }
-                style={{ maxWidth: "100%", maxHeight: "100%" }}
-                alt=""
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              {name}
-            </Textfit>
-          </Grid>
-          <Grid item xs={12} className="grid-elem" style={{ height: "20%" }}>
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              Health: {health}
-            </Textfit>
-          </Grid>
-          <Grid item xs={6} className="grid-elem" style={{ height: "20%" }}>
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              Hand: {handSize}
-            </Textfit>
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            className="grid-elem"
-            onClick={voidOnClick}
-            style={{ height: "20%" }}
+          
+          <Paper className="player-display">
+            <Grid container spacing={0} style={{ height: "100%" }}>
+              {/*<div
+            style={{
+              backgroundColor: borderColor,
+              maxWidth: "100%", maxHeight: "100%",
+            }}
+            onClick={clickHandler}
           >
-            <Textfit
-              mode="single"
-              forceSingleModeWidth={false}
-              style={{ padding: "0 5% 0 5%", height: "100%" }}
-            >
-              Void: {void_.length}
-            </Textfit>
-          </Grid>
-        </Grid>
-      </Paper>
+            <img
+              src={
+                process.env.PUBLIC_URL +
+                "/img/" +
+                (isPlayer ? "Player" : "Opponent") +
+                ".png"
+              }
+              style={{ maxWidth: "100%", maxHeight: "100%", margin: "%3" }}
+              alt=""
+            />
+            </div>*/}
+              <Grid item xs={12} className="grid-elem">
+                <Textfit
+                  mode="single"
+                  forceSingleModeWidth={false}
+                  style={{ padding: "0 5% 0 5%", height: "100%" }}
+                >
+                  {name}
+                </Textfit>
+              </Grid>
+              <Grid item xs={12} className="grid-elem">
+                <Textfit
+                  mode="single"
+                  forceSingleModeWidth={false}
+                  style={{ padding: "0 5% 0 5%", height: "100%" }}
+                >
+                  Health: {health}
+                </Textfit>
+              </Grid>
+              <Grid item xs={6} className="grid-elem" onClick={voidOnClick}>
+                <Textfit
+                  mode="single"
+                  forceSingleModeWidth={false}
+                  style={{ padding: "0 5% 0 5%", height: "100%" }}
+                >
+                  Void: {void_.length}
+                </Textfit>
+              </Grid>
+            </Grid>
+          </Paper>
     );
   }
 }
