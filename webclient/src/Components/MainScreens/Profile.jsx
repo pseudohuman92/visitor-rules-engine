@@ -25,6 +25,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = { value: 0 };
+    this.back = () => this.setState({value: 0});
   }
 
   play = event => {
@@ -66,8 +67,8 @@ class Profile extends Component {
           </Center>
         )}
         {value === 1 && (gameInitialized ? <PlayArea /> : <div>WAITING FOR THE GAME</div>)}
-        {value === 2 && <Decks/>}
-        {value === 3 && <OpenPacks/>}
+        {value === 2 && <Decks back={this.back}/>}
+        {value === 3 && <OpenPacks back={this.back}/>}
       </div>
     );
   }

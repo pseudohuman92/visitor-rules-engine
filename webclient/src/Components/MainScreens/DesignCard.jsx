@@ -53,7 +53,16 @@ class DesignCard extends Component {
         <div>
           <Fonts />
           <Grid container spacing={24} justify="space-around">
-            <Grid item xs={10}>
+            <Grid item xs={2}>
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={this.props.back}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item xs={8}>
               <TextField
                 id="creator"
                 label="Creator"
@@ -64,7 +73,12 @@ class DesignCard extends Component {
               />
             </Grid>
             <Grid item xs={2}>
-              <Button type="submit" variant="contained" onClick={this.submit}>
+              <Button
+                disabled={this.state.creator === ""}
+                type="submit"
+                variant="contained"
+                onClick={this.submit}
+              >
                 Submit
               </Button>
             </Grid>

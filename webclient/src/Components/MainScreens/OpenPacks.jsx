@@ -93,6 +93,13 @@ class OpenPacks extends Component {
             </Button>
           </Dialog>
         )}
+        <Button
+                type="submit"
+                variant="contained"
+                onClick={this.props.back}
+              >
+                Back
+              </Button>
         <Grid
           container
           alignContent="space-around"

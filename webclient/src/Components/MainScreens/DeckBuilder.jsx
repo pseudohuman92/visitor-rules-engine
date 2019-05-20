@@ -93,12 +93,21 @@ class DeckBuilder extends React.Component {
   render() {
     return (
       <Grid container spacing={16} style={{ maxHeight: "90vh" }}>
-        <Grid item style={{ maxHeight: "5%" }}>
+        <Grid item xs={2} style={{ maxHeight: "5%" }}>
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={this.props.back}
+        >
+          Back
+        </Button>
+        </Grid>
+        <Grid item xs={2} style={{ maxHeight: "5%" }}>
           <Button variant="contained" onClick={this.saveDeck}>
             Save
           </Button>
         </Grid>
-        <Grid item style={{ maxHeight: "5%" }}>
+        <Grid item xs={8} style={{ maxHeight: "5%" }}>
           <TextField
             value={this.state.name}
             onChange={event => {

@@ -20,6 +20,7 @@ class Decks extends React.Component {
       selectedDeckId: "",
       decks: []
     };
+    this.back = () => this.setState({value:0});
   }
 
   componentWillMount() {
@@ -59,6 +60,14 @@ class Decks extends React.Component {
     return (
       <div>
         {value === 0 && (
+          <div>
+          <Button
+          type="submit"
+          variant="contained"
+          onClick={this.props.back}
+        >
+          Back
+        </Button>
           <Grid container spacing={8}>
             {decks.map((deck, i) => (
               <Grid
@@ -104,8 +113,9 @@ class Decks extends React.Component {
               </Grid>
             </Grid>
           </Grid>
+          </div>
         )}
-        {value === 1 && <DeckBuilder deckId={loadedDeck}/>}
+        {value === 1 && <DeckBuilder back={this.back} deckId={loadedDeck}/>}
       </div>
     );
   }

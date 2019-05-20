@@ -7,13 +7,14 @@ import Center from "react-center";
 import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
 import DesignCard from "./DesignCard";
-import CustomCardPage from "./CustomCardPage";
+import CustomCardGallery from './CustomCardGallery';
 
 export default class MainPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = { value: 0 };
+    this.back = () => this.setState({value:0});
   }
   
   render() {
@@ -56,8 +57,8 @@ export default class MainPage extends Component {
         )}
         {value === 1 && <SignIn />}
         {value === 2 && <SignUp />}
-        {value === 3 && <DesignCard />}
-        {value === 4 && <CustomCardPage/>}
+        {value === 3 && <DesignCard back={this.back}/>}
+        {value === 4 && <CustomCardGallery back={this.back}/>}
       </div>
     );
   }
