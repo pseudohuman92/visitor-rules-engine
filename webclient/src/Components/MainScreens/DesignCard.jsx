@@ -181,7 +181,7 @@ class DesignCard extends Component {
                       onChange={this.onChange("description")}
                     />
                   </Grid>
-                  {this.state.type === "Item" ? (
+                  {(this.state.type === "Item" || this.state.type === "Ally") ? (
                     <Grid item xs={4}>
                       <Input
                         id="health"

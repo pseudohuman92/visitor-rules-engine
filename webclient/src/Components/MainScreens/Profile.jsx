@@ -66,7 +66,8 @@ class Profile extends Component {
             </Paper>
           </Center>
         )}
-        {value === 1 && (gameInitialized ? <PlayArea /> : <div>WAITING FOR THE GAME</div>)}
+        {value === 1 && (gameInitialized ? <PlayArea /> : <div>{"Waiting For An Opponent..."} 
+        {"You can open a second tab and login with a different account to play against yourself"}</div>)}
         {value === 2 && <Decks back={this.back}/>}
         {value === 3 && <OpenPacks back={this.back}/>}
       </div>
