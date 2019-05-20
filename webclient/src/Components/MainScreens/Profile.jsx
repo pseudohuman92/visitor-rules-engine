@@ -1,24 +1,19 @@
 import React, { Component } from "react";
-import { DragDropContext } from "react-dnd";
-import MultiBackend from "react-dnd-multi-backend";
-import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
 import { connect } from "react-redux";
 
-import PlayArea from "../GameAreas/PlayArea";
 import OpenPacks from "./OpenPacks";
 import { mapDispatchToProps } from "../Redux/Store";
-import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import Decks from "./Decks";
+import DeckSelection from "./DeckSelection";
 
 const mapStateToProps = state => {
   return { username: state.username,
-           userId : state.authUser.user.uid,
-          gameInitialized: state.extendedGameState.gameInitialized };
+           userId : state.authUser.user.uid };
 };
 
 class Profile extends Component {
@@ -29,14 +24,11 @@ class Profile extends Component {
   }
 
   play = event => {
-    const {userId, updateHandlers, updateExtendedGameState} = this.props;
-    updateHandlers({serverMessage : new ServerMessageHandler(userId, updateHandlers, updateExtendedGameState)});
     this.setState({ value: 1 });
   }
 
   render() {
     const { value } = this.state;
-    const { gameInitialized } = this.props;
     return (
       <div>
         {value === 0 && (
@@ -66,8 +58,7 @@ class Profile extends Component {
             </Paper>
           </Center>
         )}
-        {value === 1 && (gameInitialized ? <PlayArea /> : <div>{"Waiting For An Opponent..."} 
-        {"You can open a second tab and login with a different account to play against yourself"}</div>)}
+        {value === 1 && <DeckSelection back={this.back}/>}
         {value === 2 && <Decks back={this.back}/>}
         {value === 3 && <OpenPacks back={this.back}/>}
       </div>
@@ -78,4 +69,4 @@ class Profile extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DragDropContext(MultiBackend(HTML5toTouch))(withHandlers (Profile)));
+)(withHandlers (Profile));

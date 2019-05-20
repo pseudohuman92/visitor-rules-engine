@@ -4749,211 +4749,24 @@ $root.GameState = (function() {
     return GameState;
 })();
 
-$root.ChatMessage = (function() {
+$root.JoinQueue = (function() {
 
     /**
-     * Properties of a ChatMessage.
-     * @exports IChatMessage
-     * @interface IChatMessage
-     * @property {string|null} [msg] ChatMessage msg
+     * Properties of a JoinQueue.
+     * @exports IJoinQueue
+     * @interface IJoinQueue
+     * @property {Array.<string>|null} [decklist] JoinQueue decklist
      */
 
     /**
-     * Constructs a new ChatMessage.
-     * @exports ChatMessage
-     * @classdesc Represents a ChatMessage.
-     * @implements IChatMessage
+     * Constructs a new JoinQueue.
+     * @exports JoinQueue
+     * @classdesc Represents a JoinQueue.
+     * @implements IJoinQueue
      * @constructor
-     * @param {IChatMessage=} [properties] Properties to set
+     * @param {IJoinQueue=} [properties] Properties to set
      */
-    function ChatMessage(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * ChatMessage msg.
-     * @member {string} msg
-     * @memberof ChatMessage
-     * @instance
-     */
-    ChatMessage.prototype.msg = "";
-
-    /**
-     * Creates a new ChatMessage instance using the specified properties.
-     * @function create
-     * @memberof ChatMessage
-     * @static
-     * @param {IChatMessage=} [properties] Properties to set
-     * @returns {ChatMessage} ChatMessage instance
-     */
-    ChatMessage.create = function create(properties) {
-        return new ChatMessage(properties);
-    };
-
-    /**
-     * Encodes the specified ChatMessage message. Does not implicitly {@link ChatMessage.verify|verify} messages.
-     * @function encode
-     * @memberof ChatMessage
-     * @static
-     * @param {IChatMessage} message ChatMessage message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    ChatMessage.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.msg != null && message.hasOwnProperty("msg"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.msg);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified ChatMessage message, length delimited. Does not implicitly {@link ChatMessage.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof ChatMessage
-     * @static
-     * @param {IChatMessage} message ChatMessage message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    ChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a ChatMessage message from the specified reader or buffer.
-     * @function decode
-     * @memberof ChatMessage
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {ChatMessage} ChatMessage
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    ChatMessage.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ChatMessage();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.msg = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a ChatMessage message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof ChatMessage
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {ChatMessage} ChatMessage
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    ChatMessage.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a ChatMessage message.
-     * @function verify
-     * @memberof ChatMessage
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    ChatMessage.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.msg != null && message.hasOwnProperty("msg"))
-            if (!$util.isString(message.msg))
-                return "msg: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a ChatMessage message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof ChatMessage
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {ChatMessage} ChatMessage
-     */
-    ChatMessage.fromObject = function fromObject(object) {
-        if (object instanceof $root.ChatMessage)
-            return object;
-        var message = new $root.ChatMessage();
-        if (object.msg != null)
-            message.msg = String(object.msg);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a ChatMessage message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof ChatMessage
-     * @static
-     * @param {ChatMessage} message ChatMessage
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    ChatMessage.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.msg = "";
-        if (message.msg != null && message.hasOwnProperty("msg"))
-            object.msg = message.msg;
-        return object;
-    };
-
-    /**
-     * Converts this ChatMessage to JSON.
-     * @function toJSON
-     * @memberof ChatMessage
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    ChatMessage.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return ChatMessage;
-})();
-
-$root.CreateTable = (function() {
-
-    /**
-     * Properties of a CreateTable.
-     * @exports ICreateTable
-     * @interface ICreateTable
-     * @property {Array.<string>|null} [decklist] CreateTable decklist
-     */
-
-    /**
-     * Constructs a new CreateTable.
-     * @exports CreateTable
-     * @classdesc Represents a CreateTable.
-     * @implements ICreateTable
-     * @constructor
-     * @param {ICreateTable=} [properties] Properties to set
-     */
-    function CreateTable(properties) {
+    function JoinQueue(properties) {
         this.decklist = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -4962,251 +4775,37 @@ $root.CreateTable = (function() {
     }
 
     /**
-     * CreateTable decklist.
+     * JoinQueue decklist.
      * @member {Array.<string>} decklist
-     * @memberof CreateTable
+     * @memberof JoinQueue
      * @instance
      */
-    CreateTable.prototype.decklist = $util.emptyArray;
+    JoinQueue.prototype.decklist = $util.emptyArray;
 
     /**
-     * Creates a new CreateTable instance using the specified properties.
+     * Creates a new JoinQueue instance using the specified properties.
      * @function create
-     * @memberof CreateTable
+     * @memberof JoinQueue
      * @static
-     * @param {ICreateTable=} [properties] Properties to set
-     * @returns {CreateTable} CreateTable instance
+     * @param {IJoinQueue=} [properties] Properties to set
+     * @returns {JoinQueue} JoinQueue instance
      */
-    CreateTable.create = function create(properties) {
-        return new CreateTable(properties);
+    JoinQueue.create = function create(properties) {
+        return new JoinQueue(properties);
     };
 
     /**
-     * Encodes the specified CreateTable message. Does not implicitly {@link CreateTable.verify|verify} messages.
+     * Encodes the specified JoinQueue message. Does not implicitly {@link JoinQueue.verify|verify} messages.
      * @function encode
-     * @memberof CreateTable
+     * @memberof JoinQueue
      * @static
-     * @param {ICreateTable} message CreateTable message or plain object to encode
+     * @param {IJoinQueue} message JoinQueue message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    CreateTable.encode = function encode(message, writer) {
+    JoinQueue.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.decklist != null && message.decklist.length)
-            for (var i = 0; i < message.decklist.length; ++i)
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.decklist[i]);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified CreateTable message, length delimited. Does not implicitly {@link CreateTable.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof CreateTable
-     * @static
-     * @param {ICreateTable} message CreateTable message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    CreateTable.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a CreateTable message from the specified reader or buffer.
-     * @function decode
-     * @memberof CreateTable
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {CreateTable} CreateTable
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    CreateTable.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.CreateTable();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 2:
-                if (!(message.decklist && message.decklist.length))
-                    message.decklist = [];
-                message.decklist.push(reader.string());
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a CreateTable message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof CreateTable
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {CreateTable} CreateTable
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    CreateTable.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a CreateTable message.
-     * @function verify
-     * @memberof CreateTable
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    CreateTable.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.decklist != null && message.hasOwnProperty("decklist")) {
-            if (!Array.isArray(message.decklist))
-                return "decklist: array expected";
-            for (var i = 0; i < message.decklist.length; ++i)
-                if (!$util.isString(message.decklist[i]))
-                    return "decklist: string[] expected";
-        }
-        return null;
-    };
-
-    /**
-     * Creates a CreateTable message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof CreateTable
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {CreateTable} CreateTable
-     */
-    CreateTable.fromObject = function fromObject(object) {
-        if (object instanceof $root.CreateTable)
-            return object;
-        var message = new $root.CreateTable();
-        if (object.decklist) {
-            if (!Array.isArray(object.decklist))
-                throw TypeError(".CreateTable.decklist: array expected");
-            message.decklist = [];
-            for (var i = 0; i < object.decklist.length; ++i)
-                message.decklist[i] = String(object.decklist[i]);
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a CreateTable message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof CreateTable
-     * @static
-     * @param {CreateTable} message CreateTable
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    CreateTable.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.arrays || options.defaults)
-            object.decklist = [];
-        if (message.decklist && message.decklist.length) {
-            object.decklist = [];
-            for (var j = 0; j < message.decklist.length; ++j)
-                object.decklist[j] = message.decklist[j];
-        }
-        return object;
-    };
-
-    /**
-     * Converts this CreateTable to JSON.
-     * @function toJSON
-     * @memberof CreateTable
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    CreateTable.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return CreateTable;
-})();
-
-$root.JoinTable = (function() {
-
-    /**
-     * Properties of a JoinTable.
-     * @exports IJoinTable
-     * @interface IJoinTable
-     * @property {string|null} [tableID] JoinTable tableID
-     * @property {Array.<string>|null} [decklist] JoinTable decklist
-     */
-
-    /**
-     * Constructs a new JoinTable.
-     * @exports JoinTable
-     * @classdesc Represents a JoinTable.
-     * @implements IJoinTable
-     * @constructor
-     * @param {IJoinTable=} [properties] Properties to set
-     */
-    function JoinTable(properties) {
-        this.decklist = [];
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * JoinTable tableID.
-     * @member {string} tableID
-     * @memberof JoinTable
-     * @instance
-     */
-    JoinTable.prototype.tableID = "";
-
-    /**
-     * JoinTable decklist.
-     * @member {Array.<string>} decklist
-     * @memberof JoinTable
-     * @instance
-     */
-    JoinTable.prototype.decklist = $util.emptyArray;
-
-    /**
-     * Creates a new JoinTable instance using the specified properties.
-     * @function create
-     * @memberof JoinTable
-     * @static
-     * @param {IJoinTable=} [properties] Properties to set
-     * @returns {JoinTable} JoinTable instance
-     */
-    JoinTable.create = function create(properties) {
-        return new JoinTable(properties);
-    };
-
-    /**
-     * Encodes the specified JoinTable message. Does not implicitly {@link JoinTable.verify|verify} messages.
-     * @function encode
-     * @memberof JoinTable
-     * @static
-     * @param {IJoinTable} message JoinTable message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    JoinTable.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.tableID != null && message.hasOwnProperty("tableID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.tableID);
         if (message.decklist != null && message.decklist.length)
             for (var i = 0; i < message.decklist.length; ++i)
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.decklist[i]);
@@ -5214,39 +4813,36 @@ $root.JoinTable = (function() {
     };
 
     /**
-     * Encodes the specified JoinTable message, length delimited. Does not implicitly {@link JoinTable.verify|verify} messages.
+     * Encodes the specified JoinQueue message, length delimited. Does not implicitly {@link JoinQueue.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @static
-     * @param {IJoinTable} message JoinTable message or plain object to encode
+     * @param {IJoinQueue} message JoinQueue message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    JoinTable.encodeDelimited = function encodeDelimited(message, writer) {
+    JoinQueue.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a JoinTable message from the specified reader or buffer.
+     * Decodes a JoinQueue message from the specified reader or buffer.
      * @function decode
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {JoinTable} JoinTable
+     * @returns {JoinQueue} JoinQueue
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    JoinTable.decode = function decode(reader, length) {
+    JoinQueue.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.JoinTable();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.JoinQueue();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.tableID = reader.string();
-                break;
             case 3:
                 if (!(message.decklist && message.decklist.length))
                     message.decklist = [];
@@ -5261,35 +4857,32 @@ $root.JoinTable = (function() {
     };
 
     /**
-     * Decodes a JoinTable message from the specified reader or buffer, length delimited.
+     * Decodes a JoinQueue message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {JoinTable} JoinTable
+     * @returns {JoinQueue} JoinQueue
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    JoinTable.decodeDelimited = function decodeDelimited(reader) {
+    JoinQueue.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a JoinTable message.
+     * Verifies a JoinQueue message.
      * @function verify
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    JoinTable.verify = function verify(message) {
+    JoinQueue.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.tableID != null && message.hasOwnProperty("tableID"))
-            if (!$util.isString(message.tableID))
-                return "tableID: string expected";
         if (message.decklist != null && message.hasOwnProperty("decklist")) {
             if (!Array.isArray(message.decklist))
                 return "decklist: array expected";
@@ -5301,22 +4894,20 @@ $root.JoinTable = (function() {
     };
 
     /**
-     * Creates a JoinTable message from a plain object. Also converts values to their respective internal types.
+     * Creates a JoinQueue message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {JoinTable} JoinTable
+     * @returns {JoinQueue} JoinQueue
      */
-    JoinTable.fromObject = function fromObject(object) {
-        if (object instanceof $root.JoinTable)
+    JoinQueue.fromObject = function fromObject(object) {
+        if (object instanceof $root.JoinQueue)
             return object;
-        var message = new $root.JoinTable();
-        if (object.tableID != null)
-            message.tableID = String(object.tableID);
+        var message = new $root.JoinQueue();
         if (object.decklist) {
             if (!Array.isArray(object.decklist))
-                throw TypeError(".JoinTable.decklist: array expected");
+                throw TypeError(".JoinQueue.decklist: array expected");
             message.decklist = [];
             for (var i = 0; i < object.decklist.length; ++i)
                 message.decklist[i] = String(object.decklist[i]);
@@ -5325,24 +4916,20 @@ $root.JoinTable = (function() {
     };
 
     /**
-     * Creates a plain object from a JoinTable message. Also converts values to other types if specified.
+     * Creates a plain object from a JoinQueue message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @static
-     * @param {JoinTable} message JoinTable
+     * @param {JoinQueue} message JoinQueue
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    JoinTable.toObject = function toObject(message, options) {
+    JoinQueue.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
             object.decklist = [];
-        if (options.defaults)
-            object.tableID = "";
-        if (message.tableID != null && message.hasOwnProperty("tableID"))
-            object.tableID = message.tableID;
         if (message.decklist && message.decklist.length) {
             object.decklist = [];
             for (var j = 0; j < message.decklist.length; ++j)
@@ -5352,17 +4939,17 @@ $root.JoinTable = (function() {
     };
 
     /**
-     * Converts this JoinTable to JSON.
+     * Converts this JoinQueue to JSON.
      * @function toJSON
-     * @memberof JoinTable
+     * @memberof JoinQueue
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    JoinTable.prototype.toJSON = function toJSON() {
+    JoinQueue.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return JoinTable;
+    return JoinQueue;
 })();
 
 $root.RegisterGameConnection = (function() {
@@ -5552,204 +5139,14 @@ $root.RegisterGameConnection = (function() {
     return RegisterGameConnection;
 })();
 
-$root.RegisterInteractionConnection = (function() {
-
-    /**
-     * Properties of a RegisterInteractionConnection.
-     * @exports IRegisterInteractionConnection
-     * @interface IRegisterInteractionConnection
-     * @property {string|null} [gameID] RegisterInteractionConnection gameID
-     */
-
-    /**
-     * Constructs a new RegisterInteractionConnection.
-     * @exports RegisterInteractionConnection
-     * @classdesc Represents a RegisterInteractionConnection.
-     * @implements IRegisterInteractionConnection
-     * @constructor
-     * @param {IRegisterInteractionConnection=} [properties] Properties to set
-     */
-    function RegisterInteractionConnection(properties) {
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * RegisterInteractionConnection gameID.
-     * @member {string} gameID
-     * @memberof RegisterInteractionConnection
-     * @instance
-     */
-    RegisterInteractionConnection.prototype.gameID = "";
-
-    /**
-     * Creates a new RegisterInteractionConnection instance using the specified properties.
-     * @function create
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {IRegisterInteractionConnection=} [properties] Properties to set
-     * @returns {RegisterInteractionConnection} RegisterInteractionConnection instance
-     */
-    RegisterInteractionConnection.create = function create(properties) {
-        return new RegisterInteractionConnection(properties);
-    };
-
-    /**
-     * Encodes the specified RegisterInteractionConnection message. Does not implicitly {@link RegisterInteractionConnection.verify|verify} messages.
-     * @function encode
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {IRegisterInteractionConnection} message RegisterInteractionConnection message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    RegisterInteractionConnection.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified RegisterInteractionConnection message, length delimited. Does not implicitly {@link RegisterInteractionConnection.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {IRegisterInteractionConnection} message RegisterInteractionConnection message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    RegisterInteractionConnection.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a RegisterInteractionConnection message from the specified reader or buffer.
-     * @function decode
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {RegisterInteractionConnection} RegisterInteractionConnection
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    RegisterInteractionConnection.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.RegisterInteractionConnection();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.gameID = reader.string();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a RegisterInteractionConnection message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {RegisterInteractionConnection} RegisterInteractionConnection
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    RegisterInteractionConnection.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a RegisterInteractionConnection message.
-     * @function verify
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    RegisterInteractionConnection.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            if (!$util.isString(message.gameID))
-                return "gameID: string expected";
-        return null;
-    };
-
-    /**
-     * Creates a RegisterInteractionConnection message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {RegisterInteractionConnection} RegisterInteractionConnection
-     */
-    RegisterInteractionConnection.fromObject = function fromObject(object) {
-        if (object instanceof $root.RegisterInteractionConnection)
-            return object;
-        var message = new $root.RegisterInteractionConnection();
-        if (object.gameID != null)
-            message.gameID = String(object.gameID);
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a RegisterInteractionConnection message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof RegisterInteractionConnection
-     * @static
-     * @param {RegisterInteractionConnection} message RegisterInteractionConnection
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    RegisterInteractionConnection.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.gameID = "";
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
-            object.gameID = message.gameID;
-        return object;
-    };
-
-    /**
-     * Converts this RegisterInteractionConnection to JSON.
-     * @function toJSON
-     * @memberof RegisterInteractionConnection
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    RegisterInteractionConnection.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return RegisterInteractionConnection;
-})();
-
 $root.ClientMessage = (function() {
 
     /**
      * Properties of a ClientMessage.
      * @exports IClientMessage
      * @interface IClientMessage
-     * @property {IChatMessage|null} [chatMessage] ClientMessage chatMessage
-     * @property {ICreateTable|null} [createTable] ClientMessage createTable
-     * @property {IJoinTable|null} [joinTable] ClientMessage joinTable
+     * @property {IJoinQueue|null} [joinQueue] ClientMessage joinQueue
      * @property {IRegisterGameConnection|null} [registerGameConnection] ClientMessage registerGameConnection
-     * @property {IRegisterInteractionConnection|null} [registerInteractionConnection] ClientMessage registerInteractionConnection
      */
 
     /**
@@ -5768,28 +5165,12 @@ $root.ClientMessage = (function() {
     }
 
     /**
-     * ClientMessage chatMessage.
-     * @member {IChatMessage|null|undefined} chatMessage
+     * ClientMessage joinQueue.
+     * @member {IJoinQueue|null|undefined} joinQueue
      * @memberof ClientMessage
      * @instance
      */
-    ClientMessage.prototype.chatMessage = null;
-
-    /**
-     * ClientMessage createTable.
-     * @member {ICreateTable|null|undefined} createTable
-     * @memberof ClientMessage
-     * @instance
-     */
-    ClientMessage.prototype.createTable = null;
-
-    /**
-     * ClientMessage joinTable.
-     * @member {IJoinTable|null|undefined} joinTable
-     * @memberof ClientMessage
-     * @instance
-     */
-    ClientMessage.prototype.joinTable = null;
+    ClientMessage.prototype.joinQueue = null;
 
     /**
      * ClientMessage registerGameConnection.
@@ -5799,25 +5180,17 @@ $root.ClientMessage = (function() {
      */
     ClientMessage.prototype.registerGameConnection = null;
 
-    /**
-     * ClientMessage registerInteractionConnection.
-     * @member {IRegisterInteractionConnection|null|undefined} registerInteractionConnection
-     * @memberof ClientMessage
-     * @instance
-     */
-    ClientMessage.prototype.registerInteractionConnection = null;
-
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientMessage payload.
-     * @member {"chatMessage"|"createTable"|"joinTable"|"registerGameConnection"|"registerInteractionConnection"|undefined} payload
+     * @member {"joinQueue"|"registerGameConnection"|undefined} payload
      * @memberof ClientMessage
      * @instance
      */
     Object.defineProperty(ClientMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["chatMessage", "createTable", "joinTable", "registerGameConnection", "registerInteractionConnection"]),
+        get: $util.oneOfGetter($oneOfFields = ["joinQueue", "registerGameConnection"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -5845,16 +5218,10 @@ $root.ClientMessage = (function() {
     ClientMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.chatMessage != null && message.hasOwnProperty("chatMessage"))
-            $root.ChatMessage.encode(message.chatMessage, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.createTable != null && message.hasOwnProperty("createTable"))
-            $root.CreateTable.encode(message.createTable, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-        if (message.joinTable != null && message.hasOwnProperty("joinTable"))
-            $root.JoinTable.encode(message.joinTable, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+        if (message.joinQueue != null && message.hasOwnProperty("joinQueue"))
+            $root.JoinQueue.encode(message.joinQueue, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.registerGameConnection != null && message.hasOwnProperty("registerGameConnection"))
             $root.RegisterGameConnection.encode(message.registerGameConnection, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
-        if (message.registerInteractionConnection != null && message.hasOwnProperty("registerInteractionConnection"))
-            $root.RegisterInteractionConnection.encode(message.registerInteractionConnection, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
         return writer;
     };
 
@@ -5889,20 +5256,11 @@ $root.ClientMessage = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 4:
-                message.chatMessage = $root.ChatMessage.decode(reader, reader.uint32());
-                break;
-            case 5:
-                message.createTable = $root.CreateTable.decode(reader, reader.uint32());
-                break;
             case 6:
-                message.joinTable = $root.JoinTable.decode(reader, reader.uint32());
+                message.joinQueue = $root.JoinQueue.decode(reader, reader.uint32());
                 break;
             case 11:
                 message.registerGameConnection = $root.RegisterGameConnection.decode(reader, reader.uint32());
-                break;
-            case 12:
-                message.registerInteractionConnection = $root.RegisterInteractionConnection.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5940,32 +5298,12 @@ $root.ClientMessage = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         var properties = {};
-        if (message.chatMessage != null && message.hasOwnProperty("chatMessage")) {
+        if (message.joinQueue != null && message.hasOwnProperty("joinQueue")) {
             properties.payload = 1;
             {
-                var error = $root.ChatMessage.verify(message.chatMessage);
+                var error = $root.JoinQueue.verify(message.joinQueue);
                 if (error)
-                    return "chatMessage." + error;
-            }
-        }
-        if (message.createTable != null && message.hasOwnProperty("createTable")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.CreateTable.verify(message.createTable);
-                if (error)
-                    return "createTable." + error;
-            }
-        }
-        if (message.joinTable != null && message.hasOwnProperty("joinTable")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.JoinTable.verify(message.joinTable);
-                if (error)
-                    return "joinTable." + error;
+                    return "joinQueue." + error;
             }
         }
         if (message.registerGameConnection != null && message.hasOwnProperty("registerGameConnection")) {
@@ -5976,16 +5314,6 @@ $root.ClientMessage = (function() {
                 var error = $root.RegisterGameConnection.verify(message.registerGameConnection);
                 if (error)
                     return "registerGameConnection." + error;
-            }
-        }
-        if (message.registerInteractionConnection != null && message.hasOwnProperty("registerInteractionConnection")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.RegisterInteractionConnection.verify(message.registerInteractionConnection);
-                if (error)
-                    return "registerInteractionConnection." + error;
             }
         }
         return null;
@@ -6003,30 +5331,15 @@ $root.ClientMessage = (function() {
         if (object instanceof $root.ClientMessage)
             return object;
         var message = new $root.ClientMessage();
-        if (object.chatMessage != null) {
-            if (typeof object.chatMessage !== "object")
-                throw TypeError(".ClientMessage.chatMessage: object expected");
-            message.chatMessage = $root.ChatMessage.fromObject(object.chatMessage);
-        }
-        if (object.createTable != null) {
-            if (typeof object.createTable !== "object")
-                throw TypeError(".ClientMessage.createTable: object expected");
-            message.createTable = $root.CreateTable.fromObject(object.createTable);
-        }
-        if (object.joinTable != null) {
-            if (typeof object.joinTable !== "object")
-                throw TypeError(".ClientMessage.joinTable: object expected");
-            message.joinTable = $root.JoinTable.fromObject(object.joinTable);
+        if (object.joinQueue != null) {
+            if (typeof object.joinQueue !== "object")
+                throw TypeError(".ClientMessage.joinQueue: object expected");
+            message.joinQueue = $root.JoinQueue.fromObject(object.joinQueue);
         }
         if (object.registerGameConnection != null) {
             if (typeof object.registerGameConnection !== "object")
                 throw TypeError(".ClientMessage.registerGameConnection: object expected");
             message.registerGameConnection = $root.RegisterGameConnection.fromObject(object.registerGameConnection);
-        }
-        if (object.registerInteractionConnection != null) {
-            if (typeof object.registerInteractionConnection !== "object")
-                throw TypeError(".ClientMessage.registerInteractionConnection: object expected");
-            message.registerInteractionConnection = $root.RegisterInteractionConnection.fromObject(object.registerInteractionConnection);
         }
         return message;
     };
@@ -6044,30 +5357,15 @@ $root.ClientMessage = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (message.chatMessage != null && message.hasOwnProperty("chatMessage")) {
-            object.chatMessage = $root.ChatMessage.toObject(message.chatMessage, options);
+        if (message.joinQueue != null && message.hasOwnProperty("joinQueue")) {
+            object.joinQueue = $root.JoinQueue.toObject(message.joinQueue, options);
             if (options.oneofs)
-                object.payload = "chatMessage";
-        }
-        if (message.createTable != null && message.hasOwnProperty("createTable")) {
-            object.createTable = $root.CreateTable.toObject(message.createTable, options);
-            if (options.oneofs)
-                object.payload = "createTable";
-        }
-        if (message.joinTable != null && message.hasOwnProperty("joinTable")) {
-            object.joinTable = $root.JoinTable.toObject(message.joinTable, options);
-            if (options.oneofs)
-                object.payload = "joinTable";
+                object.payload = "joinQueue";
         }
         if (message.registerGameConnection != null && message.hasOwnProperty("registerGameConnection")) {
             object.registerGameConnection = $root.RegisterGameConnection.toObject(message.registerGameConnection, options);
             if (options.oneofs)
                 object.payload = "registerGameConnection";
-        }
-        if (message.registerInteractionConnection != null && message.hasOwnProperty("registerInteractionConnection")) {
-            object.registerInteractionConnection = $root.RegisterInteractionConnection.toObject(message.registerInteractionConnection, options);
-            if (options.oneofs)
-                object.payload = "registerInteractionConnection";
         }
         return object;
     };
@@ -7896,620 +7194,6 @@ $root.LoginResponse = (function() {
     return LoginResponse;
 })();
 
-$root.UpdateChatLog = (function() {
-
-    /**
-     * Properties of an UpdateChatLog.
-     * @exports IUpdateChatLog
-     * @interface IUpdateChatLog
-     * @property {Array.<string>|null} [chatLog] UpdateChatLog chatLog
-     */
-
-    /**
-     * Constructs a new UpdateChatLog.
-     * @exports UpdateChatLog
-     * @classdesc Represents an UpdateChatLog.
-     * @implements IUpdateChatLog
-     * @constructor
-     * @param {IUpdateChatLog=} [properties] Properties to set
-     */
-    function UpdateChatLog(properties) {
-        this.chatLog = [];
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * UpdateChatLog chatLog.
-     * @member {Array.<string>} chatLog
-     * @memberof UpdateChatLog
-     * @instance
-     */
-    UpdateChatLog.prototype.chatLog = $util.emptyArray;
-
-    /**
-     * Creates a new UpdateChatLog instance using the specified properties.
-     * @function create
-     * @memberof UpdateChatLog
-     * @static
-     * @param {IUpdateChatLog=} [properties] Properties to set
-     * @returns {UpdateChatLog} UpdateChatLog instance
-     */
-    UpdateChatLog.create = function create(properties) {
-        return new UpdateChatLog(properties);
-    };
-
-    /**
-     * Encodes the specified UpdateChatLog message. Does not implicitly {@link UpdateChatLog.verify|verify} messages.
-     * @function encode
-     * @memberof UpdateChatLog
-     * @static
-     * @param {IUpdateChatLog} message UpdateChatLog message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    UpdateChatLog.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.chatLog != null && message.chatLog.length)
-            for (var i = 0; i < message.chatLog.length; ++i)
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.chatLog[i]);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified UpdateChatLog message, length delimited. Does not implicitly {@link UpdateChatLog.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof UpdateChatLog
-     * @static
-     * @param {IUpdateChatLog} message UpdateChatLog message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    UpdateChatLog.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes an UpdateChatLog message from the specified reader or buffer.
-     * @function decode
-     * @memberof UpdateChatLog
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {UpdateChatLog} UpdateChatLog
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    UpdateChatLog.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UpdateChatLog();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                if (!(message.chatLog && message.chatLog.length))
-                    message.chatLog = [];
-                message.chatLog.push(reader.string());
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes an UpdateChatLog message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof UpdateChatLog
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UpdateChatLog} UpdateChatLog
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    UpdateChatLog.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies an UpdateChatLog message.
-     * @function verify
-     * @memberof UpdateChatLog
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    UpdateChatLog.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.chatLog != null && message.hasOwnProperty("chatLog")) {
-            if (!Array.isArray(message.chatLog))
-                return "chatLog: array expected";
-            for (var i = 0; i < message.chatLog.length; ++i)
-                if (!$util.isString(message.chatLog[i]))
-                    return "chatLog: string[] expected";
-        }
-        return null;
-    };
-
-    /**
-     * Creates an UpdateChatLog message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof UpdateChatLog
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {UpdateChatLog} UpdateChatLog
-     */
-    UpdateChatLog.fromObject = function fromObject(object) {
-        if (object instanceof $root.UpdateChatLog)
-            return object;
-        var message = new $root.UpdateChatLog();
-        if (object.chatLog) {
-            if (!Array.isArray(object.chatLog))
-                throw TypeError(".UpdateChatLog.chatLog: array expected");
-            message.chatLog = [];
-            for (var i = 0; i < object.chatLog.length; ++i)
-                message.chatLog[i] = String(object.chatLog[i]);
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from an UpdateChatLog message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof UpdateChatLog
-     * @static
-     * @param {UpdateChatLog} message UpdateChatLog
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    UpdateChatLog.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.arrays || options.defaults)
-            object.chatLog = [];
-        if (message.chatLog && message.chatLog.length) {
-            object.chatLog = [];
-            for (var j = 0; j < message.chatLog.length; ++j)
-                object.chatLog[j] = message.chatLog[j];
-        }
-        return object;
-    };
-
-    /**
-     * Converts this UpdateChatLog to JSON.
-     * @function toJSON
-     * @memberof UpdateChatLog
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    UpdateChatLog.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return UpdateChatLog;
-})();
-
-$root.UpdateTableList = (function() {
-
-    /**
-     * Properties of an UpdateTableList.
-     * @exports IUpdateTableList
-     * @interface IUpdateTableList
-     * @property {Array.<ITable>|null} [tables] UpdateTableList tables
-     */
-
-    /**
-     * Constructs a new UpdateTableList.
-     * @exports UpdateTableList
-     * @classdesc Represents an UpdateTableList.
-     * @implements IUpdateTableList
-     * @constructor
-     * @param {IUpdateTableList=} [properties] Properties to set
-     */
-    function UpdateTableList(properties) {
-        this.tables = [];
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * UpdateTableList tables.
-     * @member {Array.<ITable>} tables
-     * @memberof UpdateTableList
-     * @instance
-     */
-    UpdateTableList.prototype.tables = $util.emptyArray;
-
-    /**
-     * Creates a new UpdateTableList instance using the specified properties.
-     * @function create
-     * @memberof UpdateTableList
-     * @static
-     * @param {IUpdateTableList=} [properties] Properties to set
-     * @returns {UpdateTableList} UpdateTableList instance
-     */
-    UpdateTableList.create = function create(properties) {
-        return new UpdateTableList(properties);
-    };
-
-    /**
-     * Encodes the specified UpdateTableList message. Does not implicitly {@link UpdateTableList.verify|verify} messages.
-     * @function encode
-     * @memberof UpdateTableList
-     * @static
-     * @param {IUpdateTableList} message UpdateTableList message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    UpdateTableList.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.tables != null && message.tables.length)
-            for (var i = 0; i < message.tables.length; ++i)
-                $root.Table.encode(message.tables[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        return writer;
-    };
-
-    /**
-     * Encodes the specified UpdateTableList message, length delimited. Does not implicitly {@link UpdateTableList.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof UpdateTableList
-     * @static
-     * @param {IUpdateTableList} message UpdateTableList message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    UpdateTableList.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes an UpdateTableList message from the specified reader or buffer.
-     * @function decode
-     * @memberof UpdateTableList
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {UpdateTableList} UpdateTableList
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    UpdateTableList.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UpdateTableList();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                if (!(message.tables && message.tables.length))
-                    message.tables = [];
-                message.tables.push($root.Table.decode(reader, reader.uint32()));
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes an UpdateTableList message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof UpdateTableList
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UpdateTableList} UpdateTableList
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    UpdateTableList.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies an UpdateTableList message.
-     * @function verify
-     * @memberof UpdateTableList
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    UpdateTableList.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.tables != null && message.hasOwnProperty("tables")) {
-            if (!Array.isArray(message.tables))
-                return "tables: array expected";
-            for (var i = 0; i < message.tables.length; ++i) {
-                var error = $root.Table.verify(message.tables[i]);
-                if (error)
-                    return "tables." + error;
-            }
-        }
-        return null;
-    };
-
-    /**
-     * Creates an UpdateTableList message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof UpdateTableList
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {UpdateTableList} UpdateTableList
-     */
-    UpdateTableList.fromObject = function fromObject(object) {
-        if (object instanceof $root.UpdateTableList)
-            return object;
-        var message = new $root.UpdateTableList();
-        if (object.tables) {
-            if (!Array.isArray(object.tables))
-                throw TypeError(".UpdateTableList.tables: array expected");
-            message.tables = [];
-            for (var i = 0; i < object.tables.length; ++i) {
-                if (typeof object.tables[i] !== "object")
-                    throw TypeError(".UpdateTableList.tables: object expected");
-                message.tables[i] = $root.Table.fromObject(object.tables[i]);
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from an UpdateTableList message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof UpdateTableList
-     * @static
-     * @param {UpdateTableList} message UpdateTableList
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    UpdateTableList.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.arrays || options.defaults)
-            object.tables = [];
-        if (message.tables && message.tables.length) {
-            object.tables = [];
-            for (var j = 0; j < message.tables.length; ++j)
-                object.tables[j] = $root.Table.toObject(message.tables[j], options);
-        }
-        return object;
-    };
-
-    /**
-     * Converts this UpdateTableList to JSON.
-     * @function toJSON
-     * @memberof UpdateTableList
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    UpdateTableList.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return UpdateTableList;
-})();
-
-$root.UpdatePlayerList = (function() {
-
-    /**
-     * Properties of an UpdatePlayerList.
-     * @exports IUpdatePlayerList
-     * @interface IUpdatePlayerList
-     * @property {Array.<string>|null} [players] UpdatePlayerList players
-     */
-
-    /**
-     * Constructs a new UpdatePlayerList.
-     * @exports UpdatePlayerList
-     * @classdesc Represents an UpdatePlayerList.
-     * @implements IUpdatePlayerList
-     * @constructor
-     * @param {IUpdatePlayerList=} [properties] Properties to set
-     */
-    function UpdatePlayerList(properties) {
-        this.players = [];
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * UpdatePlayerList players.
-     * @member {Array.<string>} players
-     * @memberof UpdatePlayerList
-     * @instance
-     */
-    UpdatePlayerList.prototype.players = $util.emptyArray;
-
-    /**
-     * Creates a new UpdatePlayerList instance using the specified properties.
-     * @function create
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {IUpdatePlayerList=} [properties] Properties to set
-     * @returns {UpdatePlayerList} UpdatePlayerList instance
-     */
-    UpdatePlayerList.create = function create(properties) {
-        return new UpdatePlayerList(properties);
-    };
-
-    /**
-     * Encodes the specified UpdatePlayerList message. Does not implicitly {@link UpdatePlayerList.verify|verify} messages.
-     * @function encode
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {IUpdatePlayerList} message UpdatePlayerList message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    UpdatePlayerList.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.players != null && message.players.length)
-            for (var i = 0; i < message.players.length; ++i)
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.players[i]);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified UpdatePlayerList message, length delimited. Does not implicitly {@link UpdatePlayerList.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {IUpdatePlayerList} message UpdatePlayerList message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    UpdatePlayerList.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes an UpdatePlayerList message from the specified reader or buffer.
-     * @function decode
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {UpdatePlayerList} UpdatePlayerList
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    UpdatePlayerList.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UpdatePlayerList();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                if (!(message.players && message.players.length))
-                    message.players = [];
-                message.players.push(reader.string());
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes an UpdatePlayerList message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UpdatePlayerList} UpdatePlayerList
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    UpdatePlayerList.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies an UpdatePlayerList message.
-     * @function verify
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    UpdatePlayerList.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.players != null && message.hasOwnProperty("players")) {
-            if (!Array.isArray(message.players))
-                return "players: array expected";
-            for (var i = 0; i < message.players.length; ++i)
-                if (!$util.isString(message.players[i]))
-                    return "players: string[] expected";
-        }
-        return null;
-    };
-
-    /**
-     * Creates an UpdatePlayerList message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {UpdatePlayerList} UpdatePlayerList
-     */
-    UpdatePlayerList.fromObject = function fromObject(object) {
-        if (object instanceof $root.UpdatePlayerList)
-            return object;
-        var message = new $root.UpdatePlayerList();
-        if (object.players) {
-            if (!Array.isArray(object.players))
-                throw TypeError(".UpdatePlayerList.players: array expected");
-            message.players = [];
-            for (var i = 0; i < object.players.length; ++i)
-                message.players[i] = String(object.players[i]);
-        }
-        return message;
-    };
-
-    /**
-     * Creates a plain object from an UpdatePlayerList message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof UpdatePlayerList
-     * @static
-     * @param {UpdatePlayerList} message UpdatePlayerList
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    UpdatePlayerList.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.arrays || options.defaults)
-            object.players = [];
-        if (message.players && message.players.length) {
-            object.players = [];
-            for (var j = 0; j < message.players.length; ++j)
-                object.players[j] = message.players[j];
-        }
-        return object;
-    };
-
-    /**
-     * Converts this UpdatePlayerList to JSON.
-     * @function toJSON
-     * @memberof UpdatePlayerList
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    UpdatePlayerList.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return UpdatePlayerList;
-})();
-
 $root.NewGame = (function() {
 
     /**
@@ -8709,9 +7393,6 @@ $root.ServerMessage = (function() {
      * @exports IServerMessage
      * @interface IServerMessage
      * @property {ILoginResponse|null} [loginResponse] ServerMessage loginResponse
-     * @property {IUpdateChatLog|null} [updateChatLog] ServerMessage updateChatLog
-     * @property {IUpdateTableList|null} [updateTableList] ServerMessage updateTableList
-     * @property {IUpdatePlayerList|null} [updatePlayerList] ServerMessage updatePlayerList
      * @property {INewGame|null} [newGame] ServerMessage newGame
      */
 
@@ -8739,30 +7420,6 @@ $root.ServerMessage = (function() {
     ServerMessage.prototype.loginResponse = null;
 
     /**
-     * ServerMessage updateChatLog.
-     * @member {IUpdateChatLog|null|undefined} updateChatLog
-     * @memberof ServerMessage
-     * @instance
-     */
-    ServerMessage.prototype.updateChatLog = null;
-
-    /**
-     * ServerMessage updateTableList.
-     * @member {IUpdateTableList|null|undefined} updateTableList
-     * @memberof ServerMessage
-     * @instance
-     */
-    ServerMessage.prototype.updateTableList = null;
-
-    /**
-     * ServerMessage updatePlayerList.
-     * @member {IUpdatePlayerList|null|undefined} updatePlayerList
-     * @memberof ServerMessage
-     * @instance
-     */
-    ServerMessage.prototype.updatePlayerList = null;
-
-    /**
      * ServerMessage newGame.
      * @member {INewGame|null|undefined} newGame
      * @memberof ServerMessage
@@ -8775,12 +7432,12 @@ $root.ServerMessage = (function() {
 
     /**
      * ServerMessage payload.
-     * @member {"loginResponse"|"updateChatLog"|"updateTableList"|"updatePlayerList"|"newGame"|undefined} payload
+     * @member {"loginResponse"|"newGame"|undefined} payload
      * @memberof ServerMessage
      * @instance
      */
     Object.defineProperty(ServerMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["loginResponse", "updateChatLog", "updateTableList", "updatePlayerList", "newGame"]),
+        get: $util.oneOfGetter($oneOfFields = ["loginResponse", "newGame"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -8810,12 +7467,6 @@ $root.ServerMessage = (function() {
             writer = $Writer.create();
         if (message.loginResponse != null && message.hasOwnProperty("loginResponse"))
             $root.LoginResponse.encode(message.loginResponse, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.updateChatLog != null && message.hasOwnProperty("updateChatLog"))
-            $root.UpdateChatLog.encode(message.updateChatLog, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.updateTableList != null && message.hasOwnProperty("updateTableList"))
-            $root.UpdateTableList.encode(message.updateTableList, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-        if (message.updatePlayerList != null && message.hasOwnProperty("updatePlayerList"))
-            $root.UpdatePlayerList.encode(message.updatePlayerList, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.newGame != null && message.hasOwnProperty("newGame"))
             $root.NewGame.encode(message.newGame, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         return writer;
@@ -8854,15 +7505,6 @@ $root.ServerMessage = (function() {
             switch (tag >>> 3) {
             case 2:
                 message.loginResponse = $root.LoginResponse.decode(reader, reader.uint32());
-                break;
-            case 4:
-                message.updateChatLog = $root.UpdateChatLog.decode(reader, reader.uint32());
-                break;
-            case 5:
-                message.updateTableList = $root.UpdateTableList.decode(reader, reader.uint32());
-                break;
-            case 6:
-                message.updatePlayerList = $root.UpdatePlayerList.decode(reader, reader.uint32());
                 break;
             case 7:
                 message.newGame = $root.NewGame.decode(reader, reader.uint32());
@@ -8911,36 +7553,6 @@ $root.ServerMessage = (function() {
                     return "loginResponse." + error;
             }
         }
-        if (message.updateChatLog != null && message.hasOwnProperty("updateChatLog")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.UpdateChatLog.verify(message.updateChatLog);
-                if (error)
-                    return "updateChatLog." + error;
-            }
-        }
-        if (message.updateTableList != null && message.hasOwnProperty("updateTableList")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.UpdateTableList.verify(message.updateTableList);
-                if (error)
-                    return "updateTableList." + error;
-            }
-        }
-        if (message.updatePlayerList != null && message.hasOwnProperty("updatePlayerList")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.UpdatePlayerList.verify(message.updatePlayerList);
-                if (error)
-                    return "updatePlayerList." + error;
-            }
-        }
         if (message.newGame != null && message.hasOwnProperty("newGame")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
@@ -8971,21 +7583,6 @@ $root.ServerMessage = (function() {
                 throw TypeError(".ServerMessage.loginResponse: object expected");
             message.loginResponse = $root.LoginResponse.fromObject(object.loginResponse);
         }
-        if (object.updateChatLog != null) {
-            if (typeof object.updateChatLog !== "object")
-                throw TypeError(".ServerMessage.updateChatLog: object expected");
-            message.updateChatLog = $root.UpdateChatLog.fromObject(object.updateChatLog);
-        }
-        if (object.updateTableList != null) {
-            if (typeof object.updateTableList !== "object")
-                throw TypeError(".ServerMessage.updateTableList: object expected");
-            message.updateTableList = $root.UpdateTableList.fromObject(object.updateTableList);
-        }
-        if (object.updatePlayerList != null) {
-            if (typeof object.updatePlayerList !== "object")
-                throw TypeError(".ServerMessage.updatePlayerList: object expected");
-            message.updatePlayerList = $root.UpdatePlayerList.fromObject(object.updatePlayerList);
-        }
         if (object.newGame != null) {
             if (typeof object.newGame !== "object")
                 throw TypeError(".ServerMessage.newGame: object expected");
@@ -9011,21 +7608,6 @@ $root.ServerMessage = (function() {
             object.loginResponse = $root.LoginResponse.toObject(message.loginResponse, options);
             if (options.oneofs)
                 object.payload = "loginResponse";
-        }
-        if (message.updateChatLog != null && message.hasOwnProperty("updateChatLog")) {
-            object.updateChatLog = $root.UpdateChatLog.toObject(message.updateChatLog, options);
-            if (options.oneofs)
-                object.payload = "updateChatLog";
-        }
-        if (message.updateTableList != null && message.hasOwnProperty("updateTableList")) {
-            object.updateTableList = $root.UpdateTableList.toObject(message.updateTableList, options);
-            if (options.oneofs)
-                object.payload = "updateTableList";
-        }
-        if (message.updatePlayerList != null && message.hasOwnProperty("updatePlayerList")) {
-            object.updatePlayerList = $root.UpdatePlayerList.toObject(message.updatePlayerList, options);
-            if (options.oneofs)
-                object.payload = "updatePlayerList";
         }
         if (message.newGame != null && message.hasOwnProperty("newGame")) {
             object.newGame = $root.NewGame.toObject(message.newGame, options);

@@ -4,12 +4,13 @@ import { GetProfileURL, debug } from "../Helpers/Helpers";
 import ServerGameMessageHandler from "./ServerGameMessageHandler";
 
 export default class ServerMessageHandler {
-  constructor(userId, updateHandlers, updateExtendedGameState) {
+  constructor(userId, updateHandlers, updateExtendedGameState, callback) {
     this.userId = userId;
     this.protoSocket = new ProtoSocket(GetProfileURL(this.userId), this.handleMsg);
     this.updateHandlers = updateHandlers;
     this.updateExtendedGameState = updateExtendedGameState;
     this.gameId = "";
+    this.callback = callback;
   }
   
   handleMsg = (msgType, params) => {
@@ -24,9 +25,7 @@ export default class ServerMessageHandler {
             true
           )
         });
-      } else {
-        debug("Send JoinTable");
-        this.JoinTable("best game");
+        this.callback();
       }
     } else if (msgType === "NewGame") {
       this.gameId = params.game.id;
@@ -45,10 +44,9 @@ export default class ServerMessageHandler {
     }
   };
 
-  JoinTable = tableID => {
-    this.protoSocket.send("JoinTable", {
-      tableID: tableID,
-      decklist: []
+  joinQueue = decklist => {
+    this.protoSocket.send("JoinQueue", {
+      decklist: decklist
     });
   };
 

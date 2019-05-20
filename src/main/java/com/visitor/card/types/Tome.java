@@ -4,6 +4,7 @@ package com.visitor.card.types;
 import com.visitor.game.Game;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.helpers.Hashmap;
+import com.visitor.protocol.Types;
 
 /**
  * Abstract class for the Tome card type.
@@ -24,5 +25,12 @@ public abstract class Tome extends Card {
     @Override
     public void resolve(Game game){
         game.putTo(controller, this, "scrapyard");
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setType("Tome")
+                .setCost("");
     }
 }
