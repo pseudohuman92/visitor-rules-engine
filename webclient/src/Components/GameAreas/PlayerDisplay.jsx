@@ -103,7 +103,7 @@ class PlayerDisplay extends React.Component {
       }
     };
 
-    let borderColor = "black";
+    let borderColor = "white";
     let clickHandler = undefined;
     if (targeted) {
       borderColor = "yellow";
@@ -116,13 +116,12 @@ class PlayerDisplay extends React.Component {
     }
 
     return (
-          
-          <Paper className="player-display">
-            <Grid container spacing={0} style={{ height: "100%" }}>
-              {/*<div
+      <Grid container spacing={8} style={{ height: "100%" }}>
+        <Grid item xs={12} className="grid-elem">
+          {/*<div
             style={{
               backgroundColor: borderColor,
-              maxWidth: "100%", maxHeight: "100%",
+              width: "100%", height: "100%",
             }}
             onClick={clickHandler}
           >
@@ -135,13 +134,18 @@ class PlayerDisplay extends React.Component {
               }
               style={{ maxWidth: "100%", maxHeight: "100%", margin: "%3" }}
               alt=""
-            />
-            </div>*/}
-              <Grid item xs={12} className="grid-elem">
+            /> 
+            </div> */}
+        </Grid>
+        <Grid item xs={12} className="grid-elem">
+          <Paper className="player-display">
+            <Grid container spacing={0} style={{ height: "100%" }}>
+              <Grid item xs={12} className="grid-elem" style={{backgroundColor: borderColor}} onClick={clickHandler}>
                 <Textfit
                   mode="single"
                   forceSingleModeWidth={false}
-                  style={{ padding: "0 5% 0 5%", height: "100%" }}
+                  
+                  style={{ padding: "0 5% 0 5%", height: "100%"}}
                 >
                   {name}
                 </Textfit>
@@ -166,6 +170,8 @@ class PlayerDisplay extends React.Component {
               </Grid>
             </Grid>
           </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }

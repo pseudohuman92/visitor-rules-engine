@@ -23,10 +23,10 @@ export default class Board extends React.Component {
         <Grid item xs={12} style={{ height: "30%" }}>
           <BoardSide isPlayer={true} />
         </Grid>
-        <Grid item xs={12} style={{ height: "10%" }}>
+        <Grid item xs={12} style={{ height: "5%" }}>
           <InfoMessage/>
         </Grid>
-        <Grid item xs={12} style={{ height: "15%"}}>
+        <Grid item xs={12} style={{ height: "20%"}}>
           <Hand />
         </Grid>
       </Grid>
