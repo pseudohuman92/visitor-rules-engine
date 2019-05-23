@@ -50,7 +50,6 @@ class ResourceArea extends Component {
           <Divider />
         </Grid>
         <Grid item container xs={12} style={{ height: "50%" }}>
-          
         {knowledgePool.map((k, i) => (
           <Grid item xs={2} key={i}>
             <span
@@ -61,7 +60,6 @@ class ResourceArea extends Component {
             {": " + k.count}
           </Grid>
         ))}
-        
         </Grid>
       </Grid>
     );

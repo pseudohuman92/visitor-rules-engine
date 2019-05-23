@@ -13,7 +13,7 @@ BI06	Mind slave's thrash	Item		Condition - Control a card you don't own.    Acti
 BI05	Idle hand	Item		3, Activate:    Draw top item of opponent's deck.	3	3	BB
 BI07	Parasytid	Item		3, Sacrifice ~, Activate:    Possess target item.	3	2	BB
 BI08		Item		1, Activate, Sacrifice ~:    Look at opponent's hand and choose an Spell from it.    They discard it.	3	1	B
-BL01		Ally	Human Thief	Pay 3: +2 Loyalty -1 Loyalty, Favor 2:   Draw the top item of opponent's deck.	5	2	BB
+BL01		Ally	Human Thief	3, Activate: +2 Loyalty -1 Loyalty, Activate:   Favor 2 - Draw the top item of opponent's deck.	5	2	BB
 	Promontory Institute						
 UA01	Regressive Heiracrhy	Spell		Purge all copies of a target card from your scrapyard.  Deal that many damage.		1	UU
 UA02		Spell		Transmute target item into Junk		3	U
@@ -55,6 +55,7 @@ RI04		Item		Charge X. 1, Activate, Sacrifice ~:   Deal X damage, X = # of charge
 RI05		Item		Discard a card:    Charge 1.  Discharge 1, Activate:    Deal 2 damage	3	2	RRR
 RI06		Item		Sacrifice an Item, Activate:    Deal X damage.    X = cost of sacrificed item.	3	1	RR
 RI07		Item		X, Purge X, Activate:    Deal X damage.	3	1	RR
+RL01		Ally	Alien Mercenary	Pay 2 life, Activate: +2 Loyalty -X Loyalty, Activate:    Favor 1 - Deal 2X damage to opponent	5	1	R
 							
 NT01		Tome		Study:   Gain BU			
 NT02		Tome		Study:   Gain BR			

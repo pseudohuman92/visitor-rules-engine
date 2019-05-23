@@ -9,7 +9,6 @@ import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import PlayArea from "../GameAreas/PlayArea";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import { delayClick } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return {
@@ -23,8 +22,6 @@ class DeckSelection extends React.Component {
     super(props);
     this.state = {
       value: 0,
-      loadedDeck: {},
-      selectedDeckId: "",
       decks: [],
       message: ""
     };
@@ -49,14 +46,7 @@ class DeckSelection extends React.Component {
 
   addDeck = deck => {
     this.setState((state, props) => ({ decks: state.decks.concat([deck]) }));
-  };
-
-  selectDeck = deckId => {
-    if (deckId === this.state.selectedDeckId) {
-      this.setState({ selectedDeckId: "" });
-    } else {
-      this.setState({ selectedDeckId: deckId });
-    }
+    console.log(deck);
   };
 
   loadDeck = (name, deck) => {
@@ -64,13 +54,14 @@ class DeckSelection extends React.Component {
     const decklist = this.toDecklist(deck);
     if (decklist) {
       this.props.serverHandler.joinQueue(decklist);
-      this.setState({ selectedDeckId: "", message: "", value: 1 });
+      this.setState({message: "", value: 1 });
     } else {
-      this.setState({ selectedDeckId: "", message: "Invalid Deck" });
+      this.setState({message: "Invalid Deck" });
     }
   };
 
   joinQueue = deckId => {
+    console.log(deckId);
     const Return = this.loadDeck.bind(this);
     this.props.firebase.getDeck(deckId, Return);
   };
@@ -89,7 +80,7 @@ class DeckSelection extends React.Component {
   };
 
   render() {
-    const { value, decks, selectedDeckId } = this.state;
+    const { value, decks} = this.state;
     return (
       <div>
         {value === 0 && (
@@ -103,10 +94,7 @@ class DeckSelection extends React.Component {
                   item
                   key={i}
                   xs={3}
-                  onClick={delayClick(
-                    () => this.selectDeck(deck.id),
-                    () => this.joinQueue(deck.id)
-                  )}
+                  onDoubleClick={event => this.joinQueue(deck.id)}
                 >
                   <Center>
                     <img
@@ -114,7 +102,6 @@ class DeckSelection extends React.Component {
                       style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
-                        opacity: deck.id === selectedDeckId ? 0.5 : 1
                       }}
                       alt=""
                     />
@@ -122,21 +109,8 @@ class DeckSelection extends React.Component {
                   <Center>{deck.name}</Center>
                 </Grid>
               ))}
-              <Grid container item xs={12} spacing={8}>
-                <Grid item xs>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    onClick={this.joinQueue}
-                  >
-                    Join Queue
-                  </Button>
-                </Grid>
-                <Grid item xs>
-                  {this.state.message}
-                </Grid>
-              </Grid>
             </Grid>
+            {this.state.message}
           </div>
         )}
         {value === 1 &&
@@ -144,9 +118,8 @@ class DeckSelection extends React.Component {
             <PlayArea back={this.props.back} />
           ) : (
             <div>
-              {"Waiting For An Opponent..."}
               {
-                "You can open a second tab and login with a different account to play against yourself"
+                "Waiting For An Opponent... You can open a second tab and login with a different account to play against yourself"
               }
             </div>
           ))}

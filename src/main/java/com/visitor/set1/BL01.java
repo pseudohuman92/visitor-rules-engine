@@ -25,9 +25,9 @@ public class BL01 extends Ally {
 
     public BL01(String owner){
         super ("BL01", 2, new Hashmap(BLACK, 2),
-            "Pay 3: +2 Loyalty\n"+
-            "-1 Loyalty: Favor 2\n"+
-            "  Draw the top item of opponent's deck.", 5,
+            "3, Activate: +2 Loyalty\n"+
+            "-1 Loyalty, Activate: \n"+
+            "  Favor 2 - Draw the top item of opponent's deck.", 5,
             owner);
     }
         

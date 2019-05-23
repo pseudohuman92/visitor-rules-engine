@@ -160,17 +160,18 @@ public class Game {
                 newTurn();
                 break;
             case BEGIN:
-                
                 passCount = 0;
                 activePlayer = turnPlayer;
                 phase = MAIN;
-                
                 break;
             case MAIN:
                 passCount = 0;
                 activePlayer = " ";
+                updatePlayers();
                 endTurn();
+                updatePlayers();
                 newTurn();
+                updatePlayers();
                 break;
             case END:
                 break;
@@ -260,8 +261,8 @@ public class Game {
     }
     */
 
-    public void mulligan(String userId) {
-        players.get(userId).mulligan();
+    public void redraw(String userId) {
+        players.get(userId).redraw();
     }
 
     public void keep(String userId) {
@@ -386,9 +387,9 @@ public class Game {
         } while(ret > 0);
     }
     
-    public void damageSelf(String userId, int count){
+    public void payLife(String userId, int count){
         Player player = players.get(userId);
-        player.damageSelf(count);
+        player.payLife(count);
         if (player.health <= 0){
             lose(userId);
         }
@@ -709,5 +710,9 @@ public class Game {
 
     public boolean isTurnPlayer(String userId) {
         return turnPlayer.equals(userId);
+    }
+
+    public UUID getOpponentId(String userId) {
+        return players.get(getOpponentName(userId)).id;
     }
 }

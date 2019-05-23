@@ -84,7 +84,7 @@ public class Player implements Serializable, Damageable {
                 .forEachOrdered((card) -> { scrapyard.add(card); });     
     }
     
-    public void mulligan(){
+    public void redraw(){
         int size = hand.size();
         if(size > 0){
             deck.addAll(hand);
@@ -232,7 +232,7 @@ public class Player implements Serializable, Damageable {
         return b;
     }
 
-    public void damageSelf(int damage) {
+    public void payLife(int damage) {
         health -= damage;
     }
     

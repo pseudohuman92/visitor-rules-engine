@@ -47,7 +47,7 @@ public class GameServer {
     }
     
     void mulligan(UUID gameID, String userId) {
-        games.get(gameID).mulligan(userId);
+        games.get(gameID).redraw(userId);
         games.get(gameID).updatePlayers();
     }
     
