@@ -9,6 +9,7 @@ import { withFirebase } from "../Firebase/index";
 import CardDisplay from "../Card/CardDisplay";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
+import { fullCollection } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {
@@ -41,7 +42,7 @@ class OpenPacks extends Component {
   };
 
   generateRandomCard = () => {
-    const collection = Object.values(this.props.fullCollection);
+    const collection = Object.values(fullCollection);
     if (collection) {
       return collection[Math.floor(Math.random() * collection.length)];
     }

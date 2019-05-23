@@ -29,7 +29,7 @@ const mapStateToProps = state => {
 };
 
 class ButtonDisplay extends Component {
-  mulligan = event => {
+  redraw = event => {
     this.props.gameHandler.Mulligan();
   };
 
@@ -120,11 +120,11 @@ class ButtonDisplay extends Component {
             <Button
               color="secondary"
               variant="contained"
-              onClick={this.mulligan}
+              onClick={this.redraw}
               disabled={!amIActive}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
             >
-              Mulligan
+              Redraw
             </Button>
           </Grid>
           <Grid item xs={12} style={{ height: "50%" }}>

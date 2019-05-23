@@ -11,29 +11,12 @@ import {
   getCardColor,
   getIconColor,
   toKnowledgeString,
-  toIconString
+  toIconString,
+  delayClick
 } from "../Helpers/Helpers";
 import Fonts from "../Fonts/Fonts";
 import "../../css/Card.css";
 import "../../css/Utils.css";
-
-function delayClick(onClick, onDoubleClick, delay) {
-  var timeoutID = null;
-  delay = delay || 200;
-  return function (event) {
-      if (!timeoutID) {
-          timeoutID = setTimeout(function () {
-              if(onClick){
-                onClick(event);
-              }
-              timeoutID = null
-          }, delay);
-      } else {
-          timeoutID = clearTimeout(timeoutID);
-          onDoubleClick(event);
-      }
-  };
-}
 
 export class CardDisplay extends Component {
   state = { showDialog: false };
@@ -49,13 +32,13 @@ export class CardDisplay extends Component {
       knowledgeCost,
       borderColor,
       health,
-      onClick,
+      onClick
     } = this.props;
 
     const marginSize = "2%";
     const borderRadius = "3px";
 
-    let smallCard = (
+    let smallCard = onClick => (
       <div>
         <Fonts />
         <Rectangle
@@ -65,7 +48,9 @@ export class CardDisplay extends Component {
             backgroundColor: getCardColor(knowledgeCost),
             overflow: "hidden"
           }}
-          onDoubleClick={delayClick(onClick, event => this.setState({ showDialog: true }))}
+          onClick={delayClick(onClick, event =>
+            this.setState({ showDialog: true })
+          )}
         >
           <Textfit
             mode="single"
@@ -95,7 +80,9 @@ export class CardDisplay extends Component {
             backgroundColor: borderColor,
             overflow: "hidden"
           }}
-          onClick={delayClick(onClick, event => this.setState({ showDialog: true }))}
+          onClick={delayClick(onClick, event =>
+            this.setState({ showDialog: true })
+          )}
         >
           <div
             className="card-inner"
@@ -167,7 +154,7 @@ export class CardDisplay extends Component {
               >
                 {description}
               </Textfit>
-              {health? "\nHealth:" + health : ""}
+              {health ? "\nHealth:" + health : ""}
             </div>
           </div>
         </Rectangle>
@@ -184,7 +171,7 @@ export class CardDisplay extends Component {
         >
           <DialogContent>{fullCard()}</DialogContent>
         </Dialog>
-        {small ? smallCard : fullCard(onClick)}
+        {small ? smallCard(onClick) : fullCard(onClick)}
       </div>
     );
   }

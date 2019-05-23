@@ -1,6 +1,6 @@
 import proto from "../../protojs/compiled.js";
-import {ServerName, PrintDebug} from '../../Config.js';
-import {fontMap, GamePhases, knowledgeMap } from "./Constants";
+import { ServerName, PrintDebug } from "../../Config.js";
+import { fontMap, GamePhases, knowledgeMap } from "./Constants";
 
 export function GetProfileURL(userId) {
   return `ws://${ServerName}/profiles/${userId}`;
@@ -33,7 +33,6 @@ export function copy(o) {
   }
   return output;
 }
-
 
 export function toIconString(s) {
   var line = "";
@@ -186,4 +185,22 @@ export function toKnowledgeCost(knowledgeString) {
     res.push({ knowledge: parseInt(k), count: cost[k] });
   }
   return res;
+}
+
+export function delayClick(onClick, onDoubleClick, delay) {
+  var timeoutID = null;
+  delay = delay || 200;
+  return event => {
+    if (!timeoutID) {
+      timeoutID = setTimeout(() => {
+        if (onClick) {
+          onClick(event);
+        }
+        timeoutID = null;
+      }, delay);
+    } else {
+      timeoutID = clearTimeout(timeoutID);
+      onDoubleClick(event);
+    }
+  };
 }

@@ -42,23 +42,23 @@ class ResourceArea extends Component {
         alignItems="center"
         style={{ width: "100%", height: "100%", backgroundColor: "#b1b1b1" }}
       >
-        <Grid item xs={12} style={{height: "50%"}}>
+        <Grid item xs={12} style={{ height: "50%" }}>
           {energy} / {maxEnergy}
         </Grid>
         <Grid item xs={12}>
-          <Divider/>
+          <Divider />
         </Grid>
-        <Grid item xs={12} style={{height: "50%" }}>
-          {knowledgePool.map((k, i) => (
-            <div key={i}>
-              <span
-                className={
-                  "knowledge-stone " + knowledgeMap[k.knowledge] + "-knowledge"
-                }
-              />
-              {": " + k.count}
-            </div>
-          ))}
+        <Grid item container xs={12} style={{ height: "50%" }}>
+        {knowledgePool.map((k, i) => (
+          <Grid item xs={2} key={i}>
+            <span
+              className={
+                "knowledge-stone " + knowledgeMap[k.knowledge] + "-knowledge"
+              }
+            />
+            {": " + k.count}
+          </Grid>
+        ))}
         </Grid>
       </Grid>
     );

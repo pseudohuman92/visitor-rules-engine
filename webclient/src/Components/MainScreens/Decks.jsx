@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 
 import { withFirebase } from "../Firebase";
 import DeckBuilder from "./DeckBuilder";
+import { delayClick } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return { userId: state.authUser.user.uid };
@@ -74,8 +75,7 @@ class Decks extends React.Component {
                 item
                 key={i}
                 xs={1}
-                onClick={() => this.selectDeck(deck.id)}
-                onDoubleClick={() => this.setState({ value: 1, loadedDeck: deck.id })}
+                onClick={delayClick(() => this.selectDeck(deck.id), () => this.setState({ value: 1, loadedDeck: deck.id }))}
               >
                 <Center>
                   <img

@@ -144,7 +144,6 @@ class PlayerDisplay extends React.Component {
                 <Textfit
                   mode="single"
                   forceSingleModeWidth={false}
-                  
                   style={{ padding: "0 5% 0 5%", height: "100%"}}
                 >
                   {name}

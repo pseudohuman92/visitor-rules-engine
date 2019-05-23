@@ -24,7 +24,7 @@ class InfoMessage extends Component {
 
     let instMessage = "...";
     if (game.phase === proto.Phase.MULLIGAN) {
-      instMessage = "Choose either to keep or mulligan your hand.";
+      instMessage = "Choose either to keep or redraw your hand.";
     } else if (IsSelectCardPhase(phase)) {
       instMessage = `Select ${
         upTo ? "up to " : ""

@@ -140,7 +140,6 @@ class Firebase {
   };
 
   getDeck = (deckId, Return) => {
-    let ret = [];
     this.deck(deckId)
       .get()
       .then(deckDoc => {
@@ -149,10 +148,7 @@ class Firebase {
           .get()
           .then(coll => {
             let cards = coll.data().cards;
-            Object.keys(cards).forEach(cardName => {
-              ret.push({ name: cardName, count: cards[cardName] });
-            });
-            Return(deck.name, ret);
+            Return(deck.name, cards);
           });
       });
   };
