@@ -135,11 +135,11 @@ function initializeFullCollection (){
       ) {
         result[fields[0]] = {
           name: fields[0],
-          type: fields[1],
-          description: fields[3],
-          health: fields[4],
-          cost: fields[5],
-          knowledgeCost: toKnowledgeCost(fields[6])
+          type: fields[2],
+          description: fields[4],
+          health: fields[5],
+          cost: fields[6],
+          knowledgeCost: toKnowledgeCost(fields[7])
         };
       }
     });

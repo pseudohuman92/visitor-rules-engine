@@ -7,7 +7,6 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Activation;
-import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
@@ -41,9 +40,12 @@ public class RI02 extends Item {
         game.addToStack(new Activation (controller,
             "Return ~ and target item to controller's hand.",
             (x) -> {
-                Card c = game.extractCard(target);
-                game.putTo(controller, game.extractCard(id), "hand");
-                game.putTo(c.controller, c, "hand");
+                if(game.isIn(controller, target, "both play")){
+                    game.getCard(target).returnToHand(game);
+                }
+                if(game.isIn(controller, id, "both play")){
+                    returnToHand(game);
+                }
             }, new Arraylist<>(target).putIn(id))
         );
     }

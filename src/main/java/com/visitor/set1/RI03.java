@@ -23,7 +23,6 @@ public class RI03 extends Item {
     public RI03 (String owner){
         super("RI03", 2, new Hashmap(RED, 2), 
             "Charge 3. \n" +
-            "\n" +
             "Discharge 1, Activate: \n" +
             "  Deal 2 damage", owner);
     }

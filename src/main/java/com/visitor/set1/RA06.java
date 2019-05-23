@@ -5,7 +5,6 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Card;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
@@ -40,7 +39,6 @@ public class RA06 extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        Card c = game.extractCard(target);
-        game.putTo(c.controller, c, "hand");
+        game.getCard(target).returnToHand(game);
     }    
 }

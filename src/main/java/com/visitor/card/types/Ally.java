@@ -20,16 +20,16 @@ import com.visitor.protocol.Types;
 public abstract class Ally extends Card 
         implements Activatable, Triggering, Damageable {
     
-    int favorCount;
-    Activation favorAbility;
-    int loyalty;
-    int health;
+    public int favor;
+    public Activation favorAbility;
+    public int loyalty;
+    public int health;
 
     public Ally(String name, int cost, 
             Hashmap<Types.Knowledge, Integer> knowledge, 
             String text, int health, String owner) {
         super(name, cost, knowledge, text, owner);
-        favorCount = 0;
+        favor = 0;
         loyalty = 0;
         favorAbility = null;
         this.health = health; 
@@ -50,9 +50,12 @@ public abstract class Ally extends Card
     
     @Override
     public void checkEvent(Game game, Event event){
-        if (event.label.equals("Begin Turn") && favorCount > 0){
-            favorCount--;
-            if (favorCount == 0){
+        System.out.println("Ally is checking event");
+        if (game.isTurnPlayer(controller) && event.label.equals("Turn Start") && favor > 0){
+            System.out.println("Passed the check");
+            favor--;
+            if (favor == 0){
+                ready();
                 game.addToStack(favorAbility);
                 favorAbility = null;
             }
@@ -61,9 +64,14 @@ public abstract class Ally extends Card
     
     @Override
     public void ready(){
-        if (favorCount == 0){
+        if (favor == 0){
             depleted = false;
         }
+    }
+    
+    @Override
+    public boolean canActivate(Game game) {
+        return !depleted && game.canPlaySlow(controller);
     }
     
     @Override
@@ -78,8 +86,7 @@ public abstract class Ally extends Card
         int tmp = Math.min(health, damageAmount);
         if (health <= damageAmount){
             health = 0;
-            game.extractCard(id);
-            game.putTo(controller, this, "scrapyard");
+            destroy(game);
         } else {
             health -= damageAmount;
         }
@@ -90,7 +97,9 @@ public abstract class Ally extends Card
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
                 .setType("Ally")
-                .setHealth(health);
+                .setHealth(health)
+                .setFavor(favor)
+                .setLoyalty(loyalty);
     }
     
 }

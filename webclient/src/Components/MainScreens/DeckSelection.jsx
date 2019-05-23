@@ -9,6 +9,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import PlayArea from "../GameAreas/PlayArea";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
+import { delayClick } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return {
@@ -22,7 +23,7 @@ class DeckSelection extends React.Component {
     super(props);
     this.state = {
       value: 0,
-      loadedDeck: [],
+      loadedDeck: {},
       selectedDeckId: "",
       decks: [],
       message: ""
@@ -35,11 +36,7 @@ class DeckSelection extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      userId,
-      updateHandlers,
-      updateExtendedGameState
-    } = this.props;
+    const { userId, updateHandlers, updateExtendedGameState } = this.props;
     updateHandlers({
       serverHandler: new ServerMessageHandler(
         userId,
@@ -73,16 +70,17 @@ class DeckSelection extends React.Component {
     }
   };
 
-  joinQueue = () => {
+  joinQueue = deckId => {
     const Return = this.loadDeck.bind(this);
-    this.props.firebase.getDeck(this.state.selectedDeckId, Return);
+    this.props.firebase.getDeck(deckId, Return);
   };
 
   toDecklist = deck => {
-    let decklist = [];
-    deck.forEach(card => {
-      if (card.count <= 3 && card.count > 0) {
-        decklist.push("" + card.count + ";" + card.name);
+    var decklist = [];
+    Object.keys(deck).forEach(cardName => {
+      let count = deck[cardName];
+      if (count <= 3 && count > 0) {
+        decklist.push("" + count + ";" + cardName);
       } else {
         return [];
       }
@@ -105,7 +103,10 @@ class DeckSelection extends React.Component {
                   item
                   key={i}
                   xs={3}
-                  onClick={() => this.selectDeck(deck.id)}
+                  onClick={delayClick(
+                    () => this.selectDeck(deck.id),
+                    () => this.joinQueue(deck.id)
+                  )}
                 >
                   <Center>
                     <img

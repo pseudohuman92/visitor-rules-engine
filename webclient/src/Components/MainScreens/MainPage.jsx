@@ -8,6 +8,7 @@ import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
 import DesignCard from "./DesignCard";
 import CustomCardGallery from './CustomCardGallery';
+import CardGallery from "./CardGallery";
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -52,6 +53,12 @@ export default class MainPage extends Component {
               >
                 Custom Cards
               </Button>
+              <Button
+                variant="contained"
+                onClick={event => this.setState({ value: 5 })}
+              >
+                Card Gallery
+              </Button>
             </Paper>
           </Center>
         )}
@@ -59,6 +66,7 @@ export default class MainPage extends Component {
         {value === 2 && <SignUp />}
         {value === 3 && <DesignCard back={this.back}/>}
         {value === 4 && <CustomCardGallery back={this.back}/>}
+        {value === 5 && <CardGallery back={this.back}/>}
       </div>
     );
   }

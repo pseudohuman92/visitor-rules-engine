@@ -41,7 +41,6 @@ public class BI05 extends Item {
                         .deck.extractInstanceFromTop(Item.class);
                 if(c != null){
                     c.controller = controller;
-                    c.knowledge = new Hashmap<>();
                     game.putTo(c.controller, c, "hand");
                 }
             }));

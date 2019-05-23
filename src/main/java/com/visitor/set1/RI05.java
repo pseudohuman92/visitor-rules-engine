@@ -28,7 +28,6 @@ public class RI05 extends Item{
         super("RI05", 2, new Hashmap(RED, 3), 
                 "\"Discard a card: \n" +
                 "  Charge 1. \n" +
-                "\n" +
                 "Discharge 1, Activate: \n" +
                 "  Deal 2 damage", owner);
     }

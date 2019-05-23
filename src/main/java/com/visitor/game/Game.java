@@ -148,6 +148,7 @@ public class Game {
     public void processEvents(){
         while(!eventQueue.isEmpty()){
             Event e = eventQueue.remove(0);
+            System.out.println("Processing Event: " + e.label);
             triggeringCards.get(turnPlayer).forEachInOrder(c ->{ c.checkEvent(this, e);});
             triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c ->{ c.checkEvent(this, e);});
         }
@@ -668,8 +669,10 @@ public class Game {
     }
 
     private void processBeginEvents() {
+        System.out.println("Starting Begin Triggers");
         eventQueue.add(Event.turnStart(turnPlayer));
         processEvents();
+        System.out.println("Ending Begin Triggers");
     }
 
     private void processEndEvents() {
@@ -702,5 +705,9 @@ public class Game {
         } else {
             ((Damageable)getCard(targetId)).dealDamage(this, damage);
         }
+    }
+
+    public boolean isTurnPlayer(String userId) {
+        return turnPlayer.equals(userId);
     }
 }

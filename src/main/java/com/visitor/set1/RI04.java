@@ -26,7 +26,6 @@ public class RI04 extends Item {
     public RI04 (String owner){
         super("RI04", 1, new Hashmap(RED, 1), 
             "Charge X.\n" +
-            "\n" +
             "1, Activate, Sacrifice:\n" +
             "  Deal X damage, X = # of charge counters.", owner);
     }

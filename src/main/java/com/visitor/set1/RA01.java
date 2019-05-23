@@ -5,7 +5,6 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Card;
 import com.visitor.card.types.Spell;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
@@ -43,8 +42,7 @@ public class RA01 extends Spell {
     @Override
     public void resolveEffect (Game game){
         if(game.isIn(controller, target, "both play")){
-            Card c = game.extractCard(target);    
-            game.putTo(c.controller, c, "hand");
+            game.getCard(target).returnToHand(game);
         }
         game.damagePlayer(game.getOpponentName(controller), 1);
     }    

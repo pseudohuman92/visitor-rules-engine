@@ -32,6 +32,8 @@ export class CardDisplay extends Component {
       knowledgeCost,
       borderColor,
       health,
+      favor,
+      loyalty,
       onClick
     } = this.props;
 
@@ -155,6 +157,8 @@ export class CardDisplay extends Component {
                 {description}
               </Textfit>
               {health ? "\nHealth:" + health : ""}
+              {loyalty ? "\nLoyalty:" + loyalty : ""}
+              {favor ? "\nFavor:" + favor : ""}
             </div>
           </div>
         </Rectangle>

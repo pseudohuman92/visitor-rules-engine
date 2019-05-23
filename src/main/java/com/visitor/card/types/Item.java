@@ -33,12 +33,16 @@ public abstract class Item extends Card implements Activatable, Damageable {
         int tmp = Math.min(health, damageAmount);
         if (health <= damageAmount){
             health = 0;
-            game.extractCard(id);
-            game.putTo(controller, this, "scrapyard");
+            destroy(game);
         } else {
             health -= damageAmount;
         }
         return tmp;
+    }
+    
+    @Override
+    public boolean canActivate(Game game) {
+        return !depleted;
     }
     
     @Override

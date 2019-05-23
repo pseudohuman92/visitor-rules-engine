@@ -35,7 +35,7 @@ public class RA05 extends Spell {
     @Override
     public void play (Game game){
         target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
-        game.putTo(controller, game.extractCard(target), "hand");
+        game.getCard(target).returnToHand(game);
         super.play(game);
     }  
     

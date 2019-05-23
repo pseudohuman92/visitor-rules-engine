@@ -23,7 +23,6 @@ public class YI02 extends Item {
     public YI02 (String owner){
         super("YI02", 1, new Hashmap(YELLOW, 2), 
                 "Charge 2.\n" +
-                "\n" +
                 "3, Sacrifice ~: \n" +
                 "  Gain reflect X.\n" +
                 "  X = # of charge counters\"", owner);

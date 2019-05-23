@@ -42,7 +42,8 @@ public class RA02 extends Spell {
     @Override
     public void resolveEffect (Game game){
         if(game.isIn(controller, target, "both play")){
-            Card c = game.extractCard(target);    
+            Card c = game.extractCard(target);
+            c.clear();
             game.putTo(c.controller, c, "deck", 0);
         }
     }    

@@ -17,58 +17,18 @@ import static java.util.UUID.randomUUID;
  */
 public abstract class Card implements Serializable {
 
-    // intrinsic variables
-
-    /**
-     * Unique identifier for the card.
-     */
     public UUID id;
-
-    /**
-     * Name of the card.
-     */
     public String name;
-
-    /**
-     * Energy cost of the card.
-     */
     public int cost;
-
-    /**
-     * Knowledge requirement of the card.
-     */
     public Hashmap<Knowledge, Integer> knowledge;
-
-    /**
-     * Text of the card
-     */
     public String text;
-    
     public Arraylist<String> subtypes;
-
-    /**
-     * Owner of the card. This is the player who started the game with the card in his deck.
-     */
+    
     public String owner;
-
-    /**
-     * Controller of the card. This is the player who currently have the card in play, hand, deck, void or scrapyard.
-     */
     public String controller;
 
-    /**
-     * Flag to indicate if the card is depleted.
-     */
     public boolean depleted;
-
-    /**
-     * Collection of counters on the card.
-     */
     public Hashmap<Counter, Integer> counters;
-
-    /**
-     * Targets.
-     */
     public Arraylist<UUID> targets;
 
     /**
@@ -180,6 +140,7 @@ public abstract class Card implements Serializable {
     }
     
     public void destroy(Game game){
+        clear();
         game.extractCard(this.id);
         game.putTo(controller, this, "scrapyard");
     }
@@ -190,7 +151,13 @@ public abstract class Card implements Serializable {
      */
     public void clear() {
         depleted = false;
-        counters = new Hashmap<>();
+        targets = new Arraylist<>();
+    }
+    
+    public void returnToHand(Game game){
+        clear();
+        game.extractCard(this.id);
+        game.putTo(controller, this, "hand");
     }
     
     public void copyPropertiesFrom(Card c) {
@@ -199,6 +166,7 @@ public abstract class Card implements Serializable {
         controller = c.controller;
         counters = c.counters;
         depleted = c.depleted;
+        targets = c.targets;
     }
 
     public Types.Card.Builder toCardMessage() {

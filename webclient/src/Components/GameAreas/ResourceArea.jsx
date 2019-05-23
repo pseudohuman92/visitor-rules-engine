@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Center from "react-center";
 
 import { knowledgeMap } from "../Helpers/Constants";
 
@@ -49,16 +50,18 @@ class ResourceArea extends Component {
           <Divider />
         </Grid>
         <Grid item container xs={12} style={{ height: "50%" }}>
+          
         {knowledgePool.map((k, i) => (
           <Grid item xs={2} key={i}>
             <span
               className={
                 "knowledge-stone " + knowledgeMap[k.knowledge] + "-knowledge"
               }
-            />
+            /> 
             {": " + k.count}
           </Grid>
         ))}
+        
         </Grid>
       </Grid>
     );
