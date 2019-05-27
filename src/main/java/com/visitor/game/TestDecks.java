@@ -37,20 +37,20 @@ public class TestDecks {
         Deck d = new Deck(userId);
         for (int i = 0; i < 3; i++){
             
-            d.add(new BA01(userId));
-            d.add(new BA02(userId));
-            d.add(new BA03(userId));
-            d.add(new BA04(userId));
-            d.add(new BA05(userId));
+            d.add(new WeakWill(userId));
+            d.add(new Pilfer(userId));
+            d.add(new CrossroadTrade(userId));
+            d.add(new WeakLink(userId));
+            d.add(new IrRunic(userId));
             
-            d.add(new BI01(userId));
-            d.add(new BI02(userId));
-            d.add(new BI03(userId));
-            d.add(new BI04(userId));
-            d.add(new BI05(userId));
-            d.add(new BI06(userId));
-            d.add(new BI07(userId));
-            d.add(new BI08(userId));
+            d.add(new Thief(userId));
+            d.add(new HandofIllWill(userId));
+            d.add(new EntropySurge(userId));
+            d.add(new RuneofUnnaturalLife(userId));
+            d.add(new IdleHand(userId));
+            d.add(new MindSlavesThrash(userId));
+            d.add(new Parasytid(userId));
+            d.add(new EyeofIntent(userId));
         }
         return d;
     }
@@ -59,19 +59,19 @@ public class TestDecks {
         Deck d = new Deck(userId);
         for (int i = 0; i < 3; i++){
             
-            d.add(new UA01(userId));
-            d.add(new UA02(userId));
+            d.add(new RegressiveHierarchy(userId));
+            d.add(new Recycle(userId));
             d.add(new UA03(userId));
-            d.add(new UA04(userId));
-            d.add(new UA05(userId));
+            d.add(new NaniteSabotage(userId));
+            d.add(new RecombinantReplication(userId));
             
-            d.add(new UI01(userId));
-            d.add(new UI02(userId));
-            d.add(new UI03(userId));
-            d.add(new UI04(userId));
-            d.add(new UI05(userId));
-            d.add(new UI06(userId));
-            d.add(new UI07(userId));
+            d.add(new SelfdestructNode(userId));
+            d.add(new NaniteDeconstructor(userId));
+            d.add(new DataRecompiler(userId));
+            d.add(new SalvageForge(userId));
+            d.add(new QuantumStateExtractor(userId));
+            d.add(new SynapticCapacitor(userId));
+            d.add(new UncertaintyGun(userId));
             d.add(new UI08(userId));
         }
         return d;
@@ -81,18 +81,18 @@ public class TestDecks {
         Deck d = new Deck(userId);
         for (int i = 0; i < 3; i++){
             
-            d.add(new YA01(userId));
-            d.add(new YA02(userId));
-            d.add(new YA03(userId));
-            d.add(new YA04(userId));
-            d.add(new YA05(userId));
-            d.add(new YA06(userId));
+            d.add(new TemporalReflection(userId));
+            d.add(new Nullify(userId));
+            d.add(new Neutralize(userId));
+            d.add(new Rewind(userId));
+            d.add(new ChronologicalReversal(userId));
+            d.add(new FastForward(userId));
             
-            d.add(new YI01(userId));
-            d.add(new YI02(userId));
-            d.add(new YI03(userId));
-            d.add(new YI04(userId));
-            d.add(new YI05(userId));
+            d.add(new MetaphasicShieldMK5(userId));
+            d.add(new MetaphasicShieldMK7(userId));
+            d.add(new MetaphasicShieldCoil(userId));
+            d.add(new NSink(userId));
+            d.add(new KineticReflectors(userId));
             d.add(new YI06(userId));
         }
         return d;
@@ -102,20 +102,20 @@ public class TestDecks {
         Deck d = new Deck(userId);
         for (int i = 0; i < 3; i++){
             
-            d.add(new RA01(userId));
-            d.add(new RA02(userId));
-            d.add(new RA03(userId));
-            d.add(new RA04(userId));
-            d.add(new RA05(userId));
-            d.add(new RA06(userId));
+            d.add(new ForcedRetreat(userId));
+            d.add(new PriorityOps(userId));
+            d.add(new WalkingFire(userId));
+            d.add(new Reinforcements(userId));
+            d.add(new Extraction(userId));
+            d.add(new Withdrawal(userId));
             
-            d.add(new RI01(userId));
+            d.add(new FragGrenade(userId));
             d.add(new RI02(userId));
-            d.add(new RI03(userId));
-            d.add(new RI04(userId));
+            d.add(new KillTeam(userId));
+            d.add(new MortarTeam(userId));
             d.add(new RI05(userId));
             d.add(new RI06(userId));
-            d.add(new RI07(userId));
+            d.add(new ShockTroop(userId));
         }
         return d;
     }

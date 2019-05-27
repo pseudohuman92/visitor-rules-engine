@@ -133,8 +133,9 @@ function initializeFullCollection (){
         !fields[0].startsWith("Code") &&
         !fields[0].startsWith("A")
       ) {
-        result[fields[0]] = {
-          name: fields[0],
+        let name = fields[1] !== ""?fields[1]:fields[0];
+        result[name] = {
+          name: name,
           type: fields[2],
           description: fields[4],
           health: fields[5],

@@ -2,8 +2,6 @@
 package com.visitor.game;
 
 import com.visitor.card.types.Card;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import static java.lang.Integer.parseInt;
 import java.security.SecureRandom;
@@ -26,7 +24,10 @@ public class Deck extends Arraylist<Card> implements Serializable {
         for (int i = 0; i < decklist.length; i++){
             String[] tokens = decklist[i].split(";");
             int count = parseInt(tokens[0]);
-            String name = tokens[1];
+            String name = tokens[1].replace(" ","")
+                    .replace("-", "")
+                    .replace(".", "")
+                    .replace("'", "");
             for (int j = 0; j < count; j++){
                 add(Deck.createCard(userId, name));
             }
