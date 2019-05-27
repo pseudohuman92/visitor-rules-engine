@@ -54,9 +54,9 @@ public class RL01 extends Ally {
                 favor = 1;
                 favorAbility =  new Activation(controller, "Deal " + 2*x +" damage to opponent.",
                     (x2) -> {
-                        game.dealDamage(game.getOpponentId(controller), 2*x);
+                        game.dealDamage(game.getOpponentUid(controller), 2*x);
                     },
-                new Arraylist<>(id).putIn(game.getOpponentId(controller)));
+                new Arraylist<>(id).putIn(game.getOpponentUid(controller)));
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);

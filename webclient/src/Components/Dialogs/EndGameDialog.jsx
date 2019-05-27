@@ -4,6 +4,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import { connect } from "react-redux";
+import { TextField, Grid } from "@material-ui/core";
 
 import { GamePhases } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
@@ -15,14 +16,12 @@ const mapStateToProps = state => {
   };
 };
 
-
-
-class WinLoseDialog extends Component {
+class EndGameDialog extends Component {
   back = () => {
-    const {updateExtendedGameState, back} = this.props;
-    updateExtendedGameState({gameInitialized: false});
+    const { updateExtendedGameState, back } = this.props;
+    updateExtendedGameState({ gameInitialized: false, phase: GamePhases.NOT_STARTED });
     back();
-  }
+  };
 
   render = () => {
     const { phase, win } = this.props;
@@ -33,16 +32,28 @@ class WinLoseDialog extends Component {
       <Dialog open={open}>
         <DialogTitle>{win ? "You Win!" : "You Lose..."}</DialogTitle>
         <DialogContent>
-          <img
-            src={process.env.PUBLIC_URL + "/img/" +(win ? "win" : "lose")+".jpg"}
-            alt=""
-          />
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <TextField label="Please Provide Feedback PLACEHOLDER" disabled />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField multiline label="Description" />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" disabled>
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
         </DialogContent>
         <Button type="submit" variant="contained" onClick={this.back}>
-              Back
-            </Button>
+          Back
+        </Button>
       </Dialog>
     );
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(WinLoseDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EndGameDialog);

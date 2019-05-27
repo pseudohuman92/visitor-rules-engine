@@ -24,7 +24,7 @@ const mapStateToProps = state => {
     phase: state.extendedGameState.phase,
     upTo: state.extendedGameState.upTo,
     autoPass: state.extendedGameState.autoPass,
-    selectedCards: state.extendedGameState.selectedCards,
+    selectedCards: state.extendedGameState.selectedCards
   };
 };
 
@@ -35,10 +35,6 @@ class ButtonDisplay extends Component {
 
   keep = event => {
     this.props.gameHandler.Keep();
-  };
-
-  concede = event => {
-    this.props.gameHandler.Concede();
   };
 
   selectDone = event => {
@@ -71,7 +67,6 @@ class ButtonDisplay extends Component {
       4: "MAIN_RESOLVING",
       5: "END"
     }[gamePhase];
-
 
     const amIActive = activePlayer === playerUserId;
     const actPlayer = amIActive ? playerName : opponentName;
@@ -142,53 +137,27 @@ class ButtonDisplay extends Component {
       );
     } else if (IsSelectCardPhase(phase)) {
       buttonMenu = (
-        <Grid container spacing={0} style={{ height: "100%" }}>
-          <Grid item xs={12} style={{ height: "50%" }}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={this.concede}
-            >
-              Concede
-            </Button>
-          </Grid>
-          <Grid item xs={12} style={{ height: "50%" }}>
-            <Button
-              color="primary"
-              variant="contained"
-              disabled={!upTo}
-              onClick={this.selectDone}
-              style={{ maxHeight: "100%", maxWidth: "100%" }}
-            >
-              Done
-            </Button>
-          </Grid>
-        </Grid>
+        <Button
+          color="primary"
+          variant="contained"
+          disabled={!upTo}
+          onClick={this.selectDone}
+          style={{ maxHeight: "100%", maxWidth: "100%" }}
+        >
+          Done
+        </Button>
       );
     } else {
       buttonMenu = (
-        <Grid container spacing={0} style={{ height: "100%" }}>
-          <Grid item xs={12} style={{ height: "50%" }}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={this.concede}
-            >
-              Concede
-            </Button>
-          </Grid>
-          <Grid item xs={12} style={{ height: "50%" }}>
-            <Button
-              color="primary"
-              variant="contained"
-              disabled={!amIActive || autoPass}
-              onClick={this.pass}
-              style={{ maxHeight: "100%", maxWidth: "100%" }}
-            >
-              Pass
-            </Button>
-          </Grid>
-        </Grid>
+        <Button
+          color="primary"
+          variant="contained"
+          disabled={!amIActive || autoPass}
+          onClick={this.pass}
+          style={{ maxHeight: "100%", maxWidth: "100%" }}
+        >
+          Pass
+        </Button>
       );
     }
 

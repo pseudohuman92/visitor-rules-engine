@@ -79,6 +79,8 @@ public class Game {
         updatePlayers();
     }
 
+    
+    // Connection methods
     public void addConnection(String userId, GameEndpoint connection) {
         connections.putIn(userId, connection);
     }
@@ -95,6 +97,8 @@ public class Game {
         return lastMessages.get(userId);
     }
 
+    
+    // Card accessor methods
     public Card extractCard(UUID targetID) {
         for (Player player : players.values()) {
             Card c = player.extractCard(targetID);
@@ -126,6 +130,8 @@ public class Game {
         return null;
     }
     
+    
+    // Action methods
     public void playCard(String userId, UUID cardID) {
         extractCard(cardID).play(this);
         activePlayer = getOpponentName(userId); 
@@ -136,15 +142,38 @@ public class Game {
         activePlayer = getOpponentName(userId); 
     }
     
-    public void addToStack(Card c) {
-        passCount = 0;
-        stack.add(0, c);
+    public void pass(String userId) {
+        passCount++;
+        if (passCount == 2) {
+            if (!stack.isEmpty()){
+                resolveStack();
+            } else {
+                changePhase();
+            }
+        } else {
+            activePlayer = getOpponentName(userId);
+        }
     }
 
     public void studyCard(String userId, UUID cardID) {
         extractCard(cardID).study(this);
     }
     
+    public void redraw(String userId) {
+        players.get(userId).redraw();
+    }
+
+    public void keep(String userId) {
+        passCount++;
+        if (passCount == 2) {
+            changePhase();
+        } else {
+            activePlayer = getOpponentName(userId);
+        }
+    }
+    
+    
+    // Turn / phase methods
     public void processEvents(){
         while(!eventQueue.isEmpty()){
             Event e = eventQueue.remove(0);
@@ -205,7 +234,8 @@ public class Game {
         processBeginEvents();
     }
     
-
+    
+    // Identifier accessor methods
     public String getOpponentName(String playerName){
         for(String name : players.keySet()){
             if(!name.equals(playerName)){
@@ -215,19 +245,16 @@ public class Game {
         return null;
     }
 
-    public void pass(String userId) {
-        passCount++;
-        if (passCount == 2) {
-            if (!stack.isEmpty()){
-                resolveStack();
-            } else {
-                changePhase();
-            }
-        } else {
-            activePlayer = getOpponentName(userId);
-        }
+    public UUID getOpponentUid(String userId) {
+        return players.get(getOpponentName(userId)).id;
     }
-
+    
+    
+    // Stack methods
+    public void addToStack(Card c) {
+        passCount = 0;
+        stack.add(0, c);
+    }
     
     //This is resolve until something new is added version
     private void resolveStack() {
@@ -261,18 +288,6 @@ public class Game {
     }
     */
 
-    public void redraw(String userId) {
-        players.get(userId).redraw();
-    }
-
-    public void keep(String userId) {
-        passCount++;
-        if (passCount == 2) {
-            changePhase();
-        } else {
-            activePlayer = getOpponentName(userId);
-        }
-    }
     
     //Eventually make this private.
     public Arraylist<Card> getZone(String userId, String zone){
@@ -712,7 +727,4 @@ public class Game {
         return turnPlayer.equals(userId);
     }
 
-    public UUID getOpponentId(String userId) {
-        return players.get(getOpponentName(userId)).id;
-    }
 }

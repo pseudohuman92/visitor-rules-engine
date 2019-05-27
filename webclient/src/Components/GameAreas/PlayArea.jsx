@@ -12,7 +12,7 @@ import ResourceArea from "./ResourceArea";
 import StateDisplay from "./StateDisplay";
 
 import ChooseDialog from "../Dialogs/ChooseDialog";
-import WinLoseDialog from "../Dialogs/WinLoseDialog";
+import EndGameDialog from '../Dialogs/EndGameDialog';
 import SelectXDialog from "../Dialogs/SelectXDialog";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
@@ -20,6 +20,7 @@ import { GamePhases } from "../Helpers/Constants";
 import proto from "../../protojs/compiled";
 
 import "../../css/App.css";
+import EscapeMenu from "../Dialogs/EscapeMenu";
 
 
 const mapStateToProps = state => {
@@ -30,6 +31,25 @@ const mapStateToProps = state => {
 };
 
 class PlayArea extends Component {
+
+  state = {menuOpen : false};
+
+  openMenu = event => {
+    if(event.keyCode === 27) {
+      this.setState({menuOpen: true});
+    }
+  }
+
+  closeMenu = event => {
+    this.setState({menuOpen: false});
+  }
+
+  componentDidMount(){
+    document.addEventListener("keydown", this.openMenu, false);
+  }
+  componentWillUnmount(){
+    document.removeEventListener("keydown", this.openMenu, false);
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     let gameHandler = this.props.gameHandler;
@@ -71,9 +91,11 @@ class PlayArea extends Component {
       game.canStudy.length > 0;
 
     return (
+      
       <div className="App" >
-        <header className="App-header" >
-          <WinLoseDialog back={back}/>
+        <header className="App-header">
+          <EscapeMenu open={this.state.menuOpen} close={this.closeMenu}/>
+          <EndGameDialog back={back}/>
           <SelectXDialog />
           <ChooseDialog />
           <Grid
