@@ -44,7 +44,7 @@ public class AI03 extends Item {
                 "Deal 2 damage\n" +
                 "If ~ has no counters on it, transform ~ to UI08",
             (x) -> {
-                game.dealDamage(target, 2);
+                game.dealDamage(id, target, 2);
                 if (counters.get(CHARGE) == 0){
                     game.replaceWith(this, new UI08(this));
                 }

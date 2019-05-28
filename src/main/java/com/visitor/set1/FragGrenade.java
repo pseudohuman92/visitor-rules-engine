@@ -37,6 +37,6 @@ public class FragGrenade extends Item {
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Activation (controller,
             "Deal 2 damage",
-            (x) -> { game.dealDamage(target, 2); }));
+            (x) -> { game.dealDamage(id, target, 2); }));
     }
 }

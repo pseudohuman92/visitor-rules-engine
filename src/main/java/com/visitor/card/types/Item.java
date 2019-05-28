@@ -7,6 +7,7 @@ import com.visitor.game.Game;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
+import java.util.UUID;
 
 /**
  * Abstract class for the Item card type.
@@ -29,15 +30,13 @@ public abstract class Item extends Card implements Activatable, Damageable {
     }
     
     @Override
-    public int dealDamage(Game game, int damageAmount) {
-        int tmp = Math.min(health, damageAmount);
+    public void dealDamage(Game game, int damageAmount, UUID source) {
         if (health <= damageAmount){
             health = 0;
             destroy(game);
         } else {
             health -= damageAmount;
         }
-        return tmp;
     }
     
     @Override

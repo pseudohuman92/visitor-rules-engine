@@ -40,6 +40,6 @@ public class ScrapGrenade extends Item {
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Activation(controller, "Deal 3 damage",
         (y) -> {
-            game.dealDamage(target, 3);
+            game.dealDamage(id, target, 3);
         }, new Arraylist(target).putIn(id)));   }
 }

@@ -108,6 +108,7 @@ export default class ServerGameMessageHandler {
       phase: GamePhases.DONE_SELECT,
       selectedCards: [],
       selectableCards: [],
+      selectablePlayers: [],
       dialog: { text: "", open: false, cards: [] }
     });
   };

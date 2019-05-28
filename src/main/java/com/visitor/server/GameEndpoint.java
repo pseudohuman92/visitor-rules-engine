@@ -21,11 +21,11 @@ import javax.websocket.server.*;
  *
  * @author pseudo
  */
-@ServerEndpoint(value="/games/{gameID}/{userId}")
+@ServerEndpoint(value="/games/{gameID}/{username}")
 public class GameEndpoint {
 
     Session session;
-    String userId;
+    String username;
     UUID gameID;
     boolean waitingResponse;
     PayloadCase responseType;
@@ -34,14 +34,14 @@ public class GameEndpoint {
 
     
     @OnOpen
-    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("userId") String userId) throws IOException, EncodeException {
+    public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException, EncodeException {
         this.session = session;
-        this.userId = userId;
+        this.username = username;
         this.gameID = UUID.fromString(gameID);
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
         session.setMaxIdleTimeout(0);
-        gameServer.addGameConnection(this.gameID, userId, this);
+        gameServer.addGameConnection(this.gameID, username, this);
         resendLastMessage();
     }
  
@@ -64,12 +64,12 @@ public class GameEndpoint {
  
     @OnClose
     public void onClose(Session session) throws IOException {
-        gameServer.removeGameConnection(gameID, userId);
+        gameServer.removeGameConnection(gameID, username);
     }
  
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println("[ERROR: " + userId + "] " + throwable.getMessage());
+        System.out.println("[ERROR: " + username + "] " + throwable.getMessage());
         throwable.printStackTrace();
     }
     
@@ -85,9 +85,9 @@ public class GameEndpoint {
     }
     
     public void resendLastMessage() throws IOException, EncodeException {
-        ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, userId);
+        ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, username);
         if (lastMessage != null) {
-            System.out.println("Resending last message to "+userId+" "+lastMessage);
+            System.out.println("Resending last message to "+username+" "+lastMessage);
             checkResponseType(lastMessage);
             session.getBasicRemote().sendObject(lastMessage.toByteArray());
         }
@@ -95,7 +95,7 @@ public class GameEndpoint {
 
     private void processResponse(ClientGameMessage message) {
         if (message.getPayloadCase() == CONCEDE){
-                gameServer.concede(gameID, userId);
+                gameServer.concede(gameID, username);
                 return;
         }
         if (message.getPayloadCase() == responseType){
@@ -108,7 +108,7 @@ public class GameEndpoint {
                 case SELECTFROMRESPONSE:
                     SelectFromResponse sfr = message.getSelectFromResponse();
                     if(sfr.getMessageType() != selectFromType){
-                        System.out.println("Wrong SelectFrom response received from " + userId + 
+                        System.out.println("Wrong SelectFrom response received from " + username + 
                                 "\nExpected " + selectFromType + " Received: " + message);
                         break;
                     }
@@ -120,41 +120,41 @@ public class GameEndpoint {
                     gameServer.addToResponseQueue(gameID, message.getSelectXValueResponse().getSelectedXValue());
                     break;
                 default:
-                    System.out.println("Wrong Message received from " + userId  
+                    System.out.println("Wrong Message received from " + username  
                             + "\nExpected " + responseType + " Received: " + message);
                     break;
             }
             waitingResponse = false;
         } else {
-            System.out.println("Unexpected response from " + userId + ": " + message);
+            System.out.println("Unexpected response from " + username + ": " + message);
         }
     }
 
     private void processMessage(ClientGameMessage message) {
         switch(message.getPayloadCase()){
             case PLAYCARD:
-                gameServer.playCard(gameID, userId, UUID.fromString(message.getPlayCard().getCardID()));
+                gameServer.playCard(gameID, username, UUID.fromString(message.getPlayCard().getCardID()));
                 break;
             case ACTIVATECARD:
-                gameServer.activateCard(gameID, userId, UUID.fromString(message.getActivateCard().getCardID()));
+                gameServer.activateCard(gameID, username, UUID.fromString(message.getActivateCard().getCardID()));
                 break;
             case STUDYCARD:
-                gameServer.studyCard(gameID, userId, UUID.fromString(message.getStudyCard().getCardID()));
+                gameServer.studyCard(gameID, username, UUID.fromString(message.getStudyCard().getCardID()));
                 break;
             case PASS:
-                gameServer.pass(gameID, userId);
+                gameServer.pass(gameID, username);
                 break;
             case MULLIGAN:
-                gameServer.mulligan(gameID, userId);
+                gameServer.mulligan(gameID, username);
                 break;
             case KEEP:
-                gameServer.keep(gameID, userId);
+                gameServer.keep(gameID, username);
                 break;
             case CONCEDE:
-                gameServer.concede(gameID, userId);
+                gameServer.concede(gameID, username);
                 break;
             default:
-                System.out.println("Unexpected message from " + userId + ": " + message);
+                System.out.println("Unexpected message from " + username + ": " + message);
                 break;
         }
     }
@@ -184,7 +184,7 @@ public class GameEndpoint {
         try {
             new File("../game-logs/").mkdirs();
             writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
-            writer.append("[FROM: " + userId + "] " + cgm);
+            writer.append("[FROM: " + username + "] " + cgm);
             writer.flush();
             writer.close();
             writer = null;
@@ -197,7 +197,7 @@ public class GameEndpoint {
         try {
             new File("../game-logs/").mkdirs();
             writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
-            writer.append("[TO: " + userId + "] "  + message);
+            writer.append("[TO: " + username + "] "  + message);
             writer.flush();
             writer.close();
             writer = null;

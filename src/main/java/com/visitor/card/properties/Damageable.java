@@ -6,6 +6,7 @@
 package com.visitor.card.properties;
 
 import com.visitor.game.Game;
+import java.util.UUID;
 
 /**
  *
@@ -13,6 +14,6 @@ import com.visitor.game.Game;
  */
 public interface Damageable {
     
-    public abstract int dealDamage(Game game, int damageAmount);
+    public abstract void dealDamage(Game game, int damageAmount, UUID source);
     
 }

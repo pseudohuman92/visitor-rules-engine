@@ -54,7 +54,7 @@ public class SaulgolathEnforcer extends Ally {
                 favor = 1;
                 favorAbility =  new Activation(controller, "Deal " + 2*x +" damage to opponent.",
                     (x2) -> {
-                        game.dealDamage(game.getOpponentUid(controller), 2*x);
+                        game.dealDamage(id, game.getOpponentUid(controller), 2*x);
                     },
                 new Arraylist<>(id).putIn(game.getOpponentUid(controller)));
             }));

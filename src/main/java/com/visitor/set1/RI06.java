@@ -43,7 +43,7 @@ public class RI06 extends Item {
         game.addToStack(new Activation (controller,
             "Deal "+x+" damage",
             (y) -> {
-                game.dealDamage(target, x);
+                game.dealDamage(id, target, x);
             }, new Arraylist<>(selection))
         );
     }

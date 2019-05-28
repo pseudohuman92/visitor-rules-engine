@@ -44,7 +44,7 @@ public class ShockTroop extends Item {
         game.deplete(id);
         game.addToStack(new Activation(controller, "Deal " + x + " damage",
         (y) -> {
-            game.dealDamage(target, x);
+            game.dealDamage(id, target, x);
         }, new Arraylist(selection).putIn(target).putIn(id)));
     }
 }

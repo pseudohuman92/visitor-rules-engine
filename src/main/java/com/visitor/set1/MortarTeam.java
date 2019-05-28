@@ -65,7 +65,7 @@ public class MortarTeam extends Item {
         game.addToStack(new Activation (controller,
             "Deal "+c+" damage",
             (x) -> {
-                game.dealDamage(target, c);
+                game.dealDamage(id, target, c);
             })
         );
     }

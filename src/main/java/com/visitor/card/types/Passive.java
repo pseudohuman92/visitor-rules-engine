@@ -4,6 +4,7 @@ package com.visitor.card.types;
 import com.visitor.game.Game;
 import com.visitor.protocol.Types.*;
 import com.visitor.helpers.Hashmap;
+import com.visitor.protocol.Types;
 
 /**
  * Abstract class for the Passive card type.
@@ -34,5 +35,11 @@ public abstract class Passive extends Card {
         return game.hasEnergy(controller, cost)
                && game.hasKnowledge(controller, knowledge)
                && game.canPlaySlow(controller);
-    }  
+    }
+    
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setType("Passive");
+    }
 }

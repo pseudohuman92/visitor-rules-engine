@@ -39,7 +39,7 @@ public class Meltdown extends Item {
         target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Activation(controller, "Deal 5 damage",
         (y) -> {
-            game.dealDamage(target, 5);
+            game.dealDamage(id, target, 5);
         }, new Arraylist(target).putIn(id)));
     }
 }

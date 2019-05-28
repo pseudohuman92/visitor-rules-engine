@@ -44,6 +44,6 @@ public class ForcedRetreat extends Spell {
         if(game.isIn(controller, target, "both play")){
             game.getCard(target).returnToHand(game);
         }
-        game.damagePlayer(game.getOpponentName(controller), 1);
+        game.damagePlayer(id, game.getOpponentName(controller), 1);
     }    
 }

@@ -13,6 +13,8 @@ BI05	Idle Hand	Item		3, Activate:    Draw top item of opponent's deck.	3	3	BB
 BI06	Mind Slave's Thrash	Item		Condition - Control a card you don't own.    Activate:      Deal 2 damage.	3	1	B
 BI07	Parasytid	Item		3, Sacrifice ~, Activate:    Possess target item.	3	2	BB
 BI08	Eye of Intent	Item		1, Activate, Sacrifice ~:    Look at opponent's hand and choose an Spell from it.    They discard it.	3	1	B
+BP01		Passive		Trigger - When you possess a card    Deal 2 damage to possessed card's controller		2	B
+BP02		Passive		Trigger - When opponent discards a card   Deal 2 damage to opponent.		1	BB
 BL01	The Highwayman	Ally	Human Thief	3, Activate: +2 Loyalty -1 Loyalty, Activate:   Favor 2 - Draw the top item of opponent's deck.	5	2	BB
 	Promontory Institute						
 UA01	Regressive Hierarchy	Spell		Purge all copies of a target card from your scrapyard.  Deal that many damage.		1	UU

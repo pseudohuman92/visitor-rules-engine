@@ -36,7 +36,7 @@ public class MindSlavesThrash extends Item {
         game.addToStack(new Activation (controller,
             "deal 2 damage.",
             (x) -> {
-                game.dealDamage(target, 2);
+                game.dealDamage(id, target, 2);
             }));
     }
 }

@@ -42,6 +42,6 @@ public class HandofIllWill extends Item {
         game.destroy(target);
         game.addToStack(new Activation(controller, "deal " + (game.ownedByOpponent(target)? 3:2) +  
             " damage to " + game.getOpponentName(controller),
-            (x) -> { game.dealDamage(target, (game.ownedByOpponent(target)?3:2)); }));
+            (x) -> { game.dealDamage(id, target, (game.ownedByOpponent(target)?3:2)); }));
     }
 }

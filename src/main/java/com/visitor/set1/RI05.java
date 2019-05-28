@@ -61,7 +61,7 @@ public class RI05 extends Item{
                 game.addToStack(new Activation (controller,
                     "Deal 2 damage",
                     (x) -> {
-                        game.dealDamage(target, 2);
+                        game.dealDamage(id, target, 2);
                     })
                 );
             }));

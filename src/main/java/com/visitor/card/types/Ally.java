@@ -9,9 +9,11 @@ import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Damageable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
+import static com.visitor.game.Event.TURN_START;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
+import java.util.UUID;
 
 /**
  *
@@ -51,7 +53,7 @@ public abstract class Ally extends Card
     @Override
     public void checkEvent(Game game, Event event){
         System.out.println("Ally is checking event");
-        if (game.isTurnPlayer(controller) && event.label.equals("Turn Start") && favor > 0){
+        if (game.isTurnPlayer(controller) && event.label.equals(TURN_START) && favor > 0){
             System.out.println("Passed the check");
             favor--;
             if (favor == 0){
@@ -82,15 +84,13 @@ public abstract class Ally extends Card
     }
     
     @Override
-    public int dealDamage(Game game, int damageAmount) {
-        int tmp = Math.min(health, damageAmount);
+    public void dealDamage(Game game, int damageAmount, UUID source) {
         if (health <= damageAmount){
             health = 0;
             destroy(game);
         } else {
             health -= damageAmount;
         }
-        return tmp;
     }
     
     @Override

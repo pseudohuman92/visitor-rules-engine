@@ -18,7 +18,7 @@ import com.visitor.card.properties.Damageable;
  */
 public class Player implements Serializable, Damageable {
 
-    public String userId;
+    public String username;
     public UUID id;
     public int energy;
     public int maxEnergy;
@@ -35,13 +35,13 @@ public class Player implements Serializable, Damageable {
     
     /**
      *
-     * @param userId
+     * @param username
      * @param deck
      */
-    public Player (String userId, String[] decklist){
-        this.userId = userId;
+    public Player (String username, String[] decklist){
+        this.username = username;
         id = randomUUID();
-        this.deck = new Deck(userId, decklist);
+        this.deck = new Deck(username, decklist);
         energy = 0;
         maxEnergy = 0;
         numOfStudiesLeft = 1;
@@ -60,28 +60,33 @@ public class Player implements Serializable, Damageable {
     }
     
     @Override
-    public int dealDamage(Game game, int count) {
+    public void dealDamage(Game game, int count, UUID source) {
         int damage = count;
         if(shield >= damage){
             shield -= damage;
-            return 0;
+            return;
         }
         damage -= shield;
         shield = 0;
         if(reflect >= damage){
             reflect -= damage;
-            return damage;
+            game.dealDamage(id, source, damage);
+            return;
         }
         int temp = reflect;
         damage -= reflect;
         reflect = 0;
         health -= damage;
-        return temp;
+        game.dealDamage(id, source, temp);
     }
 
-    public void discard(Arraylist<UUID> cards){
+    public Arraylist<Card> discard(Arraylist<UUID> cards){
+        Arraylist<Card> discarded = new Arraylist<>();
         cards.stream().map((cardID) -> extractCardFrom(cardID, hand))
-                .forEachOrdered((card) -> { scrapyard.add(card); });     
+                .forEachOrdered((card) -> { 
+                    discarded.add(card);
+                    scrapyard.add(card); });
+        return discarded;
     }
     
     public void redraw(){
@@ -188,7 +193,7 @@ public class Player implements Serializable, Damageable {
     public Types.Player.Builder toPlayerMessage() {
         Types.Player.Builder b = Types.Player.newBuilder()
                 .setId(id.toString())
-                .setUserId(userId)
+                .setUserId(username)
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
@@ -212,7 +217,7 @@ public class Player implements Serializable, Damageable {
     public Types.Player.Builder toOpponentMessage() {
         Types.Player.Builder b = Types.Player.newBuilder()
                 .setId(id.toString())
-                .setUserId(userId)
+                .setUserId(username)
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)

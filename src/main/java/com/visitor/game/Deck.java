@@ -18,9 +18,9 @@ import java.util.logging.Logger;
  */
 public class Deck extends Arraylist<Card> implements Serializable {
 
-    public Deck(String userId){}
+    public Deck(String username){}
 
-    public Deck(String userId, String[] decklist) {
+    public Deck(String username, String[] decklist) {
         for (int i = 0; i < decklist.length; i++){
             String[] tokens = decklist[i].split(";");
             int count = parseInt(tokens[0]);
@@ -29,16 +29,16 @@ public class Deck extends Arraylist<Card> implements Serializable {
                     .replace(".", "")
                     .replace("'", "");
             for (int j = 0; j < count; j++){
-                add(Deck.createCard(userId, name));
+                add(Deck.createCard(username, name));
             }
         }
     }
     
-    public static Card createCard(String userId, String cardName) {
+    public static Card createCard(String username, String cardName) {
         try {
             Class<?> cardClass = Class.forName("com.visitor.set1."+cardName);
             Constructor<?> cardConstructor = cardClass.getConstructor(String.class);
-            Object card = cardConstructor.newInstance(new Object[] { userId });
+            Object card = cardConstructor.newInstance(new Object[] { username });
             return ((Card)card);
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(Deck.class.getName()).log(Level.SEVERE, null, ex);

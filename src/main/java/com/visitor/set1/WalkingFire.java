@@ -32,7 +32,7 @@ public class WalkingFire extends Spell {
     @Override
     public void resolve (Game game){
         target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.dealDamage(target, 2);
+        game.dealDamage(id, target, 2);
         game.shuffleIntoDeck(controller, new Arraylist<>(this));
     }    
 }

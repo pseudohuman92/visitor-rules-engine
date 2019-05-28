@@ -59,18 +59,18 @@ public class Game {
         lastMessages = new Hashmap<>();
         response = new ArrayBlockingQueue<>(1);
         triggeringCards = new Hashmap<>();
-        triggeringCards.put(p1.userId, new Arraylist<>());
-        triggeringCards.put(p2.userId, new Arraylist<>());
+        triggeringCards.put(p1.username, new Arraylist<>());
+        triggeringCards.put(p2.username, new Arraylist<>());
         eventQueue = new Arraylist();
         
-        players.put(p1.userId, p1);
-        players.put(p2.userId, p2);
+        players.put(p1.username, p1);
+        players.put(p2.username, p2);
 
         p1.deck.shuffle();
         p2.deck.shuffle();
         
         phase = MULLIGAN;
-        turnPlayer = (random() < 0.5)?p1.userId:p2.userId;
+        turnPlayer = (random() < 0.5)?p1.username:p2.username;
         activePlayer = turnPlayer;
         turnCount = 0;
         passCount = 0;
@@ -81,20 +81,20 @@ public class Game {
 
     
     // Connection methods
-    public void addConnection(String userId, GameEndpoint connection) {
-        connections.putIn(userId, connection);
+    public void addConnection(String username, GameEndpoint connection) {
+        connections.putIn(username, connection);
     }
 
-    public void removeConnection(String userId) {
-        connections.removeFrom(userId);
+    public void removeConnection(String username) {
+        connections.removeFrom(username);
     }
 
-    public void setLastMessage(String userId, ServerGameMessage lastMessage) {
-        lastMessages.put(userId, lastMessage);
+    public void setLastMessage(String username, ServerGameMessage lastMessage) {
+        lastMessages.put(username, lastMessage);
     }
 
-    public ServerGameMessage getLastMessage(String userId) {
-        return lastMessages.get(userId);
+    public ServerGameMessage getLastMessage(String username) {
+        return lastMessages.get(username);
     }
 
     
@@ -132,17 +132,17 @@ public class Game {
     
     
     // Action methods
-    public void playCard(String userId, UUID cardID) {
+    public void playCard(String username, UUID cardID) {
         extractCard(cardID).play(this);
-        activePlayer = getOpponentName(userId); 
+        activePlayer = getOpponentName(username); 
     }
     
-    public void activateCard(String userId, UUID cardID) {
+    public void activateCard(String username, UUID cardID) {
         ((Activatable)getCard(cardID)).activate(this);
-        activePlayer = getOpponentName(userId); 
+        activePlayer = getOpponentName(username); 
     }
     
-    public void pass(String userId) {
+    public void pass(String username) {
         passCount++;
         if (passCount == 2) {
             if (!stack.isEmpty()){
@@ -151,24 +151,24 @@ public class Game {
                 changePhase();
             }
         } else {
-            activePlayer = getOpponentName(userId);
+            activePlayer = getOpponentName(username);
         }
     }
 
-    public void studyCard(String userId, UUID cardID) {
+    public void studyCard(String username, UUID cardID) {
         extractCard(cardID).study(this);
     }
     
-    public void redraw(String userId) {
-        players.get(userId).redraw();
+    public void redraw(String username) {
+        players.get(username).redraw();
     }
 
-    public void keep(String userId) {
+    public void keep(String username) {
         passCount++;
         if (passCount == 2) {
             changePhase();
         } else {
-            activePlayer = getOpponentName(userId);
+            activePlayer = getOpponentName(username);
         }
     }
     
@@ -245,8 +245,8 @@ public class Game {
         return null;
     }
 
-    public UUID getOpponentUid(String userId) {
-        return players.get(getOpponentName(userId)).id;
+    public UUID getOpponentUid(String username) {
+        return players.get(getOpponentName(username)).id;
     }
     
     
@@ -290,68 +290,68 @@ public class Game {
 
     
     //Eventually make this private.
-    public Arraylist<Card> getZone(String userId, String zone){
+    public Arraylist<Card> getZone(String username, String zone){
         switch(zone){
             case "deck":
-                return players.get(userId).deck;
+                return players.get(username).deck;
             case "hand":
-                return players.get(userId).hand;
+                return players.get(username).hand;
             case "play":
-                return players.get(userId).playArea;
+                return players.get(username).playArea;
             case "scrapyard":
-                return players.get(userId).scrapyard;
+                return players.get(username).scrapyard;
             case "void":
-                return players.get(userId).voidPile;
+                return players.get(username).voidPile;
             case "stack":
                 return stack;
             case "both play":
                 Arraylist<Card> total = new Arraylist<>();
-                total.addAll(players.get(userId).playArea);
-                total.addAll(players.get(getOpponentName(userId)).playArea);
+                total.addAll(players.get(username).playArea);
+                total.addAll(players.get(getOpponentName(username)).playArea);
                 return total;
             default:
                 return null;
         }
     }
     
-    public boolean hasValidTargetsIn(String userId, Predicate<Card> validTarget, int count, String zone){
-        return getZone(userId, zone).parallelStream().filter(validTarget).count() >= count;
+    public boolean hasValidTargetsIn(String username, Predicate<Card> validTarget, int count, String zone){
+        return getZone(username, zone).parallelStream().filter(validTarget).count() >= count;
     }
     
-     public boolean hasCardsIn(String userId, String zone, int count) {
-        return getZone(userId, zone).size() >= count;
+     public boolean hasCardsIn(String username, String zone, int count) {
+        return getZone(username, zone).size() >= count;
     }
     
-    public void putTo(String userId, Card c, String zone) {
-        getZone(userId, zone).add(c);
+    public void putTo(String username, Card c, String zone) {
+        getZone(username, zone).add(c);
     }
     
-    public void putTo(String userId, Card c, String zone, int index) {
-        getZone(userId, zone).add(index, c);
+    public void putTo(String username, Card c, String zone, int index) {
+        getZone(username, zone).add(index, c);
     }
     
-    public void addEnergy(String userId, int i) {
-        players.get(userId).energy+=i;
+    public void addEnergy(String username, int i) {
+        players.get(username).energy+=i;
     }
     
-    public void spendEnergy(String userId, int i) {
-        players.get(userId).energy-=i;
+    public void spendEnergy(String username, int i) {
+        players.get(username).energy-=i;
     }
     
-    public void draw(String userId, int count){
-        Player player = players.get(userId);
+    public void draw(String username, int count){
+        Player player = players.get(username);
         player.draw(count);
         if (player.deck.isEmpty()){
-            lose(userId);
+            lose(username);
         }
     }
     
-    public void drawByID(String userId, UUID cardID) {
-        players.get(userId).hand.add(extractCard(id));
+    public void drawByID(String username, UUID cardID) {
+        players.get(username).hand.add(extractCard(id));
     }
     
-    public void purge(String userId, UUID cardID) {
-        players.get(userId).voidPile.add(extractCard(id));
+    public void purge(String username, UUID cardID) {
+        players.get(username).voidPile.add(extractCard(id));
     }
 
     public void destroy(UUID id){
@@ -359,19 +359,20 @@ public class Game {
         item.destroy(this);
     }
     
-    public void loot(String userId, int x) {
-        draw(userId, x);
-        discard(userId, x);
+    public void loot(String username, int x) {
+        draw(username, x);
+        discard(username, x);
     }
     
-    public void discard(String userId, int count){
-        players.get(userId).discard(selectFromZone(userId, "hand", c -> {return true;}, count, false));
+    public void discard(String username, int count){
+        Arraylist<Card> d = players.get(username).discard(selectFromZone(username, "hand", c -> {return true;}, count, false));
+        eventQueue.add(Event.discard(username, d));
     }
     
-    public void discard(String userId, UUID cardID){
+    public void discard(String username, UUID cardID){
         Arraylist<UUID> temp = new Arraylist<>();
         temp.add(cardID);
-        players.get(userId).discard(temp);
+        eventQueue.add(Event.discard(username, players.get(username).discard(temp)));
     }
     
     public void deplete(UUID id){
@@ -386,47 +387,34 @@ public class Game {
         Card c = getCard(targetID);
         return c.owner.equals(getOpponentName(c.controller));
     }
-    
-    public void damagePlayer(String userId, int count){
-        String current = userId;
-        Player player; 
-        int ret = count;
-        
-        do {
-            player = players.get(current);
-            ret = player.dealDamage(this, ret);
-            if (player.health <= 0){
-                lose(current);
-            }
-            current = getOpponentName(current);
-        } while(ret > 0);
-    }
-    
-    public void payLife(String userId, int count){
-        Player player = players.get(userId);
+
+    public void payLife(String username, int count){
+        Player player = players.get(username);
         player.payLife(count);
         if (player.health <= 0){
-            lose(userId);
+            lose(username);
         }
     }
 
     public void possessTo(String newController, UUID cardID, String zone) {
+        
         Card c = extractCard(cardID);
+        eventQueue.add(Event.possession(c.controller, newController, new Arraylist<>(c)));
         c.controller = newController;
         c.knowledge = new Hashmap<>();
         getZone(newController, zone).add(c);
     }
 
-    public boolean controlsUnownedCard(String userId, String zone) {
-        return getZone(userId, zone).parallelStream().anyMatch(c->{return ownedByOpponent(c.id);});
+    public boolean controlsUnownedCard(String username, String zone) {
+        return getZone(username, zone).parallelStream().anyMatch(c->{return ownedByOpponent(c.id);});
     }
 
-    public boolean isIn(String userId, UUID cardID, String zone) {
-        return getZone(userId, zone).parallelStream().anyMatch(getCard(cardID)::equals);
+    public boolean isIn(String username, UUID cardID, String zone) {
+        return getZone(username, zone).parallelStream().anyMatch(getCard(cardID)::equals);
     }
     
-    public boolean hasInstancesIn(String userId, Class c, String zone, int count) {
-        return getZone(userId, zone).parallelStream().filter(c::isInstance).count() >= count;
+    public boolean hasInstancesIn(String username, Class c, String zone, int count) {
+        return getZone(username, zone).parallelStream().filter(c::isInstance).count() >= count;
     }
 
     public void replaceWith(Card oldCard, Card newCard) {
@@ -439,15 +427,15 @@ public class Game {
         }
     }
 
-    public Arraylist<Card> extractAllCopiesFrom(String userId, String cardName, String zone) {
-        Arraylist<Card> cards = new Arraylist<>(getZone(userId, zone).parallelStream()
+    public Arraylist<Card> extractAllCopiesFrom(String username, String cardName, String zone) {
+        Arraylist<Card> cards = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(c -> { return c.name.equals(cardName);}).collect(Collectors.toList()));
-        getZone(userId, zone).removeAll(cards);
+        getZone(username, zone).removeAll(cards);
         return cards;
     }
 
-    public void putTo(String userId, Arraylist<Card> cards, String zone) {
-        getZone(userId, zone).addAll(cards);
+    public void putTo(String username, Arraylist<Card> cards, String zone) {
+        getZone(username, zone).addAll(cards);
     }
     
     public void transformToJunk(UUID cardID){
@@ -461,8 +449,8 @@ public class Game {
         return new Arraylist<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
     }
     
-    public void shuffleIntoDeck(String userId, Arraylist<Card> cards) {
-        players.get(userId).deck.shuffleInto(cards);
+    public void shuffleIntoDeck(String username, Arraylist<Card> cards) {
+        players.get(username).deck.shuffleInto(cards);
     }
 
     private SelectFromType getZoneLabel(String zone){
@@ -483,15 +471,15 @@ public class Game {
         }
     }
     
-    public int selectX(String userId, int maxX) {
+    public int selectX(String username, int maxX) {
         if (maxX == 0){
             return maxX;
         }
         SelectXValue.Builder b = SelectXValue.newBuilder()
                 .setMaxXValue(maxX)
-                .setGame(toGameState(userId));
+                .setGame(toGameState(username));
         try {
-            send(userId, ServerGameMessage.newBuilder().setSelectXValue(b));
+            send(username, ServerGameMessage.newBuilder().setSelectXValue(b));
             
             int l = (int)response.take();
             return l;
@@ -501,7 +489,7 @@ public class Game {
         return 0;
     }
     
-    private Arraylist<UUID> selectFrom(String userId, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo){
+    private Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo){
         SelectFrom.Builder b = SelectFrom.newBuilder()
                 .addAllCanSelected(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
                 .addAllCanSelectedPlayers(canSelectPlayers.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
@@ -509,9 +497,9 @@ public class Game {
                 .setMessageType(type)
                 .setSelectionCount(count)
                 .setUpTo(upTo)
-                .setGame(toGameState(userId));
+                .setGame(toGameState(username));
         try {
-            send(userId, ServerGameMessage.newBuilder().setSelectFrom(b));
+            send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
             System.out.println("Waiting targets!");
             String[] l = (String[])response.take();
             System.out.println("Done waiting!");
@@ -522,38 +510,38 @@ public class Game {
         return null;
     }
     
-    public Arraylist<UUID> selectFromZone(String userId, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
-        Arraylist<UUID> canSelect = new Arraylist<>(getZone(userId, zone).parallelStream()
+    public Arraylist<UUID> selectFromZone(String username, String zone, Predicate<Card> validTarget, int count, boolean upTo) {        
+        Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(userId, getZoneLabel(zone), getZone(userId, zone), canSelect, new Arraylist<>(), count, upTo);
+        return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, new Arraylist<>(), count, upTo);
     }
     
-    public Arraylist<UUID> selectFromZoneWithPlayers(String userId, String zone, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
-        Arraylist<UUID> canSelect = new Arraylist<>(getZone(userId, zone).parallelStream()
+    public Arraylist<UUID> selectFromZoneWithPlayers(String username, String zone, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
+        Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
         Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
                 .filter(validPlayer).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(userId, getZoneLabel(zone), getZone(userId, zone), canSelect, canSelectPlayers, count, upTo);
+        return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, canSelectPlayers, count, upTo);
     }
 
-    public Arraylist<UUID> selectFromList(String userId, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
+    public Arraylist<UUID> selectFromList(String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
         Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
                 .filter(validTarget).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(userId, LIST, candidates, canSelect, new Arraylist<>(), count, upTo);
+        return selectFrom(username, LIST, candidates, canSelect, new Arraylist<>(), count, upTo);
     }
     
-    public Arraylist<UUID> selectPlayers(String userId, Predicate<Player> validPlayer, int count, boolean upTo) {        
+    public Arraylist<UUID> selectPlayers(String username, Predicate<Player> validPlayer, int count, boolean upTo) {        
         Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
                 .filter(validPlayer).map(c->{return c.id;}).collect(Collectors.toList()));
-        return selectFrom(userId, getZoneLabel("play"), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo);
+        return selectFrom(username, getZoneLabel("play"), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo);
     }
     
-    public Arraylist<UUID> selectDamageTargetsConditional(String userId, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
-        return selectFromZoneWithPlayers(userId, "both play", validTarget, validPlayer, count, upTo);
+    public Arraylist<UUID> selectDamageTargetsConditional(String username, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {        
+        return selectFromZoneWithPlayers(username, "both play", validTarget, validPlayer, count, upTo);
     }
     
-    public Arraylist<UUID> selectDamageTargets(String userId, int count, boolean upTo) {        
-        return selectFromZoneWithPlayers(userId, "both play", c->{return c instanceof Damageable;}, p->{return true;}, count, upTo);
+    public Arraylist<UUID> selectDamageTargets(String username, int count, boolean upTo) {        
+        return selectFromZoneWithPlayers(username, "both play", c->{return c instanceof Damageable;}, p->{return true;}, count, upTo);
     }
     
     
@@ -575,12 +563,12 @@ public class Game {
         GeneralEndpoint.gameServer.removeGame(id);
     }
     
-    public GameState.Builder toGameState(String userId){
+    public GameState.Builder toGameState(String username){
         GameState.Builder b = 
                 GameState.newBuilder()
                 .setId(id.toString())
-                .setPlayer(players.get(userId).toPlayerMessage())
-                .setOpponent(players.get(getOpponentName(userId)).toOpponentMessage())
+                .setPlayer(players.get(username).toPlayerMessage())
+                .setOpponent(players.get(getOpponentName(username)).toOpponentMessage())
                 .setTurnPlayer(turnPlayer)
                 .setActivePlayer(activePlayer)
                 .setPhase(phase);
@@ -588,7 +576,7 @@ public class Game {
             b.addStack(stack.get(i).toCardMessage());
         }
         players.forEach((s, p) -> {
-            if(userId.equals(s) && isActive(s)){
+            if(username.equals(s) && isActive(s)){
                 p.hand.forEach(c -> {
                     if(c.canPlay(this)){
                         b.addCanPlay(c.id.toString());
@@ -607,10 +595,10 @@ public class Game {
         return b;
     }
 
-    public void send(String userId, ServerGameMessage.Builder builder) {
+    public void send(String username, ServerGameMessage.Builder builder) {
         try {
-            setLastMessage(userId, builder.build());
-            GameEndpoint e = connections.get(userId);
+            setLastMessage(username, builder.build());
+            GameEndpoint e = connections.get(username);
             if (e != null) {
                 e.send(builder);
             }
@@ -627,25 +615,25 @@ public class Game {
         });
     }
 
-    public void addReflect(String userId, int i) {
-        players.get(userId).reflect += i;
+    public void addReflect(String username, int i) {
+        players.get(username).reflect += i;
     }
     
-    public void addShield(String userId, int i) {
-        players.get(userId).shield += i;
+    public void addShield(String username, int i) {
+        players.get(username).shield += i;
     }
 
-    public boolean hasEnergy(String userId, int i) {
-        return players.get(userId).energy >= i;
+    public boolean hasEnergy(String username, int i) {
+        return players.get(username).energy >= i;
     }
 
-    public boolean hasKnowledge(String userId, Hashmap<Types.Knowledge, Integer> knowledge) {
-         return players.get(userId).hasKnowledge(knowledge);
+    public boolean hasKnowledge(String username, Hashmap<Types.Knowledge, Integer> knowledge) {
+         return players.get(username).hasKnowledge(knowledge);
     }
 
-    public boolean canPlaySlow(String userId) {
-         return turnPlayer.equals(userId)
-                && activePlayer.equals(userId)
+    public boolean canPlaySlow(String username) {
+         return turnPlayer.equals(username)
+                && activePlayer.equals(username)
                 && stack.isEmpty()
                 && phase == MAIN;
     }
@@ -654,26 +642,26 @@ public class Game {
         return id;
     }
 
-    public boolean canStudy(String userId) {
-        return canPlaySlow(userId)
-            && players.get(userId).numOfStudiesLeft > 0;
+    public boolean canStudy(String username) {
+        return canPlaySlow(username)
+            && players.get(username).numOfStudiesLeft > 0;
     }
 
     //Eventually get rid of this
-    public Player getPlayer(String userId) {
-        return players.get(userId);
+    public Player getPlayer(String username) {
+        return players.get(username);
     }
 
     public int getEnergy(String controller) {
         return players.get(controller).energy;
     }
 
-    public boolean isActive(String userId) {
-        return activePlayer.equals(userId);
+    public boolean isActive(String username) {
+        return activePlayer.equals(username);
     }
 
-    public boolean isAPlayer(String userId) {
-        return players.getOrDefault(userId, null) != null;
+    public boolean isAPlayer(String username) {
+        return players.getOrDefault(username, null) != null;
     }
 
     public void addToResponseQueue(Object o) {
@@ -696,35 +684,46 @@ public class Game {
         processEvents();
     }
 
-    public void registerTriggeringCard(String userId, Triggering t) {
-        triggeringCards.get(userId).add(t);
+    public void registerTriggeringCard(String username, Triggering t) {
+        triggeringCards.get(username).add(t);
     }
 
     public void removeTriggeringCard(Triggering card) {
         triggeringCards.values().forEach(l->{l.remove(card);});
     }
 
-    public String getUserId(UUID targetPlayerId) {
+    public String getUsername(UUID targetPlayerId) {
         for (int i = 0; i < players.size(); i++){
             Player p = players.values().toArray(new Player[0])[i];
             if (p.id.equals(targetPlayerId)) {
-                return p.userId;
+                return p.username;
             }
         }
         return "";
     }
     
-    public void dealDamage(UUID targetId, int damage){
-        String userId = getUserId(targetId);
-        if (!userId.isEmpty()){
-            damagePlayer(userId, damage);
+     public UUID getUserId(String username) {
+        return players.get(username).id;
+    }
+    
+    public void damagePlayer(UUID sourceId, String playerName, int damage){
+        players.get(playerName).dealDamage(this, damage, sourceId);
+    }
+    
+    public void dealDamage(UUID sourceId, UUID targetId, int damage){
+        String username = getUsername(targetId);
+        if (!username.isEmpty()){
+            damagePlayer(sourceId, username, damage);
         } else {
-            ((Damageable)getCard(targetId)).dealDamage(this, damage);
+            Card c = getCard(targetId);
+            if (c != null && c instanceof Damageable){
+                ((Damageable)c).dealDamage(this, damage, sourceId);
+            }
         }
     }
 
-    public boolean isTurnPlayer(String userId) {
-        return turnPlayer.equals(userId);
+    public boolean isTurnPlayer(String username) {
+        return turnPlayer.equals(username);
     }
 
 }

@@ -42,6 +42,6 @@ public class Extraction extends Spell {
     @Override
     public void resolveEffect (Game game){
         target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.dealDamage(target, 4);
+        game.dealDamage(id, target, 4);
     }    
 }

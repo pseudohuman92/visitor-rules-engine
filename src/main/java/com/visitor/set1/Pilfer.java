@@ -29,7 +29,7 @@ public class Pilfer extends Spell {
     public void play(Game game) {
         int x = game.selectX(controller, game.getPlayer(controller).energy);
         UUID targetPlayerId = game.selectPlayers(controller, p->{return true;}, 1, false).get(0);
-        targetPlayer = game.getUserId(targetPlayerId);
+        targetPlayer = game.getUsername(targetPlayerId);
         cost = x;
         game.spendEnergy(controller, cost);
         text = targetPlayer + " loots " + x;

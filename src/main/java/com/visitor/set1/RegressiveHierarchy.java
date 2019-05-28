@@ -45,7 +45,7 @@ public class RegressiveHierarchy extends Spell {
             Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
             game.putTo(controller, cards, "void");
             UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-            game.dealDamage(target, cards.size());
+            game.dealDamage(id, target, cards.size());
         }
     }    
 }
