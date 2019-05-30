@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Center from "react-center";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 
 import { withFirebase } from "../Firebase";
 import CardDisplay from "../Card/CardDisplay";
@@ -22,9 +22,7 @@ class CustomCardGallery extends Component {
   render() {
     return (
       <div>
-        <Button type="submit" variant="contained" onClick={this.props.back}>
-          Back
-        </Button>
+        <Button onClick={this.props.back} text="Back"/>
         <Grid container spacing={8}>
           {this.state.cards.map((card, i) => (
             <Grid item key={i} xs={3}>

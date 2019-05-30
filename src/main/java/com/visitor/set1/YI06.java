@@ -39,7 +39,7 @@ public class YI06 extends Item {
         int x = game.getCard(selection).counters.getOrDefault(CHARGE, 0);
         game.destroy(selection);
         game.deplete(id);
-        game.addToStack(new Activation(controller, game.getOpponentName(controller)+" purges " + x,
+        game.addToStack(new Activation(this, game.getOpponentName(controller)+" purges " + x,
         (y) -> {
             game.damagePlayer(id, game.getOpponentName(controller), x);
         }));

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
@@ -10,22 +10,22 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import Decks from "./Decks";
 import DeckSelection from "./DeckSelection";
+import Fonts from '../Primitives/Fonts';
 
 const mapStateToProps = state => {
-  return { username: state.username,
-           userId : state.authUser.user.uid };
+  return { username: state.username, userId: state.authUser.user.uid };
 };
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = { value: 0 };
-    this.back = () => this.setState({value: 0});
+    this.back = () => this.setState({ value: 0 });
   }
 
   play = event => {
     this.setState({ value: 1 });
-  }
+  };
 
   render() {
     const { value } = this.state;
@@ -33,34 +33,32 @@ class Profile extends Component {
       <div>
         {value === 0 && (
           <Center>
+            <Fonts />
             <Paper>
-              <Typography component="h1" variant="h1">
-                Profile Page
-              </Typography>
+              <Center>
+                <Typography
+                  component="h1"
+                  variant="h1"
+                  style={{ fontFamily: "Cinzel, serif" }}
+                >
+                  Profile Page
+                </Typography>
+              </Center>
+              <Button onClick={this.play} text="Play" />
               <Button
-                variant="contained"
-                onClick={this.play}
-              >
-                Play
-              </Button>
-              <Button
-                variant="contained"
                 onClick={event => this.setState({ value: 2 })}
-              >
-                Decks
-              </Button>
+                text="Decks"
+              />
               <Button
-                variant="contained"
                 onClick={event => this.setState({ value: 3 })}
-              >
-                Open Packs
-              </Button>
+                text="Open Packs"
+              />
             </Paper>
           </Center>
         )}
-        {value === 1 && <DeckSelection back={this.back}/>}
-        {value === 2 && <Decks back={this.back}/>}
-        {value === 3 && <OpenPacks back={this.back}/>}
+        {value === 1 && <DeckSelection back={this.back} />}
+        {value === 2 && <Decks back={this.back} />}
+        {value === 3 && <OpenPacks back={this.back} />}
       </div>
     );
   }
@@ -69,4 +67,4 @@ class Profile extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers (Profile));
+)(withHandlers(Profile));

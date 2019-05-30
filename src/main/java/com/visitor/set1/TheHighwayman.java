@@ -42,25 +42,24 @@ public class TheHighwayman extends Ally {
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasEnergy(controller, 3)){
-            choices.add(new Activation(controller, "Pay 3: +2 Loyalty",
+            choices.add(new Activation(this, "Pay 3: +2 Loyalty",
             (x1) -> {
                 depleted = true;
                 game.spendEnergy(controller, 3);
-                game.addToStack(new Activation(controller, "+2 Loyalty",
+                game.addToStack(new Activation(this, "+2 Loyalty",
                 (x2) -> {
                     loyalty +=2;
-                },
-                new Arraylist<>(id)));
+                }));
             }));
         }
         if (loyalty >= 1){
-            choices.add(new Activation(controller, "-1 Loyalty: Favor 2:\n" +
+            choices.add(new Activation(this, "-1 Loyalty: Favor 2:\n" +
                         "  Draw the top item of opponent's deck.",
             (x1) -> {
                 depleted = true;
                 loyalty -=1;
                 favor = 2;
-                favorAbility =  new Activation(controller, "Draw the top item of opponent's deck.",
+                favorAbility =  new Activation(this, "Draw the top item of opponent's deck.",
                     (x2) -> {
                         Card c = game.getPlayer(game.getOpponentName(controller))
                         .deck.extractInstanceFromTop(Item.class);
@@ -69,8 +68,7 @@ public class TheHighwayman extends Ally {
                             c.knowledge = new Hashmap<>();
                             game.putTo(c.controller, c, "hand");
                         }
-                    },
-                new Arraylist<>(id));
+                    });
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);

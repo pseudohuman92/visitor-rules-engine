@@ -18,7 +18,7 @@ class Hand extends Component {
     return (
       <Fanner angle={15} elevation={size.height} width={size.width} style={{width: "100%"}}>
         {hand.map(card => (
-            <PlayingCard key={card.id} {...card} style={{width: Math.min((size.width / hand.length), (size.width/5))}}/>
+            <PlayingCard key={card.id} {...card} play={true} style={{width: Math.min((size.width / hand.length), (size.width/5))}}/>
         ))}
       </Fanner>
     );

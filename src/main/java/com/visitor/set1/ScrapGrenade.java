@@ -38,8 +38,8 @@ public class ScrapGrenade extends Item {
         Arraylist<UUID> selected = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false);
         game.purge(controller, selected.get(0));
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(controller, "Deal 3 damage",
+        game.addToStack(new Activation(this, "Deal 3 damage",
         (y) -> {
             game.dealDamage(id, target, 3);
-        }, new Arraylist(target).putIn(id)));   }
+        }, new Arraylist<>(target)));   }
 }

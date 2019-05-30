@@ -20,25 +20,25 @@ class StateDisplay extends React.Component {
         }}
         className="state-display"
       >
-        <Grid item xs={6} style={{ height: "20%" }}>
+        <Grid item xs={6}>
           <Scrapyard isPlayer={false} />
         </Grid>
-        <Grid item xs={6} style={{ height: "20%" }}>
+        <Grid item xs={6}>
           <Deck isPlayer={false} />
         </Grid>
-        <Grid item xs={12} style={{ height: "20%" }}>
+        <Grid item xs={12} >
           <PlayerDisplay isPlayer={false} />
         </Grid>
-        <Grid item xs={12} style={{ height: "20%" }}>
+        <Grid item xs={12}>
           <ButtonDisplay />
         </Grid>
-        <Grid item xs={12} style={{ height: "20%" }}>
+        <Grid item xs={12}>
           <PlayerDisplay isPlayer={true} />
         </Grid>
-        <Grid item xs={6} style={{ height: "20%" }}>
+        <Grid item xs={6}>
           <Scrapyard isPlayer={true} />
         </Grid>
-        <Grid item xs={6} style={{ height: "20%" }}>
+        <Grid item xs={6}>
           <Deck isPlayer={true} />
         </Grid>
       </Grid>

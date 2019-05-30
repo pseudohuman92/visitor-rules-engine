@@ -47,7 +47,7 @@ public class MetaphasicShieldMK7 extends Item {
         counters.removeFrom(CHARGE);
         game.destroy(id);
         
-        game.addToStack(new Activation(controller, controller+" gains reflect " + x,
+        game.addToStack(new Activation(this, controller+" gains reflect " + x,
             (y) -> { 
                 game.addReflect(controller, x);
         }));

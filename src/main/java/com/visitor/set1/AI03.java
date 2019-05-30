@@ -9,7 +9,6 @@ package com.visitor.set1;
 import com.visitor.card.types.Activation;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
@@ -40,7 +39,7 @@ public class AI03 extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(controller, 
+        game.addToStack(new Activation(this, 
                 "Deal 2 damage\n" +
                 "If ~ has no counters on it, transform ~ to UI08",
             (x) -> {
@@ -48,6 +47,6 @@ public class AI03 extends Item {
                 if (counters.get(CHARGE) == 0){
                     game.replaceWith(this, new UI08(this));
                 }
-            },  new Arraylist(target).putIn(id)));
+            }));
     }
 }

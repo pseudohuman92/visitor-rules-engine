@@ -43,7 +43,7 @@ public class KillTeam extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Deal 2 damage",
             (x) -> {
                 game.dealDamage(id, target, 2);

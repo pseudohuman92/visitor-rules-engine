@@ -45,11 +45,11 @@ public class BP02 extends Passive implements Triggering {
                 && ((String)event.eventData.get(0)).equals(game.getOpponentName(controller))){
             
             String discardingPlayer = ((String)event.eventData.get(0));
-            game.addToStack(new Activation(controller,
+            game.addToStack(new Activation(this,
             "Deal 2 damage to opponent",
             (x) -> {
                 game.dealDamage(id, game.getUserId(discardingPlayer), 2);
-            }, new Arraylist<>(id).putIn(game.getUserId(discardingPlayer))));
+            }, new Arraylist<>(game.getUserId(discardingPlayer))));
         }
     }
 }

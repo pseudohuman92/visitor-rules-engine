@@ -35,7 +35,7 @@ public class EntropySurge extends Item {
     public void activate(Game game) {
         target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
         game.destroy(target);
-        game.addToStack(new Activation(controller, 
+        game.addToStack(new Activation(this, 
             controller + " gains " + (game.ownedByOpponent(target)?2:1) + " energy",
             (x) -> { game.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
     }

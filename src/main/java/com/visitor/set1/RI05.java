@@ -42,23 +42,22 @@ public class RI05 extends Item{
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasCardsIn(controller, "hand", 1)){
-            choices.add(new Activation(controller, "Discard a card: Charge 1.",
+            choices.add(new Activation(this, "Discard a card: Charge 1.",
             (x1) -> {
                 game.discard(controller, 1);
-                game.addToStack(new Activation(controller, "Charge 1",
+                game.addToStack(new Activation(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);
-                    },
-                new Arraylist<>(id)));
+                    }));
             }));
         }
         if (!depleted && counters.getOrDefault(CHARGE, 0) > 0){
-            choices.add(new Activation(controller, "Discharge 1, Activate: Deal 2 damage",
+            choices.add(new Activation(this, "Discharge 1, Activate: Deal 2 damage",
             (x1) -> {
                 removeCounters(CHARGE, 1);
                 game.deplete(id);
                 UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-                game.addToStack(new Activation (controller,
+                game.addToStack(new Activation(this,
                     "Deal 2 damage",
                     (x) -> {
                         game.dealDamage(id, target, 2);

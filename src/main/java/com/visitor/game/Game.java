@@ -397,11 +397,9 @@ public class Game {
     }
 
     public void possessTo(String newController, UUID cardID, String zone) {
-        
         Card c = extractCard(cardID);
         eventQueue.add(Event.possession(c.controller, newController, new Arraylist<>(c)));
         c.controller = newController;
-        c.knowledge = new Hashmap<>();
         getZone(newController, zone).add(c);
     }
 

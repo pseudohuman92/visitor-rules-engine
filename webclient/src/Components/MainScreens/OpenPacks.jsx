@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
-import { Button } from "@material-ui/core";
+import Button from "../Primitives/Button";
 import { connect } from "react-redux";
 import Center from "react-center";
 
@@ -28,15 +28,17 @@ class OpenPacks extends Component {
   }
 
   openPack = packName => {
-    const {packs, userId, firebase} = this.props;
+    const { packs, userId, firebase } = this.props;
     if (packs[packName] > 0) {
       let genPack = this.generatePack(5, true);
       this.setState({ generatedPack: genPack });
       let cards = {};
-      genPack.forEach(card => {cards[card.name] = 1;});
+      genPack.forEach(card => {
+        cards[card.name] = 1;
+      });
       firebase.openPack(userId, packName, cards);
       packs[packName] -= 1;
-      this.props.updateState({packs: packs});
+      this.props.updateState({ packs: packs });
       this.setState({ show: true });
     }
   };
@@ -85,22 +87,10 @@ class OpenPacks extends Component {
                 </Grid>
               ))}
             </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.hideDialog}
-            >
-              Done
-            </Button>
+            <Button onClick={this.hideDialog} text="Done" />
           </Dialog>
         )}
-        <Button
-                type="submit"
-                variant="contained"
-                onClick={this.props.back}
-              >
-                Back
-              </Button>
+        <Button onClick={this.props.back} text="Back" />
         <Grid
           container
           alignContent="space-around"
@@ -132,4 +122,7 @@ class OpenPacks extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withHandlers(withFirebase(OpenPacks)));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withHandlers(withFirebase(OpenPacks)));

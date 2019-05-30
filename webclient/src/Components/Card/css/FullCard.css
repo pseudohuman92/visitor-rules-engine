@@ -1,0 +1,52 @@
+.card-inner {
+  margin: 3.1746% 3.9683% 3.1746% 3.9683%;
+  height: 93.6508%;
+  color: black;
+  overflow: hidden;
+  font-family: "Open Sans, sans-serif";  
+  font-size: calc(2px + (20 - 2) * ((100vw - 300px) / (1920 - 300)));
+}
+
+.card-inner-play {
+    margin: 3.1746% 3.9683% 3.1746% 3.9683%;
+    height: 93.6508%;
+    color: black;
+    overflow: hidden;
+    font-family: "Open Sans, sans-serif";  
+    font-size: calc(2px + (10 - 2) * (100%/15));
+  }
+
+.card-name {
+  margin: 3.4483% 3.4483% 0 3.4483%;
+  background-color: beige;
+  overflow: hidden;
+  height: 5.9524%;
+  font-family: "Open Sans, sans-serif";
+}
+
+.card-image {
+  margin: 1.6949% 3.4483% 0 3.4483%;
+  overflow: hidden;
+  height: 47.619%;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.card-type {
+  margin: 1.6949% 3.4483% 0 3.4483%;
+  background-color: beige;
+  overflow: hidden;
+  height: 5.9524%;
+  font-family: "Open Sans, sans-serif";
+}
+
+.card-description {
+  margin: 1.6949% 3.4483% 3.4483% 3.4483%;
+  background-color: beige;
+  overflow: hidden;
+  height: 32.1429%;
+  font-family: "Open Sans, sans-serif";
+}

@@ -40,7 +40,7 @@ public class RI06 extends Item {
         game.destroy(selection);
         game.deplete(id);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Deal "+x+" damage",
             (y) -> {
                 game.dealDamage(id, target, x);

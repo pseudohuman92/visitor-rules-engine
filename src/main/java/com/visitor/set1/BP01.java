@@ -45,11 +45,11 @@ public class BP01 extends Passive implements Triggering {
                 && ((String)event.eventData.get(1)).equals(controller)){
             String oldOwner = ((String)event.eventData.get(0));
             
-            game.addToStack(new Activation(controller,
+            game.addToStack(new Activation(this,
             "Deal 2 damage to possessed card's controller",
             (x) -> {
                 game.dealDamage(id, game.getUserId(oldOwner), 2);
-            }, new Arraylist<>(id).putIn(game.getUserId(oldOwner))));
+            }, new Arraylist<>(game.getUserId(oldOwner))));
         }
     }
 }

@@ -52,9 +52,10 @@ class BoardSide extends Component {
           {(isPlayer ? playerCards : opponentCards).map(card => (
             <GridListTile
               key={card.id}
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
+              style={{ maxWidth: "100%", maxHeight: "100%", 
+               }}
             >
-              <PlayingCard {...card} />
+              <PlayingCard {...card} play style={{textAlign: "justify"}} />
             </GridListTile>
           ))}
         </GridList>

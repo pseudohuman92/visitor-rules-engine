@@ -32,7 +32,7 @@ public class Thief extends Item {
     @Override
     public void activate(Game game) {
         game.deplete(id);
-        game.addToStack(new Activation(controller, controller + " loots 1", 
+        game.addToStack(new Activation(this, controller + " loots 1", 
                 (x) -> { game.loot(controller, 1); }));
     }
 }

@@ -37,7 +37,7 @@ public class RuneofUnnaturalLife extends Item {
     public void activate(Game game) {
         Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", c->{return true;}, 1, false);
         game.destroy(id);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Draw a card from your scrapyard then discard a card.",
             (x) -> {
                 if (game.isIn(controller, selected.get(0), "scrapyard")){

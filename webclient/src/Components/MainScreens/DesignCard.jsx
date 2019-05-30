@@ -1,13 +1,13 @@
 import React from "react";
 import { Component } from "react";
 import Rectangle from "react-rectangle";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 import Input from "@material-ui/core/Input";
 import Center from "react-center";
 
 import { getCardColor, toKnowledgeCost } from "../Helpers/Helpers";
-import Fonts from "../Fonts/Fonts";
-import "../../css/Card.css";
+import Fonts from '../Primitives/Fonts';
+import "../Card/css/FullCard.css";
 import "../../css/Utils.css";
 import { TextField, Grid } from "@material-ui/core";
 import { withFirebase } from "../Firebase";
@@ -55,12 +55,9 @@ class DesignCard extends Component {
           <Grid container spacing={24} justify="space-around">
             <Grid item xs={2}>
               <Button
-                type="submit"
-                variant="contained"
                 onClick={this.props.back}
-              >
-                Back
-              </Button>
+                text="Back"
+              />
             </Grid>
             <Grid item xs={8}>
               <TextField
@@ -75,12 +72,9 @@ class DesignCard extends Component {
             <Grid item xs={2}>
               <Button
                 disabled={this.state.creator === ""}
-                type="submit"
-                variant="contained"
                 onClick={this.submit}
-              >
-                Submit
-              </Button>
+                text="Submit"
+              />
             </Grid>
           </Grid>
           <Rectangle

@@ -34,7 +34,7 @@ public class KineticReflectors extends Item {
     public void activate(Game game) {
         game.spendEnergy(controller, 2);
         game.deplete(id);
-        game.addToStack(new Activation(controller, controller+" gains reflect 2",
+        game.addToStack(new Activation(this, controller+" gains reflect 2",
         (x) -> {
             game.addReflect(controller, 2);
         }));

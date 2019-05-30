@@ -33,18 +33,17 @@ public class SaulgolathEnforcer extends Ally {
     @Override
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
-        choices.add(new Activation(controller, "Pay 2 life, Activate: +2 Loyalty",
+        choices.add(new Activation(this, "Pay 2 life, Activate: +2 Loyalty",
         (x1) -> {
             depleted = true;
             game.payLife(controller, 2);
-            game.addToStack(new Activation(controller, "+2 Loyalty",
+            game.addToStack(new Activation(this, "+2 Loyalty",
             (x2) -> {
                 loyalty +=2;
-            },
-            new Arraylist<>(id)));
+            }));
         }));
         if (loyalty >= 1){
-            choices.add(new Activation(controller, 
+            choices.add(new Activation(this, 
                     "-X Loyalty, Activate: \n"+
                     "  Favor 1 - Deal 2X damage to opponent.",
             (x1) -> {
@@ -52,11 +51,11 @@ public class SaulgolathEnforcer extends Ally {
                 depleted = true;
                 loyalty -=x;
                 favor = 1;
-                favorAbility =  new Activation(controller, "Deal " + 2*x +" damage to opponent.",
+                favorAbility =  new Activation(this, "Deal " + 2*x +" damage to opponent.",
                     (x2) -> {
                         game.dealDamage(id, game.getOpponentUid(controller), 2*x);
                     },
-                new Arraylist<>(id).putIn(game.getOpponentUid(controller)));
+                new Arraylist<>(game.getOpponentUid(controller)));
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);

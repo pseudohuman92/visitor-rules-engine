@@ -37,14 +37,14 @@ public class MetaphasicShieldCoil extends Item {
     @Override
     public void activate(Game game) {
         game.spendEnergy(controller, 2);
-        game.addToStack(new Activation(controller, "Create and draw YI01 or YI02",
+        game.addToStack(new Activation(this, "Create and draw YI01 or YI02",
         (x) -> {
             Arraylist<Card> choices = new Arraylist<>();
-            choices.add(new Activation(controller, "Create and draw YI01",
+            choices.add(new Activation(this, "Create and draw YI01",
                 (x1) -> {
                     game.putTo(controller, new MetaphasicShieldMK5(controller), "hand");
             }));
-            choices.add(new Activation(controller, "Create and draw YI02",
+            choices.add(new Activation(this, "Create and draw YI02",
                 (x1) -> {
                     game.putTo(controller, new MetaphasicShieldMK7(controller), "hand");
             }));

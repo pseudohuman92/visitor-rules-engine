@@ -47,7 +47,8 @@ class Child extends React.Component {
           top: "" +  (elevationStep * Math.abs(stepCount(i))) + "px",
           //- (this.state.hover ? 2 * elevationStep : 0)}%`,
           left: "" + (widthStep * i) + "px",
-          zIndex: this.state.hover ? length : i
+          zIndex: this.state.hover ? length : i,
+          textAlign: "justify"
         }}
       >
         {child}

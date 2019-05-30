@@ -62,7 +62,7 @@ public class MortarTeam extends Item {
         game.destroy(id);
         int c = removeAllCounters(CHARGE);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Deal "+c+" damage",
             (x) -> {
                 game.dealDamage(id, target, c);

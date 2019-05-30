@@ -39,7 +39,7 @@ public class NSink extends Item {
         UUID selection = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false).get(0);
         game.spendEnergy(controller, 2 * x);
         game.deplete(id);
-        game.addToStack(new Activation(controller, "Charge " + x,
+        game.addToStack(new Activation(this, "Charge " + x,
         (y) -> {
             if(game.isIn(controller, selection, "both play")){
                 game.getCard(selection).addCounters(CHARGE, x);

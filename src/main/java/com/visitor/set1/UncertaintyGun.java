@@ -38,7 +38,7 @@ public class UncertaintyGun extends Item {
     public void activate(Game game) {
         x = game.selectX(controller, game.getPlayer(controller).energy);
         game.destroy(id);
-        game.addToStack(new Activation(controller, 
+        game.addToStack(new Activation(this, 
             "  Look at opponent's deck. \n" +
             "  Choose a card that costs "+x+" or less from it. \n" +
             "  Transform chosen card into junk.",

@@ -38,7 +38,7 @@ public class EyeofIntent extends Item {
         game.spendEnergy(controller, 1);
         game.deplete(id);
         game.destroy(id);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Look at "+game.getOpponentName(controller)+"'s hand and choose an spell from it. \n" +
             "They discard it.",
             (x) -> {

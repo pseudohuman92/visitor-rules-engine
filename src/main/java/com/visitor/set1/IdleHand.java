@@ -34,7 +34,7 @@ public class IdleHand extends Item {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Draw top item of " + game.getOpponentName(controller) + "'s deck",
             (x) -> {
                 Card c = game.getPlayer(game.getOpponentName(controller))

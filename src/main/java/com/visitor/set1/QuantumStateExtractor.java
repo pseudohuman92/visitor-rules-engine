@@ -40,7 +40,7 @@ public class QuantumStateExtractor extends Item{
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 1);
-        game.addToStack(new Activation(controller, 
+        game.addToStack(new Activation(this, 
                 "Look at the top two cards of your deck. "
                 + "Draw one, transform other into junk and shuffle into the deck.",
                 (x) -> { 

@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 import TextField from "@material-ui/core/TextField";
 import Center from "react-center";
 import { connect } from "react-redux";
@@ -90,14 +90,11 @@ class DeckBuilder extends React.Component {
     return (collection && initialized) ? (
       <Grid container spacing={16} style={{ maxHeight: "90vh" }}>
         <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          <Button type="submit" variant="contained" onClick={this.props.back}>
-            Back
-          </Button>
+          
+        <Button onClick={this.props.back} text="Back"/>
         </Grid>
         <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          <Button variant="contained" onClick={this.saveDeck}>
-            Save
-          </Button>
+          <Button onClick={this.saveDeck} text="Save"/>
         </Grid>
         <Grid item xs={8} style={{ maxHeight: "5%" }}>
           <TextField

@@ -54,33 +54,31 @@ public class UI08 extends Item {
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasInstancesIn(controller, Junk.class, "hand", 1)){
-            choices.add(new Activation(controller, "Discard a Junk: Charge 1.",
+            choices.add(new Activation(this, "Discard a Junk: Charge 1.",
             (x1) -> {
                 target = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false).get(0);
                 game.discard(controller, target);
-                game.addToStack(new Activation(controller, "Charge 1",
+                game.addToStack(new Activation(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
                             game.replaceWith(this, new AI03(this));
                         }
-                    },
-                new Arraylist<>(id)));
+                    }));
             }));
         }
         if (game.hasInstancesIn(controller, Item.class, "play", 1)){
-            choices.add(new Activation(controller, "Sacrifice an Item: Charge 1.",
+            choices.add(new Activation(this, "Sacrifice an Item: Charge 1.",
             (x1) -> {
                 target = game.selectFromZone(controller, "play", c -> {return c instanceof Item;}, 1, false).get(0);
                 game.destroy(target);
-                game.addToStack(new Activation(controller, "Charge 1",
+                game.addToStack(new Activation(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
                             game.replaceWith(this, new AI03(this));
                         }
-                    },
-                new Arraylist<>(id)));
+                    }));
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);

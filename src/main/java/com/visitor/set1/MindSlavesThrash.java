@@ -33,7 +33,7 @@ public class MindSlavesThrash extends Item {
     public void activate(Game game) {
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.deplete(id);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "deal 2 damage.",
             (x) -> {
                 game.dealDamage(id, target, 2);

@@ -37,7 +37,7 @@ public class RI02 extends Item {
     public void activate(Game game) {
         game.deplete(id);
         target = game.selectFromZone(controller, "both play", c->{return (c instanceof Item && !c.id.equals(id));}, 1, false).get(0);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Return ~ and target item to controller's hand.",
             (x) -> {
                 if(game.isIn(controller, target, "both play")){
@@ -46,7 +46,7 @@ public class RI02 extends Item {
                 if(game.isIn(controller, id, "both play")){
                     returnToHand(game);
                 }
-            }, new Arraylist<>(target).putIn(id))
+            }, new Arraylist<>(target))
         );
     }
 }

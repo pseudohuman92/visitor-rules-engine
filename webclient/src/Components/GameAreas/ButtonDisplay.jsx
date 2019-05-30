@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 import Textfit from "react-textfit";
 import { connect } from "react-redux";
 
@@ -73,30 +73,30 @@ class ButtonDisplay extends Component {
     const turPlayer = turnPlayer === playerUserId ? playerName : opponentName;
 
     const activeDisplay = (
-      <Grid container spacing={0} style={{ height: "100%" }}>
-        <Grid item xs={12} style={{ height: "33%" }}>
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
           <Textfit
             mode="single"
             forceSingleModeWidth={false}
-            style={{ margin: "5%", height: "100%" }}
+            style={{ margin: "5%" }}
           >
             Phase: {gamePhaseStr}
           </Textfit>
         </Grid>
-        <Grid item xs={12} style={{ height: "33%" }}>
+        <Grid item xs={12}>
           <Textfit
             mode="single"
             forceSingleModeWidth={false}
-            style={{ margin: "5%", height: "100%" }}
+            style={{ margin: "5%" }}
           >
             Turn: {turPlayer}
           </Textfit>
         </Grid>
-        <Grid item xs={12} style={{ height: "33%" }}>
+        <Grid item xs={12}>
           <Textfit
             mode="single"
             forceSingleModeWidth={false}
-            style={{ margin: "5%", height: "100%" }}
+            style={{ margin: "5%" }}
           >
             Active: {actPlayer}
           </Textfit>
@@ -110,64 +110,36 @@ class ButtonDisplay extends Component {
       gamePhase === proto.Phase.MULLIGAN
     ) {
       buttonMenu = (
-        <Grid container spacing={0} style={{ height: "100%" }}>
-          <Grid item xs={12} style={{ height: "50%" }}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={this.redraw}
-              disabled={!amIActive}
-              style={{ maxHeight: "100%", maxWidth: "100%" }}
-            >
-              Redraw
-            </Button>
+        <Grid container spacing={16}>
+          <Grid item xs={6}>
+            <Button onClick={this.keep} disabled={!amIActive} text="Keep" />
           </Grid>
-          <Grid item xs={12} style={{ height: "50%" }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={this.keep}
-              disabled={!amIActive}
-              style={{ maxHeight: "100%", maxWidth: "100%" }}
-            >
-              Keep
-            </Button>
+          <Grid item xs={6}>
+            <Button onClick={this.redraw} disabled={!amIActive} text="Redraw" />
           </Grid>
         </Grid>
       );
     } else if (IsSelectCardPhase(phase)) {
       buttonMenu = (
-        <Button
-          color="primary"
-          variant="contained"
-          disabled={!upTo}
-          onClick={this.selectDone}
-          style={{ maxHeight: "100%", maxWidth: "100%" }}
-        >
-          Done
-        </Button>
+        <Button disabled={!upTo} onClick={this.selectDone} text="Done" />
       );
     } else {
       buttonMenu = (
         <Button
-          color="primary"
-          variant="contained"
           disabled={!amIActive || autoPass}
           onClick={this.pass}
-          style={{ maxHeight: "100%", maxWidth: "100%" }}
-        >
-          Pass
-        </Button>
+          text="Pass"
+        />
       );
     }
 
     return (
       <Paper className="message-display">
-        <Grid container spacing={0} style={{ height: "100%", color: "black" }}>
-          <Grid item xs={12} style={{ height: "60%" }}>
+        <Grid container spacing={0} style={{ color: "black" }}>
+          <Grid item xs={12}>
             {activeDisplay}
           </Grid>
-          <Grid item xs={12} style={{ height: "40%" }}>
+          <Grid item xs={12}>
             {buttonMenu}
           </Grid>
         </Grid>

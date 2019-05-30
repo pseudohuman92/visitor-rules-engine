@@ -9,7 +9,6 @@ package com.visitor.set1;
 import com.visitor.card.types.Activation;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.set1.Meltdown;
 import com.visitor.helpers.Hashmap;
@@ -35,10 +34,10 @@ public class SelfdestructNode extends Item {
     @Override
     public void activate(Game game) {
         game.discard(controller, 2);
-        game.addToStack(new Activation(controller, "Transform ~ into AI01.",
+        game.addToStack(new Activation(this, "Transform ~ into AI01.",
             (x) -> { 
                 if(game.isIn(controller, id, "play")) 
                     game.replaceWith(this, new Meltdown(this));
-        }, new Arraylist<>(id)));
+        }));
     }
 }

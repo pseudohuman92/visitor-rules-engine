@@ -43,11 +43,11 @@ public class NaniteDeconstructor extends Item {
         game.shuffleIntoDeck(controller, junks);
         game.deplete(id);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Deal 3 damage",
             (y) -> {
                 game.dealDamage(id, target, 3);
-            }, new Arraylist<>(target).putIn(id))
+            }, new Arraylist<>(target))
         );
     }
 }

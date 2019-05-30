@@ -35,7 +35,7 @@ public class SynapticCapacitor extends Item{
         game.discard(controller, 1);
         UUID target = game.selectFromZone(controller, "scrapyard", c->{return true;}, 1, false).get(0);
         game.purge(controller, target);
-        game.addToStack(new Activation(controller, controller + " gains 1 energy",
+        game.addToStack(new Activation(this, controller + " gains 1 energy",
                 (x) -> { game.addEnergy(controller, 1); }));
     }
 }

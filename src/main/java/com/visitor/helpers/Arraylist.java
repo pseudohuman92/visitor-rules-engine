@@ -32,6 +32,11 @@ public class Arraylist<T> extends ArrayList<T> {
         return this;
     }
     
+    public Arraylist<T> putAllIn(Arraylist<T> values){
+        addAll(values);
+        return this;
+    }
+    
     public Arraylist<T> putIn(int index, T value){
         add(index, value);
         return this;

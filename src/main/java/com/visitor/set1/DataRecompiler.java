@@ -39,7 +39,7 @@ public class DataRecompiler extends Item{
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 1);
-        game.addToStack(new Activation(controller, "Look at the top 2 cards of your library. "
+        game.addToStack(new Activation(this, "Look at the top 2 cards of your library. "
                 + "You may discard any number of them. Put the rest in the same order.",
                 (x) -> { 
                     Player p = game.getPlayer(controller);

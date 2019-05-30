@@ -17,6 +17,10 @@ export default class Fonts extends Component {
           font: 'Quicksand',
           weights: [400, 700],
         },
+        {
+          font: 'Cinzel',
+          weights: [400, 700, 900],
+        },
       ]}
     />
             </div>

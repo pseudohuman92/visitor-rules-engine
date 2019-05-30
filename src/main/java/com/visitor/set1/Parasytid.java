@@ -36,7 +36,7 @@ public class Parasytid extends Item {
         game.spendEnergy(controller, 3);
         Arraylist<UUID> selected = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false);
         game.destroy(id);
-        game.addToStack(new Activation (controller,
+        game.addToStack(new Activation(this,
             "Possess target item",
             (x) -> {
                 if (game.isIn(controller, selected.get(0), "both play"))

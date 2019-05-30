@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 import Center from "react-center";
 import { connect } from "react-redux";
 
@@ -21,7 +21,7 @@ class Decks extends React.Component {
       selectedDeckId: "",
       decks: []
     };
-    this.back = () => this.setState({value:0});
+    this.back = () => this.setState({ value: 0 });
   }
 
   componentWillMount() {
@@ -38,17 +38,22 @@ class Decks extends React.Component {
   };
 
   loadDeck = deckId => {
-      this.setState({ value: 1, loadedDeck: deckId });
+    this.setState({ value: 1, loadedDeck: deckId });
   };
 
   addDeck = deck => {
-    this.setState((state, props) => ({decks: state.decks.concat([deck]) }));
+    this.setState((state, props) => ({ decks: state.decks.concat([deck]) }));
   };
 
   deleteDeck = () => {
-      this.props.firebase.deleteDeck(this.props.userId, this.state.selectedDeckId);
-      this.setState((state, props) => ({ selectedDeckId: "",
-       decks: state.decks.filter(item => item.id !== this.state.selectedDeckId) }));
+    this.props.firebase.deleteDeck(
+      this.props.userId,
+      this.state.selectedDeckId
+    );
+    this.setState((state, props) => ({
+      selectedDeckId: "",
+      decks: state.decks.filter(item => item.id !== this.state.selectedDeckId)
+    }));
   };
 
   createDeck = () => {
@@ -62,60 +67,48 @@ class Decks extends React.Component {
       <div>
         {value === 0 && (
           <div>
-          <Button
-          type="submit"
-          variant="contained"
-          onClick={this.props.back}
-        >
-          Back
-        </Button>
-          <Grid container spacing={8}>
-            {decks.map((deck, i) => (
-              <Grid
-                item
-                key={i}
-                xs={1}
-                onClick={delayClick(() => this.selectDeck(deck.id), () => this.setState({ value: 1, loadedDeck: deck.id }))}
-              >
-                <Center>
-                  <img
-                    src={process.env.PUBLIC_URL + "/img/Logo.png"}
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      opacity: deck.id === selectedDeckId ? 0.5 : 1
-                    }}
-                    alt=""
+            <Button onClick={this.props.back} text="Back" />
+            <Grid container spacing={8}>
+              {decks.map((deck, i) => (
+                <Grid
+                  item
+                  key={i}
+                  xs={1}
+                  onClick={delayClick(
+                    () => this.selectDeck(deck.id),
+                    () => this.setState({ value: 1, loadedDeck: deck.id })
+                  )}
+                >
+                  <Center>
+                    <img
+                      src={process.env.PUBLIC_URL + "/img/Logo.png"}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        opacity: deck.id === selectedDeckId ? 0.5 : 1
+                      }}
+                      alt=""
+                    />
+                  </Center>
+                  <Center>{deck.name}</Center>
+                </Grid>
+              ))}
+              <Grid container item xs={12} spacing={8}>
+                <Grid item xs>
+                  <Button onClick={this.createDeck} text="Create" />
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    disabled={selectedDeckId === ""}
+                    onClick={this.deleteDeck}
+                    text="Delete"
                   />
-                </Center>
-                <Center>{deck.name}</Center>
-              </Grid>
-            ))}
-            <Grid container item xs={12} spacing={8}>
-              <Grid item xs>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  onClick={this.createDeck}
-                >
-                  Create
-                </Button>
-              </Grid>
-              <Grid item xs>
-                <Button
-                  disabled={selectedDeckId === ""}
-                  type="submit"
-                  variant="contained"
-                  onClick={this.deleteDeck}
-                >
-                  Delete
-                </Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
           </div>
         )}
-        {value === 1 && <DeckBuilder back={this.back} deckId={loadedDeck}/>}
+        {value === 1 && <DeckBuilder back={this.back} deckId={loadedDeck} />}
       </div>
     );
   }

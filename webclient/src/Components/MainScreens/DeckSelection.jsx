@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Button from "../Primitives/Button";
 import Center from "react-center";
 import { connect } from "react-redux";
 
@@ -85,9 +85,8 @@ class DeckSelection extends React.Component {
       <div>
         {value === 0 && (
           <div>
-            <Button type="submit" variant="contained" onClick={this.props.back}>
-              Back
-            </Button>
+
+            <Button onClick={this.props.back} text="Back"/>
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
                 <Grid
