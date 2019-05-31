@@ -11,6 +11,7 @@ import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 /**
@@ -33,7 +34,7 @@ public class CrossroadTrade extends Spell{
     
     @Override
     public void play(Game game) {
-        target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
+        target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
         game.spendEnergy(controller, cost);
         game.destroy(target);
         game.addToStack(this);

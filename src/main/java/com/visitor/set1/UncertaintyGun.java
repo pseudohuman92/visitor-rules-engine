@@ -5,7 +5,7 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
@@ -38,7 +38,7 @@ public class UncertaintyGun extends Item {
     public void activate(Game game) {
         x = game.selectX(controller, game.getPlayer(controller).energy);
         game.destroy(id);
-        game.addToStack(new Activation(this, 
+        game.addToStack(new Ability(this, 
             "  Look at opponent's deck. \n" +
             "  Choose a card that costs "+x+" or less from it. \n" +
             "  Transform chosen card into junk.",

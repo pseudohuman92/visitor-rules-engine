@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Counter.CHARGE;
@@ -47,7 +47,7 @@ public class MetaphasicShieldMK5 extends Item {
         counters.removeFrom(CHARGE);
         game.destroy(id);
         
-        game.addToStack(new Activation(this, controller+" gains shield " + x,
+        game.addToStack(new Ability(this, controller+" gains shield " + x,
             (y) -> { 
                 game.addShield(controller, x);
         }));

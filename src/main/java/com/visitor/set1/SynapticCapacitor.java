@@ -6,11 +6,12 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 
@@ -33,9 +34,9 @@ public class SynapticCapacitor extends Item{
     @Override
     public void activate(Game game) {
         game.discard(controller, 1);
-        UUID target = game.selectFromZone(controller, "scrapyard", c->{return true;}, 1, false).get(0);
+        UUID target = game.selectFromZone(controller, "scrapyard", Predicates::any, 1, false).get(0);
         game.purge(controller, target);
-        game.addToStack(new Activation(this, controller + " gains 1 energy",
+        game.addToStack(new Ability(this, controller + " gains 1 energy",
                 (x) -> { game.addEnergy(controller, 1); }));
     }
 }

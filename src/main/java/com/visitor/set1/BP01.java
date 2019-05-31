@@ -6,7 +6,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.properties.Triggering;
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Passive;
 import com.visitor.game.Event;
 import static com.visitor.game.Event.POSSESSION;
@@ -45,7 +45,7 @@ public class BP01 extends Passive implements Triggering {
                 && ((String)event.eventData.get(1)).equals(controller)){
             String oldOwner = ((String)event.eventData.get(0));
             
-            game.addToStack(new Activation(this,
+            game.addToStack(new Ability(this,
             "Deal 2 damage to possessed card's controller",
             (x) -> {
                 game.dealDamage(id, game.getUserId(oldOwner), 2);

@@ -7,7 +7,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Spell;
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
@@ -28,12 +28,12 @@ public class Neutralize extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return !(c instanceof Activation);}, 1, "stack");
+        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return !(c instanceof Ability);}, 1, "stack");
     }
     
     @Override
     public void play (Game game){
-        targets = game.selectFromZone(controller, "stack", c->{return !(c instanceof Activation);}, 1, false);
+        targets = game.selectFromZone(controller, "stack", c->{return !(c instanceof Ability);}, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);

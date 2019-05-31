@@ -9,6 +9,7 @@ import com.visitor.helpers.Arraylist;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,9 +55,9 @@ public class Deck extends Arraylist<Card> implements Serializable {
         return cards;
     }
     
-    public Card extractInstanceFromTop(Class c){
+    public Card extractTopmost(Predicate<Card> pred){
         for (int i = 0; i < size(); i++){
-            if(c.isInstance(get(i))){
+            if(pred.test(get(i))){
                 return remove(i);
             }
         }

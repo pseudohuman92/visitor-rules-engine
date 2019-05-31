@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -34,7 +34,7 @@ public class KineticReflectors extends Item {
     public void activate(Game game) {
         game.spendEnergy(controller, 2);
         game.deplete(id);
-        game.addToStack(new Activation(this, controller+" gains reflect 2",
+        game.addToStack(new Ability(this, controller+" gains reflect 2",
         (x) -> {
             game.addReflect(controller, 2);
         }));

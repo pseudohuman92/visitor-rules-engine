@@ -23,7 +23,7 @@ public abstract class Ally extends Card
         implements Activatable, Triggering, Damageable {
     
     public int favor;
-    public Activation favorAbility;
+    public Ability favorAbility;
     public int loyalty;
     public int health;
 
@@ -78,8 +78,7 @@ public abstract class Ally extends Card
     
     @Override
     public void destroy(Game game) {
-        game.extractCard(id);
-        game.putTo(controller, this, "scrapyard");
+        super.destroy(game);
         game.removeTriggeringCard(this);
     }
     
@@ -100,6 +99,17 @@ public abstract class Ally extends Card
                 .setHealth(health)
                 .setFavor(favor)
                 .setLoyalty(loyalty);
+    }
+    
+    @Override
+    public void copyPropertiesFrom(Card c){
+        super.copyPropertiesFrom(c);
+        if (c instanceof Ally){
+            health = ((Ally) c).health;
+            favor = ((Ally) c).favor;
+            loyalty = ((Ally) c).loyalty;
+            
+        }
     }
     
 }

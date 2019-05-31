@@ -12,6 +12,7 @@ import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 /**
@@ -37,7 +38,7 @@ public class WeakLink extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "play", c->{return c instanceof Item;}, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "play", Predicates::isItem, 1, false);
         game.possessTo(controller, selected.get(0), "play");
     }
 }

@@ -9,6 +9,7 @@ import com.visitor.card.types.Spell;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class Extraction extends Spell {
     
     @Override
     public void play (Game game){
-        target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
+        target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
         game.getCard(target).returnToHand(game);
         super.play(game);
     }  

@@ -6,12 +6,13 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import java.util.UUID;
 
@@ -36,10 +37,10 @@ public class NSink extends Item {
     @Override
     public void activate(Game game) {
         int x = game.selectX(controller, game.getPlayer(controller).energy/2);
-        UUID selection = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false).get(0);
+        UUID selection = game.selectFromZone(controller, "both play", Predicates::isItem, 1, false).get(0);
         game.spendEnergy(controller, 2 * x);
         game.deplete(id);
-        game.addToStack(new Activation(this, "Charge " + x,
+        game.addToStack(new Ability(this, "Charge " + x,
         (y) -> {
             if(game.isIn(controller, selection, "both play")){
                 game.getCard(selection).addCounters(CHARGE, x);

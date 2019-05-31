@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
@@ -17,6 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.set1.AI03;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 
@@ -54,11 +55,11 @@ public class UI08 extends Item {
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasInstancesIn(controller, Junk.class, "hand", 1)){
-            choices.add(new Activation(this, "Discard a Junk: Charge 1.",
+            choices.add(new Ability(this, "Discard a Junk: Charge 1.",
             (x1) -> {
-                target = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false).get(0);
+                target = game.selectFromZone(controller, "hand", Predicates::isJunk, 1, false).get(0);
                 game.discard(controller, target);
-                game.addToStack(new Activation(this, "Charge 1",
+                game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
@@ -68,11 +69,11 @@ public class UI08 extends Item {
             }));
         }
         if (game.hasInstancesIn(controller, Item.class, "play", 1)){
-            choices.add(new Activation(this, "Sacrifice an Item: Charge 1.",
+            choices.add(new Ability(this, "Sacrifice an Item: Charge 1.",
             (x1) -> {
-                target = game.selectFromZone(controller, "play", c -> {return c instanceof Item;}, 1, false).get(0);
+                target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
                 game.destroy(target);
-                game.addToStack(new Activation(this, "Charge 1",
+                game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
@@ -81,7 +82,7 @@ public class UI08 extends Item {
                     }));
             }));
         }
-        Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
+        Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
         UUIDHelper.getInList(choices, selection).get(0).resolve(game);
     }
 }

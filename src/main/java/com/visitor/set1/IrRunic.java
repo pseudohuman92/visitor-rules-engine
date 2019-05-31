@@ -10,6 +10,7 @@ import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 /**
@@ -29,7 +30,7 @@ public class IrRunic extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "hand", c->{return c instanceof Spell;}, 1, 
+        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "hand", Predicates::isSpell, 1, 
                     !game.hasInstancesIn(game.getOpponentName(controller), Spell.class, "hand", 1));
         if(!selected.isEmpty()){
             game.discard(game.getOpponentName(controller), selected.get(0));

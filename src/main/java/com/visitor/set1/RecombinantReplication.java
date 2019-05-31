@@ -13,6 +13,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
 import java.lang.reflect.InvocationTargetException;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,17 +33,17 @@ public class RecombinantReplication extends Spell {
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) 
-                && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 5, "scrapyard")
-                && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 1, "void")
-                && game.hasValidTargetsIn(controller, c->{return c instanceof Item;}, 1, "play");
+                && game.hasValidTargetsIn(controller, Predicates::isItem, 5, "scrapyard")
+                && game.hasValidTargetsIn(controller, Predicates::isItem, 1, "void")
+                && game.hasValidTargetsIn(controller, Predicates::isItem, 1, "play");
     }
     
     @Override
     public void play(Game game) {
-        targets = game.selectFromZone(controller, "scrapyard", c->{return c instanceof Item;}, 5, false);
-        Arraylist<UUID> sel = game.selectFromZone(controller, "void", c->{return c instanceof Item;}, 1, false);
+        targets = game.selectFromZone(controller, "scrapyard", Predicates::isItem, 5, false);
+        Arraylist<UUID> sel = game.selectFromZone(controller, "void", Predicates::isItem, 1, false);
         targets.addAll(sel);
-        Arraylist<UUID> sel2 = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false);
+        Arraylist<UUID> sel2 = game.selectFromZone(controller, "play", Predicates::isItem, 1, false);
         targets.addAll(sel2);
         game.spendEnergy(controller, cost);
         game.addToStack(this);

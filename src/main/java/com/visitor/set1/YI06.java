@@ -6,11 +6,12 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import java.util.UUID;
 
@@ -35,11 +36,11 @@ public class YI06 extends Item {
     
     @Override
     public void activate(Game game) {
-        UUID selection = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
+        UUID selection = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
         int x = game.getCard(selection).counters.getOrDefault(CHARGE, 0);
         game.destroy(selection);
         game.deplete(id);
-        game.addToStack(new Activation(this, game.getOpponentName(controller)+" purges " + x,
+        game.addToStack(new Ability(this, game.getOpponentName(controller)+" purges " + x,
         (y) -> {
             game.damagePlayer(id, game.getOpponentName(controller), x);
         }));

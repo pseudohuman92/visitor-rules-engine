@@ -6,11 +6,12 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import java.util.UUID;
 
@@ -35,12 +36,12 @@ public class RI06 extends Item {
     
     @Override
     public void activate(Game game) {
-        UUID selection = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
+        UUID selection = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
         int x = game.getCard(selection).cost;
         game.destroy(selection);
         game.deplete(id);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this,
+        game.addToStack(new Ability(this,
             "Deal "+x+" damage",
             (y) -> {
                 game.dealDamage(id, target, x);

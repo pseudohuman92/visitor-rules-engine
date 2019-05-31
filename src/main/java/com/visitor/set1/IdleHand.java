@@ -6,12 +6,13 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 
 /**
  *
@@ -34,11 +35,11 @@ public class IdleHand extends Item {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        game.addToStack(new Activation(this,
+        game.addToStack(new Ability(this,
             "Draw top item of " + game.getOpponentName(controller) + "'s deck",
             (x) -> {
                 Card c = game.getPlayer(game.getOpponentName(controller))
-                        .deck.extractInstanceFromTop(Item.class);
+                        .deck.extractTopmost(Predicates::isItem);
                 if(c != null){
                     c.controller = controller;
                     game.putTo(c.controller, c, "hand");

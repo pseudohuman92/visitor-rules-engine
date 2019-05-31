@@ -19,6 +19,9 @@ import com.visitor.helpers.Hashmap;
 import java.io.IOException;
 import static java.lang.Math.random;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
+import static com.visitor.helpers.Predicates.any;
+import static com.visitor.helpers.Predicates.isDamageable;
 import com.visitor.server.GeneralEndpoint;
 import java.util.List;
 import java.util.UUID;
@@ -365,7 +368,7 @@ public class Game {
     }
     
     public void discard(String username, int count){
-        Arraylist<Card> d = players.get(username).discard(selectFromZone(username, "hand", c -> {return true;}, count, false));
+        Arraylist<Card> d = players.get(username).discard(selectFromZone(username, "hand", Predicates::any, count, false));
         eventQueue.add(Event.discard(username, d));
     }
     
@@ -539,7 +542,7 @@ public class Game {
     }
     
     public Arraylist<UUID> selectDamageTargets(String username, int count, boolean upTo) {        
-        return selectFromZoneWithPlayers(username, "both play", c->{return c instanceof Damageable;}, p->{return true;}, count, upTo);
+        return selectFromZoneWithPlayers(username, "both play", Predicates::isDamageable, Predicates::any, count, upTo);
     }
     
     
