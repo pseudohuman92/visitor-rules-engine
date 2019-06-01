@@ -6,12 +6,13 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import com.visitor.helpers.UUIDHelper;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -42,22 +43,22 @@ public class RI05 extends Item{
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
         if (game.hasCardsIn(controller, "hand", 1)){
-            choices.add(new Activation(this, "Discard a card: Charge 1.",
+            choices.add(new Ability(this, "Discard a card: Charge 1.",
             (x1) -> {
                 game.discard(controller, 1);
-                game.addToStack(new Activation(this, "Charge 1",
+                game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);
                     }));
             }));
         }
         if (!depleted && counters.getOrDefault(CHARGE, 0) > 0){
-            choices.add(new Activation(this, "Discharge 1, Activate: Deal 2 damage",
+            choices.add(new Ability(this, "Discharge 1, Activate: Deal 2 damage",
             (x1) -> {
                 removeCounters(CHARGE, 1);
                 game.deplete(id);
                 UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-                game.addToStack(new Activation(this,
+                game.addToStack(new Ability(this,
                     "Deal 2 damage",
                     (x) -> {
                         game.dealDamage(id, target, 2);
@@ -65,7 +66,7 @@ public class RI05 extends Item{
                 );
             }));
         }
-        Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
+        Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
         UUIDHelper.getInList(choices, selection).get(0).resolve(game);
     }
 

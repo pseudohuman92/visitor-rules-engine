@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
@@ -15,6 +15,7 @@ import com.visitor.helpers.UUIDHelper;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 
@@ -39,12 +40,12 @@ public class DataRecompiler extends Item{
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 1);
-        game.addToStack(new Activation(this, "Look at the top 2 cards of your library. "
+        game.addToStack(new Ability(this, "Look at the top 2 cards of your library. "
                 + "You may discard any number of them. Put the rest in the same order.",
                 (x) -> { 
                     Player p = game.getPlayer(controller);
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
-                    Arraylist<UUID> selected = game.selectFromList(controller, cand, cx->{return true;}, 2, true);
+                    Arraylist<UUID> selected = game.selectFromList(controller, cand, Predicates::any, 2, true);
                     p.deck.putToTop(UUIDHelper.getNotInList(cand, selected));
                     p.scrapyard.addAll(UUIDHelper.getInList(cand, selected));
                 }));

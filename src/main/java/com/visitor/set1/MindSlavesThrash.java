@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
@@ -33,7 +33,7 @@ public class MindSlavesThrash extends Item {
     public void activate(Game game) {
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.deplete(id);
-        game.addToStack(new Activation(this,
+        game.addToStack(new Ability(this,
             "deal 2 damage.",
             (x) -> {
                 game.dealDamage(id, target, 2);

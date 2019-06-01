@@ -28,7 +28,7 @@ public class Junk extends Card {
 
     @Override
     public void resolve(Game game) {
-        game.putTo(controller, this, "scrapyard");
+        destroy(game);
     }
     
     @Override

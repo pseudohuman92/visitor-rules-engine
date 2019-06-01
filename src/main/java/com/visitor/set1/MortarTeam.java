@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
@@ -62,7 +62,7 @@ public class MortarTeam extends Item {
         game.destroy(id);
         int c = removeAllCounters(CHARGE);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this,
+        game.addToStack(new Ability(this,
             "Deal "+c+" damage",
             (x) -> {
                 game.dealDamage(id, target, c);

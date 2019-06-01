@@ -3,8 +3,6 @@ import { PureComponent } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import "./css/FullCard.css";
-import "../../css/Utils.css";
 import FullCard from "./FullCard";
 import SmallCard from "./SmallCard";
 

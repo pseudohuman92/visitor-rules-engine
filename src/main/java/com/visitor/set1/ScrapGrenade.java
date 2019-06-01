@@ -6,13 +6,14 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 
@@ -35,10 +36,10 @@ public class ScrapGrenade extends Item {
     
     @Override
     public void activate(Game game) {
-        Arraylist<UUID> selected = game.selectFromZone(controller, "hand", c -> {return c instanceof Junk;}, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, "hand", Predicates::isJunk, 1, false);
         game.purge(controller, selected.get(0));
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this, "Deal 3 damage",
+        game.addToStack(new Ability(this, "Deal 3 damage",
         (y) -> {
             game.dealDamage(id, target, 3);
         }, new Arraylist<>(target)));   }

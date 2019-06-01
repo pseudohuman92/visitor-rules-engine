@@ -6,7 +6,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.properties.Triggering;
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Passive;
 import com.visitor.game.Event;
 import static com.visitor.game.Event.DISCARD;
@@ -45,7 +45,7 @@ public class BP02 extends Passive implements Triggering {
                 && ((String)event.eventData.get(0)).equals(game.getOpponentName(controller))){
             
             String discardingPlayer = ((String)event.eventData.get(0));
-            game.addToStack(new Activation(this,
+            game.addToStack(new Ability(this,
             "Deal 2 damage to opponent",
             (x) -> {
                 game.dealDamage(id, game.getUserId(discardingPlayer), 2);

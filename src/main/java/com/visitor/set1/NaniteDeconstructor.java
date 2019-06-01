@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
@@ -43,7 +43,7 @@ public class NaniteDeconstructor extends Item {
         game.shuffleIntoDeck(controller, junks);
         game.deplete(id);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this,
+        game.addToStack(new Ability(this,
             "Deal 3 damage",
             (y) -> {
                 game.dealDamage(id, target, 3);

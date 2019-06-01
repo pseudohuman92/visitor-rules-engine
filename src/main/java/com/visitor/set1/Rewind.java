@@ -11,6 +11,7 @@ import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class Rewind extends Spell {
     
     @Override
     public void resolve (Game game){
-        Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", c->{return true;}, x, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", Predicates::any, x, false);
         Arraylist<Card> cards = game.extractAll(selected);
         game.shuffleIntoDeck(controller, cards);
         text = "Recover X. \n" +

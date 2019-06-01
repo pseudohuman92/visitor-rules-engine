@@ -10,6 +10,7 @@ import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 /**
@@ -31,7 +32,7 @@ public class Recycle extends Spell {
     
     @Override
     public void play(Game game) {
-        targets = game.selectFromZone(controller, "both play", c->{return c instanceof Item;}, 1, false);
+        targets = game.selectFromZone(controller, "both play", Predicates::isItem, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);

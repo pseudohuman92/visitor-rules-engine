@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
@@ -43,7 +43,7 @@ public class KillTeam extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this,
+        game.addToStack(new Ability(this,
             "Deal 2 damage",
             (x) -> {
                 game.dealDamage(id, target, 2);

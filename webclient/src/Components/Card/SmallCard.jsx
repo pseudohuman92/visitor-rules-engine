@@ -1,6 +1,5 @@
 import React from "react";
 import { PureComponent } from "react";
-import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 
 import {
@@ -11,7 +10,6 @@ import {
 } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
 import "./css/SmallCard.css";
-import "../../css/Utils.css";
 
 export default class SmallCard extends PureComponent {
   render() {

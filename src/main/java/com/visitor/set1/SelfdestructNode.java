@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
@@ -34,7 +34,7 @@ public class SelfdestructNode extends Item {
     @Override
     public void activate(Game game) {
         game.discard(controller, 2);
-        game.addToStack(new Activation(this, "Transform ~ into AI01.",
+        game.addToStack(new Ability(this, "Transform ~ into AI01.",
             (x) -> { 
                 if(game.isIn(controller, id, "play")) 
                     game.replaceWith(this, new Meltdown(this));

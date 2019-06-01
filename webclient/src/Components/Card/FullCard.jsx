@@ -1,6 +1,5 @@
 import React from "react";
 import { PureComponent } from "react";
-import Textfit from "react-textfit";
 import Rectangle from "react-rectangle";
 import VisibilitySensor from "react-visibility-sensor";
 
@@ -12,7 +11,6 @@ import {
 } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
 import "./css/FullCard.css";
-import "../../css/Utils.css";
 
 export default class FullCard extends PureComponent {
   state = { showDialog: false };
@@ -31,7 +29,7 @@ export default class FullCard extends PureComponent {
       loyalty,
       play
     } = this.props;
-
+    const backColor = borderColor ? borderColor : "black";
     return (
       <div>
         <Fonts />
@@ -39,7 +37,7 @@ export default class FullCard extends PureComponent {
           aspectRatio={[63, 88]}
           style={{
             opacity: opacity,
-            backgroundColor: borderColor,
+            backgroundColor: backColor,
             overflow: "hidden"
           }}
         >

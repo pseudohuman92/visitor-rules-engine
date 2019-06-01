@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
@@ -14,6 +14,7 @@ import com.visitor.helpers.UUIDHelper;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 
@@ -37,18 +38,18 @@ public class MetaphasicShieldCoil extends Item {
     @Override
     public void activate(Game game) {
         game.spendEnergy(controller, 2);
-        game.addToStack(new Activation(this, "Create and draw YI01 or YI02",
+        game.addToStack(new Ability(this, "Create and draw YI01 or YI02",
         (x) -> {
             Arraylist<Card> choices = new Arraylist<>();
-            choices.add(new Activation(this, "Create and draw YI01",
+            choices.add(new Ability(this, "Create and draw YI01",
                 (x1) -> {
                     game.putTo(controller, new MetaphasicShieldMK5(controller), "hand");
             }));
-            choices.add(new Activation(this, "Create and draw YI02",
+            choices.add(new Ability(this, "Create and draw YI02",
                 (x1) -> {
                     game.putTo(controller, new MetaphasicShieldMK7(controller), "hand");
             }));
-            Arraylist<UUID> selection = game.selectFromList(controller, choices, c->{return true;}, 1, false);
+            Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
             UUIDHelper.getInList(choices, selection).get(0).resolve(game);
         }));
     }

@@ -24,7 +24,7 @@ public abstract class Tome extends Card {
     
     @Override
     public void resolve(Game game){
-        game.putTo(controller, this, "scrapyard");
+        destroy(game);
     }
     
     @Override

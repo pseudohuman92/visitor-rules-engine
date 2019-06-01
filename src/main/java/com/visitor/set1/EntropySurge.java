@@ -6,11 +6,12 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 /**
@@ -33,9 +34,9 @@ public class EntropySurge extends Item {
 
     @Override
     public void activate(Game game) {
-        target = game.selectFromZone(controller, "play", c->{return c instanceof Item;}, 1, false).get(0);
+        target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
         game.destroy(target);
-        game.addToStack(new Activation(this, 
+        game.addToStack(new Ability(this, 
             controller + " gains " + (game.ownedByOpponent(target)?2:1) + " energy",
             (x) -> { game.addEnergy(controller, (game.ownedByOpponent(target)?2:1)); }));
     }

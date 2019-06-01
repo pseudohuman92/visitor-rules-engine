@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
@@ -37,7 +37,7 @@ public class Meltdown extends Item {
     public void activate(Game game) {
         game.destroy(id);
         target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this, "Deal 5 damage",
+        game.addToStack(new Ability(this, "Deal 5 damage",
         (y) -> {
             game.dealDamage(id, target, 5);
         }, new Arraylist<>(target)));

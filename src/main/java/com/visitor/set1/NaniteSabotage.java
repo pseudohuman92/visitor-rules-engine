@@ -11,6 +11,7 @@ import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 /**
@@ -32,7 +33,7 @@ public class NaniteSabotage extends Spell {
     public void resolveEffect (Game game){
         Arraylist<UUID> s = game.selectFromList(controller, 
                 game.getZone(game.getOpponentName(controller), "hand"), 
-                c->{return c instanceof Item;}, 1, true);
+                Predicates::isItem, 1, true);
         if (!s.isEmpty()){
             game.transformToJunk(s.get(0));
         }

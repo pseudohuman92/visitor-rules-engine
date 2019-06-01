@@ -6,7 +6,7 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Activation;
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import static com.visitor.protocol.Types.Counter.CHARGE;
@@ -39,7 +39,7 @@ public class AI03 extends Item {
         game.deplete(id);
         removeCounters(CHARGE, 1);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
-        game.addToStack(new Activation(this, 
+        game.addToStack(new Ability(this, 
                 "Deal 2 damage\n" +
                 "If ~ has no counters on it, transform ~ to UI08",
             (x) -> {
