@@ -11,6 +11,7 @@ import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
 import static com.visitor.game.Event.TURN_START;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public abstract class Ally extends Card
     
     @Override
     public void resolve(Game game) {
-        game.putTo(controller, this, "play");
+        game.putTo(controller, this, PLAY);
         game.registerTriggeringCard(controller, this);
     }
     
@@ -53,7 +54,7 @@ public abstract class Ally extends Card
     @Override
     public void checkEvent(Game game, Event event){
         System.out.println("Ally is checking event");
-        if (game.isTurnPlayer(controller) && event.label.equals(TURN_START) && favor > 0){
+        if (game.isTurnPlayer(controller) && event.type.equals(TURN_START) && favor > 0){
             System.out.println("Passed the check");
             favor--;
             if (favor == 0){

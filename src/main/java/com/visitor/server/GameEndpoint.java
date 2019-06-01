@@ -144,8 +144,8 @@ public class GameEndpoint {
             case PASS:
                 gameServer.pass(gameID, username);
                 break;
-            case MULLIGAN:
-                gameServer.mulligan(gameID, username);
+            case REDRAW:
+                gameServer.redraw(gameID, username);
                 break;
             case KEEP:
                 gameServer.keep(gameID, username);

@@ -13,7 +13,7 @@ import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.UUIDHelper;
+import static com.visitor.helpers.UUIDHelper.getInList;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import java.util.UUID;
 
@@ -36,7 +36,7 @@ public class SaulgolathEnforcer extends Ally {
         Arraylist<Card> choices = new Arraylist<>();
         choices.add(new Ability(this, "Pay 2 life, Activate: +2 Loyalty",
         (x1) -> {
-            depleted = true;
+            deplete();
             game.payLife(controller, 2);
             game.addToStack(new Ability(this, "+2 Loyalty",
             (x2) -> {
@@ -49,7 +49,7 @@ public class SaulgolathEnforcer extends Ally {
                     "  Favor 1 - Deal 2X damage to opponent.",
             (x1) -> {
                 int x = game.selectX(controller, loyalty);
-                depleted = true;
+                deplete();
                 loyalty -=x;
                 favor = 1;
                 favorAbility =  new Ability(this, "Deal " + 2*x +" damage to opponent.",
@@ -60,7 +60,7 @@ public class SaulgolathEnforcer extends Ally {
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
-        UUIDHelper.getInList(choices, selection).get(0).resolve(game);
+        getInList(choices, selection).get(0).resolve(game);
     }
     
 }

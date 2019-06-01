@@ -6,13 +6,14 @@
 package com.visitor.set1;
 
 
-import com.visitor.card.types.Spell;
 import com.visitor.card.types.Item;
+import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -33,12 +34,12 @@ public class WeakLink extends Spell {
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
-            game.hasInstancesIn(game.getOpponentName(controller), Item.class, "play", 1);
+            game.hasInstancesIn(game.getOpponentName(controller), Item.class, PLAY, 1);
     }
     
     @Override
     public void resolveEffect (Game game){
-        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), "play", Predicates::isItem, 1, false);
-        game.possessTo(controller, selected.get(0), "play");
+        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), PLAY, Predicates::isItem, 1, false);
+        game.possessTo(controller, selected.get(0), PLAY);
     }
 }

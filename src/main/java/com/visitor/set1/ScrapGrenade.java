@@ -10,10 +10,11 @@ import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 
@@ -31,12 +32,12 @@ public class ScrapGrenade extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Junk.class, "hand", 1);
+        return game.hasInstancesIn(controller, Junk.class, HAND, 1);
     }
     
     @Override
     public void activate(Game game) {
-        Arraylist<UUID> selected = game.selectFromZone(controller, "hand", Predicates::isJunk, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, HAND, Predicates::isJunk, 1, false);
         game.purge(controller, selected.get(0));
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Ability(this, "Deal 3 damage",

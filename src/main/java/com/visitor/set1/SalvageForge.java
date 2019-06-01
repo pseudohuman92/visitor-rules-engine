@@ -9,9 +9,10 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.set1.ScrapGrenade;
+import static com.visitor.game.Game.Zone.HAND;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 
 /**
@@ -28,7 +29,7 @@ public class SalvageForge extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasCardsIn(controller, "hand", 1)
+        return game.hasCardsIn(controller, HAND, 1)
                 && game.hasEnergy(controller, 1);
     }
     
@@ -38,8 +39,9 @@ public class SalvageForge extends Item {
         game.spendEnergy(controller, 1);
         game.addToStack(new Ability(this, "Transform ~ into AI02.",
             (x) -> { 
-                if(game.isIn(controller, id, "play"))
+                if(game.isIn(controller, id, PLAY)) {
                     game.replaceWith(this, new ScrapGrenade(this));
+                }
         }));
     }
 }

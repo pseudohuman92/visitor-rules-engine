@@ -10,9 +10,10 @@ import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 
 /**
  *
@@ -42,7 +43,7 @@ public class IdleHand extends Item {
                         .deck.extractTopmost(Predicates::isItem);
                 if(c != null){
                     c.controller = controller;
-                    game.putTo(c.controller, c, "hand");
+                    game.putTo(c.controller, c, HAND);
                 }
             }));
     }

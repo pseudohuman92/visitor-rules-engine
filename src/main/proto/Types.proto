@@ -7,7 +7,7 @@ option java_package = "com.visitor.protocol";
  */
 enum Phase {
     NOPHASE = 0;
-    MULLIGAN = 1;
+    REDRAW = 1;
     BEGIN = 2;
     MAIN = 3;
     MAIN_RESOLVING = 4;

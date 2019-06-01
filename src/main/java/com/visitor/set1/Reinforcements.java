@@ -7,6 +7,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -29,12 +30,12 @@ public class Reinforcements extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasCardsIn(controller, "hand", 2);
+        return super.canPlay(game) && game.hasCardsIn(controller, HAND, 2);
     }
     
     @Override
     public void play (Game game){
-        target = game.selectFromZone(controller, "hand", c->{return !c.id.equals(id);}, 1, false).get(0);
+        target = game.selectFromZone(controller, HAND, c->{return !c.id.equals(id);}, 1, false).get(0);
         game.shuffleIntoDeck(controller, new Arraylist<>(game.extractCard(target)));
         super.play(game);
     }  

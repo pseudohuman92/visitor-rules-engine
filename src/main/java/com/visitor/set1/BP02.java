@@ -41,10 +41,10 @@ public class BP02 extends Passive implements Triggering {
 
     @Override
     public void checkEvent(Game game, Event event) {
-        if (event.label.equals(DISCARD) 
-                && ((String)event.eventData.get(0)).equals(game.getOpponentName(controller))){
+        if (event.type.equals(DISCARD) 
+                && ((String)event.data.get(0)).equals(game.getOpponentName(controller))){
             
-            String discardingPlayer = ((String)event.eventData.get(0));
+            String discardingPlayer = ((String)event.data.get(0));
             game.addToStack(new Ability(this,
             "Deal 2 damage to opponent",
             (x) -> {

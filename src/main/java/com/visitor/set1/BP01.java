@@ -41,9 +41,9 @@ public class BP01 extends Passive implements Triggering {
     
     @Override
     public void checkEvent(Game game, Event event) {
-        if (event.label.equals(POSSESSION) 
-                && ((String)event.eventData.get(1)).equals(controller)){
-            String oldOwner = ((String)event.eventData.get(0));
+        if (event.type.equals(POSSESSION) 
+                && ((String)event.data.get(1)).equals(controller)){
+            String oldOwner = ((String)event.data.get(0));
             
             game.addToStack(new Ability(this,
             "Deal 2 damage to possessed card's controller",

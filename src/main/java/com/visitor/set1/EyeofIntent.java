@@ -6,14 +6,14 @@
 
 package com.visitor.set1;
 
-import com.visitor.card.types.Spell;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -45,7 +45,7 @@ public class EyeofIntent extends Item {
             (x) -> {
                 Arraylist<UUID> selected = 
                         game.selectFromList(controller, 
-                                game.getZone(game.getOpponentName(controller), "hand"), 
+                                game.getZone(game.getOpponentName(controller), HAND), 
                         Predicates::isSpell, 1, true);
                 if(!selected.isEmpty()){
                     game.discard(game.getOpponentName(controller), selected.get(0));

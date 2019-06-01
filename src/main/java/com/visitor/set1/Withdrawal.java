@@ -7,6 +7,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.STACK;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -27,12 +28,12 @@ public class Withdrawal extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasInstancesIn(controller, Spell.class, "stack", 1);
+        return super.canPlay(game) && game.hasInstancesIn(controller, Spell.class, STACK, 1);
     }
     
     @Override
     public void play (Game game){
-        targets = game.selectFromZone(controller, "stack", Predicates::isSpell, 1, false);
+        targets = game.selectFromZone(controller, STACK, Predicates::isSpell, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);

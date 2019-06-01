@@ -7,16 +7,12 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ally;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
 import com.visitor.card.types.Spell;
-import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import static com.visitor.protocol.Types.Knowledge.RED;
-import java.util.UUID;
 
 /**
  *
@@ -48,7 +44,7 @@ public class ProactiveAssassination extends Spell{
     public void resolveEffect (Game game){
         Card ca = game.getPlayer(game.getOpponentName(controller)).deck.extractTopmost(c->{return c instanceof Ally && c.cost <= x;});
         if (ca != null){
-            game.putTo(game.getOpponentName(controller), ca, "scrapyard");
+            game.putTo(game.getOpponentName(controller), ca, SCRAPYARD);
         }
         cost = -1;
         x = 0; 

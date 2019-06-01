@@ -5,12 +5,14 @@
  */
 package com.visitor.set1;
 
+import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Spell;
-import com.visitor.card.types.Ability;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
+import static com.visitor.game.Game.Zone.STACK;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import java.util.UUID;
 
 /**
@@ -28,12 +30,12 @@ public class Neutralize extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return !(c instanceof Ability);}, 1, "stack");
+        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return !(c instanceof Ability);}, 1, STACK);
     }
     
     @Override
     public void play (Game game){
-        targets = game.selectFromZone(controller, "stack", c->{return !(c instanceof Ability);}, 1, false);
+        targets = game.selectFromZone(controller, STACK, c->{return !(c instanceof Ability);}, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -42,6 +44,6 @@ public class Neutralize extends Spell {
     @Override
     public void resolveEffect (Game game){
         Card c = game.extractCard(target);
-        game.putTo(c.controller, c, "scrapyard");
+        game.putTo(c.controller, c, SCRAPYARD);
     }    
 }

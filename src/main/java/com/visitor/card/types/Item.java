@@ -4,6 +4,7 @@ package com.visitor.card.types;
 import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Damageable;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
@@ -32,7 +33,7 @@ public abstract class Item extends Card implements Activatable, Damageable {
     @Override
     public void resolve(Game game) {
         depleted = true;
-        game.putTo(controller, this, "play");
+        game.putTo(controller, this, PLAY);
     }
     
     @Override

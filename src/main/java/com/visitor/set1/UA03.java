@@ -5,14 +5,16 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Spell;
 import com.visitor.card.types.Card;
+import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
-import com.visitor.helpers.UUIDHelper;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.UUIDHelper;
+import static com.visitor.helpers.UUIDHelper.getInList;
+import static com.visitor.helpers.UUIDHelper.getNotInList;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 /**
@@ -35,8 +37,8 @@ public class UA03 extends Spell {
         Player p = game.getPlayer(controller);
         Arraylist<Card> topCards = p.deck.extractFromTop(4);
         Arraylist<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Kit");}, 1, true);
-        Arraylist<Card> selected = UUIDHelper.getInList(topCards, s);
-        Arraylist<Card> notSelected = UUIDHelper.getNotInList(topCards, s);
+        Arraylist<Card> selected = getInList(topCards, s);
+        Arraylist<Card> notSelected = getNotInList(topCards, s);
         selected.forEach(c ->{c.resolve(game);});
         p.deck.putToBottom(notSelected);
     }

@@ -1,12 +1,13 @@
 package com.visitor.card.types;
 
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.HAND;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.*;
 import com.visitor.helpers.Hashmap;
-import java.io.Serializable;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import static java.util.UUID.randomUUID;
@@ -15,7 +16,7 @@ import static java.util.UUID.randomUUID;
  *
  * @author pseudo
  */
-public abstract class Card implements Serializable {
+public abstract class Card {
 
     public UUID id;
     public String name;
@@ -134,6 +135,9 @@ public abstract class Card implements Serializable {
         return counters.remove(name);
     }
     
+    public void deplete(){
+        depleted = true;
+    }
     
     public void ready(){
         depleted = false;
@@ -142,7 +146,7 @@ public abstract class Card implements Serializable {
     public void destroy(Game game){
         clear();
         game.extractCard(this.id);
-        game.putTo(controller, this, "scrapyard");
+        game.putTo(controller, this, SCRAPYARD);
     }
 
     /**
@@ -157,7 +161,7 @@ public abstract class Card implements Serializable {
     public void returnToHand(Game game){
         clear();
         game.extractCard(this.id);
-        game.putTo(controller, this, "hand");
+        game.putTo(controller, this, HAND);
     }
     
     public void copyPropertiesFrom(Card c) {

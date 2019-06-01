@@ -9,10 +9,12 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.BOTH_PLAY;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -35,13 +37,14 @@ public class Parasytid extends Item {
     public void activate(Game game) {
         game.deplete(id);
         game.spendEnergy(controller, 3);
-        Arraylist<UUID> selected = game.selectFromZone(controller, "both play", Predicates::isItem, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, BOTH_PLAY, Predicates::isItem, 1, false);
         game.destroy(id);
         game.addToStack(new Ability(this,
             "Possess target item",
             (x) -> {
-                if (game.isIn(controller, selected.get(0), "both play"))
-                    game.possessTo(controller, selected.get(0), "play");
+                if (game.isIn(controller, selected.get(0), BOTH_PLAY)) {
+                    game.possessTo(controller, selected.get(0), PLAY);
+                }
             }, selected));
     }
 }

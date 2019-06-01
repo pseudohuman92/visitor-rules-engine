@@ -6,12 +6,13 @@
 package com.visitor.set1;
 
 
-import com.visitor.card.types.Spell;
 import com.visitor.card.types.Item;
+import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -29,12 +30,12 @@ public class CrossroadTrade extends Spell{
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasInstancesIn(controller, Item.class, "play", 1);
+        return super.canPlay(game) && game.hasInstancesIn(controller, Item.class, PLAY, 1);
     }
     
     @Override
     public void play(Game game) {
-        target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
+        target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         game.spendEnergy(controller, cost);
         game.destroy(target);
         game.addToStack(this);

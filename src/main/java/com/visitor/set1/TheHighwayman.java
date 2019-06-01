@@ -9,12 +9,12 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Ally;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.UUIDHelper;
+import static com.visitor.helpers.UUIDHelper.getInList;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
@@ -45,7 +45,7 @@ public class TheHighwayman extends Ally {
         if (game.hasEnergy(controller, 3)){
             choices.add(new Ability(this, "Pay 3: +2 Loyalty",
             (x1) -> {
-                depleted = true;
+                deplete();
                 game.spendEnergy(controller, 3);
                 game.addToStack(new Ability(this, "+2 Loyalty",
                 (x2) -> {
@@ -57,7 +57,7 @@ public class TheHighwayman extends Ally {
             choices.add(new Ability(this, "-1 Loyalty: Favor 2:\n" +
                         "  Draw the top item of opponent's deck.",
             (x1) -> {
-                depleted = true;
+                deplete();
                 loyalty -=1;
                 favor = 2;
                 favorAbility =  new Ability(this, "Draw the top item of opponent's deck.",
@@ -67,13 +67,13 @@ public class TheHighwayman extends Ally {
                         if(c != null){
                             c.controller = controller;
                             c.knowledge = new Hashmap<>();
-                            game.putTo(c.controller, c, "hand");
+                            game.putTo(c.controller, c, HAND);
                         }
                     });
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
-        UUIDHelper.getInList(choices, selection).get(0).resolve(game);
+        getInList(choices, selection).get(0).resolve(game);
     }
     
 }

@@ -7,9 +7,12 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
+import static com.visitor.game.Game.Zone.HAND;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
+import static com.visitor.game.Game.Zone.VOID;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import java.util.UUID;
 
 /**
@@ -29,12 +32,12 @@ public class ChronologicalReversal extends Spell {
     @Override
     public boolean canPlay (Game game){
         return super.canPlay(game) 
-                && game.hasInstancesIn(controller, Spell.class, "scrapyard", 1);
+                && game.hasInstancesIn(controller, Spell.class, SCRAPYARD, 1);
     }
     
     @Override
     public void play (Game game){
-        targets = game.selectFromZone(controller, "scrapyard", Predicates::isSpell, 1, false);
+        targets = game.selectFromZone(controller, SCRAPYARD, Predicates::isSpell, 1, false);
         selected = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -45,9 +48,9 @@ public class ChronologicalReversal extends Spell {
     
     @Override
     public void resolve (Game game){
-        if(game.isIn(controller, selected, "scrapyard")){
-            game.putTo(controller, game.extractCard(selected), "hand");
+        if(game.isIn(controller, selected, SCRAPYARD)){
+            game.putTo(controller, game.extractCard(selected), HAND);
         }
-        game.putTo(controller, this, "void");
+        game.putTo(controller, this, VOID);
     }    
 }

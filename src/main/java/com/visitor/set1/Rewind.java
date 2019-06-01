@@ -8,11 +8,14 @@ package com.visitor.set1;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
+import static com.visitor.game.Game.Zone.VOID;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
+import static java.lang.Math.min;
 import java.util.UUID;
 
 /**
@@ -33,13 +36,13 @@ public class Rewind extends Spell {
     public boolean canPlay (Game game){
         return super.canPlay(game) 
                 && game.hasEnergy(controller, 2)
-                && game.hasCardsIn(controller, "scrapyard", 1);
+                && game.hasCardsIn(controller, SCRAPYARD, 1);
     }
     
     @Override
     public void play (Game game){
-        x = game.selectX(controller, Math.min(game.getPlayer(controller).energy/2, 
-                                              game.getZone(controller, "scrapyard").size()));
+        x = game.selectX(controller, min(game.getPlayer(controller).energy/2, 
+                                              game.getZone(controller, SCRAPYARD).size()));
         game.spendEnergy(controller, 2 * x);
         text = "Recover "+x+". \n" +
                 "Purge ~.";
@@ -51,12 +54,12 @@ public class Rewind extends Spell {
     
     @Override
     public void resolve (Game game){
-        Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", Predicates::any, x, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, SCRAPYARD, Predicates::any, x, false);
         Arraylist<Card> cards = game.extractAll(selected);
         game.shuffleIntoDeck(controller, cards);
         text = "Recover X. \n" +
                 "Purge ~.";
-        game.putTo(controller, this, "void");
+        game.putTo(controller, this, VOID);
     }
     
     @Override

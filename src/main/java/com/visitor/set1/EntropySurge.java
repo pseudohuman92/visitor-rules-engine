@@ -9,9 +9,10 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -29,12 +30,12 @@ public class EntropySurge extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Item.class, "play", 1);
+        return game.hasInstancesIn(controller, Item.class, PLAY, 1);
     }
 
     @Override
     public void activate(Game game) {
-        target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
+        target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         game.destroy(target);
         game.addToStack(new Ability(this, 
             controller + " gains " + (game.ownedByOpponent(target)?2:1) + " energy",

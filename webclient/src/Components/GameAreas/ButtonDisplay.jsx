@@ -30,7 +30,7 @@ const mapStateToProps = state => {
 
 class ButtonDisplay extends Component {
   redraw = event => {
-    this.props.gameHandler.Mulligan();
+    this.props.gameHandler.Redraw();
   };
 
   keep = event => {
@@ -61,7 +61,7 @@ class ButtonDisplay extends Component {
     } = this.props;
     const gamePhaseStr = {
       0: "NOPHASE",
-      1: "MULLIGAN",
+      1: "REDRAW",
       2: "BEGIN",
       3: "MAIN",
       4: "MAIN_RESOLVING",
@@ -107,7 +107,7 @@ class ButtonDisplay extends Component {
     let buttonMenu = <div />;
     if (
       phase === GamePhases.NOT_STARTED ||
-      gamePhase === proto.Phase.MULLIGAN
+      gamePhase === proto.Phase.REDRAW
     ) {
       buttonMenu = (
         <Grid container spacing={16}>

@@ -5,11 +5,13 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Spell;
 import com.visitor.card.types.Item;
+import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
+import static com.visitor.game.Game.Zone.BOTH_PLAY;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -26,12 +28,12 @@ public class WeakWill extends Spell {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && c.cost <= 3);}, 1, "both play");
+        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && c.cost <= 3);}, 1, BOTH_PLAY);
     }
     
     @Override
     public void play(Game game) {
-        targets = game.selectFromZone(controller, "both play", c->{return (c instanceof Item && c.cost <= 3);}, 1, false);
+        targets = game.selectFromZone(controller, BOTH_PLAY, c->{return (c instanceof Item && c.cost <= 3);}, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -39,8 +41,8 @@ public class WeakWill extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        if(game.isIn(controller, target, "both play")){
-            game.possessTo(controller, target, "play");
+        if(game.isIn(controller, target, BOTH_PLAY)){
+            game.possessTo(controller, target, PLAY);
         }
     }
 }

@@ -731,23 +731,23 @@ $root.Pass = (function() {
     return Pass;
 })();
 
-$root.Mulligan = (function() {
+$root.Redraw = (function() {
 
     /**
-     * Properties of a Mulligan.
-     * @exports IMulligan
-     * @interface IMulligan
+     * Properties of a Redraw.
+     * @exports IRedraw
+     * @interface IRedraw
      */
 
     /**
-     * Constructs a new Mulligan.
-     * @exports Mulligan
-     * @classdesc Represents a Mulligan.
-     * @implements IMulligan
+     * Constructs a new Redraw.
+     * @exports Redraw
+     * @classdesc Represents a Redraw.
+     * @implements IRedraw
      * @constructor
-     * @param {IMulligan=} [properties] Properties to set
+     * @param {IRedraw=} [properties] Properties to set
      */
-    function Mulligan(properties) {
+    function Redraw(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -755,60 +755,60 @@ $root.Mulligan = (function() {
     }
 
     /**
-     * Creates a new Mulligan instance using the specified properties.
+     * Creates a new Redraw instance using the specified properties.
      * @function create
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
-     * @param {IMulligan=} [properties] Properties to set
-     * @returns {Mulligan} Mulligan instance
+     * @param {IRedraw=} [properties] Properties to set
+     * @returns {Redraw} Redraw instance
      */
-    Mulligan.create = function create(properties) {
-        return new Mulligan(properties);
+    Redraw.create = function create(properties) {
+        return new Redraw(properties);
     };
 
     /**
-     * Encodes the specified Mulligan message. Does not implicitly {@link Mulligan.verify|verify} messages.
+     * Encodes the specified Redraw message. Does not implicitly {@link Redraw.verify|verify} messages.
      * @function encode
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
-     * @param {IMulligan} message Mulligan message or plain object to encode
+     * @param {IRedraw} message Redraw message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Mulligan.encode = function encode(message, writer) {
+    Redraw.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         return writer;
     };
 
     /**
-     * Encodes the specified Mulligan message, length delimited. Does not implicitly {@link Mulligan.verify|verify} messages.
+     * Encodes the specified Redraw message, length delimited. Does not implicitly {@link Redraw.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
-     * @param {IMulligan} message Mulligan message or plain object to encode
+     * @param {IRedraw} message Redraw message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Mulligan.encodeDelimited = function encodeDelimited(message, writer) {
+    Redraw.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a Mulligan message from the specified reader or buffer.
+     * Decodes a Redraw message from the specified reader or buffer.
      * @function decode
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {Mulligan} Mulligan
+     * @returns {Redraw} Redraw
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Mulligan.decode = function decode(reader, length) {
+    Redraw.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Mulligan();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Redraw();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -821,74 +821,74 @@ $root.Mulligan = (function() {
     };
 
     /**
-     * Decodes a Mulligan message from the specified reader or buffer, length delimited.
+     * Decodes a Redraw message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Mulligan} Mulligan
+     * @returns {Redraw} Redraw
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Mulligan.decodeDelimited = function decodeDelimited(reader) {
+    Redraw.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a Mulligan message.
+     * Verifies a Redraw message.
      * @function verify
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Mulligan.verify = function verify(message) {
+    Redraw.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         return null;
     };
 
     /**
-     * Creates a Mulligan message from a plain object. Also converts values to their respective internal types.
+     * Creates a Redraw message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {Mulligan} Mulligan
+     * @returns {Redraw} Redraw
      */
-    Mulligan.fromObject = function fromObject(object) {
-        if (object instanceof $root.Mulligan)
+    Redraw.fromObject = function fromObject(object) {
+        if (object instanceof $root.Redraw)
             return object;
-        return new $root.Mulligan();
+        return new $root.Redraw();
     };
 
     /**
-     * Creates a plain object from a Mulligan message. Also converts values to other types if specified.
+     * Creates a plain object from a Redraw message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof Mulligan
+     * @memberof Redraw
      * @static
-     * @param {Mulligan} message Mulligan
+     * @param {Redraw} message Redraw
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Mulligan.toObject = function toObject() {
+    Redraw.toObject = function toObject() {
         return {};
     };
 
     /**
-     * Converts this Mulligan to JSON.
+     * Converts this Redraw to JSON.
      * @function toJSON
-     * @memberof Mulligan
+     * @memberof Redraw
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Mulligan.prototype.toJSON = function toJSON() {
+    Redraw.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return Mulligan;
+    return Redraw;
 })();
 
 $root.Keep = (function() {
@@ -1875,7 +1875,7 @@ $root.ClientGameMessage = (function() {
      * @property {IActivateCard|null} [activateCard] ClientGameMessage activateCard
      * @property {IStudyCard|null} [studyCard] ClientGameMessage studyCard
      * @property {IPass|null} [pass] ClientGameMessage pass
-     * @property {IMulligan|null} [mulligan] ClientGameMessage mulligan
+     * @property {IRedraw|null} [redraw] ClientGameMessage redraw
      * @property {IKeep|null} [keep] ClientGameMessage keep
      * @property {IConcede|null} [concede] ClientGameMessage concede
      * @property {IOrderCardsResponse|null} [orderCardsResponse] ClientGameMessage orderCardsResponse
@@ -1931,12 +1931,12 @@ $root.ClientGameMessage = (function() {
     ClientGameMessage.prototype.pass = null;
 
     /**
-     * ClientGameMessage mulligan.
-     * @member {IMulligan|null|undefined} mulligan
+     * ClientGameMessage redraw.
+     * @member {IRedraw|null|undefined} redraw
      * @memberof ClientGameMessage
      * @instance
      */
-    ClientGameMessage.prototype.mulligan = null;
+    ClientGameMessage.prototype.redraw = null;
 
     /**
      * ClientGameMessage keep.
@@ -1983,12 +1983,12 @@ $root.ClientGameMessage = (function() {
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"mulligan"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "mulligan", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2024,8 +2024,8 @@ $root.ClientGameMessage = (function() {
             $root.StudyCard.encode(message.studyCard, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         if (message.pass != null && message.hasOwnProperty("pass"))
             $root.Pass.encode(message.pass, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
-        if (message.mulligan != null && message.hasOwnProperty("mulligan"))
-            $root.Mulligan.encode(message.mulligan, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+        if (message.redraw != null && message.hasOwnProperty("redraw"))
+            $root.Redraw.encode(message.redraw, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
         if (message.keep != null && message.hasOwnProperty("keep"))
             $root.Keep.encode(message.keep, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
         if (message.selectFromResponse != null && message.hasOwnProperty("selectFromResponse"))
@@ -2083,7 +2083,7 @@ $root.ClientGameMessage = (function() {
                 message.pass = $root.Pass.decode(reader, reader.uint32());
                 break;
             case 13:
-                message.mulligan = $root.Mulligan.decode(reader, reader.uint32());
+                message.redraw = $root.Redraw.decode(reader, reader.uint32());
                 break;
             case 14:
                 message.keep = $root.Keep.decode(reader, reader.uint32());
@@ -2174,14 +2174,14 @@ $root.ClientGameMessage = (function() {
                     return "pass." + error;
             }
         }
-        if (message.mulligan != null && message.hasOwnProperty("mulligan")) {
+        if (message.redraw != null && message.hasOwnProperty("redraw")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
             properties.payload = 1;
             {
-                var error = $root.Mulligan.verify(message.mulligan);
+                var error = $root.Redraw.verify(message.redraw);
                 if (error)
-                    return "mulligan." + error;
+                    return "redraw." + error;
             }
         }
         if (message.keep != null && message.hasOwnProperty("keep")) {
@@ -2269,10 +2269,10 @@ $root.ClientGameMessage = (function() {
                 throw TypeError(".ClientGameMessage.pass: object expected");
             message.pass = $root.Pass.fromObject(object.pass);
         }
-        if (object.mulligan != null) {
-            if (typeof object.mulligan !== "object")
-                throw TypeError(".ClientGameMessage.mulligan: object expected");
-            message.mulligan = $root.Mulligan.fromObject(object.mulligan);
+        if (object.redraw != null) {
+            if (typeof object.redraw !== "object")
+                throw TypeError(".ClientGameMessage.redraw: object expected");
+            message.redraw = $root.Redraw.fromObject(object.redraw);
         }
         if (object.keep != null) {
             if (typeof object.keep !== "object")
@@ -2335,10 +2335,10 @@ $root.ClientGameMessage = (function() {
             if (options.oneofs)
                 object.payload = "pass";
         }
-        if (message.mulligan != null && message.hasOwnProperty("mulligan")) {
-            object.mulligan = $root.Mulligan.toObject(message.mulligan, options);
+        if (message.redraw != null && message.hasOwnProperty("redraw")) {
+            object.redraw = $root.Redraw.toObject(message.redraw, options);
             if (options.oneofs)
-                object.payload = "mulligan";
+                object.payload = "redraw";
         }
         if (message.keep != null && message.hasOwnProperty("keep")) {
             object.keep = $root.Keep.toObject(message.keep, options);
@@ -2387,7 +2387,7 @@ $root.ClientGameMessage = (function() {
  * @exports Phase
  * @enum {string}
  * @property {number} NOPHASE=0 NOPHASE value
- * @property {number} MULLIGAN=1 MULLIGAN value
+ * @property {number} REDRAW=1 REDRAW value
  * @property {number} BEGIN=2 BEGIN value
  * @property {number} MAIN=3 MAIN value
  * @property {number} MAIN_RESOLVING=4 MAIN_RESOLVING value
@@ -2396,7 +2396,7 @@ $root.ClientGameMessage = (function() {
 $root.Phase = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NOPHASE"] = 0;
-    values[valuesById[1] = "MULLIGAN"] = 1;
+    values[valuesById[1] = "REDRAW"] = 1;
     values[valuesById[2] = "BEGIN"] = 2;
     values[valuesById[3] = "MAIN"] = 3;
     values[valuesById[4] = "MAIN_RESOLVING"] = 4;
@@ -4693,7 +4693,7 @@ $root.GameState = (function() {
         case 0:
             message.phase = 0;
             break;
-        case "MULLIGAN":
+        case "REDRAW":
         case 1:
             message.phase = 1;
             break;

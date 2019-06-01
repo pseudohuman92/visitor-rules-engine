@@ -10,10 +10,12 @@ import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
+import static com.visitor.game.Game.Zone.VOID;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -31,17 +33,17 @@ public class RuneofUnnaturalLife extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasInstancesIn(controller, Card.class, "void", 1);
+        return !depleted && game.hasInstancesIn(controller, Card.class, VOID, 1);
     }
 
     @Override
     public void activate(Game game) {
-        Arraylist<UUID> selected = game.selectFromZone(controller, "scrapyard", Predicates::any, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(controller, SCRAPYARD, Predicates::any, 1, false);
         game.destroy(id);
         game.addToStack(new Ability(this,
             "Draw a card from your scrapyard then discard a card.",
             (x) -> {
-                if (game.isIn(controller, selected.get(0), "scrapyard")){
+                if (game.isIn(controller, selected.get(0), SCRAPYARD)){
                     game.drawByID(controller, selected.get(0));
                     game.discard(controller, 1);
                 }

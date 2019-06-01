@@ -9,8 +9,9 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLACK;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.BLACK;
 import java.util.UUID;
 
 /**
@@ -26,7 +27,7 @@ public class MindSlavesThrash extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.controlsUnownedCard(controller, "play");
+        return !depleted && game.controlsUnownedCard(controller, PLAY);
     }
 
     @Override

@@ -9,9 +9,9 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
 import java.util.UUID;
 
 

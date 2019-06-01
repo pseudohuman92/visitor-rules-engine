@@ -14,51 +14,52 @@ import com.visitor.helpers.Arraylist;
  */
 public class Event {
     
-    public static String POSSESSION = "POSSESSION";
-    public static String TURN_START = "TURN_START";
-    public static String TURN_END = "TURN_END";
-    public static String DRAW = "DRAW";
-    public static String DISCARD = "DISCARD";
+    //Event types
+    public static final String POSSESSION = "POSSESSION";
+    public static final String TURN_START = "TURN_START";
+    public static final String TURN_END = "TURN_END";
+    public static final String DRAW = "DRAW";
+    public static final String DISCARD = "DISCARD";
     
-    public String label;
-    public Arraylist<Object> eventData;
+    public String type;
+    public Arraylist<Object> data;
     
     private Event(String l){
-        label = l;
-        eventData = new Arraylist<>();
+        type = l;
+        data = new Arraylist<>();
     }
     
     public static Event draw (String username, Arraylist<Card> drawn){
         Event e = new Event(DRAW);
-        e.eventData.add(username);
-        e.eventData.add(drawn);
+        e.data.add(username);
+        e.data.add(drawn);
         return e;
     }
     
     public static Event discard (String username, Arraylist<Card> discarded){
         Event e = new Event(DISCARD);
-        e.eventData.add(username);
-        e.eventData.add(discarded);
+        e.data.add(username);
+        e.data.add(discarded);
         return e;
     }
     
     public static Event possession (String oldController, String newController, Arraylist<Card> c){
         Event e = new Event(POSSESSION);
-        e.eventData.add(oldController);
-        e.eventData.add(newController);
-        e.eventData.add(c);
+        e.data.add(oldController);
+        e.data.add(newController);
+        e.data.add(c);
         return e;
     }
     
     public static Event turnStart (String turnPlayer){
         Event e = new Event(TURN_START);
-        e.eventData.add(turnPlayer);
+        e.data.add(turnPlayer);
         return e;
     }
     
     public static Event turnEnd (String turnPlayer){
         Event e = new Event(TURN_END);
-        e.eventData.add(turnPlayer);
+        e.data.add(turnPlayer);
         return e;
     }
 

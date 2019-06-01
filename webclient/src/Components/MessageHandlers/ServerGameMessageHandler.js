@@ -69,8 +69,8 @@ export default class ServerGameMessageHandler {
     this.send("Pass", {});
   };
 
-  Mulligan = () => {
-    this.send("Mulligan", {});
+  Redraw = () => {
+    this.send("Redraw", {});
   };
 
   Keep = () => {

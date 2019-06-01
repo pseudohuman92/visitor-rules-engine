@@ -8,10 +8,12 @@ package com.visitor.set1;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
+import static com.visitor.game.Game.Zone.VOID;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 /**
@@ -28,12 +30,12 @@ public class RegressiveHierarchy extends Spell {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasCardsIn(controller, "scrapyard", 1);
+        return super.canPlay(game) && game.hasCardsIn(controller, SCRAPYARD, 1);
     }
     
     @Override
     public void play(Game game) {
-        targets = game.selectFromZone(controller, "scrapyard", Predicates::any, 1, false);
+        targets = game.selectFromZone(controller, SCRAPYARD, Predicates::any, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -41,10 +43,10 @@ public class RegressiveHierarchy extends Spell {
     
     @Override
     public void resolveEffect (Game game){
-        if(game.isIn(controller, target, "scrapyard")){
+        if(game.isIn(controller, target, SCRAPYARD)){
             Card c = game.getCard(target);
-            Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, "scrapyard");
-            game.putTo(controller, cards, "void");
+            Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, SCRAPYARD);
+            game.putTo(controller, cards, VOID);
             UUID target = game.selectDamageTargets(controller, 1, false).get(0);
             game.dealDamage(id, target, cards.size());
         }

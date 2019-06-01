@@ -26,7 +26,7 @@ message Pass {}
 
 
 //This will be send when player mulligans his starting hand
-message Mulligan {
+message Redraw {
 }
 
 //This will be send when player keeps his starting hand
@@ -58,7 +58,7 @@ message ClientGameMessage {
         ActivateCard                    activateCard = 8;
         StudyCard                       studyCard = 9;
         Pass                            pass = 10;
-        Mulligan                        mulligan = 13;
+        Redraw                          redraw = 13;
         Keep                            keep = 14;
         Concede                         concede = 16;
         OrderCardsResponse              orderCardsResponse = 17;

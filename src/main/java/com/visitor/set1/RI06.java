@@ -9,6 +9,7 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
@@ -31,12 +32,12 @@ public class RI06 extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasInstancesIn(controller, Item.class, "play", 1);
+        return !depleted && game.hasInstancesIn(controller, Item.class, PLAY, 1);
     }
     
     @Override
     public void activate(Game game) {
-        UUID selection = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
+        UUID selection = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         int x = game.getCard(selection).cost;
         game.destroy(selection);
         game.deplete(id);

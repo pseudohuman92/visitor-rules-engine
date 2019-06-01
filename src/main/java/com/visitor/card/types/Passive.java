@@ -2,6 +2,7 @@
 package com.visitor.card.types;
 
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.protocol.Types.*;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
@@ -27,7 +28,7 @@ public abstract class Passive extends Card {
     
     @Override
     public void resolve(Game game) {
-        game.putTo(controller, this, "play");
+        game.putTo(controller, this, PLAY);
     }
     
     @Override

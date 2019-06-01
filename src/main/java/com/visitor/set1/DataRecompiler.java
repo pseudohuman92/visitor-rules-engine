@@ -11,11 +11,13 @@ import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
-import com.visitor.helpers.UUIDHelper;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import com.visitor.helpers.UUIDHelper;
+import static com.visitor.helpers.UUIDHelper.getInList;
+import static com.visitor.helpers.UUIDHelper.getNotInList;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 
@@ -46,8 +48,8 @@ public class DataRecompiler extends Item{
                     Player p = game.getPlayer(controller);
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
                     Arraylist<UUID> selected = game.selectFromList(controller, cand, Predicates::any, 2, true);
-                    p.deck.putToTop(UUIDHelper.getNotInList(cand, selected));
-                    p.scrapyard.addAll(UUIDHelper.getInList(cand, selected));
+                    p.deck.putToTop(getNotInList(cand, selected));
+                    p.scrapyard.addAll(getInList(cand, selected));
                 }));
     }
 }

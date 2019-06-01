@@ -11,13 +11,14 @@ import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
-import com.visitor.helpers.UUIDHelper;
+import static com.visitor.game.Game.Zone.HAND;
+import static com.visitor.game.Game.Zone.PLAY;
+import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
+import static com.visitor.helpers.UUIDHelper.getInList;
 import static com.visitor.protocol.Types.Counter.CHARGE;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.set1.AI03;
-import com.visitor.helpers.Hashmap;
-import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 
@@ -47,17 +48,17 @@ public class UI08 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Junk.class, "hand", 1) 
-            || game.hasInstancesIn(controller, Item.class, "play", 1);
+        return game.hasInstancesIn(controller, Junk.class, HAND, 1) 
+            || game.hasInstancesIn(controller, Item.class, PLAY, 1);
     }
     
     @Override
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
-        if (game.hasInstancesIn(controller, Junk.class, "hand", 1)){
+        if (game.hasInstancesIn(controller, Junk.class, HAND, 1)){
             choices.add(new Ability(this, "Discard a Junk: Charge 1.",
             (x1) -> {
-                target = game.selectFromZone(controller, "hand", Predicates::isJunk, 1, false).get(0);
+                target = game.selectFromZone(controller, HAND, Predicates::isJunk, 1, false).get(0);
                 game.discard(controller, target);
                 game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {
@@ -68,10 +69,10 @@ public class UI08 extends Item {
                     }));
             }));
         }
-        if (game.hasInstancesIn(controller, Item.class, "play", 1)){
+        if (game.hasInstancesIn(controller, Item.class, PLAY, 1)){
             choices.add(new Ability(this, "Sacrifice an Item: Charge 1.",
             (x1) -> {
-                target = game.selectFromZone(controller, "play", Predicates::isItem, 1, false).get(0);
+                target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
                 game.destroy(target);
                 game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {
@@ -83,6 +84,6 @@ public class UI08 extends Item {
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
-        UUIDHelper.getInList(choices, selection).get(0).resolve(game);
+        getInList(choices, selection).get(0).resolve(game);
     }
 }

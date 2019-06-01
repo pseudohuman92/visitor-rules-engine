@@ -58,7 +58,7 @@ class PlayArea extends Component {
 
     //Auto keep function
     if (
-      game.phase === proto.Phase.MULLIGAN &&
+      game.phase === proto.Phase.REDRAW &&
       game.activePlayer === game.player.userId &&
       game.player.hand.length === 0
     ) {
@@ -67,7 +67,7 @@ class PlayArea extends Component {
 
     //Auto pass function
     if (
-      game.phase !== proto.Phase.MULLIGAN &&
+      game.phase !== proto.Phase.REDRAW &&
       phase === GamePhases.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
       game.canStudy.length === 0 &&

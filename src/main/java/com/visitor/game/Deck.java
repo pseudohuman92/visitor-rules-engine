@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author pseudo
  */
-public class Deck extends Arraylist<Card> implements Serializable {
+public class Deck extends Arraylist<Card>  {
 
     public Deck(String username){}
 

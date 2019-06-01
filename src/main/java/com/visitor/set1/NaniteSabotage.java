@@ -6,12 +6,12 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Spell;
-import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 /**
@@ -32,7 +32,7 @@ public class NaniteSabotage extends Spell {
     @Override
     public void resolveEffect (Game game){
         Arraylist<UUID> s = game.selectFromList(controller, 
-                game.getZone(game.getOpponentName(controller), "hand"), 
+                game.getZone(game.getOpponentName(controller), HAND), 
                 Predicates::isItem, 1, true);
         if (!s.isEmpty()){
             game.transformToJunk(s.get(0));

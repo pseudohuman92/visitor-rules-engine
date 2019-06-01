@@ -8,9 +8,10 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.DECK;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 /**
@@ -44,7 +45,7 @@ public class UncertaintyGun extends Item {
             "  Transform chosen card into junk.",
         (y) -> {
             Arraylist<UUID> s = game.selectFromList(controller, 
-                    game.getZone(game.getOpponentName(controller), "deck"), 
+                    game.getZone(game.getOpponentName(controller), DECK), 
                     c->{return c.cost <= x;}, 1, true);
             if (!s.isEmpty()){
                 game.transformToJunk(s.get(0));

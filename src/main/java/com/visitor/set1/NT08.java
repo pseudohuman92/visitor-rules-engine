@@ -9,9 +9,7 @@ import com.visitor.card.types.Tome;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
-import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  *

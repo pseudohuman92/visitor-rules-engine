@@ -9,9 +9,10 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.set1.Meltdown;
+import static com.visitor.game.Game.Zone.HAND;
+import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 
 /**
@@ -28,7 +29,7 @@ public class SelfdestructNode extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.getZone(controller, "hand").size() >= 2;
+        return game.getZone(controller, HAND).size() >= 2;
     }
     
     @Override
@@ -36,8 +37,9 @@ public class SelfdestructNode extends Item {
         game.discard(controller, 2);
         game.addToStack(new Ability(this, "Transform ~ into AI01.",
             (x) -> { 
-                if(game.isIn(controller, id, "play")) 
+                if(game.isIn(controller, id, PLAY)) {
                     game.replaceWith(this, new Meltdown(this));
+                }
         }));
     }
 }

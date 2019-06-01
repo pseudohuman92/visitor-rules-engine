@@ -12,11 +12,13 @@ import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
-import com.visitor.helpers.UUIDHelper;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
-import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import com.visitor.helpers.UUIDHelper;
+import static com.visitor.helpers.UUIDHelper.getInList;
+import static com.visitor.helpers.UUIDHelper.getNotInList;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
 
@@ -48,9 +50,9 @@ public class QuantumStateExtractor extends Item{
                     Player p = game.getPlayer(controller);
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
                     Arraylist<UUID> selected = game.selectFromList(controller, cand, Predicates::any, 1, false);
-                    p.hand.addAll(UUIDHelper.getInList(cand, selected));
+                    p.hand.addAll(getInList(cand, selected));
                     Junk j = new Junk(controller);
-                    j.copyPropertiesFrom(UUIDHelper.getNotInList(cand, selected).get(0));
+                    j.copyPropertiesFrom(getNotInList(cand, selected).get(0));
                     Arraylist<Card> cards = new Arraylist<>();
                     cards.add(j);
                     game.shuffleIntoDeck(j.controller, cards);

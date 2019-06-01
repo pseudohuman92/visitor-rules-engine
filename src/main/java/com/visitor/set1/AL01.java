@@ -8,13 +8,13 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.PLAY;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.UUIDHelper;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import java.util.UUID;
 
@@ -36,7 +36,7 @@ public class AL01 extends Ally {
     @Override
     public boolean canActivate(Game game){
         return super.canActivate(game) && 
-                    game.hasInstancesIn(controller, Item.class, "scrapyard", 1) && 
+                    game.hasInstancesIn(controller, Item.class, SCRAPYARD, 1) && 
                 loyalty >= 2; 
     }
     
@@ -44,17 +44,17 @@ public class AL01 extends Ally {
     @Override
     public void activate(Game game) {
 
-        UUID target = game.selectFromZone(controller, "scrapyard", Predicates::isItem, 1, false).get(0);
-        depleted = true;
+        UUID target = game.selectFromZone(controller, SCRAPYARD, Predicates::isItem, 1, false).get(0);
+        deplete();
         loyalty -=2;
         favor = 1;
         favorAbility =  new Ability(this, 
                 "Return target Item from your scrapyard to play.\n" +
                   "If ~ has no loyalty, Transform it to UL01",
             (x2) -> {
-                if(game.isIn(controller, target, "scrapyard")){
+                if(game.isIn(controller, target, SCRAPYARD)){
 
-                game.putTo(controller, game.extractCard(target), "play");
+                game.putTo(controller, game.extractCard(target), PLAY);
                 }
                 if (loyalty == 0){
                     game.replaceWith(this, new UL01(this));

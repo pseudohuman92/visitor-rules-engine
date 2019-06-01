@@ -5,7 +5,6 @@ import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.KnowledgeGroup;
 import com.visitor.protocol.Types.*;
 import com.visitor.helpers.Hashmap;
-import java.io.Serializable;
 import com.visitor.helpers.Arraylist;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
@@ -16,7 +15,7 @@ import com.visitor.card.properties.Damageable;
  *
  * @author pseudo
  */
-public class Player implements Serializable, Damageable {
+public class Player implements Damageable {
 
     public String username;
     public UUID id;

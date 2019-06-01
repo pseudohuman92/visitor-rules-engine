@@ -10,11 +10,12 @@ import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import com.visitor.helpers.UUIDHelper;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
-import com.visitor.helpers.Hashmap;
+import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import static com.visitor.helpers.UUIDHelper.getInList;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import java.util.UUID;
 
 
@@ -43,14 +44,14 @@ public class MetaphasicShieldCoil extends Item {
             Arraylist<Card> choices = new Arraylist<>();
             choices.add(new Ability(this, "Create and draw YI01",
                 (x1) -> {
-                    game.putTo(controller, new MetaphasicShieldMK5(controller), "hand");
+                    game.putTo(controller, new MetaphasicShieldMK5(controller), HAND);
             }));
             choices.add(new Ability(this, "Create and draw YI02",
                 (x1) -> {
-                    game.putTo(controller, new MetaphasicShieldMK7(controller), "hand");
+                    game.putTo(controller, new MetaphasicShieldMK7(controller), HAND);
             }));
             Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);
-            UUIDHelper.getInList(choices, selection).get(0).resolve(game);
+            getInList(choices, selection).get(0).resolve(game);
         }));
     }
 }

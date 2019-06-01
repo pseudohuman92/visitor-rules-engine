@@ -10,10 +10,13 @@ import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
+import static com.visitor.game.Game.Zone.VOID;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.RED;
+import static java.lang.Math.min;
 import java.util.UUID;
 
 
@@ -31,17 +34,17 @@ public class ShockTroop extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasEnergy(controller, 1)&&game.hasCardsIn(controller, "scrapyard", 1);
+        return !depleted && game.hasEnergy(controller, 1)&&game.hasCardsIn(controller, SCRAPYARD, 1);
     }
     
     @Override
     public void activate(Game game) {
-        int x = game.selectX(controller, Math.min(game.getEnergy(controller), game.getZone(controller, "scrapyard").size()));
-        Arraylist<UUID> selection = game.selectFromZone(controller, "scrapyard", Predicates::any, x, false);
+        int x = game.selectX(controller, min(game.getEnergy(controller), game.getZone(controller, SCRAPYARD).size()));
+        Arraylist<UUID> selection = game.selectFromZone(controller, SCRAPYARD, Predicates::any, x, false);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.spendEnergy(controller, x);
         Arraylist<Card> cards = game.extractAll(selection);
-        game.putTo(controller, cards, "void");
+        game.putTo(controller, cards, VOID);
         game.deplete(id);
         game.addToStack(new Ability(this, "Deal " + x + " damage",
         (y) -> {

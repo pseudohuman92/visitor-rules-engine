@@ -23,7 +23,7 @@ class InfoMessage extends Component {
     const { phase, game, upTo, selectedCards, selectCountMax } = this.props;
 
     let instMessage = "...";
-    if (game.phase === proto.Phase.MULLIGAN) {
+    if (game.phase === proto.Phase.REDRAW) {
       instMessage = "Choose either to keep or redraw your hand.";
     } else if (IsSelectCardPhase(phase)) {
       instMessage = `Select ${

@@ -7,8 +7,8 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  *

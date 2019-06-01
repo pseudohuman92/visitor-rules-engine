@@ -9,8 +9,8 @@ package com.visitor.set1;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Item;
 import com.visitor.game.Game;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
 import com.visitor.helpers.Hashmap;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 
 /**
