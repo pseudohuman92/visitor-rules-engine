@@ -113,24 +113,23 @@ export const initialState = {
 
 function initializeFullCollection (){
   var result ={};
-  fetch("/Cards.tsv")
+  fetch("/Cards - Cards.json")
   .then(r => r.text())
   .then(file => {
-    file.split("\n").forEach(line => {
-      let fields = line.split("\t");
+    JSON.parse(file).forEach(card => {
       if (
-        fields[0] !== "" &&
-        !fields[0].startsWith("Code") &&
-        !fields[0].startsWith("A")
+        card.Code !== "" &&
+        !card.Code.startsWith("Code") &&
+        !card.Code.startsWith("A")
       ) {
-        let name = fields[1] !== ""?fields[1]:fields[0];
+        let name = card.Name !== ""?card.Name:card.Code;
         result[name] = {
           name: name,
-          type: fields[2],
-          description: fields[4],
-          health: fields[5],
-          cost: fields[6],
-          knowledgeCost: toKnowledgeCost(fields[7])
+          type: card.Type,
+          description: card.Effect,
+          health: card.Health,
+          cost: card.Energy,
+          knowledgeCost: toKnowledgeCost(card.Knowledge)
         };
       }
     });

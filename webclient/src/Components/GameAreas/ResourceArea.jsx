@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Center from "react-center";
 
 import { knowledgeMap } from "../Helpers/Constants";
 

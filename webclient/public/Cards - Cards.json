@@ -1,0 +1,822 @@
+[
+  {
+    "Code": "",
+    "Name": "The Rook and Raven",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "BA01",
+    "Name": "Weak Will",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Possess target item that costs 3 or less.",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BA02",
+    "Name": "Pilfer",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Target player loots X",
+    "Health": "",
+    "Energy": "X",
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BA03",
+    "Name": "Crossroad Trade",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Additional Cost - Sacrifice an item.\nDraw 2 cards.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BA04",
+    "Name": "Weak Link",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Opponent chooses an item he controls, posses that item.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BA05",
+    "Name": "Ir-Runic",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Opponent discards an Spell.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BA06",
+    "Name": "Proactive Assassination",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Discard the top ally of the opponent’s deck that costs X or less.",
+    "Health": "",
+    "Energy": "X",
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BR01",
+    "Name": "Framed Betrayal",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Target ally's loyalty becomes 0.",
+    "Health": "",
+    "Energy": 4,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BI01",
+    "Name": "Thief",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Activate:\n  Loot 1",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BI02",
+    "Name": "Hand of Ill Will",
+    "Type": "Item",
+    "Subtype": "Weapon",
+    "Effect": "Sacrifice an item, Activate: \n  Deal 2 damage to your opponent. \n  If sacrificed item belongs to him, deal 3 damage instead.",
+    "Health": 3,
+    "Energy": 4,
+    "Knowledge": "BBB"
+  },
+  {
+    "Code": "BI03",
+    "Name": "Entropy Surge",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Sacrifice an Item: \n  Gain 1 Energy. \n  If that item is owned by the opponent gain 1 additional energy.",
+    "Health": 3,
+    "Energy": 4,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BI04",
+    "Name": "Rune of Unnatural Life",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Activate, Sacrifice ~: \n  Draw a card from your scrapyard then \n  discard a card.",
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BI05",
+    "Name": "Idle Hand",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "3, Activate: \n  Draw top item of opponent's deck.",
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BI06",
+    "Name": "Mind Slave's Thrash",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Condition - Control a card you don't own. \n  Activate: \n    Deal 2 damage.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BI07",
+    "Name": "Parasytid",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "3, Sacrifice ~, Activate: \n  Possess target item.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BI08",
+    "Name": "Eye of Intent",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "1, Activate, Sacrifice ~: \n  Look at opponent's hand and choose an Spell from it. \n  They discard it.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BP01",
+    "Name": "",
+    "Type": "Passive",
+    "Subtype": "",
+    "Effect": "Trigger - When you possess a card \n  Deal 2 damage to possessed card's controller",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "B"
+  },
+  {
+    "Code": "BP02",
+    "Name": "",
+    "Type": "Passive",
+    "Subtype": "",
+    "Effect": "Trigger - When opponent discards a card\n  Deal 2 damage to opponent.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "BL01",
+    "Name": "The Highwayman",
+    "Type": "Ally",
+    "Subtype": "Human Thief",
+    "Effect": "3, Activate: +2 Loyalty\n-1 Loyalty, Activate:\n  Favor 2 - Draw the top item of opponent's deck.",
+    "Health": 5,
+    "Energy": 2,
+    "Knowledge": "BB"
+  },
+  {
+    "Code": "",
+    "Name": "Promontory Institute",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "UA01",
+    "Name": "Regressive Hierarchy",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Purge all copies of a target card from your scrapyard. \nDeal that many damage.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "UU"
+  },
+  {
+    "Code": "UA02",
+    "Name": "Recycle",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Transmute target item into Junk",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "UA03",
+    "Name": "",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Search top 4 cards of your deck for a kit card and put into play. \nPut rest to the bottom of your library.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "UA04",
+    "Name": "Nanite Sabotage",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Choose an item from opponent's hand and transform it into Junk",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "UU"
+  },
+  {
+    "Code": "UA05",
+    "Name": "Recombinant Replication",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Additional Cost - Purge 3 items from your scrapyard. \nTransmute target item you control into a copy of target item in your scrapyard.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "UUU"
+  },
+  {
+    "Code": "UI01",
+    "Name": "Self-destruct Node",
+    "Type": "Item",
+    "Subtype": "Kit",
+    "Effect": "Discard 2: \n  Transform ~ into AI01.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "UU"
+  },
+  {
+    "Code": "UI02",
+    "Name": "Nanite Deconstructor",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Shuffle 3 Junk into your deck, Activate: \n  Deal 3 damage.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "UI03",
+    "Name": "Data Recompiler",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "1, Activate: \n  Look at the top 2 cards of your library. \n  You may discard any number of them. \n  Put the rest in the same order.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "UI04",
+    "Name": "Salvage Forge",
+    "Type": "Item",
+    "Subtype": "Kit",
+    "Effect": "1, Discard 1: \n  Transform ~ into AI02.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "UI05",
+    "Name": "Quantum State Extractor",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "1, Activate: \n  Look at the top 2 cards of your deck. \n  Draw one. \n  Transform other into junk and shuffle into the deck.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "UU"
+  },
+  {
+    "Code": "UI06",
+    "Name": "Synaptic Capacitor",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Discard 1, Purge 1: \n  Gain 1 Energy",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "UU"
+  },
+  {
+    "Code": "UI07",
+    "Name": "Uncertainty Gun",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "X, Sacrifice ~: \n  Look at opponent's deck. \n  Choose a card that costs X or less from it. \n  Transform chosen card into junk.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "UU"
+  },
+  {
+    "Code": "UI08",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Discard a Junk: Charge 1.\nSacrifice an Item: Charge 1. \nIf it has 3 charges, transform ~ into AI03",
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "UL01",
+    "Name": "",
+    "Type": "Ally",
+    "Subtype": "Alien Trader",
+    "Effect": "Discard an Item, Activate: +3 Loyalty\nIf ~ has 6 or more loyalty, Transform it to AL01",
+    "Health": 5,
+    "Energy": 1,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "",
+    "Name": "Planar Explorers Society",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "YA01",
+    "Name": "Temporal Reflection",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Gain reflect 1.\nShuffle Temporal Reflection back into your deck.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "YYY"
+  },
+  {
+    "Code": "YA02",
+    "Name": "Nullify",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Cancel target Spell.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "Y"
+  },
+  {
+    "Code": "YA03",
+    "Name": "Neutralize",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Cancel target card.",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "YA04",
+    "Name": "Rewind",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Recover X. \nPurge ~",
+    "Health": "",
+    "Energy": "2X",
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "YA05",
+    "Name": "Chronological Reversal",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Return target Spell from scrapyard to your hand.\nPurge ~",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "Y"
+  },
+  {
+    "Code": "YA06",
+    "Name": "Fast Forward",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Each player draws 3 cards",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "YI01",
+    "Name": "Metaphasic Shield MK 5",
+    "Type": "Item",
+    "Subtype": "Barrier",
+    "Effect": "Charge 4.\n3, Sacrifice ~: \n  Gain shield X.\n  X = # of charge counters",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "Y"
+  },
+  {
+    "Code": "YI02",
+    "Name": "Metaphasic Shield MK 7",
+    "Type": "Item",
+    "Subtype": "Barrier",
+    "Effect": "Charge 3.\n3, Sacrifice ~: \n  Gain reflect X\n  X = # of charge counters",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "YI03",
+    "Name": "Metaphasic Shield Coil",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "2, Activate: \n  Create and draw a YI01 or YI02.",
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": "YYY"
+  },
+  {
+    "Code": "YI04",
+    "Name": "N-Sink",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "2X, Activate: \n  Target item Charge X.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "YI05",
+    "Name": "Kinetic Reflectors",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "2, Activate:\n  Gain reflect 1.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "YI06",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Sacrifice an item, Activate:\n  Deal X damage to opponent, \n  where X is # of charge counter on sacrificed item.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "YY"
+  },
+  {
+    "Code": "",
+    "Name": "Anvil Inc",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "RA01",
+    "Name": "Forced Retreat",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Return target item to controller's hand. \nDeal 1 damage to opponent.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "R"
+  },
+  {
+    "Code": "RA02",
+    "Name": "Priority Ops",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Put target item on top of controller's deck",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RA03",
+    "Name": "Walking Fire",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Deal 2 damage. \nShuffle ~ to your deck.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RA04",
+    "Name": "Reinforcements",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Additional Cost \n  Shuffle a card from your hand to your deck. \nDraw two cards.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "R"
+  },
+  {
+    "Code": "RA05",
+    "Name": "Extraction",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Additional Cost \n  Return an item you control to your hand. \nDeal 4 damage.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RA06",
+    "Name": "Withdrawal",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Return target Spell to its controller's hand.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "R"
+  },
+  {
+    "Code": "RI01",
+    "Name": "Frag Grenade",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "1, Activate: \n  Deal 2 damage.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "R"
+  },
+  {
+    "Code": "RI02",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Activate: \n  Return ~ and target item to controller's hand.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RI03",
+    "Name": "Kill Team",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Charge 3. \n1, Discharge 1, Activate: \n  Deal 2 damage",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RI04",
+    "Name": "Mortar Team",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Charge X.\n1, Activate, Sacrifice ~:\n  Deal X damage, X = # of charge counters.",
+    "Health": 3,
+    "Energy": "X+1",
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RI05",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Discard a card: \n  Charge 1. \nDischarge 1, Activate: \n  Deal 2 damage",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "RRR"
+  },
+  {
+    "Code": "RI06",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Sacrifice an Item, Activate: \n  Deal X damage. \n  X = cost of sacrificed item.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RI07",
+    "Name": "Shock Troop",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "X, Purge X, Activate: \n  Deal X damage.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "RR"
+  },
+  {
+    "Code": "RL01",
+    "Name": "Sa'ulgolath Enforcer",
+    "Type": "Ally",
+    "Subtype": "Alien Mercenary",
+    "Effect": "Pay 2 life, Activate: +2 Loyalty\n-X Loyalty, Activate: \n  Favor 1 - Deal 2X damage to opponent",
+    "Health": 5,
+    "Energy": 1,
+    "Knowledge": "R"
+  },
+  {
+    "Code": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT01",
+    "Name": "Neuromancy Vol. I",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BU",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT02",
+    "Name": "Horrors in Battle",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT03",
+    "Name": "Art of War",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain UR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT04",
+    "Name": "Mystical Mixology",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BB",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT05",
+    "Name": "Xenoengineering ",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain UU",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT06",
+    "Name": "Tactical Briefing",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain RR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT07",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain GG",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT08",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BG",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT09",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain GR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "NT10",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain GU",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "AI01",
+    "Name": "Meltdown",
+    "Type": "Item",
+    "Subtype": "Bomb",
+    "Effect": "Destroy: \n  Deal 5 damage.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": ""
+  },
+  {
+    "Code": "AI02",
+    "Name": "Scrap Grenade",
+    "Type": "Item",
+    "Subtype": "Weapon",
+    "Effect": "Purge a Junk from your hand, Activate: \n  Deal 3 damage.",
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": "UUU"
+  },
+  {
+    "Code": "AI03",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Discharge 1, Activate: \n  Deal 2 damage.\n  If ~ has no counters on it, transform ~ to UI08",
+    "Health": 3,
+    "Energy": 0,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "AL01",
+    "Name": "",
+    "Type": "Ally",
+    "Subtype": "Alien Trader",
+    "Effect": "-2 Loyalty, Activate: \n  Favor 1 - Return target Item from your scrapyard to play.\nIf ~ has no loyalty, Transform it to UL01",
+    "Health": 5,
+    "Energy": 2,
+    "Knowledge": "U"
+  },
+  {
+    "Code": "",
+    "Name": "DoubleBrand International",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Code": "",
+    "Name": "Brotherhood of the observer",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  }
+]
