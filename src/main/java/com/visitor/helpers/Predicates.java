@@ -5,13 +5,13 @@
  */
 package com.visitor.helpers;
 
-import com.visitor.card.properties.Damageable;
 import com.visitor.card.types.Ally;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.card.types.Ritual;
 import com.visitor.card.types.Spell;
+import com.visitor.game.Player;
 
 /**
  *
@@ -39,10 +39,18 @@ public abstract class Predicates {
         return c instanceof Junk;
     }
     
-    public static boolean isDamageable(Object o) {
-        return o instanceof Damageable;
+    public static boolean isDamageable(Card c) {
+        return c.isDamageable();
     }
     
+    public static boolean isStudyable(Card c) {
+        return !(c instanceof Junk);
+    }
+    
+    public static boolean isDamageable(Object o) {
+        return o instanceof Player || (o instanceof Card && ((Card)o).isDamageable());
+    }
+
     public static boolean any(Object o) {
         return true;
     }

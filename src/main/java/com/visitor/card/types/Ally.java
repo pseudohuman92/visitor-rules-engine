@@ -6,7 +6,6 @@
 package com.visitor.card.types;
 
 import com.visitor.card.properties.Activatable;
-import com.visitor.card.properties.Damageable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
 import static com.visitor.game.Event.TURN_START;
@@ -23,12 +22,11 @@ import java.util.UUID;
  * @author pseudo
  */
 public abstract class Ally extends Card 
-        implements Activatable, Triggering, Damageable {
+        implements Activatable, Triggering {
     
     public int favor;
     public Ability favorAbility;
     public int loyalty;
-    public int health;
 
     public Ally(String name, int cost, 
             Hashmap<Types.Knowledge, Integer> knowledge, 
@@ -104,7 +102,6 @@ public abstract class Ally extends Card
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
                 .setType("Ally")
-                .setHealth(health)
                 .setFavor(favor)
                 .setLoyalty(loyalty);
     }
@@ -113,7 +110,6 @@ public abstract class Ally extends Card
     public void copyPropertiesFrom(Card c){
         super.copyPropertiesFrom(c);
         if (c instanceof Ally){
-            health = ((Ally) c).health;
             favor = ((Ally) c).favor;
             loyalty = ((Ally) c).loyalty;
             

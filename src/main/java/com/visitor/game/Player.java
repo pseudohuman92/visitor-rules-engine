@@ -1,6 +1,5 @@
 package com.visitor.game;
 
-import com.visitor.card.properties.Damageable;
 import com.visitor.card.types.Card;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
  *
  * @author pseudo
  */
-public class Player implements Damageable {
+public class Player {
 
     public String username;
     public UUID id;
@@ -58,7 +57,6 @@ public class Player implements Damageable {
         hand.addAll(deck.extractFromTop(count));
     }
     
-    @Override
     public void dealDamage(Game game, int count, UUID source) {
         int damage = count;
         if(shield >= damage){
@@ -101,7 +99,18 @@ public class Player implements Damageable {
     public void newTurn(){
         energy = maxEnergy;
         numOfStudiesLeft = 1;
-        playArea.forEach((card) -> card.ready());
+        playArea.forEach((card) -> {
+            card.ready();
+            card.resetShields();
+        });
+    }
+    
+    public void resetShields(){
+        energy = maxEnergy;
+        numOfStudiesLeft = 1;
+        playArea.forEach((card) -> {
+            card.resetShields();
+        });
     }
     
     public void addKnowledge(Hashmap<Knowledge, Integer> knowl){

@@ -27,6 +27,10 @@ public abstract class Card {
     public Hashmap<Knowledge, Integer> knowledge;
     public String text;
     public Arraylist<String> subtypes;
+    public int health;
+    public int shield;
+    public int reflect;
+    
     
     public String owner;
     public String controller;
@@ -57,6 +61,9 @@ public abstract class Card {
         this.owner = owner;
         this.controller = owner;
         this.depleted = false;
+        health = -1;
+        shield = 0;
+        reflect = 0;
     }
     
     /**
@@ -163,6 +170,11 @@ public abstract class Card {
         depleted = true;
     }
     
+    public void resetShields(){
+        shield = 0;
+        reflect = 0;
+    }
+    
     public void ready(){
         depleted = false;
     }
@@ -180,6 +192,8 @@ public abstract class Card {
     public void clear() {
         depleted = false;
         targets = new Arraylist<>();
+        shield = 0;
+        reflect = 0;
     }
     
     public void returnToHand(Game game){
@@ -195,6 +209,33 @@ public abstract class Card {
         counters = c.counters;
         depleted = c.depleted;
         targets = c.targets;
+        health = c.health;
+        shield = c.shield;
+        reflect = c.reflect;
+    }
+    
+    public boolean isDamageable(){
+        return health >= 0;
+    }
+    
+    public void dealDamage(Game game, int count, UUID source) {
+        int damage = count;
+        if(shield >= damage){
+            shield -= damage;
+            return;
+        }
+        damage -= shield;
+        shield = 0;
+        if(reflect >= damage){
+            reflect -= damage;
+            game.dealDamage(id, source, damage);
+            return;
+        }
+        int temp = reflect;
+        damage -= reflect;
+        reflect = 0;
+        health = Math.max(0, health - damage);
+        game.dealDamage(id, source, temp);
     }
 
     public Types.Card.Builder toCardMessage() {
@@ -219,6 +260,15 @@ public abstract class Card {
                     .setKnowledge(k)
                     .setCount(i).build());
         });
+        if(health > -1){
+            b.setHealth(health);
+        }
+        if(shield > 0){
+            b.setShield(shield);
+        }
+        if(reflect > 0){
+            b.setReflect(reflect);
+        }
         return b;
     }
     

@@ -27,6 +27,8 @@ export default class FullCard extends PureComponent {
       health,
       favor,
       loyalty,
+      shield,
+      reflect,
       play
     } = this.props;
     const backColor = borderColor ? borderColor : "black";
@@ -85,6 +87,8 @@ export default class FullCard extends PureComponent {
 
             <div className="card-description" style={{ whiteSpace: "pre-wrap"}}>
                 {description}
+              {shield ? "\nShield:" + shield : ""}
+              {reflect ? "\nReflect:" + reflect : ""}
               {health ? "\nHealth:" + health : ""}
               {loyalty ? "\nLoyalty:" + loyalty : ""}
               {favor ? "\nFavor:" + favor : ""}

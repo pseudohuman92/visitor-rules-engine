@@ -3182,6 +3182,8 @@ $root.Card = (function() {
      * @property {number|null} [health] Card health
      * @property {number|null} [favor] Card favor
      * @property {number|null} [loyalty] Card loyalty
+     * @property {number|null} [shield] Card shield
+     * @property {number|null} [reflect] Card reflect
      */
 
     /**
@@ -3316,6 +3318,22 @@ $root.Card = (function() {
     Card.prototype.loyalty = 0;
 
     /**
+     * Card shield.
+     * @member {number} shield
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.shield = 0;
+
+    /**
+     * Card reflect.
+     * @member {number} reflect
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.reflect = 0;
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -3371,6 +3389,10 @@ $root.Card = (function() {
             writer.uint32(/* id 13, wireType 0 =*/104).int32(message.favor);
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.loyalty);
+        if (message.shield != null && message.hasOwnProperty("shield"))
+            writer.uint32(/* id 15, wireType 0 =*/120).int32(message.shield);
+        if (message.reflect != null && message.hasOwnProperty("reflect"))
+            writer.uint32(/* id 16, wireType 0 =*/128).int32(message.reflect);
         return writer;
     };
 
@@ -3454,6 +3476,12 @@ $root.Card = (function() {
                 break;
             case 14:
                 message.loyalty = reader.int32();
+                break;
+            case 15:
+                message.shield = reader.int32();
+                break;
+            case 16:
+                message.reflect = reader.int32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3552,6 +3580,12 @@ $root.Card = (function() {
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             if (!$util.isInteger(message.loyalty))
                 return "loyalty: integer expected";
+        if (message.shield != null && message.hasOwnProperty("shield"))
+            if (!$util.isInteger(message.shield))
+                return "shield: integer expected";
+        if (message.reflect != null && message.hasOwnProperty("reflect"))
+            if (!$util.isInteger(message.reflect))
+                return "reflect: integer expected";
         return null;
     };
 
@@ -3621,6 +3655,10 @@ $root.Card = (function() {
             message.favor = object.favor | 0;
         if (object.loyalty != null)
             message.loyalty = object.loyalty | 0;
+        if (object.shield != null)
+            message.shield = object.shield | 0;
+        if (object.reflect != null)
+            message.reflect = object.reflect | 0;
         return message;
     };
 
@@ -3654,6 +3692,8 @@ $root.Card = (function() {
             object.health = 0;
             object.favor = 0;
             object.loyalty = 0;
+            object.shield = 0;
+            object.reflect = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -3695,6 +3735,10 @@ $root.Card = (function() {
             object.favor = message.favor;
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             object.loyalty = message.loyalty;
+        if (message.shield != null && message.hasOwnProperty("shield"))
+            object.shield = message.shield;
+        if (message.reflect != null && message.hasOwnProperty("reflect"))
+            object.reflect = message.reflect;
         return object;
     };
 

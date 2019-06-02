@@ -2,7 +2,6 @@
 package com.visitor.card.types;
 
 import com.visitor.card.properties.Activatable;
-import com.visitor.card.properties.Damageable;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -14,9 +13,8 @@ import java.util.UUID;
  * Abstract class for the Item card type.
  * @author pseudo
  */
-public abstract class Item extends Card implements Activatable, Damageable {
+public abstract class Item extends Card implements Activatable {
     
-    int health;
     
     //TODO: Eventually remove this.
     public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
@@ -58,17 +56,8 @@ public abstract class Item extends Card implements Activatable, Damageable {
     }
     
     @Override
-    public void copyPropertiesFrom(Card c){
-        super.copyPropertiesFrom(c);
-        if (c instanceof Item){
-            health = ((Item) c).health;
-        }
-    }
-    
-    @Override
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
-                .setType("Item")
-                .setHealth(health);
+                .setType("Item");
     }
 }

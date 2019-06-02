@@ -22,7 +22,9 @@ export default class SmallCard extends PureComponent {
       type,
       health,
       loyalty,
-      favor
+      favor,
+      shield,
+      reflect
     } = this.props;
 
     return (
@@ -60,6 +62,9 @@ export default class SmallCard extends PureComponent {
 
           <div className="card-description" style={{whiteSpace: "pre-wrap"}}>
                 {description}
+              
+                {shield ? "\nShield:" + shield : ""}
+              {reflect ? "\nReflect:" + reflect : ""}
                 {health ? "\nHealth:" + health : ""}
               {loyalty ? "\nLoyalty:" + loyalty : ""}
               {favor ? "\nFavor:" + favor : ""}

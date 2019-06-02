@@ -72,6 +72,15 @@ public class Deck extends Arraylist<Card>  {
         }
         return cards;
     }
+    
+    public Card getTopmost(Predicate<Card> pred){
+        for (int i = 0; i < size(); i++){
+            if(pred.test(get(i))){
+                return get(i);
+            }
+        }
+        return null;
+    }
 
     public void shuffle(){
         Collections.shuffle(this, new SecureRandom());

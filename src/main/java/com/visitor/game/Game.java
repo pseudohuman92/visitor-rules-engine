@@ -2,7 +2,6 @@
 package com.visitor.game;
 
 import com.visitor.card.properties.Activatable;
-import com.visitor.card.properties.Damageable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Junk;
@@ -263,6 +262,7 @@ public class Game {
         passCount = 0;
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
+        players.get(getOpponentName(turnPlayer)).resetShields();
         turnCount++;
         processBeginEvents();
     }
@@ -736,8 +736,8 @@ public class Game {
             damagePlayer(sourceId, username, damage);
         } else {
             Card c = getCard(targetId);
-            if (c != null && c instanceof Damageable){
-                ((Damageable)c).dealDamage(this, damage, sourceId);
+            if (c != null && c.isDamageable()){
+                c.dealDamage(this, damage, sourceId);
             }
         }
     }
