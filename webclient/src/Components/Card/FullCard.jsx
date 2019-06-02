@@ -2,6 +2,7 @@ import React from "react";
 import { PureComponent } from "react";
 import Rectangle from "react-rectangle";
 import VisibilitySensor from "react-visibility-sensor";
+import TextFit from "react-textfit";
 
 import {
   getCardColor,
@@ -44,21 +45,23 @@ export default class FullCard extends PureComponent {
           }}
         >
           <div
-            className={"card-inner"+(play?"-play":"")}
+            className={"card-inner" + (play ? "-play" : "")}
             style={{ backgroundColor: getCardColor(knowledgeCost) }}
           >
             <div className="card-name">
-             
-                <span style={{ fontWeight: "500" }}>{cost}</span>
-                <span
-                  style={{
-                    fontWeight: "500",
-                    color: getIconColor(knowledgeCost)
-                  }}
-                >
-                  {toIconString(toKnowledgeString(knowledgeCost))}
-                </span>
-                {" | " + name}
+            <TextFit mode="single" forceSingleModeWidth={false}>
+              <span style={{ fontWeight: "500" }}>{cost}</span>
+              <span
+                style={{
+                  fontWeight: "500",
+                  color: getIconColor(knowledgeCost)
+                }}
+              >
+                {toIconString(toKnowledgeString(knowledgeCost))}
+              </span>
+              
+              {" | " + name}
+              </TextFit>
             </div>
 
             <div className="card-image">
@@ -82,16 +85,16 @@ export default class FullCard extends PureComponent {
             </div>
 
             <div className="card-type">
-                {type}
-            </div>
-
-            <div className="card-description" style={{ whiteSpace: "pre-wrap"}}>
+            <TextFit mode="single" forceSingleModeWidth={false}>{type}</TextFit></div>
+            <div className="card-description">
+              <TextFit mode="multi" style={{ whiteSpace: "pre-wrap" }}>
                 {description}
-              {shield ? "\nShield:" + shield : ""}
-              {reflect ? "\nReflect:" + reflect : ""}
-              {health ? "\nHealth:" + health : ""}
-              {loyalty ? "\nLoyalty:" + loyalty : ""}
-              {favor ? "\nFavor:" + favor : ""}
+                {shield ? "\nShield:" + shield : ""}
+                {reflect ? "\nReflect:" + reflect : ""}
+                {health ? "\nHealth:" + health : ""}
+                {loyalty ? "\nLoyalty:" + loyalty : ""}
+                {favor ? "\nFavor:" + favor : ""}
+              </TextFit>
             </div>
           </div>
         </Rectangle>

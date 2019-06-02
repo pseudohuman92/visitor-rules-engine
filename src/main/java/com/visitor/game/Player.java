@@ -106,8 +106,6 @@ public class Player {
     }
     
     public void resetShields(){
-        energy = maxEnergy;
-        numOfStudiesLeft = 1;
         playArea.forEach((card) -> {
             card.resetShields();
         });

@@ -13,7 +13,7 @@
     color: black;
     overflow: hidden;
     font-family: "Open Sans, sans-serif";  
-    font-size: calc(2px + (10 - 2) * (100%/15)); 
+    font-size: calc(2px + (10 - 2) * (100%/15));
   }
 
 .card-name {
@@ -41,7 +41,7 @@
 .card-description {
   margin: 1.6949% 3.4483% 3.4483% 3.4483%;
   background-color: beige;
-  overflow: hidden;
+  overflow: auto;
   height: 32.1429%;
   font-family: "Open Sans, sans-serif";
 }
