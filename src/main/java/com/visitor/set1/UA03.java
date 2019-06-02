@@ -11,7 +11,6 @@ import com.visitor.game.Game;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
-import com.visitor.helpers.UUIDHelper;
 import static com.visitor.helpers.UUIDHelper.getInList;
 import static com.visitor.helpers.UUIDHelper.getNotInList;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
@@ -33,7 +32,7 @@ public class UA03 extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         Player p = game.getPlayer(controller);
         Arraylist<Card> topCards = p.deck.extractFromTop(4);
         Arraylist<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Kit");}, 1, true);

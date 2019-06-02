@@ -6,6 +6,7 @@
 package com.visitor.card.types;
 
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 
@@ -27,9 +28,9 @@ public class Junk extends Card {
     public boolean canStudy(Game game) { return false; }
 
     @Override
-    public void resolve(Game game) {
-        destroy(game);
-    }
+    protected void duringResolve(Game game) {
+        game.putTo(controller, this, SCRAPYARD);
+    }    
     
     @Override
     public Types.Card.Builder toCardMessage() {

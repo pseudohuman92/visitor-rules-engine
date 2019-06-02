@@ -34,14 +34,13 @@ public class Reinforcements extends Spell {
     }
     
     @Override
-    public void play (Game game){
+    protected void beforePlay(Game game){
         target = game.selectFromZone(controller, HAND, c->{return !c.id.equals(id);}, 1, false).get(0);
         game.shuffleIntoDeck(controller, new Arraylist<>(game.extractCard(target)));
-        super.play(game);
     }  
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         game.draw(controller, 2);
     }    
 }

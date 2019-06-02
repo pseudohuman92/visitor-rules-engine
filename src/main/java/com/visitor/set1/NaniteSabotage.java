@@ -30,7 +30,7 @@ public class NaniteSabotage extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         Arraylist<UUID> s = game.selectFromList(controller, 
                 game.getZone(game.getOpponentName(controller), HAND), 
                 Predicates::isItem, 1, true);

@@ -2,22 +2,34 @@
 package com.visitor.game;
 
 import com.visitor.card.types.Card;
-import java.io.Serializable;
-import static java.lang.Integer.parseInt;
-import java.security.SecureRandom;
 import com.visitor.helpers.Arraylist;
+import static java.lang.Class.forName;
+import static java.lang.Integer.parseInt;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
 
 /**
  *
  * @author pseudo
  */
 public class Deck extends Arraylist<Card>  {
+
+    public static Card createCard(String username, String cardName) {
+        try {
+            Class<?> cardClass = forName("com.visitor.set1."+cardName);
+            Constructor<?> cardConstructor = cardClass.getConstructor(String.class);
+            Object card = cardConstructor.newInstance(new Object[] { username });
+            return ((Card)card);
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
+            getLogger(Deck.class.getName()).log(SEVERE, null, ex);
+        }
+        return null;
+    }
 
     public Deck(String username){}
 
@@ -30,22 +42,11 @@ public class Deck extends Arraylist<Card>  {
                     .replace(".", "")
                     .replace("'", "");
             for (int j = 0; j < count; j++){
-                add(Deck.createCard(username, name));
+                add(createCard(username, name));
             }
         }
     }
     
-    public static Card createCard(String username, String cardName) {
-        try {
-            Class<?> cardClass = Class.forName("com.visitor.set1."+cardName);
-            Constructor<?> cardConstructor = cardClass.getConstructor(String.class);
-            Object card = cardConstructor.newInstance(new Object[] { username });
-            return ((Card)card);
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(Deck.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
   
     public Arraylist<Card> extractFromTop(int count){
         Arraylist<Card> cards = new Arraylist<>();

@@ -22,7 +22,7 @@ public class FastForward extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         game.draw(controller, 3);
         game.draw(game.getOpponentName(controller), 3);
     }    

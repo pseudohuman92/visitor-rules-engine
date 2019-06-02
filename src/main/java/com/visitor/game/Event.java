@@ -21,13 +21,6 @@ public class Event {
     public static final String DRAW = "DRAW";
     public static final String DISCARD = "DISCARD";
     
-    public String type;
-    public Arraylist<Object> data;
-    
-    private Event(String l){
-        type = l;
-        data = new Arraylist<>();
-    }
     
     public static Event draw (String username, Arraylist<Card> drawn){
         Event e = new Event(DRAW);
@@ -61,6 +54,12 @@ public class Event {
         Event e = new Event(TURN_END);
         e.data.add(turnPlayer);
         return e;
+    }
+    public String type;
+    public Arraylist<Object> data;
+    private Event(String l){
+        type = l;
+        data = new Arraylist<>();
     }
 
 }

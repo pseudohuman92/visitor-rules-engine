@@ -14,7 +14,6 @@ import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.UUIDHelper;
 import static com.visitor.helpers.UUIDHelper.getInList;
 import static com.visitor.helpers.UUIDHelper.getNotInList;
 import static com.visitor.protocol.Types.Knowledge.BLUE;

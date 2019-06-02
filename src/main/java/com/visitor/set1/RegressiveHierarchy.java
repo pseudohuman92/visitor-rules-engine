@@ -34,7 +34,7 @@ public class RegressiveHierarchy extends Spell {
     }
     
     @Override
-    public void play(Game game) {
+    protected void beforePlay(Game game) {
         targets = game.selectFromZone(controller, SCRAPYARD, Predicates::any, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
@@ -42,7 +42,7 @@ public class RegressiveHierarchy extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         if(game.isIn(controller, target, SCRAPYARD)){
             Card c = game.getCard(target);
             Arraylist<Card> cards = game.extractAllCopiesFrom(controller, c.name, SCRAPYARD);

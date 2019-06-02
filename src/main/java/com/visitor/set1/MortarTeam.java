@@ -31,14 +31,13 @@ public class MortarTeam extends Item {
     }
     
     @Override
-    public void play (Game game) {
+    protected void beforePlay(Game game) {
         x = game.selectX(controller, game.getEnergy(controller) - 1);
         game.spendEnergy(controller, x);
         text = "Charge "+x+".\n" +
             "\n" +
             "Dischage 1, Activate:\n" +
             "  Opponent purges 2.";
-        super.play(game);
     }
     
     @Override

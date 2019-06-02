@@ -6,29 +6,37 @@ import com.visitor.card.properties.Damageable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Junk;
+import static com.visitor.game.Event.possession;
+import static com.visitor.game.Event.turnEnd;
+import static com.visitor.game.Event.turnStart;
 import static com.visitor.game.Game.Zone.*;
-import com.visitor.helpers.UUIDHelper;
-import com.visitor.protocol.ServerGameMessages.*;
+import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
+import static com.visitor.helpers.UUIDHelper.toUUIDList;
+import com.visitor.protocol.ServerGameMessages.GameEnd;
+import com.visitor.protocol.ServerGameMessages.SelectFrom;
+import com.visitor.protocol.ServerGameMessages.SelectXValue;
+import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
+import com.visitor.protocol.ServerGameMessages.UpdateGameState;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.GameState;
 import com.visitor.protocol.Types.Phase;
-import com.visitor.server.GameEndpoint;
 import static com.visitor.protocol.Types.Phase.*;
 import com.visitor.protocol.Types.SelectFromType;
 import static com.visitor.protocol.Types.SelectFromType.*;
-import com.visitor.helpers.Hashmap;
+import com.visitor.server.GameEndpoint;
+import static com.visitor.server.GeneralEndpoint.gameServer;
 import java.io.IOException;
 import static java.lang.Math.random;
-import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Predicates;
-import com.visitor.server.GeneralEndpoint;
+import static java.lang.System.out;
 import java.util.List;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
 import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
 
@@ -37,11 +45,7 @@ import javax.websocket.EncodeException;
  * @author pseudo
  */
 public class Game {
-    
-    
-    public enum Zone {
-        DECK, HAND, PLAY, BOTH_PLAY, SCRAPYARD, VOID, STACK;
-    }
+
     
     Hashmap<String, Player> players;
     Hashmap<String, GameEndpoint> connections;
@@ -84,6 +88,15 @@ public class Game {
         p1.draw(5);
         p2.draw(5);
         updatePlayers();
+    }
+    public int getMaxEnergy(String username) {
+        return players.get(username).maxEnergy;
+    }
+    public void addStudyCount(String username, int count) {
+        players.get(username).numOfStudiesLeft += count;
+    }
+    public void sacrifice(UUID cardId) {
+        getCard(cardId).sacrifice(this);
     }
 
     
@@ -171,8 +184,12 @@ public class Game {
         }
     }
 
-    public void studyCard(String username, UUID cardID) {
-        extractCard(cardID).study(this);
+    public void study(String username, UUID cardID) {
+        extractCard(cardID).study(this, true);
+    }
+    
+    public void study(String username, UUID cardID, boolean regular) {
+        extractCard(cardID).study(this, regular);
     }
     
     public void redraw(String username) {
@@ -193,7 +210,7 @@ public class Game {
     public void processEvents(){
         while(!eventQueue.isEmpty()){
             Event e = eventQueue.remove(0);
-            System.out.println("Processing Event: " + e.type);
+            out.println("Processing Event: " + e.type);
             triggeringCards.get(turnPlayer).forEachInOrder(c ->{ c.checkEvent(this, e);});
             triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c ->{ c.checkEvent(this, e);});
         }
@@ -358,7 +375,7 @@ public class Game {
         Player player = players.get(username);
         player.draw(count);
         if (player.deck.isEmpty()){
-            lose(username);
+            gameEnd(username, false);
         }
     }
     
@@ -408,13 +425,13 @@ public class Game {
         Player player = players.get(username);
         player.payLife(count);
         if (player.health <= 0){
-            lose(username);
+            gameEnd(username, false);
         }
     }
 
     public void possessTo(String newController, UUID cardID, Zone zone) {
         Card c = extractCard(cardID);
-        eventQueue.add(Event.possession(c.controller, newController, new Arraylist<>(c)));
+        eventQueue.add(possession(c.controller, newController, new Arraylist<>(c)));
         c.controller = newController;
         getZone(newController, zone).add(c);
     }
@@ -498,7 +515,7 @@ public class Game {
             int l = (int)response.take();
             return l;
         } catch (InterruptedException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
         return 0;
     }
@@ -514,12 +531,12 @@ public class Game {
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
-            System.out.println("Waiting targets!");
+            out.println("Waiting targets!");
             String[] l = (String[])response.take();
-            System.out.println("Done waiting!");
-            return UUIDHelper.toUUIDList(l);
+            out.println("Done waiting!");
+            return toUUIDList(l);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
         return null;
     }
@@ -558,23 +575,12 @@ public class Game {
         return selectFromZoneWithPlayers(username, BOTH_PLAY, Predicates::isDamageable, Predicates::any, count, upTo);
     }
     
-    
-    
-    public void win(String player) {
-        send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(true)));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(getOpponentName(player))).setWin(false)));
+    public void gameEnd(String player, boolean win) {
+        send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(win)));
+        send(getOpponentName(player), ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(getOpponentName(player))).setWin(!win)));
         connections.forEach((s, c) -> {c.close();});
         connections = new Hashmap<>();
-        GeneralEndpoint.gameServer.removeGame(id);
-    }
-    
-    
-    public void lose(String player) {
-        send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(false)));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(getOpponentName(player))).setWin(true)));
-        connections.forEach((s, c) -> {c.close();});
-        connections = new Hashmap<>();
-        GeneralEndpoint.gameServer.removeGame(id);
+        gameServer.removeGame(id);
     }
     
     public GameState.Builder toGameState(String username){
@@ -617,7 +623,7 @@ public class Game {
                 e.send(builder);
             }
         } catch (IOException | EncodeException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
     }
     
@@ -682,19 +688,19 @@ public class Game {
         try {
             response.put(o);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
     }
 
     private void processBeginEvents() {
-        System.out.println("Starting Begin Triggers");
-        eventQueue.add(Event.turnStart(turnPlayer));
+        out.println("Starting Begin Triggers");
+        eventQueue.add(turnStart(turnPlayer));
         processEvents();
-        System.out.println("Ending Begin Triggers");
+        out.println("Ending Begin Triggers");
     }
 
     private void processEndEvents() {
-        eventQueue.add(Event.turnEnd(turnPlayer));
+        eventQueue.add(turnEnd(turnPlayer));
         processEvents();
     }
 
@@ -738,6 +744,9 @@ public class Game {
 
     public boolean isTurnPlayer(String username) {
         return turnPlayer.equals(username);
+    }
+    public enum Zone {
+        DECK, HAND, PLAY, BOTH_PLAY, SCRAPYARD, VOID, STACK;
     }
 
 }

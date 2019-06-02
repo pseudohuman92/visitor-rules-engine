@@ -40,7 +40,7 @@ public class Rewind extends Spell {
     }
     
     @Override
-    public void play (Game game){
+    protected void beforePlay(Game game){
         x = game.selectX(controller, min(game.getPlayer(controller).energy/2, 
                                               game.getZone(controller, SCRAPYARD).size()));
         game.spendEnergy(controller, 2 * x);
@@ -50,7 +50,7 @@ public class Rewind extends Spell {
     } 
     
     @Override
-    public void resolveEffect (Game game){}
+    protected void duringResolve (Game game){}
     
     @Override
     public void resolve (Game game){

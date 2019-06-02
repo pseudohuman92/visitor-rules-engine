@@ -1,15 +1,15 @@
 package com.visitor.game;
 
+import com.visitor.card.properties.Damageable;
 import com.visitor.card.types.Card;
-import com.visitor.protocol.Types;
-import com.visitor.protocol.Types.KnowledgeGroup;
-import com.visitor.protocol.Types.*;
-import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
+import com.visitor.protocol.Types;
+import com.visitor.protocol.Types.Knowledge;
+import com.visitor.protocol.Types.KnowledgeGroup;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
-import com.visitor.card.properties.Damageable;
 
 /**
  *

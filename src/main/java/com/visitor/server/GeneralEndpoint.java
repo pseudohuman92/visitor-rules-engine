@@ -5,11 +5,11 @@ package com.visitor.server;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.visitor.helpers.Arraylist;
 import com.visitor.protocol.ClientMessages.ClientMessage;
 import com.visitor.protocol.ClientMessages.JoinQueue;
 import com.visitor.protocol.ServerMessages.ServerMessage;
 import java.io.IOException;
+import static java.lang.System.out;
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -36,38 +36,38 @@ public class GeneralEndpoint {
         if (gameServer == null) {
             gameServer = new GameServer();
         }
-        System.out.println(username + " connected!");
+        out.println(username + " connected!");
         gameServer.addConnection(username, this);
     }
  
     @OnMessage
     public void onMessage(Session session, byte[] message) throws IOException {
         ClientMessage cm = ClientMessage.parseFrom(message);
-        System.out.println(username + " sent a message: " + cm);
+        out.println(username + " sent a message: " + cm);
         handleMessage(cm);
     }
  
     @OnClose
     public void onClose(Session session) throws IOException {
-        System.out.println(username + " disconnected!");
+        out.println(username + " disconnected!");
         gameServer.removeConnection(username);
         this.session = null;
     }
  
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println("General " + username + " ERROR!");
+        out.println("General " + username + " ERROR!");
         throwable.printStackTrace();
     }
  
     public void send(ServerMessage message) throws IOException, EncodeException {
-        System.out.println("Server sending a message to " + username + ": " + message);
+        out.println("Server sending a message to " + username + ": " + message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
     public void send(ServerMessage.Builder builder) throws IOException, EncodeException {
         ServerMessage message = builder.build();
-        System.out.println("Server sending a message to " + username + ": " + message);
+        out.println("Server sending a message to " + username + ": " + message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
 

@@ -5,12 +5,15 @@ import static com.visitor.game.Game.Zone.HAND;
 import static com.visitor.game.Game.Zone.SCRAPYARD;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
-import com.visitor.protocol.Types;
-import com.visitor.protocol.Types.*;
 import com.visitor.helpers.Hashmap;
+import com.visitor.protocol.Types;
+import com.visitor.protocol.Types.Counter;
+import com.visitor.protocol.Types.CounterGroup;
+import com.visitor.protocol.Types.Knowledge;
+import com.visitor.protocol.Types.KnowledgeGroup;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import static java.util.UUID.randomUUID;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -74,6 +77,9 @@ public abstract class Card {
        return game.canStudy(controller);
     }
     
+    protected void beforePlay(Game game){};
+    protected void afterPlay(Game game){};
+    
     /**
      * Called by server when this card is played.
      * Default behavior is that it deducts the energy cost of the card, 
@@ -82,8 +88,10 @@ public abstract class Card {
      * @param game
      */
     public void play(Game game) {
+        beforePlay(game);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
+        afterPlay(game);
     }
 
     /**
@@ -92,13 +100,20 @@ public abstract class Card {
      * OVERRIDE IF: Card has a special effect when studied or card is multicolor.
      * @param game
      */
-    public void study(Game game) {
+    public void study(Game game, boolean regular) {
         Player player = game.getPlayer(controller);
         player.voidPile.add(this);
         player.energy++;
         player.maxEnergy++;
         player.addKnowledge(getKnowledgeType());
-        player.numOfStudiesLeft--;
+        if(regular){
+            player.numOfStudiesLeft--;
+        }
+    }
+    
+    public void sacrifice(Game game){
+        game.extractCard(id);
+        game.putTo(controller, this, SCRAPYARD);
     }
 
     public Hashmap<Knowledge, Integer> getKnowledgeType() {
@@ -111,7 +126,16 @@ public abstract class Card {
      * This function contains the business logic of the card effect.
      * @param game
      */
-    public abstract void resolve(Game game);
+    protected void beforeResolve(Game game){};
+    protected abstract void duringResolve(Game game);
+    protected void afterResolve(Game game){};
+    
+    public void resolve(Game game){
+        beforeResolve(game);
+        duringResolve(game);
+        afterResolve(game);
+    }
+    
     
     /**
      * Function that adds counters to the card.

@@ -2,7 +2,7 @@
 package com.visitor.card.types;
 
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
+import static com.visitor.game.Game.Zone.SCRAPYARD;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
@@ -18,12 +18,12 @@ public abstract class Ritual extends Card {
         super(name, cost, knowledge, text, owner);
     }
     
-    public abstract void resolveEffect(Game game);
-       
     @Override
-    public void resolve (Game game){ 
-        resolveEffect(game);
-        destroy(game);
+    protected abstract void duringResolve(Game game);
+    
+    @Override
+    protected void afterResolve(Game game) {
+        game.putTo(controller, this, SCRAPYARD);
     }    
 
     @Override

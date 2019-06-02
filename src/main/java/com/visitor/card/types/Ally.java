@@ -14,6 +14,8 @@ import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
+import static java.lang.Math.max;
+import static java.lang.System.out;
 import java.util.UUID;
 
 /**
@@ -38,8 +40,9 @@ public abstract class Ally extends Card
         this.health = health; 
     }
     
+    
     @Override
-    public void resolve(Game game) {
+    protected void duringResolve(Game game) {
         game.putTo(controller, this, PLAY);
         game.registerTriggeringCard(controller, this);
     }
@@ -53,15 +56,19 @@ public abstract class Ally extends Card
     
     @Override
     public void checkEvent(Game game, Event event){
-        System.out.println("Ally is checking event");
+        out.println("Ally is checking event");
         if (game.isTurnPlayer(controller) && event.type.equals(TURN_START) && favor > 0){
-            System.out.println("Passed the check");
-            favor--;
-            if (favor == 0){
-                ready();
-                game.addToStack(favorAbility);
-                favorAbility = null;
-            }
+            out.println("Passed the check");
+            decreaseFavor(game, 1);
+        }
+    }
+    
+    public void decreaseFavor(Game game, int count){
+        favor = max(0, favor - count);
+        if (favor == 0){
+            ready();
+            game.addToStack(favorAbility);
+            favorAbility = null;
         }
     }
     

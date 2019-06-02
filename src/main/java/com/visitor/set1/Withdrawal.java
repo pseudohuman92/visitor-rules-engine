@@ -32,7 +32,7 @@ public class Withdrawal extends Spell {
     }
     
     @Override
-    public void play (Game game){
+    protected void beforePlay(Game game){
         targets = game.selectFromZone(controller, STACK, Predicates::isSpell, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
@@ -40,7 +40,7 @@ public class Withdrawal extends Spell {
     } 
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         game.getCard(target).returnToHand(game);
     }    
 }

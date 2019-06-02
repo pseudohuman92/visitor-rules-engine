@@ -32,7 +32,7 @@ public class Recycle extends Spell {
     }
     
     @Override
-    public void play(Game game) {
+    protected void beforePlay(Game game) {
         targets = game.selectFromZone(controller, BOTH_PLAY, Predicates::isItem, 1, false);
         target = targets.get(0);
         game.spendEnergy(controller, cost);
@@ -40,7 +40,7 @@ public class Recycle extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         if(game.isIn(controller, target, BOTH_PLAY)){
             game.transformToJunk(target);
         }

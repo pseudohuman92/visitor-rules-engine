@@ -41,7 +41,7 @@ public class RecombinantReplication extends Spell {
     }
     
     @Override
-    public void play(Game game) {
+    protected void beforePlay(Game game) {
         targets = game.selectFromZone(controller, SCRAPYARD, Predicates::isItem, 5, false);
         Arraylist<UUID> sel = game.selectFromZone(controller, VOID, Predicates::isItem, 1, false);
         targets.addAll(sel);
@@ -52,7 +52,7 @@ public class RecombinantReplication extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         if(targets.subList(0, 3).parallelStream().allMatch(i -> { return game.isIn(controller, i, SCRAPYARD);})
             && game.isIn(controller, targets.get(3), VOID)
             && game.isIn(controller, targets.get(4), PLAY)){

@@ -1,20 +1,23 @@
 package com.visitor.server;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
-import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
-import com.visitor.protocol.ClientGameMessages.*;
 import com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
+import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
+import com.visitor.protocol.ClientGameMessages.OrderCardsResponse;
+import com.visitor.protocol.ClientGameMessages.SelectFromResponse;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.Types.SelectFromType;
 import static com.visitor.server.GeneralEndpoint.gameServer;
-import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static java.util.UUID.fromString;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
 import javax.websocket.*;
 import javax.websocket.server.*;
 /**
@@ -57,7 +60,7 @@ public class GameEndpoint {
                     processMessage(cgm);
                 }
             } catch (InvalidProtocolBufferException ex) {
-                Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                getLogger(GameEndpoint.class.getName()).log(SEVERE, null, ex);
             }
         }).start();
     }
@@ -69,7 +72,7 @@ public class GameEndpoint {
  
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.out.println("[ERROR: " + username + "] " + throwable.getMessage());
+        out.println("[ERROR: " + username + "] " + throwable.getMessage());
         throwable.printStackTrace();
     }
     
@@ -87,7 +90,7 @@ public class GameEndpoint {
     public void resendLastMessage() throws IOException, EncodeException {
         ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, username);
         if (lastMessage != null) {
-            System.out.println("Resending last message to "+username+" "+lastMessage);
+            out.println("Resending last message to "+username+" "+lastMessage);
             checkResponseType(lastMessage);
             session.getBasicRemote().sendObject(lastMessage.toByteArray());
         }
@@ -108,7 +111,7 @@ public class GameEndpoint {
                 case SELECTFROMRESPONSE:
                     SelectFromResponse sfr = message.getSelectFromResponse();
                     if(sfr.getMessageType() != selectFromType){
-                        System.out.println("Wrong SelectFrom response received from " + username + 
+                        out.println("Wrong SelectFrom response received from " + username + 
                                 "\nExpected " + selectFromType + " Received: " + message);
                         break;
                     }
@@ -120,26 +123,26 @@ public class GameEndpoint {
                     gameServer.addToResponseQueue(gameID, message.getSelectXValueResponse().getSelectedXValue());
                     break;
                 default:
-                    System.out.println("Wrong Message received from " + username  
+                    out.println("Wrong Message received from " + username  
                             + "\nExpected " + responseType + " Received: " + message);
                     break;
             }
             waitingResponse = false;
         } else {
-            System.out.println("Unexpected response from " + username + ": " + message);
+            out.println("Unexpected response from " + username + ": " + message);
         }
     }
 
     private void processMessage(ClientGameMessage message) {
         switch(message.getPayloadCase()){
             case PLAYCARD:
-                gameServer.playCard(gameID, username, UUID.fromString(message.getPlayCard().getCardID()));
+                gameServer.playCard(gameID, username, fromString(message.getPlayCard().getCardID()));
                 break;
             case ACTIVATECARD:
-                gameServer.activateCard(gameID, username, UUID.fromString(message.getActivateCard().getCardID()));
+                gameServer.activateCard(gameID, username, fromString(message.getActivateCard().getCardID()));
                 break;
             case STUDYCARD:
-                gameServer.studyCard(gameID, username, UUID.fromString(message.getStudyCard().getCardID()));
+                gameServer.studyCard(gameID, username, fromString(message.getStudyCard().getCardID()));
                 break;
             case PASS:
                 gameServer.pass(gameID, username);
@@ -154,7 +157,7 @@ public class GameEndpoint {
                 gameServer.concede(gameID, username);
                 break;
             default:
-                System.out.println("Unexpected message from " + username + ": " + message);
+                out.println("Unexpected message from " + username + ": " + message);
                 break;
         }
     }
@@ -189,7 +192,7 @@ public class GameEndpoint {
             writer.close();
             writer = null;
         } catch (IOException ex) {
-            Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(GameEndpoint.class.getName()).log(SEVERE, null, ex);
         }
     }
 
@@ -202,7 +205,7 @@ public class GameEndpoint {
             writer.close();
             writer = null;
         } catch (IOException ex) {
-            Logger.getLogger(GameEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(GameEndpoint.class.getName()).log(SEVERE, null, ex);
         }
     }
 }

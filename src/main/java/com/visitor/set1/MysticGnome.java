@@ -10,7 +10,6 @@ import com.visitor.card.types.Ability;
 import com.visitor.card.types.Ally;
 import com.visitor.card.types.Card;
 import com.visitor.game.Game;
-import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
@@ -22,30 +21,32 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class GrandOrator extends Ally {
+public class MysticGnome extends Ally {
     
-    public GrandOrator(String owner){
-        super ("Grand Orator", 2, new Hashmap(GREEN, 2),
-            "2, Activate: +1 Loyalty.\n" +
-            "-1 Loyalty, Activate:\n" +
-            "      Favor 1 - All other allies you control gain 1 Loyalty", 2,
+    public MysticGnome(String owner){
+        super ("MysticGnome", 1, new Hashmap(GREEN, 1),
+            "1, Activate: +1 Loyalty \n" +
+            "-2 Loyalty, Activate: \n" +
+            "    Favor 1 - Deal X damage to a target. \n" +
+            "    X = Your max energy.", 
+            2,
             owner);
     }
         
     @Override
     public boolean canActivate(Game game){
         return super.canActivate(game) && 
-                    (game.hasEnergy(controller, 2) ||
-                    loyalty >= 1); 
+                    (game.hasEnergy(controller, 1) ||
+                    loyalty >= 2); 
     }
     
 
     @Override
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
-        if (game.hasEnergy(controller, 2)){
+        if (game.hasEnergy(controller, 1)){
             choices.add(new Ability(this, 
-                    "2, Activate: +1 Loyalty.",
+                    "1, Activate: +1 Loyalty",
             (x1) -> {
                 deplete();
                 game.spendEnergy(controller, 2);
@@ -55,19 +56,22 @@ public class GrandOrator extends Ally {
                 }));
             }));
         }
-        if (loyalty >= 1){
+        if (loyalty >= 2){
             choices.add(new Ability(this, 
-                    "-1 Loyalty, Activate:\n" +
-                    "      Favor 1 - All other allies you control gain 1 Loyalty",
+                    "-2 Loyalty, Activate: \n" +
+                    "    Favor 1 - Deal X damage to a target. \n" +
+                    "    X = Your max energy.",
             (x1) -> {
+                targets = game.selectDamageTargets(controller, 1, false);
                 deplete();
-                loyalty -=1;
+                loyalty -=2;
                 favor = 1;
-                favorAbility =  new Ability(this, "All other allies you control gain 1 Loyalty.",
+                favorAbility =  new Ability(this, 
+                    "Deal X damage to a target. \n" +
+                    "    X = Your max energy.",
                     (x2) -> {
-                        Arraylist<Card> allies = game.getAllFrom(controller, PLAY, c->{return c instanceof Ally && !c.id.equals(id);});
-                        allies.forEach(c->{ ((Ally)c).loyalty++; });
-                    });
+                        game.dealDamage(id, targets.get(0), game.getMaxEnergy(controller));
+                    }, targets);
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);

@@ -25,21 +25,28 @@ public class Ability extends Card {
         super(creator.name+"'s Ability", 0, new Hashmap<>(), text, creator.controller);
         this.effect = effect;
         this.creator = creator;
-        this.targets = new Arraylist<UUID>(creator.id);
+        this.targets = new Arraylist<>(creator.id);
+    }
+    
+    public Ability (Card creator, String text, Consumer<Card> effect, UUID target){
+        super(creator.name+"'s Ability", 0, new Hashmap<>(), text, creator.controller);
+        this.effect = effect;
+        this.creator = creator;
+        this.targets = new Arraylist<>(creator.id).putIn(target);
     }
     
     public Ability (Card creator, String text, Consumer<Card> effect, Arraylist<UUID> targets){
         super(creator.name+"'s Ability", 0, new Hashmap<>(), text, creator.controller);
         this.effect = effect;
         this.creator = creator;
-        this.targets = new Arraylist<UUID>(creator.id).putAllIn(targets);
+        this.targets = new Arraylist<>(creator.id).putAllIn(targets);
     }
     
     @Override
     public boolean canPlay(Game game) { return false; }
 
     @Override
-    public void resolve(Game game) { effect.accept(this); }
+    protected void duringResolve(Game game) { effect.accept(this); }
     
     @Override
     public Types.Card.Builder toCardMessage() {

@@ -28,7 +28,7 @@ public class TemporalReflection extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){}
+    protected void duringResolve (Game game){}
     
     @Override
     public void resolve (Game game){

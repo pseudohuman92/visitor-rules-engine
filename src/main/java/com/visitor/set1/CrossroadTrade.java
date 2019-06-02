@@ -34,15 +34,13 @@ public class CrossroadTrade extends Spell{
     }
     
     @Override
-    public void play(Game game) {
+    protected void beforePlay(Game game) {
         target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
-        game.spendEnergy(controller, cost);
         game.destroy(target);
-        game.addToStack(this);
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         game.draw(controller, 2);
     }   
 }

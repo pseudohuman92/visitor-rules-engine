@@ -27,7 +27,7 @@ public class Pilfer extends Spell {
     
 
     @Override
-    public void play(Game game) {
+    protected void beforePlay(Game game) {
         int x = game.selectX(controller, game.getPlayer(controller).energy);
         UUID targetPlayerId = game.selectPlayers(controller, Predicates::any, 1, false).get(0);
         targetPlayer = game.getUsername(targetPlayerId);
@@ -38,7 +38,7 @@ public class Pilfer extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         game.loot(targetPlayer, cost);
         text = "Target player loots X.";
         cost = 0;

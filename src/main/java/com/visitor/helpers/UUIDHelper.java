@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.visitor.helpers;
 
 import com.visitor.card.types.Card;
-import com.visitor.helpers.Arraylist;
 import java.util.UUID;
+import static java.util.UUID.fromString;
 
 /**
  *
@@ -31,7 +27,7 @@ public abstract class UUIDHelper {
     public static Arraylist<UUID> toUUIDList(String[] cards) {
         Arraylist<UUID> uuids = new Arraylist<>();
         for (int i =0; i < cards.length; i++){
-            uuids.add(UUID.fromString(cards[i]));
+            uuids.add(fromString(cards[i]));
         }
         return uuids;
     }
@@ -62,8 +58,9 @@ public abstract class UUIDHelper {
     public static Arraylist<Card> getInList(Arraylist<Card> cards, Arraylist<UUID> uuids) {
         Arraylist<Card> selected = new Arraylist<>();
         for (int i =0; i < cards.size(); i++){
-            if(uuids.contains(cards.get(i).id))
+            if(uuids.contains(cards.get(i).id)) {
                 selected.add(cards.get(i));
+            }
         }
         return selected;
     }
@@ -71,8 +68,9 @@ public abstract class UUIDHelper {
     public static Arraylist<Card> getNotInList(Arraylist<Card> cards, Arraylist<UUID> uuids) {
         Arraylist<Card> selected = new Arraylist<>();
         for (int i =0; i < cards.size(); i++){
-            if(!uuids.contains(cards.get(i).id))
+            if(!uuids.contains(cards.get(i).id)) {
                 selected.add(cards.get(i));
+            }
         }
         return selected;
     }

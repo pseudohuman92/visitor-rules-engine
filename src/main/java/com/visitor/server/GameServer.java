@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.visitor.server;
 
 import com.visitor.game.*;
+import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
+import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
+import com.visitor.protocol.ServerMessages.LoginResponse;
 import com.visitor.protocol.ServerMessages.NewGame;
 import com.visitor.protocol.ServerMessages.ServerMessage;
-import com.visitor.protocol.ServerGameMessages.*;
-import com.visitor.helpers.Hashmap;
 import java.io.IOException;
-import com.visitor.helpers.Arraylist;
-import com.visitor.protocol.ServerMessages.LoginResponse;
+import static java.lang.System.out;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
 import javax.websocket.EncodeException;
 
 /**
@@ -43,7 +40,7 @@ public class GameServer {
     }
 
     void concede(UUID gameID, String username) {
-        games.get(gameID).lose(username);
+        games.get(gameID).gameEnd(username, false);
     }
     
     void redraw(UUID gameID, String username) {
@@ -62,7 +59,7 @@ public class GameServer {
     }
     
     void studyCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).studyCard(username, cardID);
+        games.get(gameID).study(username, cardID);
         games.get(gameID).updatePlayers();
     }
     
@@ -87,7 +84,7 @@ public class GameServer {
             connection.send(ServerMessage.newBuilder().setLoginResponse(LoginResponse.newBuilder()
                     .setGameId(playerGames.size()>0?playerGames.get(0).toString():"")));
         } catch (IOException | EncodeException ex) {
-            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
         }
     }
 
@@ -112,13 +109,14 @@ public class GameServer {
 
     synchronized void joinQueue(String username, String[] decklist) {
         if (gameQueue.isEmpty()){
-            System.out.println("Adding " + username + " to game queue!");
+            out.println("Adding " + username + " to game queue!");
             gameQueue.add(new Player(username, decklist));
         } else {
-            if(gameQueue.get(0).username.equals(username))
-                    return;
+            if(gameQueue.get(0).username.equals(username)) {
+                return;
+            }
             Player p1 = gameQueue.remove(0);
-            System.out.println("Starting a new game with " + username + " and " + p1);
+            out.println("Starting a new game with " + username + " and " + p1);
             Game g = new Game(p1, new Player(username, decklist));
             games.putIn(g.getId(), g);
             try {
@@ -129,7 +127,7 @@ public class GameServer {
                         .setNewGame(NewGame.newBuilder()
                                 .setGame(g.toGameState(username))));
             } catch (IOException | EncodeException ex) {
-                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+                getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
             }
         }
     }

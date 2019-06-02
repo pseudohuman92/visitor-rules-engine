@@ -33,7 +33,7 @@ public class ProactiveAssassination extends Spell{
     }
     
     @Override
-    public void play(Game game) {
+    protected void beforePlay(Game game) {
         x = game.selectX(controller, game.getEnergy(controller));
         cost = x;
         game.spendEnergy(controller, cost);
@@ -41,7 +41,7 @@ public class ProactiveAssassination extends Spell{
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         Card ca = game.getPlayer(game.getOpponentName(controller)).deck.extractTopmost(c->{return c instanceof Ally && c.cost <= x;});
         if (ca != null){
             game.putTo(game.getOpponentName(controller), ca, SCRAPYARD);

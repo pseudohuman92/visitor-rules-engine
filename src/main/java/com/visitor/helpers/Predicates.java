@@ -12,8 +12,6 @@ import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.card.types.Ritual;
 import com.visitor.card.types.Spell;
-import com.visitor.helpers.Arraylist;
-import java.util.UUID;
 
 /**
  *

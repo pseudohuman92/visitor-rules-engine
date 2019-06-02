@@ -35,14 +35,13 @@ public class Extraction extends Spell {
     }
     
     @Override
-    public void play (Game game){
+    protected void beforePlay(Game game){
         target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         game.getCard(target).returnToHand(game);
-        super.play(game);
     }  
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         target = game.selectDamageTargets(controller, 1, false).get(0);
         game.dealDamage(id, target, 4);
     }    

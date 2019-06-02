@@ -38,7 +38,7 @@ public class WeakLink extends Spell {
     }
     
     @Override
-    public void resolveEffect (Game game){
+    protected void duringResolve (Game game){
         Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), PLAY, Predicates::isItem, 1, false);
         game.possessTo(controller, selected.get(0), PLAY);
     }

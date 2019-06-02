@@ -36,21 +36,20 @@ public class ChronologicalReversal extends Spell {
     }
     
     @Override
-    public void play (Game game){
+    protected void beforePlay (Game game){
         targets = game.selectFromZone(controller, SCRAPYARD, Predicates::isSpell, 1, false);
         selected = targets.get(0);
-        game.spendEnergy(controller, cost);
-        game.addToStack(this);
     } 
     
     @Override
-    public void resolveEffect (Game game){}
-    
-    @Override
-    public void resolve (Game game){
+    protected void duringResolve (Game game){
         if(game.isIn(controller, selected, SCRAPYARD)){
             game.putTo(controller, game.extractCard(selected), HAND);
         }
+    }
+    
+    @Override
+    protected void afterResolve (Game game){
         game.putTo(controller, this, VOID);
     }    
 }
