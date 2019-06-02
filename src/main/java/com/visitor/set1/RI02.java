@@ -31,7 +31,7 @@ public class RI02 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && !c.id.equals(id));}, 1, BOTH_PLAY);
+        return super.canActivate(game) && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && !c.id.equals(id));}, 1, BOTH_PLAY);
     }
 
     @Override

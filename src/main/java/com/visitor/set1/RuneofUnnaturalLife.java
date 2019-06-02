@@ -33,7 +33,7 @@ public class RuneofUnnaturalLife extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasInstancesIn(controller, Card.class, VOID, 1);
+        return super.canActivate(game) && game.hasInstancesIn(controller, Card.class, VOID, 1);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class Rewind extends Spell {
         game.spendEnergy(controller, 2 * x);
         text = "Recover "+x+". \n" +
                 "Purge ~.";
-        game.addToStack(this);
+        
     } 
     
     @Override

@@ -47,8 +47,8 @@ public class RecombinantReplication extends Spell {
         targets.addAll(sel);
         Arraylist<UUID> sel2 = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false);
         targets.addAll(sel2);
-        game.spendEnergy(controller, cost);
-        game.addToStack(this);
+        
+        
     }
     
     @Override

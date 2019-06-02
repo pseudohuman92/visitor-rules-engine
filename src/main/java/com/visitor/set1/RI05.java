@@ -37,7 +37,7 @@ public class RI05 extends Item{
     @Override
     public boolean canActivate(Game game) {
         return game.hasCardsIn(controller, HAND, 1)
-                || (!depleted && counters.getOrDefault(CHARGE, 0) > 0);
+                || (super.canActivate(game) && counters.getOrDefault(CHARGE, 0) > 0);
     }
     
     @Override
@@ -53,7 +53,7 @@ public class RI05 extends Item{
                     }));
             }));
         }
-        if (!depleted && counters.getOrDefault(CHARGE, 0) > 0){
+        if (super.canActivate(game) && counters.getOrDefault(CHARGE, 0) > 0){
             choices.add(new Ability(this, "Discharge 1, Activate: Deal 2 damage",
             (x1) -> {
                 removeCounters(CHARGE, 1);

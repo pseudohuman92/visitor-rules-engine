@@ -32,9 +32,9 @@ public class Pilfer extends Spell {
         UUID targetPlayerId = game.selectPlayers(controller, Predicates::any, 1, false).get(0);
         targetPlayer = game.getUsername(targetPlayerId);
         cost = x;
-        game.spendEnergy(controller, cost);
+        
         text = targetPlayer + " loots " + x;
-        game.addToStack(this);
+        
     }
     
     @Override

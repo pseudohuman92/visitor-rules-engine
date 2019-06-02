@@ -35,7 +35,7 @@ public class KillTeam extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && counters.getOrDefault(CHARGE, 0) > 0;
+        return super.canActivate(game) && counters.getOrDefault(CHARGE, 0) > 0;
     }
 
     @Override

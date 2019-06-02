@@ -7,7 +7,8 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
   },
   {
     "Code": "BA01",
@@ -17,7 +18,8 @@
     "Effect": "Possess target item that costs 3 or less.",
     "Health": "",
     "Energy": 3,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": ""
   },
   {
     "Code": "BA02",
@@ -27,7 +29,8 @@
     "Effect": "Target player loots X",
     "Health": "",
     "Energy": "X",
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": "I hope these won't be missed"
   },
   {
     "Code": "BA03",
@@ -37,7 +40,8 @@
     "Effect": "Additional Cost - Sacrifice an item.\nDraw 2 cards.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": "Everything's for sale...at a certain price"
   },
   {
     "Code": "BA04",
@@ -47,7 +51,8 @@
     "Effect": "Opponent chooses an item he controls, posses that item.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": "Psychomancers are particularly adept at targeting the weakest part of an opponent's mind"
   },
   {
     "Code": "BA05",
@@ -57,7 +62,8 @@
     "Effect": "Opponent discards an Spell.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": ""
   },
   {
     "Code": "BA06",
@@ -67,7 +73,8 @@
     "Effect": "Discard the top ally of the opponent’s deck that costs X or less.",
     "Health": "",
     "Energy": "X",
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": "one can never be too cautious when dealing with potential political rivals"
   },
   {
     "Code": "BR01",
@@ -77,7 +84,8 @@
     "Effect": "Target ally's loyalty becomes 0.",
     "Health": "",
     "Energy": 4,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": "A single perceived misstep can cause a cascade of real ones and the demise of a friendship"
   },
   {
     "Code": "BI01",
@@ -87,7 +95,8 @@
     "Effect": "Activate:\n  Loot 1",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": ""
   },
   {
     "Code": "BI02",
@@ -97,7 +106,8 @@
     "Effect": "Sacrifice an item, Activate: \n  Deal 2 damage to your opponent. \n  If sacrificed item belongs to him, deal 3 damage instead.",
     "Health": 3,
     "Energy": 4,
-    "Knowledge": "BBB"
+    "Knowledge": "BBB",
+    "Flavor": ""
   },
   {
     "Code": "BI03",
@@ -107,7 +117,8 @@
     "Effect": "Sacrifice an Item: \n  Gain 1 Energy. \n  If that item is owned by the opponent gain 1 additional energy.",
     "Health": 3,
     "Energy": 4,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": ""
   },
   {
     "Code": "BI04",
@@ -117,7 +128,8 @@
     "Effect": "Activate, Sacrifice ~: \n  Draw a card from your scrapyard then \n  discard a card.",
     "Health": 3,
     "Energy": 3,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": "To go against the very fabric of reality must have high reward, for it has an excetionally high price"
   },
   {
     "Code": "BI05",
@@ -127,7 +139,8 @@
     "Effect": "3, Activate: \n  Draw top item of opponent's deck.",
     "Health": 3,
     "Energy": 3,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": "Others call it the Devil's Workshop"
   },
   {
     "Code": "BI06",
@@ -137,7 +150,8 @@
     "Effect": "Condition - Control a card you don't own. \n  Activate: \n    Deal 2 damage.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": "Many psychic chains are made to tighten as the victim struggles against them"
   },
   {
     "Code": "BI07",
@@ -147,7 +161,8 @@
     "Effect": "3, Sacrifice ~, Activate: \n  Possess target item.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": ""
   },
   {
     "Code": "BI08",
@@ -157,7 +172,8 @@
     "Effect": "1, Activate, Sacrifice ~: \n  Look at opponent's hand and choose an Spell from it. \n  They discard it.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": "To gaze into another mind and erase a thought from it is a wonderful feeling, just not for them."
   },
   {
     "Code": "BP01",
@@ -167,7 +183,8 @@
     "Effect": "Trigger - When you possess a card \n  Deal 2 damage to possessed card's controller",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "B"
+    "Knowledge": "B",
+    "Flavor": ""
   },
   {
     "Code": "BP02",
@@ -177,7 +194,8 @@
     "Effect": "Trigger - When opponent discards a card\n  Deal 2 damage to opponent.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": ""
   },
   {
     "Code": "BL01",
@@ -187,7 +205,8 @@
     "Effect": "3, Activate: +2 Loyalty\n-1 Loyalty, Activate:\n  Favor 2 - Draw the top item of opponent's deck.",
     "Health": 5,
     "Energy": 2,
-    "Knowledge": "BB"
+    "Knowledge": "BB",
+    "Flavor": "Your money or your life"
   },
   {
     "Code": "",
@@ -197,7 +216,8 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
   },
   {
     "Code": "UA01",
@@ -207,7 +227,8 @@
     "Effect": "Purge all copies of a target card from your scrapyard. \nDeal that many damage.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "UU"
+    "Knowledge": "UU",
+    "Flavor": ""
   },
   {
     "Code": "UA02",
@@ -217,7 +238,8 @@
     "Effect": "Transmute target item into Junk",
     "Health": "",
     "Energy": 3,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "UA03",
@@ -227,7 +249,8 @@
     "Effect": "Search top 4 cards of your deck for a kit card and put into play. \nPut rest to the bottom of your library.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "UA04",
@@ -237,7 +260,8 @@
     "Effect": "Choose an item from opponent's hand and transform it into Junk",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "UU"
+    "Knowledge": "UU",
+    "Flavor": "Machines for the sole purpose of destroying their own kind. Truely made in their creator's image."
   },
   {
     "Code": "UA05",
@@ -247,7 +271,8 @@
     "Effect": "Additional Cost - Purge 3 items from your scrapyard. \nTransmute target item you control into a copy of target item in your scrapyard.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "UUU"
+    "Knowledge": "UUU",
+    "Flavor": "What has been made and lost can be made again"
   },
   {
     "Code": "UI01",
@@ -257,7 +282,8 @@
     "Effect": "Discard 2: \n  Transform ~ into AI01.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "UU"
+    "Knowledge": "UU",
+    "Flavor": ""
   },
   {
     "Code": "UI02",
@@ -267,7 +293,8 @@
     "Effect": "Shuffle 3 Junk into your deck, Activate: \n  Deal 3 damage.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "UI03",
@@ -277,7 +304,8 @@
     "Effect": "1, Activate: \n  Look at the top 2 cards of your library. \n  You may discard any number of them. \n  Put the rest in the same order.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "UI04",
@@ -287,7 +315,8 @@
     "Effect": "1, Discard 1: \n  Transform ~ into AI02.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "UI05",
@@ -297,7 +326,8 @@
     "Effect": "1, Activate: \n  Look at the top 2 cards of your deck. \n  Draw one. \n  Transform other into junk and shuffle into the deck.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "UU"
+    "Knowledge": "UU",
+    "Flavor": "To gain information about the future is to destroy infinite potential futures"
   },
   {
     "Code": "UI06",
@@ -307,7 +337,8 @@
     "Effect": "Discard 1, Purge 1: \n  Gain 1 Energy",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "UU"
+    "Knowledge": "UU",
+    "Flavor": ""
   },
   {
     "Code": "UI07",
@@ -317,7 +348,8 @@
     "Effect": "X, Sacrifice ~: \n  Look at opponent's deck. \n  Choose a card that costs X or less from it. \n  Transform chosen card into junk.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "UU"
+    "Knowledge": "UU",
+    "Flavor": "Ironically, never misfires"
   },
   {
     "Code": "UI08",
@@ -327,7 +359,8 @@
     "Effect": "Discard a Junk: Charge 1.\nSacrifice an Item: Charge 1. \nIf it has 3 charges, transform ~ into AI03",
     "Health": 3,
     "Energy": 3,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "UL01",
@@ -337,7 +370,8 @@
     "Effect": "Discard an Item, Activate: +3 Loyalty\nIf ~ has 6 or more loyalty, Transform it to AL01",
     "Health": 5,
     "Energy": 1,
-    "Knowledge": "U"
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -347,7 +381,8 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
   },
   {
     "Code": "YA01",
@@ -357,7 +392,8 @@
     "Effect": "Gain reflect 1.\nShuffle Temporal Reflection back into your deck.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "YYY"
+    "Knowledge": "YYY",
+    "Flavor": "I think I've seen this trick before..."
   },
   {
     "Code": "YA02",
@@ -367,7 +403,8 @@
     "Effect": "Cancel target Spell.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "Y"
+    "Knowledge": "Y",
+    "Flavor": "A fine lesson in the art of denial"
   },
   {
     "Code": "YA03",
@@ -377,7 +414,8 @@
     "Effect": "Cancel target card.",
     "Health": "",
     "Energy": 3,
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": "a finer lession in the art of denial"
   },
   {
     "Code": "YA04",
@@ -387,7 +425,8 @@
     "Effect": "Recover X. \nPurge ~",
     "Health": "",
     "Energy": "2X",
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": ""
   },
   {
     "Code": "YA05",
@@ -397,7 +436,8 @@
     "Effect": "Return target Spell from scrapyard to your hand.\nPurge ~",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "Y"
+    "Knowledge": "Y",
+    "Flavor": "Let's try this again"
   },
   {
     "Code": "YA06",
@@ -407,7 +447,8 @@
     "Effect": "Each player draws 3 cards",
     "Health": "",
     "Energy": 3,
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": ""
   },
   {
     "Code": "YI01",
@@ -417,7 +458,8 @@
     "Effect": "Charge 4.\n3, Sacrifice ~: \n  Gain shield X.\n  X = # of charge counters",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "Y"
+    "Knowledge": "Y",
+    "Flavor": ""
   },
   {
     "Code": "YI02",
@@ -427,7 +469,8 @@
     "Effect": "Charge 3.\n3, Sacrifice ~: \n  Gain reflect X\n  X = # of charge counters",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": "Less protective and more volitile than the MK5 version, this was nevertheless considered a major improvement"
   },
   {
     "Code": "YI03",
@@ -437,7 +480,8 @@
     "Effect": "2, Activate: \n  Create and draw a YI01 or YI02.",
     "Health": 3,
     "Energy": 3,
-    "Knowledge": "YYY"
+    "Knowledge": "YYY",
+    "Flavor": ""
   },
   {
     "Code": "YI04",
@@ -447,7 +491,8 @@
     "Effect": "2X, Activate: \n  Target item Charge X.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": "A place to store all excess N's"
   },
   {
     "Code": "YI05",
@@ -457,7 +502,8 @@
     "Effect": "2, Activate:\n  Gain reflect 1.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": ""
   },
   {
     "Code": "YI06",
@@ -467,7 +513,8 @@
     "Effect": "Sacrifice an item, Activate:\n  Deal X damage to opponent, \n  where X is # of charge counter on sacrificed item.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "YY"
+    "Knowledge": "YY",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -477,17 +524,19 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
   },
   {
-    "Code": "RA01",
+    "Code": "RS01",
     "Name": "Forced Retreat",
     "Type": "Spell",
     "Subtype": "",
     "Effect": "Return target item to controller's hand. \nDeal 1 damage to opponent.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "R"
+    "Knowledge": "R",
+    "Flavor": "Beat them back!"
   },
   {
     "Code": "RA02",
@@ -497,7 +546,8 @@
     "Effect": "Put target item on top of controller's deck",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": ""
   },
   {
     "Code": "RA03",
@@ -507,7 +557,8 @@
     "Effect": "Deal 2 damage. \nShuffle ~ to your deck.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": "May it never walk too close to you"
   },
   {
     "Code": "RA04",
@@ -517,7 +568,8 @@
     "Effect": "Additional Cost \n  Shuffle a card from your hand to your deck. \nDraw two cards.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "R"
+    "Knowledge": "R",
+    "Flavor": "There's never a shortage of bodies during wartime"
   },
   {
     "Code": "RA05",
@@ -527,7 +579,8 @@
     "Effect": "Additional Cost \n  Return an item you control to your hand. \nDeal 4 damage.",
     "Health": "",
     "Energy": 1,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": "Anvil often uses extractions as an excuse to raze something to the ground"
   },
   {
     "Code": "RA06",
@@ -537,7 +590,8 @@
     "Effect": "Return target Spell to its controller's hand.",
     "Health": "",
     "Energy": 2,
-    "Knowledge": "R"
+    "Knowledge": "R",
+    "Flavor": ""
   },
   {
     "Code": "RI01",
@@ -547,7 +601,8 @@
     "Effect": "1, Activate: \n  Deal 2 damage.",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "R"
+    "Knowledge": "R",
+    "Flavor": "Simple, violent, and cheap. Anvil's 3 favourite words"
   },
   {
     "Code": "RI02",
@@ -557,7 +612,8 @@
     "Effect": "Activate: \n  Return ~ and target item to controller's hand.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": ""
   },
   {
     "Code": "RI03",
@@ -567,7 +623,8 @@
     "Effect": "Charge 3. \n1, Discharge 1, Activate: \n  Deal 2 damage",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": ""
   },
   {
     "Code": "RI04",
@@ -577,7 +634,8 @@
     "Effect": "Charge X.\n1, Activate, Sacrifice ~:\n  Deal X damage, X = # of charge counters.",
     "Health": 3,
     "Energy": "X+1",
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": "The pinnicle of angry efficiency"
   },
   {
     "Code": "RI05",
@@ -587,7 +645,8 @@
     "Effect": "Discard a card: \n  Charge 1. \nDischarge 1, Activate: \n  Deal 2 damage",
     "Health": 3,
     "Energy": 2,
-    "Knowledge": "RRR"
+    "Knowledge": "RRR",
+    "Flavor": ""
   },
   {
     "Code": "RI06",
@@ -597,7 +656,8 @@
     "Effect": "Sacrifice an Item, Activate: \n  Deal X damage. \n  X = cost of sacrificed item.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": ""
   },
   {
     "Code": "RI07",
@@ -607,7 +667,8 @@
     "Effect": "X, Purge X, Activate: \n  Deal X damage.",
     "Health": 3,
     "Energy": 1,
-    "Knowledge": "RR"
+    "Knowledge": "RR",
+    "Flavor": "Forget the past, focus on the flamethrower infront of you"
   },
   {
     "Code": "RL01",
@@ -617,167 +678,8 @@
     "Effect": "Pay 2 life, Activate: +2 Loyalty\n-X Loyalty, Activate: \n  Favor 1 - Deal 2X damage to opponent",
     "Health": 5,
     "Energy": 1,
-    "Knowledge": "R"
-  },
-  {
-    "Code": "",
-    "Name": "",
-    "Type": "",
-    "Subtype": "",
-    "Effect": "",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT01",
-    "Name": "Neuromancy Vol. I",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain BU",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT02",
-    "Name": "Horrors in Battle",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain BR",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT03",
-    "Name": "Art of War",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain UR",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT04",
-    "Name": "Mystical Mixology",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain BB",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT05",
-    "Name": "Xenoengineering ",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain UU",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT06",
-    "Name": "Tactical Briefing",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain RR",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT07",
-    "Name": "",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain GG",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT08",
-    "Name": "",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain BG",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT09",
-    "Name": "",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain GR",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "NT10",
-    "Name": "",
-    "Type": "Tome",
-    "Subtype": "",
-    "Effect": "Study:\n  Gain GU",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "",
-    "Name": "",
-    "Type": "",
-    "Subtype": "",
-    "Effect": "",
-    "Health": "",
-    "Energy": "",
-    "Knowledge": ""
-  },
-  {
-    "Code": "AI01",
-    "Name": "Meltdown",
-    "Type": "Item",
-    "Subtype": "Bomb",
-    "Effect": "Destroy: \n  Deal 5 damage.",
-    "Health": 3,
-    "Energy": 1,
-    "Knowledge": ""
-  },
-  {
-    "Code": "AI02",
-    "Name": "Scrap Grenade",
-    "Type": "Item",
-    "Subtype": "Weapon",
-    "Effect": "Purge a Junk from your hand, Activate: \n  Deal 3 damage.",
-    "Health": 3,
-    "Energy": 3,
-    "Knowledge": "UUU"
-  },
-  {
-    "Code": "AI03",
-    "Name": "",
-    "Type": "Item",
-    "Subtype": "",
-    "Effect": "Discharge 1, Activate: \n  Deal 2 damage.\n  If ~ has no counters on it, transform ~ to UI08",
-    "Health": 3,
-    "Energy": 0,
-    "Knowledge": "U"
-  },
-  {
-    "Code": "AL01",
-    "Name": "",
-    "Type": "Ally",
-    "Subtype": "Alien Trader",
-    "Effect": "-2 Loyalty, Activate: \n  Favor 1 - Return target Item from your scrapyard to play.\nIf ~ has no loyalty, Transform it to UL01",
-    "Health": 5,
-    "Energy": 2,
-    "Knowledge": "U"
+    "Knowledge": "R",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -787,7 +689,173 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "GL01",
+    "Name": "Grand Orator",
+    "Type": "Ally",
+    "Subtype": "Human Bard",
+    "Effect": "2, Activate: +1 Loyalty.\n-1 Loyalty, Activate:\n      Favor 1 - All other allies you control gain 1 Loyalty",
+    "Health": 2,
+    "Energy": 2,
+    "Knowledge": "GG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GL02",
+    "Name": "Mystic Gnome",
+    "Type": "Ally",
+    "Subtype": "Gnome Wizard",
+    "Effect": "1, Activate: +1 Loyalty \n-2 Loyalty, Activate: \n    Favor 1 - Deal X damage to a target. \n    X = Your max energy.",
+    "Health": 2,
+    "Energy": 1,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "GI01",
+    "Name": "Puzzle Box",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "2, Activate: \n    Study Puzzle Box.",
+    "Health": 1,
+    "Energy": 1,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "GI02",
+    "Name": "Examination Tools",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "1, Pay 3 life, Activate: \n    You can study one additional time.",
+    "Health": 1,
+    "Energy": 2,
+    "Knowledge": "GG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GI03",
+    "Name": "Energy Cannon ",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "X, Activate: \n    Deal X damage.",
+    "Health": 6,
+    "Energy": 7,
+    "Knowledge": "GGGG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GI04",
+    "Name": "Mystic Fruit",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "When ~ enters play: \n    Add 1 Loyalty up to one target ally. \nActivate, Sacrifice ~: \n    Target Ally gains 2 health.",
+    "Health": 1,
+    "Energy": 1,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "GR01",
+    "Name": "Unity",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Target ally gains X loyalty",
+    "Health": "",
+    "Energy": "X+2",
+    "Knowledge": "GG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GR02",
+    "Name": "Mass Energy Conversion",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "You may study X additional times this turn",
+    "Health": "",
+    "Energy": "2X",
+    "Knowledge": "GGG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GR03",
+    "Name": "Coordination",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Decrease Favor counter of each Ally you control by 1",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "GG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GR04",
+    "Name": "Coordinated Attack",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Deal X damage to your opponent and each damageable they control.\nX = 1+ num of allies you control.",
+    "Health": "",
+    "Energy": 5,
+    "Knowledge": "GGG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GR05",
+    "Name": "Channel",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Gain 4 energy.",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "GG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GS01",
+    "Name": "Power Pulse",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Deal 1 damage to a target for every 2 maximum energy you have.",
+    "Health": "",
+    "Energy": 4,
+    "Knowledge": "GG",
+    "Flavor": ""
+  },
+  {
+    "Code": "GS02",
+    "Name": "Protective Manuver",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Target ally gains Shield 3",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "GS03",
+    "Name": "Gratitude",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Target Ally you control gains 2 Loyalty",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "GS04",
+    "Name": "Energize",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Study the top studiable card of your deck",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "G",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -797,7 +865,118 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT01",
+    "Name": "Neuromancy Vol. I",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BU",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT02",
+    "Name": "Horrors in Battle",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT03",
+    "Name": "Art of War",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain UR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT04",
+    "Name": "Mystical Mixology",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BB",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT05",
+    "Name": "Xenoengineering ",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain UU",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT06",
+    "Name": "Tactical Briefing",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain RR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT07",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain GG",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT08",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain BG",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT09",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain GR",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "NT10",
+    "Name": "",
+    "Type": "Tome",
+    "Subtype": "",
+    "Effect": "Study:\n  Gain GU",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -807,7 +986,52 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "AI01",
+    "Name": "Meltdown",
+    "Type": "Item",
+    "Subtype": "Bomb",
+    "Effect": "Destroy: \n  Deal 5 damage.",
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "",
+    "Flavor": ""
+  },
+  {
+    "Code": "AI02",
+    "Name": "Scrap Grenade",
+    "Type": "Item",
+    "Subtype": "Weapon",
+    "Effect": "Purge a Junk from your hand, Activate: \n  Deal 3 damage.",
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": "UUU",
+    "Flavor": "When life gives you lemons, make a lemon cannon"
+  },
+  {
+    "Code": "AI03",
+    "Name": "",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Discharge 1, Activate: \n  Deal 2 damage.\n  If ~ has no counters on it, transform ~ to UI08",
+    "Health": 3,
+    "Energy": 0,
+    "Knowledge": "U",
+    "Flavor": ""
+  },
+  {
+    "Code": "AL01",
+    "Name": "",
+    "Type": "Ally",
+    "Subtype": "Alien Trader",
+    "Effect": "-2 Loyalty, Activate: \n  Favor 1 - Return target Item from your scrapyard to play.\nIf ~ has no loyalty, Transform it to UL01",
+    "Health": 5,
+    "Energy": 2,
+    "Knowledge": "U",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -817,6 +1041,7 @@
     "Effect": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "",
+    "Flavor": ""
   }
 ]

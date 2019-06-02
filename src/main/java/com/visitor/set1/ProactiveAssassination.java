@@ -36,8 +36,8 @@ public class ProactiveAssassination extends Spell{
     protected void beforePlay(Game game) {
         x = game.selectX(controller, game.getEnergy(controller));
         cost = x;
-        game.spendEnergy(controller, cost);
-        game.addToStack(this);
+        
+        
     }
     
     @Override

@@ -35,7 +35,7 @@ public class QuantumStateExtractor extends Item{
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasEnergy(controller, 1);
+        return super.canActivate(game) && game.hasEnergy(controller, 1);
     }
     
     @Override

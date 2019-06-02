@@ -27,7 +27,7 @@ public class MindSlavesThrash extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.controlsUnownedCard(controller, PLAY);
+        return super.canActivate(game) && game.controlsUnownedCard(controller, PLAY);
     }
 
     @Override

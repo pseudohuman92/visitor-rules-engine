@@ -35,8 +35,8 @@ public class WeakWill extends Spell {
     protected void beforePlay(Game game) {
         targets = game.selectFromZone(controller, BOTH_PLAY, c->{return (c instanceof Item && c.cost <= 3);}, 1, false);
         target = targets.get(0);
-        game.spendEnergy(controller, cost);
-        game.addToStack(this);
+        
+        
     }
     
     @Override

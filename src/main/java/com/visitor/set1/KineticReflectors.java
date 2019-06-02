@@ -27,7 +27,7 @@ public class KineticReflectors extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasEnergy(controller, 2);
+        return super.canActivate(game) && game.hasEnergy(controller, 2);
     }
     
     @Override

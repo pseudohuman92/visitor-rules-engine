@@ -34,7 +34,7 @@ public class ShockTroop extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return !depleted && game.hasEnergy(controller, 1)&&game.hasCardsIn(controller, SCRAPYARD, 1);
+        return super.canActivate(game) && game.hasEnergy(controller, 1)&&game.hasCardsIn(controller, SCRAPYARD, 1);
     }
     
     @Override
