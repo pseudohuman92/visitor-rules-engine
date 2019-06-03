@@ -28,6 +28,7 @@ class Profile extends Component {
   };
 
   render() {
+    const { username } = this.props
     const { value } = this.state;
     return (
       <div>
@@ -41,7 +42,7 @@ class Profile extends Component {
                   variant="h1"
                   style={{ fontFamily: "Cinzel, serif" }}
                 >
-                  Profile Page
+                  {username+"'s Profile"}
                 </Typography>
               </Center>
               <Button onClick={this.play} text="Play" />
