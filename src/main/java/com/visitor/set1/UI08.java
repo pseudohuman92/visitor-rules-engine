@@ -73,7 +73,7 @@ public class UI08 extends Item {
             choices.add(new Ability(this, "Sacrifice an Item: Charge 1.",
             (x1) -> {
                 target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
-                game.destroy(target);
+                game.sacrifice(target);
                 game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {
                         addCounters(CHARGE, 1);

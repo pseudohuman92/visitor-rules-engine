@@ -5,11 +5,10 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Passive;
+import com.visitor.card.types.TriggeringPassive;
 import com.visitor.game.Event;
-import static com.visitor.game.Event.POSSESSION;
+import static com.visitor.game.Event.EventType.*;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
@@ -19,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.BLACK;
  *
  * @author pseudo
  */
-public class BP01 extends Passive implements Triggering {
+public class BP01 extends TriggeringPassive {
 
     public BP01(String owner) {
         super("BP01", 2, new Hashmap(BLACK, 1), 
@@ -27,17 +26,7 @@ public class BP01 extends Passive implements Triggering {
                 "  Deal 2 damage to possessed card's controller", owner);
     }
 
-    @Override
-    public void resolve(Game game) {
-        super.resolve(game);
-        game.registerTriggeringCard(controller, this);
-    }
     
-    @Override
-    public void destroy(Game game) {
-        super.destroy(game);
-        game.removeTriggeringCard(this);
-    }
     
     @Override
     public void checkEvent(Game game, Event event) {

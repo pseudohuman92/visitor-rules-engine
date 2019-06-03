@@ -39,11 +39,11 @@ public class YI06 extends Item {
     public void activate(Game game) {
         UUID selection = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         int x = game.getCard(selection).counters.getOrDefault(CHARGE, 0);
-        game.destroy(selection);
+        game.sacrifice(selection);
         game.deplete(id);
         game.addToStack(new Ability(this, game.getOpponentName(controller)+" purges " + x,
         (y) -> {
-            game.damagePlayer(id, game.getOpponentName(controller), x);
+            game.dealDamage(id, game.getOpponentId(controller), x);
         }));
     }
 }

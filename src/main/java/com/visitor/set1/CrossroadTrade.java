@@ -36,7 +36,7 @@ public class CrossroadTrade extends Spell{
     @Override
     protected void beforePlay(Game game) {
         target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
-        game.destroy(target);
+        game.sacrifice(target);
     }
     
     @Override

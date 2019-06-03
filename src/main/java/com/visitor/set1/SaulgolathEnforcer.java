@@ -36,7 +36,7 @@ public class SaulgolathEnforcer extends Ally {
         Arraylist<Card> choices = new Arraylist<>();
         choices.add(new Ability(this, "Pay 2 life, Activate: +2 Loyalty",
         (x1) -> {
-            deplete();
+            game.deplete(id);
             game.payLife(controller, 2);
             game.addToStack(new Ability(this, "+2 Loyalty",
             (x2) -> {
@@ -49,14 +49,14 @@ public class SaulgolathEnforcer extends Ally {
                     "  Favor 1 - Deal 2X damage to opponent.",
             (x1) -> {
                 int x = game.selectX(controller, loyalty);
-                deplete();
+                game.deplete(id);
                 loyalty -=x;
                 favor = 1;
                 favorAbility =  new Ability(this, "Deal " + 2*x +" damage to opponent.",
                     (x2) -> {
-                        game.dealDamage(id, game.getOpponentUid(controller), 2*x);
+                        game.dealDamage(id, game.getOpponentId(controller), 2*x);
                     },
-                new Arraylist<>(game.getOpponentUid(controller)));
+                new Arraylist<>(game.getOpponentId(controller)));
             }));
         }
         Arraylist<UUID> selection = game.selectFromList(controller, choices, Predicates::any, 1, false);

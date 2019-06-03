@@ -12,6 +12,7 @@ import com.visitor.card.types.Junk;
 import com.visitor.card.types.Ritual;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Player;
+import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
  *
@@ -49,6 +50,10 @@ public abstract class Predicates {
     
     public static boolean isDamageable(Object o) {
         return o instanceof Player || (o instanceof Card && ((Card)o).isDamageable());
+    }
+    
+    public static boolean isGreen (Card c) {
+        return c.knowledge.containsKey(GREEN);
     }
 
     public static boolean any(Object o) {

@@ -29,7 +29,7 @@ public class CoordinatedAttack extends Ritual {
     @Override
     protected void duringResolve (Game game){
         x = game.getAllFrom(controller, PLAY, Predicates::isAlly).size()+1;
-        game.dealDamage(id, game.getOpponentUid(controller), x);
+        game.dealDamage(id, game.getOpponentId(controller), x);
         game.getAllFrom(game.getOpponentName(controller), PLAY, Predicates::isDamageable).forEach(
             c->{
                 game.dealDamage(id, c.id, x);

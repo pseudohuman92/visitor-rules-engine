@@ -45,7 +45,7 @@ public class TheHighwayman extends Ally {
         if (game.hasEnergy(controller, 3)){
             choices.add(new Ability(this, "Pay 3: +2 Loyalty",
             (x1) -> {
-                deplete();
+                game.deplete(id);
                 game.spendEnergy(controller, 3);
                 game.addToStack(new Ability(this, "+2 Loyalty",
                 (x2) -> {
@@ -57,7 +57,7 @@ public class TheHighwayman extends Ally {
             choices.add(new Ability(this, "-1 Loyalty: Favor 2:\n" +
                         "  Draw the top item of opponent's deck.",
             (x1) -> {
-                deplete();
+                game.deplete(id);
                 loyalty -=1;
                 favor = 2;
                 favorAbility =  new Ability(this, "Draw the top item of opponent's deck.",

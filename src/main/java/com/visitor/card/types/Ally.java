@@ -8,7 +8,7 @@ package com.visitor.card.types;
 import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
-import static com.visitor.game.Event.TURN_START;
+import static com.visitor.game.Event.EventType.TURN_START;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -42,7 +42,7 @@ public abstract class Ally extends Card
     @Override
     protected void duringResolve(Game game) {
         game.putTo(controller, this, PLAY);
-        game.registerTriggeringCard(controller, this);
+        game.addTriggeringCard(controller, this);
     }
     
     @Override

@@ -38,7 +38,7 @@ public class UncertaintyGun extends Item {
     @Override
     public void activate(Game game) {
         x = game.selectX(controller, game.getPlayer(controller).energy);
-        game.destroy(id);
+        game.sacrifice(id);
         game.addToStack(new Ability(this, 
             "  Look at opponent's deck. \n" +
             "  Choose a card that costs "+x+" or less from it. \n" +

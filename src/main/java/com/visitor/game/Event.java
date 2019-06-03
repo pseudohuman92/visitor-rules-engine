@@ -6,6 +6,7 @@
 package com.visitor.game;
 
 import com.visitor.card.types.Card;
+import static com.visitor.game.Event.EventType.*;
 import com.visitor.helpers.Arraylist;
 
 /**
@@ -14,13 +15,10 @@ import com.visitor.helpers.Arraylist;
  */
 public class Event {
     
-    //Event types
-    public static final String POSSESSION = "POSSESSION";
-    public static final String TURN_START = "TURN_START";
-    public static final String TURN_END = "TURN_END";
-    public static final String DRAW = "DRAW";
-    public static final String DISCARD = "DISCARD";
-    
+    public enum EventType {
+        POSSESSION, TURN_START, TURN_END, DRAW, DISCARD, STUDY,
+        DESTROY;
+    }
     
     public static Event draw (String username, Arraylist<Card> drawn){
         Event e = new Event(DRAW);
@@ -55,9 +53,24 @@ public class Event {
         e.data.add(turnPlayer);
         return e;
     }
-    public String type;
+    
+    public static Event study (String studyingPlayer, Card studiedCard){
+        Event e = new Event(STUDY);
+        e.data.add(studyingPlayer);
+        e.data.add(studiedCard);
+        return e;
+    }
+    
+    public static Event destroy (Card destroyingCard, Card destroyedCard){
+        Event e = new Event(DESTROY);
+        e.data.add(destroyingCard);
+        e.data.add(destroyedCard);
+        return e;
+    }
+    
+    public EventType type;
     public Arraylist<Object> data;
-    private Event(String l){
+    private Event(EventType l){
         type = l;
         data = new Arraylist<>();
     }

@@ -41,7 +41,7 @@ public class HandofIllWill extends Item {
     public void activate(Game game) {
         target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         game.deplete(id);
-        game.destroy(target);
+        game.sacrifice(target);
         game.addToStack(new Ability(this, "deal " + (game.ownedByOpponent(target)? 3:2) +  
             " damage to " + game.getOpponentName(controller),
             (x) -> { game.dealDamage(id, target, (game.ownedByOpponent(target)?3:2)); }));

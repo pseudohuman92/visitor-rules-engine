@@ -47,7 +47,7 @@ public class GrandOrator extends Ally {
             choices.add(new Ability(this, 
                     "2, Activate: +1 Loyalty.",
             (x1) -> {
-                deplete();
+                game.deplete(id);
                 game.spendEnergy(controller, 2);
                 game.addToStack(new Ability(this, "+1 Loyalty",
                 (x2) -> {
@@ -60,7 +60,7 @@ public class GrandOrator extends Ally {
                     "-1 Loyalty, Activate:\n" +
                     "      Favor 1 - All other allies you control gain 1 Loyalty",
             (x1) -> {
-                deplete();
+                game.deplete(id);
                 loyalty -=1;
                 favor = 1;
                 favorAbility =  new Ability(this, "All other allies you control gain 1 Loyalty.",

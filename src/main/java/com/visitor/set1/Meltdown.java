@@ -35,7 +35,7 @@ public class Meltdown extends Item {
     
     @Override
     public void activate(Game game) {
-        game.destroy(id);
+        game.sacrifice(id);
         target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Ability(this, "Deal 5 damage",
         (y) -> {

@@ -47,7 +47,7 @@ public class UL01 extends Ally {
     public void activate(Game game) {
         UUID target = game.selectFromZone(controller, HAND, Predicates::isItem, 1, false).get(0);
         game.discard(controller, target);
-        deplete();
+        game.deplete(id);
         loyalty +=3;
         if(loyalty >= 6){
             game.replaceWith(this, new AL01(this));

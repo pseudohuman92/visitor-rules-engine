@@ -45,7 +45,7 @@ public class AL01 extends Ally {
     public void activate(Game game) {
 
         UUID target = game.selectFromZone(controller, SCRAPYARD, Predicates::isItem, 1, false).get(0);
-        deplete();
+        game.deplete(id);
         loyalty -=2;
         favor = 1;
         favorAbility =  new Ability(this, 

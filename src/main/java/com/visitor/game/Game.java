@@ -57,6 +57,7 @@ public class Game {
     int passCount;
     UUID id;
     ArrayBlockingQueue<Object> response;
+    
     Hashmap<String, Arraylist<Triggering>> triggeringCards;
     Arraylist<Event> eventQueue;
     boolean endProcessed;
@@ -183,12 +184,23 @@ public class Game {
         }
     }
 
-    public void study(String username, UUID cardID) {
-        extractCard(cardID).study(this, true);
+    public void addEvent(Event e, boolean process){
+        eventQueue.add(e);
+        if(process){
+            processEvents();
+        }
     }
     
-    public void study(String username, UUID cardID, boolean regular) {
-        extractCard(cardID).study(this, regular);
+    public void studyCard(String username, UUID cardID) {
+        Card c = extractCard(cardID);
+        c.study(this, true);
+        addEvent(Event.study(username, c), true);
+    }
+    
+    public void studyCard(String username, UUID cardID, boolean regular) {
+        Card c = extractCard(cardID);
+        c.study(this, regular);
+        addEvent(Event.study(username, c), regular);   
     }
     
     public void redraw(String username) {
@@ -207,11 +219,15 @@ public class Game {
     
     // Turn / phase methods
     public void processEvents(){
-        while(!eventQueue.isEmpty()){
-            Event e = eventQueue.remove(0);
-            out.println("Processing Event: " + e.type);
-            triggeringCards.get(turnPlayer).forEachInOrder(c ->{ c.checkEvent(this, e);});
-            triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c ->{ c.checkEvent(this, e);});
+        if (!eventQueue.isEmpty()){
+            Arraylist<Event> tempQueue = eventQueue;
+            eventQueue = new Arraylist<>();
+            while(!tempQueue.isEmpty()){
+                Event e = tempQueue.remove(0);
+                out.println("Processing Event: " + e.type);
+                triggeringCards.get(turnPlayer).forEachInOrder(c ->{ c.checkEvent(this, e);});
+                triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c ->{ c.checkEvent(this, e);});
+            }
         }
     }
     
@@ -278,7 +294,7 @@ public class Game {
         return null;
     }
 
-    public UUID getOpponentUid(String username) {
+    public UUID getOpponentId(String username) {
         return players.get(getOpponentName(username)).id;
     }
     
@@ -302,7 +318,7 @@ public class Game {
                 passCount = 0;
                 activePlayer = turnPlayer;
             } else {
-                updatePlayers();
+            updatePlayers();
             }
         }
     }
@@ -379,7 +395,7 @@ public class Game {
         }
     }
     
-    public void drawByID(String username, UUID cardID) {
+    public void draw(String username, UUID cardID) {
         players.get(username).hand.add(extractCard(id));
     }
     
@@ -387,25 +403,26 @@ public class Game {
         players.get(username).voidPile.add(extractCard(id));
     }
 
-    public void destroy(UUID id){
-        Card item = extractCard(id);
-        item.destroy(this);
+    public void destroy(UUID sourceId, UUID targetId){
+        Card c = getCard(targetId);
+        addEvent(Event.destroy(getCard(sourceId), c), false);
+        c.destroy(this);
     }
     
     public void loot(String username, int x) {
-        draw(username, x);
+        Game.this.draw(username, x);
         discard(username, x);
     }
     
     public void discard(String username, int count){
         Arraylist<Card> d = players.get(username).discard(selectFromZone(username, Zone.HAND, Predicates::any, count, false));
-        eventQueue.add(Event.discard(username, d));
+        addEvent(Event.discard(username, d), false);
     }
     
     public void discard(String username, UUID cardID){
         Arraylist<UUID> temp = new Arraylist<>();
         temp.add(cardID);
-        eventQueue.add(Event.discard(username, players.get(username).discard(temp)));
+        addEvent(Event.discard(username, players.get(username).discard(temp)), false);
     }
     
     public void deplete(UUID id){
@@ -431,7 +448,7 @@ public class Game {
 
     public void possessTo(String newController, UUID cardID, Zone zone) {
         Card c = extractCard(cardID);
-        eventQueue.add(possession(c.controller, newController, new Arraylist<>(c)));
+        addEvent(possession(c.controller, newController, new Arraylist<>(c)), false);
         c.controller = newController;
         getZone(newController, zone).add(c);
     }
@@ -694,17 +711,17 @@ public class Game {
 
     private void processBeginEvents() {
         out.println("Starting Begin Triggers");
-        eventQueue.add(turnStart(turnPlayer));
-        processEvents();
+        addEvent(turnStart(turnPlayer), true);
         out.println("Ending Begin Triggers");
     }
 
     private void processEndEvents() {
-        eventQueue.add(turnEnd(turnPlayer));
-        processEvents();
+        out.println("Starting End Triggers");
+        addEvent(turnEnd(turnPlayer), true);
+        out.println("Ending End Triggers");
     }
 
-    public void registerTriggeringCard(String username, Triggering t) {
+    public void addTriggeringCard(String username, Triggering t) {
         triggeringCards.get(username).add(t);
     }
 
@@ -712,10 +729,10 @@ public class Game {
         triggeringCards.values().forEach(l->{l.remove(card);});
     }
 
-    public String getUsername(UUID targetPlayerId) {
+    public String getUsername(UUID playerId) {
         for (int i = 0; i < players.size(); i++){
             Player p = players.values().toArray(new Player[0])[i];
-            if (p.id.equals(targetPlayerId)) {
+            if (p.id.equals(playerId)) {
                 return p.username;
             }
         }
@@ -725,15 +742,11 @@ public class Game {
      public UUID getUserId(String username) {
         return players.get(username).id;
     }
-    
-    public void damagePlayer(UUID sourceId, String playerName, int damage){
-        players.get(playerName).dealDamage(this, damage, sourceId);
-    }
-    
+        
     public void dealDamage(UUID sourceId, UUID targetId, int damage){
         String username = getUsername(targetId);
         if (!username.isEmpty()){
-            damagePlayer(sourceId, username, damage);
+             players.get(username).dealDamage(this, damage, sourceId);
         } else {
             Card c = getCard(targetId);
             if (c != null && c.isDamageable()){
@@ -745,6 +758,15 @@ public class Game {
     public boolean isTurnPlayer(String username) {
         return turnPlayer.equals(username);
     }
+
+    public boolean hasMaxEnergy(String username, int count) {
+        return players.get(username).maxEnergy >= count;
+    }
+
+    public void removeMaxEnergy(String username, int count) {
+        players.get(username).maxEnergy -= count;
+    }
+    
     public enum Zone {
         DECK, HAND, PLAY, BOTH_PLAY, SCRAPYARD, VOID, STACK;
     }

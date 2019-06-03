@@ -42,7 +42,7 @@ public class PuzzleBox extends Item {
                 "Study Puzzle Box",
             (x) -> {
                 if(game.isIn(controller, id, PLAY)){
-                    game.study(controller, id, false);
+                    game.studyCard(controller, id, false);
                 }
             }));
     }

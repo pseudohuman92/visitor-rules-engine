@@ -39,7 +39,7 @@ public class RI06 extends Item {
     public void activate(Game game) {
         UUID selection = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
         int x = game.getCard(selection).cost;
-        game.destroy(selection);
+        game.sacrifice(selection);
         game.deplete(id);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Ability(this,

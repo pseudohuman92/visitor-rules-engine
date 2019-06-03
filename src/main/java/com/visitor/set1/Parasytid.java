@@ -38,7 +38,7 @@ public class Parasytid extends Item {
         game.deplete(id);
         game.spendEnergy(controller, 3);
         Arraylist<UUID> selected = game.selectFromZone(controller, BOTH_PLAY, Predicates::isItem, 1, false);
-        game.destroy(id);
+        game.sacrifice(id);
         game.addToStack(new Ability(this,
             "Possess target item",
             (x) -> {

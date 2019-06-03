@@ -59,7 +59,7 @@ public class GameServer {
     }
     
     void studyCard(UUID gameID, String username, UUID cardID) {
-        games.get(gameID).study(username, cardID);
+        games.get(gameID).studyCard(username, cardID);
         games.get(gameID).updatePlayers();
     }
     

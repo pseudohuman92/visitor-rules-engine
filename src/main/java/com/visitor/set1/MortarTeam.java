@@ -58,7 +58,7 @@ public class MortarTeam extends Item {
     @Override
     public void activate(Game game) {
         game.spendEnergy(controller, 1);
-        game.destroy(id);
+        game.sacrifice(id);
         int c = removeAllCounters(CHARGE);
         UUID target = game.selectDamageTargets(controller, 1, false).get(0);
         game.addToStack(new Ability(this,

@@ -74,9 +74,9 @@ public abstract class Card {
     public abstract boolean canPlay(Game game);
     
     /**
-     * Called by client to check if you can study this card in current game state.
-     * Default implementation just checks the game if the controller can study.
-     * OVERRIDE IF: Card has special conditions to be studied.
+     * Called by client to check if you can studyCard this card in current game state.
+     * Default implementation just checks the game if the controller can studyCard.
+ OVERRIDE IF: Card has special conditions to be studied.
      * @param game
      * @return
      */
@@ -102,7 +102,7 @@ public abstract class Card {
     }
 
     /**
-     * Called by the server when you choose to study this card.
+     * Called by the server when you choose to studyCard this card.
      * It increases player's maximum energy and adds knowledgePool.
      * OVERRIDE IF: Card has a special effect when studied or card is multicolor.
      * @param game
@@ -236,6 +236,9 @@ public abstract class Card {
         reflect = 0;
         health = Math.max(0, health - damage);
         game.dealDamage(id, source, temp);
+        if(health <= 0){
+            game.destroy(source, id);
+        }
     }
 
     public Types.Card.Builder toCardMessage() {
