@@ -117,12 +117,13 @@ function initializeFullCollection (){
   .then(r => r.text())
   .then(file => {
     JSON.parse(file).forEach(card => {
+      let name = card.Name !== ""?card.Name:card.Code;
       if (
-        card.Code !== "" &&
+        name !== "" &&
         !card.Code.startsWith("Code") &&
         !card.Code.startsWith("A")
       ) {
-        let name = card.Name !== ""?card.Name:card.Code;
+        
         result[name] = {
           name: name,
           type: card.Type,
