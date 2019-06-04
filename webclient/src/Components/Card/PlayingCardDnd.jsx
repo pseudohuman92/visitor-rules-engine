@@ -4,6 +4,8 @@ export const cardSource = {
   beginDrag(props) {
     return {
       sourceType: ItemTypes.CARD,
+      props: props,
+      size: props.size,
       playable: props.playableCards.includes(props.id),
       studyable: props.studyableCards.includes(props.id)
     };

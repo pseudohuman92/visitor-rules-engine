@@ -15,7 +15,6 @@
         "boundless-fitted-text": "1.1.0",
         "firebase": "6.1.0",
         "file-saver": "2.0.2",
-        "fit-svg-text": "0.1.2",
         "fluid-resize-react": "1.2.1",
         "prop-types": "15.7.2",
         "protobufjs": "6.8.8",
@@ -37,11 +36,10 @@
         "react-textfit": "1.1.0",
         "react-visibility-sensor": "5.0.2",
         "redux": "4.0.1",
-        "react-tailor":"0.3.1",
-        "react-svg-text":"0.1.2"
+        "react-container-dimensions": "1.4.1",
+        "react-touch": "0.4.4"
     },
     "devDependencies": {
-        "@babel/plugin-proposal-class-properties": "^7.4.4",
         "typescript": "3.5.1"
     },
     "scripts": {

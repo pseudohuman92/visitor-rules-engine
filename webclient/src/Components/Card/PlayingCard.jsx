@@ -1,6 +1,7 @@
 import React from "react";
-import { DragSource, DropTarget } from "react-dnd";
+import { DragSource, DropTarget} from "react-dnd";
 import { connect } from "react-redux";
+import { Preview } from 'react-dnd-multi-backend';
 
 import CardDisplay from "./CardDisplay";
 import { ItemTypes } from "../Helpers/Constants";
@@ -9,25 +10,22 @@ import { cardSource, cardTarget } from "./PlayingCardDnd";
 import proto from "../../protojs/compiled.js";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-
+import { withSize } from "react-sizeme";
 
 const mapStateToProps = state => {
   return {
-    phase : state.extendedGameState.phase,
+    phase: state.extendedGameState.phase,
     playableCards: state.extendedGameState.game.canPlay,
-    studyableCards : state.extendedGameState.game.canStudy,
-    activatableCards : state.extendedGameState.game.canActivate,
+    studyableCards: state.extendedGameState.game.canStudy,
+    activatableCards: state.extendedGameState.game.canActivate,
     selectedCards: state.extendedGameState.selectedCards,
     selectableCards: state.extendedGameState.selectableCards,
     displayTargets: state.extendedGameState.targets,
-    selectCountMax: state.extendedGameState.selectCountMax,
+    selectCountMax: state.extendedGameState.selectCountMax
   };
 };
 
-
-
 export class PlayingCard extends React.Component {
-
   onMouseEnter = event => {
     this.props.updateExtendedGameState({ targets: this.props.targets });
   };
@@ -57,12 +55,12 @@ export class PlayingCard extends React.Component {
 
     if (selected.includes(id)) {
       selected.splice(selected.indexOf(id), 1);
-      this.props.updateExtendedGameState({ 
+      this.props.updateExtendedGameState({
         selectedCards: selected
       });
     }
   };
-  
+
 
   render() {
     const {
@@ -77,7 +75,7 @@ export class PlayingCard extends React.Component {
       displayTargets,
       activatableCards,
       playableCards,
-      gameHandler,
+      gameHandler
     } = this.props;
 
     const activatable = activatableCards.includes(id);
@@ -109,8 +107,8 @@ export class PlayingCard extends React.Component {
       borderColor = "blue";
     } else if (playable) {
       borderColor = "blue";
-    } 
-    
+    }
+
     if (depleted) {
       opacity = 0.5;
     }
@@ -124,12 +122,13 @@ export class PlayingCard extends React.Component {
         onMouseLeave={this.onMouseLeave}
         style={this.props.style}
       >
-        <CardDisplay
-          opacity={opacity}
-          borderColor={borderColor}
-          onClick={clickHandler}
-          {...this.props}
-        />
+
+          <CardDisplay
+            opacity={opacity}
+            borderColor={borderColor}
+            onClick={clickHandler}
+            {...this.props}
+          />
       </div>
     );
   }
@@ -137,7 +136,8 @@ export class PlayingCard extends React.Component {
 
 PlayingCard = DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  connectDragPreview: connect.dragPreview(),
+  isDragging: monitor.isDragging(),
 }))(PlayingCard);
 
 PlayingCard = DropTarget(ItemTypes.CARD, cardTarget, (connect, monitor) => ({
@@ -146,4 +146,7 @@ PlayingCard = DropTarget(ItemTypes.CARD, cardTarget, (connect, monitor) => ({
   canDrop: monitor.canDrop()
 }))(PlayingCard);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withHandlers (PlayingCard));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withHandlers(withSize()(PlayingCard)));

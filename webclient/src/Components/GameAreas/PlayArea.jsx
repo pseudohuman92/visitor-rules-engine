@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { DragDropContext } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
-import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
+import { Preview } from "react-dnd-multi-backend";
+import FullCard from "../Card/FullCard";
+import SmallCard from "../Card/SmallCard";
+import HTML5Backend from 'react-dnd-html5-backend';
+import TouchBackend from 'react-dnd-touch-backend';
+import { TouchTransition } from 'react-dnd-multi-backend';
 
 import Board from "./Board";
 import Stack from "./Stack";
@@ -12,7 +17,7 @@ import ResourceArea from "./ResourceArea";
 import StateDisplay from "./StateDisplay";
 
 import ChooseDialog from "../Dialogs/ChooseDialog";
-import EndGameDialog from '../Dialogs/EndGameDialog';
+import EndGameDialog from "../Dialogs/EndGameDialog";
 import SelectXDialog from "../Dialogs/SelectXDialog";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
@@ -21,7 +26,7 @@ import proto from "../../protojs/compiled";
 
 import "../../css/App.css";
 import EscapeMenu from "../Dialogs/EscapeMenu";
-
+import CardDragPreview from '../Card/CardDragPreview';
 
 const mapStateToProps = state => {
   return {
@@ -31,23 +36,22 @@ const mapStateToProps = state => {
 };
 
 class PlayArea extends Component {
-
-  state = {menuOpen : false};
+  state = { menuOpen: false };
 
   openMenu = event => {
-    if(event.keyCode === 27) {
-      this.setState({menuOpen: true});
+    if (event.keyCode === 27) {
+      this.setState({ menuOpen: true });
     }
-  }
+  };
 
   closeMenu = event => {
-    this.setState({menuOpen: false});
-  }
+    this.setState({ menuOpen: false });
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     document.addEventListener("keydown", this.openMenu, false);
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     document.removeEventListener("keydown", this.openMenu, false);
   }
 
@@ -91,11 +95,11 @@ class PlayArea extends Component {
       game.canStudy.length > 0;
 
     return (
-      
-      <div className="App" >
+      <div className="App">
         <header className="App-header">
-          <EscapeMenu open={this.state.menuOpen} close={this.closeMenu}/>
-          <EndGameDialog back={back}/>
+          <CardDragPreview/>
+          <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
+          <EndGameDialog back={back} />
           <SelectXDialog />
           <ChooseDialog />
           <Grid
@@ -111,7 +115,7 @@ class PlayArea extends Component {
               <StateDisplay />
             </Grid>
             <Grid item xs={8} className="display-col">
-              <Board/>
+              <Board />
             </Grid>
             <Grid item xs={2} className="display-col">
               <Grid
@@ -126,13 +130,21 @@ class PlayArea extends Component {
                 <Grid item xs={12} style={{ height: "10%" }}>
                   <ResourceArea isPlayer={false} />
                 </Grid>
-                <Grid item xs={12} style={{ height: (hasStudyable? "50%" : "65%") }}>
+                <Grid
+                  item
+                  xs={12}
+                  style={{ height: hasStudyable ? "50%" : "65%" }}
+                >
                   <Stack />
                 </Grid>
                 <Grid item xs={12} style={{ height: "10%" }}>
                   <ResourceArea isPlayer={true} />
                 </Grid>
-                <Grid item xs={12} style={{ height: (hasStudyable ? "30%" : "15%") }}>
+                <Grid
+                  item
+                  xs={12}
+                  style={{ height: hasStudyable ? "30%" : "15%" }}
+                >
                   <StudyArea />
                 </Grid>
               </Grid>
@@ -143,6 +155,20 @@ class PlayArea extends Component {
     );
   }
 }
+
+const HTML5toTouch = {
+  backends: [
+    {
+      backend: HTML5Backend,
+      preview: true,
+    },
+    {
+      backend: TouchBackend({enableMouseEvents: true}), // Note that you can call your backends with options
+      preview: true,
+      transition: TouchTransition
+    }
+  ]
+};
 
 export default connect(
   mapStateToProps,

@@ -2,6 +2,9 @@ import React from "react";
 import { PureComponent } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
+import { getEmptyImage } from 'react-dnd-html5-backend'
+import { defineHold, Holdable } from 'react-touch';
+import { withSize } from "react-sizeme";
 
 import FullCard from "./FullCard";
 import SmallCard from "./SmallCard";
@@ -9,17 +12,28 @@ import SmallCard from "./SmallCard";
 export class CardDisplay extends PureComponent {
   state = { showDialog: false };
 
+  componentDidMount() {
+    const { connectDragPreview } = this.props
+    if (connectDragPreview) {
+      connectDragPreview(getEmptyImage(), {captureDraggingState: true,})
+    }
+  }
+
   openDialog = event => {
-    if (event.ctrlKey) {
+    if (event){
+      if (event.ctrlKey) {
+        this.setState({ showDialog: true });
+      } else if (this.props.onClick) {
+        this.props.onClick(event);
+      }
+    } else { //Hold event
       this.setState({ showDialog: true });
-    } else if (this.props.onClick) {
-      this.props.onClick(event);
     }
   };
 
   render() {
-    const { small } = this.props;
-
+    const { small, size, ...others } = this.props;
+    const hold = defineHold({updateEvery: 50, holdFor: 250});
     return (
       <div>
         <Dialog
@@ -29,17 +43,19 @@ export class CardDisplay extends PureComponent {
           fullWidth={true}
         >
           <DialogContent>
-            <FullCard {...this.props} opacity="1" play={false} />
+            <FullCard {...others} opacity="1" play={false} />
           </DialogContent>
         </Dialog>
+        <Holdable config={hold} onHoldComplete={this.openDialog}>
         <div
           onClick={this.openDialog}
         >
-          {small ? <SmallCard {...this.props} /> : <FullCard {...this.props} />}
+          {small ? <SmallCard {...others} /> : <FullCard {...others} />}
         </div>
+        </Holdable>
       </div>
     );
   }
 }
 
-export default CardDisplay;
+export default withSize()(CardDisplay);

@@ -4,6 +4,7 @@ import Rectangle from "react-rectangle";
 import VisibilitySensor from "react-visibility-sensor";
 import TextFit from "react-textfit";
 
+
 import {
   getCardColor,
   getIconColor,
@@ -12,8 +13,9 @@ import {
 } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
 import "./css/FullCard.css";
+import { withSize } from "react-sizeme";
 
-export default class FullCard extends PureComponent {
+class FullCard extends PureComponent {
   state = { showDialog: false };
 
   render() {
@@ -30,7 +32,8 @@ export default class FullCard extends PureComponent {
       loyalty,
       shield,
       reflect,
-      play
+      play,
+      size
     } = this.props;
     const backColor = borderColor ? borderColor : "black";
     return (
@@ -46,10 +49,12 @@ export default class FullCard extends PureComponent {
         >
           <div
             className={"card-inner" + (play ? "-play" : "")}
-            style={{ backgroundColor: getCardColor(knowledgeCost) }}
+            style={{
+              backgroundColor: getCardColor(knowledgeCost),
+              fontSize: size.width / 20 + "px"
+            }}
           >
             <div className="card-name">
-            <TextFit mode="single" forceSingleModeWidth={false}>
               <span style={{ fontWeight: "500" }}>{cost}</span>
               <span
                 style={{
@@ -59,9 +64,8 @@ export default class FullCard extends PureComponent {
               >
                 {toIconString(toKnowledgeString(knowledgeCost))}
               </span>
-              
+
               {" | " + name}
-              </TextFit>
             </div>
 
             <div className="card-image">
@@ -71,30 +75,20 @@ export default class FullCard extends PureComponent {
                   style={{ maxWidth: "100%" }}
                   alt=""
                 />
-                {/*
-              <Image
-                src={[
-                  process.env.PUBLIC_URL + "/img/" + name + ".jpg",
-                  process.env.PUBLIC_URL + "/img/" + type + ".png"
-                ]}
-                style={{ maxWidth: "100%" }}
-                decode={false}
-              />
-              */}
               </VisibilitySensor>
             </div>
 
-            <div className="card-type">
-            <TextFit mode="single" forceSingleModeWidth={false}>{type}</TextFit></div>
-            <div className="card-description">
-              <TextFit mode="multi" style={{ whiteSpace: "pre-wrap" }}>
-                {description}
-                {shield ? "\nShield:" + shield : ""}
-                {reflect ? "\nReflect:" + reflect : ""}
-                {health ? "\nHealth:" + health : ""}
-                {loyalty ? "\nLoyalty:" + loyalty : ""}
-                {favor ? "\nFavor:" + favor : ""}
-              </TextFit>
+            <div className="card-type">{type}</div>
+            <div
+              className="card-description"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
+              {description}
+              {shield ? "\nShield:" + shield : ""}
+              {reflect ? "\nReflect:" + reflect : ""}
+              {health ? "\nHealth:" + health : ""}
+              {loyalty ? "\nLoyalty:" + loyalty : ""}
+              {favor ? "\nFavor:" + favor : ""}
             </div>
           </div>
         </Rectangle>
@@ -102,3 +96,5 @@ export default class FullCard extends PureComponent {
     );
   }
 }
+
+export default withSize()(FullCard);

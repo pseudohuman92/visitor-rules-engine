@@ -4,7 +4,6 @@
     color: black;
     overflow: hidden;
     font-family: "Open Sans, sans-serif";  
-    font-size: calc(2px + (20 - 2) * ((100vw - 300px) / (1920 - 300)));
   }
   
 .card-inner-play {
@@ -13,7 +12,6 @@
     color: black;
     overflow: hidden;
     font-family: "Open Sans, sans-serif";  
-    font-size: calc(2px + (10 - 2) * (100%/20));
 }
   
   .card-name {

@@ -10,8 +10,9 @@ import {
 } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
 import "./css/SmallCard.css";
+import { withSize } from "react-sizeme";
 
-export default class SmallCard extends PureComponent {
+class SmallCard extends PureComponent {
   render() {
     const {
       name,
@@ -24,7 +25,8 @@ export default class SmallCard extends PureComponent {
       loyalty,
       favor,
       shield,
-      reflect
+      reflect,
+      size
     } = this.props;
 
     return (
@@ -35,12 +37,13 @@ export default class SmallCard extends PureComponent {
           style={{
             backgroundColor: getCardColor(knowledgeCost),
             overflow: "hidden",
-            textAlign: "justify"
+            textAlign: "justify",
           }}
         >
           <div
             className={"card-inner"+(play?"-play":"")}
-            style={{ backgroundColor: getCardColor(knowledgeCost) }}
+            style={{ backgroundColor: getCardColor(knowledgeCost),
+              fontSize: size.width/20+"px" }}
           >
             <div className="card-name">
              
@@ -75,3 +78,5 @@ export default class SmallCard extends PureComponent {
     );
   }
 }
+
+export default withSize()(SmallCard)
