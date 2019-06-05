@@ -1,7 +1,6 @@
 import React from "react";
 import { DragSource, DropTarget} from "react-dnd";
 import { connect } from "react-redux";
-import { Preview } from 'react-dnd-multi-backend';
 
 import CardDisplay from "./CardDisplay";
 import { ItemTypes } from "../Helpers/Constants";

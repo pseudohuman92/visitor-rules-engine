@@ -74,7 +74,7 @@ class OpenPacks extends Component {
     return (
       <div>
         {show && (
-          <Dialog fullScreen open={show}>
+          <Dialog fullScreen open={show} scroll="body">
             <Grid
               container
               alignContent="space-around"

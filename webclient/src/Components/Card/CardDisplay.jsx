@@ -40,7 +40,8 @@ export class CardDisplay extends PureComponent {
           open={this.state.showDialog}
           onClose={event => this.setState({ showDialog: false })}
           maxWidth="xs"
-          fullWidth={true}
+          fullWidth
+          scroll="body"
         >
           <DialogContent>
             <FullCard {...others} opacity="1" play={false} />

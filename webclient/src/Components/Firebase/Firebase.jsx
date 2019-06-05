@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import { getNewUserCollection } from "../Helpers/Constants";
-import { toKnowledgeCost } from "../Helpers/Helpers";
+import { toKnowledgeCost, debug } from "../Helpers/Helpers";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -37,9 +37,15 @@ class Firebase {
   decks = () => this.db.collection("decks");
   collection = cid => this.db.doc(`collections/${cid}`);
   collections = () => this.db.collection("collections");
+  customCard = cid => this.db.doc(`customCards/${cid}`);
+  customCards = () => this.db.collection("customCards");
+  bugReport = bid => this.db.doc(`bugReports/${bid}`);
+  bugReports = () => this.db.collection("bugReports");
+  feedback = fid => this.db.doc(`feedbacks/${fid}`);
+  feedbacks = () => this.db.collection("feedbacks");
 
   createNewCollection = cards => {
-    let coll = this.db.collection("collections").doc();
+    let coll = this.collections().doc();
     coll.set({ cards: cards });
     return coll;
   };
@@ -53,7 +59,7 @@ class Firebase {
           let collectionRef = this.collection(user.collectionId);
           return transaction.get(collectionRef).then(collectionDoc => {
             let packs = user.packs;
-            if(!packs[packName] || packs[packName] === 0){
+            if (!packs[packName] || packs[packName] === 0) {
               return;
             }
             packs[packName] -= 1;
@@ -70,12 +76,6 @@ class Firebase {
             return;
           });
         });
-      })
-      .then(function() {
-        console.log("Transaction successfully committed!");
-      })
-      .catch(function(error) {
-        console.log("Transaction failed: ", error);
       });
   };
 
@@ -89,8 +89,6 @@ class Firebase {
 
   createNewUser = (uid, username) => {
     let collection = this.createNewCollection(getNewUserCollection());
-    console.log("Collection: ", collection);
-    console.log("ID: ", collection.id);
     this.user(uid).set({
       username: username,
       coins: 1000000,
@@ -118,7 +116,7 @@ class Firebase {
 
   createNewDeck = (uid, name, Return) => {
     let collection = this.createNewCollection({});
-    let deck = this.db.collection("decks").doc();
+    let deck = this.decks().doc();
     deck.set({ name: name, collectionId: collection.id });
     this.user(uid).update({
       deckIds: firebase.firestore.FieldValue.arrayUnion(deck.id)
@@ -167,7 +165,7 @@ class Firebase {
                 Return({ id: deckId, name: deck.name });
               }
             })
-            .catch(console.log("Error in ", deckId));
+            .catch(debug("Error in getAllDecks. ID: ", deckId));
         });
       });
   };
@@ -194,13 +192,11 @@ class Firebase {
   };
 
   createNewCustomCard = card => {
-    let coll = this.db.collection("customCards").doc();
-    coll.set(card);
+    this.customCards().add(card);
   };
 
   getCustomCards = Return => {
-    this.db
-      .collection("customCards")
+    this.customCards()
       .get()
       .then(function(querySnapshot) {
         let cards = [];
@@ -211,12 +207,18 @@ class Firebase {
               ...card,
               knowledgeCost: toKnowledgeCost(card.knowledge)
             });
-            console.log(doc.id, " => ", doc.data());
           }
         });
-        console.log(cards);
         Return({ cards: cards });
       });
+  };
+
+  submitBugReport = report => {
+    this.bugReports().add(report);
+  };
+
+  submitFeedback = feedback => {
+    this.feedbacks().add(feedback);
   };
 }
 

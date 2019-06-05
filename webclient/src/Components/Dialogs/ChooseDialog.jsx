@@ -52,9 +52,10 @@ class ChooseDialog extends Component {
         open={dialog.open}
         onClose={this.onClose}
         maxWidth={false}
-        fullWidth={true}
+        fullWidth
         disableBackdropClick={isSelectPhase}
         disableEscapeKeyDown={isSelectPhase}
+        scroll="body"
       >
         <DialogTitle> {dialog.title} </DialogTitle>
         <DialogContent>

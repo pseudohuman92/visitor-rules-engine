@@ -31,7 +31,11 @@ class SelectXDialog extends Component {
     }
   };
 
-  onClick = event => {
+  setToMax = event => {
+      this.setState({ xVal: this.props.maxXValue });
+  };
+
+  submit = event => {
     this.props.gameHandler.SelectXValue(this.state.xVal);
   };
 
@@ -42,7 +46,7 @@ class SelectXDialog extends Component {
 
     return (
       <Dialog open={open}>
-        <DialogTitle> Select X </DialogTitle>
+        <DialogTitle> {"Select X between 0 and "+this.props.maxXValue} </DialogTitle>
         <DialogContent>
           <TextField
             type="number"
@@ -50,8 +54,11 @@ class SelectXDialog extends Component {
             value={xVal}
             onChange={this.onChange}
           />
-          <Button color="primary" variant="contained" onClick={this.onClick}>
+          <Button color="primary" variant="contained" onClick={this.submit}>
             Submit
+          </Button>
+          <Button variant="contained" onClick={this.setToMax}>
+            Set to Max
           </Button>
         </DialogContent>
       </Dialog>

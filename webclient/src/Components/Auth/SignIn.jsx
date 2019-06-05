@@ -16,16 +16,12 @@ import PasswordReset from "./PasswordReset";
 import { mapDispatchToProps } from "../Redux/Store";
 
 class SignIn extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+  state = {
       value: 0,
       email: "",
       password: "",
       error: null
     };
-  }
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });

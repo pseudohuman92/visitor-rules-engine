@@ -2,7 +2,6 @@ import React from "react";
 import { PureComponent } from "react";
 import Rectangle from "react-rectangle";
 import VisibilitySensor from "react-visibility-sensor";
-import TextFit from "react-textfit";
 
 
 import {

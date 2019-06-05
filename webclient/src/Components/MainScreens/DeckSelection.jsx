@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { withFirebase } from "../Firebase";
 import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
-import PlayArea from "../GameAreas/PlayArea";
+import PlayArea from './PlayArea';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {

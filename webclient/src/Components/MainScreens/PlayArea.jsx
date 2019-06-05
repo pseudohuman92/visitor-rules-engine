@@ -3,29 +3,26 @@ import { DragDropContext } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
-import { Preview } from "react-dnd-multi-backend";
-import FullCard from "../Card/FullCard";
-import SmallCard from "../Card/SmallCard";
 import HTML5Backend from 'react-dnd-html5-backend';
 import TouchBackend from 'react-dnd-touch-backend';
 import { TouchTransition } from 'react-dnd-multi-backend';
 
-import Board from "./Board";
-import Stack from "./Stack";
-import StudyArea from "./StudyArea";
-import ResourceArea from "./ResourceArea";
-import StateDisplay from "./StateDisplay";
+import Board from '../GameAreas/Board';
+import Stack from '../GameAreas/Stack';
+import StudyArea from '../GameAreas/StudyArea';
+import ResourceArea from '../GameAreas/ResourceArea';
+import StateDisplay from '../GameAreas/StateDisplay';
 
-import ChooseDialog from "../Dialogs/ChooseDialog";
-import EndGameDialog from "../Dialogs/EndGameDialog";
-import SelectXDialog from "../Dialogs/SelectXDialog";
-import { withHandlers } from "../MessageHandlers/HandlerContext";
-import { mapDispatchToProps } from "../Redux/Store";
-import { GamePhases } from "../Helpers/Constants";
-import proto from "../../protojs/compiled";
+import ChooseDialog from '../Dialogs/ChooseDialog';
+import EndGameDialog from '../Dialogs/EndGameDialog';
+import SelectXDialog from '../Dialogs/SelectXDialog';
+import { withHandlers } from '../MessageHandlers/HandlerContext';
+import { mapDispatchToProps } from '../Redux/Store';
+import { GamePhases } from '../Helpers/Constants';
+import proto from '../../protojs/compiled';
 
-import "../../css/App.css";
-import EscapeMenu from "../Dialogs/EscapeMenu";
+import '../../css/App.css';
+import EscapeMenu from '../Dialogs/EscapeMenu';
 import CardDragPreview from '../Card/CardDragPreview';
 
 const mapStateToProps = state => {
@@ -163,7 +160,7 @@ const HTML5toTouch = {
       preview: true,
     },
     {
-      backend: TouchBackend({enableMouseEvents: true}), // Note that you can call your backends with options
+      backend: TouchBackend({enableMouseEvents: true}),
       preview: true,
       transition: TouchTransition
     }

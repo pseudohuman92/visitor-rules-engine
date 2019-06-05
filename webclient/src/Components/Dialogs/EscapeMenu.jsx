@@ -19,10 +19,10 @@ class EscapeMenu extends Component {
     return (
       <div>
         {value === 0 && (
-          <Dialog open={open} onClose={close}>
+          <Dialog open={open} onClose={close} scroll="body">
             <DialogTitle>{"MENU"}</DialogTitle>
             <DialogContent>
-              <Grid container spacing={24}>
+              <Grid container spacing={8} justify="center">
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
