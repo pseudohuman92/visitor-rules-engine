@@ -22,6 +22,13 @@
   font-family: "Open Sans, sans-serif";
 }
 
+.small-card-name {
+  margin: 3.4483% 3.4483% 0 3.4483%;
+  background-color: beige;
+  overflow: hidden;
+  font-family: "Open Sans, sans-serif";
+}
+
 .card-image {
   margin: 1.6949% 3.4483% 0 3.4483%;
   overflow: hidden;

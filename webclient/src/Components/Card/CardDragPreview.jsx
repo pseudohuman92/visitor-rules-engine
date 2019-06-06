@@ -4,7 +4,8 @@ import { DragLayer } from "react-dnd";
 import { ItemTypes } from "../Helpers/Constants";
 
 import FullCard from "./FullCard";
-import SmallCard from "./SmallCard";
+import MediumCard from './MediumCard';
+import SmallCard from './SmallCard';
 
 class CardDragPreview extends PureComponent {
   getItemStyles = props => {
@@ -23,12 +24,12 @@ class CardDragPreview extends PureComponent {
   };
 
   renderItem = (itemType, props) => {
-    const { small, size, ...rest } = props;
+    const { small, medium, size, ...rest } = props;
     switch (itemType) {
       case ItemTypes.CARD:
         return (
           <div style={{ opacity: "0.5" }}>
-            {small ? <SmallCard {...rest} /> : <FullCard {...rest} />}
+          {small ? <SmallCard {...rest} /> : (medium? <MediumCard {...rest}/>: <FullCard {...rest} />)}
           </div>
         );
       default:

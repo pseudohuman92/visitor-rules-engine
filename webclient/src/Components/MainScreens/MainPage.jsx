@@ -78,6 +78,9 @@ export default class MainPage extends Component {
         {value === 3 && <DesignCard back={this.back} />}
         {value === 4 && <CustomCardGallery back={this.back} />}
         {value === 5 && <CardGallery back={this.back} />}
+        <div hidden>
+        <CardGallery back={this.back} />
+        </div>
       </div>
     );
   }

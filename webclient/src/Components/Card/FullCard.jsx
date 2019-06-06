@@ -1,7 +1,6 @@
 import React from "react";
 import { PureComponent } from "react";
 import Rectangle from "react-rectangle";
-import VisibilitySensor from "react-visibility-sensor";
 
 
 import {
@@ -11,7 +10,7 @@ import {
   toIconString
 } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
-import "./css/FullCard.css";
+import "./css/Card.css";
 import { withSize } from "react-sizeme";
 
 class FullCard extends PureComponent {
@@ -68,13 +67,11 @@ class FullCard extends PureComponent {
             </div>
 
             <div className="card-image">
-              <VisibilitySensor>
                 <img
                   src={process.env.PUBLIC_URL + "/img/" + type + ".png"}
                   style={{ maxWidth: "100%" }}
                   alt=""
                 />
-              </VisibilitySensor>
             </div>
 
             <div className="card-type">{type}</div>

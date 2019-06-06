@@ -7,6 +7,7 @@ import { defineHold, Holdable } from 'react-touch';
 import { withSize } from "react-sizeme";
 
 import FullCard from "./FullCard";
+import MediumCard from './MediumCard';
 import SmallCard from "./SmallCard";
 
 export class CardDisplay extends PureComponent {
@@ -32,7 +33,7 @@ export class CardDisplay extends PureComponent {
   };
 
   render() {
-    const { small, size, ...others } = this.props;
+    const { small, medium, size, ...rest } = this.props;
     const hold = defineHold({updateEvery: 50, holdFor: 250});
     return (
       <div>
@@ -44,14 +45,14 @@ export class CardDisplay extends PureComponent {
           scroll="body"
         >
           <DialogContent>
-            <FullCard {...others} opacity="1" play={false} />
+            <FullCard {...rest} opacity="1" play={false} />
           </DialogContent>
         </Dialog>
         <Holdable config={hold} onHoldComplete={this.openDialog}>
         <div
           onClick={this.openDialog}
         >
-          {small ? <SmallCard {...others} /> : <FullCard {...others} />}
+          {small ? <SmallCard {...rest} /> : (medium? <MediumCard {...rest}/>: <FullCard {...rest} />)}
         </div>
         </Holdable>
       </div>

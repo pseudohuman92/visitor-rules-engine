@@ -7,7 +7,7 @@ import Center from "react-center";
 
 import { getCardColor, toKnowledgeCost } from "../Helpers/Helpers";
 import Fonts from '../Primitives/Fonts';
-import "../Card/css/FullCard.css";
+import "../Card/css/Card.css";
 import "../../css/Utils.css";
 import { TextField, Grid } from "@material-ui/core";
 import { withFirebase } from "../Firebase";

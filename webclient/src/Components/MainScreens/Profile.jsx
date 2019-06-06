@@ -38,8 +38,6 @@ class Profile extends Component {
             <Paper>
               <Center>
                 <Typography
-                  component="h1"
-                  variant="h1"
                   style={{ fontFamily: "Cinzel, serif" }}
                 >
                   {username+"'s Profile"}

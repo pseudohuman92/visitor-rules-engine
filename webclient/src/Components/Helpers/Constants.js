@@ -1,5 +1,5 @@
 import proto from "../../protojs/compiled.js";
-import { toKnowledgeCost } from "./Helpers"
+import { toKnowledgeCost } from "./Helpers";
 
 export const GamePhases = {
   NOT_STARTED: "NotStarted",
@@ -39,7 +39,6 @@ knowledgeMap["U"] = proto.Knowledge.BLUE;
 knowledgeMap["R"] = proto.Knowledge.RED;
 knowledgeMap["G"] = proto.Knowledge.GREEN;
 knowledgeMap["Y"] = proto.Knowledge.YELLOW;
-
 
 export const fontMap = {
   U: "\u2738",
@@ -95,7 +94,7 @@ const initialExtendedGameState = {
   targets: [],
   autoPass: false,
   win: false,
-  opponentUsername: "",
+  opponentUsername: ""
 };
 
 export const initialState = {
@@ -111,30 +110,30 @@ export const initialState = {
   extendedGameState: initialExtendedGameState
 };
 
-function initializeFullCollection (){
-  var result ={};
+const initializeFullCollection = () => {
+  var result = {};
   fetch("/Cards - Cards.json")
-  .then(r => r.text())
-  .then(file => {
-    JSON.parse(file).forEach(card => {
-      let name = card.Name !== ""?card.Name:card.Code;
-      if (
-        name !== "" &&
-        !card.Code.startsWith("Code") &&
-        !card.Code.startsWith("A")
-      ) {
-        
-        result[name] = {
-          name: name,
-          type: card.Type,
-          description: card.Effect,
-          health: card.Health,
-          cost: card.Energy,
-          knowledgeCost: toKnowledgeCost(card.Knowledge)
-        };
-      }
-    });
-  })
+    .then(r => r.text())
+    .then(file =>
+      JSON.parse(file).forEach(card => {
+        let name = card.Name !== "" ? card.Name : card.Code;
+        if (
+          name !== "" &&
+          !card.Code.startsWith("Code") &&
+          !card.Code.startsWith("A")
+        ) {
+          result[name] = {
+            name: name,
+            type: card.Type,
+            description: card.Effect,
+            health: card.Health,
+            cost: card.Energy,
+            knowledgeCost: toKnowledgeCost(card.Knowledge)
+          };
+        }
+      })
+    );
+  console.log("init call");
   return result;
 };
 

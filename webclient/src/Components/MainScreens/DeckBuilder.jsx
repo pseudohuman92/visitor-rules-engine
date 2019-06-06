@@ -15,6 +15,8 @@ const mapStateToProps = state => {
   return { collection: state.collection, userId: state.authUser.user.uid };
 };
 
+const cardsPerPage = 18;
+
 class DeckBuilder extends React.Component {
   constructor(props) {
     super(props);
@@ -22,9 +24,19 @@ class DeckBuilder extends React.Component {
       collection: Object.assign({}, props.collection),
       name: "",
       deck: {},
-      initialized: false
+      initialized: false,
+      page: 0,
+      maxPage: Math.floor(Object.keys(props.collection).length / cardsPerPage)
     };
   }
+
+  prev = () => {
+    this.setState(state => ({ page: Math.max(state.page - 1, 0) }));
+  };
+
+  next = () => {
+    this.setState(state => ({ page: Math.min(state.page + 1, state.maxPage) }));
+  };
 
   setDeck = (name, cards) => {
     let collection = this.state.collection;
@@ -86,35 +98,43 @@ class DeckBuilder extends React.Component {
   };
 
   render() {
-    const { collection, name, deck, initialized } = this.state;
-    return (collection && initialized) ? (
-      <Grid container spacing={16} style={{ maxHeight: "90vh" }}>
-        <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          
-        <Button onClick={this.props.back} text="Back"/>
+    const { collection, name, deck, initialized, page } = this.state;
+    return collection && initialized ? (
+      <Grid container spacing={8} style={{ maxHeight: "95vh" }}>
+        <Grid item xs={1}>
+          <Button onClick={this.props.back} text="Back" />
         </Grid>
-        <Grid item xs={2} style={{ maxHeight: "5%" }}>
-          <Button onClick={this.saveDeck} text="Save"/>
+        <Grid item xs={1}>
+          <Button onClick={this.saveDeck} text="Save" />
         </Grid>
-        <Grid item xs={8} style={{ maxHeight: "5%" }}>
+        <Grid item xs={4}>
           <TextField
             value={name}
+            fullWidth
             onChange={event => {
               this.changeName(event.target.value);
             }}
           />
         </Grid>
-        <Grid container item xs={9}>
-          {Object.keys(collection).map((cardName, i) => (
-            <Grid item key={i} xs={3}>
-              <center> {collection[cardName]} </center>
-              <CardDisplay
-                onClick={() => this.addToDeck(cardName)}
-                opacity={collection[cardName] > 0 ? 1 : 0.5}
-                {...fullCollection[cardName]}
-              />
-            </Grid>
-          ))}
+        <Grid item xs={1}>
+          <Button onClick={this.prev} text="Prev" />
+        </Grid>
+        <Grid item xs={1}>
+          <Button onClick={this.next} text="Next" />
+        </Grid>
+        <Grid container item xs={9} spacing={8}>
+          {Object.keys(collection)
+            .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
+            .map((cardName, i) => (
+              <Grid item key={i} xs={2}>
+                <center> {collection[cardName]} </center>
+                <CardDisplay
+                  onClick={() => this.addToDeck(cardName)}
+                  opacity={collection[cardName] > 0 ? 1 : 0.5}
+                  {...fullCollection[cardName]}
+                />
+              </Grid>
+            ))}
         </Grid>
 
         <Grid
@@ -133,15 +153,13 @@ class DeckBuilder extends React.Component {
             {"Deck List"}
             <GridList cellHeight="auto" cols={1} style={{ maxHeight: "95vh" }}>
               {Object.keys(deck).map((cardName, i) => (
-                <GridListTile
-                  key={i}
-                  cols={1}
-                >
+                <GridListTile key={i} cols={1}>
                   <Center>{deck[cardName]}</Center>
-                  <CardDisplay 
-                  small 
-                  onClick={() => this.removeFromDeck(cardName)}
-                  {...fullCollection[cardName]} />
+                  <CardDisplay
+                    small
+                    onClick={() => this.removeFromDeck(cardName)}
+                    {...fullCollection[cardName]}
+                  />
                 </GridListTile>
               ))}
             </GridList>

@@ -25,7 +25,7 @@ class Stack extends React.Component {
           <GridListTile key={card.id}>
             <PlayingCard
               {...card}
-              small={true}
+              medium
             />
           </GridListTile>
         ))}

@@ -92,7 +92,7 @@ class DeckSelection extends React.Component {
                 <Grid
                   item
                   key={i}
-                  xs={3}
+                  xs={4}
                   onDoubleClick={event => this.joinQueue(deck.id)}
                 >
                   <Center>

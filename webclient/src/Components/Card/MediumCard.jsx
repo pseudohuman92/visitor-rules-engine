@@ -12,24 +12,30 @@ import Fonts from '../Primitives/Fonts';
 import './css/Card.css';
 import { withSize } from "react-sizeme";
 
-class SmallCard extends PureComponent {
+class MediumCard extends PureComponent {
   render() {
     const {
       name,
       cost,
       knowledgeCost,
+      description,
       play,
+      type,
+      health,
+      loyalty,
+      favor,
+      shield,
+      reflect,
       size,
-      borderColor,
-      opacity
+      opacity,
+      borderColor
     } = this.props;
-
     const backColor = borderColor ? borderColor : "black";
     return (
       <div>
         <Fonts />
         <Rectangle
-          aspectRatio={[22, 3]}
+          aspectRatio={[22, 22]}
           style={{
             opacity: opacity,
             backgroundColor: backColor,
@@ -42,7 +48,8 @@ class SmallCard extends PureComponent {
             style={{ backgroundColor: getCardColor(knowledgeCost),
               fontSize: size.width/20+"px" }}
           >
-            <div className="small-card-name">
+            <div className="card-name">
+             
                 <span style={{ fontWeight: "500" }}>{cost}</span>
                 <span
                   style={{
@@ -54,6 +61,20 @@ class SmallCard extends PureComponent {
                 </span>
                 {" | " + name}
             </div>
+          <div className="card-type">
+                {type}
+            </div>
+
+
+          <div className="card-description" style={{whiteSpace: "pre-wrap"}}>
+                {description}
+              
+                {shield ? "\nShield:" + shield : ""}
+              {reflect ? "\nReflect:" + reflect : ""}
+                {health ? "\nHealth:" + health : ""}
+              {loyalty ? "\nLoyalty:" + loyalty : ""}
+              {favor ? "\nFavor:" + favor : ""}
+          </div>
           </div>
         </Rectangle>
       </div>
@@ -61,4 +82,4 @@ class SmallCard extends PureComponent {
   }
 }
 
-export default withSize()(SmallCard)
+export default withSize()(MediumCard)

@@ -48,7 +48,7 @@ export function toIconString(s) {
 }
 
 export function getIconColor(knowledgeCost) {
-  if (knowledgeCost.length === 0) {
+  if (!knowledgeCost || knowledgeCost.length === 0) {
     return "gray";
   }
   var knowlString = toKnowledgeString(knowledgeCost);
@@ -131,7 +131,7 @@ export function toSelectFromType(phase) {
 }
 
 export function getCardColor(knowledgeCost) {
-  if (knowledgeCost.length === 0) {
+  if (!knowledgeCost || knowledgeCost.length === 0) {
     return "gray";
   }
   if (knowledgeCost.length > 1) {
@@ -156,6 +156,9 @@ export function getCardColor(knowledgeCost) {
 
 export function toKnowledgeString(knowledgeCost) {
   var str = "";
+  if (!knowledgeCost){
+    return str
+  }
 
   for (var i = 0; i < knowledgeCost.length; i++) {
     for (var j = 0; j < knowledgeCost[i].count; j++) {

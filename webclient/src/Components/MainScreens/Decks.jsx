@@ -21,7 +21,12 @@ class Decks extends React.Component {
       selectedDeckId: "",
       decks: []
     };
-    this.back = () => this.setState({ value: 0 });
+    this.back = () => {
+      this.setState({ loadedDeck: "", selectedDeckId: "", decks: [] });
+      const Return = this.addDeck.bind(this);
+      this.props.firebase.getAllDecks(this.props.userId, Return);
+      this.setState({ value: 0 });
+    };
   }
 
   componentWillMount() {
@@ -73,7 +78,7 @@ class Decks extends React.Component {
                 <Grid
                   item
                   key={i}
-                  xs={1}
+                  xs={4}
                   onClick={delayClick(
                     () => this.selectDeck(deck.id),
                     () => this.setState({ value: 1, loadedDeck: deck.id })
