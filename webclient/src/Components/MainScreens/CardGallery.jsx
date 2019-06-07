@@ -4,6 +4,7 @@ import Button from "../Primitives/Button";
 
 import CardDisplay from "../Card/CardDisplay";
 import { fullCollection } from "../Helpers/Constants";
+import { compareCardsByKnowledge } from "../Helpers/Helpers";
 
 const cardsPerPage = 12;
 
@@ -36,7 +37,7 @@ class CardGallery extends Component {
             <Button onClick={this.next} text="Next" />
           </Grid>
           <Grid container item spacing={8} xs={12}>
-            {Object.values(fullCollection)
+            {Object.values(fullCollection).sort(compareCardsByKnowledge)
               .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
               .map((card, i) => (
                 <Grid item key={i} xs={2}>

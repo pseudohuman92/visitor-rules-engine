@@ -21,7 +21,6 @@ class DeckBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collection: Object.assign({}, props.collection),
       name: "",
       deck: {},
       initialized: false,
@@ -39,15 +38,8 @@ class DeckBuilder extends React.Component {
   };
 
   setDeck = (name, cards) => {
-    let collection = this.state.collection;
-    Object.keys(cards).forEach(cardName => {
-      for (let i = 0; i < cards[cardName]; i++) {
-        collection[cardName]--;
-      }
-    });
     this.setState({
       name: name,
-      collection: collection,
       deck: cards,
       initialized: true
     });
@@ -62,30 +54,26 @@ class DeckBuilder extends React.Component {
   }
 
   addToDeck = cardName => {
-    var collection = this.state.collection;
+    var collection = this.props.collection;
     var deck = this.state.deck;
-    if (collection[cardName] > 0) {
-      collection[cardName]--;
-
-      if (deck[cardName] > 0) {
+    if (collection[cardName] - (deck[cardName]?deck[cardName]:0) > 0) {
+      if (deck[cardName]) {
         deck[cardName]++;
       } else {
         deck[cardName] = 1;
       }
-      this.setState({ collection: collection, deck: deck });
+      this.setState({ deck: deck });
     }
   };
 
   removeFromDeck = cardName => {
-    var collection = this.state.collection;
     var deck = this.state.deck;
     if (deck[cardName] === 1) {
       delete deck[cardName];
     } else {
       deck[cardName]--;
     }
-    collection[cardName]++;
-    this.setState({ collection: collection, deck: deck });
+    this.setState({ deck: deck });
   };
 
   changeName = name => {
@@ -98,7 +86,8 @@ class DeckBuilder extends React.Component {
   };
 
   render() {
-    const { collection, name, deck, initialized, page } = this.state;
+    const { name, deck, initialized, page } = this.state;
+    const {collection} = this.props;
     return collection && initialized ? (
       <Grid container spacing={8} style={{ maxHeight: "95vh" }}>
         <Grid item xs={1}>
@@ -127,7 +116,7 @@ class DeckBuilder extends React.Component {
             .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
             .map((cardName, i) => (
               <Grid item key={i} xs={2}>
-                <center> {collection[cardName]} </center>
+                <center> {collection[cardName] - (deck[cardName]?deck[cardName]:0)} </center>
                 <CardDisplay
                   onClick={() => this.addToDeck(cardName)}
                   opacity={collection[cardName] > 0 ? 1 : 0.5}

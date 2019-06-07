@@ -9,6 +9,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import PlayArea from './PlayArea';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
+import { debugPrint } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return {
@@ -46,11 +47,11 @@ class DeckSelection extends React.Component {
 
   addDeck = deck => {
     this.setState((state, props) => ({ decks: state.decks.concat([deck]) }));
-    console.log(deck);
+    debugPrint(deck);
   };
 
   loadDeck = (name, deck) => {
-    console.log(deck);
+    debugPrint(deck);
     const decklist = this.toDecklist(deck);
     if (decklist) {
       this.props.serverHandler.joinQueue(decklist);
@@ -61,7 +62,7 @@ class DeckSelection extends React.Component {
   };
 
   joinQueue = deckId => {
-    console.log(deckId);
+    debugPrint(deckId);
     const Return = this.loadDeck.bind(this);
     this.props.firebase.getDeck(deckId, Return);
   };

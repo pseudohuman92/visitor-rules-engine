@@ -2,8 +2,8 @@ import app from "firebase/app";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { getNewUserCollection } from "../Helpers/Constants";
-import { toKnowledgeCost, debug } from "../Helpers/Helpers";
+import { newUserCollection } from "../Helpers/Constants";
+import { toKnowledgeCost, debugPrint } from "../Helpers/Helpers";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -52,31 +52,30 @@ class Firebase {
 
   openPack = (userId, packName, cards) => {
     let userRef = this.user(userId);
-    this.db
-      .runTransaction(transaction => {
-        return transaction.get(userRef).then(userDoc => {
-          let user = userDoc.data();
-          let collectionRef = this.collection(user.collectionId);
-          return transaction.get(collectionRef).then(collectionDoc => {
-            let packs = user.packs;
-            if (!packs[packName] || packs[packName] === 0) {
-              return;
-            }
-            packs[packName] -= 1;
-            let collection = collectionDoc.data().cards;
-            Object.keys(cards).forEach(cardName => {
-              if (collection[cardName]) {
-                collection[cardName] += cards[cardName];
-              } else {
-                collection[cardName] = cards[cardName];
-              }
-            });
-            transaction.update(collectionRef, { cards: collection });
-            transaction.update(userRef, { packs: packs });
+    this.db.runTransaction(transaction => {
+      return transaction.get(userRef).then(userDoc => {
+        let user = userDoc.data();
+        let collectionRef = this.collection(user.collectionId);
+        return transaction.get(collectionRef).then(collectionDoc => {
+          let packs = user.packs;
+          if (!packs[packName] || packs[packName] === 0) {
             return;
+          }
+          packs[packName] -= 1;
+          let collection = collectionDoc.data().cards;
+          Object.keys(cards).forEach(cardName => {
+            if (collection[cardName]) {
+              collection[cardName] += cards[cardName];
+            } else {
+              collection[cardName] = cards[cardName];
+            }
           });
+          transaction.update(collectionRef, { cards: collection });
+          transaction.update(userRef, { packs: packs });
+          return;
         });
       });
+    });
   };
 
   getPacks = (userId, Return) => {
@@ -88,7 +87,7 @@ class Firebase {
   };
 
   createNewUser = (uid, username) => {
-    let collection = this.createNewCollection(getNewUserCollection());
+    let collection = this.createNewCollection(newUserCollection);
     this.user(uid).set({
       username: username,
       coins: 1000000,
@@ -100,7 +99,7 @@ class Firebase {
     });
   };
 
-  setUserData = (uid, updateState) => {
+  setUserData = (uid, Return) => {
     this.user(uid)
       .get()
       .then(user => {
@@ -108,8 +107,7 @@ class Firebase {
         this.collection(data.collectionId)
           .get()
           .then(coll => {
-            updateState(data);
-            updateState({ collection: coll.data().cards });
+            Return({...data, collection: coll.data().cards });
           });
       });
   };
@@ -165,7 +163,7 @@ class Firebase {
                 Return({ id: deckId, name: deck.name });
               }
             })
-            .catch(debug("Error in getAllDecks. ID: ", deckId));
+            .catch(debugPrint("Error in getAllDecks. ID: ", deckId));
         });
       });
   };
@@ -219,6 +217,28 @@ class Firebase {
 
   submitFeedback = feedback => {
     this.feedbacks().add(feedback);
+  };
+
+  cardChange = (userId, collection, dust, Return) => {
+    let userRef = this.user(userId);
+    this.db.runTransaction(transaction => {
+      return transaction.get(userRef).then(userDoc => {
+        let user = userDoc.data();
+        let collectionRef = this.collection(user.collectionId);
+        transaction.update(collectionRef, { cards: collection });
+        transaction.update(userRef, { dust: dust });
+        return;
+      });
+    }).then(() =>
+    userRef.get()
+    .then(user => {
+      let data = user.data();
+      this.collection(data.collectionId)
+        .get()
+        .then(coll => {
+          Return({...data, collection: coll.data().cards });
+        });
+    }));
   };
 }
 

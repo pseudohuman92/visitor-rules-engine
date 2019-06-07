@@ -1,4 +1,4 @@
-import { debug } from "../Components/Helpers/Helpers";
+import { debugPrint } from "../Components/Helpers/Helpers";
 
 const proto = require('./compiled.js');
 
@@ -12,12 +12,12 @@ function decapitalize(s) {
 
 export class GameProtoSocket {
     constructor(url, msgHandler) {
-        debug('[connecting]', url);
+        debugPrint('[connecting]', url);
         this.socket = new WebSocket(url);
         this.socket.binaryType = 'arraybuffer';
         this.socket.onmessage = event => {
             const msg = proto.ServerGameMessage.decode(new Uint8Array(event.data));
-            debug('[recvGameMsg]', msg);
+            debugPrint('[recvGameMsg]', msg);
             msgHandler(capitalize(msg.payload), msg[msg.payload]);
         };
     }
@@ -39,7 +39,7 @@ export class GameProtoSocket {
     send = (msgType, params) => {
         // Sends client game messages
         if (this.socket.readyState !== 1) {
-            debug('wtf not ready');
+            debugPrint('wtf not ready');
         }
 
         const msgParams = {};
@@ -47,19 +47,19 @@ export class GameProtoSocket {
         const msg = proto.ClientGameMessage.create(msgParams);
         const bytes = proto.ClientGameMessage.encode(msg).finish();
 
-        debug('[sendGameMsg]', msg);
+        debugPrint('[sendGameMsg]', msg);
         this.waitForOpen(bytes);
     };
 }
 
 export class ProtoSocket {
     constructor(url, msgHandler) {
-        debug('[connecting]', url);
+        debugPrint('[connecting]', url);
         this.socket = new WebSocket(url);
         this.socket.binaryType = 'arraybuffer';
         this.socket.onmessage = event => {
             const msg = proto.ServerMessage.decode(new Uint8Array(event.data));
-            debug('[recvMsg]', msg);
+            debugPrint('[recvMsg]', msg);
             msgHandler(capitalize(msg.payload), msg[msg.payload]);
         };
     }
@@ -78,7 +78,7 @@ export class ProtoSocket {
                 }
             }, 10);
         } else {
-            debug('[sentMsg]', bytes);
+            debugPrint('[sentMsg]', bytes);
             this.socket.send(bytes);
         }
     };
@@ -86,7 +86,7 @@ export class ProtoSocket {
     send = (msgType, params) => {
         // Sends client game messages
         if (this.socket.readyState !== 1) {
-            debug('wtf not ready');
+            debugPrint('wtf not ready');
         }
 
         const msgParams = {};
@@ -94,7 +94,7 @@ export class ProtoSocket {
         const msg = proto.ClientMessage.create(msgParams);
         const bytes = proto.ClientMessage.encode(msg).finish();
 
-        debug('[sendMsg]', msg);
+        debugPrint('[sendMsg]', msg);
         this.waitForOpen(bytes);
     };
 }

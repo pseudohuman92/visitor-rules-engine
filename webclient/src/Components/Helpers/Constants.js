@@ -133,24 +133,20 @@ const initializeFullCollection = () => {
         }
       })
     );
-  console.log("init call");
   return result;
 };
 
 export const fullCollection = initializeFullCollection();
 
-export function toCollectionArray(collection) {
-  var col = [];
-  Object.keys(collection).forEach(function(key) {
-    col.push({ count: collection[key], card: fullCollection[key] });
-  });
-  return col;
-}
-
-export function getNewUserCollection() {
+function getNewUserCollection() {
   let newUserCollection = {};
   Object.keys(fullCollection).forEach(function(key) {
     newUserCollection[key] = 3;
   });
   return newUserCollection;
 }
+
+export const newUserCollection = getNewUserCollection();
+
+export const craftCost = 1000;
+export const salvageValue = 100;

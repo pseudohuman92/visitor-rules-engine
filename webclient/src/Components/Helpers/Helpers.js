@@ -1,6 +1,6 @@
 import proto from "../../protojs/compiled.js";
 import { ServerName, PrintDebug } from "../../Config.js";
-import { fontMap, GamePhases, knowledgeMap } from "./Constants";
+import { fontMap, GamePhases, knowledgeMap, fullCollection } from "./Constants";
 
 export function GetProfileURL(userId) {
   return `ws://${ServerName}/profiles/${userId}`;
@@ -10,7 +10,7 @@ export function GetGameURL(userId, gameID) {
   return `ws://${ServerName}/games/${gameID}/${userId}`;
 }
 
-export function debug() {
+export function debugPrint() {
   if (PrintDebug) {
     console.log(...arguments);
   }
@@ -206,4 +206,34 @@ export function delayClick(onClick, onDoubleClick, delay) {
       onDoubleClick(event);
     }
   };
+}
+
+export function compareCardsByKnowledge (a, b){
+  if (toKnowledgeString(a.knowledgeCost) > toKnowledgeString(b.knowledgeCost)){
+    return 1;
+  } else if (toKnowledgeString(a.knowledgeCost) < toKnowledgeString(b.knowledgeCost)){
+    return -1;
+  } else {
+    if (a.cost > b.cost){
+      return 1;
+    } else if (a.cost < b.cost){
+      return -1;
+    } else {
+      if (a.name > b.name){
+        return 1;
+      } else if (a.name < b.name){
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  }
+}
+
+export function toFullCards(collection) {
+  var col = {};
+  Object.keys(collection).forEach(key => {
+    col[key] = fullCollection[key];
+  });
+  return col;
 }
