@@ -68,7 +68,7 @@ class FullCard extends PureComponent {
 
             <div className="card-image">
                 <img
-                  src={process.env.PUBLIC_URL + "/img/" + type + ".png"}
+                  src={process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"}
                   style={{ maxWidth: "100%" }}
                   alt=""
                 />
