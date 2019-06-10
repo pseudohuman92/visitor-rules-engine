@@ -12,6 +12,7 @@ import static com.visitor.game.Game.Zone.*;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import com.visitor.helpers.UUIDHelper;
 import static com.visitor.helpers.UUIDHelper.toUUIDList;
 import com.visitor.protocol.ServerGameMessages.GameEnd;
 import com.visitor.protocol.ServerGameMessages.SelectFrom;
@@ -486,11 +487,17 @@ public class Game {
         getZone(username, zone).addAll(cards);
     }
     
-    public void transformToJunk(UUID cardID){
+    public void transformToJunk(Card transformingCard, UUID cardID){
         Card c = getCard(cardID);
         Junk j = new Junk(c.controller);
         j.copyPropertiesFrom(c);
         replaceWith(c, j);
+        addEvent(Event.transform(transformingCard, c, j), false);
+    }
+    
+    public void transformTo(Card transformingCard, Card transformedCard, Card transformTo){
+        replaceWith(transformedCard, transformTo);
+        addEvent(Event.transform(transformingCard, transformedCard, transformTo), false);
     }
 
     public Arraylist<Card> extractAll(List<UUID> list) {
@@ -765,6 +772,17 @@ public class Game {
 
     public void removeMaxEnergy(String username, int count) {
         players.get(username).maxEnergy -= count;
+    }
+
+    public void discardAll(String username, Arraylist<Card> cards) {
+        players.get(username).discard(UUIDHelper.toUUIDList(cards));
+        addEvent(Event.discard(username, cards), false);
+    }
+
+    public boolean isPlayer(UUID targetId) {
+        return players.values().stream().anyMatch(p -> {
+            return p.id.equals(targetId);  
+        });
     }
     
     public enum Zone {

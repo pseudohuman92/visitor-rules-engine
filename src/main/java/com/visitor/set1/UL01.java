@@ -50,7 +50,7 @@ public class UL01 extends Ally {
         game.deplete(id);
         loyalty +=3;
         if(loyalty >= 6){
-            game.replaceWith(this, new AL01(this));
+            game.transformTo(this, this, new AL01(this));
         }
     }
     

@@ -42,7 +42,7 @@ public class Recycle extends Spell {
     @Override
     protected void duringResolve (Game game){
         if(game.isIn(controller, target, BOTH_PLAY)){
-            game.transformToJunk(target);
+            game.transformToJunk(this, target);
         }
     }    
 }

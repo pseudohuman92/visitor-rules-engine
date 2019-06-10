@@ -375,6 +375,61 @@
   },
   {
     "Code": "",
+    "Name": "Discombobulate",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Discard all junk from your hand then deal 2 damage for each discarded junk to a target.",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "U",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Recombobulate",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Shuffle all junk from your hand into your deck and draw that many cards",
+    "Health": "",
+    "Energy": 4,
+    "Knowledge": "UUU",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Spontaneous Explosion",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Destroy target Junk.\r\nIts controller takes 3 damage.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "UU",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Volatile Materials",
+    "Type": "Passive",
+    "Subtype": "",
+    "Effect": "Trigger - When a card is transformed. \n    That card's controller takes 2 damage",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "U",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Weaponize",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Additional Cost - Discard a Junk\n    Deal 4 damage to your opponent.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "U",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
     "Name": "",
     "Type": "",
     "Subtype": "",

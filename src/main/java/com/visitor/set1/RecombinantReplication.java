@@ -63,7 +63,7 @@ public class RecombinantReplication extends Spell {
                 Card playCard = game.getCard(targets.get(4));
                 Card newCard = voidCard.getClass().getDeclaredConstructor(String.class).newInstance(playCard.controller);
                 newCard.copyPropertiesFrom(playCard);
-                game.replaceWith(playCard, newCard);
+                game.transformTo(this, playCard, newCard);
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 getLogger(RecombinantReplication.class.getName()).log(SEVERE, null, ex);
             }

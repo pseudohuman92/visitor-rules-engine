@@ -50,11 +50,9 @@ public class QuantumStateExtractor extends Item{
                     Arraylist<Card> cand = p.deck.extractFromTop(2);
                     Arraylist<UUID> selected = game.selectFromList(controller, cand, Predicates::any, 1, false);
                     p.hand.addAll(getInList(cand, selected));
-                    Junk j = new Junk(controller);
-                    j.copyPropertiesFrom(getNotInList(cand, selected).get(0));
-                    Arraylist<Card> cards = new Arraylist<>();
-                    cards.add(j);
-                    game.shuffleIntoDeck(j.controller, cards);
+                    Card toJunk = getNotInList(cand, selected).get(0);
+                    game.shuffleIntoDeck(controller, new Arraylist<>(toJunk));
+                    game.transformToJunk(this, toJunk.id);
                 }));
     }
 }

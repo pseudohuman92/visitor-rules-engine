@@ -38,7 +38,7 @@ public class SelfdestructNode extends Item {
         game.addToStack(new Ability(this, "Transform ~ into AI01.",
             (x) -> { 
                 if(game.isIn(controller, id, PLAY)) {
-                    game.replaceWith(this, new Meltdown(this));
+                    game.transformTo(this, this, new Meltdown(this));
                 }
         }));
     }

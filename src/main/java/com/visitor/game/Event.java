@@ -17,7 +17,7 @@ public class Event {
     
     public enum EventType {
         POSSESSION, TURN_START, TURN_END, DRAW, DISCARD, STUDY,
-        DESTROY;
+        DESTROY, TRANSFORM;
     }
     
     public static Event draw (String username, Arraylist<Card> drawn){
@@ -65,6 +65,14 @@ public class Event {
         Event e = new Event(DESTROY);
         e.data.add(destroyingCard);
         e.data.add(destroyedCard);
+        return e;
+    }
+    
+    public static Event transform (Card transformingCard, Card transformedFrom, Card transformedTo){
+        Event e = new Event(TRANSFORM);
+        e.data.add(transformingCard);
+        e.data.add(transformedFrom);
+        e.data.add(transformedTo);
         return e;
     }
     

@@ -64,7 +64,7 @@ public class UI08 extends Item {
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            game.replaceWith(this, new AI03(this));
+                            game.transformTo(this,this, new AI03(this));
                         }
                     }));
             }));
@@ -78,7 +78,7 @@ public class UI08 extends Item {
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            game.replaceWith(this, new AI03(this));
+                            game.transformTo(this, this, new AI03(this));
                         }
                     }));
             }));

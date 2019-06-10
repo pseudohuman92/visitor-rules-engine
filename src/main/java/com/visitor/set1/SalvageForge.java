@@ -40,7 +40,7 @@ public class SalvageForge extends Item {
         game.addToStack(new Ability(this, "Transform ~ into AI02.",
             (x) -> { 
                 if(game.isIn(controller, id, PLAY)) {
-                    game.replaceWith(this, new ScrapGrenade(this));
+                    game.transformTo(this, this, new ScrapGrenade(this));
                 }
         }));
     }

@@ -57,7 +57,7 @@ public class AL01 extends Ally {
                 game.putTo(controller, game.extractCard(target), PLAY);
                 }
                 if (loyalty == 0){
-                    game.replaceWith(this, new UL01(this));
+                    game.transformTo(this, this, new UL01(this));
                 }
             }, new Arraylist<>(target));
     }

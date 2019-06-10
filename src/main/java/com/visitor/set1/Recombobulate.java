@@ -5,8 +5,11 @@
  */
 package com.visitor.set1;
 
+import com.visitor.card.types.Card;
+import com.visitor.card.types.Ritual;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
+import static com.visitor.game.Game.Zone.BOTH_PLAY;
 import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
@@ -18,25 +21,17 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class NaniteSabotage extends Spell {
+public class Recombobulate extends Ritual {
     
-    /**
-     *
-     * @param owner
-     */
-    public NaniteSabotage(String owner) {
-        super("Nanite Sabotage", 2, new Hashmap(BLUE, 2), 
-        "Choose an item from opponent's hand and transform it into Junk", owner);
+    public Recombobulate(String owner) {
+        super("Recombobulate", 4, new Hashmap(BLUE, 3), 
+        "Shuffle all junk from your hand into your deck and draw that many cards.", owner);
     }
-    
+
     @Override
     protected void duringResolve (Game game){
-        Arraylist<UUID> s = game.selectFromList(controller, 
-                game.getZone(game.getOpponentName(controller), HAND), 
-                Predicates::isItem, 1, true);
-        if (!s.isEmpty()){
-            game.transformToJunk(this, s.get(0));
-        }
+        Arraylist<Card> junks = game.getAllFrom(controller, HAND, Predicates::isJunk);
+        game.shuffleIntoDeck(controller, junks);
+        game.draw(controller, junks.size());
     }
-    
 }

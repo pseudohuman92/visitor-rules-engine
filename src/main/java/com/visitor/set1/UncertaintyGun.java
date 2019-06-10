@@ -48,7 +48,7 @@ public class UncertaintyGun extends Item {
                     game.getZone(game.getOpponentName(controller), DECK), 
                     c->{return c.cost <= x;}, 1, true);
             if (!s.isEmpty()){
-                game.transformToJunk(s.get(0));
+                game.transformToJunk(this, s.get(0));
             }
         }));
     }

@@ -45,7 +45,7 @@ public class AI03 extends Item {
             (x) -> {
                 game.dealDamage(id, target, 2);
                 if (counters.get(CHARGE) == 0){
-                    game.replaceWith(this, new UI08(this));
+                    game.transformTo(this, this, new UI08(this));
                 }
             }));
     }
