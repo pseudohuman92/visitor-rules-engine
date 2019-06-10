@@ -32,7 +32,7 @@ public class ScrapGrenade extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Junk.class, HAND, 1);
+        return game.hasIn(controller, HAND, Predicates::isJunk, 1);
     }
     
     @Override

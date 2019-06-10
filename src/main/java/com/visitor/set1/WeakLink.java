@@ -34,7 +34,7 @@ public class WeakLink extends Spell {
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
-            game.hasInstancesIn(game.getOpponentName(controller), Item.class, PLAY, 1);
+            game.hasIn(game.getOpponentName(controller), PLAY, Predicates::isItem,1);
     }
     
     @Override

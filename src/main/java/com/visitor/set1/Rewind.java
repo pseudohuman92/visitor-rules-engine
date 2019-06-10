@@ -36,7 +36,7 @@ public class Rewind extends Spell {
     public boolean canPlay (Game game){
         return super.canPlay(game) 
                 && game.hasEnergy(controller, 2)
-                && game.hasCardsIn(controller, SCRAPYARD, 1);
+                && game.hasIn(controller, SCRAPYARD, Predicates::any, 1);
     }
     
     @Override

@@ -35,9 +35,9 @@ public class RecombinantReplication extends Spell {
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) 
-                && game.hasValidTargetsIn(controller, Predicates::isItem, 5, SCRAPYARD)
-                && game.hasValidTargetsIn(controller, Predicates::isItem, 1, VOID)
-                && game.hasValidTargetsIn(controller, Predicates::isItem, 1, PLAY);
+                && game.hasIn(controller, SCRAPYARD, Predicates::isItem, 5)
+                && game.hasIn(controller, VOID, Predicates::isItem, 1)
+                && game.hasIn(controller, PLAY, Predicates::isItem, 1);
     }
     
     @Override

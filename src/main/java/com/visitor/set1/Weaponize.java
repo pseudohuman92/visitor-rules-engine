@@ -34,7 +34,7 @@ public class Weaponize extends Ritual {
     
     @Override
     public boolean canPlay(Game game){
-        return super.canPlay(game) && game.hasInstancesIn(controller, Junk.class, HAND, 1);
+        return super.canPlay(game) && game.hasIn(controller, HAND, Predicates::isJunk, 1);
     }
     
     @Override

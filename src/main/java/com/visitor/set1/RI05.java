@@ -36,14 +36,14 @@ public class RI05 extends Item{
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasCardsIn(controller, HAND, 1)
+        return game.hasIn(controller, HAND, Predicates::any, 1)
                 || (super.canActivate(game) && counters.getOrDefault(CHARGE, 0) > 0);
     }
     
     @Override
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
-        if (game.hasCardsIn(controller, HAND, 1)){
+        if (game.hasIn(controller, HAND, Predicates::any, 1)){
             choices.add(new Ability(this, "Discard a card: Charge 1.",
             (x1) -> {
                 game.discard(controller, 1);

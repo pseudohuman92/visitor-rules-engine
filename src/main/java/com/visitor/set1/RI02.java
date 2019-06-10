@@ -12,6 +12,7 @@ import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.BOTH_PLAY;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import java.util.UUID;
 
@@ -31,7 +32,8 @@ public class RI02 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return super.canActivate(game) && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && !c.id.equals(id));}, 1, BOTH_PLAY);
+        return super.canActivate(game) && 
+                game.hasIn(controller, BOTH_PLAY, c->{return (c instanceof Item && !c.id.equals(id));}, 1);
     }
 
     @Override

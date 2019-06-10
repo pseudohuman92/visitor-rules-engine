@@ -30,7 +30,7 @@ public class Nullify extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasInstancesIn(controller, Spell.class, STACK, 1);
+        return super.canPlay(game) && game.hasIn(controller, STACK, Predicates::isSpell, 1);
     }
     
     @Override

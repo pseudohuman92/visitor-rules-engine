@@ -31,7 +31,7 @@ public class Extraction extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasInstancesIn(controller, Item.class, PLAY, 1);
+        return super.canPlay(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
     }
     
     @Override

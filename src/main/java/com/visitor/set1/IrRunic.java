@@ -32,7 +32,7 @@ public class IrRunic extends Spell {
     @Override
     protected void duringResolve (Game game){
         Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), HAND, Predicates::isSpell, 1, 
-                    !game.hasInstancesIn(game.getOpponentName(controller), Spell.class, HAND, 1));
+                    !game.hasIn(game.getOpponentName(controller), HAND, Predicates::isSpell, 1));
         if(!selected.isEmpty()){
             game.discard(game.getOpponentName(controller), selected.get(0));
         }

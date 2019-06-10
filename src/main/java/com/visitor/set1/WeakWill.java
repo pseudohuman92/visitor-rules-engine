@@ -28,7 +28,8 @@ public class WeakWill extends Spell {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return (c instanceof Item && c.cost <= 3);}, 1, BOTH_PLAY);
+        return super.canPlay(game) && 
+                game.hasIn(controller, BOTH_PLAY, c->{return (c instanceof Item && c.cost <= 3);}, 1);
     }
     
     @Override

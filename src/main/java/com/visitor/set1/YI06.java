@@ -32,7 +32,7 @@ public class YI06 extends Item {
     
     @Override
     public boolean canActivate(Game game) {
-        return super.canActivate(game) && game.hasInstancesIn(controller, Item.class, PLAY, 1);
+        return super.canActivate(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
     }
     
     @Override

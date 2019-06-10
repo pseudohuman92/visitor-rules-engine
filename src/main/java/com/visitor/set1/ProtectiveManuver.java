@@ -27,7 +27,7 @@ public class ProtectiveManuver extends Spell {
     @Override
     public boolean canPlay(Game game){
         return super.canPlay(game) &&
-                game.hasInstancesIn(controller, Ally.class, BOTH_PLAY, 1);
+                game.hasIn(controller, BOTH_PLAY, Predicates::isAlly, 1);
     }
     
     protected void beforePlay(Game game){

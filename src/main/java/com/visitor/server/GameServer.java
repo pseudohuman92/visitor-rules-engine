@@ -77,7 +77,7 @@ public class GameServer {
             playerConnections.putIn(username, connection);
             Arraylist<UUID> playerGames = new Arraylist<>();
             games.forEach((id, game) -> {
-                if(game.isAPlayer(username)){
+                if(game.isInGame(username)){
                     playerGames.add(id);
                 }
             });

@@ -29,7 +29,7 @@ public class ChangingSides extends Ritual {
     
     @Override
     public boolean canPlay(Game game){
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, ChangingSides::validTarget, 1, BOTH_PLAY);
+        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, ChangingSides::validTarget, 1);
     }
     
     @Override

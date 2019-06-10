@@ -48,14 +48,14 @@ public class UI08 extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Junk.class, HAND, 1) 
-            || game.hasInstancesIn(controller, Item.class, PLAY, 1);
+        return game.hasIn(controller, HAND, Predicates::isJunk, 1) 
+            || game.hasIn(controller, PLAY, Predicates::isItem, 1);
     }
     
     @Override
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
-        if (game.hasInstancesIn(controller, Junk.class, HAND, 1)){
+        if (game.hasIn(controller, HAND, Predicates::isJunk, 1)){
             choices.add(new Ability(this, "Discard a Junk: Charge 1.",
             (x1) -> {
                 target = game.selectFromZone(controller, HAND, Predicates::isJunk, 1, false).get(0);
@@ -69,7 +69,7 @@ public class UI08 extends Item {
                     }));
             }));
         }
-        if (game.hasInstancesIn(controller, Item.class, PLAY, 1)){
+        if (game.hasIn(controller, PLAY, Predicates::isItem, 1)){
             choices.add(new Ability(this, "Sacrifice an Item: Charge 1.",
             (x1) -> {
                 target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);

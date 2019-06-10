@@ -30,7 +30,7 @@ public class RegressiveHierarchy extends Spell {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasCardsIn(controller, SCRAPYARD, 1);
+        return super.canPlay(game) && game.hasIn(controller, SCRAPYARD, Predicates::any, 1);
     }
     
     @Override

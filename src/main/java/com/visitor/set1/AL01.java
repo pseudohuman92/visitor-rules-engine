@@ -36,7 +36,7 @@ public class AL01 extends Ally {
     @Override
     public boolean canActivate(Game game){
         return super.canActivate(game) && 
-                    game.hasInstancesIn(controller, Item.class, SCRAPYARD, 1) && 
+                    game.hasIn(controller, SCRAPYARD, Predicates::isItem, 1) && 
                 loyalty >= 2; 
     }
     

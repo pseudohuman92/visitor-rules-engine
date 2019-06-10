@@ -30,7 +30,7 @@ public class Neutralize extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, c->{return !(c instanceof Ability);}, 1, STACK);
+        return super.canPlay(game) && game.hasIn(controller, STACK, c->{return !(c instanceof Ability);}, 1);
     }
     
     @Override

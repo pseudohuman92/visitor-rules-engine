@@ -27,7 +27,7 @@ public class Gratitude extends Spell {
     @Override
     public boolean canPlay(Game game){
         return super.canPlay(game) &&
-                game.hasInstancesIn(controller, Ally.class, PLAY, 1);
+                game.hasIn(controller, PLAY, Predicates::isAlly, 1);
     }
     
     protected void beforePlay(Game game){

@@ -32,7 +32,7 @@ public class ChronologicalReversal extends Spell {
     @Override
     public boolean canPlay (Game game){
         return super.canPlay(game) 
-                && game.hasInstancesIn(controller, Spell.class, SCRAPYARD, 1);
+                && game.hasIn(controller, SCRAPYARD, Predicates::isSpell, 1);
     }
     
     @Override

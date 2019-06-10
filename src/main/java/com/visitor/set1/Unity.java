@@ -31,7 +31,7 @@ public class Unity extends Ritual {
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
                 game.hasEnergy(controller, 2) && 
-                game.hasInstancesIn(controller, Ally.class, BOTH_PLAY, 1);
+                game.hasIn(controller, BOTH_PLAY, Predicates::isAlly, 1);
     }
     
     @Override

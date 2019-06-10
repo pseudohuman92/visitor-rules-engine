@@ -10,6 +10,7 @@ import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class Reinforcements extends Spell {
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasCardsIn(controller, HAND, 2);
+        return super.canPlay(game) && game.hasIn(controller, HAND, Predicates::any, 2);
     }
     
     @Override

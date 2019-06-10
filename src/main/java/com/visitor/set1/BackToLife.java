@@ -27,7 +27,7 @@ public class BackToLife extends Spell {
     
     @Override
     public boolean canPlay(Game game){
-        return super.canPlay(game) && game.hasValidTargetsIn(controller, Predicates::isAlly, 1, SCRAPYARD);
+        return super.canPlay(game) && game.hasIn(controller, SCRAPYARD, Predicates::isAlly, 1);
     }
     
     @Override

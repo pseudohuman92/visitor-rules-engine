@@ -30,7 +30,7 @@ public class EntropySurge extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Item.class, PLAY, 1);
+        return game.hasIn(controller, PLAY, Predicates::isItem, 1);
     }
 
     @Override

@@ -161,6 +161,18 @@ public class Game {
         return cards;
     }
     
+    public Arraylist<Card> extractAll(List<UUID> list) {
+        return new Arraylist<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
+    }
+    
+    public Arraylist<Card> extractAllCopiesFrom(String username, String cardName, Zone zone) {
+        Arraylist<Card> cards = new Arraylist<>(getZone(username, zone).parallelStream()
+                .filter(c -> { return c.name.equals(cardName);}).collect(Collectors.toList()));
+        getZone(username, zone).removeAll(cards);
+        return cards;
+    }
+
+    
     // Action methods
     public void playCard(String username, UUID cardID) {
         extractCard(cardID).play(this);
@@ -364,12 +376,8 @@ public class Game {
         }
     }
     
-    public boolean hasValidTargetsIn(String username, Predicate<Card> validTarget, int count, Zone zone){
+    public boolean hasIn(String username, Zone zone, Predicate<Card> validTarget, int count){
         return getZone(username, zone).parallelStream().filter(validTarget).count() >= count;
-    }
-    
-     public boolean hasCardsIn(String username, Zone zone, int count) {
-        return getZone(username, zone).size() >= count;
     }
     
     public void putTo(String username, Card c, Zone zone) {
@@ -378,6 +386,10 @@ public class Game {
     
     public void putTo(String username, Card c, Zone zone, int index) {
         getZone(username, zone).add(index, c);
+    }
+    
+    public void putTo(String username, Arraylist<Card> cards, Zone zone) {
+        getZone(username, zone).addAll(cards);
     }
     
     public void addEnergy(String username, int i) {
@@ -426,6 +438,11 @@ public class Game {
         addEvent(Event.discard(username, players.get(username).discard(temp)), false);
     }
     
+    public void discardAll(String username, Arraylist<Card> cards) {
+        players.get(username).discard(UUIDHelper.toUUIDList(cards));
+        addEvent(Event.discard(username, cards), false);
+    }
+    
     public void deplete(UUID id){
         getCard(id).deplete();
     }
@@ -461,12 +478,8 @@ public class Game {
     public boolean isIn(String username, UUID cardID, Zone zone) {
         return getZone(username, zone).parallelStream().anyMatch(getCard(cardID)::equals);
     }
-    
-    public boolean hasInstancesIn(String username, Class c, Zone zone, int count) {
-        return getZone(username, zone).parallelStream().filter(c::isInstance).count() >= count;
-    }
 
-    public void replaceWith(Card oldCard, Card newCard) {
+    private void replaceWith(Card oldCard, Card newCard) {
         players.values().forEach(p->{p.replaceWith(oldCard, newCard);});
         for (int i = 0; i < stack.size(); i++){
             if(stack.get(i).equals(oldCard)){
@@ -476,33 +489,23 @@ public class Game {
         }
     }
 
-    public Arraylist<Card> extractAllCopiesFrom(String username, String cardName, Zone zone) {
-        Arraylist<Card> cards = new Arraylist<>(getZone(username, zone).parallelStream()
-                .filter(c -> { return c.name.equals(cardName);}).collect(Collectors.toList()));
-        getZone(username, zone).removeAll(cards);
-        return cards;
-    }
-
-    public void putTo(String username, Arraylist<Card> cards, Zone zone) {
-        getZone(username, zone).addAll(cards);
-    }
     
-    public void transformToJunk(Card transformingCard, UUID cardID){
-        Card c = getCard(cardID);
-        Junk j = new Junk(c.controller);
-        j.copyPropertiesFrom(c);
-        replaceWith(c, j);
-        addEvent(Event.transform(transformingCard, c, j), false);
-    }
-    
+    //Transformation methods
     public void transformTo(Card transformingCard, Card transformedCard, Card transformTo){
         replaceWith(transformedCard, transformTo);
         addEvent(Event.transform(transformingCard, transformedCard, transformTo), false);
     }
-
-    public Arraylist<Card> extractAll(List<UUID> list) {
-        return new Arraylist<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
+    
+    public void transformToJunk(Card transformingCard, UUID cardID){
+        Card card = getCard(cardID);
+        Junk junk = new Junk(card.controller);
+        junk.copyPropertiesFrom(card);
+        transformTo(transformingCard, card, junk);
     }
+    
+    
+
+    
     
     public void shuffleIntoDeck(String username, Arraylist<Card> cards) {
         players.get(username).deck.shuffleInto(cards);
@@ -526,6 +529,8 @@ public class Game {
         }
     }
     
+    
+    //Select methods
     public int selectX(String username, int maxX) {
         if (maxX == 0){
             return maxX;
@@ -598,6 +603,8 @@ public class Game {
     public Arraylist<UUID> selectDamageTargets(String username, int count, boolean upTo) {        
         return selectFromZoneWithPlayers(username, BOTH_PLAY, Predicates::isDamageable, Predicates::any, count, upTo);
     }
+    
+    
     
     public void gameEnd(String player, boolean win) {
         send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(win)));
@@ -704,7 +711,7 @@ public class Game {
         return activePlayer.equals(username);
     }
 
-    public boolean isAPlayer(String username) {
+    public boolean isInGame(String username) {
         return players.getOrDefault(username, null) != null;
     }
 
@@ -772,11 +779,6 @@ public class Game {
 
     public void removeMaxEnergy(String username, int count) {
         players.get(username).maxEnergy -= count;
-    }
-
-    public void discardAll(String username, Arraylist<Card> cards) {
-        players.get(username).discard(UUIDHelper.toUUIDList(cards));
-        addEvent(Event.discard(username, cards), false);
     }
 
     public boolean isPlayer(UUID targetId) {

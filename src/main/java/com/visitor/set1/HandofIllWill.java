@@ -34,7 +34,7 @@ public class HandofIllWill extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasInstancesIn(controller, Item.class, PLAY, 1)&&(!depleted);
+        return super.canActivate(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
     }
 
     @Override

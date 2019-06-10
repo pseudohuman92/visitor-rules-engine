@@ -30,7 +30,8 @@ public class SynapticCapacitor extends Item{
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasCardsIn(controller, HAND, 1) && game.hasCardsIn(controller, SCRAPYARD, 1);
+        return game.hasIn(controller, HAND, Predicates::any, 1) && 
+               game.hasIn(controller, SCRAPYARD, Predicates::any, 1);
     }
     
     @Override

@@ -39,7 +39,7 @@ public class UL01 extends Ally {
     @Override
     public boolean canActivate(Game game){
         return super.canActivate(game) && 
-                    game.hasInstancesIn(controller, Item.class, HAND, 1); 
+                    game.hasIn(controller, HAND, Predicates::isItem, 1); 
     }
     
 

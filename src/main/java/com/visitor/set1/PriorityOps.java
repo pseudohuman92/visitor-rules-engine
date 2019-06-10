@@ -31,7 +31,7 @@ public class PriorityOps extends Spell {
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasInstancesIn(controller, Item.class, BOTH_PLAY, 1);
+        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, Predicates::isItem, 1);
     }
     
     @Override

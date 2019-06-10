@@ -31,7 +31,7 @@ public class SpontaneousExplosion extends Spell {
     
     @Override
     public boolean canPlay(Game game){
-        return super.canPlay(game) && game.hasInstancesIn(controller, Junk.class, BOTH_PLAY, 1);
+        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, Predicates::isJunk, 1);
     }
     
     @Override

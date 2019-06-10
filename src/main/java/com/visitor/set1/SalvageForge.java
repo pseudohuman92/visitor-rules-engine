@@ -12,6 +12,7 @@ import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.Predicates;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 
@@ -29,7 +30,7 @@ public class SalvageForge extends Item {
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasCardsIn(controller, HAND, 1)
+        return game.hasIn(controller, HAND, Predicates::any, 1)
                 && game.hasEnergy(controller, 1);
     }
     
