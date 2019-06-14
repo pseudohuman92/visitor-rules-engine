@@ -793,7 +793,7 @@
   },
   {
     "Code": "GI03",
-    "Name": "Energy Cannon ",
+    "Name": "Energy Cannon",
     "Type": "Item",
     "Subtype": "",
     "Effect": "X, Activate: \n    Deal X damage.",
@@ -1068,7 +1068,7 @@
   },
   {
     "Code": "NT05",
-    "Name": "Xenoengineering ",
+    "Name": "Xenoengineering",
     "Type": "Tome",
     "Subtype": "",
     "Effect": "Study:\n  Gain UU",
