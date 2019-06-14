@@ -39,7 +39,6 @@ class OpenPacks extends Component {
       firebase.openPack(userId, packName, cards);
       packs[packName] -= 1;
       updateState({ packs: packs });
-      firebase.setUserData(userId, updateState)
       this.setState({ show: true });
     }
   };

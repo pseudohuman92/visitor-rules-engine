@@ -63,7 +63,7 @@ class Decks extends React.Component {
   };
 
   createDeck = () => {
-    const {firebase, userId, updateState } = this.props;
+    const { firebase, userId, updateState } = this.props;
     const Return = this.loadDeck.bind(this);
     firebase.createNewDeck(userId, "New Deck", Return);
     firebase.createNewDeck(userId, updateState);
@@ -122,4 +122,7 @@ class Decks extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withFirebase(Decks));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withFirebase(Decks));

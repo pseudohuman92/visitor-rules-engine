@@ -32,6 +32,11 @@ class CollectionScreen extends React.Component {
     };
   }
 
+  componentWillMount(){
+    const { firebase, updateState, userId } = this.props;
+    firebase.setUserData(userId, updateState)
+  }
+
   prev = () => {
     this.setState(state => ({ page: Math.max(state.page - 1, 0) }));
   };
