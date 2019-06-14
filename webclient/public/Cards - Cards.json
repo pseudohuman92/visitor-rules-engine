@@ -980,6 +980,39 @@
   },
   {
     "Code": "",
+    "Name": "Regentersize",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Gain 2 Health and 1 energy at the start of your next turn",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Focusing Master",
+    "Type": "Ally",
+    "Subtype": "Spirit Monk",
+    "Effect": "-1 Max Energy, Activate: \n    +2 Loyalty\n-1 Loyalty, Activate:\n    Favor 1 - Deal X damage, X = your energy.",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Natural Battery",
+    "Type": "Item",
+    "Subtype": "",
+    "Effect": "Trigger - Beginning of your turn\n    Gain 1 energy\nX, Activate, Sacrifice ~:\n   Deal X damage to each player and each card in play.\n",
+    "Health": 1,
+    "Energy": 3,
+    "Knowledge": "G",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
     "Name": "",
     "Type": "",
     "Subtype": "",

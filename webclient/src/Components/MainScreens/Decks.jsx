@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { withFirebase } from "../Firebase";
 import DeckBuilder from "./DeckBuilder";
 import { delayClick } from "../Helpers/Helpers";
+import { mapDispatchToProps } from "../Redux/Store";
 
 const mapStateToProps = state => {
   return { userId: state.authUser.user.uid };
@@ -62,8 +63,10 @@ class Decks extends React.Component {
   };
 
   createDeck = () => {
+    const {firebase, userId, updateState } = this.props;
     const Return = this.loadDeck.bind(this);
-    this.props.firebase.createNewDeck(this.props.userId, "New Deck", Return);
+    firebase.createNewDeck(userId, "New Deck", Return);
+    firebase.createNewDeck(userId, updateState);
   };
 
   render() {
@@ -119,4 +122,4 @@ class Decks extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(withFirebase(Decks));
+export default connect(mapStateToProps, mapDispatchToProps)(withFirebase(Decks));

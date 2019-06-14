@@ -16,7 +16,8 @@ import com.visitor.helpers.Arraylist;
 public class Event {
     
     public enum EventType {
-        POSSESSION, TURN_START, TURN_END, DRAW, DISCARD, STUDY,
+        POSSESSION, TURN_START, TURN_END, CLEANUP, 
+        DRAW, DISCARD, STUDY,
         DESTROY, TRANSFORM;
     }
     
@@ -50,6 +51,12 @@ public class Event {
     
     public static Event turnEnd (String turnPlayer){
         Event e = new Event(TURN_END);
+        e.data.add(turnPlayer);
+        return e;
+    }
+    
+    public static Event cleanup (String turnPlayer){
+        Event e = new Event(CLEANUP);
         e.data.add(turnPlayer);
         return e;
     }

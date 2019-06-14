@@ -6,6 +6,7 @@
 package com.visitor.set1;
 
 
+import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Ally;
 import com.visitor.game.Event;
@@ -21,7 +22,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class CuriousScholar extends Ally {
+public class CuriousScholar extends Ally implements Triggering {
     
     public CuriousScholar(String owner){
         super ("Curious Scholar", 2, new Hashmap(GREEN, 1),
@@ -42,7 +43,10 @@ public class CuriousScholar extends Ally {
     @Override
     public void checkEvent(Game game, Event e){
         if (e.type == STUDY && ((String) e.data.get(0)).equals(controller)){
-            loyalty += 1;
+            game.addToStack(new Ability(this, "Add 1 Loyalty", 
+            a -> {
+                loyalty += 1;
+            }));
         }
         super.checkEvent(game, e);
     }

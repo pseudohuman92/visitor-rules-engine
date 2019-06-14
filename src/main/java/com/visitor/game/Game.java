@@ -279,6 +279,7 @@ public class Game {
             discard(turnPlayer, players.get(turnPlayer).hand.size()-7);
             
         }
+        processCleanupEvents();
     }
     
     private void newTurn(){
@@ -734,6 +735,12 @@ public class Game {
         addEvent(turnEnd(turnPlayer), true);
         out.println("Ending End Triggers");
     }
+    
+    private void processCleanupEvents() {
+        out.println("Starting Cleanup Triggers");
+        addEvent(Event.cleanup(turnPlayer), true);
+        out.println("Ending Cleanup Triggers");
+    }
 
     public void addTriggeringCard(String username, Triggering t) {
         triggeringCards.get(username).add(t);
@@ -784,6 +791,21 @@ public class Game {
     public boolean isPlayer(UUID targetId) {
         return players.values().stream().anyMatch(p -> {
             return p.id.equals(targetId);  
+        });
+    }
+
+    public void gainHealth(String username, int health) {
+        players.get(username).health += health;
+    }
+
+    public void dealDamageToAll(String username, UUID sourceId, int damage) {
+        players.values().forEach(p -> {
+            dealDamage(sourceId, p.id, damage);
+        });
+        getZone(username, BOTH_PLAY).forEach(c -> {
+            if(c.isDamageable()){
+                dealDamage(sourceId, c.id, damage);
+            }
         });
     }
     

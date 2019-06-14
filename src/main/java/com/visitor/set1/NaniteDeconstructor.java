@@ -28,11 +28,6 @@ public class NaniteDeconstructor extends Item {
                 "Shuffle 3 Junk into your deck, Activate: Deal 3 damage.", owner);
         subtypes.add("Kit");
     }
-
-    @Override
-    public boolean canActivate(Game game) {
-        return !depleted;
-    }
     
     @Override
     public void activate(Game game) {

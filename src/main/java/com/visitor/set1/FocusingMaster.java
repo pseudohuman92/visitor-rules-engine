@@ -24,7 +24,7 @@ import java.util.UUID;
 public class FocusingMaster extends Ally {
     
     public FocusingMaster(String owner){
-        super ("Curious Scholar", 2, new Hashmap(GREEN, 1),
+        super ("Focusing Master", 2, new Hashmap(GREEN, 1),
             "-1 Max Energy, Activate: \n" +
             "    +2 Loyalty\n" +
             "-1 Loyalty, Activate:\n" +

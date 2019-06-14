@@ -28,7 +28,7 @@ class OpenPacks extends Component {
   }
 
   openPack = packName => {
-    const { packs, userId, firebase } = this.props;
+    const { packs, userId, firebase, updateState } = this.props;
     if (packs[packName] > 0) {
       let genPack = this.generatePack(5, true);
       this.setState({ generatedPack: genPack });
@@ -38,7 +38,8 @@ class OpenPacks extends Component {
       });
       firebase.openPack(userId, packName, cards);
       packs[packName] -= 1;
-      this.props.updateState({ packs: packs });
+      updateState({ packs: packs });
+      firebase.setUserData(userId, updateState)
       this.setState({ show: true });
     }
   };
