@@ -31,6 +31,7 @@ class Decks extends React.Component {
   }
 
   componentWillMount() {
+    this.setState({ loadedDeck: "", selectedDeckId: "", decks: [] });
     const Return = this.addDeck.bind(this);
     this.props.firebase.getAllDecks(this.props.userId, Return);
   }
@@ -63,10 +64,9 @@ class Decks extends React.Component {
   };
 
   createDeck = () => {
-    const { firebase, userId, updateState } = this.props;
+    const { firebase, userId } = this.props;
     const Return = this.loadDeck.bind(this);
     firebase.createNewDeck(userId, "New Deck", Return);
-    firebase.createNewDeck(userId, updateState);
   };
 
   render() {

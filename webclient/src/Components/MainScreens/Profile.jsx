@@ -12,6 +12,7 @@ import Decks from "./Decks";
 import DeckSelection from "./DeckSelection";
 import Fonts from "../Primitives/Fonts";
 import CollectionScreen from "./CollectionScreen";
+import GameStore from "./GameStore";
 
 const mapStateToProps = state => {
   return {
@@ -64,6 +65,10 @@ class Profile extends Component {
                 onClick={event => this.setState({ value: 4 })}
                 text="Collection"
               />
+              <Button
+                onClick={event => this.setState({ value: 5 })}
+                text="Store"
+              />
             </Paper>
           </Center>
         )}
@@ -71,6 +76,7 @@ class Profile extends Component {
         {value === 2 && <Decks back={this.back} />}
         {value === 3 && <OpenPacks back={this.back} />}
         {value === 4 && <CollectionScreen back={this.back} />}
+        {value === 5 && <GameStore back={this.back} />}
       </div>
     );
   }

@@ -10,7 +10,11 @@ import { fullCollection, craftCost, salvageValue } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
 import { Typography } from "@material-ui/core";
 import CraftableCard from "../Card/CraftableCard";
-import { debugPrint, toFullCards, compareCardsByKnowledge } from "../Helpers/Helpers";
+import {
+  debugPrint,
+  toFullCards,
+  compareCardsByKnowledge
+} from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return {
@@ -23,18 +27,14 @@ const mapStateToProps = state => {
 const cardsPerPage = 12;
 
 class CollectionScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      page: 0,
-      maxPage: Math.floor(Object.keys(props.collection).length / cardsPerPage),
-      craft: false
-    };
-  }
+  state = {
+    page: 0,
+    craft: false
+  };
 
-  componentWillMount(){
+  componentWillMount() {
     const { firebase, updateState, userId } = this.props;
-    firebase.setUserData(userId, updateState)
+    firebase.setUserData(userId, updateState);
   }
 
   prev = () => {
@@ -42,11 +42,19 @@ class CollectionScreen extends React.Component {
   };
 
   next = () => {
-    this.setState(state => ({ page: Math.min(state.page + 1, state.maxPage) }));
+    this.setState(state => ({
+      page: Math.min(
+        state.page + 1,
+        Math.floor(
+          Object.keys(state.craft ? fullCollection : this.props.collection)
+            .length / cardsPerPage
+        )
+      )
+    }));
   };
 
   craft = () => {
-    this.setState(state => ({ craft: !state.craft }));
+    this.setState(state => ({ page: 0, craft: !state.craft }));
   };
 
   onSalvage = cardName => event => {
@@ -60,7 +68,7 @@ class CollectionScreen extends React.Component {
       }
       dust2 += salvageValue;
       debugPrint("Salvaging " + cardName);
-      firebase.cardChange(userId, collection, dust2, updateState);
+      firebase.salvageCard(userId, cardName, salvageValue);
       updateState({ dust: dust2, collection: collection });
     }
   };
@@ -76,7 +84,7 @@ class CollectionScreen extends React.Component {
       }
       dust2 -= craftCost;
       debugPrint("Crafting " + cardName);
-      firebase.cardChange(userId, collection, dust2, updateState);
+      firebase.craftCard(userId, cardName, craftCost);
       updateState({ dust: dust2, collection: collection });
     }
   };
@@ -88,12 +96,14 @@ class CollectionScreen extends React.Component {
     Object.keys(collection).forEach(cardName => {
       if (collection[cardName] > 3) {
         let toDust = collection[cardName] - 3;
+        for (let i = 0; i < toDust; i++) {
+          firebase.salvageCard(userId, cardName, salvageValue);
+        }
         collection[cardName] -= toDust;
         dust2 += toDust * salvageValue;
         debugPrint("Salvaged " + toDust + " of " + cardName);
       }
     });
-    firebase.cardChange(userId, collection, dust2, updateState);
     updateState({ dust: dust2, collection: collection });
   };
 
@@ -106,16 +116,24 @@ class CollectionScreen extends React.Component {
     const { page, craft } = this.state;
     const { collection, dust } = this.props;
     const displayCollection = craft ? fullCollection : toFullCards(collection);
+    const maxPage = Math.floor(
+      Object.keys(craft ? fullCollection : collection).length / cardsPerPage
+    );
     return collection ? (
-      <Grid container spacing={8} style={{ maxHeight: "95vh" }} alignItems="center">
+      <Grid
+        container
+        spacing={8}
+        style={{ maxHeight: "95vh" }}
+        alignItems="center"
+      >
         <Grid item xs={1}>
           <Button onClick={this.props.back} text="Back" />
         </Grid>
         <Grid item xs={1}>
-          <Button onClick={this.prev} text="Prev" />
+          <Button onClick={this.prev} text="Prev" disabled={page === 0} />
         </Grid>
         <Grid item xs={1}>
-          <Button onClick={this.next} text="Next" />
+          <Button onClick={this.next} text="Next" disabled={page === maxPage} />
         </Grid>
         <Grid item xs={1}>
           <Button

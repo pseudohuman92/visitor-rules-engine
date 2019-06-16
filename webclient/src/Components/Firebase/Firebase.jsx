@@ -55,12 +55,12 @@ class Firebase {
     this.db.runTransaction(transaction => {
       return transaction.get(userRef).then(userDoc => {
         let user = userDoc.data();
+        let packs = user.packs;
+        if (!packs[packName] || packs[packName] === 0) {
+          return;
+        }
         let collectionRef = this.collection(user.collectionId);
         return transaction.get(collectionRef).then(collectionDoc => {
-          let packs = user.packs;
-          if (!packs[packName] || packs[packName] === 0) {
-            return;
-          }
           packs[packName] -= 1;
           let collection = collectionDoc.data().cards;
           Object.keys(cards).forEach(cardName => {
@@ -74,6 +74,29 @@ class Firebase {
           transaction.update(userRef, { packs: packs });
           return;
         });
+      });
+    });
+  };
+
+  buyPack = (userId, packName, cost) => {
+    let userRef = this.user(userId);
+    this.db.runTransaction(transaction => {
+      return transaction.get(userRef).then(userDoc => {
+        let user = userDoc.data();
+        let packs = user.packs;
+        let coins = user.coins;
+        if (coins < cost) {
+          return;
+        }
+
+        if (!packs[packName]) {
+          packs[packName] = 1;
+        } else {
+          packs[packName] += 1;
+        }
+        coins -= cost;
+        transaction.update(userRef, { packs: packs, coins: coins });
+        return;
       });
     });
   };
@@ -107,7 +130,7 @@ class Firebase {
         this.collection(data.collectionId)
           .get()
           .then(coll => {
-            Return({...data, collection: coll.data().cards });
+            Return({ ...data, collection: coll.data().cards });
           });
       });
   };
@@ -219,26 +242,56 @@ class Firebase {
     this.feedbacks().add(feedback);
   };
 
-  cardChange = (userId, collection, dust, Return) => {
+  craftCard = (userId, cardName, craftCost) => {
     let userRef = this.user(userId);
     this.db.runTransaction(transaction => {
       return transaction.get(userRef).then(userDoc => {
         let user = userDoc.data();
+        let dust = user.dust;
+        if (dust < craftCost) {
+          return;
+        }
         let collectionRef = this.collection(user.collectionId);
-        transaction.update(collectionRef, { cards: collection });
-        transaction.update(userRef, { dust: dust });
-        return;
-      });
-    }).then(() =>
-    userRef.get()
-    .then(user => {
-      let data = user.data();
-      this.collection(data.collectionId)
-        .get()
-        .then(coll => {
-          Return({...data, collection: coll.data().cards });
+        return transaction.get(collectionRef).then(collectionDoc => {
+          let collection = collectionDoc.data().cards;
+          dust -= craftCost;
+          if (!collection[cardName]) {
+            collection[cardName] = 1;
+          } else {
+            collection[cardName] += 1;
+          }
+          transaction.update(collectionRef, { cards: collection });
+          transaction.update(userRef, { dust: dust });
+          return;
         });
-    }));
+      });
+    });
+  };
+
+  salvageCard = (userId, cardName, salvageValue) => {
+    let userRef = this.user(userId);
+    this.db.runTransaction(transaction => {
+      return transaction.get(userRef).then(userDoc => {
+        let user = userDoc.data();
+        let dust = user.dust;
+        let collectionRef = this.collection(user.collectionId);
+        return transaction.get(collectionRef).then(collectionDoc => {
+          let collection = collectionDoc.data().cards;
+          if (!collection[cardName] || collection[cardName] === 0) {
+            return;
+          }
+          dust += salvageValue;
+          if (collection[cardName] === 1) {
+            delete collection[cardName];
+          } else {
+            collection[cardName] -= 1;
+          }
+          transaction.update(collectionRef, { cards: collection });
+          transaction.update(userRef, { dust: dust });
+          return;
+        });
+      });
+    });
   };
 }
 

@@ -23,7 +23,7 @@ class CardGallery extends Component {
   };
 
   render() {
-    const { page } = this.state;
+    const { page, maxPage } = this.state;
     return (
       <div>
         <Grid container spacing={8}>
@@ -31,10 +31,10 @@ class CardGallery extends Component {
             <Button onClick={this.props.back} text="Back" />
           </Grid>
           <Grid item xs={4}>
-            <Button onClick={this.prev} text="Prev" />
+            <Button onClick={this.prev} text="Prev" disabled={page===0}/>
           </Grid>
           <Grid item xs={4}>
-            <Button onClick={this.next} text="Next" />
+            <Button onClick={this.next} text="Next" disabled={page===maxPage}/>
           </Grid>
           <Grid container item spacing={8} xs={12}>
             {Object.values(fullCollection).sort(compareCardsByKnowledge)

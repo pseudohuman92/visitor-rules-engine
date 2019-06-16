@@ -150,3 +150,6 @@ export const newUserCollection = getNewUserCollection();
 
 export const craftCost = 1000;
 export const salvageValue = 100;
+
+export const packList = ["Set1"];
+export const packCosts = {Set1: 1000};
