@@ -10,6 +10,7 @@ import FullCard from "./FullCard";
 import MediumCard from "./MediumCard";
 import SmallCard from "./SmallCard";
 
+
 export class CardDisplay extends PureComponent {
   state = { showDialog: false };
 

@@ -675,7 +675,7 @@
     "Name": "Kill Team",
     "Type": "Asset",
     "Subtype": "",
-    "Effect": "+3*. \n1, -1*, @: \n  Deal 2%",
+    "Effect": "Charge 3. \n1, -1 Charge, @: \n  Deal 2%",
     "Health": 3,
     "Energy": 2,
     "Knowledge": "RR",

@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<metadata>
+Created by FontForge 20170731 at Tue Jun 18 14:14:16 2019
+ By Aleksey,,,
+Copyright pseudohuman 2019
+"Visitor Font Small, which is based on "Visitor Font
+</metadata>
+<defs>
+<font id="Visitor-Ability-Text" horiz-adv-x="1024" >
+  <font-face 
+    font-family="Visitor Ability Text"
+    font-weight="400"
+    font-stretch="normal"
+    units-per-em="4096"
+    panose-1="0 0 4 0 0 0 0 0 0 0"
+    ascent="4096"
+    descent="0"
+    bbox="0 0 4096 4096"
+    underline-thickness="204"
+    underline-position="103"
+    unicode-range="U+0020-007C"
+  />
+<missing-glyph horiz-adv-x="4174" 
+d="M3081 50l-1506 1978l-1506 -1978h3012zM50 69l1506 1979l-1506 1978v-3957v0zM3100 69v3957l-1506 -1978l1506 -1979v0zM1575 2067l1506 1979h-3012l1506 -1979v0zM0 0v4096h3150v-4096h-3150z" />
+    <glyph glyph-name=".notdef" horiz-adv-x="4174" 
+d="M3081 50l-1506 1978l-1506 -1978h3012zM50 69l1506 1979l-1506 1978v-3957v0zM3100 69v3957l-1506 -1978l1506 -1979v0zM1575 2067l1506 1979h-3012l1506 -1979v0zM0 0v4096h3150v-4096h-3150z" />
+    <glyph glyph-name="glyph1" 
+ />
+    <glyph glyph-name="glyph2" 
+ />
+    <glyph glyph-name="space" unicode=" " 
+ />
+    <glyph glyph-name="numbersign" unicode="#" horiz-adv-x="5120" 
+d="M1024 0l-1024 2048v1024l1024 1024h2048l1024 -1024v-1024l-1024 -2048h-2048z" />
+    <glyph glyph-name="dollar" unicode="$" horiz-adv-x="5120" 
+d="M512 0q-212 0 -363 149q-149 151 -149 363v512h1536v-1024h-1024zM2560 0v1024h1536v-512q0 -212 -150 -363q-151 -149 -362 -149h-1024zM0 2046v512q0 212 149 363q151 151 363 151h1024v-1024h-512v-2h-1024zM2560 2048v1024h1024q211 0 362 -150q150 -151 150 -362
+v-512h-1536zM1536 3072q-212 0 -363 149q-149 151 -149 363q0 211 149 362q151 150 363 150q211 0 362 -150q150 -151 150 -362q0 211 149 362q151 150 363 150q211 0 362 -150q150 -151 150 -362q0 -212 -150 -363q-151 -149 -362 -149h-1024z" />
+    <glyph glyph-name="percent" unicode="%" horiz-adv-x="3072" 
+d="M512 0v1024h-512v512h512v1536l512 1024l512 -1024v-1536h512v-512h-512v-1024h-1024z" />
+    <glyph glyph-name="asterisk" unicode="*" horiz-adv-x="5120" 
+d="M2048 0l-683 1365l-1365 683l1365 682l683 1366l682 -1366l1366 -682l-1366 -683l-682 -1365v0z" />
+    <glyph glyph-name="greater" unicode="&#x3e;" horiz-adv-x="4096" 
+d="M1536 0v2048h-1024l1024 2048h1536l-512 -1024h512l-1536 -3072v0z" />
+    <glyph glyph-name="at" unicode="@" horiz-adv-x="5120" 
+d="M1024 0l-1024 1024v1024l1024 1024v-2048h2048v2048l1024 -1024v-1024l-1024 -1024h-2048zM1536 2048v2048h1024v-2048h-1024z" />
+    <glyph glyph-name="B" unicode="B" 
+ />
+    <glyph glyph-name="G" unicode="G" 
+ />
+    <glyph glyph-name="R" unicode="R" 
+ />
+    <glyph glyph-name="U" unicode="U" 
+ />
+    <glyph glyph-name="Y" unicode="Y" 
+ />
+    <glyph glyph-name="bar" unicode="|" horiz-adv-x="5120" 
+d="M2048 0l-2048 2048v1024q0 424 300 723q300 301 724 301t723 -301q301 -300 301 -723q0 424 300 723q300 301 724 301t723 -301q301 -300 301 -723v-1024l-2048 -2048v0z" />
+  </font>
+</defs></svg>

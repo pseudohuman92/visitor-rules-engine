@@ -2,16 +2,15 @@ import React from "react";
 import { PureComponent } from "react";
 import Rectangle from "react-rectangle";
 
-
 import {
   getCardColor,
   getIconColor,
-  toKnowledgeString,
-  toIconString
+  toKnowledgeString
 } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
 import "./css/Card.css";
 import { withSize } from "react-sizeme";
+import "../../fonts/Fonts.css";
 
 class FullCard extends PureComponent {
   state = { showDialog: false };
@@ -56,33 +55,37 @@ class FullCard extends PureComponent {
               <span style={{ fontWeight: "500" }}>{cost}</span>
               <span
                 style={{
-                  fontWeight: "500",
+                  fontFamily: "Visitor Font Small",
                   color: getIconColor(knowledgeCost)
                 }}
               >
-                {toIconString(toKnowledgeString(knowledgeCost))}
+                {toKnowledgeString(knowledgeCost)}
               </span>
 
               {" | " + name}
             </div>
 
             <div className="card-image">
-                <img
-                  src={process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"}
-                  style={{ maxWidth: "100%" }}
-                  alt=""
-                />
+              <img
+                src={
+                  process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"
+                }
+                style={{ maxWidth: "100%" }}
+                alt=""
+              />
             </div>
 
             <div className="card-type">{type}</div>
             <div
               className="card-description"
-              style={{ whiteSpace: "pre-wrap" }}
+              style={{
+                whiteSpace: "pre-wrap"
+              }}
             >
               {description}
               {shield ? "\nShield:" + shield : ""}
               {reflect ? "\nReflect:" + reflect : ""}
-              {health ? "\nHealth:" + health : ""}
+              {health ? "\nHealth: " + health : ""}
               {loyalty ? "\nLoyalty:" + loyalty : ""}
               {favor ? "\nFavor:" + favor : ""}
             </div>

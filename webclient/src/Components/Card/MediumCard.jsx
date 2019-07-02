@@ -6,11 +6,11 @@ import {
   getCardColor,
   getIconColor,
   toKnowledgeString,
-  toIconString,
 } from '../Helpers/Helpers';
 import Fonts from '../Primitives/Fonts';
 import './css/Card.css';
 import { withSize } from "react-sizeme";
+import "../../fonts/Fonts.css"
 
 class MediumCard extends PureComponent {
   render() {
@@ -52,13 +52,13 @@ class MediumCard extends PureComponent {
              
                 <span style={{ fontWeight: "500" }}>{cost}</span>
                 <span
-                  style={{
-                    fontWeight: "500",
-                    color: getIconColor(knowledgeCost)
-                  }}
-                >
-                  {toIconString(toKnowledgeString(knowledgeCost))}
-                </span>
+                style={{
+                  fontFamily: "Visitor Font Small",
+                  color: getIconColor(knowledgeCost)
+                }}
+              >
+                {toKnowledgeString(knowledgeCost)}
+              </span>
                 {" | " + name}
             </div>
           <div className="card-type">

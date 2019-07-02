@@ -94,7 +94,7 @@ public abstract class Card {
      * OVERRIDE IF: Card has an alternative cost (like X) or a special effect when played.
      * @param game
      */
-    public void play(Game game) {
+    public final void play(Game game) {
         beforePlay(game);
         game.spendEnergy(controller, cost);
         game.addToStack(this);
@@ -107,7 +107,7 @@ public abstract class Card {
      * OVERRIDE IF: Card has a special effect when studied or card is multicolor.
      * @param game
      */
-    public void study(Game game, boolean regular) {
+    public final void study(Game game, boolean regular) {
         Player player = game.getPlayer(controller);
         player.voidPile.add(this);
         player.energy++;
