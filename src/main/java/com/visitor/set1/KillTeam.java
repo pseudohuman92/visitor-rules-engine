@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Counter.CHARGE;
@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class KillTeam extends Item {
+public class KillTeam extends Asset {
     
     public KillTeam (String owner){
         super("Kill Team", 2, new Hashmap(RED, 2), 

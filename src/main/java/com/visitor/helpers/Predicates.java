@@ -6,8 +6,8 @@
 package com.visitor.helpers;
 
 import com.visitor.card.types.Ally;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
 import com.visitor.card.types.Junk;
 import com.visitor.card.types.Ritual;
 import com.visitor.card.types.Spell;
@@ -20,8 +20,8 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public abstract class Predicates {
 
-    public static boolean isItem(Card c) {
-        return c instanceof Item;
+    public static boolean isAsset(Card c) {
+        return c instanceof Asset;
     }
     
     public static boolean isSpell (Card c) {

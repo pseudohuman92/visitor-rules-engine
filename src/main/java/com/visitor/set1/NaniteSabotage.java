@@ -26,14 +26,14 @@ public class NaniteSabotage extends Spell {
      */
     public NaniteSabotage(String owner) {
         super("Nanite Sabotage", 2, new Hashmap(BLUE, 2), 
-        "Choose an item from opponent's hand and transform it into Junk", owner);
+        "Choose an asset from opponent's hand and transform it into Junk", owner);
     }
     
     @Override
     protected void duringResolve (Game game){
         Arraylist<UUID> s = game.selectFromList(controller, 
                 game.getZone(game.getOpponentName(controller), HAND), 
-                Predicates::isItem, 1, true);
+                Predicates::isAsset, 1, true);
         if (!s.isEmpty()){
             game.transformToJunk(this, s.get(0));
         }

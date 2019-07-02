@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.BOTH_PLAY;
 import com.visitor.helpers.Arraylist;
@@ -22,12 +22,12 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class NSink extends Item {
+public class NSink extends Asset {
     
     public NSink (String owner){
         super("N-Sink", 2, new Hashmap(YELLOW, 2), 
                 "2X, Activate: \n" +
-                "  Target item Charge X.", owner);
+                "  Target asset Charge X.", owner);
     }
     
     @Override
@@ -38,7 +38,7 @@ public class NSink extends Item {
     @Override
     public void activate(Game game) {
         int x = game.selectX(controller, game.getPlayer(controller).energy/2);
-        UUID selection = game.selectFromZone(controller, BOTH_PLAY, Predicates::isItem, 1, false).get(0);
+        UUID selection = game.selectFromZone(controller, BOTH_PLAY, Predicates::isAsset, 1, false).get(0);
         game.spendEnergy(controller, 2 * x);
         game.deplete(id);
         game.addToStack(new Ability(this, "Charge " + x,

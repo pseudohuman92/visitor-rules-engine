@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.SCRAPYARD;
 import static com.visitor.game.Game.Zone.VOID;
@@ -24,7 +24,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class ShockTroop extends Item {
+public class ShockTroop extends Asset {
     
     public ShockTroop (String owner){
         super("Shock Troop", 1, new Hashmap(RED, 2), 

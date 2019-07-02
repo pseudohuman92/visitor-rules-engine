@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class MindSlavesThrash extends Item {
+public class MindSlavesThrash extends Asset {
     
     public MindSlavesThrash (String owner){
         super("Mind Slave's Thrash", 1, new Hashmap(BLACK, 1), 

@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Counter.CHARGE;
@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  *
  * @author pseudo
  */
-public class MetaphasicShieldMK5 extends Item {
+public class MetaphasicShieldMK5 extends Asset {
     
     public MetaphasicShieldMK5 (String owner){
         super("Metaphasic Shield MK 5", 1, new Hashmap(YELLOW, 1), 

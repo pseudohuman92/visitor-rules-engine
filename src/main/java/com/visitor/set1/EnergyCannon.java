@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class EnergyCannon extends Item {
+public class EnergyCannon extends Asset {
     
     int x;
     UUID target;

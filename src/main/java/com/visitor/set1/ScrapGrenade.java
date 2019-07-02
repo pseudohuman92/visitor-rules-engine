@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
@@ -22,7 +22,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class ScrapGrenade extends Item {
+public class ScrapGrenade extends Asset {
     
     public ScrapGrenade (SalvageForge c){
         super("Scrap Grenade", 3, new Hashmap(BLUE, 3), 

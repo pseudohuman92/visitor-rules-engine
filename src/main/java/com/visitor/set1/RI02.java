@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.BOTH_PLAY;
 import com.visitor.helpers.Arraylist;
@@ -20,28 +20,28 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class RI02 extends Item {
+public class RI02 extends Asset {
     
     UUID target;
     
     public RI02 (String owner){
         super("RI02", 1, new Hashmap(RED, 2), 
             "Activate: \n" +
-            "  Return ~ and target item to controller's hand.", owner);
+            "  Return ~ and target asset to controller's hand.", owner);
     }
 
     @Override
     public boolean canActivate(Game game) {
         return super.canActivate(game) && 
-                game.hasIn(controller, BOTH_PLAY, c->{return (c instanceof Item && !c.id.equals(id));}, 1);
+                game.hasIn(controller, BOTH_PLAY, c->{return (c instanceof Asset && !c.id.equals(id));}, 1);
     }
 
     @Override
     public void activate(Game game) {
         game.deplete(id);
-        target = game.selectFromZone(controller, BOTH_PLAY, c->{return (c instanceof Item && !c.id.equals(id));}, 1, false).get(0);
+        target = game.selectFromZone(controller, BOTH_PLAY, c->{return (c instanceof Asset && !c.id.equals(id));}, 1, false).get(0);
         game.addToStack(new Ability(this,
-            "Return ~ and target item to controller's hand.",
+            "Return ~ and target asset to controller's hand.",
             (x) -> {
                 if(game.isIn(controller, target, BOTH_PLAY)){
                     game.getCard(target).returnToHand(game);

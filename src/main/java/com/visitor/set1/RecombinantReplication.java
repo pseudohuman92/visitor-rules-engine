@@ -29,23 +29,23 @@ public class RecombinantReplication extends Spell {
     
     public RecombinantReplication(String owner) {
         super("Recombinant Replication", 1, new Hashmap(BLUE, 2), 
-                "Additional Cost - Purge 3 items from your scrapyard. Transform target item you control into a copy of target item in your void.", owner);
+                "Additional Cost - Purge 3 assets from your scrapyard. Transform target asset you control into a copy of target asset in your void.", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) 
-                && game.hasIn(controller, SCRAPYARD, Predicates::isItem, 5)
-                && game.hasIn(controller, VOID, Predicates::isItem, 1)
-                && game.hasIn(controller, PLAY, Predicates::isItem, 1);
+                && game.hasIn(controller, SCRAPYARD, Predicates::isAsset, 5)
+                && game.hasIn(controller, VOID, Predicates::isAsset, 1)
+                && game.hasIn(controller, PLAY, Predicates::isAsset, 1);
     }
     
     @Override
     protected void beforePlay(Game game) {
-        targets = game.selectFromZone(controller, SCRAPYARD, Predicates::isItem, 5, false);
-        Arraylist<UUID> sel = game.selectFromZone(controller, VOID, Predicates::isItem, 1, false);
+        targets = game.selectFromZone(controller, SCRAPYARD, Predicates::isAsset, 5, false);
+        Arraylist<UUID> sel = game.selectFromZone(controller, VOID, Predicates::isAsset, 1, false);
         targets.addAll(sel);
-        Arraylist<UUID> sel2 = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false);
+        Arraylist<UUID> sel2 = game.selectFromZone(controller, PLAY, Predicates::isAsset, 1, false);
         targets.addAll(sel2);
         
         

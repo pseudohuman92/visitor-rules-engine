@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -17,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  *
  * @author pseudo
  */
-public class KineticReflectors extends Item {
+public class KineticReflectors extends Asset {
     
     public KineticReflectors (String owner){
         super("Kinetic Reflectors", 2, new Hashmap(YELLOW, 2), 

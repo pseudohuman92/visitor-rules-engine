@@ -13,7 +13,7 @@ import com.visitor.game.Game;
 public interface Activatable {
     
     /**
-     * BEHAVIOR: return true if item can be activated.
+     * BEHAVIOR: return true if asset can be activated.
      * @param game
      * @return
      */

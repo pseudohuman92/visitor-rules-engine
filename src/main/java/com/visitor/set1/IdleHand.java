@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Hashmap;
@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.BLACK;
  *
  * @author pseudo
  */
-public class IdleHand extends Item {
+public class IdleHand extends Asset {
     
     public IdleHand (String owner){
         super("Idle Hand", 3, new Hashmap(BLACK, 2), 
-                "3, Activate: Draw top item of opponent's deck.", owner);
+                "3, Activate: Draw top asset of opponent's deck.", owner);
     }
 
     @Override
@@ -37,10 +37,10 @@ public class IdleHand extends Item {
         game.deplete(id);
         game.spendEnergy(controller, 3);
         game.addToStack(new Ability(this,
-            "Draw top item of " + game.getOpponentName(controller) + "'s deck",
+            "Draw top asset of " + game.getOpponentName(controller) + "'s deck",
             (x) -> {
                 Card c = game.getPlayer(game.getOpponentName(controller))
-                        .deck.extractTopmost(Predicates::isItem);
+                        .deck.extractTopmost(Predicates::isAsset);
                 if(c != null){
                     c.controller = controller;
                     game.putTo(c.controller, c, HAND);

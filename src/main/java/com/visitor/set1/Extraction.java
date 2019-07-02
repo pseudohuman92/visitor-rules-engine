@@ -5,7 +5,7 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
@@ -25,18 +25,18 @@ public class Extraction extends Spell {
     public Extraction(String owner) {
         super("Extraction", 1, new Hashmap(RED, 2), 
             "Additional Cost \n" +
-            "  Return an item you control to your hand. \n" +
+            "  Return an asset you control to your hand. \n" +
             "Deal 4 damage.", owner);
     }
     
     @Override
     public boolean canPlay (Game game){
-        return super.canPlay(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
+        return super.canPlay(game) && game.hasIn(controller, PLAY, Predicates::isAsset, 1);
     }
     
     @Override
     protected void beforePlay(Game game){
-        target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
+        target = game.selectFromZone(controller, PLAY, Predicates::isAsset, 1, false).get(0);
         game.getCard(target).returnToHand(game);
     }  
     

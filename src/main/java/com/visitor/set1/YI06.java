@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -21,23 +21,23 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class YI06 extends Item {
+public class YI06 extends Asset {
     
     public YI06 (String owner){
         super("YI06", 2, new Hashmap(YELLOW, 2), 
-                "\"Sacrifice an item, Activate:\n" +
+                "\"Sacrifice an asset, Activate:\n" +
                 "  Opponent purges X, \n" +
-                "  where X is # of charge counter on sacrificed item.\"", owner);
+                "  where X is # of charge counter on sacrificed asset.\"", owner);
     }
     
     @Override
     public boolean canActivate(Game game) {
-        return super.canActivate(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
+        return super.canActivate(game) && game.hasIn(controller, PLAY, Predicates::isAsset, 1);
     }
     
     @Override
     public void activate(Game game) {
-        UUID selection = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
+        UUID selection = game.selectFromZone(controller, PLAY, Predicates::isAsset, 1, false).get(0);
         int x = game.getCard(selection).counters.getOrDefault(CHARGE, 0);
         game.sacrifice(selection);
         game.deplete(id);

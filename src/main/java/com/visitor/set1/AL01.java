@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import static com.visitor.game.Game.Zone.SCRAPYARD;
@@ -27,7 +27,7 @@ public class AL01 extends Ally {
     public AL01(UL01 c){
         super ("AL01", 2, new Hashmap(BLUE, 1),
             "-2 Loyalty, Activate: \n" +
-            "  Favor 1 - Return target Item from your scrapyard to play.\n" +
+            "  Favor 1 - Return target Asset from your scrapyard to play.\n" +
             "If ~ has no loyalty, Transform it to UL01", 5,
             c.controller);
         copyPropertiesFrom(c);
@@ -36,7 +36,7 @@ public class AL01 extends Ally {
     @Override
     public boolean canActivate(Game game){
         return super.canActivate(game) && 
-                    game.hasIn(controller, SCRAPYARD, Predicates::isItem, 1) && 
+                    game.hasIn(controller, SCRAPYARD, Predicates::isAsset, 1) && 
                 loyalty >= 2; 
     }
     
@@ -44,12 +44,12 @@ public class AL01 extends Ally {
     @Override
     public void activate(Game game) {
 
-        UUID target = game.selectFromZone(controller, SCRAPYARD, Predicates::isItem, 1, false).get(0);
+        UUID target = game.selectFromZone(controller, SCRAPYARD, Predicates::isAsset, 1, false).get(0);
         game.deplete(id);
         loyalty -=2;
         favor = 1;
         favorAbility =  new Ability(this, 
-                "Return target Item from your scrapyard to play.\n" +
+                "Return target Asset from your scrapyard to play.\n" +
                   "If ~ has no loyalty, Transform it to UL01",
             (x2) -> {
                 if(game.isIn(controller, target, SCRAPYARD)){

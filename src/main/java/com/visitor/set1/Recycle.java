@@ -5,7 +5,7 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.BOTH_PLAY;
@@ -23,17 +23,17 @@ public class Recycle extends Spell {
     UUID target;
     
     public Recycle(String owner) {
-        super("Recycle", 3, new Hashmap(BLUE, 1), "Transform target item into Junk", owner);
+        super("Recycle", 3, new Hashmap(BLUE, 1), "Transform target asset into Junk", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, Predicates::isItem, 1);
+        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, Predicates::isAsset, 1);
     }
     
     @Override
     protected void beforePlay(Game game) {
-        targets = game.selectFromZone(controller, BOTH_PLAY, Predicates::isItem, 1, false);
+        targets = game.selectFromZone(controller, BOTH_PLAY, Predicates::isAsset, 1, false);
         target = targets.get(0);
         
         

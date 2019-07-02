@@ -61,7 +61,7 @@ export function getIconColor(knowledgeCost) {
   } else if (knowlString.startsWith("G")) {
     return "green";
   } else if (knowlString.startsWith("Y")) {
-    return "yellow";
+    return "goldenrod";
   } else {
     return "beige";
   }
@@ -135,7 +135,7 @@ export function getCardColor(knowledgeCost) {
     return "gray";
   }
   if (knowledgeCost.length > 1) {
-    return "yellow";
+    return "orange";
   }
 
   var knowlString = toKnowledgeString(knowledgeCost);
@@ -146,7 +146,7 @@ export function getCardColor(knowledgeCost) {
   } else if (knowlString.startsWith("R")) {
     return "#ff1a1a";
   } else if (knowlString.startsWith("Y")) {
-    return "#ffff00";
+    return "goldenrod";
   } else if (knowlString.startsWith("G")) {
     return "green";
   } else {

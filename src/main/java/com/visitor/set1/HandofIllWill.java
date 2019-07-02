@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -20,26 +20,26 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class HandofIllWill extends Item {
+public class HandofIllWill extends Asset {
     
     UUID target;
     
     public HandofIllWill (String owner){
         super("Hand of Ill Will", 4, new Hashmap(BLACK, 3), 
-        "Sacrifice an item, Activate:\n" +
+        "Sacrifice an asset, Activate:\n" +
         "Deal 2 damage to your opponent.\n" +
-        "If sacrificed item belongs to him, deal 3 damage instead.", owner);
+        "If sacrificed asset belongs to him, deal 3 damage instead.", owner);
         subtypes.add("Weapon");
     }
 
     @Override
     public boolean canActivate(Game game) {
-        return super.canActivate(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
+        return super.canActivate(game) && game.hasIn(controller, PLAY, Predicates::isAsset, 1);
     }
 
     @Override
     public void activate(Game game) {
-        target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
+        target = game.selectFromZone(controller, PLAY, Predicates::isAsset, 1, false).get(0);
         game.deplete(id);
         game.sacrifice(target);
         game.addToStack(new Ability(this, "deal " + (game.ownedByOpponent(target)? 3:2) +  

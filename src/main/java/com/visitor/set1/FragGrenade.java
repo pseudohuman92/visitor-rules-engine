@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class FragGrenade extends Item {
+public class FragGrenade extends Asset {
     
     public FragGrenade (String owner){
         super("Frag Grenade", 2, new Hashmap(RED, 1), 

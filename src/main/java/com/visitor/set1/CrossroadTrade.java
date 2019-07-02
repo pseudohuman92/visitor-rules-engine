@@ -6,7 +6,7 @@
 package com.visitor.set1;
 
 
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
@@ -25,17 +25,17 @@ public class CrossroadTrade extends Spell{
     
     public CrossroadTrade(String owner) {
         super("Crossroad Trade", 1, new Hashmap(BLACK, 1), 
-        "Additional Cost - Sacrifice an item. Draw 2 cards.", owner);
+        "Additional Cost - Sacrifice an asset. Draw 2 cards.", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasIn(controller, PLAY, Predicates::isItem, 1);
+        return super.canPlay(game) && game.hasIn(controller, PLAY, Predicates::isAsset, 1);
     }
     
     @Override
     protected void beforePlay(Game game) {
-        target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
+        target = game.selectFromZone(controller, PLAY, Predicates::isAsset, 1, false).get(0);
         game.sacrifice(target);
     }
     

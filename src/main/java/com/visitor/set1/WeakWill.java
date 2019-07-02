@@ -5,7 +5,7 @@
  */
 package com.visitor.set1;
 
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.BOTH_PLAY;
@@ -23,18 +23,18 @@ public class WeakWill extends Spell {
     UUID target;
     
     public WeakWill(String owner) {
-        super("WeakWill", 3, new Hashmap(BLACK, 2), "Possess target item that costs 3 or less.", owner);
+        super("WeakWill", 3, new Hashmap(BLACK, 2), "Possess target asset that costs 3 or less.", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
-                game.hasIn(controller, BOTH_PLAY, c->{return (c instanceof Item && c.cost <= 3);}, 1);
+                game.hasIn(controller, BOTH_PLAY, c->{return (c instanceof Asset && c.cost <= 3);}, 1);
     }
     
     @Override
     protected void beforePlay(Game game) {
-        targets = game.selectFromZone(controller, BOTH_PLAY, c->{return (c instanceof Item && c.cost <= 3);}, 1, false);
+        targets = game.selectFromZone(controller, BOTH_PLAY, c->{return (c instanceof Asset && c.cost <= 3);}, 1, false);
         target = targets.get(0);
         
         

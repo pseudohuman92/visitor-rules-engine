@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Arraylist;
@@ -24,7 +24,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class RI05 extends Item{
+public class RI05 extends Asset{
     
     public RI05 (String owner){
         super("RI05", 2, new Hashmap(RED, 3), 

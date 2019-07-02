@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  *
  * @author pseudo
  */
-public class PuzzleBox extends Item {
+public class PuzzleBox extends Asset {
     
     public PuzzleBox (String owner){
         super("Puzzle Box", 1, new Hashmap(GREEN, 1), 

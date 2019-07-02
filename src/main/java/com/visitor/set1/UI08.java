@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
@@ -26,7 +26,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class UI08 extends Item {
+public class UI08 extends Asset {
 
     
     UUID target;
@@ -34,14 +34,14 @@ public class UI08 extends Item {
     public UI08 (String owner){
         super("UI08", 3, new Hashmap(BLUE, 1), 
                 "Discard a Junk: Charge 1.\n" +
-                "Sacrifice an Item: Charge 1. \n" +
+                "Sacrifice an Asset: Charge 1. \n" +
                 "If it has 3 charges, transform ~ into AI03", owner);
     }
     
     public UI08 (AI03 c){
         super("UI08", 3, new Hashmap(BLUE, 1), 
                 "Discard a Junk: Charge 1.\n" +
-                "Sacrifice an Item: Charge 1. \n" +
+                "Sacrifice an Asset: Charge 1. \n" +
                 "If it has 3 charges, transform ~ into AI03", c.controller);
         copyPropertiesFrom(c);
     }
@@ -49,7 +49,7 @@ public class UI08 extends Item {
     @Override
     public boolean canActivate(Game game) {
         return game.hasIn(controller, HAND, Predicates::isJunk, 1) 
-            || game.hasIn(controller, PLAY, Predicates::isItem, 1);
+            || game.hasIn(controller, PLAY, Predicates::isAsset, 1);
     }
     
     @Override
@@ -69,10 +69,10 @@ public class UI08 extends Item {
                     }));
             }));
         }
-        if (game.hasIn(controller, PLAY, Predicates::isItem, 1)){
-            choices.add(new Ability(this, "Sacrifice an Item: Charge 1.",
+        if (game.hasIn(controller, PLAY, Predicates::isAsset, 1)){
+            choices.add(new Ability(this, "Sacrifice an Asset: Charge 1.",
             (x1) -> {
-                target = game.selectFromZone(controller, PLAY, Predicates::isItem, 1, false).get(0);
+                target = game.selectFromZone(controller, PLAY, Predicates::isAsset, 1, false).get(0);
                 game.sacrifice(target);
                 game.addToStack(new Ability(this, "Charge 1",
                     (x2) -> {

@@ -6,7 +6,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.BOTH_PLAY;
@@ -26,17 +26,17 @@ public class PriorityOps extends Spell {
     
     public PriorityOps(String owner) {
         super("Priority Ops", 2, new Hashmap(RED, 2), 
-                "Put target item on top of controller's deck.", owner);
+                "Put target asset on top of controller's deck.", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
-        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, Predicates::isItem, 1);
+        return super.canPlay(game) && game.hasIn(controller, BOTH_PLAY, Predicates::isAsset, 1);
     }
     
     @Override
     protected void beforePlay(Game game) {
-        targets = game.selectFromZone(controller, BOTH_PLAY, Predicates::isItem, 1, false);
+        targets = game.selectFromZone(controller, BOTH_PLAY, Predicates::isAsset, 1, false);
         target = targets.get(0);
         
         

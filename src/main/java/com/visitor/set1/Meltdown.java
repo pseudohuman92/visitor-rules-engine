@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class Meltdown extends Item {
+public class Meltdown extends Asset {
     
     UUID target;
     

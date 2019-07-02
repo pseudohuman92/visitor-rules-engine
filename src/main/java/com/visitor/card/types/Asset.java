@@ -10,19 +10,19 @@ import com.visitor.protocol.Types.Knowledge;
 import java.util.UUID;
 
 /**
- * Abstract class for the Item card type.
+ * Abstract class for the Asset card type.
  * @author pseudo
  */
-public abstract class Item extends Card implements Activatable {
+public abstract class Asset extends Card implements Activatable {
     
     
     //TODO: Eventually remove this.
-    public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
+    public Asset(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
         super(name, cost, knowledge, text, owner);
         health = 3;
     }
     
-    public Item(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, int health, String owner) {
+    public Asset(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, int health, String owner) {
         super(name, cost, knowledge, text, owner);
         this.health = health;
     }
@@ -58,6 +58,6 @@ public abstract class Item extends Card implements Activatable {
     @Override
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
-                .setType("Item");
+                .setType("Asset");
     }
 }

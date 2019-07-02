@@ -6,7 +6,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.DECK;
 import com.visitor.helpers.Arraylist;
@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class UncertaintyGun extends Item {
+public class UncertaintyGun extends Asset {
     
     int x;
     

@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Counter.CHARGE;
@@ -19,7 +19,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class AI03 extends Item {
+public class AI03 extends Asset {
     
     public AI03 (UI08 c){
         super("AI03", 0, new Hashmap(BLUE, 1), 

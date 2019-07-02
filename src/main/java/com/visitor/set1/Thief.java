@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
@@ -17,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.BLACK;
  *
  * @author pseudo
  */
-public class Thief extends Item {
+public class Thief extends Asset {
     
     public Thief (String owner){
         super("Thief", 1, new Hashmap(BLACK, 1), 

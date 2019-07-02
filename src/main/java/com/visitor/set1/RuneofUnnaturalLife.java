@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.SCRAPYARD;
 import static com.visitor.game.Game.Zone.VOID;
@@ -22,7 +22,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class RuneofUnnaturalLife extends Item {
+public class RuneofUnnaturalLife extends Asset {
     
     public RuneofUnnaturalLife (String owner){
         super("Rune of Unnatural Life", 3, new Hashmap(BLACK, 1), 

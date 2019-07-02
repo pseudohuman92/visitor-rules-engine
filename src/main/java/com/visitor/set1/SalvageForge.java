@@ -7,7 +7,7 @@
 package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import static com.visitor.game.Game.Zone.PLAY;
@@ -20,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  *
  * @author pseudo
  */
-public class SalvageForge extends Item {
+public class SalvageForge extends Asset {
     
     public SalvageForge (String owner){
         super("Salvage Forge", 1, new Hashmap(BLUE, 1), 

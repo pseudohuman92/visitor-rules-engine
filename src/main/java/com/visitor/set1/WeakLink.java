@@ -6,7 +6,7 @@
 package com.visitor.set1;
 
 
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
@@ -28,18 +28,18 @@ public class WeakLink extends Spell {
      */
     public WeakLink(String owner) {
         super("Weak Link", 2, new Hashmap(BLACK, 2), 
-        "Opponent chooses an item he controls, posses that item.", owner);
+        "Opponent chooses an asset he controls, posses that asset.", owner);
     }
     
     @Override
     public boolean canPlay(Game game){ 
         return super.canPlay(game) && 
-            game.hasIn(game.getOpponentName(controller), PLAY, Predicates::isItem,1);
+            game.hasIn(game.getOpponentName(controller), PLAY, Predicates::isAsset,1);
     }
     
     @Override
     protected void duringResolve (Game game){
-        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), PLAY, Predicates::isItem, 1, false);
+        Arraylist<UUID> selected = game.selectFromZone(game.getOpponentName(controller), PLAY, Predicates::isAsset, 1, false);
         game.possessTo(controller, selected.get(0), PLAY);
     }
 }

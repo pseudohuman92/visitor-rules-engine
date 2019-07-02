@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Ability;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Event;
 import static com.visitor.game.Event.EventType.TURN_START;
 import com.visitor.game.Game;
@@ -20,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  *
  * @author pseudo
  */
-public class NaturalBattery extends Item implements Triggering {
+public class NaturalBattery extends Asset implements Triggering {
     
     public NaturalBattery (String owner){
         super("Natural Battery", 3, new Hashmap(GREEN, 1), 

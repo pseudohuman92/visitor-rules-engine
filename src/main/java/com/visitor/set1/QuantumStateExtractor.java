@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
@@ -25,7 +25,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class QuantumStateExtractor extends Item{
+public class QuantumStateExtractor extends Asset{
     
     public QuantumStateExtractor (String owner){
         super("Quantum State Extractor", 2, new Hashmap(BLUE, 2), 

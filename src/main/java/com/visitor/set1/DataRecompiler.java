@@ -8,7 +8,7 @@ package com.visitor.set1;
 
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Card;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
@@ -24,7 +24,7 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class DataRecompiler extends Item{
+public class DataRecompiler extends Asset{
     
     public DataRecompiler (String owner){
         super("Data Recompiler", 1, new Hashmap(BLUE, 1), 

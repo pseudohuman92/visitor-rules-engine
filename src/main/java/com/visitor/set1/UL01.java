@@ -7,7 +7,7 @@ package com.visitor.set1;
 
 
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.Item;
+import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Hashmap;
@@ -23,14 +23,14 @@ public class UL01 extends Ally {
     
     public UL01(String owner){
         super ("UL01", 1, new Hashmap(BLUE, 1),
-            "Discard an Item, Activate: +3 Loyalty\n" +
+            "Discard an Asset, Activate: +3 Loyalty\n" +
             "If ~ has 6 or more loyalty, Transform it to AL01", 5,
             owner);
     }
     
     public UL01(AL01 c){
         super ("UL01", 1, new Hashmap(BLUE, 1),
-            "Discard an Item, Activate: +3 Loyalty\n" +
+            "Discard an Asset, Activate: +3 Loyalty\n" +
             "If ~ has 6 or more loyalty, Transform it to AL01", 5,
             c.controller);
         copyPropertiesFrom(c);
@@ -39,13 +39,13 @@ public class UL01 extends Ally {
     @Override
     public boolean canActivate(Game game){
         return super.canActivate(game) && 
-                    game.hasIn(controller, HAND, Predicates::isItem, 1); 
+                    game.hasIn(controller, HAND, Predicates::isAsset, 1); 
     }
     
 
     @Override
     public void activate(Game game) {
-        UUID target = game.selectFromZone(controller, HAND, Predicates::isItem, 1, false).get(0);
+        UUID target = game.selectFromZone(controller, HAND, Predicates::isAsset, 1, false).get(0);
         game.discard(controller, target);
         game.deplete(id);
         loyalty +=3;
