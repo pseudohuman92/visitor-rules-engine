@@ -66,7 +66,7 @@ class FullCard extends PureComponent {
                 />
                 <div
                   className="card-cost-text"
-                  style={{ fontSize: size.width / 12 + "px" }}
+                  style={{ fontSize: size.width / 13 + "px" }}
                 >
                   {cost}
                 </div>
@@ -78,7 +78,7 @@ class FullCard extends PureComponent {
               .map((c, i) => (
                 <div
                   className="card-knowledge"
-                  style={{ top: 10 + i * 8 + "%" }}
+                  style={{ top: 11 + i * 3 + "%" }}
                 >
                   <img
                     src={

@@ -58,33 +58,39 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.card-health {
-  position: absolute;
-  bottom: -3%;
-  left: -3%;
-  max-width: 15%
-}
-
-.card-health-text {
-  color: crimson;
-  position: absolute;
-  top: 57%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: "Special Elite", cursive;
-}
-
 .card-cost {
   position: absolute;
-  top: -3%;
-  left: -3%;
-  max-width: 15%
+  top: 1%;
+  left: 1%;
+  max-width: 12%
 }
 
 .card-knowledge {
   position: absolute;
-  left: 0%;
-  max-width: 10%
+  top: 1%;
+  left: 1%;
+  max-width: 8%
+}
+
+.card-health {
+  position: absolute;
+  bottom: 0%;
+  left: 1%;
+  max-width: 13%
+}
+
+.card-shield {
+  position: absolute;
+  bottom: 0%;
+  left: 13%;
+  max-width: 12%
+}
+
+.card-loyalty {
+  position: absolute;
+  bottom: 0%;
+  left: 25%;
+  max-width: 12%
 }
 
 .card-cost-text {
@@ -96,11 +102,13 @@
   font-family: "Special Elite", cursive;
 }
 
-.card-shield {
+.card-health-text {
+  color: crimson;
   position: absolute;
-  bottom: -3%;
-  left: 12%;
-  max-width: 12%
+  top: 57%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Special Elite", cursive;
 }
 
 .card-shield-text {
@@ -110,13 +118,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: "Special Elite", cursive;
-}
-
-.card-loyalty {
-  position: absolute;
-  bottom: -3%;
-  left: 24%;
-  max-width: 13%
 }
 
 .card-loyalty-text {

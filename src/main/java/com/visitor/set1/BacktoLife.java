@@ -18,9 +18,9 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  *
  * @author pseudo
  */
-public class BackToLife extends Spell {
+public class BacktoLife extends Spell {
 
-    public BackToLife(String owner) {
+    public BacktoLife(String owner) {
         super("Back To Life", 2, new Hashmap(GREEN, 1), 
         "Return target Ally from your scrapyard to your hand.", owner);
     }

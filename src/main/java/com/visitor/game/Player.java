@@ -127,7 +127,13 @@ public class Player {
     }
 
     public Card extractCardFrom (UUID cardID, Arraylist<Card> list){
+        if (cardID == null){
+            System.out.println("CardID is NULL!");
+        }
         for (Card card : list) {
+            if (card == null){
+                System.out.println("Card is NULL!");
+            }
             if(card.id.equals(cardID)){
                 list.remove(card);
                 return card;

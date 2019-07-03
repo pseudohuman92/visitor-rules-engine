@@ -132,7 +132,7 @@ export function toSelectFromType(phase) {
 
 export function getCardColor(knowledgeCost) {
   if (!knowledgeCost || knowledgeCost.length === 0) {
-    return "gray";
+    return "darkgray";
   }
   if (knowledgeCost.length > 1) {
     return "orange";
@@ -140,15 +140,15 @@ export function getCardColor(knowledgeCost) {
 
   var knowlString = toKnowledgeString(knowledgeCost);
   if (knowlString.startsWith("B")) {
-    return "#666666";
+    return "dimgray";
   } else if (knowlString.startsWith("U")) {
-    return "#0066ff";
+    return "royalblue";
   } else if (knowlString.startsWith("R")) {
-    return "#ff1a1a";
+    return "firebrick";
   } else if (knowlString.startsWith("Y")) {
     return "goldenrod";
   } else if (knowlString.startsWith("G")) {
-    return "green";
+    return "forestgreen";
   } else {
     return "#e6e6e6";
   }
