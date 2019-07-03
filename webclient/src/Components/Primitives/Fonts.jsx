@@ -19,7 +19,19 @@ export default class Fonts extends Component {
         },
         {
           font: 'Cinzel',
-          weights: [400, 700, 900],
+          weights: [400, 700],
+        },
+        {
+          font: 'Signika',
+          weights: [400],
+        },
+        {
+          font: 'Special Elite',
+          weights: [400],
+        },
+        {
+          font: 'Metal Mania',
+          weights: [400],
         },
       ]}
     />

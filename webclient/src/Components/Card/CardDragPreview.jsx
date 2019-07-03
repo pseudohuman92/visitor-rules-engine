@@ -52,7 +52,8 @@ class CardDragPreview extends PureComponent {
           left: 0,
           top: 0,
           width: item.props.size.width,
-          height: item.props.size.height
+          height: item.props.size.height,
+          textAlign: "left"
         }}
       >
         <div style={this.getItemStyles(this.props)}>

@@ -1,38 +1,38 @@
 .card-inner {
-  margin: 3.1746% 3.9683% 3.1746% 3.9683%;
-  height: 93.6508%;
+  margin: 3% 4% 3% 4%;
+  height: 93.5%;
   color: black;
   overflow: hidden;
-  font-family: "Open Sans, sans-serif";  
+  font-family: "Open Sans", sans-serif;
 }
 
 .card-inner-play {
-    margin: 3.1746% 3.9683% 3.1746% 3.9683%;
-    height: 93.6508%;
+    margin: 3% 4% 3% 4%;
+    height: 93.5%;
     color: black;
     overflow: hidden;
-    font-family: "Open Sans, sans-serif"; 
+    font-family: "Open Sans", sans-serif;
   }
 
 .card-name {
-  margin: 3.4483% 3.4483% 0 3.4483%;
+  margin: 3.5% 3.5% 0 10.5%;
   background-color: beige;
   overflow: hidden;
-  height: 5.9524%;
-  font-family: "Open Sans, sans-serif";
+  height: 6%;
+  font-family: "Open Sans", sans-serif;
 }
 
 .small-card-name {
-  margin: 3.4483% 3.4483% 0 3.4483%;
+  margin: 3.5% 3.5% 0 3.5%;
   background-color: beige;
   overflow: hidden;
-  font-family: "Open Sans, sans-serif";
+  font-family: "Open Sans", sans-serif;
 }
 
 .card-image {
-  margin: 1.6949% 3.4483% 0 3.4483%;
+  margin: 1.5% 3.5% 0 3.5%;
   overflow: hidden;
-  height: 47.619%;
+  height: 47.5%;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -40,21 +40,52 @@
   -ms-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
-  user-drag: none;
 }
 
 .card-type {
-  margin: 1.6949% 3.4483% 0 3.4483%;
+  margin: 1.5% 3.5% 0 3.5%;
   background-color: beige;
   overflow: hidden;
-  height: 5.9524%;
-  font-family: "Open Sans, sans-serif";
+  height: 6%;
+  font-family: "Open Sans", sans-serif;
 }
 
 .card-description {
-  margin: 1.6949% 3.4483% 3.4483% 3.4483%;
+  margin: 1.5% 3.5% 3.5% 3.5%;
   background-color: beige;
   overflow: auto;
-  height: 32.1429%;
-  font-family: "Open Sans, sans-serif";
+  height: 32%;
+  font-family: "Open Sans", sans-serif;
+}
+
+.card-health {
+  position: absolute;
+  bottom: -3%;
+  left: -3%;
+  max-width: 15%
+}
+
+.card-health-text {
+  color: crimson;
+  position: absolute;
+  top: 57%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Special Elite", cursive;
+}
+
+.card-cost {
+  position: absolute;
+  top: -3%;
+  left: -3%;
+  max-width: 15%
+}
+
+.card-cost-text {
+  color: skyblue;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Special Elite", cursive;
 }

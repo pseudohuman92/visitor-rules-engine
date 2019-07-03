@@ -84,7 +84,7 @@ export class PlayingCard extends React.Component {
     const targeted = displayTargets.includes(id);
 
     var opacity = 1,
-      borderColor = "black";
+      borderColor = "";
     let clickHandler = undefined;
     if (isDragging) {
       opacity = 0.5;
