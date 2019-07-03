@@ -27,7 +27,8 @@ class DeckBuilder extends React.Component {
       deck: {},
       initialized: false,
       page: 0,
-      maxPage: Math.floor(Object.keys(props.collection).length / cardsPerPage)
+      maxPage: Math.floor(Object.keys(props.collection).length / cardsPerPage),
+      changed: false
     };
   }
 
@@ -48,22 +49,22 @@ class DeckBuilder extends React.Component {
   };
 
   componentWillMount() {
-      const { firebase, deckId, updateState, userId } = this.props;
-      const setDeck = this.setDeck.bind(this);
-      firebase.getDeck(deckId, setDeck);
-      firebase.setUserData(userId, updateState);
+    const { firebase, deckId, updateState, userId } = this.props;
+    const setDeck = this.setDeck.bind(this);
+    firebase.getDeck(deckId, setDeck);
+    firebase.setUserData(userId, updateState);
   }
 
   addToDeck = cardName => {
     var collection = this.props.collection;
     var deck = this.state.deck;
-    if (collection[cardName] - (deck[cardName]?deck[cardName]:0) > 0) {
+    if (collection[cardName] - (deck[cardName] ? deck[cardName] : 0) > 0) {
       if (deck[cardName]) {
         deck[cardName]++;
       } else {
         deck[cardName] = 1;
       }
-      this.setState({ deck: deck });
+      this.setState({ deck: deck, changed: true });
     }
   };
 
@@ -74,28 +75,29 @@ class DeckBuilder extends React.Component {
     } else {
       deck[cardName]--;
     }
-    this.setState({ deck: deck });
+    this.setState({ deck: deck, changed: true });
   };
 
   changeName = name => {
-    this.setState({ name: name });
+    this.setState({ name: name, changed: true });
   };
 
   saveDeck = () => {
     let { name, deck } = this.state;
     this.props.firebase.updateDeck(this.props.deckId, name, deck);
+    this.setState({ changed: false });
   };
 
   render() {
-    const { name, deck, initialized, page, maxPage } = this.state;
-    const {collection} = this.props;
+    const { name, deck, initialized, page, maxPage, changed } = this.state;
+    const { collection } = this.props;
     return collection && initialized ? (
       <Grid container spacing={8} style={{ maxHeight: "95vh" }}>
         <Grid item xs={1}>
           <Button onClick={this.props.back} text="Back" />
         </Grid>
         <Grid item xs={1}>
-          <Button onClick={this.saveDeck} text="Save" />
+          <Button onClick={this.saveDeck} disabled={!changed} text="Save" />
         </Grid>
         <Grid item xs={4}>
           <TextField
@@ -107,25 +109,38 @@ class DeckBuilder extends React.Component {
           />
         </Grid>
         <Grid item xs={1}>
-          <Button onClick={this.prev} text="Prev" disabled={page===0}/>
+          <Button onClick={this.prev} text="Prev" disabled={page === 0} />
         </Grid>
         <Grid item xs={1}>
-          <Button onClick={this.next} text="Next" disabled={page===maxPage}/>
+          <Button onClick={this.next} text="Next" disabled={page === maxPage} />
         </Grid>
         <Grid container item xs={9} spacing={8}>
           {Object.values(toFullCards(collection))
-          .sort(compareCardsByKnowledge)
+            .sort(compareCardsByKnowledge)
             .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
-            .map((card, i) => (
-              <Grid item key={i} xs={2}>
-                <center> {collection[card.name] - (deck[card.name]?deck[card.name]:0)} </center>
-                <CardDisplay
-                  onClick={() => this.addToDeck(card.name)}
-                  opacity={collection[card.name] > 0 ? 1 : 0.5}
-                  {...card}
-                />
-              </Grid>
-            ))}
+            .map(
+              (card, i) =>
+                card && (
+                  <Grid item key={i} xs={2}>
+                    <center>
+                      {" "}
+                      {collection[card.name] -
+                        (deck[card.name] ? deck[card.name] : 0)}{" "}
+                    </center>
+                    <CardDisplay
+                      onClick={() => this.addToDeck(card.name)}
+                      opacity={
+                        collection[card.name] -
+                          (deck[card.name] ? deck[card.name] : 0) >
+                        0
+                          ? 1
+                          : 0.5
+                      }
+                      {...card}
+                    />
+                  </Grid>
+                )
+            )}
         </Grid>
 
         <Grid
@@ -143,24 +158,29 @@ class DeckBuilder extends React.Component {
           <Grid item xs={12}>
             {"Deck List"}
             <GridList cellHeight="auto" cols={1} style={{ maxHeight: "95vh" }}>
-              {Object.keys(deck).map((cardName, i) => (
-                <GridListTile key={i} cols={1}>
-                  <Center>{deck[cardName]}</Center>
-                  <CardDisplay
-                    small
-                    onClick={() => this.removeFromDeck(cardName)}
-                    {...fullCollection[cardName]}
-                  />
-                </GridListTile>
-              ))}
+              {Object.values(toFullCards(deck))
+                .sort(compareCardsByKnowledge)
+                .map((card, i) => (
+                  <GridListTile key={i} cols={1}>
+                    <Center>{deck[card.name]}</Center>
+                    <CardDisplay
+                      small
+                      onClick={() => this.removeFromDeck(card.name)}
+                      {...card}
+                    />
+                  </GridListTile>
+                ))}
             </GridList>
           </Grid>
         </Grid>
-      </Grid> 
+      </Grid>
     ) : (
       <div>Loading Deck</div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withFirebase(DeckBuilder));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withFirebase(DeckBuilder));
