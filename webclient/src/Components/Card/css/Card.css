@@ -81,8 +81,46 @@
   max-width: 15%
 }
 
+.card-knowledge {
+  position: absolute;
+  left: 0%;
+  max-width: 10%
+}
+
 .card-cost-text {
   color: skyblue;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Special Elite", cursive;
+}
+
+.card-shield {
+  position: absolute;
+  bottom: -3%;
+  left: 12%;
+  max-width: 12%
+}
+
+.card-shield-text {
+  color: gold;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Special Elite", cursive;
+}
+
+.card-loyalty {
+  position: absolute;
+  bottom: -3%;
+  left: 24%;
+  max-width: 13%
+}
+
+.card-loyalty-text {
+  color: blueviolet;
   position: absolute;
   top: 53%;
   left: 50%;

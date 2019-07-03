@@ -35,14 +35,15 @@ class FullCard extends PureComponent {
     } = this.props;
     const backColor = borderColor ? borderColor : getCardColor(knowledgeCost);
     return (
-      <div style={{ position: "relative"}}>
+      <div style={{ position: "relative" }}>
         <Fonts />
         <Rectangle
           aspectRatio={[63, 88]}
           style={{
             opacity: opacity,
             backgroundColor: backColor,
-            borderRadius: "10px" 
+            borderRadius: "10px",
+            textAlign: "justify",
           }}
         >
           <div
@@ -52,14 +53,14 @@ class FullCard extends PureComponent {
               fontSize: size.width / 20 + "px"
             }}
           >
-            {cost ? (
+            {cost && (
               <div className="card-cost">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/img/card-components/energy3.png"
+                    process.env.PUBLIC_URL + "/img/card-components/energy.png"
                   }
                   style={{
-                    maxWidth: "100%",
+                    maxWidth: "100%"
                   }}
                   alt=""
                 />
@@ -70,21 +71,30 @@ class FullCard extends PureComponent {
                   {cost}
                 </div>
               </div>
-            ) : (
-              <div />
             )}
-            <div className="card-name">
-              <span
-                style={{
-                  fontFamily: "Visitor Font Small",
-                  color: getIconColor(knowledgeCost)
-                }}
-              >
-                {toKnowledgeString(knowledgeCost) + " | "}
-              </span>
 
-              {name}
-            </div>
+            {toKnowledgeString(knowledgeCost)
+              .split("")
+              .map((c, i) => (
+                <div
+                  className="card-knowledge"
+                  style={{ top: 10 + i * 8 + "%" }}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/img/card-components/knowledge-" +
+                      c +
+                      ".png"
+                    }
+                    style={{
+                      maxWidth: "100%"
+                    }}
+                    alt=""
+                  />
+                </div>
+              ))}
+            <div className="card-name">{name}</div>
 
             <div className="card-image">
               <img
@@ -104,19 +114,17 @@ class FullCard extends PureComponent {
               }}
             >
               {description}
-              {shield ? "\nShield:" + shield : ""}
               {reflect ? "\nReflect:" + reflect : ""}
-              {loyalty ? "\nLoyalty:" + loyalty : ""}
               {favor ? "\nFavor:" + favor : ""}
             </div>
-            {health ? (
+            {health && (
               <div className="card-health">
                 <img
                   src={
                     process.env.PUBLIC_URL + "/img/card-components/health.png"
                   }
                   style={{
-                    maxWidth: "100%",
+                    maxWidth: "100%"
                   }}
                   alt=""
                 />
@@ -127,8 +135,44 @@ class FullCard extends PureComponent {
                   {health}
                 </div>
               </div>
-            ) : (
-              <div />
+            )}
+            {shield && (
+              <div className="card-shield">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/shield.png"
+                  }
+                  style={{
+                    maxWidth: "100%"
+                  }}
+                  alt=""
+                />
+                <div
+                  className="card-shield-text"
+                  style={{ fontSize: size.width / 12 + "px" }}
+                >
+                  {shield}
+                </div>
+              </div>
+            )}
+            {loyalty && (
+              <div className="card-loyalty">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/loyalty.png"
+                  }
+                  style={{
+                    maxWidth: "100%"
+                  }}
+                  alt=""
+                />
+                <div
+                  className="card-loyalty-text"
+                  style={{ fontSize: size.width / 12 + "px" }}
+                >
+                  {loyalty}
+                </div>
+              </div>
             )}
           </div>
         </Rectangle>

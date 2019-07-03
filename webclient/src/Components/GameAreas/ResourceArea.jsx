@@ -48,19 +48,31 @@ class ResourceArea extends Component {
         <Grid item xs={12}>
           <Divider />
         </Grid>
-        <Grid item container xs={12} justify="center">
-        {knowledgePool.map((k, i) => (
-          <Grid item xs={3} key={i}>
-            <div>
-            <span
-              className={
-                "knowledge-stone " + knowledgeMap[k.knowledge] + "-knowledge"
-              }
-            /> 
-            {": " + k.count}
-            </div>
-          </Grid>
-        ))}
+        <Grid item container xs={12} justify="center" alignItems="center">
+          {knowledgePool.map((k, i) => (
+            <Grid item xs={3} key={i}>
+              <div style={{
+                    position: "relative",}}>
+                <img
+                  src={
+                    process.env.PUBLIC_URL +
+                    "/img/card-components/knowledge-" +
+                    knowledgeMap[k.knowledge] +
+                    ".png"
+                  }
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    maxWidth: "100%",
+                    maxHeight: "100%"
+                  }}
+                  alt=""
+                />
+                {": " + k.count}
+              </div>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     );

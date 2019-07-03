@@ -128,7 +128,9 @@ const initializeFullCollection = () => {
             description: card.Effect,
             health: card.Health,
             cost: card.Energy,
-            knowledgeCost: toKnowledgeCost(card.Knowledge)
+            knowledgeCost: toKnowledgeCost(card.Knowledge),
+            shield: card.Shield,
+            loyalty: card.Loyalty,
           };
         }
       })

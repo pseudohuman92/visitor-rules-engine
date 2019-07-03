@@ -5,12 +5,12 @@ import Rectangle from "react-rectangle";
 import {
   getCardColor,
   getIconColor,
-  toKnowledgeString,
-} from '../Helpers/Helpers';
-import Fonts from '../Primitives/Fonts';
-import './css/Card.css';
+  toKnowledgeString
+} from "../Helpers/Helpers";
+import Fonts from "../Primitives/Fonts";
+import "./css/Card.css";
 import { withSize } from "react-sizeme";
-import "../../fonts/Fonts.css"
+import "../../fonts/Fonts.css";
 
 class MediumCard extends PureComponent {
   render() {
@@ -30,51 +30,137 @@ class MediumCard extends PureComponent {
       opacity,
       borderColor
     } = this.props;
-    const backColor = borderColor ? borderColor : "black";
+    const backColor = borderColor ? borderColor : getCardColor(knowledgeCost);
     return (
-      <div>
+      <div style={{ position: "relative" }}>
         <Fonts />
         <Rectangle
           aspectRatio={[22, 22]}
           style={{
             opacity: opacity,
             backgroundColor: backColor,
-            overflow: "hidden",
-            textAlign: "justify",
+            borderRadius: "10px",
+            textAlign: "justify"
           }}
         >
           <div
-            className={"card-inner"+(play?"-play":"")}
-            style={{ backgroundColor: getCardColor(knowledgeCost),
-              fontSize: size.width/20+"px" }}
+            className={"card-inner" + (play ? "-play" : "")}
+            style={{
+              backgroundColor: getCardColor(knowledgeCost),
+              fontSize: size.width / 20 + "px"
+            }}
           >
-            <div className="card-name">
-             
-                <span style={{ fontWeight: "500" }}>{cost}</span>
-                <span
-                style={{
-                  fontFamily: "Visitor Font Small",
-                  color: getIconColor(knowledgeCost)
-                }}
-              >
-                {toKnowledgeString(knowledgeCost)}
-              </span>
-                {" | " + name}
-            </div>
-          <div className="card-type">
-                {type}
-            </div>
+            {cost && (
+              <div className="card-cost">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/energy.png"
+                  }
+                  style={{
+                    maxWidth: "100%"
+                  }}
+                  alt=""
+                />
+                <div
+                  className="card-cost-text"
+                  style={{ fontSize: size.width / 12 + "px" }}
+                >
+                  {cost}
+                </div>
+              </div>
+            )}
 
+            {toKnowledgeString(knowledgeCost)
+              .split("")
+              .map((c, i) => (
+                <div
+                  className="card-knowledge"
+                  style={{ top: 10 + i * 8 + "%" }}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/img/card-components/knowledge-" +
+                      c +
+                      ".png"
+                    }
+                    style={{
+                      maxWidth: "100%"
+                    }}
+                    alt=""
+                  />
+                </div>
+              ))}
+            <div className="card-name">{name}</div>
 
-          <div className="card-description" style={{whiteSpace: "pre-wrap"}}>
-                {description}
-              
-                {shield ? "\nShield:" + shield : ""}
+            <div className="card-type">{type}</div>
+            <div
+              className="card-description"
+              style={{
+                whiteSpace: "pre-wrap"
+              }}
+            >
+              {description}
               {reflect ? "\nReflect:" + reflect : ""}
-                {health ? "\nHealth:" + health : ""}
-              {loyalty ? "\nLoyalty:" + loyalty : ""}
               {favor ? "\nFavor:" + favor : ""}
-          </div>
+            </div>
+            {health && (
+              <div className="card-health">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/health.png"
+                  }
+                  style={{
+                    maxWidth: "100%"
+                  }}
+                  alt=""
+                />
+                <div
+                  className="card-health-text"
+                  style={{ fontSize: size.width / 12 + "px" }}
+                >
+                  {health}
+                </div>
+              </div>
+            )}
+            {shield && (
+              <div className="card-shield">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/shield.png"
+                  }
+                  style={{
+                    maxWidth: "100%"
+                  }}
+                  alt=""
+                />
+                <div
+                  className="card-shield-text"
+                  style={{ fontSize: size.width / 12 + "px" }}
+                >
+                  {shield}
+                </div>
+              </div>
+            )}
+            {loyalty && (
+              <div className="card-loyalty">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/loyalty.png"
+                  }
+                  style={{
+                    maxWidth: "100%"
+                  }}
+                  alt=""
+                />
+                <div
+                  className="card-loyalty-text"
+                  style={{ fontSize: size.width / 12 + "px" }}
+                >
+                  {loyalty}
+                </div>
+              </div>
+            )}
           </div>
         </Rectangle>
       </div>
@@ -82,4 +168,4 @@ class MediumCard extends PureComponent {
   }
 }
 
-export default withSize()(MediumCard)
+export default withSize()(MediumCard);
