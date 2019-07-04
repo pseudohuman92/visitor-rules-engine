@@ -23,7 +23,7 @@
         "react-dnd-html5-backend": "8.0.3",
         "react-dnd": "7.7.0",
         "react-dnd-multi-backend": "3.2.1",
-        "react-dnd-touch-backend": "0.8.3",
+        "react-dnd-touch-backend": "9.0.0",
         "react-dom": "16.8.6",
         "react-file-reader": "1.1.4",
         "react-google-font-loader": "1.0.5",
