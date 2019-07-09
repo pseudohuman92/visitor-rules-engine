@@ -40,7 +40,7 @@
         "react-touch": "0.4.4"
     },
     "devDependencies": {
-        "typescript": "3.5.2"
+        "typescript": "3.5.3"
     },
     "scripts": {
         "start": "react-scripts start",
