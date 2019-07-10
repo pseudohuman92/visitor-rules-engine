@@ -30,7 +30,7 @@ class MediumCard extends PureComponent {
       opacity,
       borderColor
     } = this.props;
-    const backColor = borderColor ? borderColor : getCardColor(knowledgeCost);
+    const backColor = borderColor ? borderColor : "gainsboro";
     return (
       <div style={{ position: "relative" }}>
         <Fonts />
@@ -47,7 +47,8 @@ class MediumCard extends PureComponent {
             className="card-inner"
             style={{
               backgroundColor: getCardColor(knowledgeCost),
-              fontSize: size.width / 20 + "px"
+              fontSize: size.width / 20 + "px",
+              borderRadius: size.width/25+"px",
             }}
           >
             {cost && (
@@ -70,12 +71,12 @@ class MediumCard extends PureComponent {
               </div>
             )}
 
-            {toKnowledgeString(knowledgeCost)
+{toKnowledgeString(knowledgeCost)
               .split("")
               .map((c, i) => (
                 <div
                   className="card-knowledge"
-                  style={{ top: 10 + i * 8 + "%" }}
+                  style={{ top: 11 + i * 3 + "%" }}
                   key={i}
                 >
                   <img
