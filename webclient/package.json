@@ -20,10 +20,10 @@
         "protobufjs": "6.8.8",
         "react": "16.8.6",
         "react-center": "1.1.1",
-        "react-dnd-html5-backend": "8.0.3",
+        "react-dnd-html5-backend": "9.0.0",
         "react-dnd": "7.7.0",
         "react-dnd-multi-backend": "3.2.1",
-        "react-dnd-touch-backend": "0.8.3",
+        "react-dnd-touch-backend": "9.0.2",
         "react-dom": "16.8.6",
         "react-file-reader": "1.1.4",
         "react-google-font-loader": "1.0.5",
@@ -34,13 +34,13 @@
         "react-scripts": "3.0.1",
         "react-sizeme": "2.6.7",
         "react-textfit": "1.1.0",
-        "react-visibility-sensor": "5.0.2",
         "redux": "4.0.3",
+        "react-visibility-sensor": "5.1.0",
         "react-container-dimensions": "1.4.1",
         "react-touch": "0.4.4"
     },
     "devDependencies": {
-        "typescript": "3.5.2"
+        "typescript": "3.5.3"
     },
     "scripts": {
         "start": "react-scripts start",
