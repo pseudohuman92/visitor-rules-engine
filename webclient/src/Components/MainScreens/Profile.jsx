@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Button from "../Primitives/Button";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
@@ -38,37 +39,61 @@ class Profile extends Component {
   render() {
     const { username, userId, dust, coins, dailyWins } = this.props;
     const { value } = this.state;
-    const style = { fontFamily: "Cinzel, serif" };
     return (
       <div>
         {value === 0 && (
           <Center>
             <Fonts />
             <Paper>
-              <Typography style={style}>{username + "'s Profile"}</Typography>
-              <Typography style={style}>{"ID: " + userId}</Typography>
-              <Typography style={style}>{"Dust: " + dust}</Typography>
-              <Typography style={style}>{"Coins: " + coins}</Typography>
-              <Typography style={style}>
-                {"Daily Wins: " + dailyWins}
-              </Typography>
-              <Button onClick={this.play} text="Play" />
-              <Button
-                onClick={event => this.setState({ value: 2 })}
-                text="Decks"
-              />
-              <Button
-                onClick={event => this.setState({ value: 3 })}
-                text="Open Packs"
-              />
-              <Button
-                onClick={event => this.setState({ value: 4 })}
-                text="Collection"
-              />
-              <Button
-                onClick={event => this.setState({ value: 5 })}
-                text="Store"
-              />
+              <Center>
+                <Typography
+                  variant="h3"
+                  style={{ fontFamily: "Cinzel, serif" }}
+                >
+                  {username + "'s Profile"}
+                </Typography>
+              </Center>
+              <Center>
+                <Typography>{"ID: " + userId}</Typography>
+              </Center>
+              <Center>
+                <Typography>{"Dust: " + dust}</Typography>
+              </Center>
+              <Center>
+                <Typography>{"Coins: " + coins}</Typography>
+              </Center>
+              <Center>
+                <Typography>{"Daily Wins: " + dailyWins}</Typography>
+              </Center>
+              <Grid container spacing={8}>
+                <Grid item xs>
+                  <Button onClick={this.play} text="Play" />
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    onClick={event => this.setState({ value: 2 })}
+                    text="Decks"
+                  />
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    onClick={event => this.setState({ value: 3 })}
+                    text="Open Packs"
+                  />
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    onClick={event => this.setState({ value: 4 })}
+                    text="Collection"
+                  />
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    onClick={event => this.setState({ value: 5 })}
+                    text="Store"
+                  />
+                </Grid>
+              </Grid>
             </Paper>
           </Center>
         )}
