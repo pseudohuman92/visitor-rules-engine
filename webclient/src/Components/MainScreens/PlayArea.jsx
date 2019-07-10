@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DndProvider } from "react-dnd";
+import { DndProvider, DragDropContext } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
@@ -90,23 +90,8 @@ class PlayArea extends Component {
       phase === GamePhases.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
       game.canStudy.length > 0;
-    
-      const HTML5toTouch = {
-        backends: [
-          {
-            backend: HTML5Backend,
-            preview: true,
-          },
-          {
-            backend: TouchBackend({enableMouseEvents: true}),
-            preview: true,
-            transition: TouchTransition
-          }
-        ]
-      };
 
     return (
-      <DndProvider backend={MultiBackend(HTML5toTouch)}>
       <div className="App">
         <header className="App-header">
           <CardDragPreview/>
@@ -164,14 +149,27 @@ class PlayArea extends Component {
           </Grid>
         </header>
       </div>
-      </DndProvider>
     );
   }
 }
 
 
+const HTML5toTouch = {
+  backends: [
+    {
+      backend: HTML5Backend,
+      preview: true,
+    },
+    {
+      backend: TouchBackend,
+      preview: true,
+      transition: TouchTransition
+    }
+  ]
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(PlayArea));
+)(DragDropContext(MultiBackend(HTML5toTouch))(withHandlers(PlayArea)));
+

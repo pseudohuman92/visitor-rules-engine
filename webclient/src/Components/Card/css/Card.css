@@ -1,18 +1,10 @@
 .card-inner {
-  margin: 3% 4% 3% 4%;
-  height: 93.5%;
+  margin: 3% 3% 3% 3%;
+  height: 96%;
   color: black;
   overflow: hidden;
   font-family: "Open Sans", sans-serif;
 }
-
-.card-inner-play {
-    margin: 3% 4% 3% 4%;
-    height: 93.5%;
-    color: black;
-    overflow: hidden;
-    font-family: "Open Sans", sans-serif;
-  }
 
 .card-name {
   margin: 3.5% 3.5% 0 10.5%;

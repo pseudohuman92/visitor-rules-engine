@@ -44,7 +44,7 @@ class MediumCard extends PureComponent {
           }}
         >
           <div
-            className={"card-inner" + (play ? "-play" : "")}
+            className="card-inner"
             style={{
               backgroundColor: getCardColor(knowledgeCost),
               fontSize: size.width / 20 + "px"
@@ -76,6 +76,7 @@ class MediumCard extends PureComponent {
                 <div
                   className="card-knowledge"
                   style={{ top: 10 + i * 8 + "%" }}
+                  key={i}
                 >
                   <img
                     src={
