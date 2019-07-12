@@ -34,7 +34,7 @@
         "react-scripts": "3.0.1",
         "react-sizeme": "2.6.7",
         "react-textfit": "1.1.0",
-        "redux": "4.0.3",
+        "redux": "4.0.4",
         "react-visibility-sensor": "5.1.0",
         "react-container-dimensions": "1.4.1",
         "react-touch": "0.4.4"
