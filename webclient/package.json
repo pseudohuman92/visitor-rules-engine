@@ -6,7 +6,7 @@
     "main": "src/index.js",
     "dependencies": {
         "@firebase/app-types": "0.4.0",
-        "@firebase/util": "0.2.20",
+        "@firebase/util": "0.2.21",
         "@kennethormandy/react-fittext": "0.6.0",
         "@material-ui/core": "3.9.3",
         "@material-ui/icons": "3.0.2",
