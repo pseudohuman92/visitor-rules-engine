@@ -10,7 +10,7 @@ import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Asset;
 import com.visitor.game.Event;
-import static com.visitor.game.Event.EventType.TURN_START;
+import static com.visitor.game.Event.playersTurnStart;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -45,7 +45,7 @@ public class NaturalBattery extends Asset implements Triggering {
 
     @Override
     public void checkEvent(Game game, Event event) {
-        if(event.type == TURN_START && ((String)event.data.get(0)).equals(controller)) {
+        if(playersTurnStart(event, controller)) {
             game.addToStack(new Ability(this,
             "Gain 1 energy",
             a -> {

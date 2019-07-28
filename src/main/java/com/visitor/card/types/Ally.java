@@ -8,7 +8,6 @@ package com.visitor.card.types;
 import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
-import static com.visitor.game.Event.EventType.TURN_START;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
@@ -16,6 +15,7 @@ import com.visitor.protocol.Types;
 import static java.lang.Math.max;
 import static java.lang.System.out;
 import java.util.UUID;
+import static com.visitor.game.Event.playersTurnStart;
 
 /**
  *
@@ -55,7 +55,7 @@ public abstract class Ally extends Card
     @Override
     public void checkEvent(Game game, Event event){
         out.println("Ally is checking event");
-        if (game.isTurnPlayer(controller) && event.type.equals(TURN_START) && favor > 0){
+        if (playersTurnStart(event, controller) && favor > 0){
             out.println("Passed the check");
             decreaseFavor(game, 1);
         }

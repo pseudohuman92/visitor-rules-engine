@@ -153,12 +153,14 @@ public abstract class Card {
         counters.merge(name, count, (a, b) -> a + b);
     }
     
-    public void removeCounters(Counter name, int count) {
+    public boolean removeCounters(Counter name, int count) {
         int k = counters.get(name);
         if (k <= count){
             counters.remove(name);
+            return false;
         } else {
             counters.put(name, k - count);
+            return true;
         }
     }
     

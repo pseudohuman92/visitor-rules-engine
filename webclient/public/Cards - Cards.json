@@ -88,6 +88,28 @@
     "Flavor": "A single perceived misstep can cause a cascade of real ones and the demise of a friendship"
   },
   {
+    "Code": "",
+    "Name": "Switcheroo",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Each player chooses an Asset they control.\nDonate the Asset you control and possess the Asset you don't control.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "BB",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Spot Weaknesses",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Deal 2X damage to target player.\nX = # of cards you control targeted player owns.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "B",
+    "Flavor": ""
+  },
+  {
     "Code": "BI01",
     "Name": "Thief",
     "Type": "Asset",
@@ -176,6 +198,17 @@
     "Flavor": "To gaze into another mind and erase a thought from it is a wonderful feeling, just not for them."
   },
   {
+    "Code": "",
+    "Name": "Ticking Bomb",
+    "Type": "Asset",
+    "Subtype": "",
+    "Effect": "Donate, Charge 2\nTrigger - At the beginning of your turn\n    Dischage 1. If ~ has no counters on it, sacricife it and take 5 damage.\n1, Activate: Charge 1",
+    "Health": 1,
+    "Energy": 2,
+    "Knowledge": "BB",
+    "Flavor": ""
+  },
+  {
     "Code": "BP01",
     "Name": "",
     "Type": "Passive",
@@ -198,6 +231,39 @@
     "Flavor": ""
   },
   {
+    "Code": "",
+    "Name": "Creeping Poison",
+    "Type": "Passive",
+    "Subtype": "",
+    "Effect": "Donate\nTrigger - At the start of your turn\n    Deal 1 damage to your controller.",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "BB",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Malicious Gift",
+    "Type": "Passive",
+    "Subtype": "",
+    "Effect": "Donate\nTrigger - End of your turn\n    ~ deals 3 damage to you or target damageable you control, then sacrifice ~.",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "B",
+    "Flavor": ""
+  },
+  {
+    "Code": "",
+    "Name": "Trapped Gifts",
+    "Type": "Passive",
+    "Subtype": "",
+    "Effect": "Trigger - When a card is donated\n    Donated card's new controller takes 1 damage.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "B",
+    "Flavor": ""
+  },
+  {
     "Code": "BL01",
     "Name": "The Highwayman",
     "Type": "Ally",
@@ -207,6 +273,17 @@
     "Energy": 2,
     "Knowledge": "BB",
     "Flavor": "Your money or your life"
+  },
+  {
+    "Code": "",
+    "Name": "The Boss",
+    "Type": "Ally",
+    "Subtype": "",
+    "Effect": "Discard a card, Activate:    \n    +1 Loyalty. Opponent discards a card.\nCondition - Opponent has no cards in hand\n  -2 Loyalty, Activate: \n    Favor 1 - Deal 2 damage",
+    "Health": 1,
+    "Energy": 2,
+    "Knowledge": "B",
+    "Flavor": ""
   },
   {
     "Code": "",
@@ -675,7 +752,7 @@
     "Name": "Kill Team",
     "Type": "Asset",
     "Subtype": "",
-    "Effect": "Charge 3. \n1, -1 Charge, @: \n  Deal 2%",
+    "Effect": "Charge 3. \n1, -1 Charge, Activate: \n  Deal 2 damage",
     "Health": 3,
     "Energy": 2,
     "Knowledge": "RR",

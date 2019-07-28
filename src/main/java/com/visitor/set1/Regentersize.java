@@ -9,10 +9,9 @@ import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Ability;
 import com.visitor.card.types.Spell;
 import com.visitor.card.types.TemporaryEffect;
-import static com.visitor.game.Event.EventType.TURN_START;
+import static com.visitor.game.Event.playersTurnStart;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -30,7 +29,7 @@ public class Regentersize extends Spell {
     protected void duringResolve(Game game) {       
         new TemporaryEffect(game, this,
         (t, e) -> {
-            if (e.type == TURN_START && ((String)e.data.get(0)).equals(controller)){
+            if (playersTurnStart(e, controller)){
                 game.addToStack(new Ability(this, "Gain 2 health and 1 energy.", 
                 a -> {
                     game.gainHealth(controller, 2);

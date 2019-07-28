@@ -5,7 +5,6 @@ import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Junk;
-import static com.visitor.game.Event.possession;
 import static com.visitor.game.Event.turnEnd;
 import static com.visitor.game.Event.turnStart;
 import static com.visitor.game.Game.Zone.*;
@@ -39,6 +38,7 @@ import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
+import static com.visitor.game.Event.possess;
 
 /**
  *
@@ -197,23 +197,25 @@ public class Game {
         }
     }
 
-    public void addEvent(Event e, boolean process){
+    public void addEvent(Event e){
         eventQueue.add(e);
-        if(process){
-            processEvents();
-        }
+    }
+    
+    public void addEventThenProcess(Event e){
+        eventQueue.add(e);
+        processEvents();    
     }
     
     public void studyCard(String username, UUID cardID) {
         Card c = extractCard(cardID);
         c.study(this, true);
-        addEvent(Event.study(username, c), true);
+        addEventThenProcess(Event.study(username, c));
     }
     
-    public void studyCard(String username, UUID cardID, boolean regular) {
+    public void studyCardIrregular(String username, UUID cardID) {
         Card c = extractCard(cardID);
-        c.study(this, regular);
-        addEvent(Event.study(username, c), regular);   
+        c.study(this, false);
+        addEvent(Event.study(username, c));   
     }
     
     public void redraw(String username) {
@@ -419,7 +421,7 @@ public class Game {
 
     public void destroy(UUID sourceId, UUID targetId){
         Card c = getCard(targetId);
-        addEvent(Event.destroy(getCard(sourceId), c), false);
+        addEvent(Event.destroy(getCard(sourceId), c));
         c.destroy(this);
     }
     
@@ -429,19 +431,22 @@ public class Game {
     }
     
     public void discard(String username, int count){
-        Arraylist<Card> d = players.get(username).discard(selectFromZone(username, Zone.HAND, Predicates::any, count, false));
-        addEvent(Event.discard(username, d), false);
+        Arraylist<Card> d = players.get(username).discardAll(selectFromZone(username, Zone.HAND, Predicates::any, count, false));
+        d.forEach(c -> {
+            addEvent(Event.discard(username, c));
+        });
     }
     
     public void discard(String username, UUID cardID){
-        Arraylist<UUID> temp = new Arraylist<>();
-        temp.add(cardID);
-        addEvent(Event.discard(username, players.get(username).discard(temp)), false);
+        players.get(username).discard(cardID);
+        addEvent(Event.discard(username, getCard(cardID)));
     }
     
     public void discardAll(String username, Arraylist<Card> cards) {
-        players.get(username).discard(UUIDHelper.toUUIDList(cards));
-        addEvent(Event.discard(username, cards), false);
+        players.get(username).discardAll(UUIDHelper.toUUIDList(cards));
+        cards.forEach(c -> {
+            addEvent(Event.discard(username, c));
+        });
     }
     
     public void deplete(UUID id){
@@ -467,9 +472,10 @@ public class Game {
 
     public void possessTo(String newController, UUID cardID, Zone zone) {
         Card c = extractCard(cardID);
-        addEvent(possession(c.controller, newController, new Arraylist<>(c)), false);
+        String oldController = c.controller;
         c.controller = newController;
         getZone(newController, zone).add(c);
+        addEvent(possess(oldController, newController, c));
     }
 
     public boolean controlsUnownedCard(String username, Zone zone) {
@@ -494,7 +500,7 @@ public class Game {
     //Transformation methods
     public void transformTo(Card transformingCard, Card transformedCard, Card transformTo){
         replaceWith(transformedCard, transformTo);
-        addEvent(Event.transform(transformingCard, transformedCard, transformTo), false);
+        addEvent(Event.transform(transformingCard, transformedCard, transformTo));
     }
     
     public void transformToJunk(Card transformingCard, UUID cardID){
@@ -726,19 +732,19 @@ public class Game {
 
     private void processBeginEvents() {
         out.println("Starting Begin Triggers");
-        addEvent(turnStart(turnPlayer), true);
+        addEventThenProcess(turnStart(turnPlayer));
         out.println("Ending Begin Triggers");
     }
 
     private void processEndEvents() {
         out.println("Starting End Triggers");
-        addEvent(turnEnd(turnPlayer), true);
+        addEventThenProcess(turnEnd(turnPlayer));
         out.println("Ending End Triggers");
     }
     
     private void processCleanupEvents() {
         out.println("Starting Cleanup Triggers");
-        addEvent(Event.cleanup(turnPlayer), true);
+        addEventThenProcess(Event.cleanup(turnPlayer));
         out.println("Ending Cleanup Triggers");
     }
 
@@ -807,6 +813,14 @@ public class Game {
                 dealDamage(sourceId, c.id, damage);
             }
         });
+    }
+
+    public void donate(UUID donatedCardId, String newController, Zone newZone) {
+        Card c = extractCard(donatedCardId);
+        String oldController = c.controller;
+        c.controller = newController;
+        getZone(newController, newZone).add(c);
+        addEvent(Event.donate(oldController, newController, c));
     }
     
     public enum Zone {

@@ -77,9 +77,15 @@ public class Player {
         game.dealDamage(id, source, temp);
     }
 
-    public Arraylist<Card> discard(Arraylist<UUID> cards){
+    public Card discard (UUID cardId) {
+        Card c = extractCardFrom(cardId, hand);
+        scrapyard.add(c); 
+        return c;
+    }
+    
+    public Arraylist<Card> discardAll(Arraylist<UUID> cardIds){
         Arraylist<Card> discarded = new Arraylist<>();
-        cards.stream().map((cardID) -> extractCardFrom(cardID, hand))
+        cardIds.stream().map((cardID) -> extractCardFrom(cardID, hand))
                 .forEachOrdered((card) -> { 
                     discarded.add(card);
                     scrapyard.add(card); });

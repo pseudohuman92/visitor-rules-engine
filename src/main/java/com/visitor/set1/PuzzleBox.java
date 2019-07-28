@@ -42,7 +42,7 @@ public class PuzzleBox extends Asset {
                 "Study Puzzle Box",
             (x) -> {
                 if(game.isIn(controller, id, PLAY)){
-                    game.studyCard(controller, id, false);
+                    game.studyCardIrregular(controller, id);
                 }
             }));
     }

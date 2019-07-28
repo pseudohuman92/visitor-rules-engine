@@ -26,7 +26,7 @@ public class Energize extends Spell {
 
     @Override
     protected void duringResolve (Game game){
-        game.studyCard(controller, ((Deck)game.getZone(controller, DECK)).getTopmost(Predicates::isStudyable).id, false);
+        game.studyCardIrregular(controller, ((Deck)game.getZone(controller, DECK)).getTopmost(Predicates::isStudyable).id);
     }
 }
 

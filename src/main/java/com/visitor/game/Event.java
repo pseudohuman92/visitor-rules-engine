@@ -14,29 +14,40 @@ import com.visitor.helpers.Arraylist;
  * @author pseudo
  */
 public class Event {
+
     
     public enum EventType {
-        POSSESSION, TURN_START, TURN_END, CLEANUP, 
+        POSSESS, TURN_START, TURN_END, CLEANUP, 
         DRAW, DISCARD, STUDY,
-        DESTROY, TRANSFORM;
+        DESTROY, TRANSFORM, DONATE;
     }
     
-    public static Event draw (String username, Arraylist<Card> drawn){
+    
+    //Creators
+    public static Event draw (String username, Card drawn){
         Event e = new Event(DRAW);
         e.data.add(username);
         e.data.add(drawn);
         return e;
     }
     
-    public static Event discard (String username, Arraylist<Card> discarded){
+    public static Event discard (String username, Card discarded){
         Event e = new Event(DISCARD);
         e.data.add(username);
         e.data.add(discarded);
         return e;
     }
     
-    public static Event possession (String oldController, String newController, Arraylist<Card> c){
-        Event e = new Event(POSSESSION);
+    public static Event possess (String oldController, String newController, Card c){
+        Event e = new Event(POSSESS);
+        e.data.add(oldController);
+        e.data.add(newController);
+        e.data.add(c);
+        return e;
+    }
+    
+    public static Event donate (String oldController, String newController, Card c){
+        Event e = new Event(DONATE);
         e.data.add(oldController);
         e.data.add(newController);
         e.data.add(c);
@@ -81,6 +92,12 @@ public class Event {
         e.data.add(transformedFrom);
         e.data.add(transformedTo);
         return e;
+    }
+    
+    
+    //Checkers
+    public static boolean playersTurnStart(Event event, String playerName) {
+        return (event.type == TURN_START && ((String)event.data.get(0)).equals(playerName));
     }
     
     public EventType type;
