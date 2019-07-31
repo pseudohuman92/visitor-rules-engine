@@ -74,6 +74,9 @@ public class Player {
         damage -= reflect;
         reflect = 0;
         health -= damage;
+        if (health <= 0) {
+            game.gameEnd(username, false);
+        }
         game.dealDamage(id, source, temp);
     }
 

@@ -119,6 +119,7 @@ public abstract class Card {
     }
     
     public void sacrifice(Game game){
+        clear();
         game.extractCard(id);
         game.putTo(controller, this, SCRAPYARD);
     }

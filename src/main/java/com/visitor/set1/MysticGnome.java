@@ -24,7 +24,7 @@ import java.util.UUID;
 public class MysticGnome extends Ally {
     
     public MysticGnome(String owner){
-        super ("MysticGnome", 1, new Hashmap(GREEN, 1),
+        super ("Mystic Gnome", 1, new Hashmap(GREEN, 1),
             "1, Activate: +1 Loyalty \n" +
             "-2 Loyalty, Activate: \n" +
             "    Favor 1 - Deal X damage to a target. \n" +

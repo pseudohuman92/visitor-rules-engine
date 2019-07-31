@@ -23,7 +23,7 @@ public class WeakWill extends Spell {
     UUID target;
     
     public WeakWill(String owner) {
-        super("WeakWill", 3, new Hashmap(BLACK, 2), "Possess target asset that costs 3 or less.", owner);
+        super("Weak Will", 3, new Hashmap(BLACK, 2), "Possess target asset that costs 3 or less.", owner);
     }
     
     @Override

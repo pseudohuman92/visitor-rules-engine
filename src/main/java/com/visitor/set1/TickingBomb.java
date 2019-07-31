@@ -24,7 +24,7 @@ import static com.visitor.protocol.Types.Knowledge.BLACK;
 public class TickingBomb extends Asset implements Triggering {
     
     public TickingBomb (String owner){
-        super("Natural Battery", 2, new Hashmap(BLACK, 2), 
+        super("Ticking Bomb", 2, new Hashmap(BLACK, 2), 
                 "Donate, Charge 2\n" +
                 "Trigger - At the beginning of your turn\n" +
                 "    Dischage 1. If ~ has no counters on it, sacricife it and take 5 damage.\n" +

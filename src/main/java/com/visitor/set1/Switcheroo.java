@@ -21,7 +21,7 @@ public class Switcheroo extends Ritual{
 
     
     public Switcheroo(String owner) {
-        super("Framed Betrayal", 1, new Hashmap(BLACK, 2), 
+        super("Switcheroo", 1, new Hashmap(BLACK, 2), 
         "Each player chooses an Asset they control.\n" +
         "Donate the Asset you control and possess the Asset you don't control.", owner);
     }

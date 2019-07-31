@@ -38,8 +38,8 @@ public class UA03 extends Spell {
         Arraylist<UUID> s = game.selectFromList(controller, topCards, c->{return c.subtypes.contains("Kit");}, 1, true);
         Arraylist<Card> selected = getInList(topCards, s);
         Arraylist<Card> notSelected = getNotInList(topCards, s);
-        selected.forEach(c ->{c.resolve(game);});
         p.deck.putToBottom(notSelected);
+        selected.forEach(c ->{c.resolve(game);});
     }
     
 }
