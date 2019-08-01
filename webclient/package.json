@@ -13,7 +13,7 @@
         "@material-ui/utils": "4.1.0",
         "auto-fontsize": "1.0.22",
         "boundless-fitted-text": "1.1.0",
-        "firebase": "6.3.2",
+        "firebase": "6.3.3",
         "file-saver": "2.0.2",
         "fluid-resize-react": "1.2.1",
         "prop-types": "15.7.2",
