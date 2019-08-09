@@ -3,11 +3,11 @@ import { ServerName, PrintDebug } from "../../Config.js";
 import { fontMap, GamePhases, knowledgeMap, fullCollection } from "./Constants";
 
 export function GetProfileURL(userId) {
-  return `wss://${ServerName}/profiles/${userId}`;
+  return `ws://${ServerName}/profiles/${userId}`;
 }
 
 export function GetGameURL(userId, gameID) {
-  return `wss://${ServerName}/games/${gameID}/${userId}`;
+  return `ws://${ServerName}/games/${gameID}/${userId}`;
 }
 
 export function debugPrint() {
