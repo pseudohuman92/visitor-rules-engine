@@ -1,11 +1,10 @@
 import React from "react";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
 import { connect } from "react-redux";
 
-import PlayingCard from "../Card/PlayingCard";
-import "../../css/Stack.css";
-import "../../css/Utils.css";
+import PlayingCard from '../Card/PlayingCard';
+import '../../css/Stack.css';
+import '../../css/Utils.css';
+import VerticalStack from '../Primitives/VerticalStack';
 
 const mapStateToProps = state => {
   return { stack: state.extendedGameState.game.stack };
@@ -14,22 +13,17 @@ const mapStateToProps = state => {
 class Stack extends React.Component {
   render() {
     const { stack } = this.props;
-
     return (
-      <GridList
-        cols={1}
-        className="stack"
-        cellHeight="auto"
-      >
-        {stack.slice(0).map(card => (
-          <GridListTile key={card.id}>
-            <PlayingCard
-              {...card}
-              medium
-            />
-          </GridListTile>
-        ))}
-      </GridList>
+      <VerticalStack stepSize={20}>
+          {stack.map((child, i) => {
+            return (
+              <PlayingCard
+                key={i}
+                {...child}
+              />
+            );
+          })}
+      </VerticalStack>
     );
   }
 }

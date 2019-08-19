@@ -4,7 +4,6 @@ import { DragLayer } from "react-dnd";
 import { ItemTypes } from "../Helpers/Constants";
 
 import FullCard from "./FullCard";
-import MediumCard from './MediumCard';
 import SmallCard from './SmallCard';
 
 class CardDragPreview extends PureComponent {
@@ -29,7 +28,7 @@ class CardDragPreview extends PureComponent {
       case ItemTypes.CARD:
         return (
           <div style={{ opacity: "0.5" }}>
-          {small ? <SmallCard {...rest} /> : (medium? <MediumCard {...rest}/>: <FullCard {...rest} />)}
+          {small ? <SmallCard {...rest} /> : <FullCard {...rest} />}
           </div>
         );
       default:

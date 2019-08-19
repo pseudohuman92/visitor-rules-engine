@@ -7,7 +7,6 @@ import { defineHold, Holdable } from "react-touch";
 import { withSize } from "react-sizeme";
 
 import FullCard from "./FullCard";
-import MediumCard from "./MediumCard";
 import SmallCard from "./SmallCard";
 
 
@@ -59,8 +58,6 @@ export class CardDisplay extends PureComponent {
           <div onClick={this.openDialog}>
             {small ? (
               <SmallCard {...rest} />
-            ) : medium ? (
-              <MediumCard {...rest} />
             ) : (
               <FullCard {...rest} />
             )}
