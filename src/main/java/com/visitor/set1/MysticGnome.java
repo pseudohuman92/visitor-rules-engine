@@ -27,7 +27,7 @@ public class MysticGnome extends Ally {
         super ("Mystic Gnome", 1, new Hashmap(GREEN, 1),
             "1, Activate: +1 Loyalty \n" +
             "-2 Loyalty, Activate: \n" +
-            "    Favor 1 - Deal X damage to a target. \n" +
+            "    Delay 1 - Deal X damage to a target. \n" +
             "    X = Your max energy.", 
             2,
             owner);
@@ -59,14 +59,14 @@ public class MysticGnome extends Ally {
         if (loyalty >= 2){
             choices.add(new Ability(this, 
                     "-2 Loyalty, Activate: \n" +
-                    "    Favor 1 - Deal X damage to a target. \n" +
+                    "    Delay 1 - Deal X damage to a target. \n" +
                     "    X = Your max energy.",
             (x1) -> {
                 targets = game.selectDamageTargets(controller, 1, false);
                 game.deplete(id);
                 loyalty -=2;
-                favor = 1;
-                favorAbility =  new Ability(this, 
+                delayCounter = 1;
+                delayedAbility =  new Ability(this, 
                     "Deal X damage to a target. \n" +
                     "    X = Your max energy.",
                     (x2) -> {

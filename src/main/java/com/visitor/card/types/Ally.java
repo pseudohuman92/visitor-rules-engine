@@ -24,17 +24,17 @@ import static com.visitor.game.Event.playersTurnStart;
 public abstract class Ally extends Card 
         implements Activatable, Triggering {
     
-    public int favor;
-    public Ability favorAbility;
+    public int delayCounter;
+    public Ability delayedAbility;
     public int loyalty;
 
     public Ally(String name, int cost, 
             Hashmap<Types.Knowledge, Integer> knowledge, 
             String text, int health, String owner) {
         super(name, cost, knowledge, text, owner);
-        favor = 0;
+        delayCounter = 0;
         loyalty = 0;
-        favorAbility = null;
+        delayedAbility = null;
         this.health = health; 
     }
     
@@ -55,24 +55,24 @@ public abstract class Ally extends Card
     @Override
     public void checkEvent(Game game, Event event){
         out.println("Ally is checking event");
-        if (playersTurnStart(event, controller) && favor > 0){
+        if (playersTurnStart(event, controller) && delayCounter > 0){
             out.println("Passed the check");
-            decreaseFavor(game, 1);
+            decreaseDelayCounter(game, 1);
         }
     }
     
-    public void decreaseFavor(Game game, int count){
-        favor = max(0, favor - count);
-        if (favor == 0){
+    public void decreaseDelayCounter(Game game, int count){
+        delayCounter = max(0, delayCounter - count);
+        if (delayCounter == 0){
             ready();
-            game.addToStack(favorAbility);
-            favorAbility = null;
+            game.addToStack(delayedAbility);
+            delayedAbility = null;
         }
     }
     
     @Override
     public void ready(){
-        if (favor == 0){
+        if (delayCounter == 0){
             depleted = false;
         }
     }
@@ -102,7 +102,7 @@ public abstract class Ally extends Card
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
                 .setType("Ally")
-                .setFavor(favor)
+                .setDelay(delayCounter)
                 .setLoyalty(loyalty);
     }
     
@@ -110,7 +110,7 @@ public abstract class Ally extends Card
     public void copyPropertiesFrom(Card c){
         super.copyPropertiesFrom(c);
         if (c instanceof Ally){
-            favor = ((Ally) c).favor;
+            delayCounter = ((Ally) c).delayCounter;
             loyalty = ((Ally) c).loyalty;
             
         }

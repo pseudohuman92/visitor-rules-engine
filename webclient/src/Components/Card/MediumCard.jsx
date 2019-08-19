@@ -23,7 +23,7 @@ class MediumCard extends PureComponent {
       type,
       health,
       loyalty,
-      favor,
+      delay,
       shield,
       reflect,
       size,
@@ -104,7 +104,7 @@ class MediumCard extends PureComponent {
             >
               {description}
               {reflect ? "\nReflect:" + reflect : ""}
-              {favor ? "\nFavor:" + favor : ""}
+              {delay ? "\nDelay:" + delay : ""}
             </div>
             {health && (
               <div className="card-health">

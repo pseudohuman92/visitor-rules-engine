@@ -28,7 +28,7 @@ public class GrandOrator extends Ally {
         super ("Grand Orator", 2, new Hashmap(GREEN, 2),
             "2, Activate: +1 Loyalty.\n" +
             "-1 Loyalty, Activate:\n" +
-            "      Favor 1 - All other allies you control gain 1 Loyalty", 2,
+            "      Delay 1 - All other allies you control gain 1 Loyalty", 2,
             owner);
     }
         
@@ -58,12 +58,12 @@ public class GrandOrator extends Ally {
         if (loyalty >= 1){
             choices.add(new Ability(this, 
                     "-1 Loyalty, Activate:\n" +
-                    "      Favor 1 - All other allies you control gain 1 Loyalty",
+                    "      Delay 1 - All other allies you control gain 1 Loyalty",
             (x1) -> {
                 game.deplete(id);
                 loyalty -=1;
-                favor = 1;
-                favorAbility =  new Ability(this, "All other allies you control gain 1 Loyalty.",
+                delayCounter = 1;
+                delayedAbility =  new Ability(this, "All other allies you control gain 1 Loyalty.",
                     (x2) -> {
                         Arraylist<Card> allies = game.getAllFrom(controller, PLAY, c->{return c instanceof Ally && !c.id.equals(id);});
                         allies.forEach(c->{ ((Ally)c).loyalty++; });

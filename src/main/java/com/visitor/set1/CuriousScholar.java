@@ -29,7 +29,7 @@ public class CuriousScholar extends Ally implements Triggering {
             "Trigger - When you study\n" +
             "    +1 Loyalty\n" +
             "-2 Loyalty, Activate: \n" +
-            "    Favor 1 - Search your deck for a Green card and draw it", 
+            "    Delay 1 - Search your deck for a Green card and draw it", 
             3,
             owner);
     }
@@ -56,8 +56,8 @@ public class CuriousScholar extends Ally implements Triggering {
     public void activate(Game game) {
         loyalty -= 2;
         game.deplete(id);
-        favor = 1;
-        favorAbility = new Ability(this, "Search your deck for a Green card and draw it", 
+        delayCounter = 1;
+        delayedAbility = new Ability(this, "Search your deck for a Green card and draw it", 
         a -> {
             UUID target = game.selectFromList(controller, game.getZone(controller, DECK), Predicates::isGreen, 1, false).get(0);
             game.draw(controller, target);

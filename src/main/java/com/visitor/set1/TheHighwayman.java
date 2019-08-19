@@ -28,7 +28,7 @@ public class TheHighwayman extends Ally {
         super ("The Highwayman", 2, new Hashmap(BLACK, 2),
             "3, Activate: +2 Loyalty\n"+
             "-1 Loyalty, Activate: \n"+
-            "  Favor 2 - Draw the top asset of opponent's deck.", 5,
+            "  Delay 2 - Draw the top asset of opponent's deck.", 5,
             owner);
     }
         
@@ -54,13 +54,13 @@ public class TheHighwayman extends Ally {
             }));
         }
         if (loyalty >= 1){
-            choices.add(new Ability(this, "-1 Loyalty: Favor 2:\n" +
+            choices.add(new Ability(this, "-1 Loyalty: Delay 2:\n" +
                         "  Draw the top asset of opponent's deck.",
             (x1) -> {
                 game.deplete(id);
                 loyalty -=1;
-                favor = 2;
-                favorAbility =  new Ability(this, "Draw the top asset of opponent's deck.",
+                delayCounter = 2;
+                delayedAbility =  new Ability(this, "Draw the top asset of opponent's deck.",
                     (x2) -> {
                         Card c = game.getPlayer(game.getOpponentName(controller))
                         .deck.extractTopmost(Predicates::isAsset);

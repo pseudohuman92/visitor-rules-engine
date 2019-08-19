@@ -26,7 +26,7 @@ class FullCard extends PureComponent {
       knowledgeCost,
       borderColor,
       health,
-      favor,
+      delay,
       loyalty,
       shield,
       reflect,
@@ -117,7 +117,7 @@ class FullCard extends PureComponent {
             >
               {description}
               {reflect ? "\nReflect:" + reflect : ""}
-              {favor ? "\nFavor:" + favor : ""}
+              {delay ? "\nDelay:" + delay : ""}
             </div>
             {health && (
               <div className="card-health">

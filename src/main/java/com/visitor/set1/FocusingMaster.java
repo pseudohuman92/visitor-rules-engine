@@ -28,7 +28,7 @@ public class FocusingMaster extends Ally {
             "-1 Max Energy, Activate: \n" +
             "    +2 Loyalty\n" +
             "-1 Loyalty, Activate:\n" +
-            "    Favor 1 - Deal X damage, X = your energy.", 
+            "    Delay 1 - Deal X damage, X = your energy.", 
             3,
             owner);
     }
@@ -58,12 +58,12 @@ public class FocusingMaster extends Ally {
         if (loyalty >= 1){
             choices.add(new Ability(this, 
             "-1 Loyalty, Activate:\n" +
-            "    Favor 1 - Deal X damage, X = your energy.",
+            "    Delay 1 - Deal X damage, X = your energy.",
             (x1) -> {
                 loyalty -=1;
                 game.deplete(id);
-                favor = 1;
-                favorAbility =  new Ability(this, "Deal X damage, X = your energy.",
+                delayCounter = 1;
+                delayedAbility =  new Ability(this, "Deal X damage, X = your energy.",
                     (x2) -> {
                         targets = game.selectDamageTargets(controller, 1, true);
                         if(!targets.isEmpty()){

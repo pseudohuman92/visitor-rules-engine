@@ -27,7 +27,7 @@ public class SaulgolathEnforcer extends Ally {
         super ("Sa'ulgolath Enforcer", 1, new Hashmap(RED, 1),
             "Pay 2 life, Activate: +2 Loyalty\n"+
             "-X Loyalty, Activate: \n"+
-            "  Favor 1 - Deal 2X damage to opponent.", 5,
+            "  Delay 1 - Deal 2X damage to opponent.", 5,
             owner);
     }
 
@@ -46,13 +46,13 @@ public class SaulgolathEnforcer extends Ally {
         if (loyalty >= 1){
             choices.add(new Ability(this, 
                     "-X Loyalty, Activate: \n"+
-                    "  Favor 1 - Deal 2X damage to opponent.",
+                    "  Delay 1 - Deal 2X damage to opponent.",
             (x1) -> {
                 int x = game.selectX(controller, loyalty);
                 game.deplete(id);
                 loyalty -=x;
-                favor = 1;
-                favorAbility =  new Ability(this, "Deal " + 2*x +" damage to opponent.",
+                delayCounter = 1;
+                delayedAbility =  new Ability(this, "Deal " + 2*x +" damage to opponent.",
                     (x2) -> {
                         game.dealDamage(id, game.getOpponentId(controller), 2*x);
                     },

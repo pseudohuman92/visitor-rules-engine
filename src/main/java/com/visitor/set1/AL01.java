@@ -27,7 +27,7 @@ public class AL01 extends Ally {
     public AL01(UL01 c){
         super ("AL01", 2, new Hashmap(BLUE, 1),
             "-2 Loyalty, Activate: \n" +
-            "  Favor 1 - Return target Asset from your scrapyard to play.\n" +
+            "  Delay 1 - Return target Asset from your scrapyard to play.\n" +
             "If ~ has no loyalty, Transform it to UL01", 5,
             c.controller);
         copyPropertiesFrom(c);
@@ -47,8 +47,8 @@ public class AL01 extends Ally {
         UUID target = game.selectFromZone(controller, SCRAPYARD, Predicates::isAsset, 1, false).get(0);
         game.deplete(id);
         loyalty -=2;
-        favor = 1;
-        favorAbility =  new Ability(this, 
+        delayCounter = 1;
+        delayedAbility =  new Ability(this, 
                 "Return target Asset from your scrapyard to play.\n" +
                   "If ~ has no loyalty, Transform it to UL01",
             (x2) -> {

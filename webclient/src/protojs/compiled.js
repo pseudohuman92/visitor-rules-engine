@@ -3180,7 +3180,7 @@ $root.Card = (function() {
      * @property {string|null} [type] Card type
      * @property {Array.<string>|null} [subtypes] Card subtypes
      * @property {number|null} [health] Card health
-     * @property {number|null} [favor] Card favor
+     * @property {number|null} [delay] Card delay
      * @property {number|null} [loyalty] Card loyalty
      * @property {number|null} [shield] Card shield
      * @property {number|null} [reflect] Card reflect
@@ -3302,12 +3302,12 @@ $root.Card = (function() {
     Card.prototype.health = 0;
 
     /**
-     * Card favor.
-     * @member {number} favor
+     * Card delay.
+     * @member {number} delay
      * @memberof Card
      * @instance
      */
-    Card.prototype.favor = 0;
+    Card.prototype.delay = 0;
 
     /**
      * Card loyalty.
@@ -3385,8 +3385,8 @@ $root.Card = (function() {
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.subtypes[i]);
         if (message.health != null && message.hasOwnProperty("health"))
             writer.uint32(/* id 12, wireType 0 =*/96).int32(message.health);
-        if (message.favor != null && message.hasOwnProperty("favor"))
-            writer.uint32(/* id 13, wireType 0 =*/104).int32(message.favor);
+        if (message.delay != null && message.hasOwnProperty("delay"))
+            writer.uint32(/* id 13, wireType 0 =*/104).int32(message.delay);
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.loyalty);
         if (message.shield != null && message.hasOwnProperty("shield"))
@@ -3472,7 +3472,7 @@ $root.Card = (function() {
                 message.health = reader.int32();
                 break;
             case 13:
-                message.favor = reader.int32();
+                message.delay = reader.int32();
                 break;
             case 14:
                 message.loyalty = reader.int32();
@@ -3574,9 +3574,9 @@ $root.Card = (function() {
         if (message.health != null && message.hasOwnProperty("health"))
             if (!$util.isInteger(message.health))
                 return "health: integer expected";
-        if (message.favor != null && message.hasOwnProperty("favor"))
-            if (!$util.isInteger(message.favor))
-                return "favor: integer expected";
+        if (message.delay != null && message.hasOwnProperty("delay"))
+            if (!$util.isInteger(message.delay))
+                return "delay: integer expected";
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             if (!$util.isInteger(message.loyalty))
                 return "loyalty: integer expected";
@@ -3651,8 +3651,8 @@ $root.Card = (function() {
         }
         if (object.health != null)
             message.health = object.health | 0;
-        if (object.favor != null)
-            message.favor = object.favor | 0;
+        if (object.delay != null)
+            message.delay = object.delay | 0;
         if (object.loyalty != null)
             message.loyalty = object.loyalty | 0;
         if (object.shield != null)
@@ -3690,7 +3690,7 @@ $root.Card = (function() {
             object.cost = "";
             object.type = "";
             object.health = 0;
-            object.favor = 0;
+            object.delay = 0;
             object.loyalty = 0;
             object.shield = 0;
             object.reflect = 0;
@@ -3731,8 +3731,8 @@ $root.Card = (function() {
         }
         if (message.health != null && message.hasOwnProperty("health"))
             object.health = message.health;
-        if (message.favor != null && message.hasOwnProperty("favor"))
-            object.favor = message.favor;
+        if (message.delay != null && message.hasOwnProperty("delay"))
+            object.delay = message.delay;
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             object.loyalty = message.loyalty;
         if (message.shield != null && message.hasOwnProperty("shield"))

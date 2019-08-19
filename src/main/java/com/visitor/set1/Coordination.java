@@ -21,12 +21,12 @@ public class Coordination extends Ritual {
     
     public Coordination(String owner) {
         super("Coordination", 2, new Hashmap(GREEN, 2), 
-        "Decrease Favor counter of each Ally you control by 1", owner);
+        "Decrease Delay counter of each Ally you control by 1", owner);
     }
 
     @Override
     public void duringResolve (Game game){
-        game.getAllFrom(controller, PLAY, Predicates::isAlly).forEach(c-> {((Ally)c).decreaseFavor(game,1);});
+        game.getAllFrom(controller, PLAY, Predicates::isAlly).forEach(c-> {((Ally)c).decreaseDelayCounter(game,1);});
     }
 }
 

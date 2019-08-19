@@ -30,7 +30,7 @@ public class TheBoss extends Ally {
             "    +1 Loyalty. Opponent discards a card.\n" +
             "Condition - Opponent has no cards in hand\n" +
             "  -2 Loyalty, Activate: \n" +
-            "    Favor 1 - Deal 2 damage", 
+            "    Delay 1 - Deal 2 damage", 
             1,
             owner);
     }
@@ -63,13 +63,13 @@ public class TheBoss extends Ally {
         if (loyalty >= 2 && game.getZone(game.getOpponentName(controller), HAND).isEmpty()){
             choices.add(new Ability(this, 
                     "-2 Loyalty, Activate: \n" +
-                    "    Favor 1 - Deal 2 damage",
+                    "    Delay 1 - Deal 2 damage",
             (x1) -> {
                 UUID target = game.selectDamageTargets(controller, 1, false).get(0);
                 loyalty -=2;
                 game.deplete(id);
-                favor = 1;
-                favorAbility =  new Ability(this, 
+                delayCounter = 1;
+                delayedAbility =  new Ability(this, 
                         "Deal 2 damage",
                     (x2) -> {
                         game.dealDamage(id, target, 2);
