@@ -42,7 +42,7 @@ public class FocusingMaster extends Ally {
     @Override
     public void activate(Game game) {
         Arraylist<Card> choices = new Arraylist<>();
-        if (game.hasMaxEnergy(name, 1)){
+        if (game.hasMaxEnergy(controller, 1)){
             choices.add(new Ability(this, 
             "-1 Max Energy, Activate: \n" +
             "    +2 Loyalty",
