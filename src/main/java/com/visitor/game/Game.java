@@ -327,8 +327,8 @@ public class Game {
         updatePlayers();    
         while (!stack.isEmpty() && passCount == 2) {
             Card c = stack.remove(0);
-            c.resolve(this);
             int prevSize = stack.size();
+            c.resolve(this);
             processEvents();
             if(stack.isEmpty() || prevSize != stack.size()){
                 passCount = 0;
