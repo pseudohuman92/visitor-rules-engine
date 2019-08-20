@@ -412,11 +412,11 @@ public class Game {
     }
     
     public void draw(String username, UUID cardID) {
-        players.get(username).hand.add(extractCard(id));
+        players.get(username).hand.add(extractCard(cardID));
     }
     
     public void purge(String username, UUID cardID) {
-        players.get(username).voidPile.add(extractCard(id));
+        players.get(username).voidPile.add(extractCard(cardID));
     }
 
     public void destroy(UUID sourceId, UUID targetId){
