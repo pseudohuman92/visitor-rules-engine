@@ -38,20 +38,17 @@ public class ScrapShield extends Spell {
     protected void beforePlay(Game game) {
         // Select junk to be discarded
         j = game.selectFromZone(controller, HAND, Predicates::isJunk, 1, false);
-        // Select player/card to receive shield
-        targets = game.selectFromZoneWithPlayers(controller, BOTH_PLAY, Predicates::isDamageable, Predicates::any, 1, false);
+        game.discard(controller, j.get(0));
     }
     
     @Override
     protected void duringResolve(Game game) {
-        if(game.hasIn(controller, HAND, Predicates::isJunk, 1)) {
-            if(game.isIn(controller, targets.get(0), BOTH_PLAY)) {
-                game.discard(controller, j.get(0));
-                game.getCard(targets.get(0)).shield += 4;
-            } else if(game.isPlayer(targets.get(0))) {
-                game.discard(controller, j.get(0));
-                game.getPlayer(game.getUsername(targets.get(0))).shield += 4;
-            }
+        // Select player/card to receive shield
+        targets = game.selectFromZoneWithPlayers(controller, BOTH_PLAY, Predicates::isDamageable, Predicates::any, 1, false);
+        if(game.isIn(controller, targets.get(0), BOTH_PLAY)) {
+            game.getCard(targets.get(0)).shield += 4;
+        } else if(game.isPlayer(targets.get(0))) {
+            game.getPlayer(game.getUsername(targets.get(0))).shield += 4;
         }
     }
 }
