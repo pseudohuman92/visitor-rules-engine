@@ -496,6 +496,17 @@
   },
   {
     "Code": "",
+    "Name": "Scrap Shield",
+    "Type": "Spell",
+    "Subtype": "",
+    "Effect": "Additional Cost - Discard a Junk\n    Target gains Shield 4.",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "U",
+    "Flavor": "Even junk can serve a purpose if you smash enough of it together."
+  },
+  {
+    "Code": "",
     "Name": "Weaponize",
     "Type": "Ritual",
     "Subtype": "",
