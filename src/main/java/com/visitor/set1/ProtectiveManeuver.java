@@ -17,10 +17,10 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  *
  * @author pseudo
  */
-public class ProtectiveManuver extends Spell {
+public class ProtectiveManeuver extends Spell {
     
-    public ProtectiveManuver(String owner) {
-        super("Protective Manuver", 1, new Hashmap(GREEN, 1), 
+    public ProtectiveManeuver(String owner) {
+        super("Protective Maneuver", 1, new Hashmap(GREEN, 1), 
         "Target ally gains Shield 3", owner);
     }
     

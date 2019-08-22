@@ -389,7 +389,7 @@
     "Name": "Salvage Forge",
     "Type": "Asset",
     "Subtype": "Kit",
-    "Effect": "1, Discard 1: \n  Transform ~ into AI02.",
+    "Effect": "1, Discard 1: \n  Transform ~ into Scrap Grenade.",
     "Health": 3,
     "Energy": 1,
     "Knowledge": "U",
@@ -969,7 +969,7 @@
   },
   {
     "Code": "GS02",
-    "Name": "Protective Manuver",
+    "Name": "Protective Maneuver",
     "Type": "Spell",
     "Subtype": "",
     "Effect": "Target ally gains Shield 3",
