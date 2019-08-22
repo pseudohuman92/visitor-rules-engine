@@ -749,14 +749,14 @@
   },
   {
     "Code": "RI02",
-    "Name": "",
+    "Name": "Heat Wave",
     "Type": "Asset",
     "Subtype": "",
     "Effect": "Activate: \n  Return ~ and target Asset to controller's hand.",
     "Health": 3,
     "Energy": 1,
     "Knowledge": "RR",
-    "Flavor": ""
+    "Flavor": "Heat works both ways."
   },
   {
     "Code": "RI03",
