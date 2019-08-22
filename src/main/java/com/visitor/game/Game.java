@@ -321,7 +321,7 @@ public class Game {
         stack.add(0, c);
     }
     
-    //This is resolve until something new is added version
+    // TODO switch prevSize check to flag system
     private void resolveStack() {
         activePlayer = " ";
         updatePlayers();    
