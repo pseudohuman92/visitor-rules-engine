@@ -45,10 +45,10 @@ public class ScrapShield extends Spell {
     protected void duringResolve(Game game) {
         // Select player/card to receive shield
         targets = game.selectFromZoneWithPlayers(controller, BOTH_PLAY, Predicates::isDamageable, Predicates::any, 1, false);
-        if(game.isIn(controller, targets.get(0), BOTH_PLAY)) {
-            game.getCard(targets.get(0)).shield += 4;
-        } else if(game.isPlayer(targets.get(0))) {
+        if(game.isPlayer(targets.get(0))) {
             game.getPlayer(game.getUsername(targets.get(0))).shield += 4;
+        } else if(game.isIn(controller, targets.get(0), BOTH_PLAY)) {
+            game.getCard(targets.get(0)).shield += 4;
         }
     }
 }
