@@ -16,9 +16,10 @@ class StateDisplay extends React.Component {
         container
         spacing={8}
         style={{
-          padding: 0
+          padding: 0,
+          backgroundColor: "lightgreen",
+          height: "100%"
         }}
-        className="state-display"
       >
         <Grid item xs={6}>
           <Scrapyard isPlayer={false} />
@@ -26,7 +27,7 @@ class StateDisplay extends React.Component {
         <Grid item xs={6}>
           <Deck isPlayer={false} />
         </Grid>
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           <PlayerDisplay isPlayer={false} />
         </Grid>
         <Grid item xs={12}>

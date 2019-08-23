@@ -12,6 +12,8 @@ import CardGallery from "./CardGallery";
 import { Grid, Link } from "@material-ui/core";
 import Fonts from "../Primitives/Fonts";
 
+import "../../css/App.css";
+
 export default class MainPage extends Component {
   constructor(props) {
     super(props);

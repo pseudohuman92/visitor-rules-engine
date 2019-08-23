@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import PlayingCard from "../Card/PlayingCard";
 import { ItemTypes } from "../Helpers/Constants";
 
-import "../../css/Board.css";
 import "../../css/Utils.css";
 
 const boardSideTarget = {
@@ -41,21 +40,23 @@ class BoardSide extends Component {
       opponentCards
     } = this.props;
 
+    const cards = isPlayer ? playerCards : opponentCards;
+
     return connectDropTarget(
       <div style={{ height: "100%" }}>
         <GridList
-          cols={6.25}
-          className="board-side"
+          cols={12.25}
           style={{ flexWrap: "nowrap" }}
           cellHeight="auto"
+          
         >
-          {(isPlayer ? playerCards : opponentCards).map(card => (
+          {cards.map(card => (
             <GridListTile
               key={card.id}
-              style={{ maxWidth: "100%", maxHeight: "100%", 
-               }}
+              style={{maxWidth: "100%", maxHeight: "100%"}}
+              
             >
-              <PlayingCard {...card} play style={{textAlign: "justify"}} />
+              <PlayingCard {...card} play/>
             </GridListTile>
           ))}
         </GridList>

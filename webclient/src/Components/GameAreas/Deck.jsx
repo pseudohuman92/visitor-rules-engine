@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
-import { Tooltip } from "@material-ui/core";
+import TextOnImage from "../Primitives/TextOnImage";
 
 const mapStateToProps = state => {
   return {
@@ -11,21 +11,29 @@ const mapStateToProps = state => {
 };
 
 class Deck extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hover: false };
+  }
+
+  toggleHover = () => {
+    this.setState((state, props) => ({
+      hover: !state.hover
+    }));
+  };
+
   render() {
     const { playerDeckSize, opponentDeckSize, isPlayer } = this.props;
+    const { hover } = this.state;
     const deckSize = isPlayer ? playerDeckSize : opponentDeckSize;
     return (
-      <Tooltip title={deckSize} placement="top">
-        <img
-          src={[process.env.PUBLIC_URL + "/img/CardBack.png"]}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)"
-          }}
-          alt=""
+      <div onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+        <TextOnImage
+          text={hover ? deckSize : ""}
+          src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+          imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
         />
-      </Tooltip>
+      </div>
     );
   }
 }

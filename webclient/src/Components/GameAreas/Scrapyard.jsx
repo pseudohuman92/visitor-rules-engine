@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Tooltip } from "@material-ui/core";
+import TextOnImage from "../Primitives/TextOnImage";
 
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
@@ -17,7 +17,18 @@ const mapStateToProps = state => {
   };
 };
 
-class PlayerDisplay extends React.Component {
+class Scrapyard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hover: false };
+  }
+
+  toggleHover = () => {
+    this.setState((state, props) => ({
+      hover: !state.hover
+    }));
+  };
+
   componentDidMount() {
     const {
       isPlayer,
@@ -41,6 +52,7 @@ class PlayerDisplay extends React.Component {
       updateExtendedGameState
     } = this.props;
 
+    const { hover } = this.state;
     const name = isPlayer ? playerName : opponentName;
     const scrapyard = isPlayer ? playerScrapyard : opponentScrapyard;
 
@@ -55,18 +67,13 @@ class PlayerDisplay extends React.Component {
     };
 
     return (
-      <Tooltip title={scrapyard.length} placement="top">
-        <img
-          src={[process.env.PUBLIC_URL + "/img/Scrapyard.png"]}
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)"
-          }}
-          onClick={showScrapyard}
-          alt=""
+      <div onClick={showScrapyard} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+        <TextOnImage
+          text={hover ? scrapyard.length : ""}
+          src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}
+          imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
         />
-      </Tooltip>
+      </div>
     );
   }
 }
@@ -74,4 +81,4 @@ class PlayerDisplay extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(withFirebase(PlayerDisplay)));
+)(withHandlers(withFirebase(Scrapyard)));

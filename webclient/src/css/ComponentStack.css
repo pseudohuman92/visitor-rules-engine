@@ -1,0 +1,9 @@
+.component-stack {
+  height: 100%;
+  -ms-overflow-style: none;
+  overflow: scroll;
+}
+
+.component-stack::-webkit-scrollbar {
+  width: 0 !important;
+}

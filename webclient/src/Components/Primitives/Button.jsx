@@ -1,9 +1,7 @@
-import React from "react";
-import { Component } from "react";
-
-import Fonts from "./Fonts";
-import "./Button.css";
+import React, { Component } from "react";
 import { withSize } from "react-sizeme";
+
+import TextOnImage from "./TextOnImage";
 
 class Button extends Component {
   render() {
@@ -12,35 +10,19 @@ class Button extends Component {
     const opacity = disabled ? 0.5 : 1;
     return (
       <div
-        className="container"
-        style={{ opacity: opacity}}
+        style={{ opacity: opacity }}
         onClick={event => {
           if (!disabled) {
             onClick(event);
           }
         }}
       >
-        <Fonts />
-        <img
-          className = "image"
+        <TextOnImage
           src={process.env.PUBLIC_URL + "/img/buttons/buttons" + type + ".png"}
-          alt=""
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%", 
-            
-          }}
+          min={10}
+          max={30}
+          text={text}
         />
-        <div
-          className="centered"
-          style={{
-            fontFamily: "Cinzel, serif",
-            fontWeight: "700",
-          fontSize: Math.min(size.width/10, 30)+"px"
-          }}
-        >
-          {text}
-        </div>
       </div>
     );
   }

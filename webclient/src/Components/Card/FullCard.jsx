@@ -35,7 +35,7 @@ class FullCard extends PureComponent {
     } = this.props;
     const backColor = borderColor ? borderColor : "gainsboro";
     return (
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative" }} >
         <Fonts />
         <Rectangle
           aspectRatio={[63, 88]}

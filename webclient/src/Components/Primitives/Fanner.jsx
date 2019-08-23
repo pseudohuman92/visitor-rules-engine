@@ -31,8 +31,7 @@ class Child extends React.Component {
       return length % 2 > 0 ? i - oneSide : i - oneSide + (i < oneSide ? 0 : 1);
     }
     return (
-      <Grid
-        item
+      <div
         onMouseEnter={event => {
           this.toggleHover();
           if (child.props.onMouseEnter) child.props.onMouseEnter(event);
@@ -52,7 +51,7 @@ class Child extends React.Component {
         }}
       >
         {child}
-      </Grid>
+      </div>
     );
   }
 }
@@ -62,7 +61,7 @@ class Fanner extends React.Component {
     const { children, angle, elevation, width } = this.props;
     const length = React.Children.count(children);
     return (
-      <div>
+      <div style={{height:"100%"}}>
           {React.Children.map(children, (child, i) => {
             return (
               <Child

@@ -3,27 +3,36 @@ import { DndProvider } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
-import HTML5Backend from 'react-dnd-html5-backend';
-import TouchBackend from 'react-dnd-touch-backend';
-import { TouchTransition } from 'react-dnd-multi-backend';
+import HTML5Backend from "react-dnd-html5-backend";
+import TouchBackend from "react-dnd-touch-backend";
+import { TouchTransition } from "react-dnd-multi-backend";
 
-import Board from '../GameAreas/Board';
-import Stack from '../GameAreas/Stack';
-import StudyArea from '../GameAreas/StudyArea';
-import ResourceArea from '../GameAreas/ResourceArea';
-import StateDisplay from '../GameAreas/StateDisplay';
+import Board from "../GameAreas/Board";
+import Stack from "../GameAreas/Stack";
+import StudyArea from "../GameAreas/StudyArea";
+import ResourceArea from "../GameAreas/ResourceArea";
+import StateDisplay from "../GameAreas/StateDisplay";
 
-import ChooseDialog from '../Dialogs/ChooseDialog';
-import EndGameDialog from '../Dialogs/EndGameDialog';
-import SelectXDialog from '../Dialogs/SelectXDialog';
-import { withHandlers } from '../MessageHandlers/HandlerContext';
-import { mapDispatchToProps } from '../Redux/Store';
-import { GamePhases } from '../Helpers/Constants';
-import proto from '../../protojs/compiled';
+import ChooseDialog from "../Dialogs/ChooseDialog";
+import EndGameDialog from "../Dialogs/EndGameDialog";
+import SelectXDialog from "../Dialogs/SelectXDialog";
+import { withHandlers } from "../MessageHandlers/HandlerContext";
+import { mapDispatchToProps } from "../Redux/Store";
+import { GamePhases } from "../Helpers/Constants";
+import proto from "../../protojs/compiled";
 
-import '../../css/App.css';
-import EscapeMenu from '../Dialogs/EscapeMenu';
-import CardDragPreview from '../Card/CardDragPreview';
+import "../../css/App.css";
+import EscapeMenu from "../Dialogs/EscapeMenu";
+import CardDragPreview from "../Card/CardDragPreview";
+
+import Hand from "../GameAreas/Hand";
+import OpponentHand from "../GameAreas/OpponentHand";
+import BoardSide from "../GameAreas/BoardSide";
+import Deck from "../GameAreas/Deck";
+import Scrapyard from "../GameAreas/Scrapyard";
+import PlayerDisplay from "../GameAreas/PlayerDisplayNew";
+import { Box } from "@material-ui/core";
+import { withSize } from "react-sizeme";
 
 const mapStateToProps = state => {
   return {
@@ -85,94 +94,113 @@ class PlayArea extends Component {
   }
 
   render() {
-    const { phase, game, back } = this.props;
+    const { phase, game, back, size } = this.props;
+    const {width, height} = size;
+    console.log("<PLAY AREA> width: " + width + " height: " + height);
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
       game.canStudy.length > 0;
 
-      const HTML5toTouch = {
-        backends: [
-          {
-            backend: HTML5Backend,
-            preview: true,
-          },
-          {
-            backend: TouchBackend,
-            preview: true,
-            transition: TouchTransition
-          }
-        ]
-      };
-      
+    const HTML5toTouch = {
+      backends: [
+        {
+          backend: HTML5Backend,
+          preview: true
+        },
+        {
+          backend: TouchBackend,
+          preview: true,
+          transition: TouchTransition
+        }
+      ]
+    };
+
+    const sideHeight = height * 0.2;
+    const midHeight = height * 0.6;
+
     return (
       <DndProvider backend={MultiBackend(HTML5toTouch)}>
-      <div className="App">
-        <header className="App-header">
-          <CardDragPreview/>
-          <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
-          <EndGameDialog back={back} />
-          <SelectXDialog />
-          <ChooseDialog />
-          <Grid
-            container
-            spacing={8}
+        <div className="App">
+          <img
+            src={process.env.PUBLIC_URL + "/img/background.jpg"}
             style={{
-              padding: "12px 12px",
-              height: "100vh"
+              position: "absolute",
+              top: 0,
+              left: 0,
+              objectFit: "cover",
+              zIndex: -1
             }}
-            justify="space-between"
-          >
-            <Grid item xs={2} className="display-col">
-              <StateDisplay />
-            </Grid>
-            <Grid item xs={8} className="display-col">
-              <Board />
-            </Grid>
-            <Grid item xs={2} className="display-col">
-              <Grid
-                container
-                spacing={8}
-                justify="center"
-                alignItems="center"
-                style={{
-                  height: "100%"
-                }}
-              >
-                <Grid item xs={12} style={{ height: "10%" }}>
-                  <ResourceArea isPlayer={false} />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{ height: hasStudyable ? "50%" : "65%" }}
-                >
+            alt=""
+          />
+          <header className="App-header">
+            <CardDragPreview />
+            <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
+            <EndGameDialog back={back} />
+            <SelectXDialog />
+            <ChooseDialog />
+
+            <div className="level0">
+              <div className="level1-top" style={{width: width, height: sideHeight}}>
+                <div className="level1-top-1" style={{width: width * 0.1, height: sideHeight}}>
+                  <Scrapyard isPlayer={false} />
+                </div>
+                <div className="level1-top-2" style={{width: width * 0.1, height: sideHeight}}>
+                  <Deck isPlayer={false} />
+                </div>
+                <div className="level1-top-3" style={{width: width * 0.6, height: sideHeight}}>
+                  <div className="level1-top-3-1" style={{width: width * 0.6, height: sideHeight * 0.8}}>
+                    <OpponentHand />
+                  </div>
+                  <div className="level1-top-3-2" style={{width: width * 0.6, height: sideHeight * 0.2}}>
+                    <PlayerDisplay isPlayer={false}/>
+                  </div>
+                </div>
+                <div className="level1-top-4" style={{width: width * 0.05, height: sideHeight}}/>
+                <div className="level1-top-5" style={{width: width * 0.15, height: sideHeight}}/>
+              </div>
+              <div className="level1-middle" style={{width: width, height: midHeight}}>
+                <div className="level1-middle-1" style={{width: width * 0.85, height: midHeight}}>
+                  <div className="level1-middle-1-1" style={{width: width * 0.85, height: midHeight * 0.5}}>
+                    <BoardSide isPlayer={false} />
+                  </div>
+                  <div className="level1-middle-1-2" style={{width: width * 0.85, height: midHeight * 0.5}}>
+                    <BoardSide isPlayer={true} />
+                  </div>
+                </div>
+                <div className="level1-middle-2" style={{width: width * 0.15, height: midHeight}}>
                   <Stack />
-                </Grid>
-                <Grid item xs={12} style={{ height: "10%" }}>
-                  <ResourceArea isPlayer={true} />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{ height: hasStudyable ? "30%" : "15%" }}
-                >
+                </div>
+              </div>
+              <div className="level1-top" style={{width: width, height: sideHeight}}>
+              <div className="level1-top-1" style={{width: width * 0.1, height: sideHeight}}>
+                  <Scrapyard isPlayer={true} />
+                </div>
+                <div className="level1-top-2" style={{width: width * 0.1, height: sideHeight}}>
+                  <Deck isPlayer={true} />
+                </div>
+                <div className="level1-top-3" style={{width: width * 0.6, height: sideHeight}}>
+                <div className="level1-top-3-2" style={{width: width * 0.6, height: sideHeight * 0.2}}>
+                    <PlayerDisplay isPlayer={true}/>
+                  </div>
+                  <div className="level1-top-3-1" style={{width: width * 0.6, height: sideHeight * 0.8}}>
+                    <Hand />
+                  </div>
+                </div>
+                <div className="level1-top-4" style={{width: width * 0.05, height: sideHeight}}/>
+                <div className="level1-top-5" style={{width: width * 0.15, height: sideHeight}}>
                   <StudyArea />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </header>
-      </div>
+                </div>
+              </div>
+            </div>  
+          </header>
+        </div>
       </DndProvider>
     );
   }
 }
 
-
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(PlayArea));
-
+)(withHandlers(withSize({ monitorHeight: true })(PlayArea)));
