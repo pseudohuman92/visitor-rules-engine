@@ -507,6 +507,17 @@
   },
   {
     "Code": "",
+    "Name": "Junkyard",
+    "Type": "Asset",
+    "Subtype": "",
+    "Effect": "Activate:\n  Add a Junk to your hand.",
+    "Health": 2,
+    "Energy": 3,
+    "Knowledge": "UUU",
+    "Flavor": "While most of it actually is junk, you may get lucky."
+  },
+  {
+    "Code": "",
     "Name": "Weaponize",
     "Type": "Ritual",
     "Subtype": "",
