@@ -18,7 +18,7 @@ class Stack extends React.Component {
       <VerticalStack
         stepSize={size.width / 5}
       >
-        {stack.map((child, i) => {
+        {stack.reverse().map((child, i) => {
           return <PlayingCard key={i} {...child} />;
         })}
       </VerticalStack>

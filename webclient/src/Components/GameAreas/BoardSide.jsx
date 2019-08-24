@@ -8,6 +8,7 @@ import PlayingCard from "../Card/PlayingCard";
 import { ItemTypes } from "../Helpers/Constants";
 
 import "../../css/Utils.css";
+import { withSize } from "react-sizeme";
 
 const boardSideTarget = {
   drop(props, monitor) {
@@ -39,27 +40,19 @@ class BoardSide extends Component {
       playerCards,
       opponentCards
     } = this.props;
-
+    const {width, height} = this.props.size;
     const cards = isPlayer ? playerCards : opponentCards;
 
     return connectDropTarget(
-      <div style={{ height: "100%" }}>
-        <GridList
-          cols={12.25}
-          style={{ flexWrap: "nowrap" }}
-          cellHeight="auto"
-          
-        >
-          {cards.map(card => (
-            <GridListTile
-              key={card.id}
-              style={{maxWidth: "100%", maxHeight: "100%"}}
-              
+      <div style={{ height: "100%", display: "flex", justify: "space-around", alignItems: (isPlayer? "flex-end": "flex-start") }}>
+          {cards.map((card, i) => (
+            <div
+              key={i}
+              style={{width: Math.min(width / cards.length, width / 10)}}
             >
               <PlayingCard {...card} play/>
-            </GridListTile>
+            </div>
           ))}
-        </GridList>
       </div>
     );
   }
@@ -72,4 +65,4 @@ BoardSide = DropTarget(ItemTypes.CARD, boardSideTarget, (connect, monitor) => ({
   canDrop: monitor.canDrop()
 }))(BoardSide);
 
-export default connect(mapStateToProps)(BoardSide);
+export default connect(mapStateToProps)(withSize({ monitorHeight: true })(BoardSide));

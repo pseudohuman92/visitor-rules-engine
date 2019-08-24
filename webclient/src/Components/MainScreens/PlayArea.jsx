@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { DndProvider } from "react-dnd";
 import MultiBackend from "react-dnd-multi-backend";
-import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import HTML5Backend from "react-dnd-html5-backend";
 import TouchBackend from "react-dnd-touch-backend";
 import { TouchTransition } from "react-dnd-multi-backend";
 
-import Board from "../GameAreas/Board";
 import Stack from "../GameAreas/Stack";
 import StudyArea from "../GameAreas/StudyArea";
-import ResourceArea from "../GameAreas/ResourceArea";
-import StateDisplay from "../GameAreas/StateDisplay";
 
 import ChooseDialog from "../Dialogs/ChooseDialog";
 import EndGameDialog from "../Dialogs/EndGameDialog";
@@ -21,7 +17,6 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { GamePhases } from "../Helpers/Constants";
 import proto from "../../protojs/compiled";
 
-import "../../css/App.css";
 import EscapeMenu from "../Dialogs/EscapeMenu";
 import CardDragPreview from "../Card/CardDragPreview";
 
@@ -31,8 +26,10 @@ import BoardSide from "../GameAreas/BoardSide";
 import Deck from "../GameAreas/Deck";
 import Scrapyard from "../GameAreas/Scrapyard";
 import PlayerDisplay from "../GameAreas/PlayerDisplayNew";
-import { Box } from "@material-ui/core";
 import { withSize } from "react-sizeme";
+
+import "../../css/App.css";
+import ButtonDisplay from "../GameAreas/ButtonDisplay";
 
 const mapStateToProps = state => {
   return {
@@ -95,7 +92,7 @@ class PlayArea extends Component {
 
   render() {
     const { phase, game, back, size } = this.props;
-    const {width, height} = size;
+    const { width, height } = size;
     console.log("<PLAY AREA> width: " + width + " height: " + height);
     const hasStudyable =
       phase === GamePhases.UPDATE_GAME &&
@@ -141,58 +138,136 @@ class PlayArea extends Component {
             <ChooseDialog />
 
             <div className="level0">
-              <div className="level1-top" style={{width: width, height: sideHeight}}>
-                <div className="level1-top-1" style={{width: width * 0.1, height: sideHeight}}>
+              <div
+                className="level1-top"
+                style={{ width: width, height: sideHeight }}
+              >
+                <div
+                  className="level1-top-1"
+                  style={{ width: width * 0.1, height: sideHeight }}
+                >
                   <Scrapyard isPlayer={false} />
                 </div>
-                <div className="level1-top-2" style={{width: width * 0.1, height: sideHeight}}>
+                <div
+                  className="level1-top-2"
+                  style={{ width: width * 0.1, height: sideHeight }}
+                >
                   <Deck isPlayer={false} />
                 </div>
-                <div className="level1-top-3" style={{width: width * 0.6, height: sideHeight}}>
-                  <div className="level1-top-3-1" style={{width: width * 0.6, height: sideHeight * 0.8}}>
+                <div
+                  className="level1-top-3"
+                  style={{ width: width * 0.6, height: sideHeight }}
+                >
+                  <div
+                    className="level1-top-3-1"
+                    style={{ width: width * 0.6, height: sideHeight * 0.8 }}
+                  >
                     <OpponentHand />
                   </div>
-                  <div className="level1-top-3-2" style={{width: width * 0.6, height: sideHeight * 0.2}}>
-                    <PlayerDisplay isPlayer={false}/>
+                  <div
+                    className="level1-top-3-2"
+                    style={{ width: width * 0.6, height: sideHeight * 0.2 }}
+                  >
+                    <PlayerDisplay isPlayer={false} />
                   </div>
                 </div>
-                <div className="level1-top-4" style={{width: width * 0.05, height: sideHeight}}/>
-                <div className="level1-top-5" style={{width: width * 0.15, height: sideHeight}}/>
+                <div
+                  className="level1-top-4"
+                  style={{ width: width * 0.05, height: sideHeight }}
+                />
+                <div
+                  className="level1-top-5"
+                  style={{ width: width * 0.15, height: sideHeight }}
+                />
               </div>
-              <div className="level1-middle" style={{width: width, height: midHeight}}>
-                <div className="level1-middle-1" style={{width: width * 0.85, height: midHeight}}>
-                  <div className="level1-middle-1-1" style={{width: width * 0.85, height: midHeight * 0.5}}>
+              <div
+                className="level1-middle"
+                style={{ width: width, height: midHeight }}
+              >
+                <div
+                  className="level1-middle-1"
+                  style={{ width: width * 0.85, height: midHeight }}
+                >
+                  <div
+                    className="level1-middle-1-1"
+                    style={{ width: width * 0.85, height: midHeight * 0.5 }}
+                  >
                     <BoardSide isPlayer={false} />
                   </div>
-                  <div className="level1-middle-1-2" style={{width: width * 0.85, height: midHeight * 0.5}}>
+                  <div
+                    className="level1-middle-1-2"
+                    style={{ width: width * 0.85, height: midHeight * 0.5 }}
+                  >
                     <BoardSide isPlayer={true} />
                   </div>
                 </div>
-                <div className="level1-middle-2" style={{width: width * 0.15, height: midHeight}}>
-                  <Stack />
+                <div
+                  className="level1-middle"
+                  style={{ width: width * 0.15, height: midHeight, flexDirection: "column" }}
+                >
+                  <div
+                    className="level1-middle-2"
+                    style={{ width: width * 0.15, height: midHeight * 0.8, flexGrow: 8 }}
+                  >
+                    <Stack />
+                  </div>
+                  <div
+                    className="level1-middle-2"
+                    style={{
+                      width: width * 0.15,
+                      height: midHeight * 0.2,
+                      flexGrow: 2
+                    }}
+                  >
+                    <ButtonDisplay />
+                  </div>
                 </div>
               </div>
-              <div className="level1-top" style={{width: width, height: sideHeight}}>
-              <div className="level1-top-1" style={{width: width * 0.1, height: sideHeight}}>
+              <div
+                className="level1-top"
+                style={{ width: width, height: sideHeight }}
+              >
+                <div
+                  className="level1-top-1"
+                  style={{ width: width * 0.1, height: sideHeight }}
+                >
                   <Scrapyard isPlayer={true} />
                 </div>
-                <div className="level1-top-2" style={{width: width * 0.1, height: sideHeight}}>
+                <div
+                  className="level1-top-2"
+                  style={{ width: width * 0.1, height: sideHeight }}
+                >
                   <Deck isPlayer={true} />
                 </div>
-                <div className="level1-top-3" style={{width: width * 0.6, height: sideHeight}}>
-                <div className="level1-top-3-2" style={{width: width * 0.6, height: sideHeight * 0.2}}>
-                    <PlayerDisplay isPlayer={true}/>
+                <div
+                  className="level1-top-3"
+                  style={{ width: width * 0.6, height: sideHeight }}
+                >
+                  <div
+                    className="level1-top-3-2"
+                    style={{ width: width * 0.6, height: sideHeight * 0.2 }}
+                  >
+                    <PlayerDisplay isPlayer={true} />
                   </div>
-                  <div className="level1-top-3-1" style={{width: width * 0.6, height: sideHeight * 0.8}}>
+                  <div
+                    className="level1-top-3-1"
+                    style={{ width: width * 0.6, height: sideHeight * 0.8 }}
+                  >
                     <Hand />
                   </div>
                 </div>
-                <div className="level1-top-4" style={{width: width * 0.05, height: sideHeight}}/>
-                <div className="level1-top-5" style={{width: width * 0.15, height: sideHeight}}>
+                <div
+                  className="level1-top-4"
+                  style={{ width: width * 0.05, height: sideHeight }}
+                />
+                <div
+                  className="level1-top-5"
+                  style={{ width: width * 0.15, height: sideHeight }}
+                >
                   <StudyArea />
                 </div>
               </div>
-            </div>  
+            </div>
           </header>
         </div>
       </DndProvider>

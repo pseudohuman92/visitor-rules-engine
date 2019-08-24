@@ -133,7 +133,9 @@ class ButtonDisplay extends Component {
       );
     }
 
-    return (
+    return (<div>{buttonMenu}</div>);
+    {/*
+      return (
       <Paper className="message-display">
         <Grid container spacing={0} style={{ color: "black" }}>
           <Grid item xs={12}>
@@ -145,6 +147,7 @@ class ButtonDisplay extends Component {
         </Grid>
       </Paper>
     );
+      */}
   }
 }
 
