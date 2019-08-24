@@ -20,12 +20,12 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class RI02 extends Asset {
+public class HeatWave extends Asset {
     
     UUID target;
     
-    public RI02 (String owner){
-        super("RI02", 1, new Hashmap(RED, 2), 
+    public HeatWave (String owner){
+        super("Heat Wave", 1, new Hashmap(RED, 2), 
             "Activate: \n" +
             "  Return ~ and target asset to controller's hand.", owner);
     }

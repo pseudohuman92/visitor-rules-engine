@@ -110,7 +110,7 @@ public class TestDecks {
             d.add(new Withdrawal(username));
             
             d.add(new FragGrenade(username));
-            d.add(new RI02(username));
+            d.add(new HeatWave(username));
             d.add(new KillTeam(username));
             d.add(new MortarTeam(username));
             d.add(new RI05(username));

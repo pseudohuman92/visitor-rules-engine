@@ -24,21 +24,23 @@ public class SalvageForge extends Asset {
     
     public SalvageForge (String owner){
         super("Salvage Forge", 1, new Hashmap(BLUE, 1), 
-                "1, Discard 1: Transform ~ into AI02.", owner);
+                "1, Discard 1: Transform ~ into Scrap Grenade.", owner);
         subtypes.add("Kit");
     }
 
     @Override
     public boolean canActivate(Game game) {
         return game.hasIn(controller, HAND, Predicates::any, 1)
-                && game.hasEnergy(controller, 1);
+                && game.hasEnergy(controller, 1)
+                && !depleted;
     }
     
     @Override
     public void activate(Game game) {
+        deplete();
         game.discard(controller, 1);
         game.spendEnergy(controller, 1);
-        game.addToStack(new Ability(this, "Transform ~ into AI02.",
+        game.addToStack(new Ability(this, "Transform ~ into Scrap Grenade.",
             (x) -> { 
                 if(game.isIn(controller, id, PLAY)) {
                     game.transformTo(this, this, new ScrapGrenade(this));

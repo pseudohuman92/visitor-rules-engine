@@ -30,15 +30,17 @@ public class SynapticCapacitor extends Asset{
 
     @Override
     public boolean canActivate(Game game) {
-        return game.hasIn(controller, HAND, Predicates::any, 1) && 
-               game.hasIn(controller, SCRAPYARD, Predicates::any, 1);
+        return game.hasIn(controller, HAND, Predicates::any, 1)
+                && !depleted;
     }
     
     @Override
     public void activate(Game game) {
         game.discard(controller, 1);
-        UUID target = game.selectFromZone(controller, SCRAPYARD, Predicates::any, 1, false).get(0);
-        game.purge(controller, target);
+        UUID target = game.selectFromZone(game.getPlayer(controller).username, SCRAPYARD, Predicates::any, 1, false).get(0);
+        if(game.hasIn(controller, SCRAPYARD, Predicates::any, 1)) {
+            game.purge(controller, target);
+        }
         game.addToStack(new Ability(this, controller + " gains 1 energy",
                 (x) -> { game.addEnergy(controller, 1); }));
     }
