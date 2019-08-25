@@ -26,7 +26,7 @@ public class Junkyard extends Asset {
     
     @Override
     public void activate(Game game) {
-        deplete();
+        game.deplete(id);
         game.addToStack(new Ability(this, 
             "Add a Junk to your hand.",
             (x) -> {
