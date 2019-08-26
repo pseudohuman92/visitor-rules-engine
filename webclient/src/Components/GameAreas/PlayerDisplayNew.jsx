@@ -74,9 +74,16 @@ class PlayerDisplay extends React.Component {
       opponentKnowledgePool
     } = this.props;
 
-    const { width, height_ } = this.props.size;
-    const height = Math.floor(height_);
-    console.log("<PLAYER DISPLAY> width: " + width + " height_: " + height_ + " height: " + height);
+    const { width, height } = this.props.size;
+    const heightRound = Math.floor(height);
+    console.log(
+      "<PLAYER DISPLAY> width: " +
+        width +
+        " height: " +
+        height +
+        " heightRound: " +
+        heightRound
+    );
 
     const id = isPlayer ? playerId : opponentId;
     const name = isPlayer ? playerName : opponentName;
@@ -140,8 +147,9 @@ class PlayerDisplay extends React.Component {
     return (
       <div
         style={{
-          maxHeight: "100%",
+          height: "100%",
           display: "flex",
+          justifyContent: "center",
           alignItems: "center"
         }}
       >
@@ -149,23 +157,32 @@ class PlayerDisplay extends React.Component {
           style={{
             width: (width * 0.9) / 2,
             flexGrow: 9,
+            height: heightRound
           }}
         >
           {name}
         </div>
         <div
-          style={{ width: width * 0.1, maxHeight:"100%", flexGrow: 2}}
+          style={{
+            width: width * 0.1,
+            flexGrow: 2,
+            height: heightRound
+          }}
         >
           <TextOnImage
-            style={{ backgroundColor: borderColor }}
+            style={{
+              backgroundColor: borderColor
+            }}
             src={process.env.PUBLIC_URL + "/img/card-components/health.png"}
             text={health}
             min={1}
+            max={15}
           />
         </div>
         <div
           style={{
             width: (width * 0.9) / 2,
+            height: heightRound,
             flexGrow: 9,
             display: "flex"
           }}

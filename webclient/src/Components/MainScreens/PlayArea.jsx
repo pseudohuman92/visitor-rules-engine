@@ -168,7 +168,7 @@ class PlayArea extends Component {
                     className="level1-top-3-2"
                     style={{ width: width * 0.6, height: sideHeight * 0.2 }}
                   >
-                    <PlayerDisplay isPlayer={false} />
+                    <PlayerDisplay isPlayer={false} style={{ width: width * 0.6, height: sideHeight * 0.2 }}/>
                   </div>
                 </div>
                 <div
@@ -247,7 +247,7 @@ class PlayArea extends Component {
                     className="level1-top-3-2"
                     style={{ width: width * 0.6, height: sideHeight * 0.2 }}
                   >
-                    <PlayerDisplay isPlayer={true} />
+                    <PlayerDisplay isPlayer={true} style={{ width: width * 0.6, height: sideHeight * 0.2 }}/>
                   </div>
                   <div
                     className="level1-top-3-1"

@@ -27,7 +27,11 @@ class Deck extends Component {
     const { hover } = this.state;
     const deckSize = isPlayer ? playerDeckSize : opponentDeckSize;
     return (
-      <div onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+      <div
+        onMouseEnter={this.toggleHover}
+        onMouseLeave={this.toggleHover}
+        style={{ height: "100%" }}
+      >
         <TextOnImage
           text={hover ? deckSize : ""}
           src={process.env.PUBLIC_URL + "/img/CardBack.png"}

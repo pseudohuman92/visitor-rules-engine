@@ -6,7 +6,6 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 
-
 const mapStateToProps = state => {
   return {
     playerName: state.username,
@@ -67,7 +66,12 @@ class Scrapyard extends React.Component {
     };
 
     return (
-      <div onClick={showScrapyard} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+      <div
+        onClick={showScrapyard}
+        onMouseEnter={this.toggleHover}
+        onMouseLeave={this.toggleHover}
+        style={{ height: "100%" }}
+      >
         <TextOnImage
           text={hover ? scrapyard.length : ""}
           src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}

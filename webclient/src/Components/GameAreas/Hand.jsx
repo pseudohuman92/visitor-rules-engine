@@ -5,7 +5,6 @@ import { withSize } from "react-sizeme";
 
 import PlayingCard from "../Card/PlayingCard";
 import Fanner from "../Primitives/Fanner";
-import ComponentStack from "../Primitives/ComponentStack";
 
 const mapStateToProps = state => {
   return {
@@ -15,23 +14,19 @@ const mapStateToProps = state => {
 
 class Hand extends Component {
   render() {
-    const { hand, size } = this.props;
-    const width = Math.min(size.width / hand.length, size.width / 5);
+    const { hand } = this.props;
     return (
       <Fanner
+        isPlayer={true}
         angle={15}
-        elevation={size.height}
-        width={size.width}
         style={{ width: "100%" }}
+        maxNumItems={7}
       >
         {hand.map(card => (
           <PlayingCard
             key={card.id}
             {...card}
             play={true}
-            style={{
-              width: width
-            }}
           />
         ))}
       </Fanner>
@@ -39,4 +34,4 @@ class Hand extends Component {
   }
 }
 
-export default connect(mapStateToProps)(withSize()(Hand));
+export default connect(mapStateToProps)(Hand);

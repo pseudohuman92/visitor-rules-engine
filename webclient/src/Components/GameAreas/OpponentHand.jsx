@@ -2,8 +2,6 @@ import React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { withSize } from "react-sizeme";
-import { Tooltip, Grid } from "@material-ui/core";
-import ComponentStack from "../Primitives/ComponentStack";
 
 import "../../css/Utils.css";
 import Fanner from "../Primitives/ReverseFanner";
@@ -19,7 +17,7 @@ class OpponentHand extends Component {
     const { opponentHandSize, size } = this.props;
     const width = Math.min(size.width / opponentHandSize, size.width / 5);
     return (
-      <Fanner angle={-15} elevation={size.height} width={size.width}>
+      <Fanner angle={-15} maxNumItems={7}>
         {Array(opponentHandSize)
           .fill(null)
           .map((card, i) => (

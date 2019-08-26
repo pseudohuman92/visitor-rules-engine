@@ -1,5 +1,5 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
+import { withSize } from "react-sizeme";
 
 
 class Child extends React.Component {
@@ -18,18 +18,18 @@ class Child extends React.Component {
     const {
       length,
       angle,
-      elevation,
       width,
+      isPlayer,
       child,
       i,
     } = this.props;
     const oneSide = Math.floor(length / 2);
     const rotationStep = Math.floor(angle / 2 / oneSide);
-    const elevationStep = elevation / oneSide;
-    const widthStep = Math.floor(width / length);
     function stepCount(i) {
       return length % 2 > 0 ? i - oneSide : i - oneSide + (i < oneSide ? 0 : 1);
     }
+
+
     return (
       <div
         onMouseEnter={event => {
@@ -41,13 +41,12 @@ class Child extends React.Component {
           if (child.props.onMouseExit) child.props.onMouseExit(event);
         }}
         style={{
-          transform: "rotate(" + (rotationStep * stepCount(i)) + "deg)",
-          position: "absolute",
-          top: "" +  (elevationStep * Math.abs(stepCount(i))) + "px",
-          //- (this.state.hover ? 2 * elevationStep : 0)}%`,
-          left: "" + (widthStep * i) + "px",
-          zIndex: this.state.hover ? length : i,
-          textAlign: "justify"
+          transform: "rotate(" + (rotationStep * stepCount(i) + (isPlayer? 0 : 180)) + "deg)",
+          flexGrow: 1,
+          ...(isPlayer?
+          {marginTop: (Math.abs(Math.sin(rotationStep * stepCount(i))) * width)/2} :
+          {marginBottom: (Math.abs(Math.sin(rotationStep * stepCount(i))) * width)/2}),
+          zIndex: this.state.hover ? length : i
         }}
       >
         {child}
@@ -58,18 +57,19 @@ class Child extends React.Component {
 
 class Fanner extends React.Component {
   render() {
-    const { children, angle, elevation, width } = this.props;
+    const { children, angle, maxNumItems, isPlayer } = this.props;
+    const {width} = this.props.size;
     const length = React.Children.count(children);
     return (
-      <div style={{height:"100%"}}>
+      <div style={{height:"100%", display: "flex", justifyContent:"center"}}>
           {React.Children.map(children, (child, i) => {
             return (
               <Child
                 length={length}
                 angle={angle}
-                elevation={elevation}
-                width={width}
+                width={Math.min(width/ length, width/maxNumItems)}
                 child={child}
+                isPlayer={isPlayer}
                 i={i}
               />
             );
@@ -79,4 +79,4 @@ class Fanner extends React.Component {
   }
 }
 
-export default Fanner;
+export default withSize()(Fanner);
