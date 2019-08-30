@@ -43,7 +43,7 @@ class FullCard extends PureComponent {
             opacity: opacity,
             backgroundColor: backColor,
             borderRadius: size.width/20+"px",
-            textAlign: "justify",
+            textAlign: "left",
             border: "1px black solid" 
           }}
         >

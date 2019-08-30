@@ -150,6 +150,9 @@ function getNewUserCollection() {
 
 export const newUserCollection = getNewUserCollection();
 
+export const keywords = {Activate: "This is Activate explanation.", Favor: "This is Favor explanation"};
+
+
 export const craftCost = 1000;
 export const salvageValue = 100;
 

@@ -34,7 +34,7 @@ class SmallCard extends PureComponent {
             opacity: opacity,
             backgroundColor: backColor,
             overflow: "hidden",
-            textAlign: "justify",
+            textAlign: "left",
           }}
         >
           <div

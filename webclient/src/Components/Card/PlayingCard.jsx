@@ -3,13 +3,14 @@ import { DragSource, DropTarget } from "react-dnd";
 import { connect } from "react-redux";
 
 import CardDisplay from "./CardDisplay";
-import { ItemTypes } from "../Helpers/Constants";
+import { ItemTypes, keywords } from "../Helpers/Constants";
 import { cardSource, cardTarget } from "./PlayingCardDnd";
 
 import proto from "../../protojs/compiled.js";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { withSize } from "react-sizeme";
+import FittedText from "../Primitives/FittedText";
 
 const mapStateToProps = state => {
   return {
@@ -45,17 +46,21 @@ export class PlayingCard extends React.Component {
     var rect = event.currentTarget.getBoundingClientRect();
 
     var style = {};
-    style["width"] = window.innerWidth / 5;
+    style["width"] = (2 * window.innerWidth) / 6;
+    style["display"] = "flex";
+    style["textAlign"] = "left";
+
     if (rect.top < window.innerHeight / 2) {
-      style["top"] = rect.height / 2;
+      style["top"] = rect.height;
     } else {
-      style["bottom"] = rect.height / 2;
+      style["bottom"] = rect.height;
     }
 
     if (rect.left < window.innerWidth / 2) {
-      style["left"] = rect.width / 2;
+      style["left"] = rect.width;
     } else {
-      style["right"] = rect.width / 2;
+      style["right"] = rect.width;
+      style["flexDirection"] = "row-reverse";
     }
     this.setState({
       popoverStyle: style
@@ -106,7 +111,8 @@ export class PlayingCard extends React.Component {
       displayTargets,
       activatableCards,
       playableCards,
-      gameHandler
+      gameHandler,
+      ...cardProps
     } = this.props;
 
     const activatable = activatableCards.includes(id);
@@ -159,11 +165,40 @@ export class PlayingCard extends React.Component {
           style={{
             position: "absolute",
             zIndex: 20,
-            transform: "none",
             ...popoverStyle
           }}
         >
-          <CardDisplay {...this.props} />
+          <div style={{ width: popoverStyle.width / 2 }}>
+            <CardDisplay {...cardProps} />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: popoverStyle.width / 2
+            }}
+          >
+            {Object.keys(keywords).map((keyword, i) => {
+              if (cardProps.description.indexOf(keyword) !== -1) {
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      color: "white",
+                      backgroundColor: "black",
+                      border: "1px white solid",
+                      borderRadius: "5px",
+                      whiteSpace: "pre-wrap"
+                    }}
+                  >
+                    <FittedText
+                      text={keyword + "\n" + keywords[keyword]}
+                    />
+                  </div>
+                );
+              }
+            })}
+          </div>
         </div>
         <CardDisplay
           opacity={opacity}
