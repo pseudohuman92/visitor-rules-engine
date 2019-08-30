@@ -7,7 +7,7 @@ import BoardSide from "./BoardSide";
 import InfoMessage from "./InfoMessage";
 import Deck from "./Deck";
 import Scrapyard from "./Scrapyard";
-import PlayerDisplay from "./PlayerDisplayNew";
+import PlayerDisplay from './PlayerDisplay';
 
 export default class Board extends React.Component {
   render() {

@@ -1,14 +1,14 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Textfit from "react-textfit";
 import { connect } from "react-redux";
+import { knowledgeMap } from '../Helpers/Constants';
 
-import "../../css/StateDisplay.css";
-import "../../css/Utils.css";
-import { mapDispatchToProps } from "../Redux/Store";
-import { withFirebase } from "../Firebase";
-import { withHandlers } from "../MessageHandlers/HandlerContext";
+import '../../css/StateDisplay.css';
+import '../../css/Utils.css';
+import { mapDispatchToProps } from '../Redux/Store';
+import { withFirebase } from '../Firebase';
+import { withHandlers } from '../MessageHandlers/HandlerContext';
+import TextOnImage from '../Primitives/TextOnImage';
+import { withSize } from "react-sizeme";
 
 const mapStateToProps = state => {
   return {
@@ -25,7 +25,13 @@ const mapStateToProps = state => {
     selectablePlayers: state.extendedGameState.selectablePlayers,
     displayTargets: state.extendedGameState.targets,
     phase: state.extendedGameState.phase,
-    selectCountMax: state.extendedGameState.selectCountMax
+    selectCountMax: state.extendedGameState.selectCountMax,
+    playerEnergy: state.extendedGameState.game.player.energy,
+    playerMaxEnergy: state.extendedGameState.game.player.maxEnergy,
+    playerKnowledgePool: state.extendedGameState.game.player.knowledgePool,
+    opponentEnergy: state.extendedGameState.game.opponent.energy,
+    opponentMaxEnergy: state.extendedGameState.game.opponent.maxEnergy,
+    opponentKnowledgePool: state.extendedGameState.game.opponent.knowledgePool
   };
 };
 
@@ -59,13 +65,36 @@ class PlayerDisplay extends React.Component {
       displayTargets,
       phase,
       selectCountMax,
-      updateExtendedGameState
+      updateExtendedGameState,
+      playerEnergy,
+      opponentEnergy,
+      playerMaxEnergy,
+      opponentMaxEnergy,
+      playerKnowledgePool,
+      opponentKnowledgePool
     } = this.props;
+
+    const { width, height } = this.props.size;
+    const heightRound = Math.floor(height);
+    console.log(
+      "<PLAYER DISPLAY> width: " +
+        width +
+        " height: " +
+        height +
+        " heightRound: " +
+        heightRound
+    );
 
     const id = isPlayer ? playerId : opponentId;
     const name = isPlayer ? playerName : opponentName;
     const void_ = isPlayer ? playerVoid : opponentVoid;
     const health = isPlayer ? playerHealth : opponentHealth;
+    const energy = isPlayer ? playerEnergy : opponentEnergy;
+    const maxEnergy = isPlayer ? playerMaxEnergy : opponentMaxEnergy;
+    const knowledgePool = isPlayer
+      ? playerKnowledgePool
+      : opponentKnowledgePool;
+
     const selectable = selectablePlayers.includes(id);
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
@@ -103,7 +132,7 @@ class PlayerDisplay extends React.Component {
       }
     };
 
-    let borderColor = "white";
+    let borderColor = undefined;
     let clickHandler = undefined;
     if (targeted) {
       borderColor = "yellow";
@@ -116,61 +145,124 @@ class PlayerDisplay extends React.Component {
     }
 
     return (
-      <Grid container spacing={8} style={{ height: "100%" }}>
-        <Grid item xs={12} className="grid-elem">
-          {/*<div
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <div
+          style={{
+            width: (width * 0.9) / 2,
+            flexGrow: 9,
+            height: heightRound
+          }}
+        >
+          {name}
+        </div>
+        <div
+          style={{
+            width: width * 0.1,
+            flexGrow: 2,
+            height: heightRound
+          }}
+        >
+          <TextOnImage
             style={{
-              backgroundColor: borderColor,
-              width: "100%", height: "100%",
+              backgroundColor: borderColor
             }}
-            onClick={clickHandler}
+            src={process.env.PUBLIC_URL + "/img/card-components/health.png"}
+            text={health}
+            min={1}
+            max={15}
+          />
+        </div>
+        <div
+          style={{
+            width: (width * 0.9) / 2,
+            height: heightRound,
+            flexGrow: 9,
+            display: "flex"
+          }}
+        >
+          <div
+            style={{
+              width: (width * 0.9) / 2 / 2,
+              display: "flex"
+            }}
           >
-            <img
-              src={
-                process.env.PUBLIC_URL +
-                "/img/" +
-                (isPlayer ? "Player" : "Opponent") +
-                ".png"
-              }
-              style={{ maxWidth: "100%", maxHeight: "100%", margin: "%3" }}
-              alt=""
-            /> 
-            </div> */}
-        </Grid>
-        <Grid item xs={12} className="grid-elem">
-          <Paper className="player-display">
-            <Grid container spacing={0} style={{ height: "100%" }}>
-              <Grid item xs={12} className="grid-elem" style={{backgroundColor: borderColor}} onClick={clickHandler}>
-                <Textfit
-                  mode="single"
-                  forceSingleModeWidth={false}
-                  style={{ padding: "0 5% 0 5%", height: "100%"}}
+            {Array(maxEnergy)
+              .fill(null)
+              .map((c, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: (width * 0.9) / 2 / 2 / maxEnergy,
+                    flexGrow: 1
+                  }}
                 >
-                  {name}
-                </Textfit>
-              </Grid>
-              <Grid item xs={12} className="grid-elem">
-                <Textfit
-                  mode="single"
-                  forceSingleModeWidth={false}
-                  style={{ padding: "0 5% 0 5%", height: "100%" }}
-                >
-                  Health: {health}
-                </Textfit>
-              </Grid>
-              <Grid item xs={6} className="grid-elem" onClick={voidOnClick}>
-                <Textfit
-                  mode="single"
-                  forceSingleModeWidth={false}
-                  style={{ padding: "0 5% 0 5%", height: "100%" }}
-                >
-                  Void: {void_.length}
-                </Textfit>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-      </Grid>
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/img/card-components/energy-display.png"
+                    }
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "scale-down",
+                      opacity: i >= energy ? 0.3 : 1
+                    }}
+                    alt=""
+                  />
+                </div>
+              ))}
+          </div>
+          <div
+            style={{
+              width: (width * 0.9) / 2 / 2,
+              flexGrow: 1,
+              display: "flex"
+            }}
+          >
+            {knowledgePool.map((k, i) => (
+              <div
+                key={i}
+                style={{
+                  width: (width * 0.9) / 2 / 2 / knowledgePool.length,
+                  flexGrow: 1,
+                  position: "relative"
+                }}
+              >
+                {Array(k.count)
+                  .fill(null)
+                  .map((c, j) => (
+                    <img
+                      key={j}
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/img/card-components/knowledge-" +
+                        knowledgeMap[k.knowledge] +
+                        ".png"
+                      }
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "scale-down",
+                        position: "absolute",
+                        left: 15 * j + "%",
+                        zIndex: k.count - j
+                      }}
+                      alt=""
+                    />
+                  ))}
+              </div>
+            ))}
+            {/*Void: {void_.length}*/}
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -178,4 +270,4 @@ class PlayerDisplay extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(withFirebase(PlayerDisplay)));
+)(withHandlers(withFirebase(withSize({ monitorHeight: true })(PlayerDisplay))));

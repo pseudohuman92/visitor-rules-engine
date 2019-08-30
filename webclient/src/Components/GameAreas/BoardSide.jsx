@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import { DropTarget } from "react-dnd";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
 import { connect } from "react-redux";
 
 import PlayingCard from "../Card/PlayingCard";
@@ -40,7 +38,7 @@ class BoardSide extends Component {
       playerCards,
       opponentCards
     } = this.props;
-    const {width, height} = this.props.size;
+    const {width} = this.props.size;
     const cards = isPlayer ? playerCards : opponentCards;
 
     return connectDropTarget(
@@ -65,4 +63,4 @@ BoardSide = DropTarget(ItemTypes.CARD, boardSideTarget, (connect, monitor) => ({
   canDrop: monitor.canDrop()
 }))(BoardSide);
 
-export default connect(mapStateToProps)(withSize({ monitorHeight: true })(BoardSide));
+export default connect(mapStateToProps)(withSize()(BoardSide));

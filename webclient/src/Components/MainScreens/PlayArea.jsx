@@ -25,7 +25,7 @@ import OpponentHand from "../GameAreas/OpponentHand";
 import BoardSide from "../GameAreas/BoardSide";
 import Deck from "../GameAreas/Deck";
 import Scrapyard from "../GameAreas/Scrapyard";
-import PlayerDisplay from "../GameAreas/PlayerDisplayNew";
+import PlayerDisplay from '../GameAreas/PlayerDisplay';
 import { withSize } from "react-sizeme";
 
 import "../../css/App.css";

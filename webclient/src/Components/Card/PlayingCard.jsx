@@ -1,5 +1,5 @@
 import React from "react";
-import { DragSource, DropTarget} from "react-dnd";
+import { DragSource, DropTarget } from "react-dnd";
 import { connect } from "react-redux";
 
 import CardDisplay from "./CardDisplay";
@@ -25,12 +25,45 @@ const mapStateToProps = state => {
 };
 
 export class PlayingCard extends React.Component {
+  state = { popoverStyle: { display: "none" } };
+
   onMouseEnter = event => {
-    this.props.updateExtendedGameState({ targets: this.props.targets });
+    if (this.props.targets.length !== 0) {
+      this.props.updateExtendedGameState({ targets: this.props.targets });
+    }
+    this.handlePopoverOpen(event);
   };
 
   onMouseLeave = event => {
-    this.props.updateExtendedGameState({ targets: [] });
+    if (this.props.targets.length !== 0) {
+      this.props.updateExtendedGameState({ targets: [] });
+    }
+    this.handlePopoverClose(event);
+  };
+
+  handlePopoverOpen = event => {
+    var rect = event.currentTarget.getBoundingClientRect();
+
+    var style = {};
+    style["width"] = window.innerWidth / 5;
+    if (rect.top < window.innerHeight / 2) {
+      style["top"] = rect.height / 2;
+    } else {
+      style["bottom"] = rect.height / 2;
+    }
+
+    if (rect.left < window.innerWidth / 2) {
+      style["left"] = rect.width / 2;
+    } else {
+      style["right"] = rect.width / 2;
+    }
+    this.setState({
+      popoverStyle: style
+    });
+  };
+
+  handlePopoverClose = event => {
+    this.setState({ popoverStyle: { display: "none" } });
   };
 
   select = event => {
@@ -59,7 +92,6 @@ export class PlayingCard extends React.Component {
       });
     }
   };
-
 
   render() {
     const {
@@ -115,19 +147,30 @@ export class PlayingCard extends React.Component {
     const counterMap = {};
     counterMap[proto.Counter.CHARGE] = "C";
 
+    const { popoverStyle } = this.state;
+
     return connectDragSource(
       <div
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         style={this.props.style}
       >
-
-          <CardDisplay
-            opacity={opacity}
-            borderColor={borderColor}
-            onClick={clickHandler}
-            {...this.props}
-          />
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 20,
+            transform: "none",
+            ...popoverStyle
+          }}
+        >
+          <CardDisplay {...this.props} />
+        </div>
+        <CardDisplay
+          opacity={opacity}
+          borderColor={borderColor}
+          onClick={clickHandler}
+          {...this.props}
+        />
       </div>
     );
   }
@@ -136,7 +179,7 @@ export class PlayingCard extends React.Component {
 PlayingCard = DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
   connectDragPreview: connect.dragPreview(),
-  isDragging: monitor.isDragging(),
+  isDragging: monitor.isDragging()
 }))(PlayingCard);
 
 PlayingCard = DropTarget(ItemTypes.CARD, cardTarget, (connect, monitor) => ({

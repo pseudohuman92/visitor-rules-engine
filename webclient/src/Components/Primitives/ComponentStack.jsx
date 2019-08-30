@@ -42,7 +42,6 @@ class VerticalStack extends React.Component {
     return (
       <div
         className="component-stack"
-        style={horizontal ? { overflowY: "hidden" } : {}}
       >
         {React.Children.map(children, (child, i) => {
           return (

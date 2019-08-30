@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { withSize } from "react-sizeme";
 
 import TextOnImage from "./TextOnImage";
 
 class Button extends Component {
   render() {
-    const { text, disabled, onClick, variant, size } = this.props;
+    const { text, disabled, onClick, variant } = this.props;
     const type = variant ? variant : "8";
     const opacity = disabled ? 0.5 : 1;
     return (
@@ -28,4 +27,4 @@ class Button extends Component {
   }
 }
 
-export default withSize()(Button);
+export default Button;

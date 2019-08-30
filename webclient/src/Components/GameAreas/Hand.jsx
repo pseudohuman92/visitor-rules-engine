@@ -1,7 +1,6 @@
 import React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
-import { withSize } from "react-sizeme";
 
 import PlayingCard from "../Card/PlayingCard";
 import Fanner from "../Primitives/Fanner";
