@@ -21,7 +21,6 @@ import EscapeMenu from "../Dialogs/EscapeMenu";
 import CardDragPreview from "../Card/CardDragPreview";
 
 import Hand from "../GameAreas/Hand";
-import OpponentHand from "../GameAreas/OpponentHand";
 import BoardSide from "../GameAreas/BoardSide";
 import Deck from "../GameAreas/Deck";
 import Scrapyard from "../GameAreas/Scrapyard";
@@ -113,8 +112,8 @@ class PlayArea extends Component {
       ]
     };
 
-    const sideHeight = height * 0.2;
-    const midHeight = height * 0.6;
+    const sideHeight = height * 0.15;
+    const midHeight = height * 0.7;
 
     return (
       <DndProvider backend={MultiBackend(HTML5toTouch)}>
@@ -162,7 +161,7 @@ class PlayArea extends Component {
                     className="level1-top-3-1"
                     style={{ width: width * 0.6, height: sideHeight * 0.8 }}
                   >
-                    <OpponentHand />
+                    <Hand isPlayer={false}/>
                   </div>
                   <div
                     className="level1-top-3-2"
@@ -253,7 +252,7 @@ class PlayArea extends Component {
                     className="level1-top-3-1"
                     style={{ width: width * 0.6, height: sideHeight * 0.8 }}
                   >
-                    <Hand />
+                    <Hand isPlayer={true}/>
                   </div>
                 </div>
                 <div

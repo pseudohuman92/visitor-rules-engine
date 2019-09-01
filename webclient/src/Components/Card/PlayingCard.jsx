@@ -26,7 +26,7 @@ const mapStateToProps = state => {
 };
 
 export class PlayingCard extends React.Component {
-  state = { popoverStyle: { display: "none" } };
+  state = { popoverStyle: { display: "none", width: 0 } };
 
   onMouseEnter = event => {
     if (this.props.targets.length !== 0) {
@@ -68,7 +68,7 @@ export class PlayingCard extends React.Component {
   };
 
   handlePopoverClose = event => {
-    this.setState({ popoverStyle: { display: "none" } });
+    this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
   select = event => {

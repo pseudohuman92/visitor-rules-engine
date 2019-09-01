@@ -41,11 +41,9 @@ class Child extends React.Component {
           if (child.props.onMouseExit) child.props.onMouseExit(event);
         }}
         style={{
-          transform: "rotate(" + (rotationStep * stepCount(i) + (isPlayer? 0 : 180)) + "deg)",
+          transform: "rotate(" + (rotationStep * stepCount(i)) + "deg)",
           flexGrow: 1,
-          ...(isPlayer?
-          {marginTop: (Math.abs(Math.sin(rotationStep * stepCount(i))) * width)/2} :
-          {marginBottom: (Math.abs(Math.sin(rotationStep * stepCount(i))) * width)/2}),
+          marginTop: ((isPlayer ? Math.abs(Math.sin(rotationStep * stepCount(i))) : 1 - Math.abs(Math.sin(rotationStep * stepCount(i))))* width)/2,
           zIndex: this.state.hover ? length : i
         }}
       >
@@ -61,13 +59,13 @@ class Fanner extends React.Component {
     const {width} = this.props.size;
     const length = React.Children.count(children);
     return (
-      <div style={{height:"100%", display: "flex", justifyContent:"center"}}>
+      <div style={{height:"100%", display: "flex", justifyContent:"center", transform: "rotate(" + (isPlayer? 0 : 180) + "deg)"}}>
           {React.Children.map(children, (child, i) => {
             return (
               <Child
                 length={length}
                 angle={angle}
-                width={Math.min(width/ length, width/maxNumItems)}
+                width={Math.min(width/length, width/maxNumItems)}
                 child={child}
                 isPlayer={isPlayer}
                 i={i}
