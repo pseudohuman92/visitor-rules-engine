@@ -33,7 +33,7 @@ class FullCard extends PureComponent {
       play,
       size
     } = this.props;
-    const backColor = borderColor ? borderColor : "gainsboro";
+    const backColor = borderColor ? borderColor : undefined; //"gainsboro";
     return (
       <div style={{ position: "relative"}} >
         <Fonts />
@@ -44,7 +44,6 @@ class FullCard extends PureComponent {
             backgroundColor: backColor,
             borderRadius: size.width/20+"px",
             textAlign: "left",
-            border: "1px black solid" 
           }}
         >
           <div
@@ -53,6 +52,7 @@ class FullCard extends PureComponent {
               backgroundColor: getCardColor(knowledgeCost),
               fontSize: size.width / 20 + "px",
               borderRadius: size.width/25+"px",
+              border: "1px black solid" 
             }}
           >
             {cost && (

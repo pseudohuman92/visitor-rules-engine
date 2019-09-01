@@ -10,6 +10,7 @@
   margin: 3.5% 3.5% 0 10.5%;
   background-color: beige;
   overflow: hidden;
+  text-align: center;
   height: 6%;
   font-family: "Open Sans", sans-serif;
 }
@@ -38,6 +39,7 @@
   margin: 1.5% 3.5% 0 3.5%;
   background-color: beige;
   overflow: hidden;
+  text-align: center;
   height: 6%;
   font-family: "Open Sans", sans-serif;
 }
@@ -46,7 +48,8 @@
   margin: 1.5% 3.5% 3.5% 3.5%;
   background-color: beige;
   overflow: auto;
-  height: 32%;
+  padding: 1%;
+  height: 31%;
   font-family: "Open Sans", sans-serif;
 }
 
