@@ -1,7 +1,6 @@
 import React from "react";
 import { withSize } from "react-sizeme";
 
-
 class Child extends React.Component {
   constructor(props) {
     super(props);
@@ -15,20 +14,12 @@ class Child extends React.Component {
   };
 
   render() {
-    const {
-      length,
-      angle,
-      width,
-      isPlayer,
-      child,
-      i,
-    } = this.props;
+    const { length, angle, width, isPlayer, child, i } = this.props;
     const oneSide = Math.floor(length / 2);
     const rotationStep = Math.floor(angle / 2 / oneSide);
     function stepCount(i) {
       return length % 2 > 0 ? i - oneSide : i - oneSide + (i < oneSide ? 0 : 1);
     }
-
 
     return (
       <div
@@ -41,9 +32,11 @@ class Child extends React.Component {
           if (child.props.onMouseExit) child.props.onMouseExit(event);
         }}
         style={{
-          transform: "rotate(" + (rotationStep * stepCount(i)) + "deg)",
+          transform: "rotate(" + rotationStep * stepCount(i) + "deg)",
           flexGrow: 1,
-          marginTop: ((isPlayer ? Math.abs(Math.sin(rotationStep * stepCount(i))) : 1 - Math.abs(Math.sin(rotationStep * stepCount(i))))* width)/2,
+          marginTop:
+            Math.abs(Math.sin(rotationStep * (Math.PI/180) * stepCount(i))) *
+              width * 2,
           zIndex: this.state.hover ? length : i
         }}
       >
@@ -55,23 +48,33 @@ class Child extends React.Component {
 
 class Fanner extends React.Component {
   render() {
-    const { children, angle, maxNumItems, isPlayer } = this.props;
-    const {width} = this.props.size;
+    const { children, angle, maxNumItems, isPlayer, style } = this.props;
+    const { width } = this.props.size;
     const length = React.Children.count(children);
     return (
-      <div style={{height:"100%", display: "flex", justifyContent:"center", transform: "rotate(" + (isPlayer? 0 : 180) + "deg)"}}>
-          {React.Children.map(children, (child, i) => {
-            return (
-              <Child
-                length={length}
-                angle={angle}
-                width={Math.min(width/length, width/maxNumItems)}
-                child={child}
-                isPlayer={isPlayer}
-                i={i}
-              />
-            );
-          })}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          maxWidth: "100%",
+          maxHeight: "100%",
+          display: "flex",
+          justifyContent: "center",
+          ...style
+        }}
+      >
+        {React.Children.map(children, (child, i) => {
+          return (
+            <Child
+              length={length}
+              angle={angle}
+              width={Math.min(width / length, width / maxNumItems)}
+              child={child}
+              isPlayer={isPlayer}
+              i={i}
+            />
+          );
+        })}
       </div>
     );
   }

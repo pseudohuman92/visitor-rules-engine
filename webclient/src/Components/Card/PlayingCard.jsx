@@ -112,6 +112,9 @@ export class PlayingCard extends React.Component {
       activatableCards,
       playableCards,
       gameHandler,
+      small,
+      square,
+      style,
       ...cardProps
     } = this.props;
 
@@ -159,7 +162,7 @@ export class PlayingCard extends React.Component {
       <div
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
-        style={this.props.style}
+        style={{width:"100%", height:"100%", position:"relative", ...style}}
       >
         <div
           style={{
@@ -197,6 +200,7 @@ export class PlayingCard extends React.Component {
                   </div>
                 );
               }
+              return (<div key={i}/>);
             })}
           </div>
         </div>
@@ -204,7 +208,9 @@ export class PlayingCard extends React.Component {
           opacity={opacity}
           borderColor={borderColor}
           onClick={clickHandler}
-          {...this.props}
+          small={small}
+          square={square}
+          {...cardProps}
         />
       </div>
     );

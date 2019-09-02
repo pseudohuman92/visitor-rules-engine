@@ -42,13 +42,13 @@ class BoardSide extends Component {
     const cards = isPlayer ? playerCards : opponentCards;
 
     return connectDropTarget(
-      <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+      <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: isPlayer?"flex-end":"flex-start"}}>
           {cards.map((card, i) => (
             <div
               key={i}
-              style={{width: Math.min(width / cards.length, width / 10), marginLeft: "1%", marginRight:"1%"}}
+              style={{width: Math.min(width / cards.length, width / 10), margin:"1%"}}
             >
-              <PlayingCard {...card} play/>
+              <PlayingCard square {...card} play/>
             </div>
           ))}
       </div>

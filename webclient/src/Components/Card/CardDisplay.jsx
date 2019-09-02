@@ -3,10 +3,11 @@ import { PureComponent } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { withSize } from "react-sizeme";
 
 import FullCard from "./FullCard";
 import SmallCard from "./SmallCard";
+import SquareCard from "./SquareCard";
+import { withSize } from "react-sizeme";
 
 
 export class CardDisplay extends PureComponent {
@@ -30,11 +31,13 @@ export class CardDisplay extends PureComponent {
   render() {
     const {
       small,
+      square,
+      style,
       size,
       ...rest
     } = this.props;
     return (
-      <div>
+      <div style={{width:"100%", height: "100%", ...style}}>
         <Dialog
           open={this.state.showDialog}
           onClose={event => this.setState({ showDialog: false })}
@@ -50,6 +53,8 @@ export class CardDisplay extends PureComponent {
             {small ? (
               <SmallCard {...rest} />
             ) : (
+              square ?
+              <SquareCard {...rest} />:
               <FullCard {...rest} />
             )}
           </div>
@@ -58,4 +63,4 @@ export class CardDisplay extends PureComponent {
   }
 }
 
-export default withSize()(CardDisplay);
+export default withSize({monitorHeight: true})(CardDisplay);

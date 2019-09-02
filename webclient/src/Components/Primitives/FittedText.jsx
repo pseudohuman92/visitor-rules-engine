@@ -4,11 +4,12 @@ import { withSize } from "react-sizeme";
 
 class FittedText extends Component {
   render() {
-    const { text, min, max, font, scale, size } = this.props;
+    const { text, min, max, font, scale, style, size } = this.props;
     const scale_ = scale ? scale : 10;
     const min_ = min ? min : 1;
     const max_ = max ? max : 1000;
     return (
+      <div style={style}>
       <div
         style={{
           ...font,
@@ -17,6 +18,7 @@ class FittedText extends Component {
         }}
       >
         {text}
+      </div>
       </div>
     );
   }

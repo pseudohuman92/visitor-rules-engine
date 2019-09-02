@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { withFirebase } from "../Firebase";
 import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
-import PlayArea from './PlayArea';
+import PlayArea from './GameScreen';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { debugPrint } from "../Helpers/Helpers";
 

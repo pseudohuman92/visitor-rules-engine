@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import PlayingCard from "../Card/PlayingCard";
 import Fanner from "../Primitives/Fanner";
-import { withSize } from "react-sizeme";
 
 const mapStateToProps = state => {
   return {

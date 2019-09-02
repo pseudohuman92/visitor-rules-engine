@@ -5,6 +5,8 @@ import TextOnImage from "../Primitives/TextOnImage";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
+import { CardDisplay } from "../Card/CardDisplay";
+import TextOnComponent from "../Primitives/TextOnComponent";
 
 const mapStateToProps = state => {
   return {
@@ -48,7 +50,8 @@ class Scrapyard extends React.Component {
       opponentName,
       playerScrapyard,
       opponentScrapyard,
-      updateExtendedGameState
+      updateExtendedGameState,
+      style
     } = this.props;
 
     const { hover } = this.state;
@@ -64,19 +67,30 @@ class Scrapyard extends React.Component {
         }
       });
     };
+    const hasCard = scrapyard.length > 0;
 
     return (
       <div
         onClick={showScrapyard}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
-        style={{ height: "100%" }}
+        style={{width:"100%", ...style }}
       >
-        <TextOnImage
-          text={hover ? scrapyard.length : ""}
-          src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}
-          imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
-        />
+        {hasCard ? (
+          <TextOnComponent
+            text={hover ? scrapyard.length : ""}
+            component={<CardDisplay {...scrapyard[scrapyard.length - 1]} />}
+            compStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
+            scale={3}
+          />
+        ) : (
+          <TextOnImage
+            text={hover ? scrapyard.length : ""}
+            src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}
+            imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
+            scale={3}
+          />
+        )}
       </div>
     );
   }

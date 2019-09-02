@@ -23,19 +23,20 @@ class Deck extends Component {
   };
 
   render() {
-    const { playerDeckSize, opponentDeckSize, isPlayer } = this.props;
+    const { playerDeckSize, opponentDeckSize, isPlayer, style } = this.props;
     const { hover } = this.state;
     const deckSize = isPlayer ? playerDeckSize : opponentDeckSize;
     return (
       <div
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
-        style={{ height: "100%" }}
+        style={{ height: "100%", ...style }}
       >
         <TextOnImage
           text={hover ? deckSize : ""}
           src={process.env.PUBLIC_URL + "/img/CardBack.png"}
           imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
+          scale = {3}
         />
       </div>
     );

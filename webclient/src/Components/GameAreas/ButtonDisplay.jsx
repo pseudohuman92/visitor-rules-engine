@@ -10,7 +10,6 @@ import proto from "../../protojs/compiled.js";
 import { GamePhases } from "../Helpers/Constants";
 import { IsSelectCardPhase } from "../Helpers/Helpers";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import "../../css/StateDisplay.css";
 import "../../css/Utils.css";
 
 const mapStateToProps = state => {
@@ -134,7 +133,7 @@ class ButtonDisplay extends Component {
     }
 
     return (<div>{buttonMenu}</div>);
-    {/*
+    /*
       return (
       <Paper className="message-display">
         <Grid container spacing={0} style={{ color: "black" }}>
@@ -147,7 +146,7 @@ class ButtonDisplay extends Component {
         </Grid>
       </Paper>
     );
-      */}
+      */
   }
 }
 

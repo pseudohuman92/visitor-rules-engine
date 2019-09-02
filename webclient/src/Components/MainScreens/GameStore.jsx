@@ -18,7 +18,7 @@ const mapStateToProps = state => {
   };
 };
 
-class OpenPacks extends Component {
+class GameStore extends Component {
   state = {
     show: false
   };
@@ -97,4 +97,4 @@ class OpenPacks extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(withFirebase(OpenPacks)));
+)(withHandlers(withFirebase(GameStore)));

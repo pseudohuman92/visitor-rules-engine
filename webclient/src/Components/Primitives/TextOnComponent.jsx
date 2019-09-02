@@ -5,31 +5,32 @@ import Fonts from "./Fonts";
 
 import "./TextOnImage.css";
 
-class TextOnImage extends Component {
+class TextOnComponent extends Component {
   render() {
-    const { text, min, max, scale, src, font, style, imgStyle, textStyle, size } = this.props;
-    const min_ = min? min : 1;
-    const max_ = max?max:100;
-    const scale_ = scale?scale:10;
+    const {
+      text,
+      min,
+      max,
+      scale,
+      component,
+      font,
+      style,
+      compStyle,
+      textStyle,
+      size
+    } = this.props;
+    const min_ = min ? min : 1;
+    const max_ = max ? max : 100;
+    const scale_ = scale ? scale : 10;
     const font_ = font
       ? font
       : { fontFamily: "Cinzel, serif", fontWeight: "700" };
     return (
       <div className="container" style={style}>
         <Fonts />
-        <img
-          className="image"
-          src={src}
-          alt=""
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            width: "auto",
-            height: "auto",
-            objectFit: "scale-down",
-            ...imgStyle
-          }}
-        />
+        <div className="image" style={compStyle}>
+          {component}
+        </div>
         <div
           className="centered"
           style={{
@@ -47,4 +48,4 @@ class TextOnImage extends Component {
   }
 }
 
-export default withSize()(TextOnImage);
+export default withSize()(TextOnComponent);
