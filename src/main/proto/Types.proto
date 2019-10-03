@@ -9,9 +9,11 @@ enum Phase {
     NOPHASE = 0;
     REDRAW = 1;
     BEGIN = 2;
-    MAIN = 3;
-    MAIN_RESOLVING = 4;
-    END = 5;
+    MAIN_BEFORE = 3;
+    ATTACK = 4;
+    BLOCK = 5;
+    MAIN_AFTER = 6;
+    END = 7;
 }
 
 enum SelectFromType {
@@ -53,6 +55,16 @@ enum Counter {
 message CounterGroup {
     Counter counter = 1;
     int32 count = 2;
+}
+
+message Blocker {
+    string blockerId = 1;
+    repeated string canBlockList = 2;
+}
+
+message BlockerAssignment {
+    string attackerId = 1;
+    repeated string blockerList = 2;
 }
 
 message Card {

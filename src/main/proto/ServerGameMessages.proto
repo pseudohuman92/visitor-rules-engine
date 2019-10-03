@@ -38,6 +38,15 @@ message SelectXValue {
     int32 maxXValue = 2;
 }
 
+message SelectAttackers {
+    GameState game = 1;
+    repeated string canAttack = 2;
+}
+
+message SelectBlockers {
+    GameState game = 1;
+    repeated Blocker canBlock = 2;
+}
 
 message ServerGameMessage {
     oneof payload {
@@ -46,5 +55,7 @@ message ServerGameMessage {
         OrderCards              orderCards = 12;
         SelectFrom              selectFrom = 13;
         SelectXValue            selectXValue = 19;
+        SelectAttackers         selectAttackers = 20;
+        SelectBlockers          selectBlockers = 21;
     }
 }

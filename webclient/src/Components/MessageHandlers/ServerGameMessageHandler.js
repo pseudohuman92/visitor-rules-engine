@@ -48,6 +48,9 @@ export default class ServerGameMessageHandler {
       case "SelectXValue":
         newState["maxXValue"] = params.maxXValue;
         break;
+      case "SelectAttackers":
+        newState["canAttack"] = params.canAttack;
+        break;
       default:
         break;
     }
@@ -118,5 +121,15 @@ export default class ServerGameMessageHandler {
       selectedXValue: xVal
     });
     this.updateExtendedGameState({ phase: GamePhases.DONE_SELECT });
+  };
+
+  SelectAttackers = attackers => {
+    this.send("SelectAttackersResponse", {
+      attackers: attackers
+    });
+    this.updateExtendedGameState({
+      phase: GamePhases.DONE_SELECT,
+      canAttack: []
+    });
   };
 }

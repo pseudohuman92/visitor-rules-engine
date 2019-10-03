@@ -14,7 +14,8 @@ export const GamePhases = {
   SELECT_FROM_VOID: "SelectFromVoid",
   SELECT_FROM_STACK: "SelectFromStack",
   SELECT_X_VALUE: "SelectXValue",
-  DONE_SELECT: "DoneSelect"
+  DONE_SELECT: "DoneSelect",
+  SELECT_ATTACKERS: "SelectAttackers"
 };
 
 export const ItemTypes = {
@@ -88,6 +89,8 @@ const initialExtendedGameState = {
   selectedCards: [],
   selectableCards: [],
   selectablePlayers: [],
+  canAttack: [],
+  attacking: [],
   selectCountMax: 0,
   maxXValue: 0,
   upTo: false,
@@ -118,14 +121,14 @@ const initializeFullCollection = () => {
       JSON.parse(file).forEach(card => {
         let name = card.Name !== "" ? card.Name : card.Code;
         if (
-          name !== "" &&
-          !card.Code.startsWith("Code") &&
-          !card.Code.startsWith("A")
+          name !== "" //&&
+          //!card.Code.startsWith("Code") //&& !card.Code.startsWith("A")
         ) {
           result[name] = {
             name: name,
             type: card.Type,
             description: card.Effect,
+            attack: card.Attack,
             health: card.Health,
             cost: card.Energy,
             knowledgeCost: toKnowledgeCost(card.Knowledge),

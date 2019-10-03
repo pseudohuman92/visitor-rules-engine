@@ -21,7 +21,9 @@ const mapStateToProps = state => {
     selectedCards: state.extendedGameState.selectedCards,
     selectableCards: state.extendedGameState.selectableCards,
     displayTargets: state.extendedGameState.targets,
-    selectCountMax: state.extendedGameState.selectCountMax
+    selectCountMax: state.extendedGameState.selectCountMax,
+    canAttack: state.extendedGameState.canAttack,
+    attacking: state.extendedGameState.attacking,
   };
 };
 
@@ -71,6 +73,23 @@ export class PlayingCard extends React.Component {
     this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
+  toggleAttacking = event => {
+    let id = this.props.id;
+    let attacking = [...this.props.attacking];
+
+    if (attacking.includes(id)) {
+      attacking.splice(attacking.indexOf(id), 1);
+      this.props.updateExtendedGameState({
+        attacking: attacking
+      });
+    } else {
+      attacking.push(id);
+      this.props.updateExtendedGameState({
+        attacking: attacking
+      });
+    }
+  };
+
   select = event => {
     let id = this.props.id;
     let selected = [...this.props.selectedCards];
@@ -111,6 +130,8 @@ export class PlayingCard extends React.Component {
       displayTargets,
       activatableCards,
       playableCards,
+      canAttack,
+      attacking,
       gameHandler,
       small,
       square,
@@ -123,33 +144,40 @@ export class PlayingCard extends React.Component {
     const selectable = selectableCards.includes(id);
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
+    const canAttack_ = canAttack.includes(id);
+    const attacking_ = attacking.includes(id);
 
-    var opacity = 1,
-      borderColor = "";
-    let clickHandler = undefined;
+    var borderColor = "";
     if (isDragging) {
-      opacity = 0.5;
       borderColor = "yellow";
-    } else if (canDrop && isOver) {
+    } else if ((canDrop && isOver) || attacking_) {
       borderColor = "red";
-    } else if (targeted) {
+    } else if (canAttack_ || targeted) {
       borderColor = "yellow";
     } else if (selected) {
       borderColor = "magenta";
+    } else if (selectable) {
+      borderColor = "green";
+    } else if (activatable || playable) {
+      borderColor = "blue";
+    }
+
+
+    let clickHandler = undefined;
+    if (canAttack_){
+      clickHandler = this.toggleAttacking;
+    } else if (selected) {
       clickHandler = this.unselect;
     } else if (selectable) {
       clickHandler = this.select;
-      borderColor = "green";
     } else if (activatable) {
       clickHandler = event => {
         gameHandler.ActivateCard(id);
       };
-      borderColor = "blue";
-    } else if (playable) {
-      borderColor = "blue";
     }
 
-    if (depleted) {
+    var opacity = 1;
+    if (isDragging || depleted) {
       opacity = 0.5;
     }
 

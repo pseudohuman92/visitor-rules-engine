@@ -52,6 +52,14 @@ message SelectXValueResponse {
     int32 selectedXValue = 2;
 }
 
+message SelectAttackersResponse {
+    repeated string attackers = 1;
+}
+
+message SelectBlockersResponse {
+    repeated BlockerAssignment blockers = 1;
+}
+
 message ClientGameMessage {
     oneof payload {
         PlayCard                        playCard = 7;
@@ -64,5 +72,7 @@ message ClientGameMessage {
         OrderCardsResponse              orderCardsResponse = 17;
         SelectFromResponse              selectFromResponse = 15;
         SelectXValueResponse            selectXValueResponse = 23;
+        SelectAttackersResponse         selectAttackersResponse = 24;
+        SelectBlockersResponse          selectBlockersResponse = 25;
     }
 };

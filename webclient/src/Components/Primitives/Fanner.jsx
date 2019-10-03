@@ -14,7 +14,7 @@ class Child extends React.Component {
   };
 
   render() {
-    const { length, angle, width, isPlayer, child, i } = this.props;
+    const { length, angle, width, child, i } = this.props;
     const oneSide = Math.floor(length / 2);
     const rotationStep = Math.floor(angle / 2 / oneSide);
     function stepCount(i) {

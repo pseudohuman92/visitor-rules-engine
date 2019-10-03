@@ -1865,6 +1865,417 @@ $root.SelectXValueResponse = (function() {
     return SelectXValueResponse;
 })();
 
+$root.SelectAttackersResponse = (function() {
+
+    /**
+     * Properties of a SelectAttackersResponse.
+     * @exports ISelectAttackersResponse
+     * @interface ISelectAttackersResponse
+     * @property {Array.<string>|null} [attackers] SelectAttackersResponse attackers
+     */
+
+    /**
+     * Constructs a new SelectAttackersResponse.
+     * @exports SelectAttackersResponse
+     * @classdesc Represents a SelectAttackersResponse.
+     * @implements ISelectAttackersResponse
+     * @constructor
+     * @param {ISelectAttackersResponse=} [properties] Properties to set
+     */
+    function SelectAttackersResponse(properties) {
+        this.attackers = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SelectAttackersResponse attackers.
+     * @member {Array.<string>} attackers
+     * @memberof SelectAttackersResponse
+     * @instance
+     */
+    SelectAttackersResponse.prototype.attackers = $util.emptyArray;
+
+    /**
+     * Creates a new SelectAttackersResponse instance using the specified properties.
+     * @function create
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {ISelectAttackersResponse=} [properties] Properties to set
+     * @returns {SelectAttackersResponse} SelectAttackersResponse instance
+     */
+    SelectAttackersResponse.create = function create(properties) {
+        return new SelectAttackersResponse(properties);
+    };
+
+    /**
+     * Encodes the specified SelectAttackersResponse message. Does not implicitly {@link SelectAttackersResponse.verify|verify} messages.
+     * @function encode
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {ISelectAttackersResponse} message SelectAttackersResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectAttackersResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.attackers != null && message.attackers.length)
+            for (var i = 0; i < message.attackers.length; ++i)
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackers[i]);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SelectAttackersResponse message, length delimited. Does not implicitly {@link SelectAttackersResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {ISelectAttackersResponse} message SelectAttackersResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectAttackersResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SelectAttackersResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SelectAttackersResponse} SelectAttackersResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectAttackersResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectAttackersResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.attackers && message.attackers.length))
+                    message.attackers = [];
+                message.attackers.push(reader.string());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SelectAttackersResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SelectAttackersResponse} SelectAttackersResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectAttackersResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SelectAttackersResponse message.
+     * @function verify
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SelectAttackersResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.attackers != null && message.hasOwnProperty("attackers")) {
+            if (!Array.isArray(message.attackers))
+                return "attackers: array expected";
+            for (var i = 0; i < message.attackers.length; ++i)
+                if (!$util.isString(message.attackers[i]))
+                    return "attackers: string[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SelectAttackersResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SelectAttackersResponse} SelectAttackersResponse
+     */
+    SelectAttackersResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.SelectAttackersResponse)
+            return object;
+        var message = new $root.SelectAttackersResponse();
+        if (object.attackers) {
+            if (!Array.isArray(object.attackers))
+                throw TypeError(".SelectAttackersResponse.attackers: array expected");
+            message.attackers = [];
+            for (var i = 0; i < object.attackers.length; ++i)
+                message.attackers[i] = String(object.attackers[i]);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SelectAttackersResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SelectAttackersResponse
+     * @static
+     * @param {SelectAttackersResponse} message SelectAttackersResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SelectAttackersResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.attackers = [];
+        if (message.attackers && message.attackers.length) {
+            object.attackers = [];
+            for (var j = 0; j < message.attackers.length; ++j)
+                object.attackers[j] = message.attackers[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this SelectAttackersResponse to JSON.
+     * @function toJSON
+     * @memberof SelectAttackersResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SelectAttackersResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SelectAttackersResponse;
+})();
+
+$root.SelectBlockersResponse = (function() {
+
+    /**
+     * Properties of a SelectBlockersResponse.
+     * @exports ISelectBlockersResponse
+     * @interface ISelectBlockersResponse
+     * @property {Array.<IBlockerAssignment>|null} [blockers] SelectBlockersResponse blockers
+     */
+
+    /**
+     * Constructs a new SelectBlockersResponse.
+     * @exports SelectBlockersResponse
+     * @classdesc Represents a SelectBlockersResponse.
+     * @implements ISelectBlockersResponse
+     * @constructor
+     * @param {ISelectBlockersResponse=} [properties] Properties to set
+     */
+    function SelectBlockersResponse(properties) {
+        this.blockers = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SelectBlockersResponse blockers.
+     * @member {Array.<IBlockerAssignment>} blockers
+     * @memberof SelectBlockersResponse
+     * @instance
+     */
+    SelectBlockersResponse.prototype.blockers = $util.emptyArray;
+
+    /**
+     * Creates a new SelectBlockersResponse instance using the specified properties.
+     * @function create
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {ISelectBlockersResponse=} [properties] Properties to set
+     * @returns {SelectBlockersResponse} SelectBlockersResponse instance
+     */
+    SelectBlockersResponse.create = function create(properties) {
+        return new SelectBlockersResponse(properties);
+    };
+
+    /**
+     * Encodes the specified SelectBlockersResponse message. Does not implicitly {@link SelectBlockersResponse.verify|verify} messages.
+     * @function encode
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {ISelectBlockersResponse} message SelectBlockersResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectBlockersResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.blockers != null && message.blockers.length)
+            for (var i = 0; i < message.blockers.length; ++i)
+                $root.BlockerAssignment.encode(message.blockers[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SelectBlockersResponse message, length delimited. Does not implicitly {@link SelectBlockersResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {ISelectBlockersResponse} message SelectBlockersResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectBlockersResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SelectBlockersResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SelectBlockersResponse} SelectBlockersResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectBlockersResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectBlockersResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.blockers && message.blockers.length))
+                    message.blockers = [];
+                message.blockers.push($root.BlockerAssignment.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SelectBlockersResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SelectBlockersResponse} SelectBlockersResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectBlockersResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SelectBlockersResponse message.
+     * @function verify
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SelectBlockersResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.blockers != null && message.hasOwnProperty("blockers")) {
+            if (!Array.isArray(message.blockers))
+                return "blockers: array expected";
+            for (var i = 0; i < message.blockers.length; ++i) {
+                var error = $root.BlockerAssignment.verify(message.blockers[i]);
+                if (error)
+                    return "blockers." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SelectBlockersResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SelectBlockersResponse} SelectBlockersResponse
+     */
+    SelectBlockersResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.SelectBlockersResponse)
+            return object;
+        var message = new $root.SelectBlockersResponse();
+        if (object.blockers) {
+            if (!Array.isArray(object.blockers))
+                throw TypeError(".SelectBlockersResponse.blockers: array expected");
+            message.blockers = [];
+            for (var i = 0; i < object.blockers.length; ++i) {
+                if (typeof object.blockers[i] !== "object")
+                    throw TypeError(".SelectBlockersResponse.blockers: object expected");
+                message.blockers[i] = $root.BlockerAssignment.fromObject(object.blockers[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SelectBlockersResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SelectBlockersResponse
+     * @static
+     * @param {SelectBlockersResponse} message SelectBlockersResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SelectBlockersResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.blockers = [];
+        if (message.blockers && message.blockers.length) {
+            object.blockers = [];
+            for (var j = 0; j < message.blockers.length; ++j)
+                object.blockers[j] = $root.BlockerAssignment.toObject(message.blockers[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this SelectBlockersResponse to JSON.
+     * @function toJSON
+     * @memberof SelectBlockersResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SelectBlockersResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SelectBlockersResponse;
+})();
+
 $root.ClientGameMessage = (function() {
 
     /**
@@ -1881,6 +2292,8 @@ $root.ClientGameMessage = (function() {
      * @property {IOrderCardsResponse|null} [orderCardsResponse] ClientGameMessage orderCardsResponse
      * @property {ISelectFromResponse|null} [selectFromResponse] ClientGameMessage selectFromResponse
      * @property {ISelectXValueResponse|null} [selectXValueResponse] ClientGameMessage selectXValueResponse
+     * @property {ISelectAttackersResponse|null} [selectAttackersResponse] ClientGameMessage selectAttackersResponse
+     * @property {ISelectBlockersResponse|null} [selectBlockersResponse] ClientGameMessage selectBlockersResponse
      */
 
     /**
@@ -1978,17 +2391,33 @@ $root.ClientGameMessage = (function() {
      */
     ClientGameMessage.prototype.selectXValueResponse = null;
 
+    /**
+     * ClientGameMessage selectAttackersResponse.
+     * @member {ISelectAttackersResponse|null|undefined} selectAttackersResponse
+     * @memberof ClientGameMessage
+     * @instance
+     */
+    ClientGameMessage.prototype.selectAttackersResponse = null;
+
+    /**
+     * ClientGameMessage selectBlockersResponse.
+     * @member {ISelectBlockersResponse|null|undefined} selectBlockersResponse
+     * @memberof ClientGameMessage
+     * @instance
+     */
+    ClientGameMessage.prototype.selectBlockersResponse = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2036,6 +2465,10 @@ $root.ClientGameMessage = (function() {
             $root.OrderCardsResponse.encode(message.orderCardsResponse, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
         if (message.selectXValueResponse != null && message.hasOwnProperty("selectXValueResponse"))
             $root.SelectXValueResponse.encode(message.selectXValueResponse, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
+        if (message.selectAttackersResponse != null && message.hasOwnProperty("selectAttackersResponse"))
+            $root.SelectAttackersResponse.encode(message.selectAttackersResponse, writer.uint32(/* id 24, wireType 2 =*/194).fork()).ldelim();
+        if (message.selectBlockersResponse != null && message.hasOwnProperty("selectBlockersResponse"))
+            $root.SelectBlockersResponse.encode(message.selectBlockersResponse, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
         return writer;
     };
 
@@ -2099,6 +2532,12 @@ $root.ClientGameMessage = (function() {
                 break;
             case 23:
                 message.selectXValueResponse = $root.SelectXValueResponse.decode(reader, reader.uint32());
+                break;
+            case 24:
+                message.selectAttackersResponse = $root.SelectAttackersResponse.decode(reader, reader.uint32());
+                break;
+            case 25:
+                message.selectBlockersResponse = $root.SelectBlockersResponse.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2234,6 +2673,26 @@ $root.ClientGameMessage = (function() {
                     return "selectXValueResponse." + error;
             }
         }
+        if (message.selectAttackersResponse != null && message.hasOwnProperty("selectAttackersResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SelectAttackersResponse.verify(message.selectAttackersResponse);
+                if (error)
+                    return "selectAttackersResponse." + error;
+            }
+        }
+        if (message.selectBlockersResponse != null && message.hasOwnProperty("selectBlockersResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SelectBlockersResponse.verify(message.selectBlockersResponse);
+                if (error)
+                    return "selectBlockersResponse." + error;
+            }
+        }
         return null;
     };
 
@@ -2298,6 +2757,16 @@ $root.ClientGameMessage = (function() {
             if (typeof object.selectXValueResponse !== "object")
                 throw TypeError(".ClientGameMessage.selectXValueResponse: object expected");
             message.selectXValueResponse = $root.SelectXValueResponse.fromObject(object.selectXValueResponse);
+        }
+        if (object.selectAttackersResponse != null) {
+            if (typeof object.selectAttackersResponse !== "object")
+                throw TypeError(".ClientGameMessage.selectAttackersResponse: object expected");
+            message.selectAttackersResponse = $root.SelectAttackersResponse.fromObject(object.selectAttackersResponse);
+        }
+        if (object.selectBlockersResponse != null) {
+            if (typeof object.selectBlockersResponse !== "object")
+                throw TypeError(".ClientGameMessage.selectBlockersResponse: object expected");
+            message.selectBlockersResponse = $root.SelectBlockersResponse.fromObject(object.selectBlockersResponse);
         }
         return message;
     };
@@ -2365,6 +2834,16 @@ $root.ClientGameMessage = (function() {
             if (options.oneofs)
                 object.payload = "selectXValueResponse";
         }
+        if (message.selectAttackersResponse != null && message.hasOwnProperty("selectAttackersResponse")) {
+            object.selectAttackersResponse = $root.SelectAttackersResponse.toObject(message.selectAttackersResponse, options);
+            if (options.oneofs)
+                object.payload = "selectAttackersResponse";
+        }
+        if (message.selectBlockersResponse != null && message.hasOwnProperty("selectBlockersResponse")) {
+            object.selectBlockersResponse = $root.SelectBlockersResponse.toObject(message.selectBlockersResponse, options);
+            if (options.oneofs)
+                object.payload = "selectBlockersResponse";
+        }
         return object;
     };
 
@@ -2389,18 +2868,22 @@ $root.ClientGameMessage = (function() {
  * @property {number} NOPHASE=0 NOPHASE value
  * @property {number} REDRAW=1 REDRAW value
  * @property {number} BEGIN=2 BEGIN value
- * @property {number} MAIN=3 MAIN value
- * @property {number} MAIN_RESOLVING=4 MAIN_RESOLVING value
- * @property {number} END=5 END value
+ * @property {number} MAIN_BEFORE=3 MAIN_BEFORE value
+ * @property {number} ATTACK=4 ATTACK value
+ * @property {number} BLOCK=5 BLOCK value
+ * @property {number} MAIN_AFTER=6 MAIN_AFTER value
+ * @property {number} END=7 END value
  */
 $root.Phase = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NOPHASE"] = 0;
     values[valuesById[1] = "REDRAW"] = 1;
     values[valuesById[2] = "BEGIN"] = 2;
-    values[valuesById[3] = "MAIN"] = 3;
-    values[valuesById[4] = "MAIN_RESOLVING"] = 4;
-    values[valuesById[5] = "END"] = 5;
+    values[valuesById[3] = "MAIN_BEFORE"] = 3;
+    values[valuesById[4] = "ATTACK"] = 4;
+    values[valuesById[5] = "BLOCK"] = 5;
+    values[valuesById[6] = "MAIN_AFTER"] = 6;
+    values[valuesById[7] = "END"] = 7;
     return values;
 })();
 
@@ -3160,6 +3643,458 @@ $root.CounterGroup = (function() {
     };
 
     return CounterGroup;
+})();
+
+$root.Blocker = (function() {
+
+    /**
+     * Properties of a Blocker.
+     * @exports IBlocker
+     * @interface IBlocker
+     * @property {string|null} [blockerId] Blocker blockerId
+     * @property {Array.<string>|null} [canBlockList] Blocker canBlockList
+     */
+
+    /**
+     * Constructs a new Blocker.
+     * @exports Blocker
+     * @classdesc Represents a Blocker.
+     * @implements IBlocker
+     * @constructor
+     * @param {IBlocker=} [properties] Properties to set
+     */
+    function Blocker(properties) {
+        this.canBlockList = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Blocker blockerId.
+     * @member {string} blockerId
+     * @memberof Blocker
+     * @instance
+     */
+    Blocker.prototype.blockerId = "";
+
+    /**
+     * Blocker canBlockList.
+     * @member {Array.<string>} canBlockList
+     * @memberof Blocker
+     * @instance
+     */
+    Blocker.prototype.canBlockList = $util.emptyArray;
+
+    /**
+     * Creates a new Blocker instance using the specified properties.
+     * @function create
+     * @memberof Blocker
+     * @static
+     * @param {IBlocker=} [properties] Properties to set
+     * @returns {Blocker} Blocker instance
+     */
+    Blocker.create = function create(properties) {
+        return new Blocker(properties);
+    };
+
+    /**
+     * Encodes the specified Blocker message. Does not implicitly {@link Blocker.verify|verify} messages.
+     * @function encode
+     * @memberof Blocker
+     * @static
+     * @param {IBlocker} message Blocker message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Blocker.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.blockerId);
+        if (message.canBlockList != null && message.canBlockList.length)
+            for (var i = 0; i < message.canBlockList.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.canBlockList[i]);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Blocker message, length delimited. Does not implicitly {@link Blocker.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Blocker
+     * @static
+     * @param {IBlocker} message Blocker message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Blocker.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Blocker message from the specified reader or buffer.
+     * @function decode
+     * @memberof Blocker
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Blocker} Blocker
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Blocker.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Blocker();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.blockerId = reader.string();
+                break;
+            case 2:
+                if (!(message.canBlockList && message.canBlockList.length))
+                    message.canBlockList = [];
+                message.canBlockList.push(reader.string());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Blocker message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Blocker
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Blocker} Blocker
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Blocker.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Blocker message.
+     * @function verify
+     * @memberof Blocker
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Blocker.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+            if (!$util.isString(message.blockerId))
+                return "blockerId: string expected";
+        if (message.canBlockList != null && message.hasOwnProperty("canBlockList")) {
+            if (!Array.isArray(message.canBlockList))
+                return "canBlockList: array expected";
+            for (var i = 0; i < message.canBlockList.length; ++i)
+                if (!$util.isString(message.canBlockList[i]))
+                    return "canBlockList: string[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a Blocker message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Blocker
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Blocker} Blocker
+     */
+    Blocker.fromObject = function fromObject(object) {
+        if (object instanceof $root.Blocker)
+            return object;
+        var message = new $root.Blocker();
+        if (object.blockerId != null)
+            message.blockerId = String(object.blockerId);
+        if (object.canBlockList) {
+            if (!Array.isArray(object.canBlockList))
+                throw TypeError(".Blocker.canBlockList: array expected");
+            message.canBlockList = [];
+            for (var i = 0; i < object.canBlockList.length; ++i)
+                message.canBlockList[i] = String(object.canBlockList[i]);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Blocker message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Blocker
+     * @static
+     * @param {Blocker} message Blocker
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Blocker.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.canBlockList = [];
+        if (options.defaults)
+            object.blockerId = "";
+        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+            object.blockerId = message.blockerId;
+        if (message.canBlockList && message.canBlockList.length) {
+            object.canBlockList = [];
+            for (var j = 0; j < message.canBlockList.length; ++j)
+                object.canBlockList[j] = message.canBlockList[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this Blocker to JSON.
+     * @function toJSON
+     * @memberof Blocker
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Blocker.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Blocker;
+})();
+
+$root.BlockerAssignment = (function() {
+
+    /**
+     * Properties of a BlockerAssignment.
+     * @exports IBlockerAssignment
+     * @interface IBlockerAssignment
+     * @property {string|null} [attackerId] BlockerAssignment attackerId
+     * @property {Array.<string>|null} [blockerList] BlockerAssignment blockerList
+     */
+
+    /**
+     * Constructs a new BlockerAssignment.
+     * @exports BlockerAssignment
+     * @classdesc Represents a BlockerAssignment.
+     * @implements IBlockerAssignment
+     * @constructor
+     * @param {IBlockerAssignment=} [properties] Properties to set
+     */
+    function BlockerAssignment(properties) {
+        this.blockerList = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * BlockerAssignment attackerId.
+     * @member {string} attackerId
+     * @memberof BlockerAssignment
+     * @instance
+     */
+    BlockerAssignment.prototype.attackerId = "";
+
+    /**
+     * BlockerAssignment blockerList.
+     * @member {Array.<string>} blockerList
+     * @memberof BlockerAssignment
+     * @instance
+     */
+    BlockerAssignment.prototype.blockerList = $util.emptyArray;
+
+    /**
+     * Creates a new BlockerAssignment instance using the specified properties.
+     * @function create
+     * @memberof BlockerAssignment
+     * @static
+     * @param {IBlockerAssignment=} [properties] Properties to set
+     * @returns {BlockerAssignment} BlockerAssignment instance
+     */
+    BlockerAssignment.create = function create(properties) {
+        return new BlockerAssignment(properties);
+    };
+
+    /**
+     * Encodes the specified BlockerAssignment message. Does not implicitly {@link BlockerAssignment.verify|verify} messages.
+     * @function encode
+     * @memberof BlockerAssignment
+     * @static
+     * @param {IBlockerAssignment} message BlockerAssignment message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    BlockerAssignment.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackerId);
+        if (message.blockerList != null && message.blockerList.length)
+            for (var i = 0; i < message.blockerList.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.blockerList[i]);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified BlockerAssignment message, length delimited. Does not implicitly {@link BlockerAssignment.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof BlockerAssignment
+     * @static
+     * @param {IBlockerAssignment} message BlockerAssignment message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    BlockerAssignment.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a BlockerAssignment message from the specified reader or buffer.
+     * @function decode
+     * @memberof BlockerAssignment
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {BlockerAssignment} BlockerAssignment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    BlockerAssignment.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.BlockerAssignment();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.attackerId = reader.string();
+                break;
+            case 2:
+                if (!(message.blockerList && message.blockerList.length))
+                    message.blockerList = [];
+                message.blockerList.push(reader.string());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a BlockerAssignment message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof BlockerAssignment
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {BlockerAssignment} BlockerAssignment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    BlockerAssignment.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a BlockerAssignment message.
+     * @function verify
+     * @memberof BlockerAssignment
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    BlockerAssignment.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
+            if (!$util.isString(message.attackerId))
+                return "attackerId: string expected";
+        if (message.blockerList != null && message.hasOwnProperty("blockerList")) {
+            if (!Array.isArray(message.blockerList))
+                return "blockerList: array expected";
+            for (var i = 0; i < message.blockerList.length; ++i)
+                if (!$util.isString(message.blockerList[i]))
+                    return "blockerList: string[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a BlockerAssignment message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof BlockerAssignment
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {BlockerAssignment} BlockerAssignment
+     */
+    BlockerAssignment.fromObject = function fromObject(object) {
+        if (object instanceof $root.BlockerAssignment)
+            return object;
+        var message = new $root.BlockerAssignment();
+        if (object.attackerId != null)
+            message.attackerId = String(object.attackerId);
+        if (object.blockerList) {
+            if (!Array.isArray(object.blockerList))
+                throw TypeError(".BlockerAssignment.blockerList: array expected");
+            message.blockerList = [];
+            for (var i = 0; i < object.blockerList.length; ++i)
+                message.blockerList[i] = String(object.blockerList[i]);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a BlockerAssignment message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof BlockerAssignment
+     * @static
+     * @param {BlockerAssignment} message BlockerAssignment
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    BlockerAssignment.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.blockerList = [];
+        if (options.defaults)
+            object.attackerId = "";
+        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
+            object.attackerId = message.attackerId;
+        if (message.blockerList && message.blockerList.length) {
+            object.blockerList = [];
+            for (var j = 0; j < message.blockerList.length; ++j)
+                object.blockerList[j] = message.blockerList[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this BlockerAssignment to JSON.
+     * @function toJSON
+     * @memberof BlockerAssignment
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    BlockerAssignment.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return BlockerAssignment;
 })();
 
 $root.Card = (function() {
@@ -4668,6 +5603,8 @@ $root.GameState = (function() {
             case 3:
             case 4:
             case 5:
+            case 6:
+            case 7:
                 break;
             }
         return null;
@@ -4745,17 +5682,25 @@ $root.GameState = (function() {
         case 2:
             message.phase = 2;
             break;
-        case "MAIN":
+        case "MAIN_BEFORE":
         case 3:
             message.phase = 3;
             break;
-        case "MAIN_RESOLVING":
+        case "ATTACK":
         case 4:
             message.phase = 4;
             break;
-        case "END":
+        case "BLOCK":
         case 5:
             message.phase = 5;
+            break;
+        case "MAIN_AFTER":
+        case 6:
+            message.phase = 6;
+            break;
+        case "END":
+        case 7:
+            message.phase = 7;
             break;
         }
         return message;
@@ -6748,6 +7693,473 @@ $root.SelectXValue = (function() {
     return SelectXValue;
 })();
 
+$root.SelectAttackers = (function() {
+
+    /**
+     * Properties of a SelectAttackers.
+     * @exports ISelectAttackers
+     * @interface ISelectAttackers
+     * @property {IGameState|null} [game] SelectAttackers game
+     * @property {Array.<string>|null} [canAttack] SelectAttackers canAttack
+     */
+
+    /**
+     * Constructs a new SelectAttackers.
+     * @exports SelectAttackers
+     * @classdesc Represents a SelectAttackers.
+     * @implements ISelectAttackers
+     * @constructor
+     * @param {ISelectAttackers=} [properties] Properties to set
+     */
+    function SelectAttackers(properties) {
+        this.canAttack = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SelectAttackers game.
+     * @member {IGameState|null|undefined} game
+     * @memberof SelectAttackers
+     * @instance
+     */
+    SelectAttackers.prototype.game = null;
+
+    /**
+     * SelectAttackers canAttack.
+     * @member {Array.<string>} canAttack
+     * @memberof SelectAttackers
+     * @instance
+     */
+    SelectAttackers.prototype.canAttack = $util.emptyArray;
+
+    /**
+     * Creates a new SelectAttackers instance using the specified properties.
+     * @function create
+     * @memberof SelectAttackers
+     * @static
+     * @param {ISelectAttackers=} [properties] Properties to set
+     * @returns {SelectAttackers} SelectAttackers instance
+     */
+    SelectAttackers.create = function create(properties) {
+        return new SelectAttackers(properties);
+    };
+
+    /**
+     * Encodes the specified SelectAttackers message. Does not implicitly {@link SelectAttackers.verify|verify} messages.
+     * @function encode
+     * @memberof SelectAttackers
+     * @static
+     * @param {ISelectAttackers} message SelectAttackers message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectAttackers.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.game != null && message.hasOwnProperty("game"))
+            $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.canAttack != null && message.canAttack.length)
+            for (var i = 0; i < message.canAttack.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.canAttack[i]);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SelectAttackers message, length delimited. Does not implicitly {@link SelectAttackers.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SelectAttackers
+     * @static
+     * @param {ISelectAttackers} message SelectAttackers message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectAttackers.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SelectAttackers message from the specified reader or buffer.
+     * @function decode
+     * @memberof SelectAttackers
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SelectAttackers} SelectAttackers
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectAttackers.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectAttackers();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.game = $root.GameState.decode(reader, reader.uint32());
+                break;
+            case 2:
+                if (!(message.canAttack && message.canAttack.length))
+                    message.canAttack = [];
+                message.canAttack.push(reader.string());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SelectAttackers message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SelectAttackers
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SelectAttackers} SelectAttackers
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectAttackers.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SelectAttackers message.
+     * @function verify
+     * @memberof SelectAttackers
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SelectAttackers.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.game != null && message.hasOwnProperty("game")) {
+            var error = $root.GameState.verify(message.game);
+            if (error)
+                return "game." + error;
+        }
+        if (message.canAttack != null && message.hasOwnProperty("canAttack")) {
+            if (!Array.isArray(message.canAttack))
+                return "canAttack: array expected";
+            for (var i = 0; i < message.canAttack.length; ++i)
+                if (!$util.isString(message.canAttack[i]))
+                    return "canAttack: string[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SelectAttackers message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SelectAttackers
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SelectAttackers} SelectAttackers
+     */
+    SelectAttackers.fromObject = function fromObject(object) {
+        if (object instanceof $root.SelectAttackers)
+            return object;
+        var message = new $root.SelectAttackers();
+        if (object.game != null) {
+            if (typeof object.game !== "object")
+                throw TypeError(".SelectAttackers.game: object expected");
+            message.game = $root.GameState.fromObject(object.game);
+        }
+        if (object.canAttack) {
+            if (!Array.isArray(object.canAttack))
+                throw TypeError(".SelectAttackers.canAttack: array expected");
+            message.canAttack = [];
+            for (var i = 0; i < object.canAttack.length; ++i)
+                message.canAttack[i] = String(object.canAttack[i]);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SelectAttackers message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SelectAttackers
+     * @static
+     * @param {SelectAttackers} message SelectAttackers
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SelectAttackers.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.canAttack = [];
+        if (options.defaults)
+            object.game = null;
+        if (message.game != null && message.hasOwnProperty("game"))
+            object.game = $root.GameState.toObject(message.game, options);
+        if (message.canAttack && message.canAttack.length) {
+            object.canAttack = [];
+            for (var j = 0; j < message.canAttack.length; ++j)
+                object.canAttack[j] = message.canAttack[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this SelectAttackers to JSON.
+     * @function toJSON
+     * @memberof SelectAttackers
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SelectAttackers.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SelectAttackers;
+})();
+
+$root.SelectBlockers = (function() {
+
+    /**
+     * Properties of a SelectBlockers.
+     * @exports ISelectBlockers
+     * @interface ISelectBlockers
+     * @property {IGameState|null} [game] SelectBlockers game
+     * @property {Array.<IBlocker>|null} [canBlock] SelectBlockers canBlock
+     */
+
+    /**
+     * Constructs a new SelectBlockers.
+     * @exports SelectBlockers
+     * @classdesc Represents a SelectBlockers.
+     * @implements ISelectBlockers
+     * @constructor
+     * @param {ISelectBlockers=} [properties] Properties to set
+     */
+    function SelectBlockers(properties) {
+        this.canBlock = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SelectBlockers game.
+     * @member {IGameState|null|undefined} game
+     * @memberof SelectBlockers
+     * @instance
+     */
+    SelectBlockers.prototype.game = null;
+
+    /**
+     * SelectBlockers canBlock.
+     * @member {Array.<IBlocker>} canBlock
+     * @memberof SelectBlockers
+     * @instance
+     */
+    SelectBlockers.prototype.canBlock = $util.emptyArray;
+
+    /**
+     * Creates a new SelectBlockers instance using the specified properties.
+     * @function create
+     * @memberof SelectBlockers
+     * @static
+     * @param {ISelectBlockers=} [properties] Properties to set
+     * @returns {SelectBlockers} SelectBlockers instance
+     */
+    SelectBlockers.create = function create(properties) {
+        return new SelectBlockers(properties);
+    };
+
+    /**
+     * Encodes the specified SelectBlockers message. Does not implicitly {@link SelectBlockers.verify|verify} messages.
+     * @function encode
+     * @memberof SelectBlockers
+     * @static
+     * @param {ISelectBlockers} message SelectBlockers message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectBlockers.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.game != null && message.hasOwnProperty("game"))
+            $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.canBlock != null && message.canBlock.length)
+            for (var i = 0; i < message.canBlock.length; ++i)
+                $root.Blocker.encode(message.canBlock[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SelectBlockers message, length delimited. Does not implicitly {@link SelectBlockers.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SelectBlockers
+     * @static
+     * @param {ISelectBlockers} message SelectBlockers message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectBlockers.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SelectBlockers message from the specified reader or buffer.
+     * @function decode
+     * @memberof SelectBlockers
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SelectBlockers} SelectBlockers
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectBlockers.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectBlockers();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.game = $root.GameState.decode(reader, reader.uint32());
+                break;
+            case 2:
+                if (!(message.canBlock && message.canBlock.length))
+                    message.canBlock = [];
+                message.canBlock.push($root.Blocker.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SelectBlockers message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SelectBlockers
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SelectBlockers} SelectBlockers
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectBlockers.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SelectBlockers message.
+     * @function verify
+     * @memberof SelectBlockers
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SelectBlockers.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.game != null && message.hasOwnProperty("game")) {
+            var error = $root.GameState.verify(message.game);
+            if (error)
+                return "game." + error;
+        }
+        if (message.canBlock != null && message.hasOwnProperty("canBlock")) {
+            if (!Array.isArray(message.canBlock))
+                return "canBlock: array expected";
+            for (var i = 0; i < message.canBlock.length; ++i) {
+                var error = $root.Blocker.verify(message.canBlock[i]);
+                if (error)
+                    return "canBlock." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SelectBlockers message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SelectBlockers
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SelectBlockers} SelectBlockers
+     */
+    SelectBlockers.fromObject = function fromObject(object) {
+        if (object instanceof $root.SelectBlockers)
+            return object;
+        var message = new $root.SelectBlockers();
+        if (object.game != null) {
+            if (typeof object.game !== "object")
+                throw TypeError(".SelectBlockers.game: object expected");
+            message.game = $root.GameState.fromObject(object.game);
+        }
+        if (object.canBlock) {
+            if (!Array.isArray(object.canBlock))
+                throw TypeError(".SelectBlockers.canBlock: array expected");
+            message.canBlock = [];
+            for (var i = 0; i < object.canBlock.length; ++i) {
+                if (typeof object.canBlock[i] !== "object")
+                    throw TypeError(".SelectBlockers.canBlock: object expected");
+                message.canBlock[i] = $root.Blocker.fromObject(object.canBlock[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SelectBlockers message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SelectBlockers
+     * @static
+     * @param {SelectBlockers} message SelectBlockers
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SelectBlockers.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.canBlock = [];
+        if (options.defaults)
+            object.game = null;
+        if (message.game != null && message.hasOwnProperty("game"))
+            object.game = $root.GameState.toObject(message.game, options);
+        if (message.canBlock && message.canBlock.length) {
+            object.canBlock = [];
+            for (var j = 0; j < message.canBlock.length; ++j)
+                object.canBlock[j] = $root.Blocker.toObject(message.canBlock[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this SelectBlockers to JSON.
+     * @function toJSON
+     * @memberof SelectBlockers
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SelectBlockers.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SelectBlockers;
+})();
+
 $root.ServerGameMessage = (function() {
 
     /**
@@ -6759,6 +8171,8 @@ $root.ServerGameMessage = (function() {
      * @property {IOrderCards|null} [orderCards] ServerGameMessage orderCards
      * @property {ISelectFrom|null} [selectFrom] ServerGameMessage selectFrom
      * @property {ISelectXValue|null} [selectXValue] ServerGameMessage selectXValue
+     * @property {ISelectAttackers|null} [selectAttackers] ServerGameMessage selectAttackers
+     * @property {ISelectBlockers|null} [selectBlockers] ServerGameMessage selectBlockers
      */
 
     /**
@@ -6816,17 +8230,33 @@ $root.ServerGameMessage = (function() {
      */
     ServerGameMessage.prototype.selectXValue = null;
 
+    /**
+     * ServerGameMessage selectAttackers.
+     * @member {ISelectAttackers|null|undefined} selectAttackers
+     * @memberof ServerGameMessage
+     * @instance
+     */
+    ServerGameMessage.prototype.selectAttackers = null;
+
+    /**
+     * ServerGameMessage selectBlockers.
+     * @member {ISelectBlockers|null|undefined} selectBlockers
+     * @memberof ServerGameMessage
+     * @instance
+     */
+    ServerGameMessage.prototype.selectBlockers = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ServerGameMessage payload.
-     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|undefined} payload
+     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|undefined} payload
      * @memberof ServerGameMessage
      * @instance
      */
     Object.defineProperty(ServerGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue"]),
+        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -6864,6 +8294,10 @@ $root.ServerGameMessage = (function() {
             $root.SelectFrom.encode(message.selectFrom, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
         if (message.selectXValue != null && message.hasOwnProperty("selectXValue"))
             $root.SelectXValue.encode(message.selectXValue, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
+        if (message.selectAttackers != null && message.hasOwnProperty("selectAttackers"))
+            $root.SelectAttackers.encode(message.selectAttackers, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
+        if (message.selectBlockers != null && message.hasOwnProperty("selectBlockers"))
+            $root.SelectBlockers.encode(message.selectBlockers, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
         return writer;
     };
 
@@ -6912,6 +8346,12 @@ $root.ServerGameMessage = (function() {
                 break;
             case 19:
                 message.selectXValue = $root.SelectXValue.decode(reader, reader.uint32());
+                break;
+            case 20:
+                message.selectAttackers = $root.SelectAttackers.decode(reader, reader.uint32());
+                break;
+            case 21:
+                message.selectBlockers = $root.SelectBlockers.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6997,6 +8437,26 @@ $root.ServerGameMessage = (function() {
                     return "selectXValue." + error;
             }
         }
+        if (message.selectAttackers != null && message.hasOwnProperty("selectAttackers")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SelectAttackers.verify(message.selectAttackers);
+                if (error)
+                    return "selectAttackers." + error;
+            }
+        }
+        if (message.selectBlockers != null && message.hasOwnProperty("selectBlockers")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SelectBlockers.verify(message.selectBlockers);
+                if (error)
+                    return "selectBlockers." + error;
+            }
+        }
         return null;
     };
 
@@ -7036,6 +8496,16 @@ $root.ServerGameMessage = (function() {
             if (typeof object.selectXValue !== "object")
                 throw TypeError(".ServerGameMessage.selectXValue: object expected");
             message.selectXValue = $root.SelectXValue.fromObject(object.selectXValue);
+        }
+        if (object.selectAttackers != null) {
+            if (typeof object.selectAttackers !== "object")
+                throw TypeError(".ServerGameMessage.selectAttackers: object expected");
+            message.selectAttackers = $root.SelectAttackers.fromObject(object.selectAttackers);
+        }
+        if (object.selectBlockers != null) {
+            if (typeof object.selectBlockers !== "object")
+                throw TypeError(".ServerGameMessage.selectBlockers: object expected");
+            message.selectBlockers = $root.SelectBlockers.fromObject(object.selectBlockers);
         }
         return message;
     };
@@ -7077,6 +8547,16 @@ $root.ServerGameMessage = (function() {
             object.selectXValue = $root.SelectXValue.toObject(message.selectXValue, options);
             if (options.oneofs)
                 object.payload = "selectXValue";
+        }
+        if (message.selectAttackers != null && message.hasOwnProperty("selectAttackers")) {
+            object.selectAttackers = $root.SelectAttackers.toObject(message.selectAttackers, options);
+            if (options.oneofs)
+                object.payload = "selectAttackers";
+        }
+        if (message.selectBlockers != null && message.hasOwnProperty("selectBlockers")) {
+            object.selectBlockers = $root.SelectBlockers.toObject(message.selectBlockers, options);
+            if (options.oneofs)
+                object.payload = "selectBlockers";
         }
         return object;
     };

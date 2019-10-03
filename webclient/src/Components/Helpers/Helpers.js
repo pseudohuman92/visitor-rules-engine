@@ -106,6 +106,8 @@ export function toGamePhase(msgType, selectType) {
       return GamePhases.ORDER_CARDS;
     case "SelectXValue":
       return GamePhases.SELECT_X_VALUE;
+    case "SelectAttackers":  
+      return GamePhases.SELECT_ATTACKERS;
     default:
       return GamePhases.NOT_STARTED;
   }

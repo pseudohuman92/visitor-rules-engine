@@ -21,6 +21,7 @@ class FullCard extends PureComponent {
       type,
       knowledgeCost,
       borderColor,
+      attack,
       health,
       delay,
       loyalty,
@@ -51,7 +52,7 @@ class FullCard extends PureComponent {
               border: "1px black solid"
             }}
           >
-            {cost && (
+            {cost !== "" && (
               <div className="card-cost">
                 <img
                   src={
@@ -126,6 +127,15 @@ class FullCard extends PureComponent {
               alignItems: "center"
             }}
           >
+            {attack && (
+              <TextOnImage
+                src={process.env.PUBLIC_URL + "/img/card-components/attack2.png"}
+                text={attack}
+                min={15}
+                scale={5}
+                font={{ fontFamily: "Special Elite, cursive" }}
+              />
+            )}
             {health && (
               <TextOnImage
                 src={process.env.PUBLIC_URL + "/img/card-components/health.png"}
