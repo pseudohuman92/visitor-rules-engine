@@ -23,6 +23,7 @@ class SquareCard extends PureComponent {
       type,
       knowledgeCost,
       borderColor,
+      attack,
       health,
       delay,
       loyalty,
@@ -109,6 +110,16 @@ class SquareCard extends PureComponent {
                 display: "flex",
                 alignItems: "center"
               }}>
+                {attack && (
+                <TextOnImage
+                  src={
+                    process.env.PUBLIC_URL + "/img/card-components/attack2.png"
+                  }
+                  text={attack}
+                  min={12}
+                  font={{ fontFamily: "Special Elite, cursive" }}
+                />
+              )}
               {health && (
                 <TextOnImage
                   src={

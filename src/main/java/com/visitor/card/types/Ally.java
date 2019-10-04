@@ -5,6 +5,7 @@
  */
 package com.visitor.card.types;
 
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
@@ -14,7 +15,6 @@ import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import static java.lang.Math.max;
 import static java.lang.System.out;
-import java.util.UUID;
 import static com.visitor.game.Event.playersTurnStart;
 
 /**
@@ -77,25 +77,18 @@ public abstract class Ally extends Card
         }
     }
     
+    
+    protected boolean canActivateAdditional(Game game) {return true;}
     @Override
-    public boolean canActivate(Game game) {
-        return !depleted && game.canPlaySlow(controller);
+    public final boolean canActivate(Game game) {
+        return !depleted && game.canPlaySlow(controller) && canActivateAdditional(game);
     }
+    
     
     @Override
     public void destroy(Game game) {
         super.destroy(game);
         game.removeTriggeringCard(this);
-    }
-    
-    @Override
-    public void dealDamage(Game game, int damageAmount, UUID source) {
-        if (health <= damageAmount){
-            health = 0;
-            destroy(game);
-        } else {
-            health -= damageAmount;
-        }
     }
     
     @Override

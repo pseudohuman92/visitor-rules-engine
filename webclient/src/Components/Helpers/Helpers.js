@@ -1,6 +1,6 @@
 import proto from "../../protojs/compiled.js";
 import { ServerName, PrintDebug } from "../../Config.js";
-import { fontMap, GamePhases, knowledgeMap, fullCollection } from "./Constants";
+import {  GamePhases, knowledgeMap, fullCollection } from "./Constants";
 
 export function GetProfileURL(userId) {
   return `ws://${ServerName}/profiles/${userId}`;
@@ -38,11 +38,7 @@ export function toIconString(s) {
   var line = "";
   for (var i = 0; i < s.length; i++) {
     var c = s.charAt(i);
-    if (c in fontMap) {
-      line += fontMap[c];
-    } else {
-      line += "?";
-    }
+    line += c;
   }
   return line;
 }

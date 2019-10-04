@@ -5,6 +5,7 @@ import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Junk;
+import com.visitor.card.types.Unit;
 import static com.visitor.game.Event.turnEnd;
 import static com.visitor.game.Event.turnStart;
 import static com.visitor.game.Game.Zone.*;
@@ -39,6 +40,8 @@ import static java.util.logging.Logger.getLogger;
 import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
 import static com.visitor.game.Event.possess;
+import com.visitor.protocol.ServerGameMessages.SelectAttackers;
+import com.visitor.protocol.Types.BlockerAssignment;
 
 /**
  *
@@ -62,6 +65,9 @@ public class Game {
     Hashmap<String, Arraylist<Triggering>> triggeringCards;
     Arraylist<Event> eventQueue;
     boolean endProcessed;
+    
+    Arraylist<Unit> attackers;
+    Arraylist<BlockerAssignment> blockers;
 
     public Game (Player p1, Player p2) {
         id = randomUUID();
@@ -73,7 +79,8 @@ public class Game {
         triggeringCards = new Hashmap<>();
         triggeringCards.put(p1.username, new Arraylist<>());
         triggeringCards.put(p2.username, new Arraylist<>());
-        eventQueue = new Arraylist();
+        eventQueue = new Arraylist<>();
+        attackers = new Arraylist<>();
         
         players.put(p1.username, p1);
         players.put(p2.username, p2);
@@ -165,6 +172,10 @@ public class Game {
         return new Arraylist<>(list.stream().map(i -> {return extractCard(i);}).collect(Collectors.toList()));
     }
     
+    public Arraylist<Card> getAll(List<UUID> list) {
+        return new Arraylist<>(list.stream().map(i -> {return getCard(i);}).collect(Collectors.toList()));
+    }
+    
     public Arraylist<Card> extractAllCopiesFrom(String username, String cardName, Zone zone) {
         Arraylist<Card> cards = new Arraylist<>(getZone(username, zone).parallelStream()
                 .filter(c -> { return c.name.equals(cardName);}).collect(Collectors.toList()));
@@ -247,25 +258,41 @@ public class Game {
     }
     
     public void changePhase(){
+        out.println("Changing Phase from " + phase);
+        passCount = 0;
+        activePlayer = turnPlayer;
         switch(phase) {
             case REDRAW:
+                phase = BEGIN;
                 newTurn();
                 break;
             case BEGIN:
-                passCount = 0;
-                activePlayer = turnPlayer;
-                phase = MAIN;
+                phase = MAIN_BEFORE;
                 break;
-            case MAIN:
-                passCount = 0;
+            case MAIN_BEFORE:
                 activePlayer = " ";
-                updatePlayers();
-                endTurn();
-                updatePlayers();
-                newTurn();
-                updatePlayers();
+                phase = ATTACK;
+                chooseAttackers();
+                activePlayer = turnPlayer;
+                break;
+            case ATTACK:
+                activePlayer = " ";
+                phase = BLOCK;
+                //chooseBlockers();
+                activePlayer = getOpponentName(turnPlayer);
+                break;
+            case BLOCK:
+                unsetAttackers();
+                //unsetBlockers();
+                phase = MAIN_AFTER;
+                break;
+            case MAIN_AFTER:
+                phase = END;
+                endTurn();                
                 break;
             case END:
+                phase = BEGIN;
+                newTurn();
                 break;
         }
     }
@@ -274,7 +301,7 @@ public class Game {
         if (!endProcessed){
             endProcessed = true;
             processEndEvents();
-            resolveStack(); //TODO: figure out logic here
+            //TODO: figure out logic here
         }
         players.values().forEach(p->{ p.shield = 0; p.reflect = 0;});
         if(players.get(turnPlayer).hand.size() > 7){
@@ -282,10 +309,10 @@ public class Game {
             
         }
         processCleanupEvents();
+        updatePlayers();
     }
     
     private void newTurn(){
-        phase = MAIN;
         if(turnCount > 0){
             turnPlayer = getOpponentName(turnPlayer);
             players.get(turnPlayer).draw(1);
@@ -297,6 +324,7 @@ public class Game {
         players.get(getOpponentName(turnPlayer)).resetShields();
         turnCount++;
         processBeginEvents();
+        updatePlayers();
     }
     
     
@@ -321,7 +349,7 @@ public class Game {
         stack.add(0, c);
     }
     
-    // TODO switch prevSize check to flag system
+    // TODO: switch prevSize check to flag system
     private void resolveStack() {
         activePlayer = " ";
         updatePlayers();    
@@ -567,9 +595,7 @@ public class Game {
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
-            out.println("Waiting targets!");
             String[] l = (String[])response.take();
-            out.println("Done waiting!");
             return toUUIDList(l);
         } catch (InterruptedException ex) {
             getLogger(Game.class.getName()).log(SEVERE, null, ex);
@@ -612,6 +638,30 @@ public class Game {
     }
     
     
+    private Arraylist<UUID> selectAttackers(String username){
+        out.println("Sending Select Attackers Message to " + username);
+        List<String> attackers = getZone(username, Zone.PLAY).parallelStream()
+                                .filter(u-> {return u instanceof Unit && ((Unit)u).canAttack(this);})
+                                .map(u->{return u.id.toString();}).collect(Collectors.toList());
+        
+        if(attackers.isEmpty()){
+            return (new Arraylist<UUID>());
+        }
+        
+        SelectAttackers.Builder b = SelectAttackers.newBuilder()
+                .addAllCanAttack(attackers)
+                .setGame(toGameState(username));
+        try {
+            send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
+            String[] l = (String[])response.take();
+            return toUUIDList(l);
+        } catch (InterruptedException ex) {
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
     
     public void gameEnd(String player, boolean win) {
         send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(win)));
@@ -632,6 +682,9 @@ public class Game {
                 .setPhase(phase);
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
+        }
+        for(int i = 0; i < attackers.size(); i++){
+            b.addAttackers(attackers.get(i).id.toString());
         }
         players.forEach((s, p) -> {
             if(username.equals(s) && isActive(s)){
@@ -693,7 +746,7 @@ public class Game {
          return turnPlayer.equals(username)
                 && activePlayer.equals(username)
                 && stack.isEmpty()
-                && phase == MAIN;
+                && (phase == MAIN_BEFORE || phase == MAIN_AFTER);
     }
 
     public UUID getId() {
@@ -705,7 +758,7 @@ public class Game {
             && players.get(username).numOfStudiesLeft > 0;
     }
 
-    //Eventually get rid of this
+    //TODO: Eventually get rid of this
     public Player getPlayer(String username) {
         return players.get(username);
     }
@@ -821,6 +874,22 @@ public class Game {
         c.controller = newController;
         getZone(newController, newZone).add(c);
         addEvent(Event.donate(oldController, newController, c));
+    }
+
+    private void chooseAttackers() {
+        out.println(turnPlayer + "will choose attackers");
+        updatePlayers();
+        Arraylist<UUID> attackerIds = selectAttackers(turnPlayer);
+        getAll(attackerIds).forEach(c ->{
+            Unit u = (Unit)c;
+            u.setAttacking();
+            attackers.add(u);
+        });
+    }
+
+    private void unsetAttackers() {
+        attackers.forEach(u -> {u.unsetAttacking();});
+        attackers = new Arraylist<>();
     }
     
     public enum Zone {

@@ -41,16 +41,6 @@ knowledgeMap["R"] = proto.Knowledge.RED;
 knowledgeMap["G"] = proto.Knowledge.GREEN;
 knowledgeMap["Y"] = proto.Knowledge.YELLOW;
 
-export const fontMap = {
-  U: "\u2738",
-  R: "\u2738",
-  B: "\u2738",
-  G: "\u2738",
-  Y: "\u2738",
-  P: "\u2738",
-  "-": ""
-};
-
 const initialPlayer = {
   id: "",
   userId: "",
@@ -78,7 +68,8 @@ const initialGame = {
   phase: 0,
   canPlay: [],
   canActivate: [],
-  canStudy: []
+  canStudy: [],
+  attackers: []
 };
 
 const initialExtendedGameState = {
@@ -115,7 +106,7 @@ export const initialState = {
 
 const initializeFullCollection = () => {
   var result = {};
-  fetch("/Cards - Cards.json")
+  fetch("/Visitor Cards - Cards.json")
     .then(r => r.text())
     .then(file =>
       JSON.parse(file).forEach(card => {

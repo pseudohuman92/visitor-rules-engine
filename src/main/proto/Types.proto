@@ -84,6 +84,7 @@ message Card {
     int32 loyalty = 14;
     int32 shield = 15;
     int32 reflect = 16;
+    int32 attack = 17;
 }
 
 message Player {
@@ -113,6 +114,7 @@ message GameState {
     repeated string canPlay = 7;
     repeated string canActivate = 8;
     repeated string canStudy = 9;
+    repeated string attackers = 11;
     Phase phase = 10;
 }
 

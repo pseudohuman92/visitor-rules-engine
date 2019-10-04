@@ -23,7 +23,8 @@ const mapStateToProps = state => {
     phase: state.extendedGameState.phase,
     upTo: state.extendedGameState.upTo,
     autoPass: state.extendedGameState.autoPass,
-    selectedCards: state.extendedGameState.selectedCards
+    selectedCards: state.extendedGameState.selectedCards,
+    attacking: state.extendedGameState.attacking,
   };
 };
 
@@ -44,6 +45,11 @@ class ButtonDisplay extends Component {
 
   pass = event => {
     this.props.gameHandler.Pass();
+  };
+
+  selectAttackers = event => {
+    let attackers = this.props.attackers;
+    this.props.gameHandler.SelectAttackers(attackers);
   };
 
   render() {
@@ -121,6 +127,14 @@ class ButtonDisplay extends Component {
     } else if (IsSelectCardPhase(phase)) {
       buttonMenu = (
         <Button disabled={!upTo} onClick={this.selectDone} text="Done" />
+      );
+    } else if (phase === GamePhases.SELECT_ATTACKERS && turnPlayer === playerUserId ) {
+      buttonMenu = (
+        <Button onClick={this.selectAttackers} text="Attack" />
+      );
+    } else if (phase === GamePhases.SELECT_ATTACKERS) {
+      buttonMenu = (
+        <div/>
       );
     } else {
       buttonMenu = (

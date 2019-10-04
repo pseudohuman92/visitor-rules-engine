@@ -11,6 +11,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { withSize } from "react-sizeme";
 import FittedText from "../Primitives/FittedText";
+import { debug } from "util";
 
 const mapStateToProps = state => {
   return {
@@ -24,6 +25,7 @@ const mapStateToProps = state => {
     selectCountMax: state.extendedGameState.selectCountMax,
     canAttack: state.extendedGameState.canAttack,
     attacking: state.extendedGameState.attacking,
+    attackers: state.extendedGameState.game.attackers,
   };
 };
 
@@ -76,7 +78,7 @@ export class PlayingCard extends React.Component {
   toggleAttacking = event => {
     let id = this.props.id;
     let attacking = [...this.props.attacking];
-
+    console.log(attacking);
     if (attacking.includes(id)) {
       attacking.splice(attacking.indexOf(id), 1);
       this.props.updateExtendedGameState({
@@ -131,6 +133,7 @@ export class PlayingCard extends React.Component {
       activatableCards,
       playableCards,
       canAttack,
+      attackers,
       attacking,
       gameHandler,
       small,
@@ -145,7 +148,7 @@ export class PlayingCard extends React.Component {
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
     const canAttack_ = canAttack.includes(id);
-    const attacking_ = attacking.includes(id);
+    const attacking_ = attacking.includes(id) || attackers.includes(id);
 
     var borderColor = "";
     if (isDragging) {
@@ -209,7 +212,7 @@ export class PlayingCard extends React.Component {
               width: popoverStyle.width / 2
             }}
           >
-            {Object.keys(keywords).map((keyword, i) => {
+            {cardProps.description && Object.keys(keywords).map((keyword, i) => {
               if (cardProps.description.indexOf(keyword) !== -1) {
                 return (
                   <div

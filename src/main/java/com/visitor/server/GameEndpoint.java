@@ -5,8 +5,11 @@ import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
 import com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
 import com.visitor.protocol.ClientGameMessages.OrderCardsResponse;
+import com.visitor.protocol.ClientGameMessages.SelectAttackersResponse;
+import com.visitor.protocol.ClientGameMessages.SelectBlockersResponse;
 import com.visitor.protocol.ClientGameMessages.SelectFromResponse;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
+import com.visitor.protocol.Types.BlockerAssignment;
 import com.visitor.protocol.Types.SelectFromType;
 import static com.visitor.server.GeneralEndpoint.gameServer;
 import java.io.BufferedWriter;
@@ -53,7 +56,7 @@ public class GameEndpoint {
         new Thread (() -> {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
-                writeToLog(cgm);
+                //writeToLog(cgm);
                 if (waitingResponse){
                     processResponse(cgm);
                 } else {
@@ -78,7 +81,7 @@ public class GameEndpoint {
     
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
-        writeToLog(message);
+        //writeToLog(message);
         checkResponseType(message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
@@ -121,6 +124,16 @@ public class GameEndpoint {
                 case SELECTXVALUERESPONSE:
                     waitingResponse = false;
                     gameServer.addToResponseQueue(gameID, message.getSelectXValueResponse().getSelectedXValue());
+                    break;
+                case SELECTATTACKERSRESPONSE:
+                    SelectAttackersResponse sar = message.getSelectAttackersResponse();
+                    waitingResponse = false;
+                    gameServer.addToResponseQueue(gameID, sar.getAttackersList().toArray(new String[sar.getAttackersCount()]));
+                    break;
+                case SELECTBLOCKERSRESPONSE:
+                    SelectBlockersResponse sbr = message.getSelectBlockersResponse();
+                    waitingResponse = false;
+                    gameServer.addToResponseQueue(gameID, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
                     break;
                 default:
                     out.println("Wrong Message received from " + username  
@@ -176,6 +189,14 @@ public class GameEndpoint {
             case SELECTXVALUE:
                 waitingResponse = true;
                 responseType = SELECTXVALUERESPONSE;
+                break;
+            case SELECTATTACKERS:
+                waitingResponse = true;
+                responseType = SELECTATTACKERSRESPONSE;
+                break;
+            case SELECTBLOCKERS:
+                waitingResponse = true;
+                responseType = SELECTBLOCKERSRESPONSE;
                 break;
             default:
                 waitingResponse = false;

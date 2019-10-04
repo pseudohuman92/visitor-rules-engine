@@ -21,7 +21,7 @@ public class Deck extends Arraylist<Card>  {
 
     public static Card createCard(String username, String cardName) {
         try {
-            Class<?> cardClass = forName("com.visitor.set1."+cardName);
+            Class<?> cardClass = forName("com.visitor.sets.set1."+cardName);
             Constructor<?> cardConstructor = cardClass.getConstructor(String.class);
             Object card = cardConstructor.newInstance(new Object[] { username });
             return ((Card)card);

@@ -4119,6 +4119,7 @@ $root.Card = (function() {
      * @property {number|null} [loyalty] Card loyalty
      * @property {number|null} [shield] Card shield
      * @property {number|null} [reflect] Card reflect
+     * @property {number|null} [attack] Card attack
      */
 
     /**
@@ -4269,6 +4270,14 @@ $root.Card = (function() {
     Card.prototype.reflect = 0;
 
     /**
+     * Card attack.
+     * @member {number} attack
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.attack = 0;
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -4328,6 +4337,8 @@ $root.Card = (function() {
             writer.uint32(/* id 15, wireType 0 =*/120).int32(message.shield);
         if (message.reflect != null && message.hasOwnProperty("reflect"))
             writer.uint32(/* id 16, wireType 0 =*/128).int32(message.reflect);
+        if (message.attack != null && message.hasOwnProperty("attack"))
+            writer.uint32(/* id 17, wireType 0 =*/136).int32(message.attack);
         return writer;
     };
 
@@ -4417,6 +4428,9 @@ $root.Card = (function() {
                 break;
             case 16:
                 message.reflect = reader.int32();
+                break;
+            case 17:
+                message.attack = reader.int32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4521,6 +4535,9 @@ $root.Card = (function() {
         if (message.reflect != null && message.hasOwnProperty("reflect"))
             if (!$util.isInteger(message.reflect))
                 return "reflect: integer expected";
+        if (message.attack != null && message.hasOwnProperty("attack"))
+            if (!$util.isInteger(message.attack))
+                return "attack: integer expected";
         return null;
     };
 
@@ -4594,6 +4611,8 @@ $root.Card = (function() {
             message.shield = object.shield | 0;
         if (object.reflect != null)
             message.reflect = object.reflect | 0;
+        if (object.attack != null)
+            message.attack = object.attack | 0;
         return message;
     };
 
@@ -4629,6 +4648,7 @@ $root.Card = (function() {
             object.loyalty = 0;
             object.shield = 0;
             object.reflect = 0;
+            object.attack = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -4674,6 +4694,8 @@ $root.Card = (function() {
             object.shield = message.shield;
         if (message.reflect != null && message.hasOwnProperty("reflect"))
             object.reflect = message.reflect;
+        if (message.attack != null && message.hasOwnProperty("attack"))
+            object.attack = message.attack;
         return object;
     };
 
@@ -5287,6 +5309,7 @@ $root.GameState = (function() {
      * @property {Array.<string>|null} [canPlay] GameState canPlay
      * @property {Array.<string>|null} [canActivate] GameState canActivate
      * @property {Array.<string>|null} [canStudy] GameState canStudy
+     * @property {Array.<string>|null} [attackers] GameState attackers
      * @property {Phase|null} [phase] GameState phase
      */
 
@@ -5303,6 +5326,7 @@ $root.GameState = (function() {
         this.canPlay = [];
         this.canActivate = [];
         this.canStudy = [];
+        this.attackers = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -5382,6 +5406,14 @@ $root.GameState = (function() {
     GameState.prototype.canStudy = $util.emptyArray;
 
     /**
+     * GameState attackers.
+     * @member {Array.<string>} attackers
+     * @memberof GameState
+     * @instance
+     */
+    GameState.prototype.attackers = $util.emptyArray;
+
+    /**
      * GameState phase.
      * @member {Phase} phase
      * @memberof GameState
@@ -5437,6 +5469,9 @@ $root.GameState = (function() {
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.canStudy[i]);
         if (message.phase != null && message.hasOwnProperty("phase"))
             writer.uint32(/* id 10, wireType 0 =*/80).int32(message.phase);
+        if (message.attackers != null && message.attackers.length)
+            for (var i = 0; i < message.attackers.length; ++i)
+                writer.uint32(/* id 11, wireType 2 =*/90).string(message.attackers[i]);
         return writer;
     };
 
@@ -5505,6 +5540,11 @@ $root.GameState = (function() {
                 if (!(message.canStudy && message.canStudy.length))
                     message.canStudy = [];
                 message.canStudy.push(reader.string());
+                break;
+            case 11:
+                if (!(message.attackers && message.attackers.length))
+                    message.attackers = [];
+                message.attackers.push(reader.string());
                 break;
             case 10:
                 message.phase = reader.int32();
@@ -5593,6 +5633,13 @@ $root.GameState = (function() {
                 if (!$util.isString(message.canStudy[i]))
                     return "canStudy: string[] expected";
         }
+        if (message.attackers != null && message.hasOwnProperty("attackers")) {
+            if (!Array.isArray(message.attackers))
+                return "attackers: array expected";
+            for (var i = 0; i < message.attackers.length; ++i)
+                if (!$util.isString(message.attackers[i]))
+                    return "attackers: string[] expected";
+        }
         if (message.phase != null && message.hasOwnProperty("phase"))
             switch (message.phase) {
             default:
@@ -5669,6 +5716,13 @@ $root.GameState = (function() {
             for (var i = 0; i < object.canStudy.length; ++i)
                 message.canStudy[i] = String(object.canStudy[i]);
         }
+        if (object.attackers) {
+            if (!Array.isArray(object.attackers))
+                throw TypeError(".GameState.attackers: array expected");
+            message.attackers = [];
+            for (var i = 0; i < object.attackers.length; ++i)
+                message.attackers[i] = String(object.attackers[i]);
+        }
         switch (object.phase) {
         case "NOPHASE":
         case 0:
@@ -5724,6 +5778,7 @@ $root.GameState = (function() {
             object.canPlay = [];
             object.canActivate = [];
             object.canStudy = [];
+            object.attackers = [];
         }
         if (options.defaults) {
             object.id = "";
@@ -5765,6 +5820,11 @@ $root.GameState = (function() {
         }
         if (message.phase != null && message.hasOwnProperty("phase"))
             object.phase = options.enums === String ? $root.Phase[message.phase] : message.phase;
+        if (message.attackers && message.attackers.length) {
+            object.attackers = [];
+            for (var j = 0; j < message.attackers.length; ++j)
+                object.attackers[j] = message.attackers[j];
+        }
         return object;
     };
 

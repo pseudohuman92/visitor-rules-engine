@@ -113,8 +113,6 @@ class PlayerDisplay extends React.Component {
       }
     };
 
-    console.log("ID:", userId, "AP:", activePlayer);
-
     let borderColor = undefined;
     let clickHandler = undefined;
     if (targeted) {

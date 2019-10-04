@@ -129,7 +129,8 @@ export default class ServerGameMessageHandler {
     });
     this.updateExtendedGameState({
       phase: GamePhases.DONE_SELECT,
-      canAttack: []
+      canAttack: [],
+      attacking: []
     });
   };
 }

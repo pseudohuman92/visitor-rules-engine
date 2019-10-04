@@ -76,7 +76,6 @@ public abstract class Card {
     /**
      * Called by client to check if you can studyCard this card in current game state.
      * Default implementation just checks the game if the controller can studyCard.
- OVERRIDE IF: Card has special conditions to be studied.
      * @param game
      * @return
      */
@@ -84,16 +83,16 @@ public abstract class Card {
        return game.canStudy(controller);
     }
     
-    protected void beforePlay(Game game){};
-    protected void afterPlay(Game game){};
+    
     
     /**
      * Called by server when this card is played.
      * Default behavior is that it deducts the energy cost of the card, 
      * removes it from player's hand and then puts on the stack.
-     * OVERRIDE IF: Card has an alternative cost (like X) or a special effect when played.
      * @param game
      */
+    protected void beforePlay(Game game){};
+    protected void afterPlay(Game game){};
     public final void play(Game game) {
         beforePlay(game);
         game.spendEnergy(controller, cost);
@@ -104,7 +103,6 @@ public abstract class Card {
     /**
      * Called by the server when you choose to studyCard this card.
      * It increases player's maximum energy and adds knowledgePool.
-     * OVERRIDE IF: Card has a special effect when studied or card is multicolor.
      * @param game
      */
     public final void study(Game game, boolean regular) {
@@ -118,17 +116,13 @@ public abstract class Card {
         }
     }
     
-    public void sacrifice(Game game){
-        clear();
-        game.extractCard(id);
-        game.putTo(controller, this, SCRAPYARD);
-    }
-
     public Hashmap<Knowledge, Integer> getKnowledgeType() {
         Hashmap<Knowledge, Integer> knowledgeType = new Hashmap<>();
         knowledge.forEach((k, i) -> { knowledgeType.putIn(k, 1);});
         return knowledgeType;
     }
+
+    
     /**
      * This is the function that describes what is the effect of the card when it is resolved.
      * This function contains the business logic of the card effect.
@@ -138,7 +132,7 @@ public abstract class Card {
     protected abstract void duringResolve(Game game);
     protected void afterResolve(Game game){};
     
-    public void resolve(Game game){
+    public final void resolve(Game game){
         beforeResolve(game);
         duringResolve(game);
         afterResolve(game);
@@ -182,12 +176,6 @@ public abstract class Card {
         depleted = false;
     }
     
-    public void destroy(Game game){
-        clear();
-        game.extractCard(this.id);
-        game.putTo(controller, this, SCRAPYARD);
-    }
-
     /**
      * Function that clears status flags and supplementary data of the card.
      * 
@@ -199,9 +187,21 @@ public abstract class Card {
         reflect = 0;
     }
     
+    public void destroy(Game game){
+        clear();
+        game.extractCard(id);
+        game.putTo(controller, this, SCRAPYARD);
+    }
+    
+    public void sacrifice(Game game){
+        clear();
+        game.extractCard(id);
+        game.putTo(controller, this, SCRAPYARD);
+    }
+    
     public void returnToHand(Game game){
         clear();
-        game.extractCard(this.id);
+        game.extractCard(id);
         game.putTo(controller, this, HAND);
     }
     

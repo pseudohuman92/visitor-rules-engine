@@ -7,7 +7,6 @@ import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
-import java.util.UUID;
 
 /**
  * Abstract class for the Asset card type.
@@ -33,19 +32,10 @@ public abstract class Asset extends Card implements Activatable {
         game.putTo(controller, this, PLAY);
     }
     
+    protected boolean canActivateAdditional(Game game) {return true;}
     @Override
-    public void dealDamage(Game game, int damageAmount, UUID source) {
-        if (health <= damageAmount){
-            health = 0;
-            destroy(game);
-        } else {
-            health -= damageAmount;
-        }
-    }
-    
-    @Override
-    public boolean canActivate(Game game) {
-        return !depleted;
+    public final boolean canActivate(Game game) {
+        return !depleted && canActivateAdditional(game);
     }
     
     @Override
