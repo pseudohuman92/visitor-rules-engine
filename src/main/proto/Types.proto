@@ -85,6 +85,7 @@ message Card {
     int32 shield = 15;
     int32 reflect = 16;
     int32 attack = 17;
+    bool deploying = 18;
 }
 
 message Player {

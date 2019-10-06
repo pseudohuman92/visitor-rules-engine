@@ -84,6 +84,7 @@ public abstract class Unit extends Card {
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
                 .setType("Unit")
-                .setAttack(attack);
+                .setAttack(attack)
+                .setDeploying(deploying);
     }
 }

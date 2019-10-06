@@ -35,8 +35,11 @@ public class GameServer {
 
 
     void activateCard(UUID gameID, String username, UUID cardID) {
+        System.out.println("Start Activate Card");
         games.get(gameID).activateCard(username, cardID);
+        out.println("Updating players from activateCard.");
         games.get(gameID).updatePlayers();
+        System.out.println("End Activate Card");
     }
 
     void concede(UUID gameID, String username) {
@@ -44,28 +47,43 @@ public class GameServer {
     }
     
     void redraw(UUID gameID, String username) {
+        System.out.println("Start Redraw");
         games.get(gameID).redraw(username);
+        out.println("Updating players from redraw.");
         games.get(gameID).updatePlayers();
+        System.out.println("End Redraw");
     }
     
     void keep(UUID gameID, String username) {
+        System.out.println("Start Keep");
         games.get(gameID).keep(username);
+        out.println("Updating players from keep.");
         games.get(gameID).updatePlayers();
+        System.out.println("End Keep");
     }
     
     void pass(UUID gameID, String username) {
+        System.out.println("Start Pass");
         games.get(gameID).pass(username);
+        out.println("Updating players from pass.");
         games.get(gameID).updatePlayers();
+        System.out.println("End Pass");
     }
     
     void studyCard(UUID gameID, String username, UUID cardID) {
+        System.out.println("Start Study Card");
         games.get(gameID).studyCard(username, cardID);
+        out.println("Updating players from studyCard.");
         games.get(gameID).updatePlayers();
+        System.out.println("End Study Card");
     }
     
     void playCard(UUID gameID, String username, UUID cardID) {
+        System.out.println("Start Play Card");
         games.get(gameID).playCard(username, cardID);
+        out.println("Updating players from playCard.");
         games.get(gameID).updatePlayers();
+        System.out.println("End Play Card");
     }
 
     synchronized ServerGameMessage getLastMessage(UUID gameID, String username) {

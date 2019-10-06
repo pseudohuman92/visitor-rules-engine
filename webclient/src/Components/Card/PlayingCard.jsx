@@ -123,6 +123,7 @@ export class PlayingCard extends React.Component {
     const {
       id,
       depleted,
+      deploying,
       isOver,
       canDrop,
       isDragging,
@@ -182,6 +183,8 @@ export class PlayingCard extends React.Component {
     var opacity = 1;
     if (isDragging || depleted) {
       opacity = 0.5;
+    } else if (deploying) {
+      opacity = 0.75;
     }
 
     const counterMap = {};

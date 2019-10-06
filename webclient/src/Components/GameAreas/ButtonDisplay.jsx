@@ -48,8 +48,8 @@ class ButtonDisplay extends Component {
   };
 
   selectAttackers = event => {
-    let attackers = this.props.attackers;
-    this.props.gameHandler.SelectAttackers(attackers);
+    let attacking = this.props.attacking;
+    this.props.gameHandler.SelectAttackers(attacking);
   };
 
   render() {

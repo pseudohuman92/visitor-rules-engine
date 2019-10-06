@@ -95,6 +95,7 @@ public class Game {
         passCount = 0;
         p1.draw(5);
         p2.draw(5);
+        out.println("Updating players from Game constructor. AP: " + activePlayer);
         updatePlayers();
     }
     public int getMaxEnergy(String username) {
@@ -274,6 +275,9 @@ public class Game {
                 phase = ATTACK;
                 chooseAttackers();
                 activePlayer = turnPlayer;
+                if (attackers.isEmpty()){
+                    phase = MAIN_AFTER;
+                }
                 break;
             case ATTACK:
                 activePlayer = " ";
@@ -309,7 +313,6 @@ public class Game {
             
         }
         processCleanupEvents();
-        updatePlayers();
     }
     
     private void newTurn(){
@@ -324,7 +327,6 @@ public class Game {
         players.get(getOpponentName(turnPlayer)).resetShields();
         turnCount++;
         processBeginEvents();
-        updatePlayers();
     }
     
     
@@ -352,6 +354,7 @@ public class Game {
     // TODO: switch prevSize check to flag system
     private void resolveStack() {
         activePlayer = " ";
+        out.println("Updating players from resolveStack beginning. AP: " + activePlayer);
         updatePlayers();    
         while (!stack.isEmpty() && passCount == 2) {
             Card c = stack.remove(0);
@@ -362,7 +365,8 @@ public class Game {
                 passCount = 0;
                 activePlayer = turnPlayer;
             } else {
-            updatePlayers();
+                out.println("Updating players from resolveStack loop. AP: " + activePlayer);
+                updatePlayers();
             }
         }
     }
@@ -639,17 +643,16 @@ public class Game {
     
     
     private Arraylist<UUID> selectAttackers(String username){
-        out.println("Sending Select Attackers Message to " + username);
-        List<String> attackers = getZone(username, Zone.PLAY).parallelStream()
+        List<String> attack = getZone(username, Zone.PLAY).parallelStream()
                                 .filter(u-> {return u instanceof Unit && ((Unit)u).canAttack(this);})
                                 .map(u->{return u.id.toString();}).collect(Collectors.toList());
         
-        if(attackers.isEmpty()){
+        if(attack.isEmpty()){
             return (new Arraylist<UUID>());
         }
-        
+        out.println("Sending Select Attackers Message to " + username);
         SelectAttackers.Builder b = SelectAttackers.newBuilder()
-                .addAllCanAttack(attackers)
+                .addAllCanAttack(attack)
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
@@ -784,21 +787,21 @@ public class Game {
     }
 
     private void processBeginEvents() {
-        out.println("Starting Begin Triggers");
+        //out.println("Starting Begin Triggers");
         addEventThenProcess(turnStart(turnPlayer));
-        out.println("Ending Begin Triggers");
+        //out.println("Ending Begin Triggers");
     }
 
     private void processEndEvents() {
-        out.println("Starting End Triggers");
+        //out.println("Starting End Triggers");
         addEventThenProcess(turnEnd(turnPlayer));
-        out.println("Ending End Triggers");
+        //out.println("Ending End Triggers");
     }
     
     private void processCleanupEvents() {
-        out.println("Starting Cleanup Triggers");
+        //out.println("Starting Cleanup Triggers");
         addEventThenProcess(Event.cleanup(turnPlayer));
-        out.println("Ending Cleanup Triggers");
+        //out.println("Ending Cleanup Triggers");
     }
 
     public void addTriggeringCard(String username, Triggering t) {
@@ -877,9 +880,11 @@ public class Game {
     }
 
     private void chooseAttackers() {
-        out.println(turnPlayer + "will choose attackers");
+        //out.println(turnPlayer + "will choose attackers");
+        out.println("Updating players from chooseAttackers. AP: " + activePlayer);
         updatePlayers();
         Arraylist<UUID> attackerIds = selectAttackers(turnPlayer);
+        out.println("Attackers: "+attackerIds);
         getAll(attackerIds).forEach(c ->{
             Unit u = (Unit)c;
             u.setAttacking();

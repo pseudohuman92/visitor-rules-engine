@@ -4120,6 +4120,7 @@ $root.Card = (function() {
      * @property {number|null} [shield] Card shield
      * @property {number|null} [reflect] Card reflect
      * @property {number|null} [attack] Card attack
+     * @property {boolean|null} [deploying] Card deploying
      */
 
     /**
@@ -4278,6 +4279,14 @@ $root.Card = (function() {
     Card.prototype.attack = 0;
 
     /**
+     * Card deploying.
+     * @member {boolean} deploying
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.deploying = false;
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -4339,6 +4348,8 @@ $root.Card = (function() {
             writer.uint32(/* id 16, wireType 0 =*/128).int32(message.reflect);
         if (message.attack != null && message.hasOwnProperty("attack"))
             writer.uint32(/* id 17, wireType 0 =*/136).int32(message.attack);
+        if (message.deploying != null && message.hasOwnProperty("deploying"))
+            writer.uint32(/* id 18, wireType 0 =*/144).bool(message.deploying);
         return writer;
     };
 
@@ -4431,6 +4442,9 @@ $root.Card = (function() {
                 break;
             case 17:
                 message.attack = reader.int32();
+                break;
+            case 18:
+                message.deploying = reader.bool();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4538,6 +4552,9 @@ $root.Card = (function() {
         if (message.attack != null && message.hasOwnProperty("attack"))
             if (!$util.isInteger(message.attack))
                 return "attack: integer expected";
+        if (message.deploying != null && message.hasOwnProperty("deploying"))
+            if (typeof message.deploying !== "boolean")
+                return "deploying: boolean expected";
         return null;
     };
 
@@ -4613,6 +4630,8 @@ $root.Card = (function() {
             message.reflect = object.reflect | 0;
         if (object.attack != null)
             message.attack = object.attack | 0;
+        if (object.deploying != null)
+            message.deploying = Boolean(object.deploying);
         return message;
     };
 
@@ -4649,6 +4668,7 @@ $root.Card = (function() {
             object.shield = 0;
             object.reflect = 0;
             object.attack = 0;
+            object.deploying = false;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -4696,6 +4716,8 @@ $root.Card = (function() {
             object.reflect = message.reflect;
         if (message.attack != null && message.hasOwnProperty("attack"))
             object.attack = message.attack;
+        if (message.deploying != null && message.hasOwnProperty("deploying"))
+            object.deploying = message.deploying;
         return object;
     };
 
