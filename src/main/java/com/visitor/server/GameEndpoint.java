@@ -9,6 +9,7 @@ import com.visitor.protocol.ClientGameMessages.SelectAttackersResponse;
 import com.visitor.protocol.ClientGameMessages.SelectBlockersResponse;
 import com.visitor.protocol.ClientGameMessages.SelectFromResponse;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
+import com.visitor.protocol.Types.AttackerAssignment;
 import com.visitor.protocol.Types.BlockerAssignment;
 import com.visitor.protocol.Types.SelectFromType;
 import static com.visitor.server.GeneralEndpoint.gameServer;
@@ -128,7 +129,7 @@ public class GameEndpoint {
                 case SELECTATTACKERSRESPONSE:
                     SelectAttackersResponse sar = message.getSelectAttackersResponse();
                     waitingResponse = false;
-                    gameServer.addToResponseQueue(gameID, sar.getAttackersList().toArray(new String[sar.getAttackersCount()]));
+                    gameServer.addToResponseQueue(gameID, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
                     break;
                 case SELECTBLOCKERSRESPONSE:
                     SelectBlockersResponse sbr = message.getSelectBlockersResponse();

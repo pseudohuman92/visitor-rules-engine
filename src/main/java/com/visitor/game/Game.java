@@ -41,8 +41,10 @@ import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
 import static com.visitor.game.Event.possess;
 import com.visitor.protocol.ServerGameMessages.SelectAttackers;
+import com.visitor.protocol.ServerGameMessages.SelectBlockers;
 import com.visitor.protocol.Types.Attacker;
 import com.visitor.protocol.Types.AttackerAssignment;
+import com.visitor.protocol.Types.Blocker;
 import com.visitor.protocol.Types.BlockerAssignment;
 
 /**
@@ -68,8 +70,8 @@ public class Game {
     Arraylist<Event> eventQueue;
     boolean endProcessed;
     
-    Arraylist<AttackerAssignment> attackers;
-    Arraylist<BlockerAssignment> blockers;
+    Arraylist<Unit> attackers;
+    Arraylist<Unit> blockers;
 
     public Game (Player p1, Player p2) {
         id = randomUUID();
@@ -284,12 +286,13 @@ public class Game {
             case ATTACK:
                 activePlayer = " ";
                 phase = BLOCK;
-                //chooseBlockers();
+                chooseBlockers();
                 activePlayer = getOpponentName(turnPlayer);
                 break;
             case BLOCK:
+                dealCombatDamage();
                 unsetAttackers();
-                //unsetBlockers();
+                unsetBlockers();
                 phase = MAIN_AFTER;
                 break;
             case MAIN_AFTER:
@@ -670,7 +673,52 @@ public class Game {
         try {
             send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
             AttackerAssignment[] l = (AttackerAssignment[])response.take();
-            return new Arraylist<AttackerAssignment>(l);
+            return new Arraylist<>(l);
+        } catch (InterruptedException ex) {
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+     private Arraylist<BlockerAssignment> selectBlockers(String username){
+        
+        List<Unit> potentialBlockers = 
+                getZone(username, Zone.PLAY)
+                .parallelStream()
+                .filter(u-> {return u instanceof Unit;})
+                .map(c -> {return ((Unit)c);})
+                .collect(Collectors.toList());
+        
+        if(potentialBlockers.isEmpty()){
+            return (new Arraylist<>());
+        }
+        
+        Arraylist<Blocker> blockers = new Arraylist<>();
+        potentialBlockers.forEach(pb -> {
+            List<String> targets = attackers.parallelStream()
+                                   .filter(a -> {return pb.canBlock(this, a);})
+                                   .map(u->{return u.id.toString();})
+                                   .collect(Collectors.toList());
+            if(!targets.isEmpty()){
+                blockers.add(Blocker.newBuilder()
+                            .setBlockerId(pb.id.toString())
+                            .addAllCanBlock(targets)
+                            .build());
+            }
+        });
+        
+        if(blockers.isEmpty()){
+            return (new Arraylist<>());
+        }
+        
+        out.println("Sending Select Blockers Message to " + username);
+        SelectBlockers.Builder b = SelectBlockers.newBuilder()
+                .addAllCanBlock(blockers)
+                .setGame(toGameState(username));
+        try {
+            send(username, ServerGameMessage.newBuilder().setSelectBlockers(b));
+            BlockerAssignment[] l = (BlockerAssignment[])response.take();
+            return new Arraylist<>(l);
         } catch (InterruptedException ex) {
             getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
@@ -680,8 +728,14 @@ public class Game {
     
     
     public void gameEnd(String player, boolean win) {
-        send(player, ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(player)).setWin(win)));
-        send(getOpponentName(player), ServerGameMessage.newBuilder().setGameEnd(GameEnd.newBuilder().setGame(toGameState(getOpponentName(player))).setWin(!win)));
+        send(player, ServerGameMessage.newBuilder()
+                .setGameEnd(GameEnd.newBuilder()
+                        .setGame(toGameState(player))
+                        .setWin(win)));
+        send(getOpponentName(player), ServerGameMessage.newBuilder()
+                .setGameEnd(GameEnd.newBuilder()
+                        .setGame(toGameState(getOpponentName(player)))
+                        .setWin(!win)));
         connections.forEach((s, c) -> {c.close();});
         connections = new Hashmap<>();
         gameServer.removeGame(id);
@@ -699,7 +753,17 @@ public class Game {
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
         }
-            b.addAllAttackers(attackers);
+        
+        for(int i = 0; i < attackers.size(); i++){
+            Unit a = attackers.get(i);
+            b.addAttackers(a.id.toString());
+        }
+        
+        for(int i = 0; i < blockers.size(); i++){
+            Unit a = blockers.get(i);
+            b.addBlockers(a.id.toString());
+        }
+            
         
         players.forEach((s, p) -> {
             if(username.equals(s) && isActive(s)){
@@ -899,13 +963,49 @@ public class Game {
         attackerIds.forEach(c ->{
             Unit u = (Unit)getCard(UUID.fromString(c.getAttackerId()));
             u.setAttacking(UUID.fromString(c.getAttacked()));
+            attackers.add(u);
         });
-        attackers = attackerIds;
     }
 
     private void unsetAttackers() {
-        attackers.forEach(u -> {((Unit)getCard(UUID.fromString(u.getAttackerId()))).unsetAttacking();});
+        attackers.forEach(u -> {u.unsetAttacking();});
         attackers.clear();
+    }
+    
+    private void unsetBlockers() {
+        blockers.forEach(u -> {u.unsetBlocking();});
+        blockers.clear();
+    }
+
+    private void chooseBlockers() {
+        out.println("Updating players from chooseBlockers. AP: " + activePlayer);
+        updatePlayers();
+        Arraylist<BlockerAssignment> assignedBlockers = selectBlockers(getOpponentName(turnPlayer));
+        out.println("Blockers: "+ assignedBlockers);
+        assignedBlockers.forEach(c ->{
+            UUID attackerId = UUID.fromString(c.getAttackerId());
+            Arraylist<UUID> blocking = toUUIDList(c.getBlockersList()
+                                                .toArray(new String[c.getBlockersCount()]));
+            
+            Unit attacker = (Unit)getCard(attackerId);
+            attacker.setBlockers(blocking);
+            
+            blocking.forEach(b -> {
+                Unit blocker = (Unit)getCard(b);
+                blocker.setBlocking(attackerId);
+                blockers.add(blocker);
+            });
+        });
+        
+    }
+
+    private void dealCombatDamage() {
+        attackers.forEach(a -> {
+            a.dealAttackDamage(this);
+        });
+        blockers.forEach(b -> {
+            b.dealBlockDamage(this);
+        });
     }
     
     public enum Zone {

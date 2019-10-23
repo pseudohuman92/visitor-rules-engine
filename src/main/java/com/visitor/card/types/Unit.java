@@ -63,13 +63,21 @@ public abstract class Unit extends Card {
     public final void unsetAttacking() {
        attacking = false;
        attackTarget = null;
-       blockedAttacker = null;
        blockedBy.clear();
+    }
+    
+    public final void unsetBlocking() {
+       blocking = false;
+       blockedAttacker = null;
     }
     
     public final void setBlocking(UUID u) {
         blocking = true;
         blockedAttacker = u;
+    }
+    
+    public final void setBlockers(Arraylist <UUID> blockers) {
+        blockedBy = blockers;
     }
     
     @Override

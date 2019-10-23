@@ -125,7 +125,8 @@ message GameState {
     repeated string canPlay = 7;
     repeated string canActivate = 8;
     repeated string canStudy = 9;
-    repeated AttackerAssignment attackers = 11;
+    repeated string attackers = 11;
+    repeated string blockers = 12;
     Phase phase = 10;
 }
 
