@@ -53,7 +53,7 @@ message SelectXValueResponse {
 }
 
 message SelectAttackersResponse {
-    repeated string attackers = 1;
+    repeated AttackerAssignment attackers = 1;
 }
 
 message SelectBlockersResponse {

@@ -6,6 +6,7 @@
 package com.visitor.helpers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -27,6 +28,10 @@ public class Arraylist<T> extends ArrayList<T> {
     
     public Arraylist(List<T> values) {
         super(values);
+    }
+    
+    public Arraylist(T[] values) {
+        super(Arrays.asList(values));
     }
 
     public Arraylist<T> putIn(T value){

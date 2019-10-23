@@ -99,7 +99,7 @@ public class Player {
         int size = hand.size();
         if(size > 0){
             deck.addAll(hand);
-            hand = new Arraylist<>();
+            hand.clear();
             deck.shuffle();
             draw(size -1);
         }

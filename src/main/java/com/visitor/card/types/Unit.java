@@ -3,9 +3,11 @@ package com.visitor.card.types;
 
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
+import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
+import java.util.UUID;
 
 /**
  * Abstract class for the Asset card type.
@@ -17,12 +19,15 @@ public abstract class Unit extends Card {
     boolean attacking;
     boolean blocking;
     boolean deploying;
-    Unit blockedUnit;
+    UUID blockedAttacker;
+    Arraylist<UUID> blockedBy;
+    UUID attackTarget;
         
     public Unit(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, int attack, int health, String owner) {
         super(name, cost, knowledge, text, owner);
         this.attack = attack;
         this.health = health;
+        blockedBy = new Arraylist<>();
     }
     
     @Override
@@ -49,18 +54,22 @@ public abstract class Unit extends Card {
         return !depleted && canBlockAdditional(game, u);
     }
     
-    public final void setAttacking() {
+    public final void setAttacking(UUID target) {
        depleted = true;
        attacking = true;
+       attackTarget = target;
     }
     
     public final void unsetAttacking() {
        attacking = false;
+       attackTarget = null;
+       blockedAttacker = null;
+       blockedBy.clear();
     }
     
-    public final void setBlocking(Unit u) {
+    public final void setBlocking(UUID u) {
         blocking = true;
-        blockedUnit = u;
+        blockedAttacker = u;
     }
     
     @Override
@@ -70,7 +79,17 @@ public abstract class Unit extends Card {
     }
     
     public final void dealAttackDamage(Game game){
-        game.dealDamage(id, blockedUnit.id, attack);
+        if (blockedBy.isEmpty())
+            game.dealDamage(id, attackTarget, attack);
+        
+        //TODO: Implement block damage distribution
+    }
+    
+    public final void dealBlockDamage(Game game){
+        if (blockedBy.isEmpty())
+            game.dealDamage(id, blockedAttacker, attack);
+        
+        //TODO: Implement block damage distribution
     }
     
     @Override

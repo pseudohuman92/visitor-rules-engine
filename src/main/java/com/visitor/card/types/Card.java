@@ -182,7 +182,7 @@ public abstract class Card {
      */
     public void clear() {
         depleted = false;
-        targets = new Arraylist<>();
+        targets.clear();
         shield = 0;
         reflect = 0;
     }

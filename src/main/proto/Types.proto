@@ -59,12 +59,22 @@ message CounterGroup {
 
 message Blocker {
     string blockerId = 1;
-    repeated string canBlockList = 2;
+    repeated string canBlock = 2;
+}
+
+message Attacker {
+    string attackerId = 1;
+    repeated string canAttackTo = 2;
+}
+
+message AttackerAssignment {
+    string attackerId = 1;
+    string attacked = 2;
 }
 
 message BlockerAssignment {
     string attackerId = 1;
-    repeated string blockerList = 2;
+    repeated string blockers = 2;
 }
 
 message Card {
@@ -115,7 +125,7 @@ message GameState {
     repeated string canPlay = 7;
     repeated string canActivate = 8;
     repeated string canStudy = 9;
-    repeated string attackers = 11;
+    repeated AttackerAssignment attackers = 11;
     Phase phase = 10;
 }
 

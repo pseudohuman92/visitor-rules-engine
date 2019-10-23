@@ -41,6 +41,8 @@ import java.util.stream.Collectors;
 import javax.websocket.EncodeException;
 import static com.visitor.game.Event.possess;
 import com.visitor.protocol.ServerGameMessages.SelectAttackers;
+import com.visitor.protocol.Types.Attacker;
+import com.visitor.protocol.Types.AttackerAssignment;
 import com.visitor.protocol.Types.BlockerAssignment;
 
 /**
@@ -66,7 +68,7 @@ public class Game {
     Arraylist<Event> eventQueue;
     boolean endProcessed;
     
-    Arraylist<Unit> attackers;
+    Arraylist<AttackerAssignment> attackers;
     Arraylist<BlockerAssignment> blockers;
 
     public Game (Player p1, Player p2) {
@@ -642,22 +644,33 @@ public class Game {
     }
     
     
-    private Arraylist<UUID> selectAttackers(String username){
-        List<String> attack = getZone(username, Zone.PLAY).parallelStream()
+    private Arraylist<AttackerAssignment> selectAttackers(String username){
+        
+        List<String> attackers = getZone(username, Zone.PLAY).parallelStream()
                                 .filter(u-> {return u instanceof Unit && ((Unit)u).canAttack(this);})
                                 .map(u->{return u.id.toString();}).collect(Collectors.toList());
         
-        if(attack.isEmpty()){
-            return (new Arraylist<UUID>());
+        if(attackers.isEmpty()){
+            return (new Arraylist<>());
         }
+        Arraylist<String> targets = new Arraylist<>(getOpponentId(username).toString());
+        List<String> allies = getZone(getOpponentName(username), Zone.PLAY).parallelStream()
+                                .filter(Predicates::isAlly)
+                                .map(u->{return u.id.toString();}).collect(Collectors.toList());
+        targets.addAll(allies);
+        List<Attacker> attackerList = attackers.parallelStream()
+                                    .map(a-> {return Attacker.newBuilder()
+                                            .setAttackerId(a)
+                                            .addAllCanAttackTo(targets).build();})
+                                    .collect(Collectors.toList());
         out.println("Sending Select Attackers Message to " + username);
         SelectAttackers.Builder b = SelectAttackers.newBuilder()
-                .addAllCanAttack(attack)
+                .addAllCanAttack(attackerList)
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
-            String[] l = (String[])response.take();
-            return toUUIDList(l);
+            AttackerAssignment[] l = (AttackerAssignment[])response.take();
+            return new Arraylist<AttackerAssignment>(l);
         } catch (InterruptedException ex) {
             getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
@@ -686,9 +699,8 @@ public class Game {
         for(int i = 0; i < stack.size(); i++){
             b.addStack(stack.get(i).toCardMessage());
         }
-        for(int i = 0; i < attackers.size(); i++){
-            b.addAttackers(attackers.get(i).id.toString());
-        }
+            b.addAllAttackers(attackers);
+        
         players.forEach((s, p) -> {
             if(username.equals(s) && isActive(s)){
                 p.hand.forEach(c -> {
@@ -880,21 +892,20 @@ public class Game {
     }
 
     private void chooseAttackers() {
-        //out.println(turnPlayer + "will choose attackers");
         out.println("Updating players from chooseAttackers. AP: " + activePlayer);
         updatePlayers();
-        Arraylist<UUID> attackerIds = selectAttackers(turnPlayer);
+        Arraylist<AttackerAssignment> attackerIds = selectAttackers(turnPlayer);
         out.println("Attackers: "+attackerIds);
-        getAll(attackerIds).forEach(c ->{
-            Unit u = (Unit)c;
-            u.setAttacking();
-            attackers.add(u);
+        attackerIds.forEach(c ->{
+            Unit u = (Unit)getCard(UUID.fromString(c.getAttackerId()));
+            u.setAttacking(UUID.fromString(c.getAttacked()));
         });
+        attackers = attackerIds;
     }
 
     private void unsetAttackers() {
-        attackers.forEach(u -> {u.unsetAttacking();});
-        attackers = new Arraylist<>();
+        attackers.forEach(u -> {((Unit)getCard(UUID.fromString(u.getAttackerId()))).unsetAttacking();});
+        attackers.clear();
     }
     
     public enum Zone {

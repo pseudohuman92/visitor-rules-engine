@@ -40,7 +40,7 @@ message SelectXValue {
 
 message SelectAttackers {
     GameState game = 1;
-    repeated string canAttack = 2;
+    repeated Attacker canAttack = 2;
 }
 
 message SelectBlockers {
