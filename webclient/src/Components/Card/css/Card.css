@@ -1,7 +1,7 @@
 .card-inner {
   margin: 3%;
   height: 96%;
-  color: black;
+  color: white;
   overflow: hidden;
   font-family: "Open Sans", sans-serif;
 }
@@ -15,8 +15,8 @@
 }
 
 .card-name {
-  margin: 3.5% 3.5% 0 10.5%;
-  background-color: beige;
+  margin: 3.5% 3.5% 0 3.5%;
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;
   text-align: center;
   height: 6%;
@@ -43,6 +43,7 @@
   margin: 1.5% 3.5% 0 3.5%;
   overflow: hidden;
   height: 47.5%;
+  opacity: 0;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -67,20 +68,22 @@
 
 .card-type {
   margin: 1.5% 3.5% 0 3.5%;
-  background-color: beige;
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;
   text-align: center;
   height: 6%;
   font-family: "Open Sans", sans-serif;
+  z-index: 1
 }
 
 .card-description {
   margin: 1.5% 3.5% 3.5% 3.5%;
-  background-color: beige;
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: auto;
   padding: 1%;
   height: 31%;
   font-family: "Open Sans", sans-serif;
+  
 }
 
 .card-cost {

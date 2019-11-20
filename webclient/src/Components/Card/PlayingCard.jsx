@@ -75,7 +75,7 @@ export class PlayingCard extends React.Component {
     this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
-  toggleAttacking = event => {
+  toggleAttacking = attackTargets => event => {
     let id = this.props.id;
     let attacking = [...this.props.attacking];
     console.log(attacking);
@@ -85,6 +85,7 @@ export class PlayingCard extends React.Component {
         attacking: attacking
       });
     } else {
+
       attacking.push(id);
       this.props.updateExtendedGameState({
         attacking: attacking
@@ -148,7 +149,7 @@ export class PlayingCard extends React.Component {
     const selectable = selectableCards.includes(id);
     const selected = selectedCards.includes(id);
     const targeted = displayTargets.includes(id);
-    const canAttack_ = canAttack.includes(id);
+    const canAttack_ = canAttack.map(c => {return c.attackerId}).includes(id);
     const attacking_ = attacking.includes(id) || attackers.includes(id);
 
     var borderColor = "";
@@ -169,7 +170,7 @@ export class PlayingCard extends React.Component {
 
     let clickHandler = undefined;
     if (canAttack_){
-      clickHandler = this.toggleAttacking;
+      clickHandler = this.toggleAttacking();
     } else if (selected) {
       clickHandler = this.unselect;
     } else if (selectable) {
@@ -181,10 +182,13 @@ export class PlayingCard extends React.Component {
     }
 
     var opacity = 1;
-    if (isDragging || depleted) {
+    if (isDragging || deploying || depleted) {
       opacity = 0.5;
-    } else if (deploying) {
-      opacity = 0.75;
+    }
+
+    var rotation = "rotate(0deg)";
+    if (depleted){
+      rotation = "rotate(5deg)";
     }
 
     const counterMap = {};
@@ -212,7 +216,8 @@ export class PlayingCard extends React.Component {
             style={{
               display: "flex",
               flexDirection: "column",
-              width: popoverStyle.width / 2
+              width: popoverStyle.width / 2,
+              
             }}
           >
             {cardProps.description && Object.keys(keywords).map((keyword, i) => {
@@ -244,6 +249,7 @@ export class PlayingCard extends React.Component {
           onClick={clickHandler}
           small={small}
           square={square}
+          style={{transform: rotation}}
           {...cardProps}
         />
       </div>

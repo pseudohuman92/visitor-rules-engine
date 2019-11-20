@@ -8,6 +8,7 @@ import "./css/Card.css";
 import { withSize } from "react-sizeme";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
+import FittedText from "../Primitives/FittedText";
 
 class FullCard extends PureComponent {
   state = { showDialog: false };
@@ -40,18 +41,34 @@ class FullCard extends PureComponent {
             opacity: opacity,
             backgroundColor: backColor,
             borderRadius: size.width / 20 + "px",
-            textAlign: "left"
+            textAlign: "left",
+            zIndex: 1
           }}
         >
+          
           <div
             className="card-inner"
             style={{
-              backgroundColor: getCardColor(knowledgeCost),
+              position: "relative",
+              //backgroundColor: getCardColor(knowledgeCost),
               fontSize: size.width / 20 + "px",
               borderRadius: size.width / 25 + "px",
-              border: "1px black solid"
+              border: "1px black solid",
+              
             }}
           >
+            <img
+            src={process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              maxHeight: "100%",
+              objectFit: "scale-down",
+              zIndex: -1
+            }}
+            alt=""
+          />
             {cost !== "" && (
               <div className="card-cost">
                 <img
@@ -95,7 +112,7 @@ class FullCard extends PureComponent {
                 </div>
               ))}
             <div className="card-name">{name}</div>
-
+            
             <div className="card-image">
               <img
                 src={
@@ -105,17 +122,19 @@ class FullCard extends PureComponent {
                 alt=""
               />
             </div>
-
             <div className="card-type">{type}</div>
+            
             <div
               className="card-description"
               style={{
-                whiteSpace: "pre-wrap"
+                whiteSpace: "pre-wrap",
               }}
             >
-              {description}
+              <FittedText text={description} max={15}/>
               {reflect ? "\nReflect:" + reflect : ""}
             </div>
+            
+            
           </div>
           <div
             style={{

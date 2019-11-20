@@ -69,18 +69,23 @@ const initialGame = {
   canPlay: [],
   canActivate: [],
   canStudy: [],
-  attackers: []
+  attackers: [],
+  blockers: []
 };
 
 const initialExtendedGameState = {
-  game: initialGame,
-  phase: GamePhases.NOT_STARTED,
-  gameInitialized: false,
-  dialog: { title: "", open: false, cards: [] },
+  game: initialGame,                  //Game object. See above
+  phase: GamePhases.NOT_STARTED,      //Client defined phases
+  gameInitialized: false, 
+  dialog: {                           //Data for modal dialogue screen
+    title: "", 
+    open: false, 
+    cards: [] },
   selectedCards: [],
   selectableCards: [],
   selectablePlayers: [],
   canAttack: [],
+  canBlock: [],
   attacking: [],
   selectCountMax: 0,
   maxXValue: 0,
@@ -124,7 +129,7 @@ const initializeFullCollection = () => {
             cost: card.Energy,
             knowledgeCost: toKnowledgeCost(card.Knowledge),
             shield: card.Shield,
-            loyalty: card.Loyalty,
+            loyalty: card.Loyalty
           };
         }
       })
@@ -144,11 +149,28 @@ function getNewUserCollection() {
 
 export const newUserCollection = getNewUserCollection();
 
-export const keywords = {Activate: "This is Activate explanation.", Favor: "This is Favor explanation"};
-
+export const keywords = {
+  Transform: "Transforms the card into another one.",
+  Possess: "Acquire the control of a card.",
+  Pay: "Trigger card's ability at the cost of additional energy.",
+  Sacrifice:
+    "Trigger card's ability at the cost of putting it into your scrapyard.",
+  Delay: "Postpone an action or effect for written number of rounds",
+  Loyalty: "TODO",
+  Shield: "Prevent the damage dealt to target.",
+  Reflect:
+    "Prevent the determined damage and deal that much damage back to its source.",
+  Donate: "Transfer the control of the card to another player",
+  Health: "An asset or players total restitance to fatal damage",
+  Damage: "Reductions to Player health, shields or Card health",
+  Trigger: "Activates on conditional interactions",
+  Activate: "Change a cards play state form Ready to Depleted",
+  Discharge: "Remove specified number of charge counters.",
+  Charge: "Add specified number of charge counters."
+};
 
 export const craftCost = 1000;
 export const salvageValue = 100;
 
 export const packList = ["Set1"];
-export const packCosts = {Set1: 1000};
+export const packCosts = { Set1: 1000 };

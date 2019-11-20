@@ -51,6 +51,9 @@ export default class ServerGameMessageHandler {
       case "SelectAttackers":
         newState["canAttack"] = params.canAttack;
         break;
+      case "SelectBlockers":
+        newState["canBlock"] = params.canBlock;
+        break;
       default:
         break;
     }
