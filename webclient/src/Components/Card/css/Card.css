@@ -9,7 +9,7 @@
 .card-inner-square {
   margin: 3%;
   height: 91%;
-  color: black;
+  color: white;
   overflow: hidden;
   font-family: "Open Sans", sans-serif;
 }
@@ -24,8 +24,8 @@
 }
 
 .card-name-square {
-  margin: 3.5% 3.5% 0 10.5%;
-  background-color: beige;
+  margin: 3.5% 3.5% 0 3.5%;
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;
   text-align: center;
   height: 8%;
@@ -39,33 +39,6 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.card-image {
-  margin: 1.5% 3.5% 0 3.5%;
-  overflow: hidden;
-  height: 47.5%;
-  opacity: 0;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.card-image-square {
-  margin: 1.5% 3.5% 0 3.5%;
-  overflow: hidden;
-  height: 100%;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
 .card-type {
   margin: 1.5% 3.5% 0 3.5%;
   background-color: rgba(0, 0, 0, 0.4);
@@ -73,7 +46,6 @@
   text-align: center;
   height: 6%;
   font-family: "Open Sans", sans-serif;
-  z-index: 1
 }
 
 .card-description {

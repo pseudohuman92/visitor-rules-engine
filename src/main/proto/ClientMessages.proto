@@ -9,6 +9,10 @@ message JoinQueue {
     repeated string decklist = 3;
 }
 
+message LoadGame {
+    string filename = 1;
+}
+
 message RegisterGameConnection {
     string gameID = 1;
 }
@@ -18,5 +22,6 @@ message ClientMessage {
     oneof payload {
         JoinQueue                       joinQueue = 6;
         RegisterGameConnection          registerGameConnection = 11;
+        LoadGame                        loadGame = 12;
     }
 };

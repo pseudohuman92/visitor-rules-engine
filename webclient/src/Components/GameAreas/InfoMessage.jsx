@@ -4,28 +4,28 @@ import Textfit from "react-textfit";
 import { connect } from "react-redux";
 
 
-import { GamePhases } from "../Helpers/Constants";
+import { ClientPhase } from "../Helpers/Constants";
 import { IsSelectCardPhase } from "../Helpers/Helpers";
 import proto from "../../protojs/compiled";
 
 const mapStateToProps = state => {
   return {
-    phase: state.extendedGameState.phase,
+    clientPhase: state.extendedGameState.clientPhase,
     game: state.extendedGameState.game,
-    upTo: state.extendedGameState.upTo,
-    selectedCards: state.extendedGameState.selectedCards,
-    selectCountMax: state.extendedGameState.selectCountMax
+    upTo: state.extendedGameState.selectionData.upTo,
+    selected: state.extendedGameState.selectionData.selected,
+    selectCountMax: state.extendedGameState.selectionData.selectCountMax
   };
 };
 
 class InfoMessage extends Component {
   render() {
-    const { phase, game, upTo, selectedCards, selectCountMax } = this.props;
+    const { clientPhase, game, upTo, selected, selectCountMax } = this.props;
 
     let instMessage = "...";
-    if (game.phase === proto.Phase.REDRAW) {
+    if (game.clientPhase === proto.Phase.REDRAW) {
       instMessage = "Choose either to keep or redraw your hand.";
-    } else if (IsSelectCardPhase(phase)) {
+    } else if (IsSelectCardPhase(clientPhase)) {
       instMessage = `Select ${
         upTo ? "up to " : ""
       } ${selectCountMax} cards/players from ${
@@ -36,11 +36,11 @@ class InfoMessage extends Component {
           SelectFromScrapyard: "scrapyard",
           SelectFromVoid: "void",
           SelectFromStack: "stack"
-        }[phase]
-      }. (${selectedCards.length} selected)`;
-    } else if (phase === GamePhases.SELECT_X_VALUE) {
+        }[clientPhase]
+      }. (${selected.length} selected)`;
+    } else if (clientPhase === ClientPhase.SELECT_X_VALUE) {
       instMessage = "Select an X value.";
-    } else if (phase === GamePhases.SELECT_PLAYER) {
+    } else if (clientPhase === ClientPhase.SELECT_PLAYER) {
       instMessage = "Select a player.";
     } else if (game.activePlayer !== game.player.userId) {
       instMessage = "Waiting for opponent...";

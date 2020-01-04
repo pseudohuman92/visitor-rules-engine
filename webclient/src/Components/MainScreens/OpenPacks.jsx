@@ -13,7 +13,7 @@ import { fullCollection } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {
-    userId: state.authUser.user.uid,
+    userId: state.firebaseAuthData.user.uid,
     packs: state.packs
   };
 };

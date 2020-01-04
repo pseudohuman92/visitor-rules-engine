@@ -10,10 +10,11 @@ import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import PlayArea from './GameScreen';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { debugPrint } from "../Helpers/Helpers";
+import { isProduction } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {
-    userId: state.authUser.user.uid,
+    userId: state.firebaseAuthData.user.uid,
     gameInitialized: state.extendedGameState.gameInitialized
   };
 };
@@ -61,6 +62,12 @@ class DeckSelection extends React.Component {
     }
   };
 
+  loadGame = event => {
+    debugPrint("Loading Game");
+    this.props.serverHandler.LoadGame("test_save");
+    this.setState({message: "", value: 1 });
+  };
+
   joinQueue = deckId => {
     debugPrint(deckId);
     const Return = this.loadDeck.bind(this);
@@ -88,6 +95,7 @@ class DeckSelection extends React.Component {
           <div>
 
             <Button onClick={this.props.back} text="Back"/>
+        {!isProduction && <Button onClick={this.loadGame} text="Load"/> } 
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
                 <Grid

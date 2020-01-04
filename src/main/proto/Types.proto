@@ -59,22 +59,22 @@ message CounterGroup {
 
 message Blocker {
     string blockerId = 1;
-    repeated string canBlock = 2;
+    repeated string possibleBlockTargets = 2;
 }
 
 message Attacker {
     string attackerId = 1;
-    repeated string canAttackTo = 2;
+    repeated string possibleAttackTargets = 2;
 }
 
 message AttackerAssignment {
     string attackerId = 1;
-    string attacked = 2;
+    string attacksTo = 2;
 }
 
 message BlockerAssignment {
-    string attackerId = 1;
-    repeated string blockers = 2;
+    string blockerId = 1;
+    string blockedBy = 2;
 }
 
 message Card {

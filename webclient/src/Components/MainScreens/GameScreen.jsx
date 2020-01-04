@@ -13,7 +13,7 @@ import EndGameDialog from "../Dialogs/EndGameDialog";
 import SelectXDialog from "../Dialogs/SelectXDialog";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
-import { GamePhases } from "../Helpers/Constants";
+import { ClientPhase } from "../Helpers/Constants";
 import proto from "../../protojs/compiled";
 
 import EscapeMenu from "../Dialogs/EscapeMenu";
@@ -28,7 +28,7 @@ import PlayerArea from "../GameAreas/PlayerArea";
 
 const mapStateToProps = state => {
   return {
-    phase: state.extendedGameState.phase,
+    clientPhase: state.extendedGameState.clientPhase,
     game: state.extendedGameState.game
   };
 };
@@ -56,11 +56,11 @@ class PlayArea extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     let gameHandler = this.props.gameHandler;
     let game = this.props.game;
-    let phase = this.props.phase;
+    let clientPhase = this.props.clientPhase;
 
     //Auto keep function
     if (
-      game.phase === proto.Phase.REDRAW &&
+      game.clientPhase === proto.Phase.REDRAW &&
       game.activePlayer === game.player.userId &&
       game.player.hand.length === 0
     ) {
@@ -69,8 +69,8 @@ class PlayArea extends Component {
 
     //Auto pass function
     if (
-      game.phase !== proto.Phase.REDRAW &&
-      phase === GamePhases.UPDATE_GAME &&
+      game.clientPhase !== proto.Phase.REDRAW &&
+      clientPhase === ClientPhase.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
       game.canStudy.length === 0 &&
       game.canActivate.length === 0 &&

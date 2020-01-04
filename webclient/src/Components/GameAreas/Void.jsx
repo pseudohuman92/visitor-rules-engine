@@ -9,7 +9,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 
-import { ItemTypes, GamePhases } from "../Helpers/Constants";
+import { ItemTypes, ClientPhase } from "../Helpers/Constants";
 
 const voidTarget = {
   drop(props, monitor) {
@@ -31,7 +31,7 @@ const mapStateToProps = state => {
     opponentUserId: state.extendedGameState.game.opponent.userId,
     playerVoid: state.extendedGameState.game.player.void,
     opponentVoid: state.extendedGameState.game.opponent.void,
-    phase: state.extendedGameState.phase,
+    clientPhase: state.extendedGameState.clientPhase,
     game: state.extendedGameState.game
   };
 };
@@ -73,7 +73,7 @@ class Void extends Component {
     const void_ = isPlayer ? playerVoid : opponentVoid;
     const name = isPlayer ? playerName : opponentName;
     updateExtendedGameState({
-      dialog: {
+      dialogData: {
         open: true,
         title: `${name}'s Void`,
         cards: void_
@@ -87,7 +87,7 @@ class Void extends Component {
       playerVoid,
       opponentVoid,
       game,
-      phase,
+      clientPhase,
       isPlayer,
       style
     } = this.props;
@@ -97,7 +97,7 @@ class Void extends Component {
 
     const hasStudyable =
       isPlayer &&
-      phase === GamePhases.UPDATE_GAME &&
+      clientPhase === ClientPhase.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
       game.canStudy.length > 0;
 

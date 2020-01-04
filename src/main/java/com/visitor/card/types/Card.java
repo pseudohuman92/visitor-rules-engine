@@ -11,6 +11,8 @@ import com.visitor.protocol.Types.Counter;
 import com.visitor.protocol.Types.CounterGroup;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
+
+import java.io.Serializable;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @author pseudo
  */
-public abstract class Card {
+public abstract class Card implements Serializable {
 
     public UUID id;
     public String name;

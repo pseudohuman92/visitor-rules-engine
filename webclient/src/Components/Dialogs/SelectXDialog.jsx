@@ -8,12 +8,12 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import {GamePhases} from "../Helpers/Constants";
+import {ClientPhase} from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {
-    phase: state.extendedGameState.phase,
-    maxXValue: state.extendedGameState.maxXValue
+    clientPhase: state.extendedGameState.clientPhase,
+    maxXValue: state.extendedGameState.selectionData.maxXValue
   };
 };
 
@@ -41,8 +41,8 @@ class SelectXDialog extends Component {
 
   render = () => {
     const { xVal } = this.state;
-    const {phase} = this.props;
-    let open = phase === GamePhases.SELECT_X_VALUE;
+    const {clientPhase} = this.props;
+    let open = clientPhase === ClientPhase.SELECT_X_VALUE;
 
     return (
       <Dialog open={open}>

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { knowledgeMap } from "../Helpers/Constants";
+import { knowledgeMap, ClientPhase } from "../Helpers/Constants";
 
 import "../../css/Utils.css";
 import { mapDispatchToProps } from "../Redux/Store";
@@ -14,21 +14,26 @@ const mapStateToProps = state => {
     playerId: state.extendedGameState.game.player.id,
     playerName: state.username,
     playerHealth: state.extendedGameState.game.player.health,
+    playerEnergy: state.extendedGameState.game.player.energy,
+    playerMaxEnergy: state.extendedGameState.game.player.maxEnergy,
+    playerKnowledgePool: state.extendedGameState.game.player.knowledgePool,
+
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,
     opponentHealth: state.extendedGameState.game.opponent.health,
-    selectedCards: state.extendedGameState.selectedCards,
-    selectablePlayers: state.extendedGameState.selectablePlayers,
-    displayTargets: state.extendedGameState.targets,
-    phase: state.extendedGameState.phase,
-    selectCountMax: state.extendedGameState.selectCountMax,
-    playerEnergy: state.extendedGameState.game.player.energy,
-    playerMaxEnergy: state.extendedGameState.game.player.maxEnergy,
-    playerKnowledgePool: state.extendedGameState.game.player.knowledgePool,
     opponentEnergy: state.extendedGameState.game.opponent.energy,
     opponentMaxEnergy: state.extendedGameState.game.opponent.maxEnergy,
     opponentKnowledgePool: state.extendedGameState.game.opponent.knowledgePool,
+
+    selected: state.extendedGameState.selectionData.selected,
+    selectable: state.extendedGameState.selectionData.selectable,
+    selectionCount: state.extendedGameState.selectionData.selectionCount,
+
+    attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
+
+    displayTargets: state.extendedGameState.targets,
+    clientPhase: state.extendedGameState.clientPhase,
     activePlayer: state.extendedGameState.game.activePlayer,
     playerUserId: state.extendedGameState.game.player.userId
   };
@@ -48,6 +53,63 @@ class PlayerDisplay extends React.Component {
     }
   }
 
+  select = event => {
+    let {
+      isPlayer,
+      playerId,
+      opponentId, } = this.props;
+    let id = isPlayer ? playerId : opponentId;
+    let maxCount = this.props.selectionCount;
+    let selected = [...this.props.selected];
+    let clientPhase = this.props.clientPhase;
+
+    if (selected.length < maxCount) {
+      selected.push(id);
+      this.props.updateExtendedGameState({ selectionData: { selected: selected } });
+    }
+    if (selected.length === maxCount) {
+      this.props.gameHandler.SelectDone(clientPhase, selected);
+    }
+  };
+
+  unselect = event => {
+    let {
+      isPlayer,
+      playerId,
+      opponentId, } = this.props;
+    let id = isPlayer ? playerId : opponentId;
+    let selected = [...this.props.selected];
+
+    if (selected.includes(id)) {
+      selected.splice(selected.indexOf(id), 1);
+      this.props.updateExtendedGameState({
+        selectionData: {
+          selected: selected
+        }
+      });
+    }
+  };
+
+  setAttacked = event => {
+    let {
+      isPlayer,
+      playerId,
+      opponentId, } = this.props;
+    let id = isPlayer ? playerId : opponentId;
+
+    let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
+    let currentAttacker = this.props.attackerAssignmentData.currentAttacker;
+
+    attackerAssignments.push({attackerId: currentAttacker, attacksTo: id });
+    this.props.updateExtendedGameState({
+      attackerAssignmentData: {
+        currentAttacker: "",
+        possibleAttackTargets: [],
+        attackerAssignments: attackerAssignments
+      }
+    });
+  };
+
   render() {
     const {
       isPlayer,
@@ -57,11 +119,9 @@ class PlayerDisplay extends React.Component {
       opponentName,
       playerHealth,
       opponentHealth,
-      selectedCards,
-      selectablePlayers,
+      selected,
+      selectable,
       displayTargets,
-      phase,
-      selectCountMax,
       playerEnergy,
       opponentEnergy,
       playerMaxEnergy,
@@ -70,7 +130,9 @@ class PlayerDisplay extends React.Component {
       opponentKnowledgePool,
       activePlayer,
       playerUserId,
-      opponentUserId
+      opponentUserId,
+      clientPhase,
+      attackerAssignmentData
     } = this.props;
 
     const { width, height } = this.props.size;
@@ -86,43 +148,28 @@ class PlayerDisplay extends React.Component {
       ? playerKnowledgePool
       : opponentKnowledgePool;
 
-    const selectable = selectablePlayers.includes(id);
-    const selected = selectedCards.includes(id);
+    const selectable_ = selectable.includes(id);
+    const selected_ = selected.includes(id);
     const targeted = displayTargets.includes(id);
 
-    let select = event => {
-      let maxCount = selectCountMax;
-      let selected = [...selectedCards];
-      if (selected.length < maxCount) {
-        selected.push(id);
-        this.props.updateExtendedGameState({ selectedCards: selected });
-      }
-      if (selected.length === maxCount) {
-        this.props.gameHandler.SelectDone(phase, selected);
-      }
-    };
-
-    let unselect = event => {
-      let selected = [...selectedCards];
-
-      if (selected.includes(id)) {
-        selected.splice(selected.indexOf(id), 1);
-        this.props.updateExtendedGameState({
-          selectedCards: selected
-        });
-      }
-    };
+    const canBeAttacked = 
+      clientPhase === ClientPhase.SELECT_ATTACKERS &&
+      attackerAssignmentData.currentAttacker &&
+      attackerAssignmentData.possibleAttackTargets.includes(id);
 
     let borderColor = undefined;
     let clickHandler = undefined;
     if (targeted) {
       borderColor = "yellow";
-    } else if (selectable) {
-      clickHandler = select;
+    } else if (selectable_) {
+      clickHandler = this.select;
       borderColor = "green";
-    } else if (selected) {
-      borderColor = "magenta";
-      clickHandler = unselect;
+    } else if (selected_) {
+      borderColor = "blue";
+      clickHandler = this.unselect;
+    } else if (canBeAttacked) {
+      clickHandler = this.setAttacked;
+      borderColor = "green";
     }
 
     return (

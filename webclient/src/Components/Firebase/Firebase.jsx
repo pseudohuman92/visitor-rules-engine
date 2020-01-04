@@ -130,7 +130,7 @@ class Firebase {
         this.collection(data.collectionId)
           .get()
           .then(coll => {
-            Return({ ...data, collection: coll.data().cards });
+            Return({profile : { ...data, collection: coll.data().cards }});
           });
       });
   };
@@ -203,12 +203,12 @@ class Firebase {
       });
   };
 
-  setOpponentUsername = (uid, updateExtendedGameState) => {
+  setOpponentUsername = (uid, Return) => {
     this.user(uid)
       .get()
       .then(user => {
         let data = user.data();
-        updateExtendedGameState({ opponentUsername: data.username });
+        Return({ opponentUsername: data.username });
       });
   };
 

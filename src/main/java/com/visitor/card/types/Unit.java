@@ -76,8 +76,8 @@ public abstract class Unit extends Card {
         blockedAttacker = u;
     }
     
-    public final void setBlockers(Arraylist <UUID> blockers) {
-        blockedBy = blockers;
+    public final void addBlocker(UUID blocker) {
+        blockedBy.add(blocker);
     }
     
     @Override
@@ -87,17 +87,16 @@ public abstract class Unit extends Card {
     }
     
     public final void dealAttackDamage(Game game){
-        if (blockedBy.isEmpty())
+        if (blockedBy.isEmpty()) {
             game.dealDamage(id, attackTarget, attack);
-        
-        //TODO: Implement block damage distribution
+        } else {
+            //TODO: Implement block damage distribution
+        }
     }
     
     public final void dealBlockDamage(Game game){
-        if (blockedBy.isEmpty())
+        if (blocking)
             game.dealDamage(id, blockedAttacker, attack);
-        
-        //TODO: Implement block damage distribution
     }
     
     @Override

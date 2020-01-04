@@ -45,7 +45,7 @@ message OrderCardsResponse {
 //This will be send as a response to SelectFromList message from server
 message SelectFromResponse {
     SelectFromType messageType = 1;
-    repeated string selectedCards = 3;
+    repeated string selected = 3;
 }
 
 message SelectXValueResponse {
@@ -58,6 +58,10 @@ message SelectAttackersResponse {
 
 message SelectBlockersResponse {
     repeated BlockerAssignment blockers = 1;
+}
+
+message SaveGameState {
+    string filename = 1;
 }
 
 message ClientGameMessage {
@@ -74,5 +78,6 @@ message ClientGameMessage {
         SelectXValueResponse            selectXValueResponse = 23;
         SelectAttackersResponse         selectAttackersResponse = 24;
         SelectBlockersResponse          selectBlockersResponse = 25;
+        SaveGameState                   saveGameState = 26;
     }
 };

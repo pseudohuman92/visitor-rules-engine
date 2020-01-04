@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Visitor" options="-endorseddirs &quot;$PROJECT_DIR$/target/endorsed&quot;" />
+      <module name="Visitor" options="-endorseddirs &quot;/home/pseudo/Dropbox (MIT)/Repos/Visitor/target/endorsed&quot;" />
     </option>
   </component>
 </project>

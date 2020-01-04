@@ -10,7 +10,7 @@ import { delayClick } from "../Helpers/Helpers";
 import { mapDispatchToProps } from "../Redux/Store";
 
 const mapStateToProps = state => {
-  return { userId: state.authUser.user.uid };
+  return { userId: state.firebaseAuthData.user.uid };
 };
 
 class Decks extends React.Component {

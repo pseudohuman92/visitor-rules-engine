@@ -17,11 +17,11 @@ import GameStore from "./GameStore";
 
 const mapStateToProps = state => {
   return {
-    username: state.username,
-    userId: state.authUser.user.uid,
-    dust: state.dust,
-    coins: state.coins,
-    dailyWins: state.dailyWins
+    username: state.profile.username,
+    userId: state.firebaseAuthData.user.uid,
+    dust: state.profile.dust,
+    coins: state.profile.coins,
+    dailyWins: state.profile.dailyWins
   };
 };
 

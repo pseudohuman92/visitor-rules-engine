@@ -27,9 +27,14 @@ import com.visitor.protocol.Types.SelectFromType;
 import static com.visitor.protocol.Types.SelectFromType.*;
 import com.visitor.server.GameEndpoint;
 import static com.visitor.server.GeneralEndpoint.gameServer;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
 import static java.lang.Math.random;
 import static java.lang.System.out;
+
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
@@ -51,11 +56,10 @@ import com.visitor.protocol.Types.BlockerAssignment;
  *
  * @author pseudo
  */
-public class Game {
+public class Game implements Serializable {
 
-    
     Hashmap<String, Player> players;
-    Hashmap<String, GameEndpoint> connections;
+    public transient Hashmap<String, GameEndpoint> connections;
     Hashmap<String, ServerGameMessage> lastMessages;
     String turnPlayer;
     public String activePlayer;
@@ -64,14 +68,14 @@ public class Game {
     int turnCount;
     int passCount;
     UUID id;
-    ArrayBlockingQueue<Object> response;
+    public transient ArrayBlockingQueue<Object> response;
     
     Hashmap<String, Arraylist<Triggering>> triggeringCards;
     Arraylist<Event> eventQueue;
     boolean endProcessed;
     
-    Arraylist<Unit> attackers;
-    Arraylist<Unit> blockers;
+    Arraylist<UUID> attackers;
+    Arraylist<UUID> blockers;
 
     public Game (Player p1, Player p2) {
         id = randomUUID();
@@ -85,6 +89,7 @@ public class Game {
         triggeringCards.put(p2.username, new Arraylist<>());
         eventQueue = new Arraylist<>();
         attackers = new Arraylist<>();
+        blockers = new Arraylist<>();
         
         players.put(p1.username, p1);
         players.put(p2.username, p2);
@@ -595,8 +600,8 @@ public class Game {
     
     private Arraylist<UUID> selectFrom(String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo){
         SelectFrom.Builder b = SelectFrom.newBuilder()
-                .addAllCanSelected(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
-                .addAllCanSelectedPlayers(canSelectPlayers.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
+                .addAllSelectable(canSelect.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
+                .addAllSelectable(canSelectPlayers.parallelStream().map(u->{return u.toString();}).collect(Collectors.toList()))
                 .addAllCandidates(candidates.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
                 .setMessageType(type)
                 .setSelectionCount(count)
@@ -664,11 +669,11 @@ public class Game {
         List<Attacker> attackerList = attackers.parallelStream()
                                     .map(a-> {return Attacker.newBuilder()
                                             .setAttackerId(a)
-                                            .addAllCanAttackTo(targets).build();})
+                                            .addAllPossibleAttackTargets(targets).build();})
                                     .collect(Collectors.toList());
         out.println("Sending Select Attackers Message to " + username);
         SelectAttackers.Builder b = SelectAttackers.newBuilder()
-                .addAllCanAttack(attackerList)
+                .addAllPossibleAttackers(attackerList)
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
@@ -696,13 +701,13 @@ public class Game {
         Arraylist<Blocker> blockers = new Arraylist<>();
         potentialBlockers.forEach(pb -> {
             List<String> targets = attackers.parallelStream()
-                                   .filter(a -> {return pb.canBlock(this, a);})
-                                   .map(u->{return u.id.toString();})
+                                   .filter(a -> {return pb.canBlock(this, (Unit)getCard(a));})
+                                   .map(u->{return getCard(u).id.toString();})
                                    .collect(Collectors.toList());
             if(!targets.isEmpty()){
                 blockers.add(Blocker.newBuilder()
                             .setBlockerId(pb.id.toString())
-                            .addAllCanBlock(targets)
+                            .addAllPossibleBlockTargets(targets)
                             .build());
             }
         });
@@ -713,7 +718,7 @@ public class Game {
         
         out.println("Sending Select Blockers Message to " + username);
         SelectBlockers.Builder b = SelectBlockers.newBuilder()
-                .addAllCanBlock(blockers)
+                .addAllPossibleBlockers(blockers)
                 .setGame(toGameState(username));
         try {
             send(username, ServerGameMessage.newBuilder().setSelectBlockers(b));
@@ -755,13 +760,11 @@ public class Game {
         }
         
         for(int i = 0; i < attackers.size(); i++){
-            Unit a = attackers.get(i);
-            b.addAttackers(a.id.toString());
+            b.addAttackers(attackers.get(i).toString());
         }
         
         for(int i = 0; i < blockers.size(); i++){
-            Unit a = blockers.get(i);
-            b.addBlockers(a.id.toString());
+            b.addBlockers(blockers.get(i).toString());
         }
             
         
@@ -962,20 +965,21 @@ public class Game {
         out.println("Attackers: "+attackerIds);
         attackerIds.forEach(c ->{
             Unit u = (Unit)getCard(UUID.fromString(c.getAttackerId()));
-            u.setAttacking(UUID.fromString(c.getAttacked()));
-            attackers.add(u);
+            u.setAttacking(UUID.fromString(c.getAttacksTo()));
+            attackers.add(u.id);
         });
     }
 
     private void unsetAttackers() {
-        attackers.forEach(u -> {u.unsetAttacking();});
+        attackers.forEach(u -> {((Unit)getCard(u)).unsetAttacking();});
         attackers.clear();
     }
     
     private void unsetBlockers() {
-        blockers.forEach(u -> {u.unsetBlocking();});
+        blockers.forEach(u -> {((Unit)getCard(u)).unsetBlocking();});
         blockers.clear();
     }
+
 
     private void chooseBlockers() {
         out.println("Updating players from chooseBlockers. AP: " + activePlayer);
@@ -983,31 +987,44 @@ public class Game {
         Arraylist<BlockerAssignment> assignedBlockers = selectBlockers(getOpponentName(turnPlayer));
         out.println("Blockers: "+ assignedBlockers);
         assignedBlockers.forEach(c ->{
-            UUID attackerId = UUID.fromString(c.getAttackerId());
-            Arraylist<UUID> blocking = toUUIDList(c.getBlockersList()
-                                                .toArray(new String[c.getBlockersCount()]));
+            UUID blockerId = UUID.fromString(c.getBlockerId());
+            UUID blockedBy = UUID.fromString(c.getBlockedBy());
             
-            Unit attacker = (Unit)getCard(attackerId);
-            attacker.setBlockers(blocking);
-            
-            blocking.forEach(b -> {
-                Unit blocker = (Unit)getCard(b);
-                blocker.setBlocking(attackerId);
-                blockers.add(blocker);
-            });
+            ((Unit)getCard(blockedBy)).addBlocker(blockerId);
+            Unit blocker = (Unit)getCard(blockerId);
+            blocker.setBlocking(blockedBy);
+            blockers.add(blockerId);
         });
         
     }
 
+
+
     private void dealCombatDamage() {
         attackers.forEach(a -> {
-            a.dealAttackDamage(this);
+            ((Unit)getCard(a)).dealAttackDamage(this);
         });
         blockers.forEach(b -> {
-            b.dealBlockDamage(this);
+            ((Unit)getCard(b)).dealBlockDamage(this);
         });
     }
-    
+
+
+    public void saveGameState(String filename) {
+        try {
+
+            FileOutputStream fileOut = new FileOutputStream(filename+".gamestate");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(this);
+            objectOut.close();
+            System.out.println("Game state is succesfully written to a file");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
     public enum Zone {
         DECK, HAND, PLAY, BOTH_PLAY, SCRAPYARD, VOID, STACK;
     }

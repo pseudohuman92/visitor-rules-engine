@@ -11,7 +11,7 @@ import { withFirebase } from "../Firebase";
 const mapStateToProps = state => {
   return {
     gameId: state.extendedGameState.game.id,
-    userId: state.authUser.user.uid
+    userId: state.firebaseAuthData.user.uid
   };
 };
 

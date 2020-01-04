@@ -60,7 +60,7 @@ class Scrapyard extends React.Component {
 
     let showScrapyard = event => {
       updateExtendedGameState({
-        dialog: {
+        dialogData: {
           open: true,
           title: `${name}'s Scrapyard`,
           cards: scrapyard

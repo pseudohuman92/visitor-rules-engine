@@ -6,16 +6,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { connect } from "react-redux";
 import { TextField, Grid, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio } from "@material-ui/core";
 
-import { GamePhases } from "../Helpers/Constants";
+import { ClientPhase } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 
 const mapStateToProps = state => {
   return {
-    phase: state.extendedGameState.phase,
+    clientPhase: state.extendedGameState.clientPhase,
     win: state.extendedGameState.win,
     gameId: state.extendedGameState.game.id,
-    userId: state.authUser.user.uid
+    userId: state.firebaseAuthData.user.uid
   };
 };
 
@@ -38,7 +38,7 @@ class EndGameDialog extends Component {
     const { updateExtendedGameState, back } = this.props;
     updateExtendedGameState({
       gameInitialized: false,
-      phase: GamePhases.NOT_STARTED
+      clientPhase: ClientPhase.NOT_STARTED
     });
     back();
   };
@@ -63,10 +63,10 @@ class EndGameDialog extends Component {
 
 
   render = () => {
-    const { phase, win } = this.props;
+    const { clientPhase, win } = this.props;
     const {verdict, bestAspects, worstAspects, potential, replay, } = this.state;
 
-    const open = phase === GamePhases.GAME_END;
+    const open = clientPhase === ClientPhase.GAME_END;
 
     const submitDisabled = 
       verdict === "" ||

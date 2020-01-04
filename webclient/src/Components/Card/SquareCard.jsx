@@ -41,10 +41,35 @@ class SquareCard extends PureComponent {
             opacity: opacity,
             backgroundColor: backColor,
             borderRadius: size.width / 20 + "px",
-            textAlign: "left"
+            textAlign: "left",
+            zIndex: 1
           }}
         >
-          {cost && (
+          
+          <div
+            className="card-inner-square"
+            style={{
+              position: "relative",
+              //backgroundColor: getCardColor(knowledgeCost),
+              fontSize: size.width / 20 + "px",
+              borderRadius: size.width / 25 + "px",
+              border: "1px black solid"
+            }}
+          >
+            <img
+            src={process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              maxWidth: "100%",
+              objectFit: "cover",
+              zIndex: -1
+            }}
+            alt=""
+          />
+
+           {cost && (
             <div className="card-cost-square">
               <TextOnImage
                 src={process.env.PUBLIC_URL + "/img/card-components/energy.png"}
@@ -78,32 +103,10 @@ class SquareCard extends PureComponent {
                 />
               </div>
             ))}
-          <div
-            className="card-inner-square"
-            style={{
-              backgroundColor: getCardColor(knowledgeCost),
-              fontSize: size.width / 20 + "px",
-              borderRadius: size.width / 25 + "px",
-              border: "1px black solid"
-            }}
-          >
+
             <div className="card-name-square">{name}</div>
 
-            <div className="card-image-square">
-              <img
-                src={
-                  process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"
-                }
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  width: "auto",
-                  height: "auto",
-                  objectFit: "scale-down"
-                }}
-                alt=""
-              />
-            </div>
+            
           </div>
           <div className="bottom-icons" 
           style={{
@@ -120,7 +123,7 @@ class SquareCard extends PureComponent {
                   font={{ fontFamily: "Special Elite, cursive" }}
                 />
               )}
-              {health && (
+              {health > -1 && (
                 <TextOnImage
                   src={
                     process.env.PUBLIC_URL + "/img/card-components/health.png"

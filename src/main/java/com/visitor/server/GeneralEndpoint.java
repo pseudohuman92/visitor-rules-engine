@@ -78,6 +78,9 @@ public class GeneralEndpoint {
                 JoinQueue jqm = cm.getJoinQueue();
                 gameServer.joinQueue(username, jqm.getDecklistList().toArray(new String[jqm.getDecklistCount()]));
                 break;
+            case LOADGAME:
+                gameServer.loadGame(username, cm.getLoadGame().getFilename());
+                break;
         }
     }
 }

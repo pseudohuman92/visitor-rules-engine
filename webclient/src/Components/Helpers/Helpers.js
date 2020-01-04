@@ -1,6 +1,6 @@
-import proto from "../../protojs/compiled.js";
+import proto from "../../protojs/compiled";
 import { ServerName, PrintDebug } from "../../Config.js";
-import {  GamePhases, knowledgeMap, fullCollection } from "./Constants";
+import {  ClientPhase, knowledgeMap, fullCollection } from "./Constants";
 
 export function GetProfileURL(userId) {
   return `ws://${ServerName}/profiles/${userId}`;
@@ -63,65 +63,65 @@ export function getIconColor(knowledgeCost) {
   }
 }
 
-export function IsSelectCardPhase(phase) {
+export function IsSelectCardPhase(clientPhase) {
   return [
-    GamePhases.SELECT_FROM_LIST,
-    GamePhases.SELECT_FROM_PLAY,
-    GamePhases.SELECT_FROM_HAND,
-    GamePhases.SELECT_FROM_SCRAPYARD,
-    GamePhases.SELECT_FROM_VOID,
-    GamePhases.SELECT_FROM_STACK
-  ].includes(phase);
+    ClientPhase.SELECT_FROM_LIST,
+    ClientPhase.SELECT_FROM_PLAY,
+    ClientPhase.SELECT_FROM_HAND,
+    ClientPhase.SELECT_FROM_SCRAPYARD,
+    ClientPhase.SELECT_FROM_VOID,
+    ClientPhase.SELECT_FROM_STACK
+  ].includes(clientPhase);
 }
 
-export function toGamePhase(msgType, selectType) {
+export function toClientPhase(msgType, selectType) {
   switch (msgType) {
     case "SelectFrom":
       switch (selectType) {
         case proto.SelectFromType.LIST:
-          return GamePhases.SELECT_FROM_LIST;
+          return ClientPhase.SELECT_FROM_LIST;
         case proto.SelectFromType.HAND:
-          return GamePhases.SELECT_FROM_HAND;
+          return ClientPhase.SELECT_FROM_HAND;
         case proto.SelectFromType.PLAY:
-          return GamePhases.SELECT_FROM_PLAY;
+          return ClientPhase.SELECT_FROM_PLAY;
         case proto.SelectFromType.SCRAPYARD:
-          return GamePhases.SELECT_FROM_SCRAPYARD;
+          return ClientPhase.SELECT_FROM_SCRAPYARD;
         case proto.SelectFromType.VOID:
-          return GamePhases.SELECT_FROM_VOID;
+          return ClientPhase.SELECT_FROM_VOID;
         case proto.SelectFromType.STACK:
-          return GamePhases.SELECT_FROM_STACK;
+          return ClientPhase.SELECT_FROM_STACK;
         default:
           break;
       }
       break;
     case "UpdateGameState":
-      return GamePhases.UPDATE_GAME;
+      return ClientPhase.UPDATE_GAME;
     case "GameEnd":
-      return GamePhases.GAME_END;
+      return ClientPhase.GAME_END;
     case "OrderCards":
-      return GamePhases.ORDER_CARDS;
+      return ClientPhase.ORDER_CARDS;
     case "SelectXValue":
-      return GamePhases.SELECT_X_VALUE;
+      return ClientPhase.SELECT_X_VALUE;
     case "SelectAttackers":  
-      return GamePhases.SELECT_ATTACKERS;
+      return ClientPhase.SELECT_ATTACKERS;
     default:
-      return GamePhases.NOT_STARTED;
+      return ClientPhase.NOT_STARTED;
   }
 }
 
-export function toSelectFromType(phase) {
-  switch (phase) {
-    case GamePhases.SELECT_FROM_LIST:
+export function toSelectFromType(clientPhase) {
+  switch (clientPhase) {
+    case ClientPhase.SELECT_FROM_LIST:
       return proto.SelectFromType.LIST;
-    case GamePhases.SELECT_FROM_HAND:
+    case ClientPhase.SELECT_FROM_HAND:
       return proto.SelectFromType.HAND;
-    case GamePhases.SELECT_FROM_PLAY:
+    case ClientPhase.SELECT_FROM_PLAY:
       return proto.SelectFromType.PLAY;
-    case GamePhases.SELECT_FROM_SCRAPYARD:
+    case ClientPhase.SELECT_FROM_SCRAPYARD:
       return proto.SelectFromType.SCRAPYARD;
-    case GamePhases.SELECT_FROM_VOID:
+    case ClientPhase.SELECT_FROM_VOID:
       return proto.SelectFromType.VOID;
-    case GamePhases.SELECT_FROM_STACK:
+    case ClientPhase.SELECT_FROM_STACK:
       return proto.SelectFromType.STACK;
     default:
       return proto.SelectFromType.NONE;
@@ -234,4 +234,25 @@ export function toFullCards(collection) {
     col[key] = fullCollection[key];
   });
   return col;
+}
+
+export function isObject(item) {
+  return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+export function mergeDeep(target, source) {
+  let output = Object.assign({}, target);
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target))
+          Object.assign(output, { [key]: source[key] });
+        else
+          output[key] = mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
 }

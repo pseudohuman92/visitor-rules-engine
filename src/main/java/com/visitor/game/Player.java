@@ -6,6 +6,8 @@ import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
+
+import java.io.Serializable;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @author pseudo
  */
-public class Player {
+public class Player implements Serializable {
 
     public String username;
     public UUID id;

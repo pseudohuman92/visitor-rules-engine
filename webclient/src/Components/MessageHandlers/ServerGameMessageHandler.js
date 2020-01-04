@@ -1,34 +1,53 @@
 import { GameProtoSocket } from "../../protojs/ProtoSocket";
-import { GamePhases } from "../Helpers/Constants";
-import { toGamePhase, toSelectFromType } from "../Helpers/Helpers";
+import {
+  ClientPhase,
+  SelectionData,
+  ExtendedGameState,
+  initialExtendedGameState,
+  initialSelectionData,
+  initialAttackerAssignmentData,
+  initialDialogData
+} from "../Helpers/Constants";
+import { toClientPhase, toSelectFromType } from "../Helpers/Helpers";
 import { GetGameURL } from "../Helpers/Helpers";
+import { AttackerAssignment } from "../../protojs/compiled";
 
 export default class ServerGameMessageHandler {
-  constructor(userId, gameId, updateExtendedGameState, continueGame) {
+
+  constructor(
+    userId,
+    gameId,
+    updateExtendedGameState,
+    continueGame
+  ) {
     this.userId = userId;
     this.updateExtendedGameState = updateExtendedGameState;
     this.gameId = gameId;
     this.continueGame = continueGame;
-    this.protoSocket = new GameProtoSocket(GetGameURL(userId, gameId), this.handleMsg);
+    this.protoSocket = new GameProtoSocket(
+      GetGameURL(userId, gameId),
+      this.handleMsg
+    );
   }
 
   //This is a message handler for ServerGameMessage messages
   handleMsg = (msgType, params) => {
     // XXX Remember to update this with the protocol updates
-    let newState = {};
-    newState["phase"] = toGamePhase(msgType, params.messageType);
+    let newExtendedState = {};
+    let selectionData = {};
+    newExtendedState["clientPhase"] = toClientPhase(msgType, params.messageType);
     switch (msgType) {
       case "SelectFrom":
-        newState["selectableCards"] = params.canSelected;
-        newState["selectablePlayers"] = params.canSelectedPlayers;
-        newState["upTo"] = params.upTo;
-        newState["selectCountMax"] = params.selectionCount;
+        selectionData["selectionCount"] = params.selectionCount;
+        selectionData["candidates"] = params.candidates;
+        selectionData["selectable"] = params.selectable;
+        selectionData["upTo"] = params.upTo;
         if (
-          newState["phase"] === GamePhases.SELECT_FROM_LIST ||
-          newState["phase"] === GamePhases.SELECT_FROM_SCRAPYARD ||
-          newState["phase"] === GamePhases.SELECT_FROM_VOID
+          newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_LIST ||
+          newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_SCRAPYARD ||
+          newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_VOID
         ) {
-          newState["dialog"] = {
+          newExtendedState["dialogData"] = {
             open: true,
             title: `Select ${params.selectionCount} from the following`,
             cards: params.candidates
@@ -36,35 +55,38 @@ export default class ServerGameMessageHandler {
         }
         break;
       case "GameEnd":
-        newState["win"] = params.win;
+        newExtendedState["win"] = params.win;
         break;
       case "OrderCards":
-        newState["dialog"] = {
+        newExtendedState["dialogData"] = {
           open: true,
           title: "Order following cards",
           cards: params.cardsToOrder
         };
         break;
       case "SelectXValue":
-        newState["maxXValue"] = params.maxXValue;
+        selectionData["maxXValue"] = params.maxXValue;
         break;
       case "SelectAttackers":
-        newState["canAttack"] = params.canAttack;
+        newExtendedState["attackerAssignmentData"] = {
+          possibleAttackers : params.possibleAttackers
+        };
         break;
       case "SelectBlockers":
-        newState["canBlock"] = params.canBlock;
+        //newExtendedState["possibleBlockers"] = params.possibleBlockers;
         break;
       default:
         break;
     }
-    newState["game"] = params.game;
-    newState["selectedCards"] = [];
-    if (this.continueGame){
-      newState["gameInitialized"] = true;
+    newExtendedState["game"] = params.game;
+    selectionData["selected"] = [];
+    newExtendedState["selectionData"] = selectionData;
+    if (this.continueGame) {
+      newExtendedState["gameInitialized"] = true;
       this.continueGame = false;
     }
 
-    this.updateExtendedGameState(newState);
+    this.updateExtendedGameState(newExtendedState);
   };
 
   send = (msgType, params) => {
@@ -87,53 +109,50 @@ export default class ServerGameMessageHandler {
     this.send("Concede", {});
   };
 
-  PlayCard = cardID => {
+  PlayCard = (cardID) => {
     this.send("PlayCard", {
       cardID: cardID
     });
   };
 
-  ActivateCard = cardID => {
+  ActivateCard = (cardID) => {
     this.send("ActivateCard", {
       cardID: cardID
     });
   };
 
-  StudyCard = cardID => {
+  StudyCard = (cardID) => {
     this.send("StudyCard", {
       cardID: cardID
     });
   };
 
-  SelectDone = (phase, selectedCards) => {
+  SelectDone = (clientPhase, selected) => {
     this.send("SelectFromResponse", {
-      messageType: toSelectFromType(phase),
-      selectedCards: selectedCards
+      messageType: toSelectFromType(clientPhase),
+      selected: selected
     });
     this.updateExtendedGameState({
-      phase: GamePhases.DONE_SELECT,
-      selectedCards: [],
-      selectableCards: [],
-      selectablePlayers: [],
-      dialog: { text: "", open: false, cards: [] }
+      clientPhase: ClientPhase.DONE_SELECT,
+      selectionData: initialSelectionData(),
+      dialogData: initialDialogData()
     });
   };
-  
-  SelectXValue = xVal => {
+
+  SelectXValue = (xVal) => {
     this.send("SelectXValueResponse", {
       selectedXValue: xVal
     });
-    this.updateExtendedGameState({ phase: GamePhases.DONE_SELECT });
+    this.updateExtendedGameState({ clientPhase: ClientPhase.DONE_SELECT });
   };
 
-  SelectAttackers = attackers => {
+  SelectAttackers = (attackers) => {
     this.send("SelectAttackersResponse", {
       attackers: attackers
     });
     this.updateExtendedGameState({
-      phase: GamePhases.DONE_SELECT,
-      canAttack: [],
-      attacking: []
+      clientPhase: ClientPhase.DONE_SELECT,
+      attackerAssignmentData: initialAttackerAssignmentData()
     });
   };
 }

@@ -1,4 +1,3 @@
-/* eslint-disable */
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
 "use strict";
 
@@ -1421,7 +1420,7 @@ $root.SelectFromResponse = (function() {
      * @exports ISelectFromResponse
      * @interface ISelectFromResponse
      * @property {SelectFromType|null} [messageType] SelectFromResponse messageType
-     * @property {Array.<string>|null} [selectedCards] SelectFromResponse selectedCards
+     * @property {Array.<string>|null} [selected] SelectFromResponse selected
      */
 
     /**
@@ -1433,7 +1432,7 @@ $root.SelectFromResponse = (function() {
      * @param {ISelectFromResponse=} [properties] Properties to set
      */
     function SelectFromResponse(properties) {
-        this.selectedCards = [];
+        this.selected = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1449,12 +1448,12 @@ $root.SelectFromResponse = (function() {
     SelectFromResponse.prototype.messageType = 0;
 
     /**
-     * SelectFromResponse selectedCards.
-     * @member {Array.<string>} selectedCards
+     * SelectFromResponse selected.
+     * @member {Array.<string>} selected
      * @memberof SelectFromResponse
      * @instance
      */
-    SelectFromResponse.prototype.selectedCards = $util.emptyArray;
+    SelectFromResponse.prototype.selected = $util.emptyArray;
 
     /**
      * Creates a new SelectFromResponse instance using the specified properties.
@@ -1482,9 +1481,9 @@ $root.SelectFromResponse = (function() {
             writer = $Writer.create();
         if (message.messageType != null && message.hasOwnProperty("messageType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.messageType);
-        if (message.selectedCards != null && message.selectedCards.length)
-            for (var i = 0; i < message.selectedCards.length; ++i)
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.selectedCards[i]);
+        if (message.selected != null && message.selected.length)
+            for (var i = 0; i < message.selected.length; ++i)
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.selected[i]);
         return writer;
     };
 
@@ -1523,9 +1522,9 @@ $root.SelectFromResponse = (function() {
                 message.messageType = reader.int32();
                 break;
             case 3:
-                if (!(message.selectedCards && message.selectedCards.length))
-                    message.selectedCards = [];
-                message.selectedCards.push(reader.string());
+                if (!(message.selected && message.selected.length))
+                    message.selected = [];
+                message.selected.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -1575,12 +1574,12 @@ $root.SelectFromResponse = (function() {
             case 7:
                 break;
             }
-        if (message.selectedCards != null && message.hasOwnProperty("selectedCards")) {
-            if (!Array.isArray(message.selectedCards))
-                return "selectedCards: array expected";
-            for (var i = 0; i < message.selectedCards.length; ++i)
-                if (!$util.isString(message.selectedCards[i]))
-                    return "selectedCards: string[] expected";
+        if (message.selected != null && message.hasOwnProperty("selected")) {
+            if (!Array.isArray(message.selected))
+                return "selected: array expected";
+            for (var i = 0; i < message.selected.length; ++i)
+                if (!$util.isString(message.selected[i]))
+                    return "selected: string[] expected";
         }
         return null;
     };
@@ -1627,12 +1626,12 @@ $root.SelectFromResponse = (function() {
             message.messageType = 7;
             break;
         }
-        if (object.selectedCards) {
-            if (!Array.isArray(object.selectedCards))
-                throw TypeError(".SelectFromResponse.selectedCards: array expected");
-            message.selectedCards = [];
-            for (var i = 0; i < object.selectedCards.length; ++i)
-                message.selectedCards[i] = String(object.selectedCards[i]);
+        if (object.selected) {
+            if (!Array.isArray(object.selected))
+                throw TypeError(".SelectFromResponse.selected: array expected");
+            message.selected = [];
+            for (var i = 0; i < object.selected.length; ++i)
+                message.selected[i] = String(object.selected[i]);
         }
         return message;
     };
@@ -1651,15 +1650,15 @@ $root.SelectFromResponse = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.selectedCards = [];
+            object.selected = [];
         if (options.defaults)
             object.messageType = options.enums === String ? "NOTYPE" : 0;
         if (message.messageType != null && message.hasOwnProperty("messageType"))
             object.messageType = options.enums === String ? $root.SelectFromType[message.messageType] : message.messageType;
-        if (message.selectedCards && message.selectedCards.length) {
-            object.selectedCards = [];
-            for (var j = 0; j < message.selectedCards.length; ++j)
-                object.selectedCards[j] = message.selectedCards[j];
+        if (message.selected && message.selected.length) {
+            object.selected = [];
+            for (var j = 0; j < message.selected.length; ++j)
+                object.selected[j] = message.selected[j];
         }
         return object;
     };
@@ -2281,6 +2280,193 @@ $root.SelectBlockersResponse = (function() {
     return SelectBlockersResponse;
 })();
 
+$root.SaveGameState = (function() {
+
+    /**
+     * Properties of a SaveGameState.
+     * @exports ISaveGameState
+     * @interface ISaveGameState
+     * @property {string|null} [filename] SaveGameState filename
+     */
+
+    /**
+     * Constructs a new SaveGameState.
+     * @exports SaveGameState
+     * @classdesc Represents a SaveGameState.
+     * @implements ISaveGameState
+     * @constructor
+     * @param {ISaveGameState=} [properties] Properties to set
+     */
+    function SaveGameState(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SaveGameState filename.
+     * @member {string} filename
+     * @memberof SaveGameState
+     * @instance
+     */
+    SaveGameState.prototype.filename = "";
+
+    /**
+     * Creates a new SaveGameState instance using the specified properties.
+     * @function create
+     * @memberof SaveGameState
+     * @static
+     * @param {ISaveGameState=} [properties] Properties to set
+     * @returns {SaveGameState} SaveGameState instance
+     */
+    SaveGameState.create = function create(properties) {
+        return new SaveGameState(properties);
+    };
+
+    /**
+     * Encodes the specified SaveGameState message. Does not implicitly {@link SaveGameState.verify|verify} messages.
+     * @function encode
+     * @memberof SaveGameState
+     * @static
+     * @param {ISaveGameState} message SaveGameState message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SaveGameState.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.filename != null && message.hasOwnProperty("filename"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.filename);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SaveGameState message, length delimited. Does not implicitly {@link SaveGameState.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SaveGameState
+     * @static
+     * @param {ISaveGameState} message SaveGameState message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SaveGameState.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SaveGameState message from the specified reader or buffer.
+     * @function decode
+     * @memberof SaveGameState
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SaveGameState} SaveGameState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SaveGameState.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SaveGameState();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.filename = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SaveGameState message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SaveGameState
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SaveGameState} SaveGameState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SaveGameState.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SaveGameState message.
+     * @function verify
+     * @memberof SaveGameState
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SaveGameState.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.filename != null && message.hasOwnProperty("filename"))
+            if (!$util.isString(message.filename))
+                return "filename: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a SaveGameState message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SaveGameState
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SaveGameState} SaveGameState
+     */
+    SaveGameState.fromObject = function fromObject(object) {
+        if (object instanceof $root.SaveGameState)
+            return object;
+        var message = new $root.SaveGameState();
+        if (object.filename != null)
+            message.filename = String(object.filename);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SaveGameState message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SaveGameState
+     * @static
+     * @param {SaveGameState} message SaveGameState
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SaveGameState.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.filename = "";
+        if (message.filename != null && message.hasOwnProperty("filename"))
+            object.filename = message.filename;
+        return object;
+    };
+
+    /**
+     * Converts this SaveGameState to JSON.
+     * @function toJSON
+     * @memberof SaveGameState
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SaveGameState.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SaveGameState;
+})();
+
 $root.ClientGameMessage = (function() {
 
     /**
@@ -2299,6 +2485,7 @@ $root.ClientGameMessage = (function() {
      * @property {ISelectXValueResponse|null} [selectXValueResponse] ClientGameMessage selectXValueResponse
      * @property {ISelectAttackersResponse|null} [selectAttackersResponse] ClientGameMessage selectAttackersResponse
      * @property {ISelectBlockersResponse|null} [selectBlockersResponse] ClientGameMessage selectBlockersResponse
+     * @property {ISaveGameState|null} [saveGameState] ClientGameMessage saveGameState
      */
 
     /**
@@ -2412,17 +2599,25 @@ $root.ClientGameMessage = (function() {
      */
     ClientGameMessage.prototype.selectBlockersResponse = null;
 
+    /**
+     * ClientGameMessage saveGameState.
+     * @member {ISaveGameState|null|undefined} saveGameState
+     * @memberof ClientGameMessage
+     * @instance
+     */
+    ClientGameMessage.prototype.saveGameState = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2474,6 +2669,8 @@ $root.ClientGameMessage = (function() {
             $root.SelectAttackersResponse.encode(message.selectAttackersResponse, writer.uint32(/* id 24, wireType 2 =*/194).fork()).ldelim();
         if (message.selectBlockersResponse != null && message.hasOwnProperty("selectBlockersResponse"))
             $root.SelectBlockersResponse.encode(message.selectBlockersResponse, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
+        if (message.saveGameState != null && message.hasOwnProperty("saveGameState"))
+            $root.SaveGameState.encode(message.saveGameState, writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
         return writer;
     };
 
@@ -2543,6 +2740,9 @@ $root.ClientGameMessage = (function() {
                 break;
             case 25:
                 message.selectBlockersResponse = $root.SelectBlockersResponse.decode(reader, reader.uint32());
+                break;
+            case 26:
+                message.saveGameState = $root.SaveGameState.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2698,6 +2898,16 @@ $root.ClientGameMessage = (function() {
                     return "selectBlockersResponse." + error;
             }
         }
+        if (message.saveGameState != null && message.hasOwnProperty("saveGameState")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SaveGameState.verify(message.saveGameState);
+                if (error)
+                    return "saveGameState." + error;
+            }
+        }
         return null;
     };
 
@@ -2772,6 +2982,11 @@ $root.ClientGameMessage = (function() {
             if (typeof object.selectBlockersResponse !== "object")
                 throw TypeError(".ClientGameMessage.selectBlockersResponse: object expected");
             message.selectBlockersResponse = $root.SelectBlockersResponse.fromObject(object.selectBlockersResponse);
+        }
+        if (object.saveGameState != null) {
+            if (typeof object.saveGameState !== "object")
+                throw TypeError(".ClientGameMessage.saveGameState: object expected");
+            message.saveGameState = $root.SaveGameState.fromObject(object.saveGameState);
         }
         return message;
     };
@@ -2848,6 +3063,11 @@ $root.ClientGameMessage = (function() {
             object.selectBlockersResponse = $root.SelectBlockersResponse.toObject(message.selectBlockersResponse, options);
             if (options.oneofs)
                 object.payload = "selectBlockersResponse";
+        }
+        if (message.saveGameState != null && message.hasOwnProperty("saveGameState")) {
+            object.saveGameState = $root.SaveGameState.toObject(message.saveGameState, options);
+            if (options.oneofs)
+                object.payload = "saveGameState";
         }
         return object;
     };
@@ -3657,7 +3877,7 @@ $root.Blocker = (function() {
      * @exports IBlocker
      * @interface IBlocker
      * @property {string|null} [blockerId] Blocker blockerId
-     * @property {Array.<string>|null} [canBlock] Blocker canBlock
+     * @property {Array.<string>|null} [possibleBlockTargets] Blocker possibleBlockTargets
      */
 
     /**
@@ -3669,7 +3889,7 @@ $root.Blocker = (function() {
      * @param {IBlocker=} [properties] Properties to set
      */
     function Blocker(properties) {
-        this.canBlock = [];
+        this.possibleBlockTargets = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -3685,12 +3905,12 @@ $root.Blocker = (function() {
     Blocker.prototype.blockerId = "";
 
     /**
-     * Blocker canBlock.
-     * @member {Array.<string>} canBlock
+     * Blocker possibleBlockTargets.
+     * @member {Array.<string>} possibleBlockTargets
      * @memberof Blocker
      * @instance
      */
-    Blocker.prototype.canBlock = $util.emptyArray;
+    Blocker.prototype.possibleBlockTargets = $util.emptyArray;
 
     /**
      * Creates a new Blocker instance using the specified properties.
@@ -3718,9 +3938,9 @@ $root.Blocker = (function() {
             writer = $Writer.create();
         if (message.blockerId != null && message.hasOwnProperty("blockerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.blockerId);
-        if (message.canBlock != null && message.canBlock.length)
-            for (var i = 0; i < message.canBlock.length; ++i)
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.canBlock[i]);
+        if (message.possibleBlockTargets != null && message.possibleBlockTargets.length)
+            for (var i = 0; i < message.possibleBlockTargets.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.possibleBlockTargets[i]);
         return writer;
     };
 
@@ -3759,9 +3979,9 @@ $root.Blocker = (function() {
                 message.blockerId = reader.string();
                 break;
             case 2:
-                if (!(message.canBlock && message.canBlock.length))
-                    message.canBlock = [];
-                message.canBlock.push(reader.string());
+                if (!(message.possibleBlockTargets && message.possibleBlockTargets.length))
+                    message.possibleBlockTargets = [];
+                message.possibleBlockTargets.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3801,12 +4021,12 @@ $root.Blocker = (function() {
         if (message.blockerId != null && message.hasOwnProperty("blockerId"))
             if (!$util.isString(message.blockerId))
                 return "blockerId: string expected";
-        if (message.canBlock != null && message.hasOwnProperty("canBlock")) {
-            if (!Array.isArray(message.canBlock))
-                return "canBlock: array expected";
-            for (var i = 0; i < message.canBlock.length; ++i)
-                if (!$util.isString(message.canBlock[i]))
-                    return "canBlock: string[] expected";
+        if (message.possibleBlockTargets != null && message.hasOwnProperty("possibleBlockTargets")) {
+            if (!Array.isArray(message.possibleBlockTargets))
+                return "possibleBlockTargets: array expected";
+            for (var i = 0; i < message.possibleBlockTargets.length; ++i)
+                if (!$util.isString(message.possibleBlockTargets[i]))
+                    return "possibleBlockTargets: string[] expected";
         }
         return null;
     };
@@ -3825,12 +4045,12 @@ $root.Blocker = (function() {
         var message = new $root.Blocker();
         if (object.blockerId != null)
             message.blockerId = String(object.blockerId);
-        if (object.canBlock) {
-            if (!Array.isArray(object.canBlock))
-                throw TypeError(".Blocker.canBlock: array expected");
-            message.canBlock = [];
-            for (var i = 0; i < object.canBlock.length; ++i)
-                message.canBlock[i] = String(object.canBlock[i]);
+        if (object.possibleBlockTargets) {
+            if (!Array.isArray(object.possibleBlockTargets))
+                throw TypeError(".Blocker.possibleBlockTargets: array expected");
+            message.possibleBlockTargets = [];
+            for (var i = 0; i < object.possibleBlockTargets.length; ++i)
+                message.possibleBlockTargets[i] = String(object.possibleBlockTargets[i]);
         }
         return message;
     };
@@ -3849,15 +4069,15 @@ $root.Blocker = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.canBlock = [];
+            object.possibleBlockTargets = [];
         if (options.defaults)
             object.blockerId = "";
         if (message.blockerId != null && message.hasOwnProperty("blockerId"))
             object.blockerId = message.blockerId;
-        if (message.canBlock && message.canBlock.length) {
-            object.canBlock = [];
-            for (var j = 0; j < message.canBlock.length; ++j)
-                object.canBlock[j] = message.canBlock[j];
+        if (message.possibleBlockTargets && message.possibleBlockTargets.length) {
+            object.possibleBlockTargets = [];
+            for (var j = 0; j < message.possibleBlockTargets.length; ++j)
+                object.possibleBlockTargets[j] = message.possibleBlockTargets[j];
         }
         return object;
     };
@@ -3883,7 +4103,7 @@ $root.Attacker = (function() {
      * @exports IAttacker
      * @interface IAttacker
      * @property {string|null} [attackerId] Attacker attackerId
-     * @property {Array.<string>|null} [canAttackTo] Attacker canAttackTo
+     * @property {Array.<string>|null} [possibleAttackTargets] Attacker possibleAttackTargets
      */
 
     /**
@@ -3895,7 +4115,7 @@ $root.Attacker = (function() {
      * @param {IAttacker=} [properties] Properties to set
      */
     function Attacker(properties) {
-        this.canAttackTo = [];
+        this.possibleAttackTargets = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -3911,12 +4131,12 @@ $root.Attacker = (function() {
     Attacker.prototype.attackerId = "";
 
     /**
-     * Attacker canAttackTo.
-     * @member {Array.<string>} canAttackTo
+     * Attacker possibleAttackTargets.
+     * @member {Array.<string>} possibleAttackTargets
      * @memberof Attacker
      * @instance
      */
-    Attacker.prototype.canAttackTo = $util.emptyArray;
+    Attacker.prototype.possibleAttackTargets = $util.emptyArray;
 
     /**
      * Creates a new Attacker instance using the specified properties.
@@ -3944,9 +4164,9 @@ $root.Attacker = (function() {
             writer = $Writer.create();
         if (message.attackerId != null && message.hasOwnProperty("attackerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackerId);
-        if (message.canAttackTo != null && message.canAttackTo.length)
-            for (var i = 0; i < message.canAttackTo.length; ++i)
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.canAttackTo[i]);
+        if (message.possibleAttackTargets != null && message.possibleAttackTargets.length)
+            for (var i = 0; i < message.possibleAttackTargets.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.possibleAttackTargets[i]);
         return writer;
     };
 
@@ -3985,9 +4205,9 @@ $root.Attacker = (function() {
                 message.attackerId = reader.string();
                 break;
             case 2:
-                if (!(message.canAttackTo && message.canAttackTo.length))
-                    message.canAttackTo = [];
-                message.canAttackTo.push(reader.string());
+                if (!(message.possibleAttackTargets && message.possibleAttackTargets.length))
+                    message.possibleAttackTargets = [];
+                message.possibleAttackTargets.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4027,12 +4247,12 @@ $root.Attacker = (function() {
         if (message.attackerId != null && message.hasOwnProperty("attackerId"))
             if (!$util.isString(message.attackerId))
                 return "attackerId: string expected";
-        if (message.canAttackTo != null && message.hasOwnProperty("canAttackTo")) {
-            if (!Array.isArray(message.canAttackTo))
-                return "canAttackTo: array expected";
-            for (var i = 0; i < message.canAttackTo.length; ++i)
-                if (!$util.isString(message.canAttackTo[i]))
-                    return "canAttackTo: string[] expected";
+        if (message.possibleAttackTargets != null && message.hasOwnProperty("possibleAttackTargets")) {
+            if (!Array.isArray(message.possibleAttackTargets))
+                return "possibleAttackTargets: array expected";
+            for (var i = 0; i < message.possibleAttackTargets.length; ++i)
+                if (!$util.isString(message.possibleAttackTargets[i]))
+                    return "possibleAttackTargets: string[] expected";
         }
         return null;
     };
@@ -4051,12 +4271,12 @@ $root.Attacker = (function() {
         var message = new $root.Attacker();
         if (object.attackerId != null)
             message.attackerId = String(object.attackerId);
-        if (object.canAttackTo) {
-            if (!Array.isArray(object.canAttackTo))
-                throw TypeError(".Attacker.canAttackTo: array expected");
-            message.canAttackTo = [];
-            for (var i = 0; i < object.canAttackTo.length; ++i)
-                message.canAttackTo[i] = String(object.canAttackTo[i]);
+        if (object.possibleAttackTargets) {
+            if (!Array.isArray(object.possibleAttackTargets))
+                throw TypeError(".Attacker.possibleAttackTargets: array expected");
+            message.possibleAttackTargets = [];
+            for (var i = 0; i < object.possibleAttackTargets.length; ++i)
+                message.possibleAttackTargets[i] = String(object.possibleAttackTargets[i]);
         }
         return message;
     };
@@ -4075,15 +4295,15 @@ $root.Attacker = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.canAttackTo = [];
+            object.possibleAttackTargets = [];
         if (options.defaults)
             object.attackerId = "";
         if (message.attackerId != null && message.hasOwnProperty("attackerId"))
             object.attackerId = message.attackerId;
-        if (message.canAttackTo && message.canAttackTo.length) {
-            object.canAttackTo = [];
-            for (var j = 0; j < message.canAttackTo.length; ++j)
-                object.canAttackTo[j] = message.canAttackTo[j];
+        if (message.possibleAttackTargets && message.possibleAttackTargets.length) {
+            object.possibleAttackTargets = [];
+            for (var j = 0; j < message.possibleAttackTargets.length; ++j)
+                object.possibleAttackTargets[j] = message.possibleAttackTargets[j];
         }
         return object;
     };
@@ -4109,7 +4329,7 @@ $root.AttackerAssignment = (function() {
      * @exports IAttackerAssignment
      * @interface IAttackerAssignment
      * @property {string|null} [attackerId] AttackerAssignment attackerId
-     * @property {string|null} [attacked] AttackerAssignment attacked
+     * @property {string|null} [attacksTo] AttackerAssignment attacksTo
      */
 
     /**
@@ -4136,12 +4356,12 @@ $root.AttackerAssignment = (function() {
     AttackerAssignment.prototype.attackerId = "";
 
     /**
-     * AttackerAssignment attacked.
-     * @member {string} attacked
+     * AttackerAssignment attacksTo.
+     * @member {string} attacksTo
      * @memberof AttackerAssignment
      * @instance
      */
-    AttackerAssignment.prototype.attacked = "";
+    AttackerAssignment.prototype.attacksTo = "";
 
     /**
      * Creates a new AttackerAssignment instance using the specified properties.
@@ -4169,8 +4389,8 @@ $root.AttackerAssignment = (function() {
             writer = $Writer.create();
         if (message.attackerId != null && message.hasOwnProperty("attackerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackerId);
-        if (message.attacked != null && message.hasOwnProperty("attacked"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.attacked);
+        if (message.attacksTo != null && message.hasOwnProperty("attacksTo"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.attacksTo);
         return writer;
     };
 
@@ -4209,7 +4429,7 @@ $root.AttackerAssignment = (function() {
                 message.attackerId = reader.string();
                 break;
             case 2:
-                message.attacked = reader.string();
+                message.attacksTo = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4249,9 +4469,9 @@ $root.AttackerAssignment = (function() {
         if (message.attackerId != null && message.hasOwnProperty("attackerId"))
             if (!$util.isString(message.attackerId))
                 return "attackerId: string expected";
-        if (message.attacked != null && message.hasOwnProperty("attacked"))
-            if (!$util.isString(message.attacked))
-                return "attacked: string expected";
+        if (message.attacksTo != null && message.hasOwnProperty("attacksTo"))
+            if (!$util.isString(message.attacksTo))
+                return "attacksTo: string expected";
         return null;
     };
 
@@ -4269,8 +4489,8 @@ $root.AttackerAssignment = (function() {
         var message = new $root.AttackerAssignment();
         if (object.attackerId != null)
             message.attackerId = String(object.attackerId);
-        if (object.attacked != null)
-            message.attacked = String(object.attacked);
+        if (object.attacksTo != null)
+            message.attacksTo = String(object.attacksTo);
         return message;
     };
 
@@ -4289,12 +4509,12 @@ $root.AttackerAssignment = (function() {
         var object = {};
         if (options.defaults) {
             object.attackerId = "";
-            object.attacked = "";
+            object.attacksTo = "";
         }
         if (message.attackerId != null && message.hasOwnProperty("attackerId"))
             object.attackerId = message.attackerId;
-        if (message.attacked != null && message.hasOwnProperty("attacked"))
-            object.attacked = message.attacked;
+        if (message.attacksTo != null && message.hasOwnProperty("attacksTo"))
+            object.attacksTo = message.attacksTo;
         return object;
     };
 
@@ -4318,8 +4538,8 @@ $root.BlockerAssignment = (function() {
      * Properties of a BlockerAssignment.
      * @exports IBlockerAssignment
      * @interface IBlockerAssignment
-     * @property {string|null} [attackerId] BlockerAssignment attackerId
-     * @property {Array.<string>|null} [blockers] BlockerAssignment blockers
+     * @property {string|null} [blockerId] BlockerAssignment blockerId
+     * @property {Array.<string>|null} [blockedBy] BlockerAssignment blockedBy
      */
 
     /**
@@ -4331,7 +4551,7 @@ $root.BlockerAssignment = (function() {
      * @param {IBlockerAssignment=} [properties] Properties to set
      */
     function BlockerAssignment(properties) {
-        this.blockers = [];
+        this.blockedBy = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -4339,20 +4559,20 @@ $root.BlockerAssignment = (function() {
     }
 
     /**
-     * BlockerAssignment attackerId.
-     * @member {string} attackerId
+     * BlockerAssignment blockerId.
+     * @member {string} blockerId
      * @memberof BlockerAssignment
      * @instance
      */
-    BlockerAssignment.prototype.attackerId = "";
+    BlockerAssignment.prototype.blockerId = "";
 
     /**
-     * BlockerAssignment blockers.
-     * @member {Array.<string>} blockers
+     * BlockerAssignment blockedBy.
+     * @member {Array.<string>} blockedBy
      * @memberof BlockerAssignment
      * @instance
      */
-    BlockerAssignment.prototype.blockers = $util.emptyArray;
+    BlockerAssignment.prototype.blockedBy = $util.emptyArray;
 
     /**
      * Creates a new BlockerAssignment instance using the specified properties.
@@ -4378,11 +4598,11 @@ $root.BlockerAssignment = (function() {
     BlockerAssignment.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackerId);
-        if (message.blockers != null && message.blockers.length)
-            for (var i = 0; i < message.blockers.length; ++i)
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.blockers[i]);
+        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.blockerId);
+        if (message.blockedBy != null && message.blockedBy.length)
+            for (var i = 0; i < message.blockedBy.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.blockedBy[i]);
         return writer;
     };
 
@@ -4418,12 +4638,12 @@ $root.BlockerAssignment = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message.attackerId = reader.string();
+                message.blockerId = reader.string();
                 break;
             case 2:
-                if (!(message.blockers && message.blockers.length))
-                    message.blockers = [];
-                message.blockers.push(reader.string());
+                if (!(message.blockedBy && message.blockedBy.length))
+                    message.blockedBy = [];
+                message.blockedBy.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4460,15 +4680,15 @@ $root.BlockerAssignment = (function() {
     BlockerAssignment.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
-            if (!$util.isString(message.attackerId))
-                return "attackerId: string expected";
-        if (message.blockers != null && message.hasOwnProperty("blockers")) {
-            if (!Array.isArray(message.blockers))
-                return "blockers: array expected";
-            for (var i = 0; i < message.blockers.length; ++i)
-                if (!$util.isString(message.blockers[i]))
-                    return "blockers: string[] expected";
+        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+            if (!$util.isString(message.blockerId))
+                return "blockerId: string expected";
+        if (message.blockedBy != null && message.hasOwnProperty("blockedBy")) {
+            if (!Array.isArray(message.blockedBy))
+                return "blockedBy: array expected";
+            for (var i = 0; i < message.blockedBy.length; ++i)
+                if (!$util.isString(message.blockedBy[i]))
+                    return "blockedBy: string[] expected";
         }
         return null;
     };
@@ -4485,14 +4705,14 @@ $root.BlockerAssignment = (function() {
         if (object instanceof $root.BlockerAssignment)
             return object;
         var message = new $root.BlockerAssignment();
-        if (object.attackerId != null)
-            message.attackerId = String(object.attackerId);
-        if (object.blockers) {
-            if (!Array.isArray(object.blockers))
-                throw TypeError(".BlockerAssignment.blockers: array expected");
-            message.blockers = [];
-            for (var i = 0; i < object.blockers.length; ++i)
-                message.blockers[i] = String(object.blockers[i]);
+        if (object.blockerId != null)
+            message.blockerId = String(object.blockerId);
+        if (object.blockedBy) {
+            if (!Array.isArray(object.blockedBy))
+                throw TypeError(".BlockerAssignment.blockedBy: array expected");
+            message.blockedBy = [];
+            for (var i = 0; i < object.blockedBy.length; ++i)
+                message.blockedBy[i] = String(object.blockedBy[i]);
         }
         return message;
     };
@@ -4511,15 +4731,15 @@ $root.BlockerAssignment = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.blockers = [];
+            object.blockedBy = [];
         if (options.defaults)
-            object.attackerId = "";
-        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
-            object.attackerId = message.attackerId;
-        if (message.blockers && message.blockers.length) {
-            object.blockers = [];
-            for (var j = 0; j < message.blockers.length; ++j)
-                object.blockers[j] = message.blockers[j];
+            object.blockerId = "";
+        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+            object.blockerId = message.blockerId;
+        if (message.blockedBy && message.blockedBy.length) {
+            object.blockedBy = [];
+            for (var j = 0; j < message.blockedBy.length; ++j)
+                object.blockedBy[j] = message.blockedBy[j];
         }
         return object;
     };
@@ -6546,6 +6766,193 @@ $root.JoinQueue = (function() {
     return JoinQueue;
 })();
 
+$root.LoadGame = (function() {
+
+    /**
+     * Properties of a LoadGame.
+     * @exports ILoadGame
+     * @interface ILoadGame
+     * @property {string|null} [filename] LoadGame filename
+     */
+
+    /**
+     * Constructs a new LoadGame.
+     * @exports LoadGame
+     * @classdesc Represents a LoadGame.
+     * @implements ILoadGame
+     * @constructor
+     * @param {ILoadGame=} [properties] Properties to set
+     */
+    function LoadGame(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * LoadGame filename.
+     * @member {string} filename
+     * @memberof LoadGame
+     * @instance
+     */
+    LoadGame.prototype.filename = "";
+
+    /**
+     * Creates a new LoadGame instance using the specified properties.
+     * @function create
+     * @memberof LoadGame
+     * @static
+     * @param {ILoadGame=} [properties] Properties to set
+     * @returns {LoadGame} LoadGame instance
+     */
+    LoadGame.create = function create(properties) {
+        return new LoadGame(properties);
+    };
+
+    /**
+     * Encodes the specified LoadGame message. Does not implicitly {@link LoadGame.verify|verify} messages.
+     * @function encode
+     * @memberof LoadGame
+     * @static
+     * @param {ILoadGame} message LoadGame message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    LoadGame.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.filename != null && message.hasOwnProperty("filename"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.filename);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified LoadGame message, length delimited. Does not implicitly {@link LoadGame.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof LoadGame
+     * @static
+     * @param {ILoadGame} message LoadGame message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    LoadGame.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a LoadGame message from the specified reader or buffer.
+     * @function decode
+     * @memberof LoadGame
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {LoadGame} LoadGame
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    LoadGame.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.LoadGame();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.filename = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a LoadGame message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof LoadGame
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {LoadGame} LoadGame
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    LoadGame.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a LoadGame message.
+     * @function verify
+     * @memberof LoadGame
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    LoadGame.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.filename != null && message.hasOwnProperty("filename"))
+            if (!$util.isString(message.filename))
+                return "filename: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a LoadGame message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof LoadGame
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {LoadGame} LoadGame
+     */
+    LoadGame.fromObject = function fromObject(object) {
+        if (object instanceof $root.LoadGame)
+            return object;
+        var message = new $root.LoadGame();
+        if (object.filename != null)
+            message.filename = String(object.filename);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a LoadGame message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof LoadGame
+     * @static
+     * @param {LoadGame} message LoadGame
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    LoadGame.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.filename = "";
+        if (message.filename != null && message.hasOwnProperty("filename"))
+            object.filename = message.filename;
+        return object;
+    };
+
+    /**
+     * Converts this LoadGame to JSON.
+     * @function toJSON
+     * @memberof LoadGame
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    LoadGame.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return LoadGame;
+})();
+
 $root.RegisterGameConnection = (function() {
 
     /**
@@ -6741,6 +7148,7 @@ $root.ClientMessage = (function() {
      * @interface IClientMessage
      * @property {IJoinQueue|null} [joinQueue] ClientMessage joinQueue
      * @property {IRegisterGameConnection|null} [registerGameConnection] ClientMessage registerGameConnection
+     * @property {ILoadGame|null} [loadGame] ClientMessage loadGame
      */
 
     /**
@@ -6774,17 +7182,25 @@ $root.ClientMessage = (function() {
      */
     ClientMessage.prototype.registerGameConnection = null;
 
+    /**
+     * ClientMessage loadGame.
+     * @member {ILoadGame|null|undefined} loadGame
+     * @memberof ClientMessage
+     * @instance
+     */
+    ClientMessage.prototype.loadGame = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientMessage payload.
-     * @member {"joinQueue"|"registerGameConnection"|undefined} payload
+     * @member {"joinQueue"|"registerGameConnection"|"loadGame"|undefined} payload
      * @memberof ClientMessage
      * @instance
      */
     Object.defineProperty(ClientMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["joinQueue", "registerGameConnection"]),
+        get: $util.oneOfGetter($oneOfFields = ["joinQueue", "registerGameConnection", "loadGame"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -6816,6 +7232,8 @@ $root.ClientMessage = (function() {
             $root.JoinQueue.encode(message.joinQueue, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.registerGameConnection != null && message.hasOwnProperty("registerGameConnection"))
             $root.RegisterGameConnection.encode(message.registerGameConnection, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+        if (message.loadGame != null && message.hasOwnProperty("loadGame"))
+            $root.LoadGame.encode(message.loadGame, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
         return writer;
     };
 
@@ -6855,6 +7273,9 @@ $root.ClientMessage = (function() {
                 break;
             case 11:
                 message.registerGameConnection = $root.RegisterGameConnection.decode(reader, reader.uint32());
+                break;
+            case 12:
+                message.loadGame = $root.LoadGame.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6910,6 +7331,16 @@ $root.ClientMessage = (function() {
                     return "registerGameConnection." + error;
             }
         }
+        if (message.loadGame != null && message.hasOwnProperty("loadGame")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.LoadGame.verify(message.loadGame);
+                if (error)
+                    return "loadGame." + error;
+            }
+        }
         return null;
     };
 
@@ -6934,6 +7365,11 @@ $root.ClientMessage = (function() {
             if (typeof object.registerGameConnection !== "object")
                 throw TypeError(".ClientMessage.registerGameConnection: object expected");
             message.registerGameConnection = $root.RegisterGameConnection.fromObject(object.registerGameConnection);
+        }
+        if (object.loadGame != null) {
+            if (typeof object.loadGame !== "object")
+                throw TypeError(".ClientMessage.loadGame: object expected");
+            message.loadGame = $root.LoadGame.fromObject(object.loadGame);
         }
         return message;
     };
@@ -6960,6 +7396,11 @@ $root.ClientMessage = (function() {
             object.registerGameConnection = $root.RegisterGameConnection.toObject(message.registerGameConnection, options);
             if (options.oneofs)
                 object.payload = "registerGameConnection";
+        }
+        if (message.loadGame != null && message.hasOwnProperty("loadGame")) {
+            object.loadGame = $root.LoadGame.toObject(message.loadGame, options);
+            if (options.oneofs)
+                object.payload = "loadGame";
         }
         return object;
     };
@@ -7631,8 +8072,7 @@ $root.SelectFrom = (function() {
      * @property {IGameState|null} [game] SelectFrom game
      * @property {number|null} [selectionCount] SelectFrom selectionCount
      * @property {Array.<ICard>|null} [candidates] SelectFrom candidates
-     * @property {Array.<string>|null} [canSelected] SelectFrom canSelected
-     * @property {Array.<string>|null} [canSelectedPlayers] SelectFrom canSelectedPlayers
+     * @property {Array.<string>|null} [selectable] SelectFrom selectable
      * @property {boolean|null} [upTo] SelectFrom upTo
      */
 
@@ -7646,8 +8086,7 @@ $root.SelectFrom = (function() {
      */
     function SelectFrom(properties) {
         this.candidates = [];
-        this.canSelected = [];
-        this.canSelectedPlayers = [];
+        this.selectable = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -7687,20 +8126,12 @@ $root.SelectFrom = (function() {
     SelectFrom.prototype.candidates = $util.emptyArray;
 
     /**
-     * SelectFrom canSelected.
-     * @member {Array.<string>} canSelected
+     * SelectFrom selectable.
+     * @member {Array.<string>} selectable
      * @memberof SelectFrom
      * @instance
      */
-    SelectFrom.prototype.canSelected = $util.emptyArray;
-
-    /**
-     * SelectFrom canSelectedPlayers.
-     * @member {Array.<string>} canSelectedPlayers
-     * @memberof SelectFrom
-     * @instance
-     */
-    SelectFrom.prototype.canSelectedPlayers = $util.emptyArray;
+    SelectFrom.prototype.selectable = $util.emptyArray;
 
     /**
      * SelectFrom upTo.
@@ -7743,14 +8174,11 @@ $root.SelectFrom = (function() {
         if (message.candidates != null && message.candidates.length)
             for (var i = 0; i < message.candidates.length; ++i)
                 $root.Card.encode(message.candidates[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.canSelected != null && message.canSelected.length)
-            for (var i = 0; i < message.canSelected.length; ++i)
-                writer.uint32(/* id 5, wireType 2 =*/42).string(message.canSelected[i]);
+        if (message.selectable != null && message.selectable.length)
+            for (var i = 0; i < message.selectable.length; ++i)
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.selectable[i]);
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             writer.uint32(/* id 6, wireType 0 =*/48).bool(message.upTo);
-        if (message.canSelectedPlayers != null && message.canSelectedPlayers.length)
-            for (var i = 0; i < message.canSelectedPlayers.length; ++i)
-                writer.uint32(/* id 7, wireType 2 =*/58).string(message.canSelectedPlayers[i]);
         return writer;
     };
 
@@ -7800,14 +8228,9 @@ $root.SelectFrom = (function() {
                 message.candidates.push($root.Card.decode(reader, reader.uint32()));
                 break;
             case 5:
-                if (!(message.canSelected && message.canSelected.length))
-                    message.canSelected = [];
-                message.canSelected.push(reader.string());
-                break;
-            case 7:
-                if (!(message.canSelectedPlayers && message.canSelectedPlayers.length))
-                    message.canSelectedPlayers = [];
-                message.canSelectedPlayers.push(reader.string());
+                if (!(message.selectable && message.selectable.length))
+                    message.selectable = [];
+                message.selectable.push(reader.string());
                 break;
             case 6:
                 message.upTo = reader.bool();
@@ -7877,19 +8300,12 @@ $root.SelectFrom = (function() {
                     return "candidates." + error;
             }
         }
-        if (message.canSelected != null && message.hasOwnProperty("canSelected")) {
-            if (!Array.isArray(message.canSelected))
-                return "canSelected: array expected";
-            for (var i = 0; i < message.canSelected.length; ++i)
-                if (!$util.isString(message.canSelected[i]))
-                    return "canSelected: string[] expected";
-        }
-        if (message.canSelectedPlayers != null && message.hasOwnProperty("canSelectedPlayers")) {
-            if (!Array.isArray(message.canSelectedPlayers))
-                return "canSelectedPlayers: array expected";
-            for (var i = 0; i < message.canSelectedPlayers.length; ++i)
-                if (!$util.isString(message.canSelectedPlayers[i]))
-                    return "canSelectedPlayers: string[] expected";
+        if (message.selectable != null && message.hasOwnProperty("selectable")) {
+            if (!Array.isArray(message.selectable))
+                return "selectable: array expected";
+            for (var i = 0; i < message.selectable.length; ++i)
+                if (!$util.isString(message.selectable[i]))
+                    return "selectable: string[] expected";
         }
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             if (typeof message.upTo !== "boolean")
@@ -7956,19 +8372,12 @@ $root.SelectFrom = (function() {
                 message.candidates[i] = $root.Card.fromObject(object.candidates[i]);
             }
         }
-        if (object.canSelected) {
-            if (!Array.isArray(object.canSelected))
-                throw TypeError(".SelectFrom.canSelected: array expected");
-            message.canSelected = [];
-            for (var i = 0; i < object.canSelected.length; ++i)
-                message.canSelected[i] = String(object.canSelected[i]);
-        }
-        if (object.canSelectedPlayers) {
-            if (!Array.isArray(object.canSelectedPlayers))
-                throw TypeError(".SelectFrom.canSelectedPlayers: array expected");
-            message.canSelectedPlayers = [];
-            for (var i = 0; i < object.canSelectedPlayers.length; ++i)
-                message.canSelectedPlayers[i] = String(object.canSelectedPlayers[i]);
+        if (object.selectable) {
+            if (!Array.isArray(object.selectable))
+                throw TypeError(".SelectFrom.selectable: array expected");
+            message.selectable = [];
+            for (var i = 0; i < object.selectable.length; ++i)
+                message.selectable[i] = String(object.selectable[i]);
         }
         if (object.upTo != null)
             message.upTo = Boolean(object.upTo);
@@ -7990,8 +8399,7 @@ $root.SelectFrom = (function() {
         var object = {};
         if (options.arrays || options.defaults) {
             object.candidates = [];
-            object.canSelected = [];
-            object.canSelectedPlayers = [];
+            object.selectable = [];
         }
         if (options.defaults) {
             object.messageType = options.enums === String ? "NOTYPE" : 0;
@@ -8010,18 +8418,13 @@ $root.SelectFrom = (function() {
             for (var j = 0; j < message.candidates.length; ++j)
                 object.candidates[j] = $root.Card.toObject(message.candidates[j], options);
         }
-        if (message.canSelected && message.canSelected.length) {
-            object.canSelected = [];
-            for (var j = 0; j < message.canSelected.length; ++j)
-                object.canSelected[j] = message.canSelected[j];
+        if (message.selectable && message.selectable.length) {
+            object.selectable = [];
+            for (var j = 0; j < message.selectable.length; ++j)
+                object.selectable[j] = message.selectable[j];
         }
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             object.upTo = message.upTo;
-        if (message.canSelectedPlayers && message.canSelectedPlayers.length) {
-            object.canSelectedPlayers = [];
-            for (var j = 0; j < message.canSelectedPlayers.length; ++j)
-                object.canSelectedPlayers[j] = message.canSelectedPlayers[j];
-        }
         return object;
     };
 
@@ -8261,7 +8664,7 @@ $root.SelectAttackers = (function() {
      * @exports ISelectAttackers
      * @interface ISelectAttackers
      * @property {IGameState|null} [game] SelectAttackers game
-     * @property {Array.<IAttacker>|null} [canAttack] SelectAttackers canAttack
+     * @property {Array.<IAttacker>|null} [possibleAttackers] SelectAttackers possibleAttackers
      */
 
     /**
@@ -8273,7 +8676,7 @@ $root.SelectAttackers = (function() {
      * @param {ISelectAttackers=} [properties] Properties to set
      */
     function SelectAttackers(properties) {
-        this.canAttack = [];
+        this.possibleAttackers = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -8289,12 +8692,12 @@ $root.SelectAttackers = (function() {
     SelectAttackers.prototype.game = null;
 
     /**
-     * SelectAttackers canAttack.
-     * @member {Array.<IAttacker>} canAttack
+     * SelectAttackers possibleAttackers.
+     * @member {Array.<IAttacker>} possibleAttackers
      * @memberof SelectAttackers
      * @instance
      */
-    SelectAttackers.prototype.canAttack = $util.emptyArray;
+    SelectAttackers.prototype.possibleAttackers = $util.emptyArray;
 
     /**
      * Creates a new SelectAttackers instance using the specified properties.
@@ -8322,9 +8725,9 @@ $root.SelectAttackers = (function() {
             writer = $Writer.create();
         if (message.game != null && message.hasOwnProperty("game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.canAttack != null && message.canAttack.length)
-            for (var i = 0; i < message.canAttack.length; ++i)
-                $root.Attacker.encode(message.canAttack[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.possibleAttackers != null && message.possibleAttackers.length)
+            for (var i = 0; i < message.possibleAttackers.length; ++i)
+                $root.Attacker.encode(message.possibleAttackers[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -8363,9 +8766,9 @@ $root.SelectAttackers = (function() {
                 message.game = $root.GameState.decode(reader, reader.uint32());
                 break;
             case 2:
-                if (!(message.canAttack && message.canAttack.length))
-                    message.canAttack = [];
-                message.canAttack.push($root.Attacker.decode(reader, reader.uint32()));
+                if (!(message.possibleAttackers && message.possibleAttackers.length))
+                    message.possibleAttackers = [];
+                message.possibleAttackers.push($root.Attacker.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -8407,13 +8810,13 @@ $root.SelectAttackers = (function() {
             if (error)
                 return "game." + error;
         }
-        if (message.canAttack != null && message.hasOwnProperty("canAttack")) {
-            if (!Array.isArray(message.canAttack))
-                return "canAttack: array expected";
-            for (var i = 0; i < message.canAttack.length; ++i) {
-                var error = $root.Attacker.verify(message.canAttack[i]);
+        if (message.possibleAttackers != null && message.hasOwnProperty("possibleAttackers")) {
+            if (!Array.isArray(message.possibleAttackers))
+                return "possibleAttackers: array expected";
+            for (var i = 0; i < message.possibleAttackers.length; ++i) {
+                var error = $root.Attacker.verify(message.possibleAttackers[i]);
                 if (error)
-                    return "canAttack." + error;
+                    return "possibleAttackers." + error;
             }
         }
         return null;
@@ -8436,14 +8839,14 @@ $root.SelectAttackers = (function() {
                 throw TypeError(".SelectAttackers.game: object expected");
             message.game = $root.GameState.fromObject(object.game);
         }
-        if (object.canAttack) {
-            if (!Array.isArray(object.canAttack))
-                throw TypeError(".SelectAttackers.canAttack: array expected");
-            message.canAttack = [];
-            for (var i = 0; i < object.canAttack.length; ++i) {
-                if (typeof object.canAttack[i] !== "object")
-                    throw TypeError(".SelectAttackers.canAttack: object expected");
-                message.canAttack[i] = $root.Attacker.fromObject(object.canAttack[i]);
+        if (object.possibleAttackers) {
+            if (!Array.isArray(object.possibleAttackers))
+                throw TypeError(".SelectAttackers.possibleAttackers: array expected");
+            message.possibleAttackers = [];
+            for (var i = 0; i < object.possibleAttackers.length; ++i) {
+                if (typeof object.possibleAttackers[i] !== "object")
+                    throw TypeError(".SelectAttackers.possibleAttackers: object expected");
+                message.possibleAttackers[i] = $root.Attacker.fromObject(object.possibleAttackers[i]);
             }
         }
         return message;
@@ -8463,15 +8866,15 @@ $root.SelectAttackers = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.canAttack = [];
+            object.possibleAttackers = [];
         if (options.defaults)
             object.game = null;
         if (message.game != null && message.hasOwnProperty("game"))
             object.game = $root.GameState.toObject(message.game, options);
-        if (message.canAttack && message.canAttack.length) {
-            object.canAttack = [];
-            for (var j = 0; j < message.canAttack.length; ++j)
-                object.canAttack[j] = $root.Attacker.toObject(message.canAttack[j], options);
+        if (message.possibleAttackers && message.possibleAttackers.length) {
+            object.possibleAttackers = [];
+            for (var j = 0; j < message.possibleAttackers.length; ++j)
+                object.possibleAttackers[j] = $root.Attacker.toObject(message.possibleAttackers[j], options);
         }
         return object;
     };
@@ -8497,7 +8900,7 @@ $root.SelectBlockers = (function() {
      * @exports ISelectBlockers
      * @interface ISelectBlockers
      * @property {IGameState|null} [game] SelectBlockers game
-     * @property {Array.<IBlocker>|null} [canBlock] SelectBlockers canBlock
+     * @property {Array.<IBlocker>|null} [possibleBlockers] SelectBlockers possibleBlockers
      */
 
     /**
@@ -8509,7 +8912,7 @@ $root.SelectBlockers = (function() {
      * @param {ISelectBlockers=} [properties] Properties to set
      */
     function SelectBlockers(properties) {
-        this.canBlock = [];
+        this.possibleBlockers = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -8525,12 +8928,12 @@ $root.SelectBlockers = (function() {
     SelectBlockers.prototype.game = null;
 
     /**
-     * SelectBlockers canBlock.
-     * @member {Array.<IBlocker>} canBlock
+     * SelectBlockers possibleBlockers.
+     * @member {Array.<IBlocker>} possibleBlockers
      * @memberof SelectBlockers
      * @instance
      */
-    SelectBlockers.prototype.canBlock = $util.emptyArray;
+    SelectBlockers.prototype.possibleBlockers = $util.emptyArray;
 
     /**
      * Creates a new SelectBlockers instance using the specified properties.
@@ -8558,9 +8961,9 @@ $root.SelectBlockers = (function() {
             writer = $Writer.create();
         if (message.game != null && message.hasOwnProperty("game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.canBlock != null && message.canBlock.length)
-            for (var i = 0; i < message.canBlock.length; ++i)
-                $root.Blocker.encode(message.canBlock[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.possibleBlockers != null && message.possibleBlockers.length)
+            for (var i = 0; i < message.possibleBlockers.length; ++i)
+                $root.Blocker.encode(message.possibleBlockers[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -8599,9 +9002,9 @@ $root.SelectBlockers = (function() {
                 message.game = $root.GameState.decode(reader, reader.uint32());
                 break;
             case 2:
-                if (!(message.canBlock && message.canBlock.length))
-                    message.canBlock = [];
-                message.canBlock.push($root.Blocker.decode(reader, reader.uint32()));
+                if (!(message.possibleBlockers && message.possibleBlockers.length))
+                    message.possibleBlockers = [];
+                message.possibleBlockers.push($root.Blocker.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -8643,13 +9046,13 @@ $root.SelectBlockers = (function() {
             if (error)
                 return "game." + error;
         }
-        if (message.canBlock != null && message.hasOwnProperty("canBlock")) {
-            if (!Array.isArray(message.canBlock))
-                return "canBlock: array expected";
-            for (var i = 0; i < message.canBlock.length; ++i) {
-                var error = $root.Blocker.verify(message.canBlock[i]);
+        if (message.possibleBlockers != null && message.hasOwnProperty("possibleBlockers")) {
+            if (!Array.isArray(message.possibleBlockers))
+                return "possibleBlockers: array expected";
+            for (var i = 0; i < message.possibleBlockers.length; ++i) {
+                var error = $root.Blocker.verify(message.possibleBlockers[i]);
                 if (error)
-                    return "canBlock." + error;
+                    return "possibleBlockers." + error;
             }
         }
         return null;
@@ -8672,14 +9075,14 @@ $root.SelectBlockers = (function() {
                 throw TypeError(".SelectBlockers.game: object expected");
             message.game = $root.GameState.fromObject(object.game);
         }
-        if (object.canBlock) {
-            if (!Array.isArray(object.canBlock))
-                throw TypeError(".SelectBlockers.canBlock: array expected");
-            message.canBlock = [];
-            for (var i = 0; i < object.canBlock.length; ++i) {
-                if (typeof object.canBlock[i] !== "object")
-                    throw TypeError(".SelectBlockers.canBlock: object expected");
-                message.canBlock[i] = $root.Blocker.fromObject(object.canBlock[i]);
+        if (object.possibleBlockers) {
+            if (!Array.isArray(object.possibleBlockers))
+                throw TypeError(".SelectBlockers.possibleBlockers: array expected");
+            message.possibleBlockers = [];
+            for (var i = 0; i < object.possibleBlockers.length; ++i) {
+                if (typeof object.possibleBlockers[i] !== "object")
+                    throw TypeError(".SelectBlockers.possibleBlockers: object expected");
+                message.possibleBlockers[i] = $root.Blocker.fromObject(object.possibleBlockers[i]);
             }
         }
         return message;
@@ -8699,15 +9102,15 @@ $root.SelectBlockers = (function() {
             options = {};
         var object = {};
         if (options.arrays || options.defaults)
-            object.canBlock = [];
+            object.possibleBlockers = [];
         if (options.defaults)
             object.game = null;
         if (message.game != null && message.hasOwnProperty("game"))
             object.game = $root.GameState.toObject(message.game, options);
-        if (message.canBlock && message.canBlock.length) {
-            object.canBlock = [];
-            for (var j = 0; j < message.canBlock.length; ++j)
-                object.canBlock[j] = $root.Blocker.toObject(message.canBlock[j], options);
+        if (message.possibleBlockers && message.possibleBlockers.length) {
+            object.possibleBlockers = [];
+            for (var j = 0; j < message.possibleBlockers.length; ++j)
+                object.possibleBlockers[j] = $root.Blocker.toObject(message.possibleBlockers[j], options);
         }
         return object;
     };

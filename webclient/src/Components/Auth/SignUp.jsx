@@ -35,10 +35,10 @@ class SignUp extends Component {
 
     firebase
       .doCreateUserWithEmailAndPassword(email, password)
-      .then(authUser => {
-        updateState({ authUser: authUser});
-        firebase.createNewUser(authUser.user.uid, username);
-        firebase.setUserData(authUser.user.uid, updateState);
+      .then(firebaseAuthData => {
+        updateState({ firebaseAuthData: firebaseAuthData});
+        firebase.createNewUser(firebaseAuthData.user.uid, username);
+        firebase.setUserData(firebaseAuthData.user.uid, updateState);
         this.setState({ value: 1 });
       })
       .catch(error => {

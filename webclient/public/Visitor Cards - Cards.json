@@ -1381,6 +1381,18 @@
   },
   {
     "Code": "",
+    "Name": "Goblin Ally",
+    "Type": "Ally",
+    "Subtype": "Goblin",
+    "Effect": "",
+    "Attack": "",
+    "Health": 2,
+    "Energy": 0,
+    "Knowledge": "",
+    "Flavor": "FOR TESTING"
+  },
+  {
+    "Code": "",
     "Name": "",
     "Type": "",
     "Subtype": "",

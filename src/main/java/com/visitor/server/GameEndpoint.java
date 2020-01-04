@@ -1,6 +1,7 @@
 package com.visitor.server;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.visitor.protocol.ClientGameMessages;
 import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
 import com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
@@ -58,6 +59,8 @@ public class GameEndpoint {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
                 //writeToLog(cgm);
+                out.println("Received Message");
+                out.println(cgm);
                 if (waitingResponse){
                     processResponse(cgm);
                 } else {
@@ -84,6 +87,8 @@ public class GameEndpoint {
         ServerGameMessage message = builder.build();
         //writeToLog(message);
         checkResponseType(message);
+        out.println("Sent Message");
+        out.println(message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
     
@@ -94,7 +99,7 @@ public class GameEndpoint {
     public void resendLastMessage() throws IOException, EncodeException {
         ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, username);
         if (lastMessage != null) {
-            out.println("Resending last message to "+username+" "+lastMessage);
+            //out.println("Resending last message to "+username+" "+lastMessage);
             checkResponseType(lastMessage);
             session.getBasicRemote().sendObject(lastMessage.toByteArray());
         }
@@ -104,6 +109,10 @@ public class GameEndpoint {
         if (message.getPayloadCase() == CONCEDE){
                 gameServer.concede(gameID, username);
                 return;
+        }
+        if (message.getPayloadCase() == SAVEGAMESTATE){
+            gameServer.saveGameState(gameID, message.getSaveGameState().getFilename());
+            return;
         }
         if (message.getPayloadCase() == responseType){
             switch(message.getPayloadCase()){
@@ -120,7 +129,7 @@ public class GameEndpoint {
                         break;
                     }
                     waitingResponse = false;
-                    gameServer.addToResponseQueue(gameID, sfr.getSelectedCardsList().toArray(new String[sfr.getSelectedCardsCount()]));
+                    gameServer.addToResponseQueue(gameID, sfr.getSelectedList().toArray(new String[sfr.getSelectedCount()]));
                     break;
                 case SELECTXVALUERESPONSE:
                     waitingResponse = false;
@@ -169,6 +178,9 @@ public class GameEndpoint {
                 break;
             case CONCEDE:
                 gameServer.concede(gameID, username);
+                break;
+            case SAVEGAMESTATE:
+                gameServer.saveGameState(gameID, message.getSaveGameState().getFilename());
                 break;
             default:
                 out.println("Unexpected message from " + username + ": " + message);

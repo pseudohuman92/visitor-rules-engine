@@ -23,6 +23,14 @@ class EscapeMenu extends Component {
             <DialogTitle>{"MENU"}</DialogTitle>
             <DialogContent>
               <Grid container spacing={8} justify="center">
+              <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    onClick={event => this.props.gameHandler.SaveGameState("dummy")}
+                  >
+                    Save Game
+                  </Button>
+                </Grid>
                 <Grid item xs={12}>
                   <Button
                     variant="contained"

@@ -20,7 +20,7 @@ const mapStateToProps = state => {
   return {
     collection: state.collection,
     dust: state.dust,
-    userId: state.authUser.user.uid
+    userId: state.firebaseAuthData.user.uid
   };
 };
 

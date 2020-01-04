@@ -8,11 +8,13 @@ package com.visitor.sets.set1;
 import com.visitor.card.types.Unit;
 import com.visitor.helpers.Hashmap;
 
+import java.io.Serializable;
+
 /**
  *
  * @author pseudo
  */
-public class Rat extends Unit {
+public class Rat extends Unit implements Serializable {
 
     public Rat(String owner) {
         super("Rat", 

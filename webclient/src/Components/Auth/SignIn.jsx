@@ -14,14 +14,15 @@ import { withFirebase } from "../Firebase";
 import Profile from "../MainScreens/Profile";
 import PasswordReset from "./PasswordReset";
 import { mapDispatchToProps } from "../Redux/Store";
+import { isProduction } from "../Helpers/Constants";
 
 class SignIn extends Component {
   state = {
-      value: 0,
-      email: "",
-      password: "",
-      error: null
-    };
+    value: 0,
+    email: "",
+    password: "",
+    error: null
+  };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -33,9 +34,41 @@ class SignIn extends Component {
 
     firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(authUser => {
-        updateState({ authUser: authUser });
-        firebase.setUserData(authUser.user.uid, updateState);
+      .then(firebaseAuthData => {
+        updateState({ firebaseAuthData: firebaseAuthData });
+        firebase.setUserData(firebaseAuthData.user.uid, updateState);
+        this.setState({ value: 1 });
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
+
+    event.preventDefault();
+  };
+
+  Test1 = event => {
+    const { firebase, updateState } = this.props;
+    firebase
+      .doSignInWithEmailAndPassword("atalaymertileri@gmail.com", "asdqwe")
+      .then(firebaseAuthData => {
+        updateState({ firebaseAuthData: firebaseAuthData });
+        firebase.setUserData(firebaseAuthData.user.uid, updateState);
+        this.setState({ value: 1 });
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
+
+    event.preventDefault();
+  };
+
+  Test2 = event => {
+    const { firebase, updateState } = this.props;
+    firebase
+      .doSignInWithEmailAndPassword("atalaymertileri@gmail.coma", "asdqwe")
+      .then(firebaseAuthData => {
+        updateState({ firebaseAuthData: firebaseAuthData });
+        firebase.setUserData(firebaseAuthData.user.uid, updateState);
         this.setState({ value: 1 });
       })
       .catch(error => {
@@ -82,6 +115,16 @@ class SignIn extends Component {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+              {!isProduction && (
+                <Button type="submit" variant="contained" onClick={this.Test1}>
+                  Tester 1
+                </Button>
+              )}
+              {!isProduction && (
+                <Button type="submit" variant="contained" onClick={this.Test2}>
+                  Tester 2
+                </Button>
+              )}
               <Button
                 disabled={isInvalid}
                 type="submit"
@@ -107,7 +150,4 @@ class SignIn extends Component {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withFirebase(SignIn));
+export default connect(null, mapDispatchToProps)(withFirebase(SignIn));

@@ -3,7 +3,7 @@ import { DragSource, DropTarget } from "react-dnd";
 import { connect } from "react-redux";
 
 import CardDisplay from "./CardDisplay";
-import { ItemTypes, keywords } from "../Helpers/Constants";
+import { ItemTypes, keywords, ClientPhase } from "../Helpers/Constants";
 import { cardSource, cardTarget } from "./PlayingCardDnd";
 
 import proto from "../../protojs/compiled.js";
@@ -15,16 +15,16 @@ import { debug } from "util";
 
 const mapStateToProps = state => {
   return {
-    phase: state.extendedGameState.phase,
+    clientPhase: state.extendedGameState.clientPhase,
+
     playableCards: state.extendedGameState.game.canPlay,
     studyableCards: state.extendedGameState.game.canStudy,
     activatableCards: state.extendedGameState.game.canActivate,
-    selectedCards: state.extendedGameState.selectedCards,
-    selectableCards: state.extendedGameState.selectableCards,
+
+    selectionData: state.extendedGameState.selectionData,
+    attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
+
     displayTargets: state.extendedGameState.targets,
-    selectCountMax: state.extendedGameState.selectCountMax,
-    canAttack: state.extendedGameState.canAttack,
-    attacking: state.extendedGameState.attacking,
     attackers: state.extendedGameState.game.attackers,
   };
 };
@@ -75,47 +75,97 @@ export class PlayingCard extends React.Component {
     this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
-  toggleAttacking = attackTargets => event => {
+  unsetAttacking = event => {
     let id = this.props.id;
-    let attacking = [...this.props.attacking];
-    console.log(attacking);
-    if (attacking.includes(id)) {
-      attacking.splice(attacking.indexOf(id), 1);
-      this.props.updateExtendedGameState({
-        attacking: attacking
-      });
-    } else {
-
-      attacking.push(id);
-      this.props.updateExtendedGameState({
-        attacking: attacking
-      });
+    let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
+    let attackerAssignmentIds = attackerAssignments.map(a=>{return a.attackerId;});
+    
+    if (attackerAssignmentIds.indexOf(id) > -1 ) {
+      attackerAssignments.splice(attackerAssignmentIds.indexOf(id), 1);
     }
+    
+    this.props.updateExtendedGameState({
+      attackerAssignmentData: {
+        currentAttacker: "",
+        possibleAttackTargets: [],  
+        attackerAssignments: attackerAssignments
+      }
+    });
+  };
+
+  setAttacking = event => {
+    let id = this.props.id;
+
+    let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
+    let possibleAttackers = this.props.attackerAssignmentData.possibleAttackers;
+    let possibleAttackerIds = possibleAttackers.map(a=>{return a.attackerId});
+    let possibleAttackerEntry = possibleAttackers[possibleAttackerIds.indexOf(id)];
+    let possibleAttackTargets = possibleAttackerEntry.possibleAttackTargets;
+
+    if (possibleAttackTargets.length === 1) {
+        attackerAssignments.push({attackerId: id, attacksTo: possibleAttackTargets[0] });
+        this.props.updateExtendedGameState({
+          attackerAssignmentData: {
+            currentAttacker: "",
+            possibleAttackTargets: [],
+            attackerAssignments: attackerAssignments
+          }
+        });
+      } else {
+        this.props.updateExtendedGameState({
+          attackerAssignmentData: {
+            currentAttacker: id,
+            possibleAttackTargets: possibleAttackTargets
+          }
+        });
+      }
+    };
+
+  setAttacked = event => {
+    let id = this.props.id;
+
+    let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
+    let currentAttacker = this.props.attackerAssignmentData.currentAttacker;
+
+    attackerAssignments.push({attackerId: currentAttacker, attacksTo: id });
+    this.props.updateExtendedGameState({
+      attackerAssignmentData: {
+        currentAttacker: "",
+        possibleAttackTargets: [],
+        attackerAssignments: attackerAssignments
+      }
+    });
   };
 
   select = event => {
     let id = this.props.id;
-    let selected = [...this.props.selectedCards];
-    let maxCount = this.props.selectCountMax;
-    let phase = this.props.phase;
+    let selected = [...this.props.selectionData.selected];
+    let maxCount = this.props.selectionData.selectionCount;
+    let clientPhase = this.props.clientPhase;
 
     if (selected.length < maxCount) {
       selected.push(id);
-      this.props.updateExtendedGameState({ selectedCards: selected });
+      this.props.updateExtendedGameState({
+        selectionData: {
+           selected: selected 
+        }
+      });
     }
     if (selected.length === maxCount) {
-      this.props.gameHandler.SelectDone(phase, selected);
+      this.props.gameHandler.SelectDone(clientPhase, selected);
     }
   };
 
   unselect = event => {
     let id = this.props.id;
-    let selected = [...this.props.selectedCards];
+    let selected = [...this.props.selectionData.selected];
 
     if (selected.includes(id)) {
       selected.splice(selected.indexOf(id), 1);
       this.props.updateExtendedGameState({
-        selectedCards: selected
+        selectionData: {
+          selected: selected
+        }
       });
     }
   };
@@ -123,20 +173,22 @@ export class PlayingCard extends React.Component {
   render() {
     const {
       id,
+      clientPhase,
       depleted,
       deploying,
+
       isOver,
       canDrop,
       isDragging,
       connectDragSource,
-      selectableCards,
-      selectedCards,
+
+      selectionData,
+      attackerAssignmentData,
+
       displayTargets,
       activatableCards,
       playableCards,
-      canAttack,
-      attackers,
-      attacking,
+
       gameHandler,
       small,
       square,
@@ -146,34 +198,54 @@ export class PlayingCard extends React.Component {
 
     const activatable = activatableCards.includes(id);
     const playable = playableCards.includes(id);
-    const selectable = selectableCards.includes(id);
-    const selected = selectedCards.includes(id);
+    const selectable_ = selectionData.selectable.includes(id);
+    const selected_ = selectionData.selected.includes(id);
     const targeted = displayTargets.includes(id);
-    const canAttack_ = canAttack.map(c => {return c.attackerId}).includes(id);
-    const attacking_ = attacking.includes(id) || attackers.includes(id);
+
+    const attacking = 
+      clientPhase === ClientPhase.SELECT_ATTACKERS &&
+      (attackerAssignmentData.attackerAssignments.map(c => {return c.attackerId}).includes(id) || 
+        attackerAssignmentData.currentAttacker === id);
+    const canAttack =     
+        !attacking && 
+        !attackerAssignmentData.currentAttacker &&
+        clientPhase === ClientPhase.SELECT_ATTACKERS &&
+        attackerAssignmentData.possibleAttackers.map(c => {return c.attackerId}).includes(id);
+    const canBeAttacked = 
+      clientPhase === ClientPhase.SELECT_ATTACKERS &&
+      attackerAssignmentData.currentAttacker &&
+      attackerAssignmentData.possibleAttackTargets.includes(id);
 
     var borderColor = "";
     if (isDragging) {
-      borderColor = "yellow";
-    } else if ((canDrop && isOver) || attacking_) {
+      //borderColor = "yellow";
+    } else if ((canDrop && isOver) || attacking) {
       borderColor = "red";
-    } else if (canAttack_ || targeted) {
+    } else if (targeted) {
       borderColor = "yellow";
-    } else if (selected) {
-      borderColor = "magenta";
-    } else if (selectable) {
-      borderColor = "green";
-    } else if (activatable || playable) {
+    } else if (selected_) {
       borderColor = "blue";
+    } else if (canAttack || 
+              canBeAttacked || 
+              selectable_ || 
+              activatable || 
+              playable) {
+      borderColor = "green";
     }
 
 
     let clickHandler = undefined;
-    if (canAttack_){
-      clickHandler = this.toggleAttacking();
-    } else if (selected) {
+    if (canAttack){
+      clickHandler = this.setAttacking;
+      console.log("Set Attacking");
+    } else if (attacking){
+        clickHandler = this.unsetAttacking;
+        console.log("Unset Attacking");
+    } else if (canBeAttacked) {
+      clickHandler = this.setAttacked;
+    } else if (selected_) {
       clickHandler = this.unselect;
-    } else if (selectable) {
+    } else if (selectable_) {
       clickHandler = this.select;
     } else if (activatable) {
       clickHandler = event => {
@@ -202,6 +274,7 @@ export class PlayingCard extends React.Component {
         onMouseLeave={this.onMouseLeave}
         style={{width:"100%", height:"100%", position:"relative", ...style}}
       >
+        {!isDragging &&
         <div
           style={{
             position: "absolute",
@@ -242,7 +315,7 @@ export class PlayingCard extends React.Component {
               return (<div key={i}/>);
             })}
           </div>
-        </div>
+        </div>}
         <CardDisplay
           opacity={opacity}
           borderColor={borderColor}

@@ -9,15 +9,15 @@ import { connect } from "react-redux";
 import PlayingCard from "../Card/PlayingCard";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
-import { GamePhases } from "../Helpers/Constants";
+import { ClientPhase } from "../Helpers/Constants";
 
 import "../../css/ChooseDialog.css";
 
 const mapStateToProps = state => {
   return {
-    phase: state.extendedGameState.phase,
-    selectedCards: state.extendedGameState.selectedCards,
-    dialog: state.extendedGameState.dialog,
+    clientPhase: state.extendedGameState.clientPhase,
+    selected: state.extendedGameState.selectionData.selected,
+    dialog: state.extendedGameState.dialogData,
     upTo: state.extendedGameState.upTo,
   };
 };
@@ -25,7 +25,7 @@ const mapStateToProps = state => {
 class ChooseDialog extends Component {
   onClose = event => {
     this.props.updateExtendedGameState({
-      dialog: {
+      dialogData: {
         title: "",
         cards: [],
         open: false
@@ -34,18 +34,18 @@ class ChooseDialog extends Component {
   };
 
   selectDone = event => {
-    let selected = [...this.props.selectedCards];
-    let phase = this.props.phase;
-    this.props.gameHandler.SelectDone(phase, selected);
+    let selected = [...this.props.selected];
+    let clientPhase = this.props.clientPhase;
+    this.props.gameHandler.SelectDone(clientPhase, selected);
   };
 
   render = () => {
-    const { phase, dialog, upTo } = this.props;
+    const { clientPhase, dialog, upTo } = this.props;
 
     const isSelectPhase =
-      phase === GamePhases.SELECT_FROM_LIST ||
-      phase === GamePhases.SELECT_FROM_SCRAPYARD ||
-      phase === GamePhases.SELECT_FROM_VOID;
+      clientPhase === ClientPhase.SELECT_FROM_LIST ||
+      clientPhase === ClientPhase.SELECT_FROM_SCRAPYARD ||
+      clientPhase === ClientPhase.SELECT_FROM_VOID;
 
     return (
       <Dialog

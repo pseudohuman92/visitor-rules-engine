@@ -55,4 +55,10 @@ export default class ServerMessageHandler {
       gameID: this.gameId,
     });
   };
+
+  LoadGame = (filename) => {
+    this.protoSocket.send("LoadGame", {
+      filename: filename,
+    });
+  };
 }

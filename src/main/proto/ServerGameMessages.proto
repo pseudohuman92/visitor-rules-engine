@@ -28,8 +28,7 @@ message SelectFrom {
     GameState game = 2;
     int32 selectionCount = 3;
     repeated Card candidates = 4;
-    repeated string canSelected = 5;
-    repeated string canSelectedPlayers = 7;
+    repeated string selectable = 5;
     bool upTo = 6;
 }
 
@@ -40,12 +39,12 @@ message SelectXValue {
 
 message SelectAttackers {
     GameState game = 1;
-    repeated Attacker canAttack = 2;
+    repeated Attacker possibleAttackers = 2;
 }
 
 message SelectBlockers {
     GameState game = 1;
-    repeated Blocker canBlock = 2;
+    repeated Blocker possibleBlockers = 2;
 }
 
 message ServerGameMessage {

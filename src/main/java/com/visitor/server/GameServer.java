@@ -8,9 +8,15 @@ import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.ServerMessages.LoginResponse;
 import com.visitor.protocol.ServerMessages.NewGame;
 import com.visitor.protocol.ServerMessages.ServerMessage;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import static java.lang.System.out;
+
+import java.io.ObjectInputStream;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 import javax.websocket.EncodeException;
@@ -156,5 +162,36 @@ public class GameServer {
 
     public void removeGame(UUID gameID) {
         games.remove(gameID);
+    }
+
+    public void saveGameState(UUID gameID, String filename) {
+        games.get(gameID).saveGameState(filename);
+    }
+
+    public void loadGame(String username, String filename) {
+
+        try {
+
+            FileInputStream fileIn = new FileInputStream(filename+".gamestate");
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            Object obj = objectIn.readObject();
+
+            System.out.println("Game state has been read from the file");
+            objectIn.close();
+
+            Game g = (Game) obj;
+            g.connections = new Hashmap<>();
+            g.response = new ArrayBlockingQueue<>(1);
+            games.putIn(g.getId(), g);
+            try {
+                playerConnections.get(username).send(ServerMessage.newBuilder().setLoginResponse(LoginResponse.newBuilder()
+                        .setGameId(g.getId().toString())));
+            } catch (IOException | EncodeException ex) {
+                getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 import proto from "../../protojs/compiled.js";
 
-import { GamePhases } from "../Helpers/Constants";
+import { ClientPhase } from "../Helpers/Constants";
 import { IsSelectCardPhase } from "../Helpers/Helpers";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import "../../css/Utils.css";
@@ -20,11 +20,11 @@ const mapStateToProps = state => {
     opponentName: state.extendedGameState.opponentUsername,
     activePlayer: state.extendedGameState.game.activePlayer,
     turnPlayer: state.extendedGameState.game.turnPlayer,
-    phase: state.extendedGameState.phase,
-    upTo: state.extendedGameState.upTo,
+    clientPhase: state.extendedGameState.clientPhase,
+    upTo: state.extendedGameState.selectionData.upTo,
     autoPass: state.extendedGameState.autoPass,
-    selectedCards: state.extendedGameState.selectedCards,
-    attacking: state.extendedGameState.attacking,
+    selected: state.extendedGameState.selectionData.selected,
+    attackerAssignments: state.extendedGameState.attackerAssignmentData.attackerAssignments,
   };
 };
 
@@ -38,9 +38,9 @@ class ButtonDisplay extends Component {
   };
 
   selectDone = event => {
-    let selected = [...this.props.selectedCards];
-    let phase = this.props.phase;
-    this.props.gameHandler.SelectDone(phase, selected);
+    let selected = [...this.props.selected];
+    let clientPhase = this.props.clientPhase;
+    this.props.gameHandler.SelectDone(clientPhase, selected);
   };
 
   pass = event => {
@@ -48,13 +48,13 @@ class ButtonDisplay extends Component {
   };
 
   selectAttackers = event => {
-    let attacking = this.props.attacking;
-    this.props.gameHandler.SelectAttackers(attacking);
+    let attackerAssignments = [...this.props.attackerAssignments];
+    this.props.gameHandler.SelectAttackers(attackerAssignments);
   };
 
   render() {
     const {
-      phase,
+      clientPhase,
       gamePhase,
       playerName,
       playerUserId,
@@ -64,6 +64,7 @@ class ButtonDisplay extends Component {
       autoPass,
       opponentName
     } = this.props;
+
     const gamePhaseStr = {
       0: "NOPHASE",
       1: "REDRAW",
@@ -111,7 +112,7 @@ class ButtonDisplay extends Component {
 
     let buttonMenu = <div />;
     if (
-      phase === GamePhases.NOT_STARTED ||
+      clientPhase === ClientPhase.NOT_STARTED ||
       gamePhase === proto.Phase.REDRAW
     ) {
       buttonMenu = (
@@ -124,15 +125,15 @@ class ButtonDisplay extends Component {
           </Grid>
         </Grid>
       );
-    } else if (IsSelectCardPhase(phase)) {
+    } else if (IsSelectCardPhase(clientPhase)) {
       buttonMenu = (
         <Button disabled={!upTo} onClick={this.selectDone} text="Done" />
       );
-    } else if (phase === GamePhases.SELECT_ATTACKERS && turnPlayer === playerUserId ) {
+    } else if (clientPhase === ClientPhase.SELECT_ATTACKERS && turnPlayer === playerUserId ) {
       buttonMenu = (
         <Button onClick={this.selectAttackers} text="Attack" />
       );
-    } else if (phase === GamePhases.SELECT_ATTACKERS) {
+    } else if (clientPhase === ClientPhase.SELECT_ATTACKERS) {
       buttonMenu = (
         <div/>
       );
