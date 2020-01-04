@@ -49,7 +49,7 @@ class SignIn extends Component {
   Test1 = event => {
     const { firebase, updateState } = this.props;
     firebase
-      .doSignInWithEmailAndPassword("atalaymertileri@gmail.com", "asdqwe")
+      .doSignInWithEmailAndPassword("tester1@testers.com", "asdqwe")
       .then(firebaseAuthData => {
         updateState({ firebaseAuthData: firebaseAuthData });
         firebase.setUserData(firebaseAuthData.user.uid, updateState);
@@ -65,7 +65,7 @@ class SignIn extends Component {
   Test2 = event => {
     const { firebase, updateState } = this.props;
     firebase
-      .doSignInWithEmailAndPassword("atalaymertileri@gmail.coma", "asdqwe")
+      .doSignInWithEmailAndPassword("tester2@testers.com", "asdqwe")
       .then(firebaseAuthData => {
         updateState({ firebaseAuthData: firebaseAuthData });
         firebase.setUserData(firebaseAuthData.user.uid, updateState);

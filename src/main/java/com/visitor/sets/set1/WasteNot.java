@@ -8,7 +8,7 @@ package com.visitor.sets.set1;
 import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.types.helpers.TriggeringPassive;
 import com.visitor.game.Event;
-import static com.visitor.game.Event.EventType.*;
+import static com.visitor.game.Event.EventType.DISCARD;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
@@ -18,27 +18,26 @@ import static com.visitor.protocol.Types.Knowledge.BLACK;
  *
  * @author pseudo
  */
-public class BP01 extends TriggeringPassive {
+public class WasteNot extends TriggeringPassive {
 
-    public BP01(String owner) {
-        super("BP01", 2, new Hashmap(BLACK, 1), 
-                "Trigger - When you possess a card \n" +
-                "  Deal 2 damage to possessed card's controller", owner);
+    public WasteNot(String owner) {
+        super("Waste Not", 1, new Hashmap(BLACK, 2),
+                "Trigger - When opponent discards a card\n" +
+                "  Deal 2 damage to opponent.", owner);
     }
+    
 
-    
-    
     @Override
     public void checkEvent(Game game, Event event) {
-        if (event.type.equals(POSSESS) 
-                && ((String)event.data.get(1)).equals(controller)){
-            String oldOwner = ((String)event.data.get(0));
+        if (event.type.equals(DISCARD) 
+                && ((String)event.data.get(0)).equals(game.getOpponentName(controller))){
             
+            String discardingPlayer = ((String)event.data.get(0));
             game.addToStack(new Ability(this,
-            "Deal 2 damage to possessed card's controller",
+            "Deal 2 damage to opponent",
             (x) -> {
-                game.dealDamage(id, game.getUserId(oldOwner), 2);
-            }, new Arraylist<>(game.getUserId(oldOwner))));
+                game.dealDamage(id, game.getUserId(discardingPlayer), 2);
+            }, new Arraylist<>(game.getUserId(discardingPlayer))));
         }
     }
 }

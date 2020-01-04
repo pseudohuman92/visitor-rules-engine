@@ -7,7 +7,7 @@ package com.visitor.game;
 
 import com.visitor.sets.set1.FastForward;
 import com.visitor.sets.set1.WalkingFire;
-import com.visitor.sets.set1.UI08;
+import com.visitor.sets.set1.GarbageWeapon;
 import com.visitor.sets.set1.DataRecompiler;
 import com.visitor.sets.set1.KineticReflectors;
 import com.visitor.sets.set1.NaniteDeconstructor;
@@ -15,14 +15,14 @@ import com.visitor.sets.set1.Rewind;
 import com.visitor.sets.set1.Extraction;
 import com.visitor.sets.set1.MindSlavesThrash;
 import com.visitor.sets.set1.EntropySurge;
-import com.visitor.sets.set1.RI05;
+import com.visitor.sets.set1.HarmfulResources;
 import com.visitor.sets.set1.Recycle;
 import com.visitor.sets.set1.Nullify;
 import com.visitor.sets.set1.Parasytid;
 import com.visitor.sets.set1.ShockTroop;
 import com.visitor.sets.set1.HeatWave;
 import com.visitor.sets.set1.Thief;
-import com.visitor.sets.set1.YI06;
+import com.visitor.sets.set1.Overloader;
 import com.visitor.sets.set1.KillTeam;
 import com.visitor.sets.set1.NSink;
 import com.visitor.sets.set1.MetaphasicShieldCoil;
@@ -37,7 +37,7 @@ import com.visitor.sets.set1.RuneofUnnaturalLife;
 import com.visitor.sets.set1.CrossroadTrade;
 import com.visitor.sets.set1.MortarTeam;
 import com.visitor.sets.set1.Reinforcements;
-import com.visitor.sets.set1.RI06;
+import com.visitor.sets.set1.EnergyReleaser;
 import com.visitor.sets.set1.UncertaintyGun;
 import com.visitor.sets.set1.Withdrawal;
 import com.visitor.sets.set1.Pilfer;
@@ -122,7 +122,7 @@ public class TestDecks {
             d.add(new QuantumStateExtractor(username));
             d.add(new SynapticCapacitor(username));
             d.add(new UncertaintyGun(username));
-            d.add(new UI08(username));
+            d.add(new GarbageWeapon(username));
         }
         return d;
     }
@@ -143,7 +143,7 @@ public class TestDecks {
             d.add(new MetaphasicShieldCoil(username));
             d.add(new NSink(username));
             d.add(new KineticReflectors(username));
-            d.add(new YI06(username));
+            d.add(new Overloader(username));
         }
         return d;
     }
@@ -163,8 +163,8 @@ public class TestDecks {
             d.add(new HeatWave(username));
             d.add(new KillTeam(username));
             d.add(new MortarTeam(username));
-            d.add(new RI05(username));
-            d.add(new RI06(username));
+            d.add(new HarmfulResources(username));
+            d.add(new EnergyReleaser(username));
             d.add(new ShockTroop(username));
         }
         return d;

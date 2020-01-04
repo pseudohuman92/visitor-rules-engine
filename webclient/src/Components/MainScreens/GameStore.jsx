@@ -13,8 +13,8 @@ import { packList, packCosts } from "../Helpers/Constants";
 const mapStateToProps = state => {
   return {
     userId: state.firebaseAuthData.user.uid,
-    coins: state.coins,
-    packs: state.packs
+    coins: state.profile.coins,
+    packs: state.profile.packs
   };
 };
 
@@ -27,7 +27,7 @@ class GameStore extends Component {
     const { userId, firebase, updateState, packs, coins } = this.props;
     firebase.buyPack(userId, packName, cost);
     packs[packName] += 1;
-    updateState({ packs: packs, coins: coins - cost });
+    updateState({profile: { packs: packs, coins: coins - cost }});
     this.setState({ show: true });
   };
 

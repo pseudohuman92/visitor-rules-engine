@@ -14,7 +14,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { toFullCards, compareCardsByKnowledge } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
-  return { collection: state.collection, userId: state.firebaseAuthData.user.uid };
+  return { collection: state.profile.collection, userId: state.firebaseAuthData.user.uid };
 };
 
 const cardsPerPage = 18;

@@ -8,7 +8,6 @@ package com.visitor.sets.set1;
 
 import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.PLAY;
 import static com.visitor.game.Game.Zone.SCRAPYARD;
@@ -22,13 +21,13 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class AL01 extends Ally {
+public class Recoverer extends Ally {
     
-    public AL01(UL01 c){
-        super ("AL01", 2, new Hashmap(BLUE, 1),
+    public Recoverer(ShadyTrader c){
+        super ("Recoverer", 2, new Hashmap(BLUE, 1),
             "-2 Loyalty, Activate: \n" +
             "  Delay 1 - Return target Asset from your scrapyard to play.\n" +
-            "If ~ has no loyalty, Transform it to UL01", 5,
+            "If ~ has no loyalty, Transform it to Shady Trader", 5,
             c.controller);
         copyPropertiesFrom(c);
     }
@@ -57,7 +56,7 @@ public class AL01 extends Ally {
                 game.putTo(controller, game.extractCard(target), PLAY);
                 }
                 if (loyalty == 0){
-                    game.transformTo(this, this, new UL01(this));
+                    game.transformTo(this, this, new ShadyTrader(this));
                 }
             }, new Arraylist<>(target));
     }

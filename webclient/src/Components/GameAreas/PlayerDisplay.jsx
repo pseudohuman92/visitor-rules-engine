@@ -12,7 +12,7 @@ import { withSize } from "react-sizeme";
 const mapStateToProps = state => {
   return {
     playerId: state.extendedGameState.game.player.id,
-    playerName: state.username,
+    playerName: state.profile.username,
     playerHealth: state.extendedGameState.game.player.health,
     playerEnergy: state.extendedGameState.game.player.energy,
     playerMaxEnergy: state.extendedGameState.game.player.maxEnergy,

@@ -10,7 +10,7 @@ import TextOnComponent from "../Primitives/TextOnComponent";
 
 const mapStateToProps = state => {
   return {
-    playerName: state.username,
+    playerName: state.profile.username,
     playerScrapyard: state.extendedGameState.game.player.scrapyard,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,

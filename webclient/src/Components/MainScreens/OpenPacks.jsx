@@ -14,7 +14,7 @@ import { fullCollection } from "../Helpers/Constants";
 const mapStateToProps = state => {
   return {
     userId: state.firebaseAuthData.user.uid,
-    packs: state.packs
+    packs: state.profile.packs
   };
 };
 
@@ -38,7 +38,7 @@ class OpenPacks extends Component {
       });
       firebase.openPack(userId, packName, cards);
       packs[packName] -= 1;
-      updateState({ packs: packs });
+      updateState({ profile: { packs: packs } });
       this.setState({ show: true });
     }
   };

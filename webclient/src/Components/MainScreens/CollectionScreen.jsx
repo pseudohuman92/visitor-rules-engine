@@ -18,8 +18,8 @@ import {
 
 const mapStateToProps = state => {
   return {
-    collection: state.collection,
-    dust: state.dust,
+    collection: state.profile.collection,
+    dust: state.profile.dust,
     userId: state.firebaseAuthData.user.uid
   };
 };
@@ -85,7 +85,7 @@ class CollectionScreen extends React.Component {
       dust2 -= craftCost;
       debugPrint("Crafting " + cardName);
       firebase.craftCard(userId, cardName, craftCost);
-      updateState({ dust: dust2, collection: collection });
+      updateState({profile: { dust: dust2, collection: collection }});
     }
   };
 
@@ -104,7 +104,7 @@ class CollectionScreen extends React.Component {
         debugPrint("Salvaged " + toDust + " of " + cardName);
       }
     });
-    updateState({ dust: dust2, collection: collection });
+    updateState({profile : { dust: dust2, collection: collection }});
   };
 
   hasExtras = () => {

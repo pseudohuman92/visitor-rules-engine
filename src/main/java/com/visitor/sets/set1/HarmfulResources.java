@@ -24,10 +24,10 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class RI05 extends Asset{
+public class HarmfulResources extends Asset{
     
-    public RI05 (String owner){
-        super("RI05", 2, new Hashmap(RED, 3), 
+    public HarmfulResources(String owner){
+        super("Harmful Resources", 2, new Hashmap(RED, 3), 
                 "\"Discard a card: \n" +
                 "  Charge 1. \n" +
                 "Discharge 1, Activate: \n" +

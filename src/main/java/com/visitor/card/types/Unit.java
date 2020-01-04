@@ -16,8 +16,6 @@ import java.util.UUID;
 public abstract class Unit extends Card {
     
     int attack;
-    boolean attacking;
-    boolean blocking;
     boolean deploying;
     UUID blockedAttacker;
     Arraylist<UUID> blockedBy;
@@ -56,23 +54,19 @@ public abstract class Unit extends Card {
     
     public final void setAttacking(UUID target) {
        depleted = true;
-       attacking = true;
        attackTarget = target;
     }
     
     public final void unsetAttacking() {
-       attacking = false;
        attackTarget = null;
        blockedBy.clear();
     }
     
     public final void unsetBlocking() {
-       blocking = false;
        blockedAttacker = null;
     }
     
     public final void setBlocking(UUID u) {
-        blocking = true;
         blockedAttacker = u;
     }
     
@@ -96,7 +90,7 @@ public abstract class Unit extends Card {
     }
     
     public final void dealBlockDamage(Game game){
-        if (blocking)
+        if (blockedAttacker != null)
             game.dealDamage(id, blockedAttacker, attack);
     }
     

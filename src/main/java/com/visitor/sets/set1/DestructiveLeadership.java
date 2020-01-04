@@ -9,20 +9,21 @@ import com.visitor.card.types.Tome;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
+import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  *
  * @author pseudo
  */
-public class NT07 extends Tome {
+public class DestructiveLeadership extends Tome {
 
-    public NT07(String owner) {
-        super("NT07", "Study: Gain GG", owner);
+    public DestructiveLeadership(String owner) {
+        super("Destructive Leadership", "Study: Gain GR", owner);
     }
 
     @Override
     public Hashmap<Types.Knowledge, Integer> getKnowledgeType() {
-        return new Hashmap(GREEN, 2);
+        return new Hashmap(GREEN, 1).putIn(RED, 1);
     }
     
 }

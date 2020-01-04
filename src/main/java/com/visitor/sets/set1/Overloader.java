@@ -21,10 +21,10 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class YI06 extends Asset {
+public class Overloader extends Asset {
     
-    public YI06 (String owner){
-        super("YI06", 2, new Hashmap(YELLOW, 2), 
+    public Overloader(String owner){
+        super("Overloader", 2, new Hashmap(YELLOW, 2),
                 "\"Sacrifice an asset, Activate:\n" +
                 "  Opponent purges X, \n" +
                 "  where X is # of charge counter on sacrificed asset.\"", owner);

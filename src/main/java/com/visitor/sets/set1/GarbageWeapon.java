@@ -9,7 +9,6 @@ package com.visitor.sets.set1;
 import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.types.Card;
 import com.visitor.card.types.Asset;
-import com.visitor.card.types.Junk;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import static com.visitor.game.Game.Zone.PLAY;
@@ -26,23 +25,23 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class UI08 extends Asset {
+public class GarbageWeapon extends Asset {
 
     
     UUID target;
     
-    public UI08 (String owner){
-        super("UI08", 3, new Hashmap(BLUE, 1), 
+    public GarbageWeapon(String owner){
+        super("Garbage Weapon", 3, new Hashmap(BLUE, 1),
                 "Discard a Junk: Charge 1.\n" +
                 "Sacrifice an Asset: Charge 1. \n" +
-                "If it has 3 charges, transform ~ into AI03", owner);
+                "If it has 3 charges, transform ~ into Trash Gun", owner);
     }
     
-    public UI08 (AI03 c){
-        super("UI08", 3, new Hashmap(BLUE, 1), 
+    public GarbageWeapon(TrashGun c){
+        super("Garbage Weapon", 3, new Hashmap(BLUE, 1),
                 "Discard a Junk: Charge 1.\n" +
                 "Sacrifice an Asset: Charge 1. \n" +
-                "If it has 3 charges, transform ~ into AI03", c.controller);
+                "If it has 3 charges, transform ~ into Trash Gun", c.controller);
         copyPropertiesFrom(c);
     }
 
@@ -64,7 +63,7 @@ public class UI08 extends Asset {
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            game.transformTo(this,this, new AI03(this));
+                            game.transformTo(this,this, new TrashGun(this));
                         }
                     }));
             }));
@@ -78,7 +77,7 @@ public class UI08 extends Asset {
                     (x2) -> {
                         addCounters(CHARGE, 1);
                         if (counters.get(CHARGE) >= 3){
-                            game.transformTo(this, this, new AI03(this));
+                            game.transformTo(this, this, new TrashGun(this));
                         }
                     }));
             }));

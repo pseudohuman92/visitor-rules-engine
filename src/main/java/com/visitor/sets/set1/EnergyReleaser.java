@@ -21,10 +21,10 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class RI06 extends Asset {
+public class EnergyReleaser extends Asset {
     
-    public RI06 (String owner){
-        super("RI06", 1, new Hashmap(RED, 2), 
+    public EnergyReleaser(String owner){
+        super("Energy Releaser", 1, new Hashmap(RED, 2),
                 "Sacrifice an Asset, Activate: \n" +
                 "  Deal X damage. \n" +
                 "  X = cost of sacrificed asset.", owner);

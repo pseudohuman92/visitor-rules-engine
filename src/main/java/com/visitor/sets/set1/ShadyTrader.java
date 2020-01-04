@@ -7,7 +7,6 @@ package com.visitor.sets.set1;
 
 
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.Asset;
 import com.visitor.game.Game;
 import static com.visitor.game.Game.Zone.HAND;
 import com.visitor.helpers.Hashmap;
@@ -19,27 +18,26 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class UL01 extends Ally {
+public class ShadyTrader extends Ally {
     
-    public UL01(String owner){
-        super ("UL01", 1, new Hashmap(BLUE, 1),
+    public ShadyTrader(String owner){
+        super ("Shady Trader", 1, new Hashmap(BLUE, 1),
             "Discard an Asset, Activate: +3 Loyalty\n" +
-            "If ~ has 6 or more loyalty, Transform it to AL01", 5,
+            "If ~ has 6 or more loyalty, Transform it to Recoverer", 5,
             owner);
     }
     
-    public UL01(AL01 c){
-        super ("UL01", 1, new Hashmap(BLUE, 1),
+    public ShadyTrader(Recoverer c){
+        super ("Shady Trader", 1, new Hashmap(BLUE, 1),
             "Discard an Asset, Activate: +3 Loyalty\n" +
-            "If ~ has 6 or more loyalty, Transform it to AL01", 5,
+            "If ~ has 6 or more loyalty, Transform it to Recoverer", 5,
             c.controller);
         copyPropertiesFrom(c);
     }
         
     @Override
     public boolean canActivateAdditional(Game game){
-        return   
-                    game.hasIn(controller, HAND, Predicates::isAsset, 1); 
+        return game.hasIn(controller, HAND, Predicates::isAsset, 1);
     }
     
 
@@ -50,7 +48,7 @@ public class UL01 extends Ally {
         game.deplete(id);
         loyalty +=3;
         if(loyalty >= 6){
-            game.transformTo(this, this, new AL01(this));
+            game.transformTo(this, this, new Recoverer(this));
         }
     }
     

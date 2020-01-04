@@ -26,7 +26,7 @@ const voidTarget = {
 
 const mapStateToProps = state => {
   return {
-    playerName: state.username,
+    playerName: state.profile.username,
     opponentName: state.extendedGameState.opponentUsername,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     playerVoid: state.extendedGameState.game.player.void,

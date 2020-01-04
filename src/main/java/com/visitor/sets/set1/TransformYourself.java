@@ -8,22 +8,22 @@ package com.visitor.sets.set1;
 import com.visitor.card.types.Tome;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
-import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  *
  * @author pseudo
  */
-public class NT09 extends Tome {
+public class TransformYourself extends Tome {
 
-    public NT09(String owner) {
-        super("NT09", "Study: Gain GR", owner);
+    public TransformYourself(String owner) {
+        super("Transform Yourself", "Study: Gain GU", owner);
     }
 
     @Override
     public Hashmap<Types.Knowledge, Integer> getKnowledgeType() {
-        return new Hashmap(GREEN, 1).putIn(RED, 1);
+        return new Hashmap(BLUE, 1).putIn(GREEN, 1);
     }
     
 }

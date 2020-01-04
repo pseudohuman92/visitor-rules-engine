@@ -19,13 +19,13 @@ import java.util.UUID;
  *
  * @author pseudo
  */
-public class AI03 extends Asset {
+public class TrashGun extends Asset {
     
-    public AI03 (UI08 c){
-        super("AI03", 0, new Hashmap(BLUE, 1), 
+    public TrashGun(GarbageWeapon c){
+        super("Trash Gun", 0, new Hashmap(BLUE, 1),
                 "Discharge 1, Activate: \n" +
                 "  Deal 2 damage. \n" +
-                "  If ~ has no counters on it, transform ~ to UI08", c.controller);
+                "  If ~ has no counters on it, transform ~ to Garbage Weapon", c.controller);
         copyPropertiesFrom(c);
     }
 
@@ -45,7 +45,7 @@ public class AI03 extends Asset {
             (x) -> {
                 game.dealDamage(id, target, 2);
                 if (counters.get(CHARGE) == 0){
-                    game.transformTo(this, this, new UI08(this));
+                    game.transformTo(this, this, new GarbageWeapon(this));
                 }
             }));
     }

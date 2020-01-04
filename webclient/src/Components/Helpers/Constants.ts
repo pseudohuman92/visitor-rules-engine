@@ -201,7 +201,7 @@ const initializeFullCollection = () => {
     .then(r => r.text())
     .then(file =>
       JSON.parse(file).forEach((card: any) => {
-        let name = card.Name !== "" ? card.Name : card.Code;
+        let name = card.Name;
         if (
           name !== "" //&&
           //!card.Code.startsWith("Code") //&& !card.Code.startsWith("A")

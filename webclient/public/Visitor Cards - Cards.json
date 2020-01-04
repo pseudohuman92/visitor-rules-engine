@@ -229,7 +229,7 @@
   },
   {
     "Code": 18,
-    "Name": 18,
+    "Name": "Mugging",
     "Type": "Passive",
     "Subtype": "",
     "Effect": "Trigger - When you possess a card \n  Deal 2 damage to possessed card's controller",
@@ -241,7 +241,7 @@
   },
   {
     "Code": 19,
-    "Name": 19,
+    "Name": "Waste Not",
     "Type": "Passive",
     "Subtype": "",
     "Effect": "Trigger - When opponent discards a card\n  Deal 2 damage to opponent.",
@@ -469,7 +469,7 @@
   },
   {
     "Code": 37,
-    "Name": 37,
+    "Name": "Garbage Weapon",
     "Type": "Asset",
     "Subtype": "",
     "Effect": "Discard a Junk: Charge 1.\nSacrifice an Asset: Charge 1. \nIf it has 3 charges, transform ~ into AI03",
@@ -481,7 +481,7 @@
   },
   {
     "Code": 38,
-    "Name": 38,
+    "Name": "Shady Trader",
     "Type": "Ally",
     "Subtype": "Alien Trader",
     "Effect": "Discard an Asset, Activate: +3 Loyalty\nIf ~ has 6 or more loyalty, Transform it to AL01",
@@ -721,7 +721,7 @@
   },
   {
     "Code": 57,
-    "Name": 57,
+    "Name": "Overloader",
     "Type": "Asset",
     "Subtype": "",
     "Effect": "Sacrifice an Asset, Activate:\n  Deal X damage to opponent, \n  where X is # of charge counter on sacrificed Asset.",
@@ -865,7 +865,7 @@
   },
   {
     "Code": 68,
-    "Name": 68,
+    "Name": "Harmful Resources",
     "Type": "Asset",
     "Subtype": "",
     "Effect": "Discard a card: \n  Charge 1. \nDischarge 1, Activate: \n  Deal 2 damage",
@@ -877,7 +877,7 @@
   },
   {
     "Code": 69,
-    "Name": 69,
+    "Name": "Energy Releaser",
     "Type": "Asset",
     "Subtype": "",
     "Effect": "Sacrifice an Asset, Activate: \n  Deal X damage. \n  X = cost of sacrificed Asset.",
@@ -1297,7 +1297,7 @@
   },
   {
     "Code": 102,
-    "Name": 102,
+    "Name": "Personal Relations",
     "Type": "Tome",
     "Subtype": "",
     "Effect": "Study:\n  Gain GG",
@@ -1309,7 +1309,7 @@
   },
   {
     "Code": 103,
-    "Name": 103,
+    "Name": "Dark Phonebook",
     "Type": "Tome",
     "Subtype": "",
     "Effect": "Study:\n  Gain BG",
@@ -1321,7 +1321,7 @@
   },
   {
     "Code": 104,
-    "Name": 104,
+    "Name": "Destructive Leadership",
     "Type": "Tome",
     "Subtype": "",
     "Effect": "Study:\n  Gain GR",
@@ -1333,7 +1333,7 @@
   },
   {
     "Code": 105,
-    "Name": 105,
+    "Name": "Transform Yourself",
     "Type": "Tome",
     "Subtype": "",
     "Effect": "Study:\n  Gain GU",
@@ -1429,10 +1429,10 @@
   },
   {
     "Code": 108,
-    "Name": 108,
+    "Name": "Trash Gun",
     "Type": "Asset",
     "Subtype": "",
-    "Effect": "Discharge 1, Activate: \n  Deal 2 damage.\n  If ~ has no counters on it, transform ~ to UI08",
+    "Effect": "Discharge 1, Activate: \n  Deal 2 damage.\n  If ~ has no counters on it, transform ~ to Garbage Weapon",
     "Attack": "",
     "Health": 3,
     "Energy": 0,
@@ -1441,7 +1441,7 @@
   },
   {
     "Code": 109,
-    "Name": 109,
+    "Name": "Recoverer",
     "Type": "Ally",
     "Subtype": "Alien Trader",
     "Effect": "-2 Loyalty, Activate: \n  Delay 1 - Return target Asset from your scrapyard to play.\nIf ~ has no loyalty, Transform it to UL01",

@@ -18,7 +18,7 @@ const mapStateToProps = state => {
     clientPhase: state.extendedGameState.clientPhase,
     selected: state.extendedGameState.selectionData.selected,
     dialog: state.extendedGameState.dialogData,
-    upTo: state.extendedGameState.upTo,
+    upTo: state.extendedGameState.selectionData.upTo,
   };
 };
 
