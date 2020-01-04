@@ -3,7 +3,8 @@ import proto, {
   GameState,
   Card,
   AttackerAssignment,
-  Player
+  Player,
+  BlockerAssignment
 } from "../../protojs/compiled";
 import { toKnowledgeCost } from "./Helpers";
 
@@ -22,7 +23,9 @@ export enum ClientPhase {
   SELECT_X_VALUE = "SelectXValue",
   DONE_SELECT = "DoneSelect",
   SELECT_ATTACKERS = "SelectAttackers",
-  ATTACK_PHASE = "AttackPhase"
+  ATTACK_PHASE = "AttackPhase",
+  SELECT_BLOCKERS = "SelectBlockers",
+  BLOCK_PHASE = "BlockPhase"
 }
 
 export enum ItemTypes {
@@ -79,6 +82,22 @@ export function initialAttackerAssignmentData(): AttackerAssignmentData {
   };
 }
 
+export interface BlockerAssignmentData {
+  possibleBlockers: string[];
+  blockerAssignments: BlockerAssignment[];
+  currentBlocker: string;
+  possibleBlockTargets: string[];
+}
+
+export function initialBlockerAssignmentData(): BlockerAssignmentData {
+  return {
+    possibleBlockers: [],
+    blockerAssignments: [],
+    currentBlocker: "",
+    possibleBlockTargets: []
+  };
+}
+
 export interface SelectionData {
   selectionCount: number;
   candidates: Card[];
@@ -113,6 +132,7 @@ export interface ExtendedGameState {
   dialogData: DialogData;
   selectionData: SelectionData;
   attackerAssignmentData: AttackerAssignmentData;
+  blockerAssignmentData: BlockerAssignmentData;
 }
 
 export function initialExtendedGameState(): ExtendedGameState {
@@ -132,6 +152,7 @@ export function initialExtendedGameState(): ExtendedGameState {
 
     dialogData: initialDialogData(),
     attackerAssignmentData: initialAttackerAssignmentData(),
+    blockerAssignmentData: initialBlockerAssignmentData(),
     selectionData: initialSelectionData()
   };
 }

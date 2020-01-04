@@ -25,6 +25,7 @@ const mapStateToProps = state => {
     autoPass: state.extendedGameState.autoPass,
     selected: state.extendedGameState.selectionData.selected,
     attackerAssignments: state.extendedGameState.attackerAssignmentData.attackerAssignments,
+    blockerAssignments: state.extendedGameState.blockerAssignmentData.blockerAssignments,
   };
 };
 
@@ -50,6 +51,11 @@ class ButtonDisplay extends Component {
   selectAttackers = event => {
     let attackerAssignments = [...this.props.attackerAssignments];
     this.props.gameHandler.SelectAttackers(attackerAssignments);
+  };
+
+  selectBlockers = event => {
+    let blockerAssignments = [...this.props.blockerAssignments];
+    this.props.gameHandler.SelectBlockers(blockerAssignments);
   };
 
   render() {
@@ -129,14 +135,13 @@ class ButtonDisplay extends Component {
       buttonMenu = (
         <Button disabled={!upTo} onClick={this.selectDone} text="Done" />
       );
-    } else if (clientPhase === ClientPhase.SELECT_ATTACKERS && turnPlayer === playerUserId ) {
-      buttonMenu = (
-        <Button onClick={this.selectAttackers} text="Attack" />
-      );
     } else if (clientPhase === ClientPhase.SELECT_ATTACKERS) {
-      buttonMenu = (
-        <div/>
-      );
+      buttonMenu = (turnPlayer === playerUserId ) ?
+        <Button onClick={this.selectAttackers} text="Attack" /> : <div/>
+        ;
+    } else if (clientPhase === ClientPhase.SELECT_BLOCKERS ) {
+      buttonMenu = (turnPlayer !== playerUserId) ?
+        <Button onClick={this.selectBlockers} text="Block" /> : <div/>;
     } else {
       buttonMenu = (
         <Button

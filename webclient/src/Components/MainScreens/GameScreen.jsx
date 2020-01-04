@@ -60,7 +60,7 @@ class PlayArea extends Component {
 
     //Auto keep function
     if (
-      game.clientPhase === proto.Phase.REDRAW &&
+      game.phase === proto.Phase.REDRAW &&
       game.activePlayer === game.player.userId &&
       game.player.hand.length === 0
     ) {
@@ -69,7 +69,7 @@ class PlayArea extends Component {
 
     //Auto pass function
     if (
-      game.clientPhase !== proto.Phase.REDRAW &&
+      game.phase !== proto.Phase.REDRAW &&
       clientPhase === ClientPhase.UPDATE_GAME &&
       game.activePlayer === game.player.userId &&
       game.canStudy.length === 0 &&
@@ -78,7 +78,7 @@ class PlayArea extends Component {
     ) {
       setTimeout(function() {
         gameHandler.Pass();
-      }, 1000);
+      }, 500);
       this.props.updateExtendedGameState({ autoPass: true });
     } else {
       this.props.updateExtendedGameState({ autoPass: false });

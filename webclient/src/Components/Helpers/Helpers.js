@@ -24,6 +24,7 @@ export function spliceToSubarrays(arr, len) {
   return res;
 }
 
+//Deep copy function
 export function copy(o) {
   var output, v, key;
   output = Array.isArray(o) ? [] : {};
@@ -104,6 +105,8 @@ export function toClientPhase(msgType, selectType) {
       return ClientPhase.SELECT_X_VALUE;
     case "SelectAttackers":  
       return ClientPhase.SELECT_ATTACKERS;
+    case "SelectBlockers":  
+      return ClientPhase.SELECT_BLOCKERS;
     default:
       return ClientPhase.NOT_STARTED;
   }

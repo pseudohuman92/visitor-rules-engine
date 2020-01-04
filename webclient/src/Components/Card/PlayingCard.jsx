@@ -20,9 +20,12 @@ const mapStateToProps = state => {
     playableCards: state.extendedGameState.game.canPlay,
     studyableCards: state.extendedGameState.game.canStudy,
     activatableCards: state.extendedGameState.game.canActivate,
+    attackers: state.extendedGameState.game.attackers,
+    blockers: state.extendedGameState.game.blockers,
 
     selectionData: state.extendedGameState.selectionData,
     attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
+    blockerAssignmentData: state.extendedGameState.blockerAssignmentData,
 
     displayTargets: state.extendedGameState.targets,
     attackers: state.extendedGameState.game.attackers,
@@ -75,23 +78,7 @@ export class PlayingCard extends React.Component {
     this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
-  unsetAttacking = event => {
-    let id = this.props.id;
-    let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
-    let attackerAssignmentIds = attackerAssignments.map(a=>{return a.attackerId;});
-    
-    if (attackerAssignmentIds.indexOf(id) > -1 ) {
-      attackerAssignments.splice(attackerAssignmentIds.indexOf(id), 1);
-    }
-    
-    this.props.updateExtendedGameState({
-      attackerAssignmentData: {
-        currentAttacker: "",
-        possibleAttackTargets: [],  
-        attackerAssignments: attackerAssignments
-      }
-    });
-  };
+  /////// Attack Handlers /////////
 
   setAttacking = event => {
     let id = this.props.id;
@@ -121,6 +108,24 @@ export class PlayingCard extends React.Component {
       }
     };
 
+    unsetAttacking = event => {
+      let id = this.props.id;
+      let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
+      let attackerAssignmentIds = attackerAssignments.map(a=>{return a.attackerId;});
+      
+      if (attackerAssignmentIds.indexOf(id) > -1 ) {
+        attackerAssignments.splice(attackerAssignmentIds.indexOf(id), 1);
+      }
+      
+      this.props.updateExtendedGameState({
+        attackerAssignmentData: {
+          currentAttacker: "",
+          possibleAttackTargets: [],  
+          attackerAssignments: attackerAssignments
+        }
+      });
+    };
+
   setAttacked = event => {
     let id = this.props.id;
 
@@ -136,6 +141,72 @@ export class PlayingCard extends React.Component {
       }
     });
   };
+
+  /////// Block Handlers /////////
+
+  setBlocking = event => {
+    let id = this.props.id;
+
+    let blockerAssignments = [...this.props.blockerAssignmentData.blockerAssignments];
+    let possibleBlockers = this.props.blockerAssignmentData.possibleBlockers;
+    let possibleBlockerIds = possibleBlockers.map(a=>{return a.blockerId});
+    let possibleBlockerEntry = possibleBlockers[possibleBlockerIds.indexOf(id)];
+    let possibleBlockTargets = possibleBlockerEntry.possibleBlockTargets;
+
+    if (possibleBlockTargets.length === 1) {
+        blockerAssignments.push({blockerId: id, blockedBy: possibleBlockTargets[0] });
+        this.props.updateExtendedGameState({
+          blockerAssignmentData: {
+            currentBlocker: "",
+            possibleBlockTargets: [],
+            blockerAssignments: blockerAssignments
+          }
+        });
+      } else {
+        this.props.updateExtendedGameState({
+          blockerAssignmentData: {
+            currentBlocker: id,
+            possibleBlockTargets: possibleBlockTargets
+          }
+        });
+      }
+    };
+
+    unsetBlocking = event => {
+      let id = this.props.id;
+      let blockerAssignments = [...this.props.blockerAssignmentData.blockerAssignments];
+      let blockerAssignmentIds = blockerAssignments.map(a=>{return a.blockerId;});
+      
+      if (blockerAssignmentIds.indexOf(id) > -1 ) {
+        blockerAssignments.splice(blockerAssignmentIds.indexOf(id), 1);
+      }
+      
+      this.props.updateExtendedGameState({
+        blockerAssignmentData: {
+          currentBlocker: "",
+          possibleBlockTargets: [],  
+          blockerAssignments: blockerAssignments
+        }
+      });
+    };
+
+  setBlocked = event => {
+    let id = this.props.id;
+
+    let blockerAssignments = [...this.props.blockerAssignmentData.blockerAssignments];
+    let currentBlocker = this.props.blockerAssignmentData.currentBlocker;
+
+    blockerAssignments.push({blockerId: currentBlocker, blockedBy: id });
+    this.props.updateExtendedGameState({
+      blockerAssignmentData: {
+        currentBlocker: "",
+        possibleBlockTargets: [],
+        blockerAssignments: blockerAssignments
+      }
+    });
+  };
+
+  ///////// Selection Handlers ///////////
 
   select = event => {
     let id = this.props.id;
@@ -184,10 +255,13 @@ export class PlayingCard extends React.Component {
 
       selectionData,
       attackerAssignmentData,
+      blockerAssignmentData,
 
       displayTargets,
       activatableCards,
       playableCards,
+      attackers,
+      blockers,
 
       gameHandler,
       small,
@@ -203,9 +277,12 @@ export class PlayingCard extends React.Component {
     const targeted = displayTargets.includes(id);
 
     const attacking = 
-      clientPhase === ClientPhase.SELECT_ATTACKERS &&
+      (clientPhase === ClientPhase.SELECT_ATTACKERS || 
+        clientPhase === ClientPhase.SELECT_BLOCKERS || 
+        clientPhase === ClientPhase.UPDATE_GAME) &&
       (attackerAssignmentData.attackerAssignments.map(c => {return c.attackerId}).includes(id) || 
-        attackerAssignmentData.currentAttacker === id);
+        attackerAssignmentData.currentAttacker === id ||
+        attackers.includes(id));
     const canAttack =     
         !attacking && 
         !attackerAssignmentData.currentAttacker &&
@@ -216,33 +293,60 @@ export class PlayingCard extends React.Component {
       attackerAssignmentData.currentAttacker &&
       attackerAssignmentData.possibleAttackTargets.includes(id);
 
+    const blocking = 
+      (clientPhase === ClientPhase.SELECT_ATTACKERS || 
+        clientPhase === ClientPhase.SELECT_BLOCKERS ||  
+      clientPhase === ClientPhase.UPDATE_GAME) &&
+      (blockerAssignmentData.blockerAssignments.map(c => {return c.blockerId}).includes(id) || 
+        blockerAssignmentData.currentBlocker === id || 
+        blockers.includes(id));
+    const canBlock =     
+        !blocking && 
+        !blockerAssignmentData.currentBlocker &&
+        clientPhase === ClientPhase.SELECT_BLOCKERS &&
+        blockerAssignmentData.possibleBlockers.map(c => {return c.blockerId}).includes(id);
+    const canBeBlocked = 
+        clientPhase === ClientPhase.SELECT_BLOCKERS &&
+        blockerAssignmentData.currentBlocker &&
+        blockerAssignmentData.possibleBlockTargets.includes(id);
+
     var borderColor = "";
     if (isDragging) {
       //borderColor = "yellow";
+    } else if (canAttack || 
+      canBeAttacked ||
+      canBlock ||
+      canBeBlocked ||
+      selectable_ || 
+      activatable || 
+      playable) {
+        borderColor = "green";
     } else if ((canDrop && isOver) || attacking) {
       borderColor = "red";
     } else if (targeted) {
       borderColor = "yellow";
-    } else if (selected_) {
+    } else if (selected_ || blocking) {
       borderColor = "blue";
-    } else if (canAttack || 
-              canBeAttacked || 
-              selectable_ || 
-              activatable || 
-              playable) {
-      borderColor = "green";
-    }
+    } 
 
 
     let clickHandler = undefined;
     if (canAttack){
       clickHandler = this.setAttacking;
       console.log("Set Attacking");
-    } else if (attacking){
+    } else if (attacking && clientPhase === ClientPhase.SELECT_ATTACKERS ){
         clickHandler = this.unsetAttacking;
         console.log("Unset Attacking");
     } else if (canBeAttacked) {
       clickHandler = this.setAttacked;
+    } else if (canBlock){
+      clickHandler = this.setBlocking;
+      console.log("Set Blocking");
+    } else if (blocking && clientPhase === ClientPhase.SELECT_BLOCKERS ){
+        clickHandler = this.unsetBlocking;
+        console.log("Unset Blocking");
+    } else if (canBeBlocked) {
+      clickHandler = this.setBlocked;
     } else if (selected_) {
       clickHandler = this.unselect;
     } else if (selectable_) {
@@ -254,13 +358,13 @@ export class PlayingCard extends React.Component {
     }
 
     var opacity = 1;
-    if (isDragging || deploying || depleted) {
+    if (isDragging || deploying) {
       opacity = 0.5;
     }
 
     var rotation = "rotate(0deg)";
     if (depleted){
-      rotation = "rotate(5deg)";
+      rotation = "rotate(7.5deg)";
     }
 
     const counterMap = {};

@@ -4539,7 +4539,7 @@ $root.BlockerAssignment = (function() {
      * @exports IBlockerAssignment
      * @interface IBlockerAssignment
      * @property {string|null} [blockerId] BlockerAssignment blockerId
-     * @property {Array.<string>|null} [blockedBy] BlockerAssignment blockedBy
+     * @property {string|null} [blockedBy] BlockerAssignment blockedBy
      */
 
     /**
@@ -4551,7 +4551,6 @@ $root.BlockerAssignment = (function() {
      * @param {IBlockerAssignment=} [properties] Properties to set
      */
     function BlockerAssignment(properties) {
-        this.blockedBy = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -4568,11 +4567,11 @@ $root.BlockerAssignment = (function() {
 
     /**
      * BlockerAssignment blockedBy.
-     * @member {Array.<string>} blockedBy
+     * @member {string} blockedBy
      * @memberof BlockerAssignment
      * @instance
      */
-    BlockerAssignment.prototype.blockedBy = $util.emptyArray;
+    BlockerAssignment.prototype.blockedBy = "";
 
     /**
      * Creates a new BlockerAssignment instance using the specified properties.
@@ -4600,9 +4599,8 @@ $root.BlockerAssignment = (function() {
             writer = $Writer.create();
         if (message.blockerId != null && message.hasOwnProperty("blockerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.blockerId);
-        if (message.blockedBy != null && message.blockedBy.length)
-            for (var i = 0; i < message.blockedBy.length; ++i)
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.blockedBy[i]);
+        if (message.blockedBy != null && message.hasOwnProperty("blockedBy"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.blockedBy);
         return writer;
     };
 
@@ -4641,9 +4639,7 @@ $root.BlockerAssignment = (function() {
                 message.blockerId = reader.string();
                 break;
             case 2:
-                if (!(message.blockedBy && message.blockedBy.length))
-                    message.blockedBy = [];
-                message.blockedBy.push(reader.string());
+                message.blockedBy = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -4683,13 +4679,9 @@ $root.BlockerAssignment = (function() {
         if (message.blockerId != null && message.hasOwnProperty("blockerId"))
             if (!$util.isString(message.blockerId))
                 return "blockerId: string expected";
-        if (message.blockedBy != null && message.hasOwnProperty("blockedBy")) {
-            if (!Array.isArray(message.blockedBy))
-                return "blockedBy: array expected";
-            for (var i = 0; i < message.blockedBy.length; ++i)
-                if (!$util.isString(message.blockedBy[i]))
-                    return "blockedBy: string[] expected";
-        }
+        if (message.blockedBy != null && message.hasOwnProperty("blockedBy"))
+            if (!$util.isString(message.blockedBy))
+                return "blockedBy: string expected";
         return null;
     };
 
@@ -4707,13 +4699,8 @@ $root.BlockerAssignment = (function() {
         var message = new $root.BlockerAssignment();
         if (object.blockerId != null)
             message.blockerId = String(object.blockerId);
-        if (object.blockedBy) {
-            if (!Array.isArray(object.blockedBy))
-                throw TypeError(".BlockerAssignment.blockedBy: array expected");
-            message.blockedBy = [];
-            for (var i = 0; i < object.blockedBy.length; ++i)
-                message.blockedBy[i] = String(object.blockedBy[i]);
-        }
+        if (object.blockedBy != null)
+            message.blockedBy = String(object.blockedBy);
         return message;
     };
 
@@ -4730,17 +4717,14 @@ $root.BlockerAssignment = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
-            object.blockedBy = [];
-        if (options.defaults)
+        if (options.defaults) {
             object.blockerId = "";
+            object.blockedBy = "";
+        }
         if (message.blockerId != null && message.hasOwnProperty("blockerId"))
             object.blockerId = message.blockerId;
-        if (message.blockedBy && message.blockedBy.length) {
-            object.blockedBy = [];
-            for (var j = 0; j < message.blockedBy.length; ++j)
-                object.blockedBy[j] = message.blockedBy[j];
-        }
+        if (message.blockedBy != null && message.hasOwnProperty("blockedBy"))
+            object.blockedBy = message.blockedBy;
         return object;
     };
 

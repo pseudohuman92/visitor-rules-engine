@@ -6,6 +6,7 @@ import {
   initialExtendedGameState,
   initialSelectionData,
   initialAttackerAssignmentData,
+  initialBlockerAssignmentData,
   initialDialogData
 } from "../Helpers/Constants";
 import { toClientPhase, toSelectFromType } from "../Helpers/Helpers";
@@ -73,7 +74,9 @@ export default class ServerGameMessageHandler {
         };
         break;
       case "SelectBlockers":
-        //newExtendedState["possibleBlockers"] = params.possibleBlockers;
+        newExtendedState["blockerAssignmentData"] = {
+          possibleBlockers : params.possibleBlockers
+        };
         break;
       default:
         break;
@@ -153,6 +156,22 @@ export default class ServerGameMessageHandler {
     this.updateExtendedGameState({
       clientPhase: ClientPhase.DONE_SELECT,
       attackerAssignmentData: initialAttackerAssignmentData()
+    });
+  };
+
+  SelectBlockers = blockers => {
+    this.send("SelectBlockersResponse", {
+      blockers: blockers
+    });
+    this.updateExtendedGameState({
+      clientPhase: ClientPhase.DONE_SELECT,
+      blockerAssignmentData: initialBlockerAssignmentData()
+    });
+  };
+
+  SaveGameState = filename => {
+    this.send("SaveGameState", {
+      filename: filename
     });
   };
 }

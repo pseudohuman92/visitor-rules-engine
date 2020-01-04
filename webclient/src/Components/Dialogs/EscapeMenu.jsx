@@ -26,7 +26,7 @@ class EscapeMenu extends Component {
               <Grid item xs={12}>
                   <Button
                     variant="contained"
-                    onClick={event => this.props.gameHandler.SaveGameState("dummy")}
+                    onClick={event => this.props.gameHandler.SaveGameState("test_save")}
                   >
                     Save Game
                   </Button>

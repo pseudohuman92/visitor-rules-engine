@@ -1905,7 +1905,7 @@ export class BlockerAssignment implements IBlockerAssignment {
     public blockerId: string;
 
     /** BlockerAssignment blockedBy. */
-    public blockedBy: string[];
+    public blockedBy: string;
 
     /**
      * Creates a new BlockerAssignment instance using the specified properties.
