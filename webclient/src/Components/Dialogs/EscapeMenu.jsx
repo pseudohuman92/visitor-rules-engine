@@ -6,6 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import BugReport from "./BugReport";
 import { Grid } from "@material-ui/core";
+import { isProduction } from "../Helpers/Constants";
 
 class EscapeMenu extends Component {
   state = { value: 0 };
