@@ -39,7 +39,7 @@
         "redux": "4.0.4"
     },
     "devDependencies": {
-        "typescript": "3.6.4"
+        "typescript": "3.7.4"
     },
     "scripts": {
         "start": "react-scripts start",
