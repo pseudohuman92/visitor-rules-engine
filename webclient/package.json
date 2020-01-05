@@ -21,7 +21,7 @@
         "react-center": "1.1.1",
         "react-container-dimensions": "1.4.1",
         "react-dnd": "10.0.2",
-        "react-dnd-html5-backend": "9.4.0",
+        "react-dnd-html5-backend": "9.5.1",
         "react-dnd-multi-backend": "5.0.0",
         "react-dnd-touch-backend": "10.0.2",
         "react-dom": "16.12.0",
