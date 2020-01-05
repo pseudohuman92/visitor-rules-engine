@@ -22,15 +22,16 @@ class EscapeMenu extends Component {
           <Dialog open={open} onClose={close} scroll="body">
             <DialogTitle>{"MENU"}</DialogTitle>
             <DialogContent>
-              <Grid container spacing={8} justify="center">
-              <Grid item xs={12}>
+              <Grid container spacing={1} justify="center">
+              {!isProduction && 
+                <Grid item xs={12}>
                   <Button
                     variant="contained"
                     onClick={event => this.props.gameHandler.SaveGameState("test_save")}
                   >
                     Save Game
                   </Button>
-                </Grid>
+                </Grid> }
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
