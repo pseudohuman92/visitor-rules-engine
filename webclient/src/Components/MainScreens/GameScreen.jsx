@@ -107,7 +107,7 @@ class PlayArea extends Component {
     const midHeight = height * 0.6;
 
     return (
-      <DndProvider backend={MultiBackend(HTML5toTouch)}>
+      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
         <div className="App">
           <img
             src={process.env.PUBLIC_URL + "/img/background.jpg"}
