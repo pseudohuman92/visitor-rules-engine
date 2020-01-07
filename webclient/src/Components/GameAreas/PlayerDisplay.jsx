@@ -8,6 +8,7 @@ import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import TextOnImage from "../Primitives/TextOnImage";
 import { withSize } from "react-sizeme";
+import { ArcherElement } from "react-archer";
 
 const mapStateToProps = state => {
   return {
@@ -32,7 +33,6 @@ const mapStateToProps = state => {
 
     attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
 
-    displayTargets: state.extendedGameState.targets,
     clientPhase: state.extendedGameState.clientPhase,
     activePlayer: state.extendedGameState.game.activePlayer,
     playerUserId: state.extendedGameState.game.player.userId
@@ -121,7 +121,6 @@ class PlayerDisplay extends React.Component {
       opponentHealth,
       selected,
       selectable,
-      displayTargets,
       playerEnergy,
       opponentEnergy,
       playerMaxEnergy,
@@ -150,7 +149,6 @@ class PlayerDisplay extends React.Component {
 
     const selectable_ = selectable.includes(id);
     const selected_ = selected.includes(id);
-    const targeted = displayTargets.includes(id);
 
     const canBeAttacked = 
       clientPhase === ClientPhase.SELECT_ATTACKERS &&
@@ -159,9 +157,7 @@ class PlayerDisplay extends React.Component {
 
     let borderColor = undefined;
     let clickHandler = undefined;
-    if (targeted) {
-      borderColor = "yellow";
-    } else if (selectable_) {
+    if (selectable_) {
       clickHandler = this.select;
       borderColor = "green";
     } else if (selected_) {
@@ -190,7 +186,8 @@ class PlayerDisplay extends React.Component {
             flexDirection: "row-reverse"
           }}
         >
-          {Array(maxEnergy)
+          {maxEnergy && 
+          Array(maxEnergy)
             .fill(null)
             .map((c, i) => (
               <div
@@ -217,6 +214,9 @@ class PlayerDisplay extends React.Component {
               </div>
             ))}
         </div>
+        <ArcherElement
+        id={id}
+        >
         <div
           onClick={clickHandler}
           style={{
@@ -236,6 +236,7 @@ class PlayerDisplay extends React.Component {
             scale={2}
           />
         </div>
+        </ArcherElement>
         <div
           style={{
             width: (width * 0.9) / 2,

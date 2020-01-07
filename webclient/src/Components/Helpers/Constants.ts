@@ -118,14 +118,26 @@ export function initialSelectionData(): SelectionData {
   };
 }
 
+/*
+export interface ArrowData {
+  from: string;
+  to: string;
+}
+
+export function initialArrowData(): ArrowData {
+  return {
+    from: "",
+    to: "",
+  };
+}
+*/
+
 export interface ExtendedGameState {
   opponentUsername: string;
   game: GameState; //GameState object. See proto files
   clientPhase: ClientPhase; //Client defined phases
 
   gameInitialized: boolean;
-  possibleBlockers: string[];
-  targets: string[];
   autoPass: boolean;
   win: boolean;
 
@@ -141,19 +153,17 @@ export function initialExtendedGameState(): ExtendedGameState {
   game.opponent = Player.create();
   return {
     opponentUsername: "",
-    game: game, //GameState object. See proto files
-    clientPhase: ClientPhase.NOT_STARTED, //Client defined phases
+    game: game,                             //GameState object. See proto files
+    clientPhase: ClientPhase.NOT_STARTED,   //Client defined phases
 
     gameInitialized: false,
-    possibleBlockers: [],
-    targets: [],
     autoPass: false,
     win: false,
 
     dialogData: initialDialogData(),
     attackerAssignmentData: initialAttackerAssignmentData(),
     blockerAssignmentData: initialBlockerAssignmentData(),
-    selectionData: initialSelectionData()
+    selectionData: initialSelectionData(),
   };
 }
 

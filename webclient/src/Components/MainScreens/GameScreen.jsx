@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import HTML5Backend from "react-dnd-html5-backend";
 import TouchBackend from "react-dnd-touch-backend";
 import { TouchTransition } from "react-dnd-multi-backend";
+import { ArcherContainer } from "react-archer";
 
 import Stack from "../GameAreas/Stack";
 
@@ -68,6 +69,7 @@ class PlayArea extends Component {
     }
 
     //Auto pass function
+    /* 
     if (
       game.phase !== proto.Phase.REDRAW &&
       clientPhase === ClientPhase.UPDATE_GAME &&
@@ -83,6 +85,7 @@ class PlayArea extends Component {
     } else {
       this.props.updateExtendedGameState({ autoPass: false });
     }
+    */
   }
 
   render() {
@@ -107,6 +110,7 @@ class PlayArea extends Component {
     const midHeight = height * 0.6;
 
     return (
+      <ArcherContainer> 
       <DndProvider backend={MultiBackend} options={HTML5toTouch}>
         <div className="App">
           <img
@@ -126,7 +130,7 @@ class PlayArea extends Component {
             <EndGameDialog back={back} />
             <SelectXDialog />
             <ChooseDialog />
-
+            
             <div className="level0">
                 <PlayerArea
                   width={width}
@@ -191,9 +195,11 @@ class PlayArea extends Component {
                   isPlayer={true}
                 />
             </div>
+            
           </header>
         </div>
       </DndProvider>
+      </ArcherContainer> 
     );
   }
 }

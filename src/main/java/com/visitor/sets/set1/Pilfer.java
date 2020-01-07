@@ -11,7 +11,6 @@ import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 import static com.visitor.protocol.Types.Knowledge.BLACK;
-import java.util.UUID;
 
 /**
  *
@@ -29,11 +28,11 @@ public class Pilfer extends Spell {
     @Override
     protected void beforePlay(Game game) {
         int x = game.selectX(controller, game.getPlayer(controller).energy);
-        UUID targetPlayerId = game.selectPlayers(controller, Predicates::any, 1, false).get(0);
-        targetPlayer = game.getUsername(targetPlayerId);
+        targets = game.selectPlayers(controller, Predicates::any, 1, false);
+        targetPlayer = game.getUsername(targets.get(0));
         cost = x;
         
-        text = targetPlayer + " loots " + x;
+        text = "Target player loots " + x;
         
     }
     
