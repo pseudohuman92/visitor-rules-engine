@@ -15,14 +15,19 @@ import "../../fonts/Fonts.css";
 class SmallCard extends PureComponent {
   render() {
     const {
-      name,
-      cost,
-      knowledgeCost,
+      cardData,
       play,
       size,
       borderColor,
       opacity
     } = this.props;
+
+    const {
+      name,
+      cost,
+      knowledgeCost,
+      
+    } = cardData
 
     const backColor = borderColor ? borderColor : "black";
     return (

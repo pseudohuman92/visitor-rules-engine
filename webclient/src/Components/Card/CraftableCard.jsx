@@ -5,10 +5,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { withSize } from "react-sizeme";
 
-import FullCard from './FullCard';
 import Button from '../Primitives/Button';
 import { Grid } from "@material-ui/core";
 import { craftCost, salvageValue } from "../Helpers/Constants";
+import { CardDisplay } from "./CardDisplay";
 
 class CraftableCard extends PureComponent {
   state = { showDialog: false };
@@ -38,7 +38,7 @@ class CraftableCard extends PureComponent {
       onSalvage,
       salvageDisabled,
       count,
-      ...rest
+      cardData
     } = this.props;
     return (
       <div>
@@ -61,7 +61,7 @@ class CraftableCard extends PureComponent {
                 </Grid>
               <Grid item xs={8}>
                 <center>{count}</center>
-                <FullCard {...rest} opacity="1" play={false} />
+                <CardDisplay cardData={cardData}  opacity="1" />
               </Grid>
                 <Grid item xs={2}>
                   <Button
@@ -75,7 +75,7 @@ class CraftableCard extends PureComponent {
           </DialogContent>
         </Dialog>
           <div onClick={this.openDialog}>
-              <FullCard {...rest} />
+              <CardDisplay cardData={cardData} />
           </div>
       </div>
     );

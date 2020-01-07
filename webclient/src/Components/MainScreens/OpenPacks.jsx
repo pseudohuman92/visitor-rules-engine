@@ -83,7 +83,7 @@ class OpenPacks extends Component {
             >
               {generatedPack.map((card, i) => (
                 <Grid item key={i} xs={3}>
-                  <CardDisplay {...card} />
+                  <CardDisplay cardData={card} />
                 </Grid>
               ))}
             </Grid>

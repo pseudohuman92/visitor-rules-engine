@@ -62,7 +62,7 @@ class ChooseDialog extends Component {
           <Grid container spacing={0} className="choose-dialog">
             {dialog.cards.map(card => (
               <Grid item xs={1} key={card.id}>
-                <PlayingCard {...card} />
+                <PlayingCard cardData={card} />
               </Grid>
             ))}
           </Grid>

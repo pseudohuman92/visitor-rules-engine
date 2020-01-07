@@ -41,7 +41,7 @@ class CardGallery extends Component {
               .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
               .map((card, i) => (
                 <Grid item key={i} xs={2}>
-                  <CardDisplay {...card} />
+                  <CardDisplay cardData={card} />
                 </Grid>
               ))}
           </Grid>

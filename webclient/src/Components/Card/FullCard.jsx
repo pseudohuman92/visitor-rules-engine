@@ -16,20 +16,25 @@ class FullCard extends PureComponent {
   render() {
     const {
       opacity,
+      cardData,
+      borderColor,
+      size
+    } = this.props;
+    
+    const {
       name,
       description,
       cost,
       type,
       knowledgeCost,
-      borderColor,
       attack,
       health,
       delay,
       loyalty,
       shield,
-      reflect,
-      size
-    } = this.props;
+      reflect 
+    } = cardData;
+
     const backColor = borderColor ? borderColor : undefined; //"gainsboro";
 
     return (

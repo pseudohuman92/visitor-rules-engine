@@ -48,7 +48,7 @@ class BoardSide extends Component {
               key={i}
               style={{width: Math.min(width / cards.length, width / 10), margin:"1%"}}
             >
-              <PlayingCard square {...card} play/>
+              <PlayingCard square play cardData={card}/>
             </div>
           ))}
       </div>

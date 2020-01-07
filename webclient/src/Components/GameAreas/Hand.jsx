@@ -19,7 +19,7 @@ class Hand extends Component {
       <Fanner isPlayer={isPlayer} angle={15} style={{ width: "100%" }} maxNumItems={7}>
         {isPlayer
           ? hand.map(card => (
-              <PlayingCard key={card.id} {...card} play={true} />
+              <PlayingCard key={card.id} cardData={card} play />
             ))
           : Array(opponentHandSize)
               .fill(null)

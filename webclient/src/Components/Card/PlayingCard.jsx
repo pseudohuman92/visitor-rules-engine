@@ -13,6 +13,7 @@ import { withSize } from "react-sizeme";
 import FittedText from "../Primitives/FittedText";
 import { debug } from "util";
 import { ArcherElement } from "react-archer";
+import Draggable from 'react-draggable';
 
 const mapStateToProps = state => {
   return {
@@ -330,9 +331,21 @@ export class PlayingCard extends React.Component {
     return relations;
   };
 
+  /////////////////////////////
+  onStart = event => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    console.log(rect.top, rect.left);
+    this.setState({top: rect.top, left: rect.left, isDragging : true});
+  };
+
+  onStop = () => {
+    console.log(this.state.top, this.state.left);
+    this.setState({isDragging : false});
+  };
+  ////////////////////////
+
   render() {
     const {
-      id,
       clientPhase,
       depleted,
       deploying,
@@ -355,9 +368,10 @@ export class PlayingCard extends React.Component {
       small,
       square,
       style,
-      ...cardProps
+      cardData
     } = this.props;
 
+    const id = cardData.id;
     const { arrowRelations, showArrows } = this.state;
 
     const activatable = activatableCards.includes(id);
@@ -477,7 +491,7 @@ export class PlayingCard extends React.Component {
     const { popoverStyle } = this.state;
 
     return connectDragSource(
-      <div
+    <div
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         style={{
@@ -487,7 +501,7 @@ export class PlayingCard extends React.Component {
           ...style
         }}
       >
-        {!isDragging && (
+        {!isDragging && !this.state.isDragging && (
           <div
             style={{
               position: "absolute",
@@ -496,7 +510,7 @@ export class PlayingCard extends React.Component {
             }}
           >
             <div style={{ width: popoverStyle.width / 2 }}>
-              <CardDisplay {...cardProps} />
+              <CardDisplay cardData={cardData} />
             </div>
             <div
               style={{
@@ -505,9 +519,9 @@ export class PlayingCard extends React.Component {
                 width: popoverStyle.width / 2
               }}
             >
-              {cardProps.description &&
+              {cardData.description &&
                 Object.keys(keywords).map((keyword, i) => {
-                  if (cardProps.description.indexOf(keyword) !== -1) {
+                  if (cardData.description.indexOf(keyword) !== -1) {
                     return (
                       <div
                         key={i}
@@ -536,13 +550,14 @@ export class PlayingCard extends React.Component {
             small={small}
             square={square}
             style={{ transform: rotation }}
-            {...cardProps}
+            cardData={cardData}
           />
         </ArcherElement>
       </div>
     );
   }
 }
+
 
 PlayingCard = DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
@@ -555,6 +570,7 @@ PlayingCard = DropTarget(ItemTypes.CARD, cardTarget, (connect, monitor) => ({
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop()
 }))(PlayingCard);
+
 
 export default connect(
   mapStateToProps,

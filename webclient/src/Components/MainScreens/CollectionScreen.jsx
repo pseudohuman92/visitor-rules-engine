@@ -175,12 +175,12 @@ class CollectionScreen extends React.Component {
                     onSalvage={this.onSalvage(card.name)}
                     craftDisabled={dust < craftCost}
                     salvageDisabled={!collection[card.name]}
-                    {...card}
+                    cardData={card}
                   />
                 ) : (
                   <CardDisplay
                     opacity={collection[card.name] ? 1 : 0.5}
-                    {...card}
+                    cardData={card}
                   />
                 )}
               </Grid>

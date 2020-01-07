@@ -26,7 +26,7 @@ class CustomCardGallery extends Component {
         <Grid container spacing={8}>
           {this.state.cards.map((card, i) => (
             <Grid item key={i} xs={3}>
-              <CardDisplay {...card} />
+              <CardDisplay cardData={card} />
               <Center>{card.creator}</Center>
             </Grid>
           ))}

@@ -18,19 +18,24 @@ class SquareCard extends PureComponent {
   render() {
     const {
       opacity,
+      cardData,
+      size,
+      borderColor,
+    } = this.props;
+
+    const {
       name,
       cost,
       type,
       knowledgeCost,
-      borderColor,
       attack,
       health,
       delay,
       loyalty,
       shield,
-      reflect,
-      size
-    } = this.props;
+      reflect
+    } = cardData;
+    
     const backColor = borderColor ? borderColor : undefined; //"gainsboro";
     return (
       <div style={{ position: "relative" }}>

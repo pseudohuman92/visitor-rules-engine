@@ -136,7 +136,7 @@ class DeckBuilder extends React.Component {
                           ? 1
                           : 0.5
                       }
-                      {...card}
+                      cardData={card}
                     />
                   </Grid>
                 )
@@ -166,7 +166,7 @@ class DeckBuilder extends React.Component {
                     <CardDisplay
                       small
                       onClick={() => this.removeFromDeck(card.name)}
-                      {...card}
+                      cardData={card}
                     />
                   </GridListTile>
                 ))}

@@ -69,7 +69,7 @@ class PlayArea extends Component {
     }
 
     //Auto pass function
-    /* 
+    
     if (
       game.phase !== proto.Phase.REDRAW &&
       clientPhase === ClientPhase.UPDATE_GAME &&
@@ -85,7 +85,7 @@ class PlayArea extends Component {
     } else {
       this.props.updateExtendedGameState({ autoPass: false });
     }
-    */
+    
   }
 
   render() {
@@ -96,11 +96,11 @@ class PlayArea extends Component {
       backends: [
         {
           backend: HTML5Backend,
-          preview: true
+          preview: false
         },
         {
           backend: TouchBackend,
-          preview: true,
+          preview: false,
           transition: TouchTransition
         }
       ]
@@ -125,7 +125,7 @@ class PlayArea extends Component {
             alt=""
           />
           <header className="App-header">
-            <CardDragPreview />
+            {/*<CardDragPreview />*/}
             <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
             <EndGameDialog back={back} />
             <SelectXDialog />
