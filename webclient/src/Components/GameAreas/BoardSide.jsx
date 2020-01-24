@@ -1,30 +1,15 @@
-import React, {Component} from "react";
-import { DropTarget } from "react-dnd";
+import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Droppable } from "react-beautiful-dnd";
 
 import PlayingCard from "../Card/PlayingCard";
 import { ItemTypes } from "../Helpers/Constants";
 
 import "../../css/Utils.css";
-import { withSize } from "react-sizeme";
-
-const boardSideTarget = {
-  drop(props, monitor) {
-    if (monitor.didDrop()) {
-      return;
-    }
-
-    return { targetType: ItemTypes.FIELD, id: props.id };
-  },
-
-  canDrop(props, monitor) {
-    const item = monitor.getItem();
-    return item.sourceType === ItemTypes.CARD && item.playable;
-  }
-};
 
 const mapStateToProps = state => {
   return {
+    windowDimensions: state.windowDimensions,
     playerCards: state.extendedGameState.game.player.play,
     opponentCards: state.extendedGameState.game.opponent.play
   };
@@ -34,33 +19,41 @@ class BoardSide extends Component {
   render() {
     const {
       isPlayer,
-      connectDropTarget,
       playerCards,
-      opponentCards
+      opponentCards,
+      windowDimensions
     } = this.props;
-    const {width} = this.props.size;
+    const { width } = windowDimensions;
     const cards = isPlayer ? playerCards : opponentCards;
 
-    return connectDropTarget(
-      <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: isPlayer?"flex-end":"flex-start"}}>
-          {cards.map((card, i) => (
-            <div
-              key={i}
-              style={{width: Math.min(width / cards.length, width / 10), margin:"1%"}}
-            >
-              <PlayingCard square play cardData={card}/>
-            </div>
-          ))}
-      </div>
-    );
+    return <Droppable droppableId={isPlayer?"player-play-area":"opponent-play-area"}>
+        {provided => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            style={{
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
+            }}
+          >
+            {cards.map((card, i) => (
+              <div
+                key={card.id}
+                style={{
+                  //width: Math.min(width / (cards.length * 2), width / 20),
+                  margin: "1%"
+                }}
+              >
+                <PlayingCard square play cardData={card} isDragDisabled DnDIndex={i}/>
+              </div>
+            ))}
+          </div>
+        )}
+      </Droppable>
+   
   }
 }
 
-BoardSide = DropTarget(ItemTypes.CARD, boardSideTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  isOverCurrent: monitor.isOver({ shallow: true }),
-  canDrop: monitor.canDrop()
-}))(BoardSide);
-
-export default connect(mapStateToProps)(withSize()(BoardSide));
+export default connect(mapStateToProps)(BoardSide);

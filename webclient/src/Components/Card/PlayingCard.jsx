@@ -1,23 +1,20 @@
 import React from "react";
-import { DragSource, DropTarget } from "react-dnd";
 import { connect } from "react-redux";
 
 import CardDisplay from "./CardDisplay";
-import { ItemTypes, keywords, ClientPhase } from "../Helpers/Constants";
-import { cardSource, cardTarget } from "./PlayingCardDnd";
+import { keywords, ClientPhase } from "../Helpers/Constants";
 
-import proto from "../../protojs/compiled.js";
+import proto, { BlockerAssignment } from "../../protojs/compiled.js";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import { withSize } from "react-sizeme";
 import FittedText from "../Primitives/FittedText";
-import { debug } from "util";
 import { ArcherElement } from "react-archer";
-import Draggable from 'react-draggable';
+import { Draggable } from "react-beautiful-dnd";
 
 const mapStateToProps = state => {
   return {
     clientPhase: state.extendedGameState.clientPhase,
+    windowDimensions: state.windowDimensions,
 
     playableCards: state.extendedGameState.game.canPlay,
     studyableCards: state.extendedGameState.game.canStudy,
@@ -27,16 +24,15 @@ const mapStateToProps = state => {
 
     selectionData: state.extendedGameState.selectionData,
     attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
-    blockerAssignmentData: state.extendedGameState.blockerAssignmentData,
-    attackers: state.extendedGameState.game.attackers
+    blockerAssignmentData: state.extendedGameState.blockerAssignmentData
   };
 };
 
-export class PlayingCard extends React.Component {
+class PlayingCard extends React.Component {
   constructor(props) {
     super(props);
     var relations = [];
-    if (this.props.targets.length > 0) {
+    if (this.shouldCalculateArrows(props)) {
       relations = this.getArrowRelations();
     }
     this.state = {
@@ -46,8 +42,10 @@ export class PlayingCard extends React.Component {
     };
   }
 
+  
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps.targets) !== JSON.stringify(this.props.targets)) {
+    if (this.shouldRecalculateArrows(prevProps)) {
       var relations = this.getArrowRelations();
       this.setState({
         arrowRelations: relations
@@ -56,34 +54,36 @@ export class PlayingCard extends React.Component {
   }
 
   onMouseEnter = event => {
-    if (this.props.targets.length !== 0) {
+    if (this.props.cardData.targets.length !== 0) {
       this.setState({ showArrows: true });
     }
     this.handlePopoverOpen(event);
   };
 
   onMouseLeave = event => {
-    if (this.props.targets.length !== 0) {
+    if (this.props.cardData.targets.length !== 0) {
       this.setState({ showArrows: false });
     }
     this.handlePopoverClose(event);
   };
 
   handlePopoverOpen = event => {
+    const { width, height } = this.props.windowDimensions;
     var rect = event.currentTarget.getBoundingClientRect();
 
     var style = {};
-    style["width"] = (2 * window.innerWidth) / 6;
+    style["width"] = width / 5;
+    style["height"] = (width / 5) * (88/63);
     style["display"] = "flex";
     style["textAlign"] = "left";
 
-    if (rect.top < window.innerHeight / 2) {
+    if (rect.top < height / 2) {
       style["top"] = rect.height;
     } else {
       style["bottom"] = rect.height;
     }
 
-    if (rect.left < window.innerWidth / 2) {
+    if (rect.left < width / 2) {
       style["left"] = rect.width;
     } else {
       style["right"] = rect.width;
@@ -98,10 +98,10 @@ export class PlayingCard extends React.Component {
     this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
-  /////// Attack Handlers /////////
+  //! ///// Attack Handlers /////////
 
   setAttacking = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
 
     let attackerAssignments = [
       ...this.props.attackerAssignmentData.attackerAssignments
@@ -137,7 +137,7 @@ export class PlayingCard extends React.Component {
   };
 
   unsetAttacking = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
     let attackerAssignments = [
       ...this.props.attackerAssignmentData.attackerAssignments
     ];
@@ -159,7 +159,7 @@ export class PlayingCard extends React.Component {
   };
 
   setAttacked = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
 
     let attackerAssignments = [
       ...this.props.attackerAssignmentData.attackerAssignments
@@ -176,10 +176,10 @@ export class PlayingCard extends React.Component {
     });
   };
 
-  /////// Block Handlers /////////
+  //! /////// Block Handlers /////////
 
   setBlocking = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
 
     let blockerAssignments = [
       ...this.props.blockerAssignmentData.blockerAssignments
@@ -214,7 +214,7 @@ export class PlayingCard extends React.Component {
   };
 
   unsetBlocking = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
     let blockerAssignments = [
       ...this.props.blockerAssignmentData.blockerAssignments
     ];
@@ -236,7 +236,7 @@ export class PlayingCard extends React.Component {
   };
 
   setBlocked = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
 
     let blockerAssignments = [
       ...this.props.blockerAssignmentData.blockerAssignments
@@ -253,10 +253,10 @@ export class PlayingCard extends React.Component {
     });
   };
 
-  ///////// Selection Handlers ///////////
+  //! /////// Selection Handlers ///////////
 
   select = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
     let selected = [...this.props.selectionData.selected];
     let maxCount = this.props.selectionData.selectionCount;
     let clientPhase = this.props.clientPhase;
@@ -275,7 +275,7 @@ export class PlayingCard extends React.Component {
   };
 
   unselect = event => {
-    let id = this.props.id;
+    let id = this.props.cardData.id;
     let selected = [...this.props.selectionData.selected];
 
     if (selected.includes(id)) {
@@ -288,24 +288,67 @@ export class PlayingCard extends React.Component {
     }
   };
 
-  /////////////////////////////////
+  //! //// Connection Arrows //////
+
+  shouldCalculateArrows = (props) => {
+    let id = props.cardData.id;
+    let targets = props.cardData.targets;
+    let attackerAssignments = props.attackerAssignmentData.attackerAssignments;
+    let attackerIndex = attackerAssignments.map(a => {
+      return a.attackerId;
+    }).indexOf(id);
+    let blockerAssignments = props.blockerAssignmentData.blockerAssignments;
+    let blockerIndex = blockerAssignments.map(a => {
+      return a.blockerId;
+    }).indexOf(id);
+
+    return targets.length > 0 || attackerIndex > -1 || blockerIndex > -1;
+  }
+
+  //! TODO: finish this first!!!! 
+  shouldRecalculateArrows = (prevProps) => {
+    
+    let id = this.props.cardData.id;
+
+    let prevTargets = prevProps.cardData.targets;
+    let prevAttackerAssignments = prevProps.attackerAssignmentData.attackerAssignments;
+    let prevAttackerIndex = prevAttackerAssignments.map(a => {
+      return a.attackerId;
+    }).indexOf(id);
+    let prevBlockerAssignments = prevProps.blockerAssignmentData.blockerAssignments;
+    let prevBlockerIndex = prevBlockerAssignments.map(a => {
+      return a.blockerId;
+    }).indexOf(id);
+
+    let targets = this.props.cardData.targets;
+    let attackerAssignments = this.props.attackerAssignmentData.attackerAssignments;
+    let attackerIndex = attackerAssignments.map(a => {
+      return a.attackerId;
+    }).indexOf(id);
+    let blockerAssignments = this.props.blockerAssignmentData.blockerAssignments;
+    let blockerIndex = blockerAssignments.map(a => {
+      return a.blockerId;
+    }).indexOf(id);
+
+    return JSON.stringify(prevTargets) !== JSON.stringify(targets) ||
+    (prevAttackerIndex === -1 && attackerIndex !== -1) ||
+    (prevAttackerIndex !== -1 && attackerIndex === -1) ||
+    (prevBlockerIndex === -1 && blockerIndex !== -1) ||
+    (prevBlockerIndex !== -1 && blockerIndex === -1);
+    
+  }
 
   getArrowRelations = () => {
-    let targets = this.props.targets;
-
-    /* {
-      //strokeColor: string,
-      //strokeWidth: number,
-      //strokeDasharray: number,
-      //arrowLength: number,
-      //arrowThickness: number,
-      //noCurves: boolean,
-    } : Style */
-    var style = {
-      strokeColor: "yellow",
-      strokeWidth: 4,
-      noCurves: false
-    };
+    let id = this.props.cardData.id;
+    let targets = this.props.cardData.targets;
+    let attackerAssignments = this.props.attackerAssignmentData.attackerAssignments;
+    let attackerAssignmentIds = attackerAssignments.map(a => {
+      return a.attackerId;
+    });
+    let blockerAssignments = this.props.blockerAssignmentData.blockerAssignments;
+    let blockerAssignmentIds = blockerAssignments.map(a => {
+      return a.blockerId;
+    });
 
     /* {
       targetId: string,
@@ -315,45 +358,64 @@ export class PlayingCard extends React.Component {
       style: Style,
     } : Relation */
     let relations = [];
-
+    
     targets.forEach(target => {
-      var relation = {
+      relations.push({
         targetId: target,
         targetAnchor: "middle",
         sourceAnchor: "middle",
-        style: style
-      };
-
-      relations.push(relation);
+        style: {
+          strokeColor: "yellow",
+          strokeWidth: 4,
+          noCurves: true
+        }
+      });
     });
+
+    // if card is attacking
+    const attackerIndex = attackerAssignmentIds.indexOf(id);
+    if ( attackerIndex > -1) {
+      const attackerAssignment = attackerAssignments[attackerIndex];
+      relations.push({
+        targetId: attackerAssignment.attacksTo,
+        targetAnchor: "middle",
+        sourceAnchor: "middle",
+        style: {
+          strokeColor: "red",
+          strokeWidth: 4,
+          noCurves: false
+        }
+      });
+    }
+
+
+    // If card is blocking 
+    const blockerIndex = blockerAssignmentIds.indexOf(id);
+    if ( blockerIndex > -1) {
+      const blockerAssignment = blockerAssignments[blockerIndex];
+      relations.push({
+        targetId: blockerAssignment.blockedBy,
+        targetAnchor: "middle",
+        sourceAnchor: "middle",
+        style: {
+          strokeColor: "blue",
+          strokeWidth: 4,
+          noCurves: false
+        }
+      });
+    }
 
     console.log("Relations", relations);
     return relations;
   };
 
-  /////////////////////////////
-  onStart = event => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    console.log(rect.top, rect.left);
-    this.setState({top: rect.top, left: rect.left, isDragging : true});
-  };
-
-  onStop = () => {
-    console.log(this.state.top, this.state.left);
-    this.setState({isDragging : false});
-  };
-  ////////////////////////
-
+  //! Rendering //////
   render() {
     const {
       clientPhase,
-      depleted,
-      deploying,
-
-      isOver,
-      canDrop,
-      isDragging,
-      connectDragSource,
+      DnDIndex,
+      isDragDisabled,
+      windowDimensions,
 
       selectionData,
       attackerAssignmentData,
@@ -361,6 +423,7 @@ export class PlayingCard extends React.Component {
 
       activatableCards,
       playableCards,
+      studyableCards,
       attackers,
       blockers,
 
@@ -368,15 +431,17 @@ export class PlayingCard extends React.Component {
       small,
       square,
       style,
-      cardData
+      cardData,
+      popoverDisabled
     } = this.props;
 
-    const id = cardData.id;
+    const { id, depleted, deploying } = cardData;
     const { arrowRelations, showArrows } = this.state;
 
     const activatable = activatableCards.includes(id);
+    const studyable = studyableCards.includes(id);
     const playable = playableCards.includes(id);
-    const selectable_ = selectionData.selectable.includes(id);
+    const selectable_ =  selectionData.selectable.includes(id);
     const selected_ = selectionData.selected.includes(id);
 
     const attacking =
@@ -430,9 +495,7 @@ export class PlayingCard extends React.Component {
       blockerAssignmentData.possibleBlockTargets.includes(id);
 
     var borderColor = "";
-    if (isDragging) {
-      //borderColor = "yellow";
-    } else if (
+    if (
       canAttack ||
       canBeAttacked ||
       canBlock ||
@@ -442,7 +505,7 @@ export class PlayingCard extends React.Component {
       playable
     ) {
       borderColor = "green";
-    } else if ((canDrop && isOver) || attacking) {
+    } else if (attacking) {
       borderColor = "red";
     } else if (selected_ || blocking) {
       borderColor = "blue";
@@ -476,7 +539,7 @@ export class PlayingCard extends React.Component {
     }
 
     var opacity = 1;
-    if (isDragging || deploying) {
+    if (deploying) {
       opacity = 0.5;
     }
 
@@ -490,89 +553,108 @@ export class PlayingCard extends React.Component {
 
     const { popoverStyle } = this.state;
 
-    return connectDragSource(
-    <div
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
-        style={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
-          ...style
-        }}
-      >
-        {!isDragging && !this.state.isDragging && (
-          <div
-            style={{
-              position: "absolute",
-              zIndex: 20,
-              ...popoverStyle
-            }}
-          >
-            <div style={{ width: popoverStyle.width / 2 }}>
-              <CardDisplay cardData={cardData} />
-            </div>
+    let draggableId = id;
+    if (studyable) {
+      draggableId = "[STUDYABLE]"+draggableId;
+    }
+    if (playable) {
+      draggableId= "[PLAYABLE]"+draggableId;
+    }
+
+    return (
+      <Draggable draggableId={draggableId} index={DnDIndex} isDragDisabled={isDragDisabled || (!playable && !studyable)} >
+        {(provided, snapshot) => {
+          const isDragging = snapshot.isDragging;
+          return (
             <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
               style={{
-                display: "flex",
-                flexDirection: "column",
-                width: popoverStyle.width / 2
+                //width: "100%",
+                //height: "100%",
+                ...style,
+                //width: width / 5,
+                //height: height / 3,
+                position: "relative"
               }}
             >
-              {cardData.description &&
-                Object.keys(keywords).map((keyword, i) => {
-                  if (cardData.description.indexOf(keyword) !== -1) {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          border: "1px white solid",
-                          borderRadius: "5px",
-                          whiteSpace: "pre-wrap"
-                        }}
-                      >
-                        <FittedText text={keyword + "\n" + keywords[keyword]} />
-                      </div>
-                    );
-                  }
-                  return <div key={i} />;
-                })}
+              {!isDragging && !popoverDisabled && (
+                <div
+                  style={{
+                    position: "absolute",
+                    zIndex: 20,
+                    ...popoverStyle
+                  }}
+                >
+                  <div style={{ width: popoverStyle.width / 2, height: popoverStyle.height }}>
+                    <CardDisplay
+                      cardData={cardData}
+                      windowDimensions={windowDimensions}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: popoverStyle.width / 2,
+                      height: popoverStyle.height
+                    }}
+                  >
+                    {cardData.description &&
+                      Object.keys(keywords).map((keyword, i) => {
+                        if (cardData.description.indexOf(keyword) !== -1) {
+                          return (
+                            <div
+                              key={i}
+                              style={{
+                                color: "white",
+                                backgroundColor: "black",
+                                border: "1px white solid",
+                                borderRadius: "5px",
+                                whiteSpace: "pre-wrap"
+                              }}
+                            >
+                              <FittedText
+                                text={keyword + "\n" + keywords[keyword]}
+                                windowDimensions={windowDimensions}
+                              />
+                            </div>
+                          );
+                        }
+                        return <div key={i} />;
+                      })}
+                  </div>
+                </div>
+              )}
+              <div {...provided.dragHandleProps}>
+                <ArcherElement
+                  id={id}
+                  relations={showArrows ? arrowRelations : []}
+                  style={{ zIndex: 10 }}
+                >
+                  <CardDisplay
+                    opacity={opacity}
+                    borderColor={borderColor}
+                    onClick={clickHandler}
+                    small={small}
+                    square={square}
+                    style={{ transform: rotation }}
+                    cardData={cardData}
+                    windowDimensions={windowDimensions}
+                  />
+                </ArcherElement>
+              </div>
             </div>
-          </div>
-        )}
-        <ArcherElement id={id} relations={showArrows ? arrowRelations : []} style={{zIndex: 100}}>
-          <CardDisplay
-            opacity={opacity}
-            borderColor={borderColor}
-            onClick={clickHandler}
-            small={small}
-            square={square}
-            style={{ transform: rotation }}
-            cardData={cardData}
-          />
-        </ArcherElement>
-      </div>
+          );
+        }}
+      </Draggable>
     );
   }
 }
 
-
-PlayingCard = DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  connectDragPreview: connect.dragPreview(),
-  isDragging: monitor.isDragging()
-}))(PlayingCard);
-
-PlayingCard = DropTarget(ItemTypes.CARD, cardTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop()
-}))(PlayingCard);
-
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(withSize()(PlayingCard)));
+)(withHandlers(PlayingCard));

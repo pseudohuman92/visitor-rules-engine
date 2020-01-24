@@ -10,6 +10,7 @@ import TextOnComponent from "../Primitives/TextOnComponent";
 
 const mapStateToProps = state => {
   return {
+    windowDimensions: state.windowDimensions,
     playerName: state.profile.username,
     playerScrapyard: state.extendedGameState.game.player.scrapyard,
     opponentUserId: state.extendedGameState.game.opponent.userId,
@@ -45,6 +46,7 @@ class Scrapyard extends React.Component {
 
   render() {
     const {
+      windowDimensions,
       isPlayer,
       playerName,
       opponentName,
@@ -54,6 +56,9 @@ class Scrapyard extends React.Component {
       style
     } = this.props;
 
+    const {width } = windowDimensions;
+    const scrapWidth = width / 10;
+    const scrapHeight = scrapWidth * (88/63);
     const { hover } = this.state;
     const name = isPlayer ? playerName : opponentName;
     const scrapyard = isPlayer ? playerScrapyard : opponentScrapyard;
@@ -74,14 +79,21 @@ class Scrapyard extends React.Component {
         onClick={showScrapyard}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
-        style={{width:"100%", ...style }}
+        style={{...style, width: scrapWidth, height: scrapHeight}}
       >
         {hasCard ? (
           <TextOnComponent
             text={hover ? scrapyard.length : ""}
-            component={<CardDisplay cardData={scrapyard[scrapyard.length - 1]} />}
+            component={
+              <CardDisplay
+                cardData={scrapyard[scrapyard.length - 1]}
+                windowDimensions={windowDimensions}
+                scale={0.75}
+              />
+            }
             compStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
             scale={3}
+            windowDimensions={windowDimensions}
           />
         ) : (
           <TextOnImage
@@ -89,6 +101,7 @@ class Scrapyard extends React.Component {
             src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}
             imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
             scale={3}
+            windowDimensions={windowDimensions}
           />
         )}
       </div>

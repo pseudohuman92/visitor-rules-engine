@@ -1,9 +1,6 @@
 import { GameProtoSocket } from "../../protojs/ProtoSocket";
 import {
   ClientPhase,
-  SelectionData,
-  ExtendedGameState,
-  initialExtendedGameState,
   initialSelectionData,
   initialAttackerAssignmentData,
   initialBlockerAssignmentData,
@@ -11,7 +8,7 @@ import {
 } from "../Helpers/Constants";
 import { toClientPhase, toSelectFromType } from "../Helpers/Helpers";
 import { GetGameURL } from "../Helpers/Helpers";
-import { AttackerAssignment } from "../../protojs/compiled";
+import { Phase } from "../../protojs/compiled";
 
 export default class ServerGameMessageHandler {
 
@@ -30,67 +27,6 @@ export default class ServerGameMessageHandler {
       this.handleMsg
     );
   }
-
-  //This is a message handler for ServerGameMessage messages
-  handleMsg = (msgType, params) => {
-    // XXX Remember to update this with the protocol updates
-    let newExtendedState = {};
-    let selectionData = {};
-    newExtendedState["clientPhase"] = toClientPhase(msgType, params.messageType);
-    switch (msgType) {
-      case "SelectFrom":
-        selectionData["selectionCount"] = params.selectionCount;
-        selectionData["candidates"] = params.candidates;
-        selectionData["selectable"] = params.selectable;
-        selectionData["upTo"] = params.upTo;
-        if (
-          newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_LIST ||
-          newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_SCRAPYARD ||
-          newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_VOID
-        ) {
-          newExtendedState["dialogData"] = {
-            open: true,
-            title: `Select ${params.selectionCount} from the following`,
-            cards: params.candidates
-          };
-        }
-        break;
-      case "GameEnd":
-        newExtendedState["win"] = params.win;
-        break;
-      case "OrderCards":
-        newExtendedState["dialogData"] = {
-          open: true,
-          title: "Order following cards",
-          cards: params.cardsToOrder
-        };
-        break;
-      case "SelectXValue":
-        selectionData["maxXValue"] = params.maxXValue;
-        break;
-      case "SelectAttackers":
-        newExtendedState["attackerAssignmentData"] = {
-          possibleAttackers : params.possibleAttackers
-        };
-        break;
-      case "SelectBlockers":
-        newExtendedState["blockerAssignmentData"] = {
-          possibleBlockers : params.possibleBlockers
-        };
-        break;
-      default:
-        break;
-    }
-    newExtendedState["game"] = params.game;
-    selectionData["selected"] = [];
-    newExtendedState["selectionData"] = selectionData;
-    if (this.continueGame) {
-      newExtendedState["gameInitialized"] = true;
-      this.continueGame = false;
-    }
-
-    this.updateExtendedGameState(newExtendedState);
-  };
 
   send = (msgType, params) => {
     this.protoSocket.send(msgType, params);
@@ -174,4 +110,82 @@ export default class ServerGameMessageHandler {
       filename: filename
     });
   };
+
+    //This is a message handler for ServerGameMessage messages
+    handleMsg = (msgType, params) => {
+      // XXX Remember to update this with the protocol updates
+      let newExtendedState = {};
+      let selectionData = {};
+      newExtendedState["clientPhase"] = toClientPhase(msgType, params.messageType);
+      switch (msgType) {
+        case "SelectFrom":
+          selectionData["selectionCount"] = params.selectionCount;
+          selectionData["candidates"] = params.candidates;
+          selectionData["selectable"] = params.selectable;
+          selectionData["upTo"] = params.upTo;
+          if (
+            newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_LIST ||
+            newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_SCRAPYARD ||
+            newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_VOID
+          ) {
+            newExtendedState["dialogData"] = {
+              open: true,
+              title: `Select ${params.selectionCount} from the following`,
+              cards: params.candidates
+            };
+          }
+          break;
+        case "GameEnd":
+          newExtendedState["win"] = params.win;
+          break;
+        case "OrderCards":
+          newExtendedState["dialogData"] = {
+            open: true,
+            title: "Order following cards",
+            cards: params.cardsToOrder
+          };
+          break;
+        case "SelectXValue":
+          selectionData["maxXValue"] = params.maxXValue;
+          break;
+        case "SelectAttackers":
+          newExtendedState["attackerAssignmentData"] = {
+            possibleAttackers : params.possibleAttackers
+          };
+          break;
+        case "SelectBlockers":
+          newExtendedState["blockerAssignmentData"] = {
+            possibleBlockers : params.possibleBlockers
+          };
+          break;
+        default:
+          let game  = params.game;
+          if (
+            game.phase !== Phase.REDRAW &&
+            game.activePlayer === game.player.userId &&
+            game.canStudy.length === 0 &&
+            game.canActivate.length === 0 &&
+            game.canPlay.length === 0
+          ) {
+            setTimeout(this.Pass, 500);
+          }
+          if (
+            game.phase === Phase.REDRAW &&
+            game.activePlayer === game.player.userId &&
+            game.player.hand.length === 0
+          ) {
+            this.Keep();
+          }
+          break;
+      }
+      newExtendedState["game"] = params.game;
+      selectionData["selected"] = [];
+      newExtendedState["selectionData"] = selectionData;
+      if (this.continueGame) {
+        newExtendedState["gameInitialized"] = true;
+        this.continueGame = false;
+      }
+  
+      this.updateExtendedGameState(newExtendedState);
+    };
 }

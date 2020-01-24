@@ -5,6 +5,7 @@ import TextOnImage from "../Primitives/TextOnImage";
 
 const mapStateToProps = state => {
   return {
+    windowDimensions: state.windowDimensions,
     playerDeckSize: state.extendedGameState.game.player.deckSize,
     opponentDeckSize: state.extendedGameState.game.opponent.deckSize
   };
@@ -23,20 +24,26 @@ class Deck extends Component {
   };
 
   render() {
-    const { playerDeckSize, opponentDeckSize, isPlayer, style } = this.props;
+    const { playerDeckSize, opponentDeckSize, isPlayer, style, windowDimensions } = this.props;
+
+    const { width } = windowDimensions;
+    const deckWidth = width / 10;
+    const deckHeight = deckWidth * (88/63);
+
     const { hover } = this.state;
     const deckSize = isPlayer ? playerDeckSize : opponentDeckSize;
     return (
       <div
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
-        style={{ height: "100%", ...style }}
+        style={{ ...style, width: deckWidth, height: deckHeight}}
       >
         <TextOnImage
           text={hover ? deckSize : ""}
           src={process.env.PUBLIC_URL + "/img/CardBack.png"}
           imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
           scale = {3}
+          windowDimensions={windowDimensions}
         />
       </div>
     );

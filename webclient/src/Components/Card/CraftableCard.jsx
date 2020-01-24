@@ -2,7 +2,6 @@ import React from "react";
 import { PureComponent } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import { getEmptyImage } from "react-dnd-html5-backend";
 import { withSize } from "react-sizeme";
 
 import Button from '../Primitives/Button';
@@ -12,13 +11,6 @@ import { CardDisplay } from "./CardDisplay";
 
 class CraftableCard extends PureComponent {
   state = { showDialog: false };
-
-  componentDidMount() {
-    const { connectDragPreview } = this.props;
-    if (connectDragPreview) {
-      connectDragPreview(getEmptyImage(), { captureDraggingState: true });
-    }
-  }
 
   openDialog = event => {
 
@@ -31,14 +23,13 @@ class CraftableCard extends PureComponent {
 
   render() {
     const {
-      size,
-      craft,
       onCraft,
       craftDisabled,
       onSalvage,
       salvageDisabled,
       count,
-      cardData
+      cardData,
+      windowDimensions
     } = this.props;
     return (
       <div>
@@ -61,7 +52,7 @@ class CraftableCard extends PureComponent {
                 </Grid>
               <Grid item xs={8}>
                 <center>{count}</center>
-                <CardDisplay cardData={cardData}  opacity="1" />
+                <CardDisplay cardData={cardData}  opacity="1" windowDimensions={windowDimensions}/>
               </Grid>
                 <Grid item xs={2}>
                   <Button
@@ -75,7 +66,7 @@ class CraftableCard extends PureComponent {
           </DialogContent>
         </Dialog>
           <div onClick={this.openDialog}>
-              <CardDisplay cardData={cardData} />
+              <CardDisplay cardData={cardData} windowDimensions={windowDimensions}/>
           </div>
       </div>
     );

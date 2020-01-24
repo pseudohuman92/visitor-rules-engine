@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider as ReduxProvider } from "react-redux";
-
+import { Provider as ReduxProvider, connect } from "react-redux";
 import MainPage from "./Components/MainScreens/MainPage";
 import Firebase, { FirebaseContext } from "./Components/Firebase";
-import store from "./Components/Redux/Store";
+import store, { mapDispatchToProps } from "./Components/Redux/Store";
 import HandlerContext from "./Components/MessageHandlers/HandlerContext";
+
+
 
 class App extends React.Component {
   constructor(props) {
@@ -22,6 +23,19 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+  
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  
+  updateWindowDimensions = () =>  {
+    this.props.updateState({windowDimensions: { width: window.innerWidth, height: window.innerHeight }});
+  }
+
   render() {
     return (
       <HandlerContext.Provider value={this.state}>
@@ -30,6 +44,11 @@ class App extends React.Component {
     );
   }
 }
+
+App = connect(
+  null,
+  mapDispatchToProps
+)(App);
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(

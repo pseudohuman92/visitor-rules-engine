@@ -10,15 +10,17 @@ import PlayingCard from "../Card/PlayingCard";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { mapDispatchToProps } from "../Redux/Store";
 import { ClientPhase } from "../Helpers/Constants";
+import { Droppable } from "react-beautiful-dnd";
 
 import "../../css/ChooseDialog.css";
+import { debugPrint } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return {
     clientPhase: state.extendedGameState.clientPhase,
     selected: state.extendedGameState.selectionData.selected,
     dialog: state.extendedGameState.dialogData,
-    upTo: state.extendedGameState.selectionData.upTo,
+    upTo: state.extendedGameState.selectionData.upTo
   };
 };
 
@@ -59,13 +61,24 @@ class ChooseDialog extends Component {
       >
         <DialogTitle> {dialog.title} </DialogTitle>
         <DialogContent>
-          <Grid container spacing={0} className="choose-dialog">
-            {dialog.cards.map(card => (
-              <Grid item xs={1} key={card.id}>
-                <PlayingCard cardData={card} />
-              </Grid>
-            ))}
-          </Grid>
+          <Droppable droppableId={"modal-list"} isDropDisabled>
+            {provided => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <Grid container spacing={0} className="choose-dialog">
+                  {dialog.cards.map((card, i) => (
+                    <Grid item xs={1} key={card.id}>
+                      <PlayingCard
+                        cardData={card}
+                        isDragDisabled
+                        DnDIndex={i}
+                        popoverDisabled
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+            )}
+          </Droppable>
           {upTo && (
             <Button
               color="primary"

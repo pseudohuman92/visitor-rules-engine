@@ -114,5 +114,7 @@
 
 .level1-middle-2 {
   flex-grow: 1;
+
+  justify-content: center;
   /* border: 3px white solid; */
 }

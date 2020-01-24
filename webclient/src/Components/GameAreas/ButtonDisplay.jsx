@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Button from "../Primitives/Button";
-import Textfit from "react-textfit";
 import { connect } from "react-redux";
 
 import proto from "../../protojs/compiled.js";
@@ -84,6 +82,7 @@ class ButtonDisplay extends Component {
     const actPlayer = amIActive ? playerName : opponentName;
     const turPlayer = turnPlayer === playerUserId ? playerName : opponentName;
 
+    /*
     const activeDisplay = (
       <Grid container spacing={0}>
         <Grid item xs={12}>
@@ -115,6 +114,7 @@ class ButtonDisplay extends Component {
         </Grid>
       </Grid>
     );
+    */
 
     let buttonMenu = <div />;
     if (

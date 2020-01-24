@@ -1,5 +1,4 @@
 import React from "react";
-import { withSize } from "react-sizeme";
 import "../../css/ComponentStack.css";
 
 class Child extends React.Component {
@@ -15,45 +14,45 @@ class Child extends React.Component {
   };
 
   render() {
-    const { length, width, stepSize, child, i, horizontal } = this.props;
+    const { length, width, stepSize, children, i, horizontal, style } = this.props;
     return (
       <div
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
         style={{
+          ...style,
           position: "absolute",
           ...(horizontal
-            ? { left: "" + stepSize * i + "px"}
+            ? { left: "" + stepSize * i + "px" }
             : { top: "" + stepSize * i + "px" }),
           zIndex: this.state.hover ? length : i,
           width: width
         }}
       >
-        {child}
+        {children}
       </div>
     );
   }
 }
 
-class VerticalStack extends React.Component {
+class ComponentStack extends React.Component {
   render() {
-    const { children, size, stepSize, horizontal } = this.props;
+    const { children, stepSize, horizontal, width } = this.props;
     const length = React.Children.count(children);
     return (
-      <div
-        className="component-stack"
-      >
+      <div style={{display: "flex", justifyContent: "center", position: "relative", height:"100%"}}>
         {React.Children.map(children, (child, i) => {
           return (
             <Child
               key={i}
               length={length}
-              child={child}
-              width={size.width}
+              width={width}
               stepSize={stepSize}
               horizontal={horizontal}
               i={i}
-            />
+            >
+              {child}
+            </Child>
           );
         })}
       </div>
@@ -61,4 +60,4 @@ class VerticalStack extends React.Component {
   }
 }
 
-export default withSize()(VerticalStack);
+export default ComponentStack;

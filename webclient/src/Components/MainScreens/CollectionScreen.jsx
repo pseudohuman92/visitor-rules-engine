@@ -20,7 +20,8 @@ const mapStateToProps = state => {
   return {
     collection: state.profile.collection,
     dust: state.profile.dust,
-    userId: state.firebaseAuthData.user.uid
+    userId: state.firebaseAuthData.user.uid,
+    windowDimensions: state.windowDimensions
   };
 };
 
@@ -114,7 +115,7 @@ class CollectionScreen extends React.Component {
 
   render() {
     const { page, craft } = this.state;
-    const { collection, dust } = this.props;
+    const { collection, dust, windowDimensions } = this.props;
     const displayCollection = craft ? fullCollection : toFullCards(collection);
     const maxPage = Math.floor(
       Object.keys(craft ? fullCollection : collection).length / cardsPerPage
@@ -176,11 +177,13 @@ class CollectionScreen extends React.Component {
                     craftDisabled={dust < craftCost}
                     salvageDisabled={!collection[card.name]}
                     cardData={card}
+                    windowDimensions={windowDimensions}
                   />
                 ) : (
                   <CardDisplay
                     opacity={collection[card.name] ? 1 : 0.5}
                     cardData={card}
+                    windowDimensions={windowDimensions}
                   />
                 )}
               </Grid>

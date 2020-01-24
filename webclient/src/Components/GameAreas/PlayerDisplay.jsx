@@ -7,11 +7,12 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import TextOnImage from "../Primitives/TextOnImage";
-import { withSize } from "react-sizeme";
 import { ArcherElement } from "react-archer";
 
 const mapStateToProps = state => {
   return {
+    windowDimensions: state.windowDimensions,
+
     playerId: state.extendedGameState.game.player.id,
     playerName: state.profile.username,
     playerHealth: state.extendedGameState.game.player.health,
@@ -54,10 +55,7 @@ class PlayerDisplay extends React.Component {
   }
 
   select = event => {
-    let {
-      isPlayer,
-      playerId,
-      opponentId, } = this.props;
+    let { isPlayer, playerId, opponentId } = this.props;
     let id = isPlayer ? playerId : opponentId;
     let maxCount = this.props.selectionCount;
     let selected = [...this.props.selected];
@@ -65,7 +63,9 @@ class PlayerDisplay extends React.Component {
 
     if (selected.length < maxCount) {
       selected.push(id);
-      this.props.updateExtendedGameState({ selectionData: { selected: selected } });
+      this.props.updateExtendedGameState({
+        selectionData: { selected: selected }
+      });
     }
     if (selected.length === maxCount) {
       this.props.gameHandler.SelectDone(clientPhase, selected);
@@ -73,10 +73,7 @@ class PlayerDisplay extends React.Component {
   };
 
   unselect = event => {
-    let {
-      isPlayer,
-      playerId,
-      opponentId, } = this.props;
+    let { isPlayer, playerId, opponentId } = this.props;
     let id = isPlayer ? playerId : opponentId;
     let selected = [...this.props.selected];
 
@@ -91,16 +88,15 @@ class PlayerDisplay extends React.Component {
   };
 
   setAttacked = event => {
-    let {
-      isPlayer,
-      playerId,
-      opponentId, } = this.props;
+    let { isPlayer, playerId, opponentId } = this.props;
     let id = isPlayer ? playerId : opponentId;
 
-    let attackerAssignments = [...this.props.attackerAssignmentData.attackerAssignments];
+    let attackerAssignments = [
+      ...this.props.attackerAssignmentData.attackerAssignments
+    ];
     let currentAttacker = this.props.attackerAssignmentData.currentAttacker;
 
-    attackerAssignments.push({attackerId: currentAttacker, attacksTo: id });
+    attackerAssignments.push({ attackerId: currentAttacker, attacksTo: id });
     this.props.updateExtendedGameState({
       attackerAssignmentData: {
         currentAttacker: "",
@@ -131,11 +127,14 @@ class PlayerDisplay extends React.Component {
       playerUserId,
       opponentUserId,
       clientPhase,
-      attackerAssignmentData
+      attackerAssignmentData,
+      windowDimensions
     } = this.props;
 
-    const { width, height } = this.props.size;
-    const heightRound = Math.floor(height);
+    const windowWidth = windowDimensions.width;
+    const windowHeight = windowDimensions.height;
+    const width = windowWidth / 20;
+    const heightRound = windowHeight/20;
 
     const id = isPlayer ? playerId : opponentId;
     const userId = isPlayer ? playerUserId : opponentUserId;
@@ -150,7 +149,7 @@ class PlayerDisplay extends React.Component {
     const selectable_ = selectable.includes(id);
     const selected_ = selected.includes(id);
 
-    const canBeAttacked = 
+    const canBeAttacked =
       clientPhase === ClientPhase.SELECT_ATTACKERS &&
       attackerAssignmentData.currentAttacker &&
       attackerAssignmentData.possibleAttackTargets.includes(id);
@@ -186,56 +185,60 @@ class PlayerDisplay extends React.Component {
             flexDirection: "row-reverse"
           }}
         >
-          {maxEnergy && 
-          Array(maxEnergy)
-            .fill(null)
-            .map((c, i) => (
-              <div
-                key={i}
-                style={{
-                  height: heightRound *0.75,
-                  alignSelf: "center",
-                  marginLeft:"1%"
-                }}
-              >
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/img/card-components/energy-display.png"
-                  }
+          {maxEnergy &&
+            Array(maxEnergy)
+              .fill(null)
+              .map((c, i) => (
+                <div
+                  key={i}
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "scale-down",
-                    opacity: i >= energy ? 0.3 : 1
+                    height: heightRound * 0.75,
+                    alignSelf: "center",
+                    marginLeft: "1%"
                   }}
-                  alt=""
-                />
-              </div>
-            ))}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/img/card-components/energy-display.png"
+                    }
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "scale-down",
+                      opacity: i >= energy ? 0.3 : 1
+                    }}
+                    alt=""
+                  />
+                </div>
+              ))}
         </div>
-        <ArcherElement
-        id={id}
-        >
-        <div
-          onClick={clickHandler}
-          style={{
-            flexGrow: 2,
-            height: heightRound,
-            margin: "0 4% 0 4%"
-          }}
-        >
-          <TextOnImage
+        <ArcherElement id={id}>
+          <div
+            onClick={clickHandler}
             style={{
-              backgroundColor: borderColor
+              flexGrow: 2,
+              height: heightRound,
+              margin: "0 4% 0 4%"
             }}
-            src={process.env.PUBLIC_URL + "/img/card-components/health"+(activePlayer === userId?"-active":"")+".png"}
-            text={health}
-            min={1}
-            max={15}
-            scale={2}
-          />
-        </div>
+          >
+            <TextOnImage
+              style={{
+                backgroundColor: borderColor
+              }}
+              src={
+                process.env.PUBLIC_URL +
+                "/img/card-components/health" +
+                (activePlayer === userId ? "-active" : "") +
+                ".png"
+              }
+              text={health}
+              min={1}
+              max={15}
+              scale={2}
+              windowDimensions={windowDimensions}
+            />
+          </div>
         </ArcherElement>
         <div
           style={{
@@ -250,7 +253,7 @@ class PlayerDisplay extends React.Component {
             <div
               key={i}
               style={{
-                width: (width * 0.9) / 2 / 6,
+                width: (width * 0.9) / 2,
                 height: heightRound * 0.75,
                 position: "relative"
               }}
@@ -271,7 +274,7 @@ class PlayerDisplay extends React.Component {
                       maxHeight: "100%",
                       objectFit: "scale-down",
                       position: "absolute",
-                      left: 15 * j + "%",
+                      left: 30 * j + "%",
                       zIndex: k.count - j
                     }}
                     alt=""
@@ -288,4 +291,4 @@ class PlayerDisplay extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(withFirebase(withSize({ monitorHeight: true })(PlayerDisplay))));
+)(withHandlers(withFirebase(PlayerDisplay)));

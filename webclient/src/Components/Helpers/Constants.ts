@@ -28,17 +28,6 @@ export enum ClientPhase {
   BLOCK_PHASE = "BlockPhase"
 }
 
-export enum ItemTypes {
-  CARD = "card",
-  FIELD = "field",
-  ALTAR = "altar"
-}
-
-export enum FieldIDs {
-  MY_FIELD = "myField",
-  GARY_FIELD = "garyField"
-}
-
 export const knowledgeMap: any = {};
 knowledgeMap[proto.Knowledge.BLACK] = "B";
 knowledgeMap[proto.Knowledge.GREEN] = "G";
@@ -50,6 +39,18 @@ knowledgeMap["U"] = proto.Knowledge.BLUE;
 knowledgeMap["R"] = proto.Knowledge.RED;
 knowledgeMap["G"] = proto.Knowledge.GREEN;
 knowledgeMap["Y"] = proto.Knowledge.YELLOW;
+
+export interface Dimension {
+  width: number;
+  height: number;
+}
+
+export function initialDimension(): Dimension {
+  return {
+    width: 0,
+    height: 0
+  };
+}
 
 export interface DialogData {
   //Data for modal dialogue screen
@@ -153,8 +154,8 @@ export function initialExtendedGameState(): ExtendedGameState {
   game.opponent = Player.create();
   return {
     opponentUsername: "",
-    game: game,                             //GameState object. See proto files
-    clientPhase: ClientPhase.NOT_STARTED,   //Client defined phases
+    game: game, //GameState object. See proto files
+    clientPhase: ClientPhase.NOT_STARTED, //Client defined phases
 
     gameInitialized: false,
     autoPass: false,
@@ -163,7 +164,7 @@ export function initialExtendedGameState(): ExtendedGameState {
     dialogData: initialDialogData(),
     attackerAssignmentData: initialAttackerAssignmentData(),
     blockerAssignmentData: initialBlockerAssignmentData(),
-    selectionData: initialSelectionData(),
+    selectionData: initialSelectionData()
   };
 }
 
@@ -195,13 +196,15 @@ export interface State {
   extendedGameState: ExtendedGameState;
   firebaseAuthData: any; // Object received from firebase
   profile: Profile;
+  windowDimensions: Dimension;
 }
 
 export function initialState(): State {
   return {
     extendedGameState: initialExtendedGameState(),
     firebaseAuthData: {}, // Object received from firebase
-    profile: initialProfile()
+    profile: initialProfile(),
+    windowDimensions: initialDimension(),
   };
 }
 
@@ -271,4 +274,4 @@ export const salvageValue = 100;
 export const packList = ["Set1"];
 export const packCosts = { Set1: 1000 };
 
-export const isProduction : boolean = process.env.NODE_ENV === "production"; 
+export const isProduction: boolean = process.env.NODE_ENV === "production";

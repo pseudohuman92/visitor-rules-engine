@@ -5,7 +5,8 @@ import Scrapyard from "./Scrapyard";
 import PlayerDisplay from "./PlayerDisplay";
 import Void from "./Void";
 
-export default class PlayerArea extends Component {
+
+class PlayerArea extends Component {
   render() {
     const { isPlayer, width, height, style } = this.props;
     return (
@@ -17,7 +18,7 @@ export default class PlayerArea extends Component {
           flexGrow: 2,
           display: "flex",
           justifyContent: "space-around",
-          top: (isPlayer?"-1%":"1%"),
+          top: isPlayer ? "-1%" : "1%",
           ...style
         }}
       >
@@ -29,12 +30,18 @@ export default class PlayerArea extends Component {
             display: "flex",
             marginLeft: "1%",
             justifyContent: "center",
-            maxHeight:"100%"
+            maxHeight: "100%"
           }}
         >
-          <Scrapyard style={{ width: "33%", marginRight:"1%" }} isPlayer={isPlayer}/>
-          <Deck style={{ width: "33%", marginRight:"1%" }} isPlayer={isPlayer} />
-          <Void style= {{width: "33%"}} isPlayer={isPlayer} />
+          <Scrapyard
+            style={{ width: "33%", marginRight: "1%" }}
+            isPlayer={isPlayer}
+          />
+          <Deck
+            style={{ width: "33%", marginRight: "1%" }}
+            isPlayer={isPlayer}
+          />
+          <Void style={{ width: "33%" }} isPlayer={isPlayer} />
         </div>
         <div
           style={{
@@ -67,14 +74,14 @@ export default class PlayerArea extends Component {
               transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)"
             }}
           >
-            <Hand isPlayer={isPlayer} />
+            <Hand isPlayer={isPlayer}/>
           </div>
         </div>
         <div
           style={{
             width: width * 0.05,
             height: height,
-            flexGrow: 1,
+            flexGrow: 1
             //border: "3px black solid"
           }}
         />
@@ -82,13 +89,13 @@ export default class PlayerArea extends Component {
           style={{
             width: width * 0.15,
             height: height,
-            flexGrow: 1,
+            flexGrow: 1
             //border: "3px black solid"
           }}
-        >
-          
-        </div>
+        ></div>
       </div>
     );
   }
 }
+
+export default PlayerArea;

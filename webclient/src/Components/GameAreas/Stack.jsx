@@ -4,26 +4,41 @@ import { connect } from "react-redux";
 import PlayingCard from "../Card/PlayingCard";
 import "../../css/Stack.css";
 import "../../css/Utils.css";
-import VerticalStack from '../Primitives/ComponentStack';
-import { withSize } from "react-sizeme";
+import ComponentStack from "../Primitives/ComponentStack";
+import { Droppable } from "react-beautiful-dnd";
 
 const mapStateToProps = state => {
-  return { stack: state.extendedGameState.game.stack };
+  return {
+    stack: state.extendedGameState.game.stack,
+    windowDimensions: state.windowDimensions
+  };
 };
 
 class Stack extends React.Component {
   render() {
-    const { stack, size } = this.props;
+    const { stack, windowDimensions } = this.props;
+    const { width } = windowDimensions;
     return (
-      <VerticalStack
-        stepSize={size.width / 5}
-      >
-        {stack.reverse().map((card, i) => {
-          return <PlayingCard key={i} cardData={card} />;
-        })}
-      </VerticalStack>
+      <Droppable droppableId={"stack"} isDroppingDisabled>
+        {provided => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <ComponentStack stepSize={width / 50} width={width / 10}>
+              {stack.reverse().map((card, i) => {
+                return (
+                  <PlayingCard
+                    key={card.id}
+                    cardData={card}
+                    isDragDisabled
+                    DnDIndex={i}
+                  />
+                );
+              })}
+            </ComponentStack>
+          </div>
+        )}
+      </Droppable>
     );
   }
 }
 
-export default connect(mapStateToProps)(withSize()(Stack));
+export default connect(mapStateToProps)(Stack);

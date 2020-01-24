@@ -1,31 +1,18 @@
 import React from "react";
 import { Component } from "react";
-import { DropTarget } from "react-dnd";
 import { connect } from "react-redux";
-
+import { Droppable } from "react-beautiful-dnd";
 import TextOnImage from "../Primitives/TextOnImage";
 
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 
-import { ItemTypes, ClientPhase } from "../Helpers/Constants";
-
-const voidTarget = {
-  drop(props, monitor) {
-    return { targetType: ItemTypes.ALTAR };
-  },
-
-  canDrop(props, monitor) {
-    const item = monitor.getItem();
-    return (
-      item.sourceType === ItemTypes.CARD && item.studyable && props.isPlayer
-    );
-  }
-};
+import { ClientPhase } from "../Helpers/Constants";
 
 const mapStateToProps = state => {
   return {
+    windowDimensions: state.windowDimensions,
     playerName: state.profile.username,
     opponentName: state.extendedGameState.opponentUsername,
     opponentUserId: state.extendedGameState.game.opponent.userId,
@@ -83,7 +70,7 @@ class Void extends Component {
 
   render() {
     const {
-      connectDropTarget,
+      windowDimensions,
       playerVoid,
       opponentVoid,
       game,
@@ -91,6 +78,12 @@ class Void extends Component {
       isPlayer,
       style
     } = this.props;
+
+
+    const { width } = windowDimensions;
+    const voidWidth = width / 10;
+    const voidHeight = voidWidth * (88/63);
+
     const { hover } = this.state;
 
     const void_ = isPlayer ? playerVoid : opponentVoid;
@@ -101,33 +94,39 @@ class Void extends Component {
       game.activePlayer === game.player.userId &&
       game.canStudy.length > 0;
 
-    return connectDropTarget(
-      <div
-        onMouseEnter={this.toggleHover}
-        onMouseLeave={this.toggleHover}
-        onClick={this.displayVoid}
-        style={{ height: "100%", ...style }}
+    return (
+      <Droppable
+        droppableId={isPlayer ? "player-void" : "opponent-void"}
+        isDropDisabled={!isPlayer}
       >
-        <TextOnImage
-          text={hover ? void_.length : ""}
-          src={process.env.PUBLIC_URL + "/img/void.png"}
-          imgStyle={{
-            transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)",
-            border: hasStudyable ? "3px green solid" : "none",
-            boxSizing: "border-box"
-          }}
-          scale={3}
-        />
-      </div>
+        {provided => {
+          return (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              onMouseEnter={this.toggleHover}
+              onMouseLeave={this.toggleHover}
+              onClick={this.displayVoid}
+              style={{ ...style, width: voidWidth, height: voidHeight }}
+            >
+              <TextOnImage
+                text={hover ? void_.length : ""}
+                src={process.env.PUBLIC_URL + "/img/void.png"}
+                imgStyle={{
+                  transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)",
+                  border: hasStudyable ? "3px green solid" : "none",
+                  boxSizing: "border-box"
+                }}
+                scale={3}
+                windowDimensions={windowDimensions}
+              />
+            </div>
+          );
+        }}
+      </Droppable>
     );
   }
 }
-
-Void = DropTarget(ItemTypes.CARD, voidTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop()
-}))(Void);
 
 export default connect(
   mapStateToProps,

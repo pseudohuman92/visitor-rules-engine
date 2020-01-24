@@ -28,3 +28,8 @@ hs_err_pid*
 /target/
 /game-logs/
 *.gamestate
+
+# IDE files
+/.idea/
+nb-configuration.xml
+nbactions.xml

@@ -14,7 +14,9 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { toFullCards, compareCardsByKnowledge } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
-  return { collection: state.profile.collection, userId: state.firebaseAuthData.user.uid };
+  return { collection: state.profile.collection, 
+    userId: state.firebaseAuthData.user.uid,
+  windowDimensions: state.windowDimensions };
 };
 
 const cardsPerPage = 18;
@@ -90,7 +92,7 @@ class DeckBuilder extends React.Component {
 
   render() {
     const { name, deck, initialized, page, maxPage, changed } = this.state;
-    const { collection } = this.props;
+    const { collection, windowDimensions } = this.props;
     return collection && initialized ? (
       <Grid container spacing={8} style={{ maxHeight: "95vh" }}>
         <Grid item xs={1}>
@@ -137,6 +139,7 @@ class DeckBuilder extends React.Component {
                           : 0.5
                       }
                       cardData={card}
+                      windowDimensions={windowDimensions}
                     />
                   </Grid>
                 )
@@ -167,6 +170,7 @@ class DeckBuilder extends React.Component {
                       small
                       onClick={() => this.removeFromDeck(card.name)}
                       cardData={card}
+                      windowDimensions={windowDimensions}
                     />
                   </GridListTile>
                 ))}

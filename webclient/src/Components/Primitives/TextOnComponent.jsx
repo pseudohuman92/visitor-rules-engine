@@ -1,6 +1,5 @@
 import React from "react";
 import { Component } from "react";
-import { withSize } from "react-sizeme";
 import Fonts from "./Fonts";
 
 import "./TextOnImage.css";
@@ -17,8 +16,10 @@ class TextOnComponent extends Component {
       style,
       compStyle,
       textStyle,
-      size
+      windowDimensions
     } = this.props;
+    const windowWidth  = windowDimensions.width;
+    const width = windowWidth / 5;
     const min_ = min ? min : 1;
     const max_ = max ? max : 100;
     const scale_ = scale ? scale : 10;
@@ -38,7 +39,7 @@ class TextOnComponent extends Component {
             ...textStyle,
             textShadow:
               "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000",
-            fontSize: Math.min(Math.max(size.width / scale_, min_), max_) + "px"
+            fontSize: Math.min(Math.max(width / scale_, min_), max_) + "px"
           }}
         >
           {text}
@@ -48,4 +49,4 @@ class TextOnComponent extends Component {
   }
 }
 
-export default withSize()(TextOnComponent);
+export default TextOnComponent;

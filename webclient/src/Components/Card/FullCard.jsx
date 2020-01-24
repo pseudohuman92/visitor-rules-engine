@@ -5,7 +5,6 @@ import Rectangle from "react-rectangle";
 import { getCardColor, toKnowledgeString } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
 import "./css/Card.css";
-import { withSize } from "react-sizeme";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
 import FittedText from "../Primitives/FittedText";
@@ -18,9 +17,11 @@ class FullCard extends PureComponent {
       opacity,
       cardData,
       borderColor,
-      size
+      square,
+      windowDimensions,
+      scale
     } = this.props;
-    
+
     const {
       name,
       description,
@@ -32,168 +33,201 @@ class FullCard extends PureComponent {
       delay,
       loyalty,
       shield,
-      reflect 
+      reflect
     } = cardData;
 
-    const backColor = borderColor ? borderColor : undefined; //"gainsboro";
+    const scale_ = scale?10/scale: 10; 
+    const { width } = windowDimensions;
+    const wtohRatio = square ? 63 / 54 : 63 / 88;
+    const cardWidth = width / scale_;
+    const cardHeight = cardWidth / wtohRatio;
 
+    const backColor = borderColor ? borderColor : undefined; //"gainsboro";
     return (
-      <div style={{ width: "100%", height: "100%", position: "relative" }}>
-        <Fonts />
-        <Rectangle
-          aspectRatio={[63, 88]}
+      <div
+        style={{
+          width: cardWidth,
+          height: cardHeight,
+          position: "relative",
+          opacity: opacity,
+          backgroundColor: backColor,
+          borderRadius: cardWidth / (2*scale_) + "px",
+          zIndex: 1
+        }}
+      >
+        {/*<Fonts />*/}
+        <div
+          className="card-inner"
           style={{
-            opacity: opacity,
-            backgroundColor: backColor,
-            borderRadius: size.width / 20 + "px",
-            textAlign: "left",
-            zIndex: 1
+            top: square ? "3%" : "0",
+            height: square? "94%" : "96%",
+            position: "relative",
+            fontSize: cardWidth / (2*scale_) + "px",
+            borderRadius: cardWidth / ((square?3:2.5)*scale_) + "px",
+            
           }}
         >
-          
           <div
-            className="card-inner"
-            style={{
-              position: "relative",
-              //backgroundColor: getCardColor(knowledgeCost),
-              fontSize: size.width / 20 + "px",
-              borderRadius: size.width / 25 + "px",
-              border: "1px black solid",
-              
-            }}
-          >
-            <img
-            src={process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"}
             style={{
               position: "absolute",
               top: 0,
               left: 0,
-              maxHeight: "100%",
-              objectFit: "scale-down",
-              zIndex: -1
+              width: "100%",
+              height: "100%",
+              zIndex: -1,
+              backgroundColor: "gainsboro"
             }}
-            alt=""
-          />
-            {cost !== "" && (
-              <div className="card-cost">
+          >
+            <img
+              src={
+                process.env.PUBLIC_URL + "/img/placeholders/" + type + ".png"
+              }
+              style={
+                square
+                  ? {
+                      maxWidth: "100%",
+                      objectFit: "scale-down"
+                    }
+                  : {
+                      maxHeight: "100%",
+                      objectFit: "scale-down"
+                    }
+              }
+              alt=""
+            />
+          </div>
+          {cost !== "" && (
+            <div className="card-cost">
+              <img
+                src={process.env.PUBLIC_URL + "/img/card-components/energy.png"}
+                style={{
+                  maxWidth: "100%"
+                }}
+                alt=""
+              />
+              <div
+                className="card-cost-text"
+                style={{ fontSize: cardWidth / (1.3*scale_) + "px" }}
+              >
+                {cost}
+              </div>
+            </div>
+          )}
+
+          {toKnowledgeString(knowledgeCost)
+            .split("")
+            .map((c, i) => (
+              <div
+                className="card-knowledge"
+                style={{ top: (square ? 17 : 11) + i * (square ? 4 : 3) + "%" }}
+                key={i}
+              >
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/img/card-components/energy.png"
+                    process.env.PUBLIC_URL +
+                    "/img/card-components/knowledge-" +
+                    c +
+                    ".png"
                   }
                   style={{
                     maxWidth: "100%"
                   }}
                   alt=""
                 />
-                <div
-                  className="card-cost-text"
-                  style={{ fontSize: size.width / 13 + "px" }}
-                >
-                  {cost}
-                </div>
               </div>
-            )}
+            ))}
+          <div className="card-name" style={{height: square?"9%":"6%"}}>
+            {name}
+          </div>
 
-            {toKnowledgeString(knowledgeCost)
-              .split("")
-              .map((c, i) => (
-                <div
-                  className="card-knowledge"
-                  style={{ top: 11 + i * 3 + "%" }}
-                  key={i}
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/img/card-components/knowledge-" +
-                      c +
-                      ".png"
-                    }
-                    style={{
-                      maxWidth: "100%"
-                    }}
-                    alt=""
-                  />
-                </div>
-              ))}
-            <div className="card-name">{name}</div>
-            
-            <div className="card-type">{type}</div>
-            
+          {!square && <div className="card-type">{type}</div>}
+
+          {!square && (
             <div
               className="card-description"
               style={{
-                whiteSpace: "pre-wrap",
+                textAlign: "left",
+                whiteSpace: "pre-wrap"
               }}
             >
-              <FittedText text={description} max={15}/>
-              {reflect ? "\nReflect:" + reflect : ""}
+              <FittedText
+                text={description}
+                max={15}
+                windowDimensions={windowDimensions}
+              />
+              {reflect > 0 ? "\nReflect:" + reflect : ""}
             </div>
-            
-            
-          </div>
+          )}
+
           <div
             style={{
               position: "absolute",
-              bottom: "-2%",
-              left: "1%",
+              bottom: "0",
+              left: "3%",
               height: "10%",
               display: "flex",
               alignItems: "center"
             }}
           >
-            {attack && (
+            {attack > -1 && (
               <TextOnImage
-                src={process.env.PUBLIC_URL + "/img/card-components/attack2.png"}
+                src={
+                  process.env.PUBLIC_URL + "/img/card-components/attack2.png"
+                }
                 text={attack}
                 min={15}
-                scale={5}
+                scale={5*scale_}
                 font={{ fontFamily: "Special Elite, cursive" }}
+                windowDimensions={windowDimensions}
               />
             )}
-            {health  > -1 && (
+            {health > -1 && (
               <TextOnImage
                 src={process.env.PUBLIC_URL + "/img/card-components/health.png"}
                 text={health}
                 min={15}
-                scale={5}
+                scale={5*scale_}
                 font={{ fontFamily: "Special Elite, cursive" }}
+                windowDimensions={windowDimensions}
               />
             )}
-            {shield && (
+            {shield > 0 && (
               <TextOnImage
                 src={process.env.PUBLIC_URL + "/img/card-components/shield.png"}
                 text={shield}
                 min={15}
-                scale={5}
+                scale={5*scale_}
                 font={{ fontFamily: "Special Elite, cursive" }}
+                windowDimensions={windowDimensions}
               />
             )}
-            {loyalty && (
+            {loyalty > -1 && (
               <TextOnImage
                 src={
                   process.env.PUBLIC_URL + "/img/card-components/loyalty.png"
                 }
                 text={loyalty}
                 min={15}
-                scale={5}
+                scale={5*scale_}
                 font={{ fontFamily: "Special Elite, cursive" }}
+                windowDimensions={windowDimensions}
               />
             )}
-            {delay && (
+            {delay > 0 && (
               <TextOnImage
                 src={process.env.PUBLIC_URL + "/img/card-components/delay.png"}
                 text={delay}
                 min={15}
-                scale={5}
+                scale={5*scale_}
                 font={{ fontFamily: "Special Elite, cursive" }}
+                windowDimensions={windowDimensions}
               />
             )}
           </div>
-        </Rectangle>
+        </div>
       </div>
     );
   }
 }
 
-export default withSize({ monitorHeight: true })(FullCard);
+export default FullCard;
