@@ -1,5 +1,4 @@
 import React from "react";
-import { withSize } from "react-sizeme";
 
 class Child extends React.Component {
   constructor(props) {
@@ -80,4 +79,4 @@ class Fanner extends React.Component {
   }
 }
 
-export default withSize()(Fanner);
+export default Fanner;

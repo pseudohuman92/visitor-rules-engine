@@ -2,7 +2,6 @@ import React from "react";
 import { PureComponent } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import { withSize } from "react-sizeme";
 
 import Button from '../Primitives/Button';
 import { Grid } from "@material-ui/core";
@@ -73,4 +72,4 @@ class CraftableCard extends PureComponent {
   }
 }
 
-export default withSize()(CraftableCard);
+export default CraftableCard;

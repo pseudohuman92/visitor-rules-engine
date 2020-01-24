@@ -9,7 +9,6 @@ import {
 } from '../Helpers/Helpers';
 import Fonts from '../Primitives/Fonts';
 import './css/Card.css';
-import { withSize } from "react-sizeme";
 import "../../fonts/Fonts.css";
 
 class SmallCard extends PureComponent {
@@ -17,7 +16,6 @@ class SmallCard extends PureComponent {
     const {
       cardData,
       play,
-      size,
       borderColor,
       opacity
     } = this.props;
@@ -26,7 +24,6 @@ class SmallCard extends PureComponent {
       name,
       cost,
       knowledgeCost,
-      
     } = cardData
 
     const backColor = borderColor ? borderColor : "black";
@@ -45,7 +42,7 @@ class SmallCard extends PureComponent {
           <div
             className={"card-inner"+(play?"-play":"")}
             style={{ backgroundColor: getCardColor(knowledgeCost),
-              fontSize: size.width/20+"px" }}
+              fontSize: 150/20+"px" }}
           >
             <div className="small-card-name">
                 <span style={{ fontWeight: "500" }}>{cost}</span>
@@ -66,4 +63,4 @@ class SmallCard extends PureComponent {
   }
 }
 
-export default withSize()(SmallCard)
+export default SmallCard;
