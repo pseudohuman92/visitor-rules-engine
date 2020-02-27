@@ -9381,10 +9381,10 @@ react-google-font-loader@1.1.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-image@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.2.2.tgz#603452970b7d86a23c56cd2cd1f4f6b797b902d8"
-  integrity sha512-ZaVqZD9ZBGSpZwBftIbTVGyfYahqF7SjFpfT522SO6vJm+xoUCGK3z04aHV9rZUsaEU382auCM+wMyW5sh+lbg==
+react-image@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-image/-/react-image-2.4.0.tgz#ef67a32e131c3570cc1eef106c470811bbfa094e"
+  integrity sha512-gYO0JUn4spmqFIac3BXG7vyXLL+PJAOOWw7O88StzEAC+fMSiTIOa5AVaIfBkUqTM3tZc0MO7/26jsRdUKioDg==
   dependencies:
     prop-types "15.7.2"
 
