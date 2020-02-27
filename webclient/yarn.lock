@@ -1273,13 +1273,6 @@
     "@firebase/util" "0.2.40"
     tslib "1.10.0"
 
-"@firebase/util@0.2.38":
-  version "0.2.38"
-  resolved "https://registry.yarnpkg.com/@firebase/util/-/util-0.2.38.tgz#3b4811f5b752463791d2ebfd1123e62b1561d22b"
-  integrity sha512-EcTQWuWrUG7wgU8IGx50Zd/xE1DdwmYpMAIElsu5G5RPAJJ9VoAOAnxyRBPrrHmFeSLJpGtKPxc/rJXnEaGrXw==
-  dependencies:
-    tslib "1.10.0"
-
 "@firebase/util@0.2.40":
   version "0.2.40"
   resolved "https://registry.yarnpkg.com/@firebase/util/-/util-0.2.40.tgz#b8c33437c63e08749c4c872025d70721d690aa69"
