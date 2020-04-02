@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: JS with Yarn
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -22,8 +22,8 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: GitHub Action for Yarn
-      uses: Borales/actions-yarn@v2.1.0
-      with:
+    #- name: GitHub Action for Yarn
+    #  uses: Borales/actions-yarn@v2.1.0
+    #  with:
         # Yarn command
-        cmd: build
+     #   cmd: build
