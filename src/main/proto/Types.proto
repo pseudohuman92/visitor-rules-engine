@@ -96,6 +96,8 @@ message Card {
     int32 reflect = 16;
     int32 attack = 17;
     bool deploying = 18;
+    string blockedAttacker = 19;
+    string attackTarget = 20;
 }
 
 message Player {

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { withFirebase } from "../Firebase";
 import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
-import PlayArea from './GameScreen';
+import GameScreen from './GameScreen';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { debugPrint } from "../Helpers/Helpers";
 import { isProduction } from "../Helpers/Constants";
@@ -123,7 +123,7 @@ class DeckSelection extends React.Component {
         )}
         {value === 1 &&
           (this.props.gameInitialized ? (
-            <PlayArea back={this.props.back} />
+            <GameScreen back={this.props.back} />
           ) : (
             <div>
               {

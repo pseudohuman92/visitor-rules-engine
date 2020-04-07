@@ -4766,6 +4766,8 @@ $root.Card = (function() {
      * @property {number|null} [reflect] Card reflect
      * @property {number|null} [attack] Card attack
      * @property {boolean|null} [deploying] Card deploying
+     * @property {string|null} [blockedAttacker] Card blockedAttacker
+     * @property {string|null} [attackTarget] Card attackTarget
      */
 
     /**
@@ -4932,6 +4934,22 @@ $root.Card = (function() {
     Card.prototype.deploying = false;
 
     /**
+     * Card blockedAttacker.
+     * @member {string} blockedAttacker
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.blockedAttacker = "";
+
+    /**
+     * Card attackTarget.
+     * @member {string} attackTarget
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.attackTarget = "";
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -4995,6 +5013,10 @@ $root.Card = (function() {
             writer.uint32(/* id 17, wireType 0 =*/136).int32(message.attack);
         if (message.deploying != null && message.hasOwnProperty("deploying"))
             writer.uint32(/* id 18, wireType 0 =*/144).bool(message.deploying);
+        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
+            writer.uint32(/* id 19, wireType 2 =*/154).string(message.blockedAttacker);
+        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
+            writer.uint32(/* id 20, wireType 2 =*/162).string(message.attackTarget);
         return writer;
     };
 
@@ -5090,6 +5112,12 @@ $root.Card = (function() {
                 break;
             case 18:
                 message.deploying = reader.bool();
+                break;
+            case 19:
+                message.blockedAttacker = reader.string();
+                break;
+            case 20:
+                message.attackTarget = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5200,6 +5228,12 @@ $root.Card = (function() {
         if (message.deploying != null && message.hasOwnProperty("deploying"))
             if (typeof message.deploying !== "boolean")
                 return "deploying: boolean expected";
+        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
+            if (!$util.isString(message.blockedAttacker))
+                return "blockedAttacker: string expected";
+        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
+            if (!$util.isString(message.attackTarget))
+                return "attackTarget: string expected";
         return null;
     };
 
@@ -5277,6 +5311,10 @@ $root.Card = (function() {
             message.attack = object.attack | 0;
         if (object.deploying != null)
             message.deploying = Boolean(object.deploying);
+        if (object.blockedAttacker != null)
+            message.blockedAttacker = String(object.blockedAttacker);
+        if (object.attackTarget != null)
+            message.attackTarget = String(object.attackTarget);
         return message;
     };
 
@@ -5314,6 +5352,8 @@ $root.Card = (function() {
             object.reflect = 0;
             object.attack = 0;
             object.deploying = false;
+            object.blockedAttacker = "";
+            object.attackTarget = "";
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -5363,6 +5403,10 @@ $root.Card = (function() {
             object.attack = message.attack;
         if (message.deploying != null && message.hasOwnProperty("deploying"))
             object.deploying = message.deploying;
+        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
+            object.blockedAttacker = message.blockedAttacker;
+        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
+            object.attackTarget = message.attackTarget;
         return object;
     };
 

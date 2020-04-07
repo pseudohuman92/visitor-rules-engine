@@ -46,7 +46,7 @@ class BoardSide extends Component {
                   margin: "1%"
                 }}
               >
-                <PlayingCard square play cardData={card} isDragDisabled DnDIndex={i}/>
+                <PlayingCard square cardData={card} isDragDisabled DnDIndex={i}/>
               </div>
             ))}
           </div>

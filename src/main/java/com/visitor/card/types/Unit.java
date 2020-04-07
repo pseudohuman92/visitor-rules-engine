@@ -103,9 +103,15 @@ public abstract class Unit extends Card {
     
     @Override
     public Types.Card.Builder toCardMessage() {
-        return super.toCardMessage()
+        Types.Card.Builder b =
+                super.toCardMessage()
                 .setType("Unit")
                 .setAttack(attack)
                 .setDeploying(deploying);
+        if (blockedAttacker != null)
+            b.setBlockedAttacker(blockedAttacker.toString());
+        if (attackTarget != null)
+            b.setAttackTarget(attackTarget.toString());
+        return b;
     }
 }

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { connect } from "react-redux";
-import { ArcherContainer } from "react-archer";
 
 import Stack from "../GameAreas/Stack";
+import ErrorBoundary from "../Primitives/ErrorBoundary";
 
 import ChooseDialog from "../Dialogs/ChooseDialog";
 import EndGameDialog from "../Dialogs/EndGameDialog";
@@ -20,24 +20,24 @@ import { debugPrint } from "../Helpers/Helpers";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     windowDimensions: state.windowDimensions,
-    hand: state.extendedGameState.game.player.hand
+    hand: state.extendedGameState.game.player.hand,
   };
 };
 
-class PlayArea extends Component {
+class GameScreen extends Component {
   state = { menuOpen: false };
 
-  openMenu = event => {
+  openMenu = (event) => {
     if (event.keyCode === 27) {
       //ESC key
       this.setState({ menuOpen: true });
     }
   };
 
-  closeMenu = event => {
+  closeMenu = (event) => {
     this.setState({ menuOpen: false });
   };
 
@@ -48,7 +48,7 @@ class PlayArea extends Component {
     document.removeEventListener("keydown", this.openMenu, false);
   }
 
-  onDragStart = result => {
+  onDragStart = (result) => {
     /*
     var hand = [...this.props.hand];
     const index = hand.map(c=> {return c.id}).indexOf(result.draggableId);
@@ -60,20 +60,24 @@ class PlayArea extends Component {
     debugPrint("Drag started!", result);
   };
 
-  onDragEnd = result => {
+  onDragEnd = (result) => {
     const { destination, draggableId, reason } = result;
     const { gameHandler } = this.props;
     if (destination && reason === "DROP") {
       switch (destination.droppableId) {
         case "player-void":
-          if (draggableId.indexOf("[STUDYABLE]") > -1){
-            gameHandler.StudyCard(draggableId.substring(draggableId.lastIndexOf("]") + 1));
+          if (draggableId.indexOf("[STUDYABLE]") > -1) {
+            gameHandler.StudyCard(
+              draggableId.substring(draggableId.lastIndexOf("]") + 1)
+            );
           }
           break;
         case "opponent-play-area":
         case "player-play-area":
-          if (draggableId.indexOf("[PLAYABLE]") > -1){
-            gameHandler.PlayCard(draggableId.substring(draggableId.lastIndexOf("]") + 1));
+          if (draggableId.indexOf("[PLAYABLE]") > -1) {
+            gameHandler.PlayCard(
+              draggableId.substring(draggableId.lastIndexOf("]") + 1)
+            );
           }
           break;
       }
@@ -82,15 +86,18 @@ class PlayArea extends Component {
   };
 
   render() {
-    const { back, windowDimensions } = this.props;
+    const { back, windowDimensions, stack } = this.props;
     const { width, height } = windowDimensions;
 
     const sideHeight = height * 0.2;
     const midHeight = height * 0.6;
 
     return (
-      <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
-        <ArcherContainer>
+      <ErrorBoundary>
+        <DragDropContext
+          onDragStart={this.onDragStart}
+          onDragEnd={this.onDragEnd}
+        >
           <div className="App">
             <img
               src={process.env.PUBLIC_URL + "/img/background.jpg"}
@@ -99,80 +106,87 @@ class PlayArea extends Component {
                 top: 0,
                 left: 0,
                 objectFit: "cover",
-                zIndex: -1
+                zIndex: -1,
               }}
               alt=""
             />
-            <header className="App-header">
-              <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
-              <EndGameDialog back={back} />
-              <SelectXDialog />
-              <ChooseDialog />
 
-              <div className="level0">
-                <PlayerArea
-                  width={width}
-                  height={sideHeight}
-                  isPlayer={false}
-                />
+              <div className="App-header">
+                <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
+                <EndGameDialog back={back} />
+                <SelectXDialog />
+                <ChooseDialog />
 
-                <div
-                  className="level1-middle"
-                  style={{ width: width, height: midHeight }}
-                >
-                  <div
-                    className="level1-middle-1"
-                    style={{ width: width * 0.85, height: midHeight }}
-                  >
-                    <div
-                      className="level1-middle-1-1"
-                      style={{ width: width * 0.85, height: midHeight * 0.5 }}
-                    >
-                      <BoardSide isPlayer={false} />
-                    </div>
-                    <div
-                      className="level1-middle-1-2"
-                      style={{ width: width * 0.85, height: midHeight * 0.5 }}
-                    >
-                      <BoardSide isPlayer={true} />
-                    </div>
-                  </div>
+                <div className="level0">
+                  <PlayerArea
+                    width={width}
+                    height={sideHeight}
+                    isPlayer={false}
+                  />
+
                   <div
                     className="level1-middle"
-                    style={{
-                      width: width * 0.15,
-                      height: midHeight,
-                      flexDirection: "column"
-                    }}
+                    style={{ width: width, height: midHeight }}
                   >
                     <div
-                      className="level1-middle-2"
-                      style={{
-                        width: width * 0.15,
-                        height: midHeight * 0.8,
-                        flexGrow: 8
-                      }}
+                      className="level1-middle-1"
+                      style={{ width: width * 0.85, height: midHeight }}
                     >
-                      <Stack />
+                      <div
+                        className="level1-middle-1-1"
+                        style={{ width: width * 0.85, height: midHeight * 0.5 }}
+                      >
+                        <BoardSide isPlayer={false} />
+                      </div>
+                      <div
+                        className="level1-middle-1-2"
+                        style={{ width: width * 0.85, height: midHeight * 0.5 }}
+                      >
+                        <BoardSide isPlayer={true} />
+                      </div>
                     </div>
+
                     <div
-                      className="level1-middle-2"
+                      className="level1-middle"
                       style={{
                         width: width * 0.15,
-                        height: midHeight * 0.2,
-                        flexGrow: 2
+                        height: midHeight,
+                        flexDirection: "column",
                       }}
                     >
-                      <ButtonDisplay />
+                      <div
+                        className="level1-middle-2"
+                        style={{
+                          width: width * 0.15,
+                          height: midHeight * 0.8,
+                          flexGrow: 8,
+                        }}
+                      >
+                        <Stack />
+                      </div>
+
+                      <div
+                        className="level1-middle-2"
+                        style={{
+                          width: width * 0.15,
+                          height: midHeight * 0.2,
+                          flexGrow: 2,
+                        }}
+                      >
+                        <ButtonDisplay />
+                      </div>
                     </div>
                   </div>
+                  <PlayerArea
+                    width={width}
+                    height={sideHeight}
+                    isPlayer={true}
+                  />
                 </div>
-                <PlayerArea width={width} height={sideHeight} isPlayer={true} />
               </div>
-            </header>
           </div>
-        </ArcherContainer>
-      </DragDropContext>
+        </DragDropContext>
+      </ErrorBoundary>
     );
   }
 }
@@ -180,4 +194,4 @@ class PlayArea extends Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(PlayArea));
+)(withHandlers(GameScreen));

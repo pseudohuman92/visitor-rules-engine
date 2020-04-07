@@ -2041,6 +2041,12 @@ export class Card implements ICard {
     /** Card deploying. */
     public deploying: boolean;
 
+    /** Card blockedAttacker. */
+    public blockedAttacker: string;
+
+    /** Card attackTarget. */
+    public attackTarget: string;
+
     /**
      * Creates a new Card instance using the specified properties.
      * @param [properties] Properties to set

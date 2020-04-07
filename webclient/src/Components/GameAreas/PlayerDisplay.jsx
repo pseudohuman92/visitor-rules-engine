@@ -7,7 +7,6 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import TextOnImage from "../Primitives/TextOnImage";
-import { ArcherElement } from "react-archer";
 
 const mapStateToProps = state => {
   return {
@@ -213,8 +212,8 @@ class PlayerDisplay extends React.Component {
                 </div>
               ))}
         </div>
-        <ArcherElement id={id}>
           <div
+            className={id}
             onClick={clickHandler}
             style={{
               flexGrow: 2,
@@ -239,7 +238,6 @@ class PlayerDisplay extends React.Component {
               windowDimensions={windowDimensions}
             />
           </div>
-        </ArcherElement>
         <div
           style={{
             width: (width * 0.9) / 2,

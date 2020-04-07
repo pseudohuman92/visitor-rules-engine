@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import CardDisplay from "./CardDisplay";
 import { keywords, ClientPhase } from "../Helpers/Constants";
 
-import proto, { BlockerAssignment } from "../../protojs/compiled.js";
+import proto from "../../protojs/compiled.js";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import FittedText from "../Primitives/FittedText";
-import { ArcherElement } from "react-archer";
+import LineTo from "react-lineto";
 import { Draggable } from "react-beautiful-dnd";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     clientPhase: state.extendedGameState.clientPhase,
     windowDimensions: state.windowDimensions,
@@ -24,56 +24,63 @@ const mapStateToProps = state => {
 
     selectionData: state.extendedGameState.selectionData,
     attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
-    blockerAssignmentData: state.extendedGameState.blockerAssignmentData
+    blockerAssignmentData: state.extendedGameState.blockerAssignmentData,
   };
 };
 
 class PlayingCard extends React.Component {
   constructor(props) {
     super(props);
-    var relations = [];
-    if (this.shouldCalculateArrows(props)) {
-      relations = this.getArrowRelations();
-    }
+    var relations = this.getArrowRelations();
     this.state = {
       popoverStyle: { display: "none", width: 0 },
       arrowRelations: relations,
-      showArrows: false
+      showArrows: false,
     };
   }
 
-  
-
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.shouldRecalculateArrows(prevProps)) {
-      var relations = this.getArrowRelations();
+    let prevArrows = this.state.arrowRelations;
+    let newArrows = this.getArrowRelations();
+
+    if (prevArrows.length !== newArrows.length) {
       this.setState({
-        arrowRelations: relations
+        arrowRelations: newArrows,
+      });
+    } else if (
+      prevArrows.some((pv) => {
+        return !newArrows.some((nv) => {
+          return JSON.stringify(pv) === JSON.stringify(nv);
+        });
+      })
+    ) {
+      this.setState({
+        arrowRelations: newArrows,
       });
     }
   }
 
-  onMouseEnter = event => {
-    if (this.props.cardData.targets.length !== 0) {
+  onMouseEnter = (event) => {
+    if (this.state.arrowRelations.length !== 0) {
       this.setState({ showArrows: true });
     }
     this.handlePopoverOpen(event);
   };
 
-  onMouseLeave = event => {
-    if (this.props.cardData.targets.length !== 0) {
+  onMouseLeave = (event) => {
+    //if (this.state.arrowRelations.length !== 0) {
       this.setState({ showArrows: false });
-    }
+    //}
     this.handlePopoverClose(event);
   };
 
-  handlePopoverOpen = event => {
+  handlePopoverOpen = (event) => {
     const { width, height } = this.props.windowDimensions;
     var rect = event.currentTarget.getBoundingClientRect();
 
     var style = {};
     style["width"] = width / 5;
-    style["height"] = (width / 5) * (88/63);
+    style["height"] = (width / 5) * (88 / 63);
     style["display"] = "flex";
     style["textAlign"] = "left";
 
@@ -90,24 +97,24 @@ class PlayingCard extends React.Component {
       style["flexDirection"] = "row-reverse";
     }
     this.setState({
-      popoverStyle: style
+      popoverStyle: style,
     });
   };
 
-  handlePopoverClose = event => {
+  handlePopoverClose = (event) => {
     this.setState({ popoverStyle: { display: "none", width: 0 } });
   };
 
   //! ///// Attack Handlers /////////
 
-  setAttacking = event => {
+  setAttacking = (event) => {
     let id = this.props.cardData.id;
 
     let attackerAssignments = [
-      ...this.props.attackerAssignmentData.attackerAssignments
+      ...this.props.attackerAssignmentData.attackerAssignments,
     ];
     let possibleAttackers = this.props.attackerAssignmentData.possibleAttackers;
-    let possibleAttackerIds = possibleAttackers.map(a => {
+    let possibleAttackerIds = possibleAttackers.map((a) => {
       return a.attackerId;
     });
     let possibleAttackerEntry =
@@ -117,31 +124,31 @@ class PlayingCard extends React.Component {
     if (possibleAttackTargets.length === 1) {
       attackerAssignments.push({
         attackerId: id,
-        attacksTo: possibleAttackTargets[0]
+        attacksTo: possibleAttackTargets[0],
       });
       this.props.updateExtendedGameState({
         attackerAssignmentData: {
           currentAttacker: "",
           possibleAttackTargets: [],
-          attackerAssignments: attackerAssignments
-        }
+          attackerAssignments: attackerAssignments,
+        },
       });
     } else {
       this.props.updateExtendedGameState({
         attackerAssignmentData: {
           currentAttacker: id,
-          possibleAttackTargets: possibleAttackTargets
-        }
+          possibleAttackTargets: possibleAttackTargets,
+        },
       });
     }
   };
 
-  unsetAttacking = event => {
+  unsetAttacking = (event) => {
     let id = this.props.cardData.id;
     let attackerAssignments = [
-      ...this.props.attackerAssignmentData.attackerAssignments
+      ...this.props.attackerAssignmentData.attackerAssignments,
     ];
-    let attackerAssignmentIds = attackerAssignments.map(a => {
+    let attackerAssignmentIds = attackerAssignments.map((a) => {
       return a.attackerId;
     });
 
@@ -153,16 +160,16 @@ class PlayingCard extends React.Component {
       attackerAssignmentData: {
         currentAttacker: "",
         possibleAttackTargets: [],
-        attackerAssignments: attackerAssignments
-      }
+        attackerAssignments: attackerAssignments,
+      },
     });
   };
 
-  setAttacked = event => {
+  setAttacked = (event) => {
     let id = this.props.cardData.id;
 
     let attackerAssignments = [
-      ...this.props.attackerAssignmentData.attackerAssignments
+      ...this.props.attackerAssignmentData.attackerAssignments,
     ];
     let currentAttacker = this.props.attackerAssignmentData.currentAttacker;
 
@@ -171,21 +178,21 @@ class PlayingCard extends React.Component {
       attackerAssignmentData: {
         currentAttacker: "",
         possibleAttackTargets: [],
-        attackerAssignments: attackerAssignments
-      }
+        attackerAssignments: attackerAssignments,
+      },
     });
   };
 
   //! /////// Block Handlers /////////
 
-  setBlocking = event => {
+  setBlocking = (event) => {
     let id = this.props.cardData.id;
 
     let blockerAssignments = [
-      ...this.props.blockerAssignmentData.blockerAssignments
+      ...this.props.blockerAssignmentData.blockerAssignments,
     ];
     let possibleBlockers = this.props.blockerAssignmentData.possibleBlockers;
-    let possibleBlockerIds = possibleBlockers.map(a => {
+    let possibleBlockerIds = possibleBlockers.map((a) => {
       return a.blockerId;
     });
     let possibleBlockerEntry = possibleBlockers[possibleBlockerIds.indexOf(id)];
@@ -194,31 +201,31 @@ class PlayingCard extends React.Component {
     if (possibleBlockTargets.length === 1) {
       blockerAssignments.push({
         blockerId: id,
-        blockedBy: possibleBlockTargets[0]
+        blockedBy: possibleBlockTargets[0],
       });
       this.props.updateExtendedGameState({
         blockerAssignmentData: {
           currentBlocker: "",
           possibleBlockTargets: [],
-          blockerAssignments: blockerAssignments
-        }
+          blockerAssignments: blockerAssignments,
+        },
       });
     } else {
       this.props.updateExtendedGameState({
         blockerAssignmentData: {
           currentBlocker: id,
-          possibleBlockTargets: possibleBlockTargets
-        }
+          possibleBlockTargets: possibleBlockTargets,
+        },
       });
     }
   };
 
-  unsetBlocking = event => {
+  unsetBlocking = (event) => {
     let id = this.props.cardData.id;
     let blockerAssignments = [
-      ...this.props.blockerAssignmentData.blockerAssignments
+      ...this.props.blockerAssignmentData.blockerAssignments,
     ];
-    let blockerAssignmentIds = blockerAssignments.map(a => {
+    let blockerAssignmentIds = blockerAssignments.map((a) => {
       return a.blockerId;
     });
 
@@ -230,16 +237,16 @@ class PlayingCard extends React.Component {
       blockerAssignmentData: {
         currentBlocker: "",
         possibleBlockTargets: [],
-        blockerAssignments: blockerAssignments
-      }
+        blockerAssignments: blockerAssignments,
+      },
     });
   };
 
-  setBlocked = event => {
+  setBlocked = (event) => {
     let id = this.props.cardData.id;
 
     let blockerAssignments = [
-      ...this.props.blockerAssignmentData.blockerAssignments
+      ...this.props.blockerAssignmentData.blockerAssignments,
     ];
     let currentBlocker = this.props.blockerAssignmentData.currentBlocker;
 
@@ -248,14 +255,14 @@ class PlayingCard extends React.Component {
       blockerAssignmentData: {
         currentBlocker: "",
         possibleBlockTargets: [],
-        blockerAssignments: blockerAssignments
-      }
+        blockerAssignments: blockerAssignments,
+      },
     });
   };
 
   //! /////// Selection Handlers ///////////
 
-  select = event => {
+  select = (event) => {
     let id = this.props.cardData.id;
     let selected = [...this.props.selectionData.selected];
     let maxCount = this.props.selectionData.selectionCount;
@@ -265,8 +272,8 @@ class PlayingCard extends React.Component {
       selected.push(id);
       this.props.updateExtendedGameState({
         selectionData: {
-          selected: selected
-        }
+          selected: selected,
+        },
       });
     }
     if (selected.length === maxCount) {
@@ -274,7 +281,7 @@ class PlayingCard extends React.Component {
     }
   };
 
-  unselect = event => {
+  unselect = (event) => {
     let id = this.props.cardData.id;
     let selected = [...this.props.selectionData.selected];
 
@@ -282,130 +289,98 @@ class PlayingCard extends React.Component {
       selected.splice(selected.indexOf(id), 1);
       this.props.updateExtendedGameState({
         selectionData: {
-          selected: selected
-        }
+          selected: selected,
+        },
       });
     }
   };
 
   //! //// Connection Arrows //////
 
-  shouldCalculateArrows = (props) => {
-    let id = props.cardData.id;
-    let targets = props.cardData.targets;
-    let attackerAssignments = props.attackerAssignmentData.attackerAssignments;
-    let attackerIndex = attackerAssignments.map(a => {
-      return a.attackerId;
-    }).indexOf(id);
-    let blockerAssignments = props.blockerAssignmentData.blockerAssignments;
-    let blockerIndex = blockerAssignments.map(a => {
-      return a.blockerId;
-    }).indexOf(id);
-
-    return targets.length > 0 || attackerIndex > -1 || blockerIndex > -1;
-  }
-
-  //! TODO: finish this first!!!! 
-  shouldRecalculateArrows = (prevProps) => {
-    
-    let id = this.props.cardData.id;
-
-    let prevTargets = prevProps.cardData.targets;
-    let prevAttackerAssignments = prevProps.attackerAssignmentData.attackerAssignments;
-    let prevAttackerIndex = prevAttackerAssignments.map(a => {
-      return a.attackerId;
-    }).indexOf(id);
-    let prevBlockerAssignments = prevProps.blockerAssignmentData.blockerAssignments;
-    let prevBlockerIndex = prevBlockerAssignments.map(a => {
-      return a.blockerId;
-    }).indexOf(id);
-
-    let targets = this.props.cardData.targets;
-    let attackerAssignments = this.props.attackerAssignmentData.attackerAssignments;
-    let attackerIndex = attackerAssignments.map(a => {
-      return a.attackerId;
-    }).indexOf(id);
-    let blockerAssignments = this.props.blockerAssignmentData.blockerAssignments;
-    let blockerIndex = blockerAssignments.map(a => {
-      return a.blockerId;
-    }).indexOf(id);
-
-    return JSON.stringify(prevTargets) !== JSON.stringify(targets) ||
-    (prevAttackerIndex === -1 && attackerIndex !== -1) ||
-    (prevAttackerIndex !== -1 && attackerIndex === -1) ||
-    (prevBlockerIndex === -1 && blockerIndex !== -1) ||
-    (prevBlockerIndex !== -1 && blockerIndex === -1);
-    
-  }
-
   getArrowRelations = () => {
     let id = this.props.cardData.id;
     let targets = this.props.cardData.targets;
+    let attackTarget = this.props.cardData.attackTarget;
+    let blockedAttacker = this.props.cardData.blockedAttacker;
     let attackerAssignments = this.props.attackerAssignmentData.attackerAssignments;
-    let attackerAssignmentIds = attackerAssignments.map(a => {
+    let blockerAssignments = this.props.blockerAssignmentData.blockerAssignments;
+    let attackerAssignmentIds = attackerAssignments.map((a) => {
       return a.attackerId;
     });
-    let blockerAssignments = this.props.blockerAssignmentData.blockerAssignments;
-    let blockerAssignmentIds = blockerAssignments.map(a => {
+    let blockerAssignmentIds = blockerAssignments.map((a) => {
       return a.blockerId;
     });
-
-    /* {
-      targetId: string,
-      targetAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
-      sourceAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
-      label: React.Node,
-      style: Style,
-    } : Relation */
     let relations = [];
-    
-    targets.forEach(target => {
+
+    targets.forEach((target) => {
       relations.push({
-        targetId: target,
-        targetAnchor: "middle",
-        sourceAnchor: "middle",
-        style: {
-          strokeColor: "yellow",
-          strokeWidth: 4,
-          noCurves: true
-        }
+        from: id,
+        to: target,
+        fromAnchor: "center center",
+        toAnchor: "center center",
+        borderColor: "yellow",
+        borderWidth: 4,
+        zIndex: 10,
       });
     });
 
     // if card is attacking
     const attackerIndex = attackerAssignmentIds.indexOf(id);
-    if ( attackerIndex > -1) {
+    if (attackerIndex > -1) {
       const attackerAssignment = attackerAssignments[attackerIndex];
       relations.push({
-        targetId: attackerAssignment.attacksTo,
-        targetAnchor: "middle",
-        sourceAnchor: "middle",
-        style: {
-          strokeColor: "red",
-          strokeWidth: 4,
-          noCurves: false
-        }
+        from: id,
+        to: attackerAssignment.attacksTo,
+        fromAnchor: "center center",
+        toAnchor: "center center",
+        borderColor: "red",
+        borderWidth: 4,
+        zIndex: 10,
+      });
+    }
+
+    if (attackTarget) {
+      relations.push({
+        from: id,
+        to: attackTarget,
+        fromAnchor: "center center",
+        toAnchor: "center center",
+        borderColor: "red",
+        borderWidth: 4,
+        zIndex: 10,
       });
     }
 
 
-    // If card is blocking 
+
+    // If card is blocking
     const blockerIndex = blockerAssignmentIds.indexOf(id);
-    if ( blockerIndex > -1) {
+    if (blockerIndex > -1) {
       const blockerAssignment = blockerAssignments[blockerIndex];
       relations.push({
-        targetId: blockerAssignment.blockedBy,
-        targetAnchor: "middle",
-        sourceAnchor: "middle",
-        style: {
-          strokeColor: "blue",
-          strokeWidth: 4,
-          noCurves: false
-        }
+        from: id,
+        to: blockerAssignment.blockedBy,
+        fromAnchor: "center center",
+        toAnchor: "center center",
+        borderColor: "blue",
+        borderWidth: 4,
+        zIndex: 10,
       });
     }
 
-    console.log("Relations", relations);
+    if (blockedAttacker) {
+      relations.push({
+        from: id,
+        to: blockedAttacker,
+        fromAnchor: "center center",
+        toAnchor: "center center",
+        borderColor: "blue",
+        borderWidth: 4,
+        zIndex: 10,
+      });
+    }
+
+    //console.log("Relations", relations);
     return relations;
   };
 
@@ -432,7 +407,7 @@ class PlayingCard extends React.Component {
       square,
       style,
       cardData,
-      popoverDisabled
+      popoverDisabled,
     } = this.props;
 
     const { id, depleted, deploying } = cardData;
@@ -441,7 +416,7 @@ class PlayingCard extends React.Component {
     const activatable = activatableCards.includes(id);
     const studyable = studyableCards.includes(id);
     const playable = playableCards.includes(id);
-    const selectable_ =  selectionData.selectable.includes(id);
+    const selectable_ = selectionData.selectable.includes(id);
     const selected_ = selectionData.selected.includes(id);
 
     const attacking =
@@ -449,7 +424,7 @@ class PlayingCard extends React.Component {
         clientPhase === ClientPhase.SELECT_BLOCKERS ||
         clientPhase === ClientPhase.UPDATE_GAME) &&
       (attackerAssignmentData.attackerAssignments
-        .map(c => {
+        .map((c) => {
           return c.attackerId;
         })
         .includes(id) ||
@@ -460,7 +435,7 @@ class PlayingCard extends React.Component {
       !attackerAssignmentData.currentAttacker &&
       clientPhase === ClientPhase.SELECT_ATTACKERS &&
       attackerAssignmentData.possibleAttackers
-        .map(c => {
+        .map((c) => {
           return c.attackerId;
         })
         .includes(id);
@@ -474,7 +449,7 @@ class PlayingCard extends React.Component {
         clientPhase === ClientPhase.SELECT_BLOCKERS ||
         clientPhase === ClientPhase.UPDATE_GAME) &&
       (blockerAssignmentData.blockerAssignments
-        .map(c => {
+        .map((c) => {
           return c.blockerId;
         })
         .includes(id) ||
@@ -485,7 +460,7 @@ class PlayingCard extends React.Component {
       !blockerAssignmentData.currentBlocker &&
       clientPhase === ClientPhase.SELECT_BLOCKERS &&
       blockerAssignmentData.possibleBlockers
-        .map(c => {
+        .map((c) => {
           return c.blockerId;
         })
         .includes(id);
@@ -533,7 +508,7 @@ class PlayingCard extends React.Component {
     } else if (selectable_) {
       clickHandler = this.select;
     } else if (activatable) {
-      clickHandler = event => {
+      clickHandler = (event) => {
         gameHandler.ActivateCard(id);
       };
     }
@@ -555,14 +530,18 @@ class PlayingCard extends React.Component {
 
     let draggableId = id;
     if (studyable) {
-      draggableId = "[STUDYABLE]"+draggableId;
+      draggableId = "[STUDYABLE]" + draggableId;
     }
     if (playable) {
-      draggableId= "[PLAYABLE]"+draggableId;
+      draggableId = "[PLAYABLE]" + draggableId;
     }
 
     return (
-      <Draggable draggableId={draggableId} index={DnDIndex} isDragDisabled={isDragDisabled || (!playable && !studyable)} >
+      <Draggable
+        draggableId={draggableId}
+        index={DnDIndex}
+        isDragDisabled={isDragDisabled || (!playable && !studyable)}
+      >
         {(provided, snapshot) => {
           const isDragging = snapshot.isDragging;
           return (
@@ -577,7 +556,7 @@ class PlayingCard extends React.Component {
                 ...style,
                 //width: width / 5,
                 //height: height / 3,
-                position: "relative"
+                position: "relative",
               }}
             >
               {!isDragging && !popoverDisabled && (
@@ -585,10 +564,15 @@ class PlayingCard extends React.Component {
                   style={{
                     position: "absolute",
                     zIndex: 20,
-                    ...popoverStyle
+                    ...popoverStyle,
                   }}
                 >
-                  <div style={{ width: popoverStyle.width / 2, height: popoverStyle.height }}>
+                  <div
+                    style={{
+                      width: popoverStyle.width / 2,
+                      height: popoverStyle.height,
+                    }}
+                  >
                     <CardDisplay
                       cardData={cardData}
                       windowDimensions={windowDimensions}
@@ -599,7 +583,7 @@ class PlayingCard extends React.Component {
                       display: "flex",
                       flexDirection: "column",
                       width: popoverStyle.width / 2,
-                      height: popoverStyle.height
+                      height: popoverStyle.height,
                     }}
                   >
                     {cardData.description &&
@@ -613,7 +597,7 @@ class PlayingCard extends React.Component {
                                 backgroundColor: "black",
                                 border: "1px white solid",
                                 borderRadius: "5px",
-                                whiteSpace: "pre-wrap"
+                                whiteSpace: "pre-wrap",
                               }}
                             >
                               <FittedText
@@ -628,12 +612,14 @@ class PlayingCard extends React.Component {
                   </div>
                 </div>
               )}
+
               <div {...provided.dragHandleProps}>
-                <ArcherElement
-                  id={id}
-                  relations={showArrows ? arrowRelations : []}
-                  style={{ zIndex: 10 }}
-                >
+                {showArrows &&
+                  arrowRelations.map((rel, i) => {
+                    return <LineTo key={i} {...rel} />;
+                  })}
+
+                <div className={cardData.id}>
                   <CardDisplay
                     opacity={opacity}
                     borderColor={borderColor}
@@ -644,7 +630,7 @@ class PlayingCard extends React.Component {
                     cardData={cardData}
                     windowDimensions={windowDimensions}
                   />
-                </ArcherElement>
+                </div>
               </div>
             </div>
           );

@@ -13,6 +13,7 @@ import { Grid, Link } from "@material-ui/core";
 import Fonts from "../Primitives/Fonts";
 
 import "../../css/App.css";
+import ErrorBoundary from "../Primitives/ErrorBoundary";
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ export default class MainPage extends Component {
     const { value } = this.state;
 
     return (
+      <ErrorBoundary>
       <div>
         {value === 0 && (
           <Center>
@@ -121,6 +123,7 @@ export default class MainPage extends Component {
         {value === 4 && <CustomCardGallery back={this.back} />}
         {value === 5 && <CardGallery back={this.back} />}
       </div>
+      </ErrorBoundary>
     );
   }
 }

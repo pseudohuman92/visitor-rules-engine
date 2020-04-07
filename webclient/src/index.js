@@ -5,36 +5,40 @@ import MainPage from "./Components/MainScreens/MainPage";
 import Firebase, { FirebaseContext } from "./Components/Firebase";
 import store, { mapDispatchToProps } from "./Components/Redux/Store";
 import HandlerContext from "./Components/MessageHandlers/HandlerContext";
-
-
+import ErrorBoundary from "./Components/Primitives/ErrorBoundary";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.updateHandlers = handlers => {
+    this.updateHandlers = (handlers) => {
       this.setState(handlers);
-    }
+    };
 
     this.state = {
       serverHandler: null,
-      gameHandler : null,
+      gameHandler: null,
       updateHandlers: this.updateHandlers,
     };
   }
 
   componentDidMount = () => {
     this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
-  }
-  
+    window.addEventListener("resize", this.updateWindowDimensions);
+  };
+
   componentWillUnmount = () => {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
-  
-  updateWindowDimensions = () =>  {
-    this.props.updateState({windowDimensions: { width: window.innerWidth, height: window.innerHeight }});
-  }
+    window.removeEventListener("resize", this.updateWindowDimensions);
+  };
+
+  updateWindowDimensions = () => {
+    this.props.updateState({
+      windowDimensions: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
+    });
+  };
 
   render() {
     return (
@@ -45,17 +49,16 @@ class App extends React.Component {
   }
 }
 
-App = connect(
-  null,
-  mapDispatchToProps
-)(App);
+App = connect(null, mapDispatchToProps)(App);
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <ReduxProvider store={store}>
-    <FirebaseContext.Provider value={new Firebase()}>
-      <App/>
-    </FirebaseContext.Provider>
-  </ReduxProvider>,
+  <ErrorBoundary>
+    <ReduxProvider store={store}>
+      <FirebaseContext.Provider value={new Firebase()}>
+        <App />
+      </FirebaseContext.Provider>
+    </ReduxProvider>
+  </ErrorBoundary>,
   rootElement
 );
