@@ -1061,6 +1061,96 @@ export class SelectBlockersResponse implements ISelectBlockersResponse {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of an AssignDamageResponse. */
+export interface IAssignDamageResponse {
+
+    /** AssignDamageResponse damageAssignments */
+    damageAssignments?: (IDamageAssignment[]|null);
+}
+
+/** Represents an AssignDamageResponse. */
+export class AssignDamageResponse implements IAssignDamageResponse {
+
+    /**
+     * Constructs a new AssignDamageResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IAssignDamageResponse);
+
+    /** AssignDamageResponse damageAssignments. */
+    public damageAssignments: IDamageAssignment[];
+
+    /**
+     * Creates a new AssignDamageResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns AssignDamageResponse instance
+     */
+    public static create(properties?: IAssignDamageResponse): AssignDamageResponse;
+
+    /**
+     * Encodes the specified AssignDamageResponse message. Does not implicitly {@link AssignDamageResponse.verify|verify} messages.
+     * @param message AssignDamageResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IAssignDamageResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified AssignDamageResponse message, length delimited. Does not implicitly {@link AssignDamageResponse.verify|verify} messages.
+     * @param message AssignDamageResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IAssignDamageResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an AssignDamageResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns AssignDamageResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): AssignDamageResponse;
+
+    /**
+     * Decodes an AssignDamageResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns AssignDamageResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): AssignDamageResponse;
+
+    /**
+     * Verifies an AssignDamageResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an AssignDamageResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns AssignDamageResponse
+     */
+    public static fromObject(object: { [k: string]: any }): AssignDamageResponse;
+
+    /**
+     * Creates a plain object from an AssignDamageResponse message. Also converts values to other types if specified.
+     * @param message AssignDamageResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: AssignDamageResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this AssignDamageResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a SaveGameState. */
 export interface ISaveGameState {
 
@@ -1192,6 +1282,9 @@ export interface IClientGameMessage {
 
     /** ClientGameMessage saveGameState */
     saveGameState?: (ISaveGameState|null);
+
+    /** ClientGameMessage assignDamageResponse */
+    assignDamageResponse?: (IAssignDamageResponse|null);
 }
 
 /** Represents a ClientGameMessage. */
@@ -1242,8 +1335,11 @@ export class ClientGameMessage implements IClientGameMessage {
     /** ClientGameMessage saveGameState. */
     public saveGameState?: (ISaveGameState|null);
 
+    /** ClientGameMessage assignDamageResponse. */
+    public assignDamageResponse?: (IAssignDamageResponse|null);
+
     /** ClientGameMessage payload. */
-    public payload?: ("playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState");
+    public payload?: ("playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse");
 
     /**
      * Creates a new ClientGameMessage instance using the specified properties.
@@ -1973,6 +2069,92 @@ export class BlockerAssignment implements IBlockerAssignment {
 
     /**
      * Converts this BlockerAssignment to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Represents a DamageAssignment. */
+export class DamageAssignment implements IDamageAssignment {
+
+    /**
+     * Constructs a new DamageAssignment.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IDamageAssignment);
+
+    /** DamageAssignment targetId. */
+    public targetId: string;
+
+    /** DamageAssignment damage. */
+    public damage: number;
+
+    /**
+     * Creates a new DamageAssignment instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns DamageAssignment instance
+     */
+    public static create(properties?: IDamageAssignment): DamageAssignment;
+
+    /**
+     * Encodes the specified DamageAssignment message. Does not implicitly {@link DamageAssignment.verify|verify} messages.
+     * @param message DamageAssignment message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IDamageAssignment, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified DamageAssignment message, length delimited. Does not implicitly {@link DamageAssignment.verify|verify} messages.
+     * @param message DamageAssignment message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IDamageAssignment, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a DamageAssignment message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns DamageAssignment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): DamageAssignment;
+
+    /**
+     * Decodes a DamageAssignment message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns DamageAssignment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): DamageAssignment;
+
+    /**
+     * Verifies a DamageAssignment message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a DamageAssignment message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns DamageAssignment
+     */
+    public static fromObject(object: { [k: string]: any }): DamageAssignment;
+
+    /**
+     * Creates a plain object from a DamageAssignment message. Also converts values to other types if specified.
+     * @param message DamageAssignment
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: DamageAssignment, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this DamageAssignment to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -3308,6 +3490,98 @@ export class SelectBlockers implements ISelectBlockers {
     public toJSON(): { [k: string]: any };
 }
 
+/** Represents an AssignDamage. */
+export class AssignDamage implements IAssignDamage {
+
+    /**
+     * Constructs a new AssignDamage.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IAssignDamage);
+
+    /** AssignDamage game. */
+    public game?: (IGameState|null);
+
+    /** AssignDamage damageSource. */
+    public damageSource: string;
+
+    /** AssignDamage possibleTargets. */
+    public possibleTargets: string[];
+
+    /** AssignDamage totalDamage. */
+    public totalDamage: number;
+
+    /**
+     * Creates a new AssignDamage instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns AssignDamage instance
+     */
+    public static create(properties?: IAssignDamage): AssignDamage;
+
+    /**
+     * Encodes the specified AssignDamage message. Does not implicitly {@link AssignDamage.verify|verify} messages.
+     * @param message AssignDamage message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IAssignDamage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified AssignDamage message, length delimited. Does not implicitly {@link AssignDamage.verify|verify} messages.
+     * @param message AssignDamage message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IAssignDamage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes an AssignDamage message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns AssignDamage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): AssignDamage;
+
+    /**
+     * Decodes an AssignDamage message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns AssignDamage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): AssignDamage;
+
+    /**
+     * Verifies an AssignDamage message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates an AssignDamage message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns AssignDamage
+     */
+    public static fromObject(object: { [k: string]: any }): AssignDamage;
+
+    /**
+     * Creates a plain object from an AssignDamage message. Also converts values to other types if specified.
+     * @param message AssignDamage
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: AssignDamage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this AssignDamage to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Represents a ServerGameMessage. */
 export class ServerGameMessage implements IServerGameMessage {
 
@@ -3338,8 +3612,11 @@ export class ServerGameMessage implements IServerGameMessage {
     /** ServerGameMessage selectBlockers. */
     public selectBlockers?: (ISelectBlockers|null);
 
+    /** ServerGameMessage assignDamage. */
+    public assignDamage?: (IAssignDamage|null);
+
     /** ServerGameMessage payload. */
-    public payload?: ("updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers");
+    public payload?: ("updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage");
 
     /**
      * Creates a new ServerGameMessage instance using the specified properties.

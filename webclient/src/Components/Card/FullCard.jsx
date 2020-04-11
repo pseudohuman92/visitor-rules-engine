@@ -1,6 +1,5 @@
 import React from "react";
 import { PureComponent } from "react";
-import Rectangle from "react-rectangle";
 
 import { getCardColor, toKnowledgeString } from "../Helpers/Helpers";
 import Fonts from "../Primitives/Fonts";
@@ -59,7 +58,7 @@ class FullCard extends PureComponent {
         <div
           className="card-inner"
           style={{
-            top: square ? "3%" : "0",
+            top: square ? "3%" : "2%",
             height: square? "94%" : "96%",
             position: "relative",
             fontSize: cardWidth / (2*scale_) + "px",

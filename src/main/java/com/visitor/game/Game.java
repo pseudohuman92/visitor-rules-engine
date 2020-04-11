@@ -14,6 +14,8 @@ import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.UUIDHelper;
 import static com.visitor.helpers.UUIDHelper.toUUIDList;
+
+import com.visitor.protocol.ServerGameMessages;
 import com.visitor.protocol.ServerGameMessages.GameEnd;
 import com.visitor.protocol.ServerGameMessages.SelectFrom;
 import com.visitor.protocol.ServerGameMessages.SelectXValue;
@@ -47,10 +49,14 @@ import javax.websocket.EncodeException;
 import static com.visitor.game.Event.possess;
 import com.visitor.protocol.ServerGameMessages.SelectAttackers;
 import com.visitor.protocol.ServerGameMessages.SelectBlockers;
+import com.visitor.protocol.ServerGameMessages.AssignDamage;
 import com.visitor.protocol.Types.Attacker;
 import com.visitor.protocol.Types.AttackerAssignment;
 import com.visitor.protocol.Types.Blocker;
 import com.visitor.protocol.Types.BlockerAssignment;
+import com.visitor.protocol.Types.DamageAssignment;
+
+
 
 /**
  *
@@ -1022,6 +1028,35 @@ public class Game implements Serializable {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void assignDamage(UUID id, Arraylist<UUID> possibleTargets, int damage) {
+        out.println("Updating players from assignDamage. AP: " + activePlayer);
+        updatePlayers();
+        Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage);
+        out.println("Damage distribution: "+ assignedDamages);
+        assignedDamages.forEach(c ->{
+            UUID targetId = UUID.fromString(c.getTargetId());
+            int assignedDamage = c.getDamage();
+            dealDamage(id, targetId, assignedDamage);
+        });
+    }
+
+    private Arraylist<DamageAssignment> assignDamage(String username, UUID id, Arraylist<UUID> possibleTargets, int damage) {
+        out.println("Sending Assign Damage Message to " + username);
+        AssignDamage.Builder b = AssignDamage.newBuilder()
+                .setDamageSource(id.toString())
+                .addAllPossibleTargets(possibleTargets.parallelStream().map(uuid -> {return uuid.toString();}).collect(Collectors.toList()))
+                .setTotalDamage(damage)
+                .setGame(toGameState(username));
+        try {
+            send(username, ServerGameMessage.newBuilder().setAssignDamage(b));
+            DamageAssignment[] l = (DamageAssignment[])response.take();
+            return new Arraylist<>(l);
+        } catch (InterruptedException ex) {
+            getLogger(Game.class.getName()).log(SEVERE, null, ex);
+        }
+        return null;
     }
 
 

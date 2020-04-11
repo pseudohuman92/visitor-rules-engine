@@ -110,7 +110,7 @@ class Void extends Component {
               style={{ ...style, width: voidWidth, height: voidHeight }}
             >
               <TextOnImage
-                text={hover ? void_.length : ""}
+                text={hover ? (void_.length?void_.length:0) : ""}
                 src={process.env.PUBLIC_URL + "/img/void.png"}
                 imgStyle={{
                   transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)",

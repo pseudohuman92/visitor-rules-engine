@@ -23,7 +23,23 @@ class Hand extends PureComponent {
       ? hand.map((card, i) => {
           return <PlayingCard key={card.id} cardData={card} DnDIndex={i} play />;
         })
-      : [];
+      : Array.apply(null, Array(opponentHandSize)).map((x, i) => {
+        return <img
+        key ={i}
+        className="image"
+        src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+        alt=""
+        style={{
+          margin: "1px",
+          maxWidth: (100/ (opponentHandSize > 5?opponentHandSize:5)) +"%",
+          maxHeight: "100%",
+          width: "auto",
+          height: "auto",
+          objectFit: "scale-down"
+        }}
+      />;
+      });
+      
     return (
       <Droppable
         droppableId={isPlayer ? "player-hand" : "opponent-hand"}

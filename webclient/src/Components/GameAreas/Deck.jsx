@@ -39,7 +39,7 @@ class Deck extends Component {
         style={{ ...style, width: deckWidth, height: deckHeight}}
       >
         <TextOnImage
-          text={hover ? deckSize : ""}
+          text={hover ? (deckSize?deckSize:0) : ""}
           src={process.env.PUBLIC_URL + "/img/CardBack.png"}
           imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
           scale = {3}

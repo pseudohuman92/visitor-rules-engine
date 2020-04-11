@@ -107,6 +107,8 @@ export function toClientPhase(msgType, selectType) {
       return ClientPhase.SELECT_ATTACKERS;
     case "SelectBlockers":  
       return ClientPhase.SELECT_BLOCKERS;
+    case "AssignDamage":  
+      return ClientPhase.ASSIGN_DAMAGE;
     default:
       return ClientPhase.NOT_STARTED;
   }

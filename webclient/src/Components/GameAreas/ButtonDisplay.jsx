@@ -24,6 +24,7 @@ const mapStateToProps = state => {
     selected: state.extendedGameState.selectionData.selected,
     attackerAssignments: state.extendedGameState.attackerAssignmentData.attackerAssignments,
     blockerAssignments: state.extendedGameState.blockerAssignmentData.blockerAssignments,
+    damageAssignmentData: state.extendedGameState.damageAssignmentData,
   };
 };
 
@@ -56,6 +57,11 @@ class ButtonDisplay extends Component {
     this.props.gameHandler.SelectBlockers(blockerAssignments);
   };
 
+  assignDamage = event => {
+    let damageAssignments = [...this.props.damageAssignmentData.damageAssignments];
+    this.props.gameHandler.AssignDamage(damageAssignments);
+  };
+
   render() {
     const {
       clientPhase,
@@ -66,7 +72,8 @@ class ButtonDisplay extends Component {
       turnPlayer,
       upTo,
       autoPass,
-      opponentName
+      opponentName,
+      damageAssignmentData
     } = this.props;
 
     const gamePhaseStr = {
@@ -81,6 +88,8 @@ class ButtonDisplay extends Component {
     const amIActive = activePlayer === playerUserId;
     const actPlayer = amIActive ? playerName : opponentName;
     const turPlayer = turnPlayer === playerUserId ? playerName : opponentName;
+
+    const canAssignDamage = damageAssignmentData.totalDamage !== damageAssignmentData.totalAssignedDamage;
 
     /*
     const activeDisplay = (
@@ -142,6 +151,9 @@ class ButtonDisplay extends Component {
     } else if (clientPhase === ClientPhase.SELECT_BLOCKERS ) {
       buttonMenu = (turnPlayer !== playerUserId) ?
         <Button onClick={this.selectBlockers} text="Block" /> : <div/>;
+    } else if (clientPhase === ClientPhase.ASSIGN_DAMAGE) {
+      buttonMenu = (turnPlayer === playerUserId) ?
+        <Button disabled={canAssignDamage} onClick={this.assignDamage} text="Assign" /> : <div/>;
     } else {
       buttonMenu = (
         <Button

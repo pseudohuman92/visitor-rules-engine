@@ -60,6 +60,10 @@ message SelectBlockersResponse {
     repeated BlockerAssignment blockers = 1;
 }
 
+message AssignDamageResponse {
+    repeated DamageAssignment damageAssignments = 1;
+}
+
 message SaveGameState {
     string filename = 1;
 }
@@ -79,5 +83,6 @@ message ClientGameMessage {
         SelectAttackersResponse         selectAttackersResponse = 24;
         SelectBlockersResponse          selectBlockersResponse = 25;
         SaveGameState                   saveGameState = 26;
+        AssignDamageResponse            assignDamageResponse = 27;
     }
 };

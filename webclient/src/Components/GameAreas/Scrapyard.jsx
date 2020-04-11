@@ -83,7 +83,7 @@ class Scrapyard extends React.Component {
       >
         {hasCard ? (
           <TextOnComponent
-            text={hover ? scrapyard.length : ""}
+            text={hover ? (scrapyard.length?scrapyard.length:0) : ""}
             component={
               <CardDisplay
                 cardData={scrapyard[scrapyard.length - 1]}
@@ -97,7 +97,7 @@ class Scrapyard extends React.Component {
           />
         ) : (
           <TextOnImage
-            text={hover ? scrapyard.length : ""}
+            text={hover ? (scrapyard.length?scrapyard.length:0) : ""}
             src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}
             imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
             scale={3}

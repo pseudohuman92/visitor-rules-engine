@@ -47,6 +47,13 @@ message SelectBlockers {
     repeated Blocker possibleBlockers = 2;
 }
 
+message AssignDamage {
+    GameState game = 1;
+    string damageSource = 2;
+    repeated string possibleTargets = 3;
+    int32 totalDamage = 4;
+}
+
 message ServerGameMessage {
     oneof payload {
         UpdateGameState         updateGameState = 8;
@@ -56,5 +63,6 @@ message ServerGameMessage {
         SelectXValue            selectXValue = 19;
         SelectAttackers         selectAttackers = 20;
         SelectBlockers          selectBlockers = 21;
+        AssignDamage        assignDamage = 22;
     }
 }

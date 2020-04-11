@@ -1,10 +1,10 @@
 import proto, {
-  SelectFrom,
   GameState,
   Card,
   AttackerAssignment,
   Player,
-  BlockerAssignment
+  BlockerAssignment,
+  DamageAssignment
 } from "../../protojs/compiled";
 import { toKnowledgeCost } from "./Helpers";
 
@@ -25,7 +25,8 @@ export enum ClientPhase {
   SELECT_ATTACKERS = "SelectAttackers",
   ATTACK_PHASE = "AttackPhase",
   SELECT_BLOCKERS = "SelectBlockers",
-  BLOCK_PHASE = "BlockPhase"
+  BLOCK_PHASE = "BlockPhase",
+  ASSIGN_DAMAGE = "AssignDamage"
 }
 
 export const knowledgeMap: any = {};
@@ -99,6 +100,24 @@ export function initialBlockerAssignmentData(): BlockerAssignmentData {
   };
 }
 
+export interface DamageAssignmentData {
+  damageSource: string;
+  possibleTargets: string[];
+  totalDamage: number;
+  damageAssignments: DamageAssignment[];
+  totalAssignedDamage: number;
+}
+
+export function initialDamageAssignmentData(): DamageAssignmentData {
+  return {
+    damageSource: "",
+    possibleTargets: [],
+    totalDamage: 0,
+    damageAssignments: [],
+    totalAssignedDamage: 0,
+  };
+}
+
 export interface SelectionData {
   selectionCount: number;
   candidates: Card[];
@@ -146,6 +165,7 @@ export interface ExtendedGameState {
   selectionData: SelectionData;
   attackerAssignmentData: AttackerAssignmentData;
   blockerAssignmentData: BlockerAssignmentData;
+  damageAssignmentData: DamageAssignmentData;
 }
 
 export function initialExtendedGameState(): ExtendedGameState {
@@ -164,6 +184,7 @@ export function initialExtendedGameState(): ExtendedGameState {
     dialogData: initialDialogData(),
     attackerAssignmentData: initialAttackerAssignmentData(),
     blockerAssignmentData: initialBlockerAssignmentData(),
+    damageAssignmentData: initialDamageAssignmentData(),
     selectionData: initialSelectionData()
   };
 }

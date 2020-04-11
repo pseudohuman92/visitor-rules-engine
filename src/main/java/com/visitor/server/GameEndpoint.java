@@ -10,6 +10,7 @@ import com.visitor.protocol.ClientGameMessages.SelectAttackersResponse;
 import com.visitor.protocol.ClientGameMessages.SelectBlockersResponse;
 import com.visitor.protocol.ClientGameMessages.SelectFromResponse;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
+import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.AttackerAssignment;
 import com.visitor.protocol.Types.BlockerAssignment;
 import com.visitor.protocol.Types.SelectFromType;
@@ -145,6 +146,11 @@ public class GameEndpoint {
                     waitingResponse = false;
                     gameServer.addToResponseQueue(gameID, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
                     break;
+                case ASSIGNDAMAGERESPONSE:
+                    ClientGameMessages.AssignDamageResponse ddr = message.getAssignDamageResponse();
+                    waitingResponse = false;
+                    gameServer.addToResponseQueue(gameID, ddr.getDamageAssignmentsList().toArray(new Types.DamageAssignment[ddr.getDamageAssignmentsCount()]));
+                    break;
                 default:
                     out.println("Wrong Message received from " + username  
                             + "\nExpected " + responseType + " Received: " + message);
@@ -210,6 +216,10 @@ public class GameEndpoint {
             case SELECTBLOCKERS:
                 waitingResponse = true;
                 responseType = SELECTBLOCKERSRESPONSE;
+                break;
+            case ASSIGNDAMAGE:
+                waitingResponse = true;
+                responseType = ASSIGNDAMAGERESPONSE;
                 break;
             default:
                 waitingResponse = false;

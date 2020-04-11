@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import TextField from "@material-ui/core/TextField";
+
 import CardDisplay from "./CardDisplay";
 import { keywords, ClientPhase } from "../Helpers/Constants";
 
@@ -25,6 +27,7 @@ const mapStateToProps = (state) => {
     selectionData: state.extendedGameState.selectionData,
     attackerAssignmentData: state.extendedGameState.attackerAssignmentData,
     blockerAssignmentData: state.extendedGameState.blockerAssignmentData,
+    damageAssignmentData: state.extendedGameState.damageAssignmentData,
   };
 };
 
@@ -61,16 +64,12 @@ class PlayingCard extends React.Component {
   }
 
   onMouseEnter = (event) => {
-    if (this.state.arrowRelations.length !== 0) {
-      this.setState({ showArrows: true });
-    }
+    this.setState({ showArrows: true });
     this.handlePopoverOpen(event);
   };
 
   onMouseLeave = (event) => {
-    //if (this.state.arrowRelations.length !== 0) {
-      this.setState({ showArrows: false });
-    //}
+    this.setState({ showArrows: false });
     this.handlePopoverClose(event);
   };
 
@@ -302,8 +301,10 @@ class PlayingCard extends React.Component {
     let targets = this.props.cardData.targets;
     let attackTarget = this.props.cardData.attackTarget;
     let blockedAttacker = this.props.cardData.blockedAttacker;
-    let attackerAssignments = this.props.attackerAssignmentData.attackerAssignments;
-    let blockerAssignments = this.props.blockerAssignmentData.blockerAssignments;
+    let attackerAssignments = this.props.attackerAssignmentData
+      .attackerAssignments;
+    let blockerAssignments = this.props.blockerAssignmentData
+      .blockerAssignments;
     let attackerAssignmentIds = attackerAssignments.map((a) => {
       return a.attackerId;
     });
@@ -351,8 +352,6 @@ class PlayingCard extends React.Component {
       });
     }
 
-
-
     // If card is blocking
     const blockerIndex = blockerAssignmentIds.indexOf(id);
     if (blockerIndex > -1) {
@@ -384,6 +383,53 @@ class PlayingCard extends React.Component {
     return relations;
   };
 
+  //! Damage Assignment /////
+  handleDamageAssignment = (event) => {
+    const newAssignedDamage = parseInt(event.target.value);
+    if (newAssignedDamage < 0) {
+      return;
+    }
+
+    const id = this.props.cardData.id;
+    const damageAssignmentData = this.props.damageAssignmentData;
+
+    const totalDamage = damageAssignmentData.totalDamage;
+    var totalAssignedDamage = damageAssignmentData.totalAssignedDamage;
+    const canAssignMore = totalDamage > totalAssignedDamage;
+    var damageAssignments = [...damageAssignmentData.damageAssignments];
+
+    const damageAssignmentIndex = damageAssignments
+      .map((a) => {
+        return a.targetId;
+      })
+      .indexOf(id);
+    const damageAssignment = damageAssignments[damageAssignmentIndex];
+    const assignedDamage = damageAssignment ? damageAssignment.damage : 0;
+
+    if (damageAssignmentIndex > -1) {
+      damageAssignments.splice(damageAssignmentIndex, 1);
+      totalAssignedDamage -= assignedDamage;
+    }
+
+    damageAssignments.push({
+      targetId: id,
+      damage: newAssignedDamage,
+    });
+    totalAssignedDamage += newAssignedDamage;
+
+    if (
+      newAssignedDamage <= assignedDamage ||
+      (newAssignedDamage > assignedDamage && canAssignMore)
+    ) {
+      this.props.updateExtendedGameState({
+        damageAssignmentData: {
+          damageAssignments: damageAssignments,
+          totalAssignedDamage: totalAssignedDamage,
+        },
+      });
+    }
+  };
+
   //! Rendering //////
   render() {
     const {
@@ -395,6 +441,7 @@ class PlayingCard extends React.Component {
       selectionData,
       attackerAssignmentData,
       blockerAssignmentData,
+      damageAssignmentData,
 
       activatableCards,
       playableCards,
@@ -411,7 +458,7 @@ class PlayingCard extends React.Component {
     } = this.props;
 
     const { id, depleted, deploying } = cardData;
-    const { arrowRelations, showArrows } = this.state;
+    const { arrowRelations, showArrows, popoverStyle } = this.state;
 
     const activatable = activatableCards.includes(id);
     const studyable = studyableCards.includes(id);
@@ -419,6 +466,7 @@ class PlayingCard extends React.Component {
     const selectable_ = selectionData.selectable.includes(id);
     const selected_ = selectionData.selected.includes(id);
 
+    //Attacker Properties
     const attacking =
       (clientPhase === ClientPhase.SELECT_ATTACKERS ||
         clientPhase === ClientPhase.SELECT_BLOCKERS ||
@@ -430,6 +478,7 @@ class PlayingCard extends React.Component {
         .includes(id) ||
         attackerAssignmentData.currentAttacker === id ||
         attackers.includes(id));
+
     const canAttack =
       !attacking &&
       !attackerAssignmentData.currentAttacker &&
@@ -439,11 +488,13 @@ class PlayingCard extends React.Component {
           return c.attackerId;
         })
         .includes(id);
+
     const canBeAttacked =
       clientPhase === ClientPhase.SELECT_ATTACKERS &&
       attackerAssignmentData.currentAttacker &&
       attackerAssignmentData.possibleAttackTargets.includes(id);
 
+    //Blocker Properties
     const blocking =
       (clientPhase === ClientPhase.SELECT_ATTACKERS ||
         clientPhase === ClientPhase.SELECT_BLOCKERS ||
@@ -455,6 +506,7 @@ class PlayingCard extends React.Component {
         .includes(id) ||
         blockerAssignmentData.currentBlocker === id ||
         blockers.includes(id));
+
     const canBlock =
       !blocking &&
       !blockerAssignmentData.currentBlocker &&
@@ -464,11 +516,30 @@ class PlayingCard extends React.Component {
           return c.blockerId;
         })
         .includes(id);
+
     const canBeBlocked =
       clientPhase === ClientPhase.SELECT_BLOCKERS &&
-      blockerAssignmentData.currentBlocker &&
       blockerAssignmentData.possibleBlockTargets.includes(id);
 
+    //Damage Assignment Properties
+    const itsDamageIsGettingAssigned =
+      clientPhase === ClientPhase.ASSIGN_DAMAGE &&
+      damageAssignmentData.damageSource === id;
+
+    const canBeAssignedDamage =
+      clientPhase === ClientPhase.ASSIGN_DAMAGE &&
+      damageAssignmentData.possibleTargets.includes(id);
+
+    const damageAssignments = damageAssignmentData.damageAssignments;
+    const damageAssignmentIndex = damageAssignments
+      .map((a) => {
+        return a.targetId;
+      })
+      .indexOf(id);
+    const damageAssignment = damageAssignments[damageAssignmentIndex];
+    const assignedDamage = damageAssignment ? damageAssignment.damage : 0;
+
+    //Highlighting
     var borderColor = "";
     if (
       canAttack ||
@@ -480,12 +551,13 @@ class PlayingCard extends React.Component {
       playable
     ) {
       borderColor = "green";
-    } else if (attacking) {
+    } else if (attacking || itsDamageIsGettingAssigned) {
       borderColor = "red";
-    } else if (selected_ || blocking) {
+    } else if (selected_ || blocking || canBeAssignedDamage) {
       borderColor = "blue";
     }
 
+    //Click behavior
     let clickHandler = undefined;
     if (canAttack) {
       clickHandler = this.setAttacking;
@@ -513,6 +585,7 @@ class PlayingCard extends React.Component {
       };
     }
 
+    //Deployed and depleted visual indicators
     var opacity = 1;
     if (deploying) {
       opacity = 0.5;
@@ -525,8 +598,6 @@ class PlayingCard extends React.Component {
 
     const counterMap = {};
     counterMap[proto.Counter.CHARGE] = "C";
-
-    const { popoverStyle } = this.state;
 
     let draggableId = id;
     if (studyable) {
@@ -548,8 +619,6 @@ class PlayingCard extends React.Component {
             <div
               ref={provided.innerRef}
               {...provided.draggableProps}
-              onMouseEnter={this.onMouseEnter}
-              onMouseLeave={this.onMouseLeave}
               style={{
                 //width: "100%",
                 //height: "100%",
@@ -614,12 +683,32 @@ class PlayingCard extends React.Component {
               )}
 
               <div {...provided.dragHandleProps}>
-                {showArrows &&
+                {
+                  (showArrows || canBeBlocked || canBeAssignedDamage) &&
                   arrowRelations.map((rel, i) => {
                     return <LineTo key={i} {...rel} />;
-                  })}
-
-                <div className={cardData.id}>
+                  })
+                }
+                {canBeAssignedDamage && (
+                  <input
+                    type="number"
+                    value={assignedDamage}
+                    onChange={this.handleDamageAssignment}
+                    style={{
+                      position: "absolute",
+                      top: "33%",
+                      left: "25%",
+                      opacity: 1,
+                      width: "50%",
+                      zIndex:50
+                    }}
+                  />
+                )}
+                <div
+                  className={cardData.id}
+                  onMouseEnter={this.onMouseEnter}
+                  onMouseLeave={this.onMouseLeave}
+                >
                   <CardDisplay
                     opacity={opacity}
                     borderColor={borderColor}

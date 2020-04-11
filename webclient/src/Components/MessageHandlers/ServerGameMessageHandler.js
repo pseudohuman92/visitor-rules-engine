@@ -4,6 +4,7 @@ import {
   initialSelectionData,
   initialAttackerAssignmentData,
   initialBlockerAssignmentData,
+  initialDamageAssignmentData,
   initialDialogData
 } from "../Helpers/Constants";
 import { toClientPhase, toSelectFromType } from "../Helpers/Helpers";
@@ -105,6 +106,16 @@ export default class ServerGameMessageHandler {
     });
   };
 
+  AssignDamage = damageAssignments => {
+    this.send("AssignDamageResponse", {
+      damageAssignments: damageAssignments
+    });
+    this.updateExtendedGameState({
+      clientPhase: ClientPhase.DONE_SELECT,
+      damageAssignmentData: initialDamageAssignmentData()
+    });
+  };
+
   SaveGameState = filename => {
     this.send("SaveGameState", {
       filename: filename
@@ -156,6 +167,13 @@ export default class ServerGameMessageHandler {
         case "SelectBlockers":
           newExtendedState["blockerAssignmentData"] = {
             possibleBlockers : params.possibleBlockers
+          };
+          break;
+        case "AssignDamage":
+          newExtendedState["damageAssignmentData"] = {
+            damageSource : params.damageSource,
+            possibleTargets : params.possibleTargets,
+            totalDamage : params.totalDamage
           };
           break;
         default:

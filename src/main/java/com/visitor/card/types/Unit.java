@@ -84,8 +84,11 @@ public abstract class Unit extends Card {
         if (blockedBy.isEmpty()) {
             game.dealDamage(id, attackTarget, attack);
         } else {
-            game.dealDamage(id, blockedBy.get(0), attack);
-            //TODO: Implement blocker damage distribution
+            if(blockedBy.size() == 1){
+                game.dealDamage(id, blockedBy.get(0), attack);
+            } else {
+                game.assignDamage(id, blockedBy, attack);
+            }
         }
     }
     

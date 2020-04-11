@@ -2280,6 +2280,214 @@ $root.SelectBlockersResponse = (function() {
     return SelectBlockersResponse;
 })();
 
+$root.AssignDamageResponse = (function() {
+
+    /**
+     * Properties of an AssignDamageResponse.
+     * @exports IAssignDamageResponse
+     * @interface IAssignDamageResponse
+     * @property {Array.<IDamageAssignment>|null} [damageAssignments] AssignDamageResponse damageAssignments
+     */
+
+    /**
+     * Constructs a new AssignDamageResponse.
+     * @exports AssignDamageResponse
+     * @classdesc Represents an AssignDamageResponse.
+     * @implements IAssignDamageResponse
+     * @constructor
+     * @param {IAssignDamageResponse=} [properties] Properties to set
+     */
+    function AssignDamageResponse(properties) {
+        this.damageAssignments = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * AssignDamageResponse damageAssignments.
+     * @member {Array.<IDamageAssignment>} damageAssignments
+     * @memberof AssignDamageResponse
+     * @instance
+     */
+    AssignDamageResponse.prototype.damageAssignments = $util.emptyArray;
+
+    /**
+     * Creates a new AssignDamageResponse instance using the specified properties.
+     * @function create
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {IAssignDamageResponse=} [properties] Properties to set
+     * @returns {AssignDamageResponse} AssignDamageResponse instance
+     */
+    AssignDamageResponse.create = function create(properties) {
+        return new AssignDamageResponse(properties);
+    };
+
+    /**
+     * Encodes the specified AssignDamageResponse message. Does not implicitly {@link AssignDamageResponse.verify|verify} messages.
+     * @function encode
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {IAssignDamageResponse} message AssignDamageResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AssignDamageResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.damageAssignments != null && message.damageAssignments.length)
+            for (var i = 0; i < message.damageAssignments.length; ++i)
+                $root.DamageAssignment.encode(message.damageAssignments[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified AssignDamageResponse message, length delimited. Does not implicitly {@link AssignDamageResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {IAssignDamageResponse} message AssignDamageResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AssignDamageResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an AssignDamageResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {AssignDamageResponse} AssignDamageResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AssignDamageResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.AssignDamageResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.damageAssignments && message.damageAssignments.length))
+                    message.damageAssignments = [];
+                message.damageAssignments.push($root.DamageAssignment.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an AssignDamageResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {AssignDamageResponse} AssignDamageResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AssignDamageResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an AssignDamageResponse message.
+     * @function verify
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    AssignDamageResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.damageAssignments != null && message.hasOwnProperty("damageAssignments")) {
+            if (!Array.isArray(message.damageAssignments))
+                return "damageAssignments: array expected";
+            for (var i = 0; i < message.damageAssignments.length; ++i) {
+                var error = $root.DamageAssignment.verify(message.damageAssignments[i]);
+                if (error)
+                    return "damageAssignments." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates an AssignDamageResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {AssignDamageResponse} AssignDamageResponse
+     */
+    AssignDamageResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.AssignDamageResponse)
+            return object;
+        var message = new $root.AssignDamageResponse();
+        if (object.damageAssignments) {
+            if (!Array.isArray(object.damageAssignments))
+                throw TypeError(".AssignDamageResponse.damageAssignments: array expected");
+            message.damageAssignments = [];
+            for (var i = 0; i < object.damageAssignments.length; ++i) {
+                if (typeof object.damageAssignments[i] !== "object")
+                    throw TypeError(".AssignDamageResponse.damageAssignments: object expected");
+                message.damageAssignments[i] = $root.DamageAssignment.fromObject(object.damageAssignments[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an AssignDamageResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof AssignDamageResponse
+     * @static
+     * @param {AssignDamageResponse} message AssignDamageResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    AssignDamageResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.damageAssignments = [];
+        if (message.damageAssignments && message.damageAssignments.length) {
+            object.damageAssignments = [];
+            for (var j = 0; j < message.damageAssignments.length; ++j)
+                object.damageAssignments[j] = $root.DamageAssignment.toObject(message.damageAssignments[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this AssignDamageResponse to JSON.
+     * @function toJSON
+     * @memberof AssignDamageResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    AssignDamageResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return AssignDamageResponse;
+})();
+
 $root.SaveGameState = (function() {
 
     /**
@@ -2486,6 +2694,7 @@ $root.ClientGameMessage = (function() {
      * @property {ISelectAttackersResponse|null} [selectAttackersResponse] ClientGameMessage selectAttackersResponse
      * @property {ISelectBlockersResponse|null} [selectBlockersResponse] ClientGameMessage selectBlockersResponse
      * @property {ISaveGameState|null} [saveGameState] ClientGameMessage saveGameState
+     * @property {IAssignDamageResponse|null} [assignDamageResponse] ClientGameMessage assignDamageResponse
      */
 
     /**
@@ -2607,17 +2816,25 @@ $root.ClientGameMessage = (function() {
      */
     ClientGameMessage.prototype.saveGameState = null;
 
+    /**
+     * ClientGameMessage assignDamageResponse.
+     * @member {IAssignDamageResponse|null|undefined} assignDamageResponse
+     * @memberof ClientGameMessage
+     * @instance
+     */
+    ClientGameMessage.prototype.assignDamageResponse = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState", "assignDamageResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2671,6 +2888,8 @@ $root.ClientGameMessage = (function() {
             $root.SelectBlockersResponse.encode(message.selectBlockersResponse, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
         if (message.saveGameState != null && message.hasOwnProperty("saveGameState"))
             $root.SaveGameState.encode(message.saveGameState, writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
+        if (message.assignDamageResponse != null && message.hasOwnProperty("assignDamageResponse"))
+            $root.AssignDamageResponse.encode(message.assignDamageResponse, writer.uint32(/* id 27, wireType 2 =*/218).fork()).ldelim();
         return writer;
     };
 
@@ -2743,6 +2962,9 @@ $root.ClientGameMessage = (function() {
                 break;
             case 26:
                 message.saveGameState = $root.SaveGameState.decode(reader, reader.uint32());
+                break;
+            case 27:
+                message.assignDamageResponse = $root.AssignDamageResponse.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2908,6 +3130,16 @@ $root.ClientGameMessage = (function() {
                     return "saveGameState." + error;
             }
         }
+        if (message.assignDamageResponse != null && message.hasOwnProperty("assignDamageResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.AssignDamageResponse.verify(message.assignDamageResponse);
+                if (error)
+                    return "assignDamageResponse." + error;
+            }
+        }
         return null;
     };
 
@@ -2987,6 +3219,11 @@ $root.ClientGameMessage = (function() {
             if (typeof object.saveGameState !== "object")
                 throw TypeError(".ClientGameMessage.saveGameState: object expected");
             message.saveGameState = $root.SaveGameState.fromObject(object.saveGameState);
+        }
+        if (object.assignDamageResponse != null) {
+            if (typeof object.assignDamageResponse !== "object")
+                throw TypeError(".ClientGameMessage.assignDamageResponse: object expected");
+            message.assignDamageResponse = $root.AssignDamageResponse.fromObject(object.assignDamageResponse);
         }
         return message;
     };
@@ -3068,6 +3305,11 @@ $root.ClientGameMessage = (function() {
             object.saveGameState = $root.SaveGameState.toObject(message.saveGameState, options);
             if (options.oneofs)
                 object.payload = "saveGameState";
+        }
+        if (message.assignDamageResponse != null && message.hasOwnProperty("assignDamageResponse")) {
+            object.assignDamageResponse = $root.AssignDamageResponse.toObject(message.assignDamageResponse, options);
+            if (options.oneofs)
+                object.payload = "assignDamageResponse";
         }
         return object;
     };
@@ -4740,6 +4982,216 @@ $root.BlockerAssignment = (function() {
     };
 
     return BlockerAssignment;
+})();
+
+$root.DamageAssignment = (function() {
+
+    /**
+     * Properties of a DamageAssignment.
+     * @exports IDamageAssignment
+     * @interface IDamageAssignment
+     * @property {string|null} [targetId] DamageAssignment targetId
+     * @property {number|null} [damage] DamageAssignment damage
+     */
+
+    /**
+     * Constructs a new DamageAssignment.
+     * @exports DamageAssignment
+     * @classdesc Represents a DamageAssignment.
+     * @implements IDamageAssignment
+     * @constructor
+     * @param {IDamageAssignment=} [properties] Properties to set
+     */
+    function DamageAssignment(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * DamageAssignment targetId.
+     * @member {string} targetId
+     * @memberof DamageAssignment
+     * @instance
+     */
+    DamageAssignment.prototype.targetId = "";
+
+    /**
+     * DamageAssignment damage.
+     * @member {number} damage
+     * @memberof DamageAssignment
+     * @instance
+     */
+    DamageAssignment.prototype.damage = 0;
+
+    /**
+     * Creates a new DamageAssignment instance using the specified properties.
+     * @function create
+     * @memberof DamageAssignment
+     * @static
+     * @param {IDamageAssignment=} [properties] Properties to set
+     * @returns {DamageAssignment} DamageAssignment instance
+     */
+    DamageAssignment.create = function create(properties) {
+        return new DamageAssignment(properties);
+    };
+
+    /**
+     * Encodes the specified DamageAssignment message. Does not implicitly {@link DamageAssignment.verify|verify} messages.
+     * @function encode
+     * @memberof DamageAssignment
+     * @static
+     * @param {IDamageAssignment} message DamageAssignment message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    DamageAssignment.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.targetId != null && message.hasOwnProperty("targetId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.targetId);
+        if (message.damage != null && message.hasOwnProperty("damage"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.damage);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified DamageAssignment message, length delimited. Does not implicitly {@link DamageAssignment.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof DamageAssignment
+     * @static
+     * @param {IDamageAssignment} message DamageAssignment message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    DamageAssignment.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a DamageAssignment message from the specified reader or buffer.
+     * @function decode
+     * @memberof DamageAssignment
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {DamageAssignment} DamageAssignment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    DamageAssignment.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.DamageAssignment();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.targetId = reader.string();
+                break;
+            case 2:
+                message.damage = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a DamageAssignment message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof DamageAssignment
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {DamageAssignment} DamageAssignment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    DamageAssignment.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a DamageAssignment message.
+     * @function verify
+     * @memberof DamageAssignment
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    DamageAssignment.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.targetId != null && message.hasOwnProperty("targetId"))
+            if (!$util.isString(message.targetId))
+                return "targetId: string expected";
+        if (message.damage != null && message.hasOwnProperty("damage"))
+            if (!$util.isInteger(message.damage))
+                return "damage: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a DamageAssignment message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof DamageAssignment
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {DamageAssignment} DamageAssignment
+     */
+    DamageAssignment.fromObject = function fromObject(object) {
+        if (object instanceof $root.DamageAssignment)
+            return object;
+        var message = new $root.DamageAssignment();
+        if (object.targetId != null)
+            message.targetId = String(object.targetId);
+        if (object.damage != null)
+            message.damage = object.damage | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a DamageAssignment message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof DamageAssignment
+     * @static
+     * @param {DamageAssignment} message DamageAssignment
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    DamageAssignment.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.targetId = "";
+            object.damage = 0;
+        }
+        if (message.targetId != null && message.hasOwnProperty("targetId"))
+            object.targetId = message.targetId;
+        if (message.damage != null && message.hasOwnProperty("damage"))
+            object.damage = message.damage;
+        return object;
+    };
+
+    /**
+     * Converts this DamageAssignment to JSON.
+     * @function toJSON
+     * @memberof DamageAssignment
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    DamageAssignment.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return DamageAssignment;
 })();
 
 $root.Card = (function() {
@@ -9157,6 +9609,282 @@ $root.SelectBlockers = (function() {
     return SelectBlockers;
 })();
 
+$root.AssignDamage = (function() {
+
+    /**
+     * Properties of an AssignDamage.
+     * @exports IAssignDamage
+     * @interface IAssignDamage
+     * @property {IGameState|null} [game] AssignDamage game
+     * @property {string|null} [damageSource] AssignDamage damageSource
+     * @property {Array.<string>|null} [possibleTargets] AssignDamage possibleTargets
+     * @property {number|null} [totalDamage] AssignDamage totalDamage
+     */
+
+    /**
+     * Constructs a new AssignDamage.
+     * @exports AssignDamage
+     * @classdesc Represents an AssignDamage.
+     * @implements IAssignDamage
+     * @constructor
+     * @param {IAssignDamage=} [properties] Properties to set
+     */
+    function AssignDamage(properties) {
+        this.possibleTargets = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * AssignDamage game.
+     * @member {IGameState|null|undefined} game
+     * @memberof AssignDamage
+     * @instance
+     */
+    AssignDamage.prototype.game = null;
+
+    /**
+     * AssignDamage damageSource.
+     * @member {string} damageSource
+     * @memberof AssignDamage
+     * @instance
+     */
+    AssignDamage.prototype.damageSource = "";
+
+    /**
+     * AssignDamage possibleTargets.
+     * @member {Array.<string>} possibleTargets
+     * @memberof AssignDamage
+     * @instance
+     */
+    AssignDamage.prototype.possibleTargets = $util.emptyArray;
+
+    /**
+     * AssignDamage totalDamage.
+     * @member {number} totalDamage
+     * @memberof AssignDamage
+     * @instance
+     */
+    AssignDamage.prototype.totalDamage = 0;
+
+    /**
+     * Creates a new AssignDamage instance using the specified properties.
+     * @function create
+     * @memberof AssignDamage
+     * @static
+     * @param {IAssignDamage=} [properties] Properties to set
+     * @returns {AssignDamage} AssignDamage instance
+     */
+    AssignDamage.create = function create(properties) {
+        return new AssignDamage(properties);
+    };
+
+    /**
+     * Encodes the specified AssignDamage message. Does not implicitly {@link AssignDamage.verify|verify} messages.
+     * @function encode
+     * @memberof AssignDamage
+     * @static
+     * @param {IAssignDamage} message AssignDamage message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AssignDamage.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.game != null && message.hasOwnProperty("game"))
+            $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.damageSource != null && message.hasOwnProperty("damageSource"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.damageSource);
+        if (message.possibleTargets != null && message.possibleTargets.length)
+            for (var i = 0; i < message.possibleTargets.length; ++i)
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.possibleTargets[i]);
+        if (message.totalDamage != null && message.hasOwnProperty("totalDamage"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.totalDamage);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified AssignDamage message, length delimited. Does not implicitly {@link AssignDamage.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof AssignDamage
+     * @static
+     * @param {IAssignDamage} message AssignDamage message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    AssignDamage.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an AssignDamage message from the specified reader or buffer.
+     * @function decode
+     * @memberof AssignDamage
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {AssignDamage} AssignDamage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AssignDamage.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.AssignDamage();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.game = $root.GameState.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.damageSource = reader.string();
+                break;
+            case 3:
+                if (!(message.possibleTargets && message.possibleTargets.length))
+                    message.possibleTargets = [];
+                message.possibleTargets.push(reader.string());
+                break;
+            case 4:
+                message.totalDamage = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an AssignDamage message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof AssignDamage
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {AssignDamage} AssignDamage
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    AssignDamage.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an AssignDamage message.
+     * @function verify
+     * @memberof AssignDamage
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    AssignDamage.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.game != null && message.hasOwnProperty("game")) {
+            var error = $root.GameState.verify(message.game);
+            if (error)
+                return "game." + error;
+        }
+        if (message.damageSource != null && message.hasOwnProperty("damageSource"))
+            if (!$util.isString(message.damageSource))
+                return "damageSource: string expected";
+        if (message.possibleTargets != null && message.hasOwnProperty("possibleTargets")) {
+            if (!Array.isArray(message.possibleTargets))
+                return "possibleTargets: array expected";
+            for (var i = 0; i < message.possibleTargets.length; ++i)
+                if (!$util.isString(message.possibleTargets[i]))
+                    return "possibleTargets: string[] expected";
+        }
+        if (message.totalDamage != null && message.hasOwnProperty("totalDamage"))
+            if (!$util.isInteger(message.totalDamage))
+                return "totalDamage: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates an AssignDamage message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof AssignDamage
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {AssignDamage} AssignDamage
+     */
+    AssignDamage.fromObject = function fromObject(object) {
+        if (object instanceof $root.AssignDamage)
+            return object;
+        var message = new $root.AssignDamage();
+        if (object.game != null) {
+            if (typeof object.game !== "object")
+                throw TypeError(".AssignDamage.game: object expected");
+            message.game = $root.GameState.fromObject(object.game);
+        }
+        if (object.damageSource != null)
+            message.damageSource = String(object.damageSource);
+        if (object.possibleTargets) {
+            if (!Array.isArray(object.possibleTargets))
+                throw TypeError(".AssignDamage.possibleTargets: array expected");
+            message.possibleTargets = [];
+            for (var i = 0; i < object.possibleTargets.length; ++i)
+                message.possibleTargets[i] = String(object.possibleTargets[i]);
+        }
+        if (object.totalDamage != null)
+            message.totalDamage = object.totalDamage | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an AssignDamage message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof AssignDamage
+     * @static
+     * @param {AssignDamage} message AssignDamage
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    AssignDamage.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.possibleTargets = [];
+        if (options.defaults) {
+            object.game = null;
+            object.damageSource = "";
+            object.totalDamage = 0;
+        }
+        if (message.game != null && message.hasOwnProperty("game"))
+            object.game = $root.GameState.toObject(message.game, options);
+        if (message.damageSource != null && message.hasOwnProperty("damageSource"))
+            object.damageSource = message.damageSource;
+        if (message.possibleTargets && message.possibleTargets.length) {
+            object.possibleTargets = [];
+            for (var j = 0; j < message.possibleTargets.length; ++j)
+                object.possibleTargets[j] = message.possibleTargets[j];
+        }
+        if (message.totalDamage != null && message.hasOwnProperty("totalDamage"))
+            object.totalDamage = message.totalDamage;
+        return object;
+    };
+
+    /**
+     * Converts this AssignDamage to JSON.
+     * @function toJSON
+     * @memberof AssignDamage
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    AssignDamage.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return AssignDamage;
+})();
+
 $root.ServerGameMessage = (function() {
 
     /**
@@ -9170,6 +9898,7 @@ $root.ServerGameMessage = (function() {
      * @property {ISelectXValue|null} [selectXValue] ServerGameMessage selectXValue
      * @property {ISelectAttackers|null} [selectAttackers] ServerGameMessage selectAttackers
      * @property {ISelectBlockers|null} [selectBlockers] ServerGameMessage selectBlockers
+     * @property {IAssignDamage|null} [assignDamage] ServerGameMessage assignDamage
      */
 
     /**
@@ -9243,17 +9972,25 @@ $root.ServerGameMessage = (function() {
      */
     ServerGameMessage.prototype.selectBlockers = null;
 
+    /**
+     * ServerGameMessage assignDamage.
+     * @member {IAssignDamage|null|undefined} assignDamage
+     * @memberof ServerGameMessage
+     * @instance
+     */
+    ServerGameMessage.prototype.assignDamage = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ServerGameMessage payload.
-     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|undefined} payload
+     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|undefined} payload
      * @memberof ServerGameMessage
      * @instance
      */
     Object.defineProperty(ServerGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers"]),
+        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers", "assignDamage"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -9295,6 +10032,8 @@ $root.ServerGameMessage = (function() {
             $root.SelectAttackers.encode(message.selectAttackers, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
         if (message.selectBlockers != null && message.hasOwnProperty("selectBlockers"))
             $root.SelectBlockers.encode(message.selectBlockers, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
+        if (message.assignDamage != null && message.hasOwnProperty("assignDamage"))
+            $root.AssignDamage.encode(message.assignDamage, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
         return writer;
     };
 
@@ -9349,6 +10088,9 @@ $root.ServerGameMessage = (function() {
                 break;
             case 21:
                 message.selectBlockers = $root.SelectBlockers.decode(reader, reader.uint32());
+                break;
+            case 22:
+                message.assignDamage = $root.AssignDamage.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -9454,6 +10196,16 @@ $root.ServerGameMessage = (function() {
                     return "selectBlockers." + error;
             }
         }
+        if (message.assignDamage != null && message.hasOwnProperty("assignDamage")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.AssignDamage.verify(message.assignDamage);
+                if (error)
+                    return "assignDamage." + error;
+            }
+        }
         return null;
     };
 
@@ -9503,6 +10255,11 @@ $root.ServerGameMessage = (function() {
             if (typeof object.selectBlockers !== "object")
                 throw TypeError(".ServerGameMessage.selectBlockers: object expected");
             message.selectBlockers = $root.SelectBlockers.fromObject(object.selectBlockers);
+        }
+        if (object.assignDamage != null) {
+            if (typeof object.assignDamage !== "object")
+                throw TypeError(".ServerGameMessage.assignDamage: object expected");
+            message.assignDamage = $root.AssignDamage.fromObject(object.assignDamage);
         }
         return message;
     };
@@ -9554,6 +10311,11 @@ $root.ServerGameMessage = (function() {
             object.selectBlockers = $root.SelectBlockers.toObject(message.selectBlockers, options);
             if (options.oneofs)
                 object.payload = "selectBlockers";
+        }
+        if (message.assignDamage != null && message.hasOwnProperty("assignDamage")) {
+            object.assignDamage = $root.AssignDamage.toObject(message.assignDamage, options);
+            if (options.oneofs)
+                object.payload = "assignDamage";
         }
         return object;
     };
