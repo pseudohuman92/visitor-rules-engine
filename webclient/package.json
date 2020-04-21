@@ -12,7 +12,7 @@
     "@material-ui/utils": "4.9.6",
     "firebase": "7.14.1",
     "prop-types": "15.7.2",
-    "protobufjs": "6.8.9",
+    "protobufjs": "6.9.0",
     "react": "16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-center": "1.1.1",
