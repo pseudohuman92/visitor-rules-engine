@@ -9080,9 +9080,9 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.0, react-is@^16.8.1, react-is
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 react-lineto@^3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/react-lineto/-/react-lineto-3.1.4.tgz#85d2d261879aa36a1a38ffe545aa56277c5ac75e"
-  integrity sha512-DXoVxR1j0gSqYwuj9i7SgjnndSxkQzDkaTKfI8q7ybwsZ8eV7ZKbBETwwXLHILcmnneLsh6kqOK6wIgcfUIO8g==
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-lineto/-/react-lineto-3.2.0.tgz#234a7999bcaee98c7259792948c728b08aac1fb9"
+  integrity sha512-soM9B/ikNpJ1UjdNjd/Z+wCrfhPzLDw0vqISS+WKd7llHvcq+X7difePPC5es9DRgjlmLdblSy0i4T3wvpzLMw==
   dependencies:
     prop-types "15.6.0"
     react "16.2.0"
