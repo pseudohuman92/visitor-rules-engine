@@ -13,56 +13,62 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author pseudo
  */
 public class Arraylist<T> extends ArrayList<T> {
-    
+
     public Arraylist() {
         super();
     }
-    
+
     public Arraylist(T value) {
         add(value);
     }
-    
+
     public Arraylist(List<T> values) {
         super(values);
     }
-    
+
     public Arraylist(T[] values) {
         super(Arrays.asList(values));
     }
 
-    public Arraylist<T> putIn(T value){
+    public Arraylist<T> putIn(T value) {
         add(value);
         return this;
     }
-    
-    public Arraylist<T> putAllIn(Arraylist<T> values){
+
+    public Arraylist<T> putAllIn(Arraylist<T> values) {
         addAll(values);
         return this;
     }
-    
-    public Arraylist<T> putIn(int index, T value){
+
+    public Arraylist<T> putIn(int index, T value) {
         add(index, value);
         return this;
     }
-  
-    public Arraylist<T> removeFrom(T value){
+
+    public Arraylist<T> removeFrom(T value) {
         remove(value);
         return this;
     }
-    
-    public Arraylist<T> removeFrom(int index){
+
+    public Arraylist<T> removeFrom(int index) {
         remove(index);
         return this;
     }
-    
-    public void forEachInOrder(Consumer<? super T> c){
-        for (int i = 0; i < size(); i++){
+
+    public void forEachInOrder(Consumer<? super T> c) {
+        for (int i = 0; i < size(); i++) {
             c.accept(get(i));
         }
     }
-    
+
+    public <R> List<? extends R> transform (Function<? super T, ? extends R> f){
+        return parallelStream().map(f).collect(Collectors.toList());
+    }
+
+    public List<String> transformToStringList(){
+        return parallelStream().map(t -> t.toString()).collect(Collectors.toList());
+    }
 }

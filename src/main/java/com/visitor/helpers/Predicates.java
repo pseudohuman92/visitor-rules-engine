@@ -5,61 +5,60 @@
  */
 package com.visitor.helpers;
 
-import com.visitor.card.types.Ally;
-import com.visitor.card.types.Asset;
-import com.visitor.card.types.Card;
-import com.visitor.card.types.Junk;
-import com.visitor.card.types.Ritual;
-import com.visitor.card.types.Spell;
+import com.visitor.card.types.*;
 import com.visitor.game.Player;
+
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
- *
  * @author pseudo
  */
 public abstract class Predicates {
 
     public static boolean isAsset(Card c) {
-        return c instanceof Asset;
+        return c.types.contains(Card.CardType.Asset);
     }
-    
-    public static boolean isSpell (Card c) {
-        return c instanceof Spell;
+
+    public static boolean isSpell(Card c) {
+
+        return c.types.contains(Card.CardType.Spell);
     }
-    
-    public static boolean isRitual (Card c) {
-        return c instanceof Ritual;
+
+    public static boolean isRitual(Card c) {
+
+        return c.types.contains(Card.CardType.Ritual);
     }
-    
+
     public static boolean isAlly(Card c) {
-        return c instanceof Ally;
+
+        return c.types.contains(Card.CardType.Ally);
     }
-    
+
     public static boolean isJunk(Card c) {
-        return c instanceof Junk;
+
+        return c.types.contains(Card.CardType.Junk);
     }
-    
+
     public static boolean isDamageable(Card c) {
-        return c.isDamageable();
+        return c.combat != null;
     }
-    
+
     public static boolean isStudyable(Card c) {
-        return !(c instanceof Junk);
+        return c.studiable != null;
     }
-    
+
     public static boolean isDamageable(Object o) {
-        return o instanceof Player || (o instanceof Card && ((Card)o).isDamageable());
+        return o instanceof Player || (o instanceof Card && ((Card) o).combat != null);
     }
-    
-    public static boolean isGreen (Card c) {
+
+    public static boolean isGreen(Card c) {
         return c.knowledge.containsKey(GREEN);
     }
 
     public static boolean any(Object o) {
         return true;
     }
-    
+
     public static boolean none(Object o) {
         return false;
     }

@@ -1,9 +1,8 @@
 package com.visitor.card.types;
 
+import com.visitor.card.properties.*;
+import com.visitor.game.Event;
 import com.visitor.game.Game;
-import static com.visitor.game.Game.Zone.HAND;
-import static com.visitor.game.Game.Zone.SCRAPYARD;
-import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
@@ -14,28 +13,35 @@ import com.visitor.protocol.Types.KnowledgeGroup;
 
 import java.io.Serializable;
 import java.util.UUID;
+
+import static com.visitor.game.Game.Zone.Hand;
+import static com.visitor.game.Game.Zone.Scrapyard;
 import static java.util.UUID.randomUUID;
-import java.util.stream.Collectors;
 
 /**
- *
  * @author pseudo
  */
 public abstract class Card implements Serializable {
 
+    protected final Game game;
     public UUID id;
     public String name;
-    public int cost;
-    public Hashmap<Knowledge, Integer> knowledge;
     public String text;
+    public Arraylist<CardType> types;
     public Arraylist<String> subtypes;
-    public int health;
-    public int shield;
-    public int reflect;
-    
-    
+
+
+    public Hashmap<Types.Knowledge, Integer> knowledge;
+
     public String owner;
     public String controller;
+
+    public Activatable activatable;
+    public Triggering triggering;
+    public Combat combat;
+    public Playable playable;
+    public Studiable studiable;
+    //public Targeting targeting;
 
     public boolean depleted;
     public Hashmap<Counter, Integer> counters;
@@ -43,116 +49,43 @@ public abstract class Card implements Serializable {
 
     /**
      * This is the default constructor for creating a card.
+     *
      * @param name
-     * @param cost
      * @param knowledge
      * @param text
-     * @param image
      * @param owner
      */
-    public Card(String name, int cost, Hashmap<Knowledge, Integer> knowledge,
-            String text, String owner) {
+    public Card(Game g, String name,
+                Hashmap<Knowledge, Integer> knowledge,
+                CardType type, String text, String owner) {
+        game = g;
         id = randomUUID();
         counters = new Hashmap<>();
+        types = new Arraylist<>(type);
         subtypes = new Arraylist<>();
         targets = new Arraylist<>();
         this.name = name;
-        this.cost = cost;
         this.knowledge = knowledge;
         this.text = text;
         this.owner = owner;
         this.controller = owner;
         this.depleted = false;
-        health = -1;
-        shield = 0;
-        reflect = 0;
-    }
-    
-    /**
-     * Called by client to check if you can play this card in current game state.
-     * @param game
-     * @return
-     */
-    public abstract boolean canPlay(Game game);
-    
-    /**
-     * Called by client to check if you can studyCard this card in current game state.
-     * Default implementation just checks the game if the controller can studyCard.
-     * @param game
-     * @return
-     */
-    public boolean canStudy (Game game){
-       return game.canStudy(controller);
-    }
-    
-    
-    
-    /**
-     * Called by server when this card is played.
-     * Default behavior is that it deducts the energy cost of the card, 
-     * removes it from player's hand and then puts on the stack.
-     * @param game
-     */
-    protected void beforePlay(Game game){};
-    protected void afterPlay(Game game){};
-    public final void play(Game game) {
-        beforePlay(game);
-        game.spendEnergy(controller, cost);
-        game.addToStack(this);
-        afterPlay(game);
     }
 
-    /**
-     * Called by the server when you choose to studyCard this card.
-     * It increases player's maximum energy and adds knowledgePool.
-     * @param game
-     */
-    public final void study(Game game, boolean regular) {
-        Player player = game.getPlayer(controller);
-        player.voidPile.add(this);
-        player.energy++;
-        player.maxEnergy++;
-        player.addKnowledge(getKnowledgeType());
-        if(regular){
-            player.numOfStudiesLeft--;
-        }
-    }
-    
-    public Hashmap<Knowledge, Integer> getKnowledgeType() {
-        Hashmap<Knowledge, Integer> knowledgeType = new Hashmap<>();
-        knowledge.forEach((k, i) -> { knowledgeType.putIn(k, 1);});
-        return knowledgeType;
-    }
 
-    
-    /**
-     * This is the function that describes what is the effect of the card when it is resolved.
-     * This function contains the business logic of the card effect.
-     * @param game
-     */
-    protected void beforeResolve(Game game){};
-    protected abstract void duringResolve(Game game);
-    protected void afterResolve(Game game){};
-    
-    public final void resolve(Game game){
-        beforeResolve(game);
-        duringResolve(game);
-        afterResolve(game);
-    }
-    
-    
     /**
      * Function that adds counters to the card.
+     *
      * @param name
      * @param count
      */
     public void addCounters(Counter name, int count) {
         counters.merge(name, count, (a, b) -> a + b);
     }
-    
+
     public boolean removeCounters(Counter name, int count) {
         int k = counters.get(name);
-        if (k <= count){
+        if (k <= count) {
             counters.remove(name);
             return false;
         } else {
@@ -160,53 +93,58 @@ public abstract class Card implements Serializable {
             return true;
         }
     }
-    
+
     public int removeAllCounters(Counter name) {
         return counters.remove(name);
     }
-    
-    public void deplete(){
+
+    public void deplete() {
         depleted = true;
     }
-    
-    public void resetShields(){
-        shield = 0;
-        reflect = 0;
-    }
-    
-    public void ready(){
+
+    public void ready() {
         depleted = false;
+        if (combat != null)
+            combat.ready();
     }
-    
+
     /**
      * Function that clears status flags and supplementary data of the card.
-     * 
      */
     public void clear() {
         depleted = false;
         targets.clear();
-        shield = 0;
-        reflect = 0;
+        if (combat != null)
+            combat.clear();
     }
-    
-    public void destroy(Game game){
+
+    public void destroy() {
         clear();
+        if (triggering != null) {
+            game.removeTriggeringCard(this);
+        }
         game.extractCard(id);
-        game.putTo(controller, this, SCRAPYARD);
+        game.putTo(controller, this, Scrapyard);
     }
-    
-    public void sacrifice(Game game){
+
+    public void sacrifice() {
         clear();
+        if (triggering != null) {
+            game.removeTriggeringCard(this);
+        }
         game.extractCard(id);
-        game.putTo(controller, this, SCRAPYARD);
+        game.putTo(controller, this, Scrapyard);
     }
-    
-    public void returnToHand(Game game){
+
+    public void returnToHand() {
         clear();
+        if (triggering != null) {
+            game.removeTriggeringCard(this);
+        }
         game.extractCard(id);
-        game.putTo(controller, this, HAND);
+        game.putTo(controller, this, Hand);
     }
-    
+
     public void copyPropertiesFrom(Card c) {
         id = c.id;
         owner = c.owner;
@@ -214,70 +152,223 @@ public abstract class Card implements Serializable {
         counters = c.counters;
         depleted = c.depleted;
         targets = c.targets;
-        health = c.health;
-        shield = c.shield;
-        reflect = c.reflect;
-    }
-    
-    public boolean isDamageable(){
-        return health >= 0;
-    }
-    
-    public void dealDamage(Game game, int count, UUID source) {
-        int damage = count;
-        if(shield >= damage){
-            shield -= damage;
-            return;
-        }
-        damage -= shield;
-        shield = 0;
-        if(reflect >= damage){
-            reflect -= damage;
-            game.dealDamage(id, source, damage);
-            return;
-        }
-        int temp = reflect;
-        damage -= reflect;
-        reflect = 0;
-        health = Math.max(0, health - damage);
-        game.dealDamage(id, source, temp);
-        if(health <= 0){
-            game.destroy(source, id);
-        }
     }
 
+
     public Types.Card.Builder toCardMessage() {
-        Types.Card.Builder b = Types.Card.newBuilder()
+        Types.Card.Builder builder = Types.Card.newBuilder()
                 .setId(id.toString())
                 .setName(name)
                 .setDepleted(depleted)
                 .setDescription(text)
-                .setCost(Integer.toString(cost))
-                .setType("Card")
+                .setCombat(combat.toCombatMessage())
+                .addAllTypes(types.transformToStringList())
                 .addAllSubtypes(subtypes)
-                .addAllTargets(targets.parallelStream()
-                        .map(c -> { return c.toString(); })
-                        .collect(Collectors.toList()));
-        counters.forEach((k, i) -> {
-            b.addCounters(CounterGroup.newBuilder()
-                    .setCounter(k)
-                    .setCount(i).build());
-        });
-        knowledge.forEach((k, i) -> {
-            b.addKnowledgeCost(KnowledgeGroup.newBuilder()
-                    .setKnowledge(k)
-                    .setCount(i).build());
-        });
-        if(health > -1){
-            b.setHealth(health);
-        }
-        if(shield > 0){
-            b.setShield(shield);
-        }
-        if(reflect > 0){
-            b.setReflect(reflect);
-        }
-        return b;
+                .addAllTargets(targets.transformToStringList());
+
+        counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
+                .setCounter(k)
+                .setCount(i).build()));
+
+        knowledge.forEach((k, i) -> builder.addKnowledgeCost(KnowledgeGroup.newBuilder()
+                .setKnowledge(k)
+                .setCount(i).build()));
+
+        if (playable != null)
+            builder.setCost(playable.getCost()+"");
+
+        return builder;
     }
-    
+
+    public final void play() {
+        if (playable != null) {
+            playable.play();
+        } else {
+            System.out.println("Trying to play a non-playable card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void study(boolean normal) {
+        if (studiable != null) {
+            studiable.study(normal);
+        } else {
+            System.out.println("Trying to study a non-studiable card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void checkEvent(Event e) {
+        if (triggering != null) {
+            triggering.checkEvent(e);
+        } else {
+            System.out.println("Trying to check an event by non-triggering card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void resolve() {
+        if (playable != null) {
+            playable.resolve();
+        } else {
+            System.out.println("Trying to resolve a non-playable card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final boolean canAttack() {
+        if (combat != null) {
+            return combat.canAttack();
+        } else {
+            System.out.println("Trying to determine canAttack a non-combat card!");
+            System.out.println(toCardMessage().toString());
+            return false;
+        }
+    }
+
+    public final boolean canBlock() {
+        if (combat != null) {
+            return combat.canBlock();
+        } else {
+            System.out.println("Trying to determine canBlock a non-combat card!");
+            System.out.println(toCardMessage().toString());
+            return false;
+        }
+    }
+
+    public final boolean canBlock(Card c) {
+        if (combat != null) {
+            return combat.canBlock(c);
+        } else {
+            System.out.println("Trying to determine canBlock a non-combat card!");
+            System.out.println(toCardMessage().toString());
+            return false;
+        }
+    }
+
+    public final boolean canPlay() {
+        if (playable != null) {
+            return playable.canPlay();
+        } else {
+            System.out.println("Trying to determine canPlay a non-playable card!");
+            System.out.println(toCardMessage().toString());
+            return false;
+        }
+    }
+
+    public final void dealDamage(int damage, Card source) {
+        if (combat != null) {
+            combat.receiveDamage(damage,  source);
+        } else {
+            System.out.println("Trying to deal damage to a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final boolean canActivate() {
+        if (activatable != null) {
+            return activatable.canActivate();
+        } else {
+            System.out.println("Trying to determine canActivate to a non-activatable card!");
+            System.out.println(toCardMessage().toString());
+            return false;
+        }
+    }
+
+    public final void setAttacking(UUID attacker) {
+        if (combat != null) {
+            combat.setAttacking(attacker);
+        } else {
+            System.out.println("Trying to set attacking a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void unsetAttacking() {
+        if (combat != null) {
+            combat.unsetAttacking();
+        } else {
+            System.out.println("Trying to unset attacking a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final boolean canStudy() {
+        if (studiable != null) {
+            return studiable.canStudy();
+        } else {
+            System.out.println("Trying to determine canStudy a non-studiable card!");
+            System.out.println(toCardMessage().toString());
+            return false;
+        }
+    }
+
+    public final void addBlocker(UUID blockerId) {
+        if (combat != null) {
+            combat.addBlocker(blockerId);
+        } else {
+            System.out.println("Trying to add blocker to a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void setBlocking(UUID blockedBy) {
+        if (combat != null) {
+            combat.setBlocking(blockedBy);
+        } else {
+            System.out.println("Trying to set blocking of a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void dealAttackDamage() {
+        if (combat != null) {
+            combat.dealAttackDamage();
+        } else {
+            System.out.println("Trying to deal attack damage from a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void dealBlockDamage() {
+        if (combat != null) {
+            combat.dealBlockDamage();
+        } else {
+            System.out.println("Trying to deal block damage from a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void activate() {
+        if (activatable != null) {
+            activatable.activate();
+        } else {
+            System.out.println("Trying to activate a non-activatable card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+    public final void unsetBlocking() {
+        if (combat != null) {
+            combat.unsetBlocking();
+        } else {
+            System.out.println("Trying to unset blocking of a non-combat card!");
+            System.out.println(toCardMessage().toString());
+        }
+    }
+
+
+    public enum CardType {
+        Ally,
+        Asset,
+        Junk,
+        Passive,
+        Ritual,
+        Spell,
+        Tome,
+        Unit,
+        Ability,
+        Effect
+    }
+
 }

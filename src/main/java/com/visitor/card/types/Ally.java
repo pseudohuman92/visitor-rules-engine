@@ -5,108 +5,90 @@
  */
 package com.visitor.card.types;
 
-import com.visitor.card.types.helpers.Ability;
-import com.visitor.card.properties.Activatable;
+import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Playable;
+import com.visitor.card.properties.Studiable;
 import com.visitor.card.properties.Triggering;
-import com.visitor.game.Event;
+import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Game;
-import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
+
+import static com.visitor.game.Event.playersTurnStart;
 import static java.lang.Math.max;
 import static java.lang.System.out;
-import static com.visitor.game.Event.playersTurnStart;
 
 /**
- *
  * @author pseudo
  */
-public abstract class Ally extends Card 
-        implements Activatable, Triggering {
-    
+public abstract class Ally extends Card {
+
+
     public int delayCounter;
-    public Ability delayedAbility;
+    public AbilityCard delayedAbility;
     public int loyalty;
 
-    public Ally(String name, int cost, 
-            Hashmap<Types.Knowledge, Integer> knowledge, 
-            String text, int health, String owner) {
-        super(name, cost, knowledge, text, owner);
+    public Ally(Game game, String name, int cost,
+                Hashmap<Types.Knowledge, Integer> knowledge,
+                String text, int health, String owner) {
+
+        super(game, name, knowledge, CardType.Ally, text, owner);
+
+        playable = new Playable(game, this, cost, () -> triggering.register()).setSlow().setPersistent();
+        studiable = new Studiable(game, this);
+        combat = new Combat(game, this, health);
+        triggering = new Triggering(game, this);
+
+        setDefaultUnitCheckEvent();
+
         delayCounter = 0;
         loyalty = 0;
         delayedAbility = null;
-        this.health = health; 
     }
-    
-    
-    @Override
-    protected void duringResolve(Game game) {
-        game.putTo(controller, this, PLAY);
-        game.addTriggeringCard(controller, this);
+
+    private void setDefaultUnitCheckEvent() {
+        triggering.resetEventCheckerList();
+        triggering.addEventChecker((event) -> {
+            out.println("Ally is checking event");
+            if (playersTurnStart(event, controller) && delayCounter > 0) {
+                out.println("Passed the check");
+                decreaseDelayCounter(game, 1);
+            }
+        });
     }
-    
-    @Override
-    public boolean canPlay(Game game){ 
-        return game.hasEnergy(controller, cost)
-               && game.hasKnowledge(controller, knowledge)
-               && game.canPlaySlow(controller);
-    }
-    
-    @Override
-    public void checkEvent(Game game, Event event){
-        out.println("Ally is checking event");
-        if (playersTurnStart(event, controller) && delayCounter > 0){
-            out.println("Passed the check");
-            decreaseDelayCounter(game, 1);
-        }
-    }
-    
-    public void decreaseDelayCounter(Game game, int count){
+
+    public void decreaseDelayCounter(Game game, int count) {
         delayCounter = max(0, delayCounter - count);
-        if (delayCounter == 0){
+        if (delayCounter == 0) {
             ready();
             game.addToStack(delayedAbility);
             delayedAbility = null;
         }
     }
-    
+
     @Override
-    public void ready(){
-        if (delayCounter == 0){
-            depleted = false;
+    public void ready() {
+        if (delayCounter == 0) {
+            super.ready();
         }
     }
-    
-    
-    protected boolean canActivateAdditional(Game game) {return true;}
-    @Override
-    public final boolean canActivate(Game game) {
-        return !depleted && game.canPlaySlow(controller) && canActivateAdditional(game);
-    }
-    
-    
-    @Override
-    public void destroy(Game game) {
-        super.destroy(game);
-        game.removeTriggeringCard(this);
-    }
-    
+
     @Override
     public Types.Card.Builder toCardMessage() {
         return super.toCardMessage()
-                .setType("Ally")
                 .setDelay(delayCounter)
                 .setLoyalty(loyalty);
     }
-    
+
+
     @Override
-    public void copyPropertiesFrom(Card c){
+    public void copyPropertiesFrom(Card c) {
         super.copyPropertiesFrom(c);
-        if (c instanceof Ally){
+        if (c instanceof Ally) {
             delayCounter = ((Ally) c).delayCounter;
             loyalty = ((Ally) c).loyalty;
-            
+
         }
     }
-    
+
 }

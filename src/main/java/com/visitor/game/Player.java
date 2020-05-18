@@ -9,14 +9,16 @@ import com.visitor.protocol.Types.KnowledgeGroup;
 
 import java.io.Serializable;
 import java.util.UUID;
+
+import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static java.util.UUID.randomUUID;
-import java.util.stream.Collectors;
 
 /**
- *
  * @author pseudo
  */
 public class Player implements Serializable {
+
+    public final Game game;
 
     public String username;
     public UUID id;
@@ -31,17 +33,15 @@ public class Player implements Serializable {
     public Hashmap<Knowledge, Integer> knowledgePool;
     public int health;
     public int shield;
-    public int reflect;
-    
+
     /**
-     *
      * @param username
-     * @param deck
      */
-    public Player (String username, String[] decklist){
+    public Player(Game game, String username, String[] decklist) {
+        this.game = game;
         this.username = username;
         id = randomUUID();
-        this.deck = new Deck(username, decklist);
+        this.deck = new Deck(game, username, decklist);
         energy = 0;
         maxEnergy = 0;
         numOfStudiesLeft = 1;
@@ -50,162 +50,160 @@ public class Player implements Serializable {
         voidPile = new Arraylist<>();
         playArea = new Arraylist<>();
         knowledgePool = new Hashmap<>();
-        health = 30; 
+        health = 30;
         shield = 0;
-        reflect = 0;
     }
 
-    public void draw(int count){
+    public void draw(int count) {
         hand.addAll(deck.extractFromTop(count));
     }
-    
-    public void dealDamage(Game game, int count, UUID source) {
-        int damage = count;
-        if(shield >= damage){
+
+    public void receiveDamage(int damageAmount, Card source) {
+        int damage = damageAmount;
+
+        // Apply shield
+        if (shield >= damage) {
             shield -= damage;
             return;
         }
         damage -= shield;
         shield = 0;
-        if(reflect >= damage){
-            reflect -= damage;
-            game.dealDamage(id, source, damage);
-            return;
-        }
-        int temp = reflect;
-        damage -= reflect;
-        reflect = 0;
+
         health -= damage;
+        if (source.combat.combatAbilittList.contains(Lifelink)){
+            game.gainHealth(source.controller, damage);
+        }
         if (health <= 0) {
             game.gameEnd(username, false);
         }
-        game.dealDamage(id, source, temp);
     }
 
-    public Card discard (UUID cardId) {
-        Card c = extractCardFrom(cardId, hand);
-        scrapyard.add(c); 
+    public void payLife(int damage) {
+        health -= damage;
+    }
+
+    public Card discard(UUID cardId) {
+        Card c = extractCardFromList(cardId, hand);
+        scrapyard.add(c);
         return c;
     }
-    
-    public Arraylist<Card> discardAll(Arraylist<UUID> cardIds){
+
+    public Arraylist<Card> discardAll(Arraylist<UUID> cardIds) {
         Arraylist<Card> discarded = new Arraylist<>();
-        cardIds.stream().map((cardID) -> extractCardFrom(cardID, hand))
-                .forEachOrdered((card) -> { 
+        cardIds.stream().map((cardID) -> extractCardFromList(cardID, hand))
+                .forEachOrdered((card) -> {
                     discarded.add(card);
-                    scrapyard.add(card); });
+                    scrapyard.add(card);
+                });
         return discarded;
     }
-    
-    public void redraw(){
+
+    public void redraw() {
         int size = hand.size();
-        if(size > 0){
+        if (size > 0) {
             deck.addAll(hand);
             hand.clear();
             deck.shuffle();
-            draw(size -1);
+            draw(size - 1);
         }
     }
 
-    public void newTurn(){
+    public void newTurn() {
         energy = maxEnergy;
         numOfStudiesLeft = 1;
-        playArea.forEach((card) -> {
-            card.ready();
-            card.resetShields();
-        });
-    }
-    
-    public void resetShields(){
-        playArea.forEach((card) -> {
-            card.resetShields();
-        });
-    }
-    
-    public void addKnowledge(Hashmap<Knowledge, Integer> knowl){
-        knowl.forEach((k, i) -> {
-            knowledgePool.merge(k, i, (a, b) -> a + b);
-        });
-        
+        playArea.forEach((card) -> card.ready());
+        resetShields();
     }
 
-    public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge){
-        boolean result = true; 
-        for (Knowledge k : cardKnowledge.keySet()){
+    public void resetShields() {
+        playArea.forEach((card) -> {
+            if (card.combat != null)
+                card.combat.resetShields();
+        });
+    }
+
+    public void addKnowledge(Hashmap<Knowledge, Integer> knowledge) {
+        knowledge.forEach((k, i) -> knowledgePool.merge(k, i, Integer::sum));
+
+    }
+
+    public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge) {
+        boolean result = true;
+        for (Knowledge k : cardKnowledge.keySet()) {
             result = result && cardKnowledge.get(k) <= knowledgePool.getOrDefault(k, 0);
         }
         return result;
     }
 
-    public Card extractCardFrom (UUID cardID, Arraylist<Card> list){
-        if (cardID == null){
+    public Card extractCardFromList(UUID cardID, Arraylist<Card> list) {
+        if (cardID == null) {
             System.out.println("CardID is NULL!");
         }
         for (Card card : list) {
-            if (card == null){
+            if (card == null) {
                 System.out.println("Card is NULL!");
             }
-            if(card.id.equals(cardID)){
+            if (card.id.equals(cardID)) {
                 list.remove(card);
                 return card;
             }
         }
         return null;
     }
-    
+
     public Card extractCard(UUID cardID) {
-        Card c; 
+        Card c;
         Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
-        lists.add(scrapyard); 
+        lists.add(scrapyard);
         lists.add(voidPile);
         lists.add(deck);
-        for (Arraylist<Card> list : lists){ 
-            c = extractCardFrom (cardID, list);
+        for (Arraylist<Card> list : lists) {
+            c = extractCardFromList(cardID, list);
             if (c != null) {
                 return c;
             }
         }
         return null;
     }
-    
-    public Card getCardFrom (UUID cardID, Arraylist<Card> list){
+
+    public Card getCardFromList (UUID cardID, Arraylist<Card> list) {
         for (Card card : list) {
-            if(card.id.equals(cardID)){ 
+            if (card.id.equals(cardID)) {
                 return card;
             }
         }
         return null;
     }
-    
+
     public Card getCard(UUID cardID) {
-        Card c; 
+        Card c;
         Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
-        lists.add(scrapyard); 
+        lists.add(scrapyard);
         lists.add(voidPile);
         lists.add(deck);
-        for (Arraylist<Card> list : lists){ 
-            c = getCardFrom (cardID, list);
+        for (Arraylist<Card> list : lists) {
+            c = getCardFromList(cardID, list);
             if (c != null) {
                 return c;
             }
         }
         return null;
     }
-    
-    void replaceWith(Card oldCard, Card newCard) {
+
+    void replaceCardWith(Card oldCard, Card newCard) {
         Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
-        lists.add(scrapyard); 
+        lists.add(scrapyard);
         lists.add(voidPile);
         lists.add(deck);
-        for (Arraylist<Card> list : lists){ 
-            for (int i = 0; i < list.size(); i++){
-                if(list.get(i).equals(oldCard)){
+        for (Arraylist<Card> list : lists) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).equals(oldCard)) {
                     list.remove(i);
                     list.add(i, newCard);
                 }
@@ -213,55 +211,31 @@ public class Player implements Serializable {
         }
     }
 
-    public Types.Player.Builder toPlayerMessage() {
-        Types.Player.Builder b = Types.Player.newBuilder()
+    public Types.Player.Builder toPlayerMessage(boolean player) {
+        Types.Player.Builder builder = Types.Player.newBuilder()
                 .setId(id.toString())
                 .setUserId(username)
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
                 .setShield(shield)
-                .setReflect(reflect)
                 .setHandSize(hand.size())
                 .setHealth(health)
-                .addAllHand(hand.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
-                .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
-                .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
-                .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));
+                .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
+                .addAllScrapyard(scrapyard.transform(c -> c.toCardMessage().build()))
+                .addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));
 
-        knowledgePool.forEach((k, i) -> {
-            b.addKnowledgePool(KnowledgeGroup.newBuilder()
-                    .setKnowledge(k)
-                    .setCount(i).build());
-        });
-        return b;
-    }
-    
-    public Types.Player.Builder toOpponentMessage() {
-        Types.Player.Builder b = Types.Player.newBuilder()
-                .setId(id.toString())
-                .setUserId(username)
-                .setDeckSize(deck.size())
-                .setEnergy(energy)
-                .setMaxEnergy(maxEnergy)
-                .setHandSize(hand.size())
-                .setShield(shield)
-                .setReflect(reflect)
-                .setHealth(health)
-                .addAllPlay(playArea.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
-                .addAllScrapyard(scrapyard.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()))
-                .addAllVoid(voidPile.parallelStream().map(c->{return c.toCardMessage().build();}).collect(Collectors.toList()));
-                
-        knowledgePool.forEach((k, i) -> {
-            b.addKnowledgePool(KnowledgeGroup.newBuilder()
-                    .setKnowledge(k)
-                    .setCount(i).build());
-        });
-        return b;
+        if (player){
+            builder.addAllHand(hand.transform(c -> c.toCardMessage().build()));
+        }
+
+        knowledgePool.forEach((k, i) -> builder.addKnowledgePool(KnowledgeGroup.newBuilder()
+                .setKnowledge(k)
+                .setCount(i).build()));
+        return builder;
     }
 
-    public void payLife(int damage) {
-        health -= damage;
-    }
-    
+
+
+
 }

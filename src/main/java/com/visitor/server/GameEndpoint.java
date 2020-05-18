@@ -2,35 +2,34 @@ package com.visitor.server;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.visitor.protocol.ClientGameMessages;
-import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
+import com.visitor.protocol.ClientGameMessages.*;
 import com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
-import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
-import com.visitor.protocol.ClientGameMessages.OrderCardsResponse;
-import com.visitor.protocol.ClientGameMessages.SelectAttackersResponse;
-import com.visitor.protocol.ClientGameMessages.SelectBlockersResponse;
-import com.visitor.protocol.ClientGameMessages.SelectFromResponse;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.AttackerAssignment;
 import com.visitor.protocol.Types.BlockerAssignment;
 import com.visitor.protocol.Types.SelectFromType;
-import static com.visitor.server.GeneralEndpoint.gameServer;
+
+import javax.websocket.*;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import static java.lang.System.out;
 import java.util.UUID;
+
+import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
+import static com.visitor.server.GeneralEndpoint.gameServer;
+import static java.lang.System.out;
 import static java.util.UUID.fromString;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
-import javax.websocket.*;
-import javax.websocket.server.*;
+
 /**
- *
  * @author pseudo
  */
-@ServerEndpoint(value="/games/{gameID}/{username}")
+@ServerEndpoint(value = "/games/{gameID}/{username}")
 public class GameEndpoint {
 
     Session session;
@@ -41,7 +40,7 @@ public class GameEndpoint {
     SelectFromType selectFromType;
     BufferedWriter writer;
 
-    
+
     @OnOpen
     public void onOpen(Session session, @PathParam("gameID") String gameID, @PathParam("username") String username) throws IOException, EncodeException {
         this.session = session;
@@ -53,16 +52,16 @@ public class GameEndpoint {
         gameServer.addGameConnection(this.gameID, username, this);
         resendLastMessage();
     }
- 
+
     @OnMessage
     public void onMessage(Session session, byte[] message) throws IOException {
-        new Thread (() -> {
+        new Thread(() -> {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
                 //writeToLog(cgm);
                 out.println("Received Message");
                 out.println(cgm);
-                if (waitingResponse){
+                if (waitingResponse) {
                     processResponse(cgm);
                 } else {
                     processMessage(cgm);
@@ -72,18 +71,18 @@ public class GameEndpoint {
             }
         }).start();
     }
- 
+
     @OnClose
     public void onClose(Session session) throws IOException {
         gameServer.removeGameConnection(gameID, username);
     }
- 
+
     @OnError
     public void onError(Session session, Throwable throwable) {
         out.println("[ERROR: " + username + "] " + throwable.getMessage());
         throwable.printStackTrace();
     }
-    
+
     public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
         ServerGameMessage message = builder.build();
         //writeToLog(message);
@@ -92,11 +91,11 @@ public class GameEndpoint {
         out.println(message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
-    
-    public void close(){
+
+    public void close() {
         session = null;
     }
-    
+
     public void resendLastMessage() throws IOException, EncodeException {
         ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, username);
         if (lastMessage != null) {
@@ -107,16 +106,16 @@ public class GameEndpoint {
     }
 
     private void processResponse(ClientGameMessage message) {
-        if (message.getPayloadCase() == CONCEDE){
-                gameServer.concede(gameID, username);
-                return;
+        if (message.getPayloadCase() == CONCEDE) {
+            gameServer.concede(gameID, username);
+            return;
         }
-        if (message.getPayloadCase() == SAVEGAMESTATE){
+        if (message.getPayloadCase() == SAVEGAMESTATE) {
             gameServer.saveGameState(gameID, message.getSaveGameState().getFilename());
             return;
         }
-        if (message.getPayloadCase() == responseType){
-            switch(message.getPayloadCase()){
+        if (message.getPayloadCase() == responseType) {
+            switch (message.getPayloadCase()) {
                 case ORDERCARDSRESPONSE:
                     OrderCardsResponse ocr = message.getOrderCardsResponse();
                     waitingResponse = false;
@@ -124,8 +123,8 @@ public class GameEndpoint {
                     break;
                 case SELECTFROMRESPONSE:
                     SelectFromResponse sfr = message.getSelectFromResponse();
-                    if(sfr.getMessageType() != selectFromType){
-                        out.println("Wrong SelectFrom response received from " + username + 
+                    if (sfr.getMessageType() != selectFromType) {
+                        out.println("Wrong SelectFrom response received from " + username +
                                 "\nExpected " + selectFromType + " Received: " + message);
                         break;
                     }
@@ -152,7 +151,7 @@ public class GameEndpoint {
                     gameServer.addToResponseQueue(gameID, ddr.getDamageAssignmentsList().toArray(new Types.DamageAssignment[ddr.getDamageAssignmentsCount()]));
                     break;
                 default:
-                    out.println("Wrong Message received from " + username  
+                    out.println("Wrong Message received from " + username
                             + "\nExpected " + responseType + " Received: " + message);
                     break;
             }
@@ -163,7 +162,7 @@ public class GameEndpoint {
     }
 
     private void processMessage(ClientGameMessage message) {
-        switch(message.getPayloadCase()){
+        switch (message.getPayloadCase()) {
             case PLAYCARD:
                 gameServer.playCard(gameID, username, fromString(message.getPlayCard().getCardID()));
                 break;
@@ -195,7 +194,7 @@ public class GameEndpoint {
     }
 
     private void checkResponseType(ServerGameMessage message) {
-        switch(message.getPayloadCase()){
+        switch (message.getPayloadCase()) {
             case ORDERCARDS:
                 waitingResponse = true;
                 responseType = ORDERCARDSRESPONSE;
@@ -230,7 +229,7 @@ public class GameEndpoint {
     private void writeToLog(ClientGameMessage cgm) {
         try {
             new File("../game-logs/").mkdirs();
-            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
+            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString() + ".log", true));
             writer.append("[FROM: " + username + "] " + cgm);
             writer.flush();
             writer.close();
@@ -243,8 +242,8 @@ public class GameEndpoint {
     private void writeToLog(ServerGameMessage message) {
         try {
             new File("../game-logs/").mkdirs();
-            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString()+".log", true));
-            writer.append("[TO: " + username + "] "  + message);
+            writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString() + ".log", true));
+            writer.append("[TO: " + username + "] " + message);
             writer.flush();
             writer.close();
             writer = null;

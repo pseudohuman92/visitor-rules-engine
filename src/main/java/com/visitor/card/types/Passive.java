@@ -1,20 +1,20 @@
-
 package com.visitor.card.types;
 
+import com.visitor.card.properties.Playable;
+import com.visitor.card.properties.Studiable;
 import com.visitor.game.Game;
-import static com.visitor.game.Game.Zone.PLAY;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 
 /**
  * Abstract class for the Passive card type.
+ *
  * @author pseudo
  */
 public abstract class Passive extends Card {
-    
+
     /**
-     *
      * @param name
      * @param cost
      * @param knowledge
@@ -22,25 +22,10 @@ public abstract class Passive extends Card {
      * @param image
      * @param owner
      */
-    public Passive(String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
-        super(name, cost, knowledge, text, owner);
-    }
-    
-    @Override
-    protected void duringResolve(Game game) {
-        game.putTo(controller, this, PLAY);
-    }
-    
-    @Override
-    public boolean canPlay(Game game){ 
-        return game.hasEnergy(controller, cost)
-               && game.hasKnowledge(controller, knowledge)
-               && game.canPlaySlow(controller);
-    }
-    
-    @Override
-    public Types.Card.Builder toCardMessage() {
-        return super.toCardMessage()
-                .setType("Passive");
+    public Passive(Game game, String name, int cost, Hashmap<Knowledge, Integer> knowledge, String text, String owner) {
+        super(game, name, knowledge, CardType.Passive, text, owner);
+
+        playable = new Playable(game, this, cost).setSlow().setPersistent();
+        studiable = new Studiable(game, this);
     }
 }

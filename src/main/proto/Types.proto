@@ -82,6 +82,16 @@ message DamageAssignment {
     int32 damage = 2;
 }
 
+message Combat {
+    int32 health = 12;
+    int32 shield = 15;
+    int32 attack = 17;
+    bool deploying = 18;
+    string blockedAttacker = 19;
+    string attackTarget = 20;
+    repeated string combatAbilities = 21;
+}
+
 message Card {
     string id = 1;
     string name = 2;
@@ -92,17 +102,11 @@ message Card {
     string description = 7;
     string cost = 8;
     repeated KnowledgeGroup knowledgeCost = 9;
-    string type = 10;
+    repeated string types = 10;
     repeated string subtypes = 11;
-    int32 health = 12;
     int32 delay = 13;
     int32 loyalty = 14;
-    int32 shield = 15;
-    int32 reflect = 16;
-    int32 attack = 17;
-    bool deploying = 18;
-    string blockedAttacker = 19;
-    string attackTarget = 20;
+    Combat combat = 16;
 }
 
 message Player {
@@ -116,7 +120,6 @@ message Player {
     repeated Card scrapyard = 8;
     repeated Card void = 9;
     repeated KnowledgeGroup knowledgePool = 10;
-    int32 reflect = 11;
     int32 shield = 12;
     int32 handSize = 13;
     int32 health = 14;
