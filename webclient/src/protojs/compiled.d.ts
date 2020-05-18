@@ -1412,29 +1412,27 @@ export class ClientGameMessage implements IClientGameMessage {
     public toJSON(): { [k: string]: any };
 }
 
+/** Custom type messages. Should not be sent directly. */
+export enum Phase {
+    NOPHASE = 0,
+    REDRAW = 1,
+    BEGIN = 2,
+    MAIN_BEFORE = 3,
+    ATTACK = 4,
+    BLOCK = 5,
+    MAIN_AFTER = 6,
+    END = 7
+}
+
 /** SelectFromType enum. */
-namespace SelectFromType {
-
-    /** NOTYPE value */
-    let NOTYPE: number;
-
-    /** LIST value */
-    let LIST: number;
-
-    /** HAND value */
-    let HAND: number;
-
-    /** PLAY value */
-    let PLAY: number;
-
-    /** SCRAPYARD value */
-    let SCRAPYARD: number;
-
-    /** VOID value */
-    let VOID: number;
-
-    /** STACK value */
-    let STACK: number;
+export enum SelectFromType {
+    NOTYPE = 0,
+    LIST = 1,
+    HAND = 3,
+    PLAY = 4,
+    SCRAPYARD = 5,
+    VOID = 6,
+    STACK = 7
 }
 
 /** Represents a Table. */
@@ -1527,25 +1525,13 @@ export class Table implements ITable {
 }
 
 /** Knowledge enum. */
-namespace Knowledge {
-
-    /** NONE value */
-    let NONE: number;
-
-    /** BLACK value */
-    let BLACK: number;
-
-    /** GREEN value */
-    let GREEN: number;
-
-    /** RED value */
-    let RED: number;
-
-    /** BLUE value */
-    let BLUE: number;
-
-    /** YELLOW value */
-    let YELLOW: number;
+export enum Knowledge {
+    NONE = 0,
+    BLACK = 1,
+    GREEN = 2,
+    RED = 3,
+    BLUE = 4,
+    YELLOW = 5
 }
 
 /** Represents a KnowledgeGroup. */
@@ -1635,13 +1621,9 @@ export class KnowledgeGroup implements IKnowledgeGroup {
 }
 
 /** Counter enum. */
-namespace Counter {
-
-    /** NOCOUNTER value */
-    let NOCOUNTER: number;
-
-    /** CHARGE value */
-    let CHARGE: number;
+export enum Counter {
+    NOCOUNTER = 0,
+    CHARGE = 1
 }
 
 /** Represents a CounterGroup. */
@@ -2160,6 +2142,107 @@ export class DamageAssignment implements IDamageAssignment {
     public toJSON(): { [k: string]: any };
 }
 
+/** Represents a Combat. */
+export class Combat implements ICombat {
+
+    /**
+     * Constructs a new Combat.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICombat);
+
+    /** Combat health. */
+    public health: number;
+
+    /** Combat shield. */
+    public shield: number;
+
+    /** Combat attack. */
+    public attack: number;
+
+    /** Combat deploying. */
+    public deploying: boolean;
+
+    /** Combat blockedAttacker. */
+    public blockedAttacker: string;
+
+    /** Combat attackTarget. */
+    public attackTarget: string;
+
+    /** Combat combatAbilities. */
+    public combatAbilities: string[];
+
+    /**
+     * Creates a new Combat instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns Combat instance
+     */
+    public static create(properties?: ICombat): Combat;
+
+    /**
+     * Encodes the specified Combat message. Does not implicitly {@link Combat.verify|verify} messages.
+     * @param message Combat message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICombat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified Combat message, length delimited. Does not implicitly {@link Combat.verify|verify} messages.
+     * @param message Combat message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICombat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a Combat message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns Combat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Combat;
+
+    /**
+     * Decodes a Combat message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns Combat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Combat;
+
+    /**
+     * Verifies a Combat message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a Combat message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns Combat
+     */
+    public static fromObject(object: { [k: string]: any }): Combat;
+
+    /**
+     * Creates a plain object from a Combat message. Also converts values to other types if specified.
+     * @param message Combat
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: Combat, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this Combat to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Represents a Card. */
 export class Card implements ICard {
 
@@ -2196,14 +2279,11 @@ export class Card implements ICard {
     /** Card knowledgeCost. */
     public knowledgeCost: IKnowledgeGroup[];
 
-    /** Card type. */
-    public type: string;
+    /** Card types. */
+    public types: string[];
 
     /** Card subtypes. */
     public subtypes: string[];
-
-    /** Card health. */
-    public health: number;
 
     /** Card delay. */
     public delay: number;
@@ -2211,23 +2291,8 @@ export class Card implements ICard {
     /** Card loyalty. */
     public loyalty: number;
 
-    /** Card shield. */
-    public shield: number;
-
-    /** Card reflect. */
-    public reflect: number;
-
-    /** Card attack. */
-    public attack: number;
-
-    /** Card deploying. */
-    public deploying: boolean;
-
-    /** Card blockedAttacker. */
-    public blockedAttacker: string;
-
-    /** Card attackTarget. */
-    public attackTarget: string;
+    /** Card combat. */
+    public combat?: (ICombat|null);
 
     /**
      * Creates a new Card instance using the specified properties.
@@ -2338,9 +2403,6 @@ export class Player implements IPlayer {
 
     /** Player knowledgePool. */
     public knowledgePool: IKnowledgeGroup[];
-
-    /** Player reflect. */
-    public reflect: number;
 
     /** Player shield. */
     public shield: number;

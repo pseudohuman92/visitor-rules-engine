@@ -357,6 +357,14 @@ public abstract class Card implements Serializable {
         }
     }
 
+    public final boolean isAttacking() {
+        return combat != null && combat.attackTarget != null;
+    }
+
+    public final boolean hasCombatAbility(Combat.CombatAbility combatAbility) {
+        return combat != null && combat.hasCombatAbility(combatAbility);
+    }
+
 
     public enum CardType {
         Ally,

@@ -1,6 +1,5 @@
 import React from "react";
 import { Component } from "react";
-import Rectangle from "react-rectangle";
 import Button from "../Primitives/Button";
 import Input from "@material-ui/core/Input";
 import Center from "react-center";
@@ -77,8 +76,8 @@ class DesignCard extends Component {
               />
             </Grid>
           </Grid>
-          <Rectangle
-            aspectRatio={[63, 88]}
+          <div
+            //aspectRatio={[63, 88]}
             style={{
               backgroundColor: "black",
               overflow: "hidden"
@@ -192,7 +191,7 @@ class DesignCard extends Component {
                 </Grid>
               </div>
             </div>
-          </Rectangle>
+          </div>
         </div>
       </Center>
     );

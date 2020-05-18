@@ -242,13 +242,15 @@ const initializeFullCollection = () => {
         ) {
           result[name] = {
             name: name,
-            type: card.Type,
+            types: [card.Type],
             description: card.Effect,
-            attack: card.Attack,
-            health: card.Health,
+            combat : {
+              attack: card.Attack,
+              health: card.Health,
+              shield: card.Shield,
+            },
             cost: card.Energy,
             knowledgeCost: toKnowledgeCost(card.Knowledge),
-            shield: card.Shield,
             loyalty: card.Loyalty
           };
         }

@@ -1,6 +1,5 @@
 import React from "react";
 import { PureComponent } from "react";
-import Rectangle from "react-rectangle";
 
 import {
   getCardColor,
@@ -30,8 +29,8 @@ class SmallCard extends PureComponent {
     return (
       <div>
         <Fonts />
-        <Rectangle
-          aspectRatio={[22, 3]}
+        <div
+          //aspectRatio={[22, 3]}
           style={{
             opacity: opacity,
             backgroundColor: backColor,
@@ -57,7 +56,7 @@ class SmallCard extends PureComponent {
                 {" | " + name}
             </div>
           </div>
-        </Rectangle>
+        </div>
       </div>
     );
   }

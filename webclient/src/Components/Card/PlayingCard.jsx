@@ -457,7 +457,7 @@ class PlayingCard extends React.Component {
       popoverDisabled,
     } = this.props;
 
-    const { id, depleted, deploying } = cardData;
+    const { id, depleted, combat } = cardData;
     const { arrowRelations, showArrows, popoverStyle } = this.state;
 
     const activatable = activatableCards.includes(id);
@@ -587,7 +587,7 @@ class PlayingCard extends React.Component {
 
     //Deployed and depleted visual indicators
     var opacity = 1;
-    if (deploying) {
+    if (combat && combat.deploying) {
       opacity = 0.5;
     }
 

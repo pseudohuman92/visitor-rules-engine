@@ -25,7 +25,7 @@ public class Combat {
     public UUID blockedAttacker;
     public Arraylist<UUID> blockedBy;
     public UUID attackTarget;
-    public Arraylist<CombatAbility> combatAbilittList;
+    public Arraylist<CombatAbility> combatAbilityList;
 
     private Supplier<Boolean> canAttackAdditional;
     private Supplier<Boolean> canAttack;
@@ -48,16 +48,16 @@ public class Combat {
         this.attack = attack;
         this.health = health;
         blockedBy = new Arraylist<>();
-        combatAbilittList = new Arraylist<>();
+        combatAbilityList = new Arraylist<>();
 
         //Default implementations
         canAttackAdditional = () -> true;
-        canAttack = () -> !card.depleted && (!deploying || combatAbilittList.contains(Haste)) && !combatAbilittList.contains(Defender) && canAttackAdditional.get();
+        canAttack = () -> !card.depleted && (!deploying || hasCombatAbility(Haste)) && !hasCombatAbility(Defender) && canAttackAdditional.get();
         canBlockAdditional = (unit) -> true;
-        canBlock = (unit) -> !card.depleted && (!unit.combat.combatAbilittList.contains(Flying) || combatAbilittList.contains(Flying)) && canBlockAdditional.test(unit);
+        canBlock = (unit) -> !card.depleted && (!unit.hasCombatAbility(Flying) || hasCombatAbility(Flying)) && canBlockAdditional.test(unit);
         canBlockGeneral = () -> !card.depleted;
         setAttacking = (target) -> {
-            if (!combatAbilittList.contains(Vigilance))
+            if (!hasCombatAbility(Vigilance))
                 card.depleted = true;
             attackTarget = target;
         };
@@ -99,25 +99,28 @@ public class Combat {
             shield = 0;
 
             //Trample Damage
-            if (damage > this.health && source.combat.combatAbilittList.contains(Trample)) {
+            if (source.isAttacking() &&
+                source.hasCombatAbility(Trample)  &&
+                    damage > this.health) {
+                int leftoverDamage = damage - this.health;
                 this.health = 0;
-                game.dealDamage(id, game.getUserId(card.controller), damage - this.health);
+                game.dealDamage(source.id, game.getUserId(card.controller), leftoverDamage);
                 game.destroy(source.id, id);
 
             } else { //Normal damage
                 this.health -= Math.min(damage, this.health);
-                if (this.health == 0 || combatAbilittList.contains(Deathtouch)) {
+                if (this.health == 0 || source.hasCombatAbility(Deathtouch)) {
                     game.destroy(source.id, id);
                 }
             }
-            if (source.combat.combatAbilittList.contains(Lifelink)){
+            if (source.hasCombatAbility(Lifelink)){
                 game.gainHealth(source.controller, damage);
             }
         };
     }
 
     public Combat(Game game, Card card, int health) {
-        this(game, card, 0, health);
+        this(game, card, -1, health);
         canAttackAdditional = () -> false;
     }
 
@@ -176,21 +179,28 @@ public class Combat {
     public final void clear() {
         shield = 0;
         deploying = false;
+        attackTarget = null;
+        blockedAttacker = null;
+        blockedBy.clear();
     }
 
     public Types.Combat.Builder toCombatMessage() {
         return Types.Combat.newBuilder()
                 .setAttack(attack)
-                .setAttackTarget(attackTarget.toString())
-                .setBlockedAttacker(blockedAttacker.toString())
-                .setDeploying(deploying)
+                .setAttackTarget(attackTarget!=null ? attackTarget.toString() : "")
+                .setBlockedAttacker(blockedAttacker!=null ? blockedAttacker.toString() : "")
+                .setDeploying(!hasCombatAbility(Haste) && deploying)
                 .setHealth(health)
                 .setShield(shield)
-                .addAllCombatAbilities(combatAbilittList.transformToStringList());
+                .addAllCombatAbilities(combatAbilityList.transformToStringList());
     }
 
     public void addCombatAbility(CombatAbility combatAbility) {
-        combatAbilittList.add(combatAbility);
+        combatAbilityList.add(combatAbility);
+    }
+
+    public boolean hasCombatAbility(CombatAbility combatAbility) {
+        return combatAbilityList.contains(combatAbility);
     }
 
     public enum CombatAbility {

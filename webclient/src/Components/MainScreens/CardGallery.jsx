@@ -6,7 +6,16 @@ import CardDisplay from "../Card/CardDisplay";
 import { fullCollection } from "../Helpers/Constants";
 import { compareCardsByKnowledge } from "../Helpers/Helpers";
 
+import { connect } from "react-redux";
+import { withHandlers } from "../MessageHandlers/HandlerContext";
+
 const cardsPerPage = 12;
+
+const mapStateToProps = (state) => {
+  return {
+    windowDimensions: state.windowDimensions,
+  };
+};
 
 class CardGallery extends Component {
   state = {
@@ -41,7 +50,7 @@ class CardGallery extends Component {
               .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
               .map((card, i) => (
                 <Grid item key={i} xs={2}>
-                  <CardDisplay cardData={card} />
+                  <CardDisplay cardData={card} windowDimensions={this.props.windowDimensions} />
                 </Grid>
               ))}
           </Grid>
@@ -51,4 +60,6 @@ class CardGallery extends Component {
   }
 }
 
-export default CardGallery;
+export default connect(
+  mapStateToProps
+)(withHandlers(CardGallery));

@@ -65,7 +65,7 @@ $root.PlayCard = (function() {
     PlayCard.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.cardID != null && message.hasOwnProperty("cardID"))
+        if (message.cardID != null && Object.hasOwnProperty.call(message, "cardID"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.cardID);
         return writer;
     };
@@ -252,7 +252,7 @@ $root.ActivateCard = (function() {
     ActivateCard.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.cardID != null && message.hasOwnProperty("cardID"))
+        if (message.cardID != null && Object.hasOwnProperty.call(message, "cardID"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.cardID);
         return writer;
     };
@@ -439,7 +439,7 @@ $root.StudyCard = (function() {
     StudyCard.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.cardID != null && message.hasOwnProperty("cardID"))
+        if (message.cardID != null && Object.hasOwnProperty.call(message, "cardID"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.cardID);
         return writer;
     };
@@ -1479,7 +1479,7 @@ $root.SelectFromResponse = (function() {
     SelectFromResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.messageType != null && message.hasOwnProperty("messageType"))
+        if (message.messageType != null && Object.hasOwnProperty.call(message, "messageType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.messageType);
         if (message.selected != null && message.selected.length)
             for (var i = 0; i < message.selected.length; ++i)
@@ -1733,7 +1733,7 @@ $root.SelectXValueResponse = (function() {
     SelectXValueResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.selectedXValue != null && message.hasOwnProperty("selectedXValue"))
+        if (message.selectedXValue != null && Object.hasOwnProperty.call(message, "selectedXValue"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.selectedXValue);
         return writer;
     };
@@ -2544,7 +2544,7 @@ $root.SaveGameState = (function() {
     SaveGameState.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.filename != null && message.hasOwnProperty("filename"))
+        if (message.filename != null && Object.hasOwnProperty.call(message, "filename"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.filename);
         return writer;
     };
@@ -2862,33 +2862,33 @@ $root.ClientGameMessage = (function() {
     ClientGameMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.playCard != null && message.hasOwnProperty("playCard"))
+        if (message.playCard != null && Object.hasOwnProperty.call(message, "playCard"))
             $root.PlayCard.encode(message.playCard, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-        if (message.activateCard != null && message.hasOwnProperty("activateCard"))
+        if (message.activateCard != null && Object.hasOwnProperty.call(message, "activateCard"))
             $root.ActivateCard.encode(message.activateCard, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-        if (message.studyCard != null && message.hasOwnProperty("studyCard"))
+        if (message.studyCard != null && Object.hasOwnProperty.call(message, "studyCard"))
             $root.StudyCard.encode(message.studyCard, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-        if (message.pass != null && message.hasOwnProperty("pass"))
+        if (message.pass != null && Object.hasOwnProperty.call(message, "pass"))
             $root.Pass.encode(message.pass, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
-        if (message.redraw != null && message.hasOwnProperty("redraw"))
+        if (message.redraw != null && Object.hasOwnProperty.call(message, "redraw"))
             $root.Redraw.encode(message.redraw, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
-        if (message.keep != null && message.hasOwnProperty("keep"))
+        if (message.keep != null && Object.hasOwnProperty.call(message, "keep"))
             $root.Keep.encode(message.keep, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
-        if (message.selectFromResponse != null && message.hasOwnProperty("selectFromResponse"))
+        if (message.selectFromResponse != null && Object.hasOwnProperty.call(message, "selectFromResponse"))
             $root.SelectFromResponse.encode(message.selectFromResponse, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
-        if (message.concede != null && message.hasOwnProperty("concede"))
+        if (message.concede != null && Object.hasOwnProperty.call(message, "concede"))
             $root.Concede.encode(message.concede, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
-        if (message.orderCardsResponse != null && message.hasOwnProperty("orderCardsResponse"))
+        if (message.orderCardsResponse != null && Object.hasOwnProperty.call(message, "orderCardsResponse"))
             $root.OrderCardsResponse.encode(message.orderCardsResponse, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
-        if (message.selectXValueResponse != null && message.hasOwnProperty("selectXValueResponse"))
+        if (message.selectXValueResponse != null && Object.hasOwnProperty.call(message, "selectXValueResponse"))
             $root.SelectXValueResponse.encode(message.selectXValueResponse, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
-        if (message.selectAttackersResponse != null && message.hasOwnProperty("selectAttackersResponse"))
+        if (message.selectAttackersResponse != null && Object.hasOwnProperty.call(message, "selectAttackersResponse"))
             $root.SelectAttackersResponse.encode(message.selectAttackersResponse, writer.uint32(/* id 24, wireType 2 =*/194).fork()).ldelim();
-        if (message.selectBlockersResponse != null && message.hasOwnProperty("selectBlockersResponse"))
+        if (message.selectBlockersResponse != null && Object.hasOwnProperty.call(message, "selectBlockersResponse"))
             $root.SelectBlockersResponse.encode(message.selectBlockersResponse, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
-        if (message.saveGameState != null && message.hasOwnProperty("saveGameState"))
+        if (message.saveGameState != null && Object.hasOwnProperty.call(message, "saveGameState"))
             $root.SaveGameState.encode(message.saveGameState, writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
-        if (message.assignDamageResponse != null && message.hasOwnProperty("assignDamageResponse"))
+        if (message.assignDamageResponse != null && Object.hasOwnProperty.call(message, "assignDamageResponse"))
             $root.AssignDamageResponse.encode(message.assignDamageResponse, writer.uint32(/* id 27, wireType 2 =*/218).fork()).ldelim();
         return writer;
     };
@@ -3331,7 +3331,7 @@ $root.ClientGameMessage = (function() {
 /**
  * Custom type messages. Should not be sent directly.
  * @exports Phase
- * @enum {string}
+ * @enum {number}
  * @property {number} NOPHASE=0 NOPHASE value
  * @property {number} REDRAW=1 REDRAW value
  * @property {number} BEGIN=2 BEGIN value
@@ -3357,7 +3357,7 @@ $root.Phase = (function() {
 /**
  * SelectFromType enum.
  * @exports SelectFromType
- * @enum {string}
+ * @enum {number}
  * @property {number} NOTYPE=0 NOTYPE value
  * @property {number} LIST=1 LIST value
  * @property {number} HAND=3 HAND value
@@ -3452,11 +3452,11 @@ $root.Table = (function() {
     Table.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.creator != null && message.hasOwnProperty("creator"))
+        if (message.creator != null && Object.hasOwnProperty.call(message, "creator"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.creator);
-        if (message.opponent != null && message.hasOwnProperty("opponent"))
+        if (message.opponent != null && Object.hasOwnProperty.call(message, "opponent"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.opponent);
         return writer;
     };
@@ -3613,7 +3613,7 @@ $root.Table = (function() {
 /**
  * Knowledge enum.
  * @exports Knowledge
- * @enum {string}
+ * @enum {number}
  * @property {number} NONE=0 NONE value
  * @property {number} BLACK=1 BLACK value
  * @property {number} GREEN=2 GREEN value
@@ -3697,9 +3697,9 @@ $root.KnowledgeGroup = (function() {
     KnowledgeGroup.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.knowledge != null && message.hasOwnProperty("knowledge"))
+        if (message.knowledge != null && Object.hasOwnProperty.call(message, "knowledge"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.knowledge);
-        if (message.count != null && message.hasOwnProperty("count"))
+        if (message.count != null && Object.hasOwnProperty.call(message, "count"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.count);
         return writer;
     };
@@ -3878,7 +3878,7 @@ $root.KnowledgeGroup = (function() {
 /**
  * Counter enum.
  * @exports Counter
- * @enum {string}
+ * @enum {number}
  * @property {number} NOCOUNTER=0 NOCOUNTER value
  * @property {number} CHARGE=1 CHARGE value
  */
@@ -3954,9 +3954,9 @@ $root.CounterGroup = (function() {
     CounterGroup.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.counter != null && message.hasOwnProperty("counter"))
+        if (message.counter != null && Object.hasOwnProperty.call(message, "counter"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.counter);
-        if (message.count != null && message.hasOwnProperty("count"))
+        if (message.count != null && Object.hasOwnProperty.call(message, "count"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.count);
         return writer;
     };
@@ -4178,7 +4178,7 @@ $root.Blocker = (function() {
     Blocker.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+        if (message.blockerId != null && Object.hasOwnProperty.call(message, "blockerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.blockerId);
         if (message.possibleBlockTargets != null && message.possibleBlockTargets.length)
             for (var i = 0; i < message.possibleBlockTargets.length; ++i)
@@ -4404,7 +4404,7 @@ $root.Attacker = (function() {
     Attacker.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
+        if (message.attackerId != null && Object.hasOwnProperty.call(message, "attackerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackerId);
         if (message.possibleAttackTargets != null && message.possibleAttackTargets.length)
             for (var i = 0; i < message.possibleAttackTargets.length; ++i)
@@ -4629,9 +4629,9 @@ $root.AttackerAssignment = (function() {
     AttackerAssignment.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.attackerId != null && message.hasOwnProperty("attackerId"))
+        if (message.attackerId != null && Object.hasOwnProperty.call(message, "attackerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.attackerId);
-        if (message.attacksTo != null && message.hasOwnProperty("attacksTo"))
+        if (message.attacksTo != null && Object.hasOwnProperty.call(message, "attacksTo"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.attacksTo);
         return writer;
     };
@@ -4839,9 +4839,9 @@ $root.BlockerAssignment = (function() {
     BlockerAssignment.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.blockerId != null && message.hasOwnProperty("blockerId"))
+        if (message.blockerId != null && Object.hasOwnProperty.call(message, "blockerId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.blockerId);
-        if (message.blockedBy != null && message.hasOwnProperty("blockedBy"))
+        if (message.blockedBy != null && Object.hasOwnProperty.call(message, "blockedBy"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.blockedBy);
         return writer;
     };
@@ -5049,9 +5049,9 @@ $root.DamageAssignment = (function() {
     DamageAssignment.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.targetId != null && message.hasOwnProperty("targetId"))
+        if (message.targetId != null && Object.hasOwnProperty.call(message, "targetId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.targetId);
-        if (message.damage != null && message.hasOwnProperty("damage"))
+        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.damage);
         return writer;
     };
@@ -5194,6 +5194,343 @@ $root.DamageAssignment = (function() {
     return DamageAssignment;
 })();
 
+$root.Combat = (function() {
+
+    /**
+     * Properties of a Combat.
+     * @exports ICombat
+     * @interface ICombat
+     * @property {number|null} [health] Combat health
+     * @property {number|null} [shield] Combat shield
+     * @property {number|null} [attack] Combat attack
+     * @property {boolean|null} [deploying] Combat deploying
+     * @property {string|null} [blockedAttacker] Combat blockedAttacker
+     * @property {string|null} [attackTarget] Combat attackTarget
+     * @property {Array.<string>|null} [combatAbilities] Combat combatAbilities
+     */
+
+    /**
+     * Constructs a new Combat.
+     * @exports Combat
+     * @classdesc Represents a Combat.
+     * @implements ICombat
+     * @constructor
+     * @param {ICombat=} [properties] Properties to set
+     */
+    function Combat(properties) {
+        this.combatAbilities = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Combat health.
+     * @member {number} health
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.health = 0;
+
+    /**
+     * Combat shield.
+     * @member {number} shield
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.shield = 0;
+
+    /**
+     * Combat attack.
+     * @member {number} attack
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.attack = 0;
+
+    /**
+     * Combat deploying.
+     * @member {boolean} deploying
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.deploying = false;
+
+    /**
+     * Combat blockedAttacker.
+     * @member {string} blockedAttacker
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.blockedAttacker = "";
+
+    /**
+     * Combat attackTarget.
+     * @member {string} attackTarget
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.attackTarget = "";
+
+    /**
+     * Combat combatAbilities.
+     * @member {Array.<string>} combatAbilities
+     * @memberof Combat
+     * @instance
+     */
+    Combat.prototype.combatAbilities = $util.emptyArray;
+
+    /**
+     * Creates a new Combat instance using the specified properties.
+     * @function create
+     * @memberof Combat
+     * @static
+     * @param {ICombat=} [properties] Properties to set
+     * @returns {Combat} Combat instance
+     */
+    Combat.create = function create(properties) {
+        return new Combat(properties);
+    };
+
+    /**
+     * Encodes the specified Combat message. Does not implicitly {@link Combat.verify|verify} messages.
+     * @function encode
+     * @memberof Combat
+     * @static
+     * @param {ICombat} message Combat message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Combat.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.health != null && Object.hasOwnProperty.call(message, "health"))
+            writer.uint32(/* id 12, wireType 0 =*/96).int32(message.health);
+        if (message.shield != null && Object.hasOwnProperty.call(message, "shield"))
+            writer.uint32(/* id 15, wireType 0 =*/120).int32(message.shield);
+        if (message.attack != null && Object.hasOwnProperty.call(message, "attack"))
+            writer.uint32(/* id 17, wireType 0 =*/136).int32(message.attack);
+        if (message.deploying != null && Object.hasOwnProperty.call(message, "deploying"))
+            writer.uint32(/* id 18, wireType 0 =*/144).bool(message.deploying);
+        if (message.blockedAttacker != null && Object.hasOwnProperty.call(message, "blockedAttacker"))
+            writer.uint32(/* id 19, wireType 2 =*/154).string(message.blockedAttacker);
+        if (message.attackTarget != null && Object.hasOwnProperty.call(message, "attackTarget"))
+            writer.uint32(/* id 20, wireType 2 =*/162).string(message.attackTarget);
+        if (message.combatAbilities != null && message.combatAbilities.length)
+            for (var i = 0; i < message.combatAbilities.length; ++i)
+                writer.uint32(/* id 21, wireType 2 =*/170).string(message.combatAbilities[i]);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Combat message, length delimited. Does not implicitly {@link Combat.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Combat
+     * @static
+     * @param {ICombat} message Combat message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Combat.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Combat message from the specified reader or buffer.
+     * @function decode
+     * @memberof Combat
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Combat} Combat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Combat.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Combat();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 12:
+                message.health = reader.int32();
+                break;
+            case 15:
+                message.shield = reader.int32();
+                break;
+            case 17:
+                message.attack = reader.int32();
+                break;
+            case 18:
+                message.deploying = reader.bool();
+                break;
+            case 19:
+                message.blockedAttacker = reader.string();
+                break;
+            case 20:
+                message.attackTarget = reader.string();
+                break;
+            case 21:
+                if (!(message.combatAbilities && message.combatAbilities.length))
+                    message.combatAbilities = [];
+                message.combatAbilities.push(reader.string());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Combat message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Combat
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Combat} Combat
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Combat.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Combat message.
+     * @function verify
+     * @memberof Combat
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Combat.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.health != null && message.hasOwnProperty("health"))
+            if (!$util.isInteger(message.health))
+                return "health: integer expected";
+        if (message.shield != null && message.hasOwnProperty("shield"))
+            if (!$util.isInteger(message.shield))
+                return "shield: integer expected";
+        if (message.attack != null && message.hasOwnProperty("attack"))
+            if (!$util.isInteger(message.attack))
+                return "attack: integer expected";
+        if (message.deploying != null && message.hasOwnProperty("deploying"))
+            if (typeof message.deploying !== "boolean")
+                return "deploying: boolean expected";
+        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
+            if (!$util.isString(message.blockedAttacker))
+                return "blockedAttacker: string expected";
+        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
+            if (!$util.isString(message.attackTarget))
+                return "attackTarget: string expected";
+        if (message.combatAbilities != null && message.hasOwnProperty("combatAbilities")) {
+            if (!Array.isArray(message.combatAbilities))
+                return "combatAbilities: array expected";
+            for (var i = 0; i < message.combatAbilities.length; ++i)
+                if (!$util.isString(message.combatAbilities[i]))
+                    return "combatAbilities: string[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a Combat message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Combat
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Combat} Combat
+     */
+    Combat.fromObject = function fromObject(object) {
+        if (object instanceof $root.Combat)
+            return object;
+        var message = new $root.Combat();
+        if (object.health != null)
+            message.health = object.health | 0;
+        if (object.shield != null)
+            message.shield = object.shield | 0;
+        if (object.attack != null)
+            message.attack = object.attack | 0;
+        if (object.deploying != null)
+            message.deploying = Boolean(object.deploying);
+        if (object.blockedAttacker != null)
+            message.blockedAttacker = String(object.blockedAttacker);
+        if (object.attackTarget != null)
+            message.attackTarget = String(object.attackTarget);
+        if (object.combatAbilities) {
+            if (!Array.isArray(object.combatAbilities))
+                throw TypeError(".Combat.combatAbilities: array expected");
+            message.combatAbilities = [];
+            for (var i = 0; i < object.combatAbilities.length; ++i)
+                message.combatAbilities[i] = String(object.combatAbilities[i]);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Combat message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Combat
+     * @static
+     * @param {Combat} message Combat
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Combat.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.combatAbilities = [];
+        if (options.defaults) {
+            object.health = 0;
+            object.shield = 0;
+            object.attack = 0;
+            object.deploying = false;
+            object.blockedAttacker = "";
+            object.attackTarget = "";
+        }
+        if (message.health != null && message.hasOwnProperty("health"))
+            object.health = message.health;
+        if (message.shield != null && message.hasOwnProperty("shield"))
+            object.shield = message.shield;
+        if (message.attack != null && message.hasOwnProperty("attack"))
+            object.attack = message.attack;
+        if (message.deploying != null && message.hasOwnProperty("deploying"))
+            object.deploying = message.deploying;
+        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
+            object.blockedAttacker = message.blockedAttacker;
+        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
+            object.attackTarget = message.attackTarget;
+        if (message.combatAbilities && message.combatAbilities.length) {
+            object.combatAbilities = [];
+            for (var j = 0; j < message.combatAbilities.length; ++j)
+                object.combatAbilities[j] = message.combatAbilities[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this Combat to JSON.
+     * @function toJSON
+     * @memberof Combat
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Combat.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Combat;
+})();
+
 $root.Card = (function() {
 
     /**
@@ -5209,17 +5546,11 @@ $root.Card = (function() {
      * @property {string|null} [description] Card description
      * @property {string|null} [cost] Card cost
      * @property {Array.<IKnowledgeGroup>|null} [knowledgeCost] Card knowledgeCost
-     * @property {string|null} [type] Card type
+     * @property {Array.<string>|null} [types] Card types
      * @property {Array.<string>|null} [subtypes] Card subtypes
-     * @property {number|null} [health] Card health
      * @property {number|null} [delay] Card delay
      * @property {number|null} [loyalty] Card loyalty
-     * @property {number|null} [shield] Card shield
-     * @property {number|null} [reflect] Card reflect
-     * @property {number|null} [attack] Card attack
-     * @property {boolean|null} [deploying] Card deploying
-     * @property {string|null} [blockedAttacker] Card blockedAttacker
-     * @property {string|null} [attackTarget] Card attackTarget
+     * @property {ICombat|null} [combat] Card combat
      */
 
     /**
@@ -5234,6 +5565,7 @@ $root.Card = (function() {
         this.counters = [];
         this.targets = [];
         this.knowledgeCost = [];
+        this.types = [];
         this.subtypes = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -5314,12 +5646,12 @@ $root.Card = (function() {
     Card.prototype.knowledgeCost = $util.emptyArray;
 
     /**
-     * Card type.
-     * @member {string} type
+     * Card types.
+     * @member {Array.<string>} types
      * @memberof Card
      * @instance
      */
-    Card.prototype.type = "";
+    Card.prototype.types = $util.emptyArray;
 
     /**
      * Card subtypes.
@@ -5328,14 +5660,6 @@ $root.Card = (function() {
      * @instance
      */
     Card.prototype.subtypes = $util.emptyArray;
-
-    /**
-     * Card health.
-     * @member {number} health
-     * @memberof Card
-     * @instance
-     */
-    Card.prototype.health = 0;
 
     /**
      * Card delay.
@@ -5354,52 +5678,12 @@ $root.Card = (function() {
     Card.prototype.loyalty = 0;
 
     /**
-     * Card shield.
-     * @member {number} shield
+     * Card combat.
+     * @member {ICombat|null|undefined} combat
      * @memberof Card
      * @instance
      */
-    Card.prototype.shield = 0;
-
-    /**
-     * Card reflect.
-     * @member {number} reflect
-     * @memberof Card
-     * @instance
-     */
-    Card.prototype.reflect = 0;
-
-    /**
-     * Card attack.
-     * @member {number} attack
-     * @memberof Card
-     * @instance
-     */
-    Card.prototype.attack = 0;
-
-    /**
-     * Card deploying.
-     * @member {boolean} deploying
-     * @memberof Card
-     * @instance
-     */
-    Card.prototype.deploying = false;
-
-    /**
-     * Card blockedAttacker.
-     * @member {string} blockedAttacker
-     * @memberof Card
-     * @instance
-     */
-    Card.prototype.blockedAttacker = "";
-
-    /**
-     * Card attackTarget.
-     * @member {string} attackTarget
-     * @memberof Card
-     * @instance
-     */
-    Card.prototype.attackTarget = "";
+    Card.prototype.combat = null;
 
     /**
      * Creates a new Card instance using the specified properties.
@@ -5425,50 +5709,39 @@ $root.Card = (function() {
     Card.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.name != null && message.hasOwnProperty("name"))
+        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
         if (message.counters != null && message.counters.length)
             for (var i = 0; i < message.counters.length; ++i)
                 $root.CounterGroup.encode(message.counters[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.depleted != null && message.hasOwnProperty("depleted"))
+        if (message.depleted != null && Object.hasOwnProperty.call(message, "depleted"))
             writer.uint32(/* id 4, wireType 0 =*/32).bool(message.depleted);
-        if (message.marked != null && message.hasOwnProperty("marked"))
+        if (message.marked != null && Object.hasOwnProperty.call(message, "marked"))
             writer.uint32(/* id 5, wireType 0 =*/40).bool(message.marked);
         if (message.targets != null && message.targets.length)
             for (var i = 0; i < message.targets.length; ++i)
                 writer.uint32(/* id 6, wireType 2 =*/50).string(message.targets[i]);
-        if (message.description != null && message.hasOwnProperty("description"))
+        if (message.description != null && Object.hasOwnProperty.call(message, "description"))
             writer.uint32(/* id 7, wireType 2 =*/58).string(message.description);
-        if (message.cost != null && message.hasOwnProperty("cost"))
+        if (message.cost != null && Object.hasOwnProperty.call(message, "cost"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.cost);
         if (message.knowledgeCost != null && message.knowledgeCost.length)
             for (var i = 0; i < message.knowledgeCost.length; ++i)
                 $root.KnowledgeGroup.encode(message.knowledgeCost[i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-        if (message.type != null && message.hasOwnProperty("type"))
-            writer.uint32(/* id 10, wireType 2 =*/82).string(message.type);
+        if (message.types != null && message.types.length)
+            for (var i = 0; i < message.types.length; ++i)
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.types[i]);
         if (message.subtypes != null && message.subtypes.length)
             for (var i = 0; i < message.subtypes.length; ++i)
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.subtypes[i]);
-        if (message.health != null && message.hasOwnProperty("health"))
-            writer.uint32(/* id 12, wireType 0 =*/96).int32(message.health);
-        if (message.delay != null && message.hasOwnProperty("delay"))
+        if (message.delay != null && Object.hasOwnProperty.call(message, "delay"))
             writer.uint32(/* id 13, wireType 0 =*/104).int32(message.delay);
-        if (message.loyalty != null && message.hasOwnProperty("loyalty"))
+        if (message.loyalty != null && Object.hasOwnProperty.call(message, "loyalty"))
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.loyalty);
-        if (message.shield != null && message.hasOwnProperty("shield"))
-            writer.uint32(/* id 15, wireType 0 =*/120).int32(message.shield);
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            writer.uint32(/* id 16, wireType 0 =*/128).int32(message.reflect);
-        if (message.attack != null && message.hasOwnProperty("attack"))
-            writer.uint32(/* id 17, wireType 0 =*/136).int32(message.attack);
-        if (message.deploying != null && message.hasOwnProperty("deploying"))
-            writer.uint32(/* id 18, wireType 0 =*/144).bool(message.deploying);
-        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
-            writer.uint32(/* id 19, wireType 2 =*/154).string(message.blockedAttacker);
-        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
-            writer.uint32(/* id 20, wireType 2 =*/162).string(message.attackTarget);
+        if (message.combat != null && Object.hasOwnProperty.call(message, "combat"))
+            $root.Combat.encode(message.combat, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
         return writer;
     };
 
@@ -5537,15 +5810,14 @@ $root.Card = (function() {
                 message.knowledgeCost.push($root.KnowledgeGroup.decode(reader, reader.uint32()));
                 break;
             case 10:
-                message.type = reader.string();
+                if (!(message.types && message.types.length))
+                    message.types = [];
+                message.types.push(reader.string());
                 break;
             case 11:
                 if (!(message.subtypes && message.subtypes.length))
                     message.subtypes = [];
                 message.subtypes.push(reader.string());
-                break;
-            case 12:
-                message.health = reader.int32();
                 break;
             case 13:
                 message.delay = reader.int32();
@@ -5553,23 +5825,8 @@ $root.Card = (function() {
             case 14:
                 message.loyalty = reader.int32();
                 break;
-            case 15:
-                message.shield = reader.int32();
-                break;
             case 16:
-                message.reflect = reader.int32();
-                break;
-            case 17:
-                message.attack = reader.int32();
-                break;
-            case 18:
-                message.deploying = reader.bool();
-                break;
-            case 19:
-                message.blockedAttacker = reader.string();
-                break;
-            case 20:
-                message.attackTarget = reader.string();
+                message.combat = $root.Combat.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5649,9 +5906,13 @@ $root.Card = (function() {
                     return "knowledgeCost." + error;
             }
         }
-        if (message.type != null && message.hasOwnProperty("type"))
-            if (!$util.isString(message.type))
-                return "type: string expected";
+        if (message.types != null && message.hasOwnProperty("types")) {
+            if (!Array.isArray(message.types))
+                return "types: array expected";
+            for (var i = 0; i < message.types.length; ++i)
+                if (!$util.isString(message.types[i]))
+                    return "types: string[] expected";
+        }
         if (message.subtypes != null && message.hasOwnProperty("subtypes")) {
             if (!Array.isArray(message.subtypes))
                 return "subtypes: array expected";
@@ -5659,33 +5920,17 @@ $root.Card = (function() {
                 if (!$util.isString(message.subtypes[i]))
                     return "subtypes: string[] expected";
         }
-        if (message.health != null && message.hasOwnProperty("health"))
-            if (!$util.isInteger(message.health))
-                return "health: integer expected";
         if (message.delay != null && message.hasOwnProperty("delay"))
             if (!$util.isInteger(message.delay))
                 return "delay: integer expected";
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             if (!$util.isInteger(message.loyalty))
                 return "loyalty: integer expected";
-        if (message.shield != null && message.hasOwnProperty("shield"))
-            if (!$util.isInteger(message.shield))
-                return "shield: integer expected";
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            if (!$util.isInteger(message.reflect))
-                return "reflect: integer expected";
-        if (message.attack != null && message.hasOwnProperty("attack"))
-            if (!$util.isInteger(message.attack))
-                return "attack: integer expected";
-        if (message.deploying != null && message.hasOwnProperty("deploying"))
-            if (typeof message.deploying !== "boolean")
-                return "deploying: boolean expected";
-        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
-            if (!$util.isString(message.blockedAttacker))
-                return "blockedAttacker: string expected";
-        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
-            if (!$util.isString(message.attackTarget))
-                return "attackTarget: string expected";
+        if (message.combat != null && message.hasOwnProperty("combat")) {
+            var error = $root.Combat.verify(message.combat);
+            if (error)
+                return "combat." + error;
+        }
         return null;
     };
 
@@ -5740,8 +5985,13 @@ $root.Card = (function() {
                 message.knowledgeCost[i] = $root.KnowledgeGroup.fromObject(object.knowledgeCost[i]);
             }
         }
-        if (object.type != null)
-            message.type = String(object.type);
+        if (object.types) {
+            if (!Array.isArray(object.types))
+                throw TypeError(".Card.types: array expected");
+            message.types = [];
+            for (var i = 0; i < object.types.length; ++i)
+                message.types[i] = String(object.types[i]);
+        }
         if (object.subtypes) {
             if (!Array.isArray(object.subtypes))
                 throw TypeError(".Card.subtypes: array expected");
@@ -5749,24 +5999,15 @@ $root.Card = (function() {
             for (var i = 0; i < object.subtypes.length; ++i)
                 message.subtypes[i] = String(object.subtypes[i]);
         }
-        if (object.health != null)
-            message.health = object.health | 0;
         if (object.delay != null)
             message.delay = object.delay | 0;
         if (object.loyalty != null)
             message.loyalty = object.loyalty | 0;
-        if (object.shield != null)
-            message.shield = object.shield | 0;
-        if (object.reflect != null)
-            message.reflect = object.reflect | 0;
-        if (object.attack != null)
-            message.attack = object.attack | 0;
-        if (object.deploying != null)
-            message.deploying = Boolean(object.deploying);
-        if (object.blockedAttacker != null)
-            message.blockedAttacker = String(object.blockedAttacker);
-        if (object.attackTarget != null)
-            message.attackTarget = String(object.attackTarget);
+        if (object.combat != null) {
+            if (typeof object.combat !== "object")
+                throw TypeError(".Card.combat: object expected");
+            message.combat = $root.Combat.fromObject(object.combat);
+        }
         return message;
     };
 
@@ -5787,6 +6028,7 @@ $root.Card = (function() {
             object.counters = [];
             object.targets = [];
             object.knowledgeCost = [];
+            object.types = [];
             object.subtypes = [];
         }
         if (options.defaults) {
@@ -5796,16 +6038,9 @@ $root.Card = (function() {
             object.marked = false;
             object.description = "";
             object.cost = "";
-            object.type = "";
-            object.health = 0;
             object.delay = 0;
             object.loyalty = 0;
-            object.shield = 0;
-            object.reflect = 0;
-            object.attack = 0;
-            object.deploying = false;
-            object.blockedAttacker = "";
-            object.attackTarget = "";
+            object.combat = null;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -5834,31 +6069,22 @@ $root.Card = (function() {
             for (var j = 0; j < message.knowledgeCost.length; ++j)
                 object.knowledgeCost[j] = $root.KnowledgeGroup.toObject(message.knowledgeCost[j], options);
         }
-        if (message.type != null && message.hasOwnProperty("type"))
-            object.type = message.type;
+        if (message.types && message.types.length) {
+            object.types = [];
+            for (var j = 0; j < message.types.length; ++j)
+                object.types[j] = message.types[j];
+        }
         if (message.subtypes && message.subtypes.length) {
             object.subtypes = [];
             for (var j = 0; j < message.subtypes.length; ++j)
                 object.subtypes[j] = message.subtypes[j];
         }
-        if (message.health != null && message.hasOwnProperty("health"))
-            object.health = message.health;
         if (message.delay != null && message.hasOwnProperty("delay"))
             object.delay = message.delay;
         if (message.loyalty != null && message.hasOwnProperty("loyalty"))
             object.loyalty = message.loyalty;
-        if (message.shield != null && message.hasOwnProperty("shield"))
-            object.shield = message.shield;
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            object.reflect = message.reflect;
-        if (message.attack != null && message.hasOwnProperty("attack"))
-            object.attack = message.attack;
-        if (message.deploying != null && message.hasOwnProperty("deploying"))
-            object.deploying = message.deploying;
-        if (message.blockedAttacker != null && message.hasOwnProperty("blockedAttacker"))
-            object.blockedAttacker = message.blockedAttacker;
-        if (message.attackTarget != null && message.hasOwnProperty("attackTarget"))
-            object.attackTarget = message.attackTarget;
+        if (message.combat != null && message.hasOwnProperty("combat"))
+            object.combat = $root.Combat.toObject(message.combat, options);
         return object;
     };
 
@@ -5892,7 +6118,6 @@ $root.Player = (function() {
      * @property {Array.<ICard>|null} [scrapyard] Player scrapyard
      * @property {Array.<ICard>|null} ["void"] Player void
      * @property {Array.<IKnowledgeGroup>|null} [knowledgePool] Player knowledgePool
-     * @property {number|null} [reflect] Player reflect
      * @property {number|null} [shield] Player shield
      * @property {number|null} [handSize] Player handSize
      * @property {number|null} [health] Player health
@@ -5999,14 +6224,6 @@ $root.Player = (function() {
     Player.prototype.knowledgePool = $util.emptyArray;
 
     /**
-     * Player reflect.
-     * @member {number} reflect
-     * @memberof Player
-     * @instance
-     */
-    Player.prototype.reflect = 0;
-
-    /**
      * Player shield.
      * @member {number} shield
      * @memberof Player
@@ -6054,15 +6271,15 @@ $root.Player = (function() {
     Player.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.userId != null && message.hasOwnProperty("userId"))
+        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
-        if (message.deckSize != null && message.hasOwnProperty("deckSize"))
+        if (message.deckSize != null && Object.hasOwnProperty.call(message, "deckSize"))
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.deckSize);
-        if (message.energy != null && message.hasOwnProperty("energy"))
+        if (message.energy != null && Object.hasOwnProperty.call(message, "energy"))
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.energy);
-        if (message.maxEnergy != null && message.hasOwnProperty("maxEnergy"))
+        if (message.maxEnergy != null && Object.hasOwnProperty.call(message, "maxEnergy"))
             writer.uint32(/* id 5, wireType 0 =*/40).int32(message.maxEnergy);
         if (message.hand != null && message.hand.length)
             for (var i = 0; i < message.hand.length; ++i)
@@ -6079,13 +6296,11 @@ $root.Player = (function() {
         if (message.knowledgePool != null && message.knowledgePool.length)
             for (var i = 0; i < message.knowledgePool.length; ++i)
                 $root.KnowledgeGroup.encode(message.knowledgePool[i], writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            writer.uint32(/* id 11, wireType 0 =*/88).int32(message.reflect);
-        if (message.shield != null && message.hasOwnProperty("shield"))
+        if (message.shield != null && Object.hasOwnProperty.call(message, "shield"))
             writer.uint32(/* id 12, wireType 0 =*/96).int32(message.shield);
-        if (message.handSize != null && message.hasOwnProperty("handSize"))
+        if (message.handSize != null && Object.hasOwnProperty.call(message, "handSize"))
             writer.uint32(/* id 13, wireType 0 =*/104).int32(message.handSize);
-        if (message.health != null && message.hasOwnProperty("health"))
+        if (message.health != null && Object.hasOwnProperty.call(message, "health"))
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.health);
         return writer;
     };
@@ -6160,9 +6375,6 @@ $root.Player = (function() {
                 if (!(message.knowledgePool && message.knowledgePool.length))
                     message.knowledgePool = [];
                 message.knowledgePool.push($root.KnowledgeGroup.decode(reader, reader.uint32()));
-                break;
-            case 11:
-                message.reflect = reader.int32();
                 break;
             case 12:
                 message.shield = reader.int32();
@@ -6268,9 +6480,6 @@ $root.Player = (function() {
                     return "knowledgePool." + error;
             }
         }
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            if (!$util.isInteger(message.reflect))
-                return "reflect: integer expected";
         if (message.shield != null && message.hasOwnProperty("shield"))
             if (!$util.isInteger(message.shield))
                 return "shield: integer expected";
@@ -6355,8 +6564,6 @@ $root.Player = (function() {
                 message.knowledgePool[i] = $root.KnowledgeGroup.fromObject(object.knowledgePool[i]);
             }
         }
-        if (object.reflect != null)
-            message.reflect = object.reflect | 0;
         if (object.shield != null)
             message.shield = object.shield | 0;
         if (object.handSize != null)
@@ -6392,7 +6599,6 @@ $root.Player = (function() {
             object.deckSize = 0;
             object.energy = 0;
             object.maxEnergy = 0;
-            object.reflect = 0;
             object.shield = 0;
             object.handSize = 0;
             object.health = 0;
@@ -6432,8 +6638,6 @@ $root.Player = (function() {
             for (var j = 0; j < message.knowledgePool.length; ++j)
                 object.knowledgePool[j] = $root.KnowledgeGroup.toObject(message.knowledgePool[j], options);
         }
-        if (message.reflect != null && message.hasOwnProperty("reflect"))
-            object.reflect = message.reflect;
         if (message.shield != null && message.hasOwnProperty("shield"))
             object.shield = message.shield;
         if (message.handSize != null && message.hasOwnProperty("handSize"))
@@ -6618,15 +6822,15 @@ $root.GameState = (function() {
     GameState.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.player != null && message.hasOwnProperty("player"))
+        if (message.player != null && Object.hasOwnProperty.call(message, "player"))
             $root.Player.encode(message.player, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.opponent != null && message.hasOwnProperty("opponent"))
+        if (message.opponent != null && Object.hasOwnProperty.call(message, "opponent"))
             $root.Player.encode(message.opponent, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.turnPlayer != null && message.hasOwnProperty("turnPlayer"))
+        if (message.turnPlayer != null && Object.hasOwnProperty.call(message, "turnPlayer"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.turnPlayer);
-        if (message.activePlayer != null && message.hasOwnProperty("activePlayer"))
+        if (message.activePlayer != null && Object.hasOwnProperty.call(message, "activePlayer"))
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.activePlayer);
         if (message.stack != null && message.stack.length)
             for (var i = 0; i < message.stack.length; ++i)
@@ -6640,7 +6844,7 @@ $root.GameState = (function() {
         if (message.canStudy != null && message.canStudy.length)
             for (var i = 0; i < message.canStudy.length; ++i)
                 writer.uint32(/* id 9, wireType 2 =*/74).string(message.canStudy[i]);
-        if (message.phase != null && message.hasOwnProperty("phase"))
+        if (message.phase != null && Object.hasOwnProperty.call(message, "phase"))
             writer.uint32(/* id 10, wireType 0 =*/80).int32(message.phase);
         if (message.attackers != null && message.attackers.length)
             for (var i = 0; i < message.attackers.length; ++i)
@@ -7302,7 +7506,7 @@ $root.LoadGame = (function() {
     LoadGame.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.filename != null && message.hasOwnProperty("filename"))
+        if (message.filename != null && Object.hasOwnProperty.call(message, "filename"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.filename);
         return writer;
     };
@@ -7489,7 +7693,7 @@ $root.RegisterGameConnection = (function() {
     RegisterGameConnection.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameID != null && message.hasOwnProperty("gameID"))
+        if (message.gameID != null && Object.hasOwnProperty.call(message, "gameID"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameID);
         return writer;
     };
@@ -7708,11 +7912,11 @@ $root.ClientMessage = (function() {
     ClientMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.joinQueue != null && message.hasOwnProperty("joinQueue"))
+        if (message.joinQueue != null && Object.hasOwnProperty.call(message, "joinQueue"))
             $root.JoinQueue.encode(message.joinQueue, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.registerGameConnection != null && message.hasOwnProperty("registerGameConnection"))
+        if (message.registerGameConnection != null && Object.hasOwnProperty.call(message, "registerGameConnection"))
             $root.RegisterGameConnection.encode(message.registerGameConnection, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
-        if (message.loadGame != null && message.hasOwnProperty("loadGame"))
+        if (message.loadGame != null && Object.hasOwnProperty.call(message, "loadGame"))
             $root.LoadGame.encode(message.loadGame, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
         return writer;
     };
@@ -7955,7 +8159,7 @@ $root.UpdateGameState = (function() {
     UpdateGameState.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
     };
@@ -8156,9 +8360,9 @@ $root.GameEnd = (function() {
     GameEnd.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.win != null && message.hasOwnProperty("win"))
+        if (message.win != null && Object.hasOwnProperty.call(message, "win"))
             writer.uint32(/* id 2, wireType 0 =*/16).bool(message.win);
         return writer;
     };
@@ -8372,7 +8576,7 @@ $root.OrderCards = (function() {
     OrderCards.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.cardsToOrder != null && message.cardsToOrder.length)
             for (var i = 0; i < message.cardsToOrder.length; ++i)
@@ -8645,11 +8849,11 @@ $root.SelectFrom = (function() {
     SelectFrom.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.messageType != null && message.hasOwnProperty("messageType"))
+        if (message.messageType != null && Object.hasOwnProperty.call(message, "messageType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.messageType);
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.selectionCount != null && message.hasOwnProperty("selectionCount"))
+        if (message.selectionCount != null && Object.hasOwnProperty.call(message, "selectionCount"))
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.selectionCount);
         if (message.candidates != null && message.candidates.length)
             for (var i = 0; i < message.candidates.length; ++i)
@@ -8657,7 +8861,7 @@ $root.SelectFrom = (function() {
         if (message.selectable != null && message.selectable.length)
             for (var i = 0; i < message.selectable.length; ++i)
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.selectable[i]);
-        if (message.upTo != null && message.hasOwnProperty("upTo"))
+        if (message.upTo != null && Object.hasOwnProperty.call(message, "upTo"))
             writer.uint32(/* id 6, wireType 0 =*/48).bool(message.upTo);
         return writer;
     };
@@ -8987,9 +9191,9 @@ $root.SelectXValue = (function() {
     SelectXValue.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.maxXValue != null && message.hasOwnProperty("maxXValue"))
+        if (message.maxXValue != null && Object.hasOwnProperty.call(message, "maxXValue"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.maxXValue);
         return writer;
     };
@@ -9203,7 +9407,7 @@ $root.SelectAttackers = (function() {
     SelectAttackers.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.possibleAttackers != null && message.possibleAttackers.length)
             for (var i = 0; i < message.possibleAttackers.length; ++i)
@@ -9439,7 +9643,7 @@ $root.SelectBlockers = (function() {
     SelectBlockers.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.possibleBlockers != null && message.possibleBlockers.length)
             for (var i = 0; i < message.possibleBlockers.length; ++i)
@@ -9693,14 +9897,14 @@ $root.AssignDamage = (function() {
     AssignDamage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.damageSource != null && message.hasOwnProperty("damageSource"))
+        if (message.damageSource != null && Object.hasOwnProperty.call(message, "damageSource"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.damageSource);
         if (message.possibleTargets != null && message.possibleTargets.length)
             for (var i = 0; i < message.possibleTargets.length; ++i)
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.possibleTargets[i]);
-        if (message.totalDamage != null && message.hasOwnProperty("totalDamage"))
+        if (message.totalDamage != null && Object.hasOwnProperty.call(message, "totalDamage"))
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.totalDamage);
         return writer;
     };
@@ -10018,21 +10222,21 @@ $root.ServerGameMessage = (function() {
     ServerGameMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.updateGameState != null && message.hasOwnProperty("updateGameState"))
+        if (message.updateGameState != null && Object.hasOwnProperty.call(message, "updateGameState"))
             $root.UpdateGameState.encode(message.updateGameState, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-        if (message.gameEnd != null && message.hasOwnProperty("gameEnd"))
+        if (message.gameEnd != null && Object.hasOwnProperty.call(message, "gameEnd"))
             $root.GameEnd.encode(message.gameEnd, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
-        if (message.orderCards != null && message.hasOwnProperty("orderCards"))
+        if (message.orderCards != null && Object.hasOwnProperty.call(message, "orderCards"))
             $root.OrderCards.encode(message.orderCards, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
-        if (message.selectFrom != null && message.hasOwnProperty("selectFrom"))
+        if (message.selectFrom != null && Object.hasOwnProperty.call(message, "selectFrom"))
             $root.SelectFrom.encode(message.selectFrom, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
-        if (message.selectXValue != null && message.hasOwnProperty("selectXValue"))
+        if (message.selectXValue != null && Object.hasOwnProperty.call(message, "selectXValue"))
             $root.SelectXValue.encode(message.selectXValue, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
-        if (message.selectAttackers != null && message.hasOwnProperty("selectAttackers"))
+        if (message.selectAttackers != null && Object.hasOwnProperty.call(message, "selectAttackers"))
             $root.SelectAttackers.encode(message.selectAttackers, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
-        if (message.selectBlockers != null && message.hasOwnProperty("selectBlockers"))
+        if (message.selectBlockers != null && Object.hasOwnProperty.call(message, "selectBlockers"))
             $root.SelectBlockers.encode(message.selectBlockers, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
-        if (message.assignDamage != null && message.hasOwnProperty("assignDamage"))
+        if (message.assignDamage != null && Object.hasOwnProperty.call(message, "assignDamage"))
             $root.AssignDamage.encode(message.assignDamage, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
         return writer;
     };
@@ -10390,7 +10594,7 @@ $root.LoginResponse = (function() {
     LoginResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.gameId != null && message.hasOwnProperty("gameId"))
+        if (message.gameId != null && Object.hasOwnProperty.call(message, "gameId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameId);
         return writer;
     };
@@ -10577,7 +10781,7 @@ $root.NewGame = (function() {
     NewGame.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.game != null && message.hasOwnProperty("game"))
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
     };
@@ -10792,9 +10996,9 @@ $root.ServerMessage = (function() {
     ServerMessage.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.loginResponse != null && message.hasOwnProperty("loginResponse"))
+        if (message.loginResponse != null && Object.hasOwnProperty.call(message, "loginResponse"))
             $root.LoginResponse.encode(message.loginResponse, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.newGame != null && message.hasOwnProperty("newGame"))
+        if (message.newGame != null && Object.hasOwnProperty.call(message, "newGame"))
             $root.NewGame.encode(message.newGame, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         return writer;
     };

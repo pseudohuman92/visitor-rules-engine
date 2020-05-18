@@ -70,7 +70,7 @@ public class Player implements Serializable {
         shield = 0;
 
         health -= damage;
-        if (source.combat.combatAbilittList.contains(Lifelink)){
+        if (source.combat.combatAbilityList.contains(Lifelink)){
             game.gainHealth(source.controller, damage);
         }
         if (health <= 0) {
