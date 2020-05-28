@@ -21,7 +21,7 @@ enum SelectFromType {
     LIST = 1;
     HAND = 3;
     PLAY = 4;
-    SCRAPYARD = 5;
+    DISCARD_PILE = 5;
     VOID = 6;
     STACK = 7;
 }
@@ -35,7 +35,7 @@ message Table
 
 enum Knowledge {
     NONE = 0;
-    BLACK = 1;
+    PURPLE = 1;
     GREEN = 2;
     RED = 3;
     BLUE = 4;
@@ -107,6 +107,7 @@ message Card {
     int32 delay = 13;
     int32 loyalty = 14;
     Combat combat = 16;
+    string set = 17;
 }
 
 message Player {
@@ -117,7 +118,7 @@ message Player {
     int32 maxEnergy = 5;
     repeated Card hand = 6;
     repeated Card play = 7;
-    repeated Card scrapyard = 8;
+    repeated Card discardPile = 8;
     repeated Card void = 9;
     repeated KnowledgeGroup knowledgePool = 10;
     int32 shield = 12;

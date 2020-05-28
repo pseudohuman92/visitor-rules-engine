@@ -5,13 +5,14 @@
  */
 package com.visitor.card.types;
 
+import com.visitor.card.Card;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
 import com.visitor.card.properties.Triggering;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Game;
-import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 
 import static com.visitor.game.Event.playersTurnStart;
@@ -25,11 +26,11 @@ public abstract class Ally extends Card {
 
 
     public int delayCounter;
-    public AbilityCard delayedAbility;
+    public Ability delayedAbility;
     public int loyalty;
 
     public Ally(Game game, String name, int cost,
-                Hashmap<Types.Knowledge, Integer> knowledge,
+                CounterMap<Types.Knowledge> knowledge,
                 String text, int health, String owner) {
 
         super(game, name, knowledge, CardType.Ally, text, owner);

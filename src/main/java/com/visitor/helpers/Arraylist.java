@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -62,6 +63,15 @@ public class Arraylist<T> extends ArrayList<T> {
         for (int i = 0; i < size(); i++) {
             c.accept(get(i));
         }
+    }
+
+    public boolean hasOne (Predicate<? super T> predicate){
+        for (int i = 0; i < this.size(); i++) {
+            if (predicate.test(get(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
     public <R> List<? extends R> transform (Function<? super T, ? extends R> f){

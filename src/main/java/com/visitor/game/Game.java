@@ -1,13 +1,10 @@
 package com.visitor.game;
 
-import com.visitor.card.types.Card;
+import com.visitor.card.Card;
 import com.visitor.card.types.Junk;
-import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Hashmap;
-import com.visitor.helpers.Predicates;
-import com.visitor.helpers.UUIDHelper;
+import com.visitor.helpers.*;
+import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.ServerGameMessages.*;
-import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.*;
 import com.visitor.server.GameEndpoint;
 
@@ -16,12 +13,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
 import static com.visitor.game.Event.*;
 import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.helpers.UUIDHelper.toUUIDList;
@@ -396,12 +395,14 @@ public class Game implements Serializable {
                 return players.get(username).hand;
             case Play:
                 return players.get(username).playArea;
-            case Scrapyard:
-                return players.get(username).scrapyard;
+            case Discard_Pile:
+                return players.get(username).discardPile;
             case Void:
                 return players.get(username).voidPile;
             case Stack:
                 return stack;
+            case Opponent_Play:
+                return players.get(getOpponentName(username)).playArea;
             case Both_Play:
                 Arraylist<Card> total = new Arraylist<>();
                 total.addAll(players.get(username).playArea);
@@ -450,6 +451,12 @@ public class Game implements Serializable {
 
     public void purge(String username, UUID cardID) {
         players.get(username).voidPile.add(extractCard(cardID));
+    }
+
+    public void destroy(UUID targetId) {
+        Card c = getCard(targetId);
+        //addEvent(Event.destroy(getCard(sourceId), c));
+        c.destroy();
     }
 
     public void destroy(UUID sourceId, UUID targetId) {
@@ -548,11 +555,12 @@ public class Game implements Serializable {
         switch (zone) {
             case Hand:
                 return SelectFromType.HAND;
-            case Both_Play:
             case Play:
+            case Both_Play:
+            case Opponent_Play:
                 return SelectFromType.PLAY;
-            case Scrapyard:
-                return SelectFromType.SCRAPYARD;
+            case Discard_Pile:
+                return SelectFromType.DISCARD_PILE;
             case Void:
                 return SelectFromType.VOID;
             case Stack:
@@ -796,7 +804,7 @@ public class Game implements Serializable {
         return players.get(username).energy >= i;
     }
 
-    public boolean hasKnowledge(String username, Hashmap<Types.Knowledge, Integer> knowledge) {
+    public boolean hasKnowledge(String username, CounterMap<Knowledge> knowledge) {
         return players.get(username).hasKnowledge(knowledge);
     }
 
@@ -881,15 +889,16 @@ public class Game implements Serializable {
         return players.get(username).id;
     }
 
-    public void dealDamage(UUID sourceId, UUID targetId, int damage) {
+    public void dealDamage(UUID sourceId, UUID targetId, Damage damage) {
         String username = getUsername(targetId);
         Card source = getCard(sourceId);
         if (!username.isEmpty()) {
-            players.get(username).receiveDamage(damage, source);
+            players.get(username).receiveDamage(damage.amount, source);
         } else {
             Card c = getCard(targetId);
             if (c != null) {
-                c.dealDamage(damage, source);
+                c.receiveDamage(damage, source);
+
             }
         }
     }
@@ -911,10 +920,13 @@ public class Game implements Serializable {
     }
 
     public void gainHealth(String username, int health) {
-        players.get(username).health += health;
+        getPlayer(username).gainHealth(health);
+    }
+    public void gainHealth(UUID cardId, int health) {
+        getCard(cardId).gainHealth(health);
     }
 
-    public void dealDamageToAll(String username, UUID sourceId, int damage) {
+    public void dealDamageToAll(String username, UUID sourceId, Damage damage) {
         players.values().forEach(p -> dealDamage(sourceId, p.id, damage));
         getZone(username, Both_Play).forEach(c -> dealDamage(sourceId, c.id, damage));
     }
@@ -969,8 +981,19 @@ public class Game implements Serializable {
 
 
     private void dealCombatDamage() {
-        attackers.forEach(a -> getCard(a).dealAttackDamage());
-        blockers.forEach(b -> getCard(b).dealBlockDamage());
+        ArrayList<Card> firstStrikeAttackers = new Arraylist<>(getAll(attackers));
+        firstStrikeAttackers.removeIf(a->!a.hasCombatAbility(FirstStrike));
+        firstStrikeAttackers.forEach(a -> a.dealAttackDamage(true));
+
+        ArrayList<Card> normalAttackers = new Arraylist<>(getAll(attackers));
+        normalAttackers.removeIf(a->a.hasCombatAbility(FirstStrike));
+        ArrayList<Card> normalBlockers = new Arraylist<>(getAll(blockers));
+
+        normalAttackers.forEach(a -> a.dealAttackDamage(false));
+        normalBlockers.forEach(b -> b.dealBlockDamage());
+
+        normalAttackers.forEach(attacker -> attacker.maybeDieFromBlock());
+        normalBlockers.forEach(blocker -> blocker.maybeDieFromAttack());
     }
 
 
@@ -988,15 +1011,15 @@ public class Game implements Serializable {
         }
     }
 
-    public void assignDamage(UUID id, Arraylist<UUID> possibleTargets, int damage) {
+    public void assignDamage(UUID id, Arraylist<UUID> possibleTargets, Damage damage) {
         out.println("Updating players from assignDamage. AP: " + activePlayer);
         updatePlayers();
-        Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage);
+        Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage.amount);
         out.println("Damage distribution: " + assignedDamages);
         assignedDamages.forEach(c -> {
             UUID targetId = UUID.fromString(c.getTargetId());
             int assignedDamage = c.getDamage();
-            dealDamage(id, targetId, assignedDamage);
+            dealDamage(id, targetId, new Damage(assignedDamage, damage.mayKill));
         });
     }
 
@@ -1017,9 +1040,13 @@ public class Game implements Serializable {
         return null;
     }
 
+    public void returnAllCardsToHand() {
+        getZone("", Both_Play).forEach(card -> card.returnToHand());
+    }
+
 
     public enum Zone {
-        Deck, Hand, Play, Both_Play, Scrapyard, Void, Stack
+        Deck, Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Stack
     }
 
 }

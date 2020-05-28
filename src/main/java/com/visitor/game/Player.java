@@ -1,8 +1,8 @@
 package com.visitor.game;
 
-import com.visitor.card.types.Card;
+import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
@@ -27,10 +27,10 @@ public class Player implements Serializable {
     public int numOfStudiesLeft;
     public Deck deck;
     public Arraylist<Card> hand;
-    public Arraylist<Card> scrapyard;
+    public Arraylist<Card> discardPile;
     public Arraylist<Card> voidPile;
     public Arraylist<Card> playArea;
-    public Hashmap<Knowledge, Integer> knowledgePool;
+    public CounterMap<Knowledge> knowledgePool;
     public int health;
     public int shield;
 
@@ -46,10 +46,10 @@ public class Player implements Serializable {
         maxEnergy = 0;
         numOfStudiesLeft = 1;
         hand = new Arraylist<>();
-        scrapyard = new Arraylist<>();
+        discardPile = new Arraylist<>();
         voidPile = new Arraylist<>();
         playArea = new Arraylist<>();
-        knowledgePool = new Hashmap<>();
+        knowledgePool = new CounterMap<>();
         health = 30;
         shield = 0;
     }
@@ -84,7 +84,7 @@ public class Player implements Serializable {
 
     public Card discard(UUID cardId) {
         Card c = extractCardFromList(cardId, hand);
-        scrapyard.add(c);
+        discardPile.add(c);
         return c;
     }
 
@@ -93,7 +93,7 @@ public class Player implements Serializable {
         cardIds.stream().map((cardID) -> extractCardFromList(cardID, hand))
                 .forEachOrdered((card) -> {
                     discarded.add(card);
-                    scrapyard.add(card);
+                    discardPile.add(card);
                 });
         return discarded;
     }
@@ -122,12 +122,11 @@ public class Player implements Serializable {
         });
     }
 
-    public void addKnowledge(Hashmap<Knowledge, Integer> knowledge) {
-        knowledge.forEach((k, i) -> knowledgePool.merge(k, i, Integer::sum));
-
+    public void addKnowledge(CounterMap<Knowledge> knowledge) {
+            knowledgePool.merge(knowledge);
     }
 
-    public boolean hasKnowledge(Hashmap<Knowledge, Integer> cardKnowledge) {
+    public boolean hasKnowledge(CounterMap<Knowledge> cardKnowledge) {
         boolean result = true;
         for (Knowledge k : cardKnowledge.keySet()) {
             result = result && cardKnowledge.get(k) <= knowledgePool.getOrDefault(k, 0);
@@ -156,7 +155,7 @@ public class Player implements Serializable {
         Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
-        lists.add(scrapyard);
+        lists.add(discardPile);
         lists.add(voidPile);
         lists.add(deck);
         for (Arraylist<Card> list : lists) {
@@ -182,7 +181,7 @@ public class Player implements Serializable {
         Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
-        lists.add(scrapyard);
+        lists.add(discardPile);
         lists.add(voidPile);
         lists.add(deck);
         for (Arraylist<Card> list : lists) {
@@ -198,7 +197,7 @@ public class Player implements Serializable {
         Arraylist<Arraylist<Card>> lists = new Arraylist<>();
         lists.add(hand);
         lists.add(playArea);
-        lists.add(scrapyard);
+        lists.add(discardPile);
         lists.add(voidPile);
         lists.add(deck);
         for (Arraylist<Card> list : lists) {
@@ -222,7 +221,7 @@ public class Player implements Serializable {
                 .setHandSize(hand.size())
                 .setHealth(health)
                 .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
-                .addAllScrapyard(scrapyard.transform(c -> c.toCardMessage().build()))
+                .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()))
                 .addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));
 
         if (player){
@@ -236,6 +235,7 @@ public class Player implements Serializable {
     }
 
 
-
-
+    public void gainHealth(int health) {
+        this.health += health;
+    }
 }

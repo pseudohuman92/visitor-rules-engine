@@ -1,6 +1,6 @@
 package com.visitor.game;
 
-import com.visitor.card.types.Card;
+import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
 
 import java.lang.reflect.Constructor;
@@ -21,7 +21,7 @@ public class Deck extends Arraylist<Card> {
 
     public static Card createCard(Game game, String username, String cardName) {
         try {
-            Class<?> cardClass = forName("com.visitor.sets.testset." + cardName);
+            Class<?> cardClass = forName("com.visitor.sets." + cardName);
             Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
             Object card = cardConstructor.newInstance(game, username);
             return ((Card) card);
@@ -40,7 +40,6 @@ public class Deck extends Arraylist<Card> {
             int count = parseInt(tokens[0]);
             String name = tokens[1].replace(" ", "")
                     .replace("-", "")
-                    .replace(".", "")
                     .replace("'", "");
             for (int j = 0; j < count; j++) {
                 add(createCard(game, username, name));

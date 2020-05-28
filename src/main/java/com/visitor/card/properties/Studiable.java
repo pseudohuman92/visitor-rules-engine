@@ -1,8 +1,9 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.types.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
+import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.Types;
 
@@ -16,7 +17,7 @@ public class Studiable {
 
     private Supplier<Boolean> canStudy;
     private Consumer<Boolean> study;
-    private Supplier<Hashmap<Types.Knowledge, Integer>> getKnowledgeType;
+    private Supplier<CounterMap<Types.Knowledge>> getKnowledgeType;
 
     public Studiable(Game game, Card card) {
         this.card = card;
@@ -39,7 +40,7 @@ public class Studiable {
         study.accept(regular);
     }
 
-    public final Hashmap<Types.Knowledge, Integer> getKnowledgeType() {
+    public final CounterMap<Types.Knowledge> getKnowledgeType() {
         return getKnowledgeType.get();
     }
 
@@ -63,15 +64,15 @@ public class Studiable {
 
     public void setDefaultGetKnowledgeType() {
         getKnowledgeType = () -> {
-            Hashmap<Types.Knowledge, Integer> knowledgeType = new Hashmap<>();
-            card.knowledge.forEach((k, i) -> knowledgeType.putIn(k, 1));
+            CounterMap<Types.Knowledge> knowledgeType = new CounterMap<>();
+            card.knowledge.forEach((k, i) -> knowledgeType.add(k));
             return knowledgeType;
         };
     }
 
 
     //Setters
-    public Studiable setGetKnowledgeType(Supplier<Hashmap<Types.Knowledge, Integer>> getKnowledgeType) {
+    public Studiable setGetKnowledgeType(Supplier<CounterMap<Types.Knowledge>> getKnowledgeType) {
         this.getKnowledgeType = getKnowledgeType;
         return this;
     }

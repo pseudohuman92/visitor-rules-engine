@@ -59,8 +59,8 @@ public class GameEndpoint {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
                 //writeToLog(cgm);
-                out.println("Received Message");
-                out.println(cgm);
+                //out.println("Received Message");
+                //out.println(cgm);
                 if (waitingResponse) {
                     processResponse(cgm);
                 } else {
@@ -87,8 +87,8 @@ public class GameEndpoint {
         ServerGameMessage message = builder.build();
         //writeToLog(message);
         checkResponseType(message);
-        out.println("Sent Message");
-        out.println(message);
+        //out.println("Sent Message");
+        //out.println(message);
         session.getBasicRemote().sendObject(message.toByteArray());
     }
 

@@ -5,17 +5,18 @@
  */
 package com.visitor.card.types;
 
+import com.visitor.card.Card;
 import com.visitor.game.Game;
+import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
 
 /**
  * @author pseudo
  */
 public class Junk extends Card {
 
-    public Junk(Game g, String owner) {
-        super(g, "Junk", new Hashmap<>(), CardType.Junk, "Junk can't be played or studied.", owner);
+    public Junk(Game game, String owner) {
+        super(game, "Junk", new CounterMap<>(), CardType.Junk, "Junk can't be played or studied.", owner);
     }
 
 }

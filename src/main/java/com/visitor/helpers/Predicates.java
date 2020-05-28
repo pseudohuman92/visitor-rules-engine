@@ -5,9 +5,10 @@
  */
 package com.visitor.helpers;
 
-import com.visitor.card.types.*;
+import com.visitor.card.Card;
 import com.visitor.game.Player;
 
+import static com.visitor.card.Card.CardType.*;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -15,28 +16,28 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public abstract class Predicates {
 
-    public static boolean isAsset(Card c) {
-        return c.types.contains(Card.CardType.Asset);
+    public static boolean isAsset(Card card) {
+        return card.hasType(Asset);
     }
 
-    public static boolean isSpell(Card c) {
-
-        return c.types.contains(Card.CardType.Spell);
+    public static boolean isSpell(Card card) {
+        return card.hasType(Spell);
     }
 
-    public static boolean isRitual(Card c) {
-
-        return c.types.contains(Card.CardType.Ritual);
+    public static boolean isRitual(Card card) {
+        return card.hasType(Ritual);
     }
 
-    public static boolean isAlly(Card c) {
-
-        return c.types.contains(Card.CardType.Ally);
+    public static boolean isAlly(Card card) {
+        return card.hasType(Ally);
     }
 
-    public static boolean isJunk(Card c) {
+    public static boolean isJunk(Card card) {
+        return card.hasType(Junk);
+    }
 
-        return c.types.contains(Card.CardType.Junk);
+    public static boolean isUnit(Card card) {
+        return card.hasType(Unit);
     }
 
     public static boolean isDamageable(Card c) {
@@ -62,5 +63,6 @@ public abstract class Predicates {
     public static boolean none(Object o) {
         return false;
     }
+
 
 }

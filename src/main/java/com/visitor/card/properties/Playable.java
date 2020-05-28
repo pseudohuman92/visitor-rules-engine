@@ -1,8 +1,7 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.types.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Game;
-import com.visitor.protocol.Types;
 
 import java.util.function.Supplier;
 
@@ -10,7 +9,7 @@ import static com.visitor.game.Game.Zone.*;
 
 public class Playable {
 
-    private Card card;
+    public Card card;
     private Game game;
 
     private int cost;
@@ -80,7 +79,7 @@ public class Playable {
     }
 
     public Playable setEphemeral() {
-        resolvePlaceCard = () -> game.putTo(card.controller, card, Scrapyard);
+        resolvePlaceCard = () -> game.putTo(card.controller, card, Discard_Pile);
         return this;
     }
 
