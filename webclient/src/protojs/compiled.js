@@ -3615,7 +3615,7 @@ $root.Table = (function() {
  * @exports Knowledge
  * @enum {number}
  * @property {number} NONE=0 NONE value
- * @property {number} BLACK=1 BLACK value
+ * @property {number} PURPLE=1 PURPLE value
  * @property {number} GREEN=2 GREEN value
  * @property {number} RED=3 RED value
  * @property {number} BLUE=4 BLUE value
@@ -3624,7 +3624,7 @@ $root.Table = (function() {
 $root.Knowledge = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NONE"] = 0;
-    values[valuesById[1] = "BLACK"] = 1;
+    values[valuesById[1] = "PURPLE"] = 1;
     values[valuesById[2] = "GREEN"] = 2;
     values[valuesById[3] = "RED"] = 3;
     values[valuesById[4] = "BLUE"] = 4;
@@ -3811,7 +3811,7 @@ $root.KnowledgeGroup = (function() {
         case 0:
             message.knowledge = 0;
             break;
-        case "BLACK":
+        case "PURPLE":
         case 1:
             message.knowledge = 1;
             break;
@@ -5551,6 +5551,7 @@ $root.Card = (function() {
      * @property {number|null} [delay] Card delay
      * @property {number|null} [loyalty] Card loyalty
      * @property {ICombat|null} [combat] Card combat
+     * @property {string|null} [set] Card set
      */
 
     /**
@@ -5686,6 +5687,14 @@ $root.Card = (function() {
     Card.prototype.combat = null;
 
     /**
+     * Card set.
+     * @member {string} set
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.set = "";
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -5742,6 +5751,8 @@ $root.Card = (function() {
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.loyalty);
         if (message.combat != null && Object.hasOwnProperty.call(message, "combat"))
             $root.Combat.encode(message.combat, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+        if (message.set != null && Object.hasOwnProperty.call(message, "set"))
+            writer.uint32(/* id 17, wireType 2 =*/138).string(message.set);
         return writer;
     };
 
@@ -5827,6 +5838,9 @@ $root.Card = (function() {
                 break;
             case 16:
                 message.combat = $root.Combat.decode(reader, reader.uint32());
+                break;
+            case 17:
+                message.set = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -5931,6 +5945,9 @@ $root.Card = (function() {
             if (error)
                 return "combat." + error;
         }
+        if (message.set != null && message.hasOwnProperty("set"))
+            if (!$util.isString(message.set))
+                return "set: string expected";
         return null;
     };
 
@@ -6008,6 +6025,8 @@ $root.Card = (function() {
                 throw TypeError(".Card.combat: object expected");
             message.combat = $root.Combat.fromObject(object.combat);
         }
+        if (object.set != null)
+            message.set = String(object.set);
         return message;
     };
 
@@ -6041,6 +6060,7 @@ $root.Card = (function() {
             object.delay = 0;
             object.loyalty = 0;
             object.combat = null;
+            object.set = "";
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -6085,6 +6105,8 @@ $root.Card = (function() {
             object.loyalty = message.loyalty;
         if (message.combat != null && message.hasOwnProperty("combat"))
             object.combat = $root.Combat.toObject(message.combat, options);
+        if (message.set != null && message.hasOwnProperty("set"))
+            object.set = message.set;
         return object;
     };
 

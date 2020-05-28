@@ -16,6 +16,10 @@ export function debugPrint() {
   }
 }
 
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export function spliceToSubarrays(arr, len) {
   let res = [];
   for (let i = 0; i * len < arr.length; i++) {
@@ -26,7 +30,7 @@ export function spliceToSubarrays(arr, len) {
 
 //Deep copy function
 export function copy(o) {
-  var output, v, key;
+  let output, v, key;
   output = Array.isArray(o) ? [] : {};
   for (key in o) {
     v = o[key];
@@ -36,9 +40,9 @@ export function copy(o) {
 }
 
 export function toIconString(s) {
-  var line = "";
-  for (var i = 0; i < s.length; i++) {
-    var c = s.charAt(i);
+  let line = "";
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charAt(i);
     line += c;
   }
   return line;
@@ -48,7 +52,7 @@ export function getIconColor(knowledgeCost) {
   if (!knowledgeCost || knowledgeCost.length === 0) {
     return "gray";
   }
-  var knowlString = toKnowledgeString(knowledgeCost);
+  const knowlString = toKnowledgeString(knowledgeCost);
   if (knowlString.startsWith("B")) {
     return "black";
   } else if (knowlString.startsWith("U")) {
@@ -141,7 +145,7 @@ export function getCardColor(knowledgeCost) {
     return "orange";
   }
 
-  var knowlString = toKnowledgeString(knowledgeCost);
+  const knowlString = toKnowledgeString(knowledgeCost);
   if (knowlString.startsWith("B")) {
     return "dimgray";
   } else if (knowlString.startsWith("U")) {
@@ -158,13 +162,13 @@ export function getCardColor(knowledgeCost) {
 }
 
 export function toKnowledgeString(knowledgeCost) {
-  var str = "";
+  let str = "";
   if (!knowledgeCost){
     return str
   }
 
-  for (var i = 0; i < knowledgeCost.length; i++) {
-    for (var j = 0; j < knowledgeCost[i].count; j++) {
+  for (let i = 0; i < knowledgeCost.length; i++) {
+    for (let j = 0; j < knowledgeCost[i].count; j++) {
       str = str + knowledgeMap[knowledgeCost[i].knowledge];
     }
   }
@@ -172,12 +176,12 @@ export function toKnowledgeString(knowledgeCost) {
 }
 
 export function toKnowledgeCost(knowledgeString) {
-  var cost = {};
+  const cost = {};
 
-  for (var i = 0; i < knowledgeString.length; i++) {
-    var c = knowledgeString.charAt(i);
+  for (let i = 0; i < knowledgeString.length; i++) {
+    const c = knowledgeString.charAt(i);
     if (c in knowledgeMap) {
-      var v = knowledgeMap[c];
+      const v = knowledgeMap[c];
       if (v in cost) {
         cost[v] += 1;
       } else {
@@ -186,15 +190,15 @@ export function toKnowledgeCost(knowledgeString) {
     }
   }
 
-  var res = [];
-  for (var k in cost) {
+  const res = [];
+  for (let k in cost) {
     res.push({ knowledge: parseInt(k), count: cost[k] });
   }
   return res;
 }
 
 export function delayClick(onClick, onDoubleClick, delay) {
-  var timeoutID = null;
+  let timeoutID = null;
   delay = delay || 200;
   return event => {
     if (!timeoutID) {
@@ -234,7 +238,7 @@ export function compareCardsByKnowledge (a, b){
 }
 
 export function toFullCards(collection) {
-  var col = {};
+  const col = {};
   Object.keys(collection).forEach(key => {
     col[key] = fullCollection[key];
   });

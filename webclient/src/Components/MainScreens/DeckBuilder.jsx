@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 
 import { withFirebase } from "../Firebase";
 import CardDisplay from "../Card/CardDisplay";
-import { fullCollection } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
 import { toFullCards, compareCardsByKnowledge } from "../Helpers/Helpers";
 
@@ -58,9 +57,9 @@ class DeckBuilder extends React.Component {
   }
 
   addToDeck = cardName => {
-    var collection = this.props.collection;
-    var deck = this.state.deck;
-    if (collection[cardName] - (deck[cardName] ? deck[cardName] : 0) > 0) {
+      const collection = this.props.collection;
+      const deck = this.state.deck;
+      if (collection[cardName] - (deck[cardName] ? deck[cardName] : 0) > 0) {
       if (deck[cardName]) {
         deck[cardName]++;
       } else {
@@ -71,8 +70,8 @@ class DeckBuilder extends React.Component {
   };
 
   removeFromDeck = cardName => {
-    var deck = this.state.deck;
-    if (deck[cardName] === 1) {
+      const deck = this.state.deck;
+      if (deck[cardName] === 1) {
       delete deck[cardName];
     } else {
       deck[cardName]--;
@@ -124,16 +123,16 @@ class DeckBuilder extends React.Component {
               (card, i) =>
                 card && (
                   <Grid item key={i} xs={2}>
-                    <center>
+                    <center style="text-align: center; text-align: center;">
                       {" "}
-                      {collection[card.name] -
-                        (deck[card.name] ? deck[card.name] : 0)}{" "}
+                      {collection[card.set+"."+card.name] -
+                        (deck[card.set+"."+card.name] ? deck[card.set+"."+card.name] : 0)}{" "}
                     </center>
                     <CardDisplay
-                      onClick={() => this.addToDeck(card.name)}
+                      onClick={() => this.addToDeck(card.set+"."+card.name)}
                       opacity={
-                        collection[card.name] -
-                          (deck[card.name] ? deck[card.name] : 0) >
+                        collection[card.set+"."+card.name] -
+                          (deck[card.set+"."+card.name] ? deck[card.set+"."+card.name] : 0) >
                         0
                           ? 1
                           : 0.5
@@ -165,10 +164,10 @@ class DeckBuilder extends React.Component {
                 .sort(compareCardsByKnowledge)
                 .map((card, i) => (
                   <GridListTile key={i} cols={1}>
-                    <Center>{deck[card.name]}</Center>
+                    <Center>{deck[card.set+"."+card.name]}</Center>
                     <CardDisplay
                       small
-                      onClick={() => this.removeFromDeck(card.name)}
+                      onClick={() => this.removeFromDeck(card.set+"."+card.name)}
                       cardData={card}
                       windowDimensions={windowDimensions}
                     />

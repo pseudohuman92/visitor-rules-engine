@@ -30,12 +30,12 @@ export enum ClientPhase {
 }
 
 export const knowledgeMap: any = {};
-knowledgeMap[proto.Knowledge.BLACK] = "B";
+knowledgeMap[proto.Knowledge.PURPLE] = "P";
 knowledgeMap[proto.Knowledge.GREEN] = "G";
 knowledgeMap[proto.Knowledge.RED] = "R";
 knowledgeMap[proto.Knowledge.BLUE] = "U";
 knowledgeMap[proto.Knowledge.YELLOW] = "Y";
-knowledgeMap["B"] = proto.Knowledge.BLACK;
+knowledgeMap["P"] = proto.Knowledge.PURPLE;
 knowledgeMap["U"] = proto.Knowledge.BLUE;
 knowledgeMap["R"] = proto.Knowledge.RED;
 knowledgeMap["G"] = proto.Knowledge.GREEN;
@@ -230,7 +230,7 @@ export function initialState(): State {
 }
 
 const initializeFullCollection = () => {
-  var result: any = {};
+  const result: any = {};
   fetch("/Visitor Cards - Cards.json")
     .then(r => r.text())
     .then(file =>
@@ -240,7 +240,8 @@ const initializeFullCollection = () => {
           name !== "" //&&
           //!card.Code.startsWith("Code") //&& !card.Code.startsWith("A")
         ) {
-          result[name] = {
+          result[card.Set+"."+name] = {
+            set: card.Set,
             name: name,
             types: [card.Type],
             description: card.Effect,

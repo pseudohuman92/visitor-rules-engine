@@ -75,8 +75,8 @@ class DeckSelection extends React.Component {
   };
 
   toDecklist = deck => {
-    var decklist = [];
-    Object.keys(deck).forEach(cardName => {
+      const decklist = [];
+      Object.keys(deck).forEach(cardName => {
       let count = deck[cardName];
       if (count <= 3 && count > 0) {
         decklist.push("" + count + ";" + cardName);

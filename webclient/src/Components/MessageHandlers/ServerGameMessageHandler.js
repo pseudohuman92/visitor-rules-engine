@@ -7,7 +7,7 @@ import {
   initialDamageAssignmentData,
   initialDialogData
 } from "../Helpers/Constants";
-import { toClientPhase, toSelectFromType } from "../Helpers/Helpers";
+import {sleep, toClientPhase, toSelectFromType} from "../Helpers/Helpers";
 import { GetGameURL } from "../Helpers/Helpers";
 import { Phase } from "../../protojs/compiled";
 
@@ -123,7 +123,7 @@ export default class ServerGameMessageHandler {
   };
 
     //This is a message handler for ServerGameMessage messages
-    handleMsg = (msgType, params) => {
+    handleMsg = async (msgType, params) => {
       // XXX Remember to update this with the protocol updates
       let newExtendedState = {};
       let selectionData = {};
@@ -135,9 +135,9 @@ export default class ServerGameMessageHandler {
           selectionData["selectable"] = params.selectable;
           selectionData["upTo"] = params.upTo;
           if (
-            newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_LIST ||
-            newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_SCRAPYARD ||
-            newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_VOID
+              newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_LIST ||
+              newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_SCRAPYARD ||
+              newExtendedState["clientPhase"] === ClientPhase.SELECT_FROM_VOID
           ) {
             newExtendedState["dialogData"] = {
               open: true,
@@ -161,36 +161,36 @@ export default class ServerGameMessageHandler {
           break;
         case "SelectAttackers":
           newExtendedState["attackerAssignmentData"] = {
-            possibleAttackers : params.possibleAttackers
+            possibleAttackers: params.possibleAttackers
           };
           break;
         case "SelectBlockers":
           newExtendedState["blockerAssignmentData"] = {
-            possibleBlockers : params.possibleBlockers
+            possibleBlockers: params.possibleBlockers
           };
           break;
         case "AssignDamage":
           newExtendedState["damageAssignmentData"] = {
-            damageSource : params.damageSource,
-            possibleTargets : params.possibleTargets,
-            totalDamage : params.totalDamage
+            damageSource: params.damageSource,
+            possibleTargets: params.possibleTargets,
+            totalDamage: params.totalDamage
           };
           break;
         default:
-          let game  = params.game;
+          let game = params.game;
           if (
-            game.phase !== Phase.REDRAW &&
-            game.activePlayer === game.player.userId &&
-            game.canStudy.length === 0 &&
-            game.canActivate.length === 0 &&
-            game.canPlay.length === 0
+              game.phase !== Phase.REDRAW &&
+              game.activePlayer === game.player.userId &&
+              game.canStudy.length === 0 &&
+              game.canActivate.length === 0 &&
+              game.canPlay.length === 0
           ) {
             setTimeout(this.Pass, 500);
           }
           if (
-            game.phase === Phase.REDRAW &&
-            game.activePlayer === game.player.userId &&
-            game.player.hand.length === 0
+              game.phase === Phase.REDRAW &&
+              game.activePlayer === game.player.userId &&
+              game.player.hand.length === 0
           ) {
             this.Keep();
           }
@@ -203,7 +203,7 @@ export default class ServerGameMessageHandler {
         newExtendedState["gameInitialized"] = true;
         this.continueGame = false;
       }
-  
+
       this.updateExtendedGameState(newExtendedState);
     };
 }

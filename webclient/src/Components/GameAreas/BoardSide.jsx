@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
 
 import PlayingCard from "../Card/PlayingCard";
-import { ItemTypes } from "../Helpers/Constants";
 
 import "../../css/Utils.css";
 

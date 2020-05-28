@@ -1,8 +1,7 @@
 import React from "react";
 import { PureComponent } from "react";
 
-import { getCardColor, toKnowledgeString } from "../Helpers/Helpers";
-import Fonts from "../Primitives/Fonts";
+import { toKnowledgeString } from "../Helpers/Helpers";
 import "./css/Card.css";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
@@ -22,6 +21,7 @@ class FullCard extends PureComponent {
     } = this.props;
 
     const {
+      set,
       name,
       description,
       cost,
@@ -76,9 +76,8 @@ class FullCard extends PureComponent {
             <img
               src={
                 process.env.PUBLIC_URL +
-                "/img/placeholders/" +
-                types[0] +
-                ".png"
+                "/img/sets/" + set + "/"
+                 + name + ".jpg"
               }
               style={
                 square

@@ -72,7 +72,6 @@ class Firebase {
           });
           transaction.update(collectionRef, { cards: collection });
           transaction.update(userRef, { packs: packs });
-          return;
         });
       });
     });
@@ -96,7 +95,6 @@ class Firebase {
         }
         coins -= cost;
         transaction.update(userRef, { packs: packs, coins: coins });
-        return;
       });
     });
   };
@@ -260,9 +258,8 @@ class Firebase {
           } else {
             collection[cardName] += 1;
           }
-          transaction.update(collectionRef, { cards: collection });
-          transaction.update(userRef, { dust: dust });
-          return;
+          transaction.update(collectionRef, {cards: collection});
+          transaction.update(userRef, {dust: dust});
         });
       });
     });
@@ -288,7 +285,6 @@ class Firebase {
           }
           transaction.update(collectionRef, { cards: collection });
           transaction.update(userRef, { dust: dust });
-          return;
         });
       });
     });

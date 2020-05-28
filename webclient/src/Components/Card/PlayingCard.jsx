@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import TextField from "@material-ui/core/TextField";
-
 import CardDisplay from "./CardDisplay";
 import { keywords, ClientPhase } from "../Helpers/Constants";
 
@@ -34,8 +32,8 @@ const mapStateToProps = (state) => {
 class PlayingCard extends React.Component {
   constructor(props) {
     super(props);
-    var relations = this.getArrowRelations();
-    this.state = {
+      const relations = this.getArrowRelations();
+      this.state = {
       popoverStyle: { display: "none", width: 0 },
       arrowRelations: relations,
       showArrows: false,
@@ -75,10 +73,10 @@ class PlayingCard extends React.Component {
 
   handlePopoverOpen = (event) => {
     const { width, height } = this.props.windowDimensions;
-    var rect = event.currentTarget.getBoundingClientRect();
+      const rect = event.currentTarget.getBoundingClientRect();
 
-    var style = {};
-    style["width"] = width / 5;
+      const style = {};
+      style["width"] = width / 5;
     style["height"] = (width / 5) * (88 / 63);
     style["display"] = "flex";
     style["textAlign"] = "left";
@@ -394,11 +392,11 @@ class PlayingCard extends React.Component {
     const damageAssignmentData = this.props.damageAssignmentData;
 
     const totalDamage = damageAssignmentData.totalDamage;
-    var totalAssignedDamage = damageAssignmentData.totalAssignedDamage;
-    const canAssignMore = totalDamage > totalAssignedDamage;
-    var damageAssignments = [...damageAssignmentData.damageAssignments];
+      let totalAssignedDamage = damageAssignmentData.totalAssignedDamage;
+      const canAssignMore = totalDamage > totalAssignedDamage;
+      const damageAssignments = [...damageAssignmentData.damageAssignments];
 
-    const damageAssignmentIndex = damageAssignments
+      const damageAssignmentIndex = damageAssignments
       .map((a) => {
         return a.targetId;
       })
@@ -540,8 +538,8 @@ class PlayingCard extends React.Component {
     const assignedDamage = damageAssignment ? damageAssignment.damage : 0;
 
     //Highlighting
-    var borderColor = "";
-    if (
+      let borderColor = "";
+      if (
       canAttack ||
       canBeAttacked ||
       canBlock ||
@@ -586,13 +584,13 @@ class PlayingCard extends React.Component {
     }
 
     //Deployed and depleted visual indicators
-    var opacity = 1;
-    if (combat && combat.deploying) {
+      let opacity = 1;
+      if (combat && combat.deploying) {
       opacity = 0.5;
     }
 
-    var rotation = "rotate(0deg)";
-    if (depleted) {
+      let rotation = "rotate(0deg)";
+      if (depleted) {
       rotation = "rotate(7.5deg)";
     }
 

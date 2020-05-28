@@ -51,8 +51,8 @@ class OpenPacks extends Component {
   };
 
   generatePack = (size, unique) => {
-    var result = [];
-    for (var i = 0; i < size; i++) {
+      const result = [];
+      for (let i = 0; i < size; i++) {
       let c = this.generateRandomCard();
       if (unique && result.includes(c)) {
         i--;

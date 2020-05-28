@@ -3,9 +3,7 @@ import { PureComponent } from "react";
 import { connect } from "react-redux";
 
 import PlayingCard from "../Card/PlayingCard";
-import Fanner from "../Primitives/Fanner";
 import { Droppable } from "react-beautiful-dnd";
-import { debugPrint } from "../Helpers/Helpers";
 import CardDisplay from "../Card/CardDisplay";
 
 const mapStateToProps = state => {

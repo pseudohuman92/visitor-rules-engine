@@ -13,7 +13,6 @@ import { ClientPhase } from "../Helpers/Constants";
 import { Droppable } from "react-beautiful-dnd";
 
 import "../../css/ChooseDialog.css";
-import { debugPrint } from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
   return {

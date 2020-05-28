@@ -12,10 +12,8 @@ class CraftableCard extends PureComponent {
   state = { showDialog: false };
 
   openDialog = event => {
-
-      if (event.ctrlKey) {
-        this.setState({ showDialog: true });
-      } else if (this.props.onClick) {
+      this.setState({ showDialog: true });
+      if (this.props.onClick) {
         this.props.onClick(event);
       }
   };
@@ -50,7 +48,7 @@ class CraftableCard extends PureComponent {
                   {"Dust: -"+ craftCost}
                 </Grid>
               <Grid item xs={8}>
-                <center>{count}</center>
+                <center style="text-align: center; text-align: center;">{count}</center>
                 <CardDisplay cardData={cardData}  opacity="1" windowDimensions={windowDimensions}/>
               </Grid>
                 <Grid item xs={2}>

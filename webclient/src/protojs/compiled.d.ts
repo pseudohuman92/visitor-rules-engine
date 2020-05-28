@@ -1527,7 +1527,7 @@ export class Table implements ITable {
 /** Knowledge enum. */
 export enum Knowledge {
     NONE = 0,
-    BLACK = 1,
+    PURPLE = 1,
     GREEN = 2,
     RED = 3,
     BLUE = 4,
@@ -2293,6 +2293,9 @@ export class Card implements ICard {
 
     /** Card combat. */
     public combat?: (ICombat|null);
+
+    /** Card set. */
+    public set: string;
 
     /**
      * Creates a new Card instance using the specified properties.
