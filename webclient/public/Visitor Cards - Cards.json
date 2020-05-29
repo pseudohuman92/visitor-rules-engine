@@ -107,7 +107,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "X"
   },
   {
     "Set": "base",
@@ -228,7 +228,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "X"
   },
   {
     "Set": "base",
@@ -371,7 +371,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "X"
   },
   {
     "Set": "base",
@@ -514,7 +514,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "X"
   },
   {
     "Set": "base",
@@ -657,7 +657,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "X"
   },
   {
     "Set": "base",
@@ -790,5 +790,192 @@
     "Health": 6,
     "Energy": 5,
     "Knowledge": "YYY"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "C01",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "Flying, First Strike",
+    "Attack": 2,
+    "Health": 1,
+    "Energy": 4,
+    "Knowledge": ""
+  },
+  {
+    "Set": "base",
+    "Name": "C02",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": 2,
+    "Health": 1,
+    "Energy": 2,
+    "Knowledge": ""
+  },
+  {
+    "Set": "base",
+    "Name": "C03",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "Defender",
+    "Attack": 3,
+    "Health": 3,
+    "Energy": 3,
+    "Knowledge": ""
+  },
+  {
+    "Set": "base",
+    "Name": "C04",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "Defender",
+    "Attack": 0,
+    "Health": 4,
+    "Energy": 1,
+    "Knowledge": ""
+  },
+  {
+    "Set": "base",
+    "Name": "C05",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": 4,
+    "Health": 4,
+    "Energy": 5,
+    "Knowledge": ""
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "UR01",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Return up to 3 target units to their controller's hands.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 6,
+    "Knowledge": "UU"
+  },
+  {
+    "Set": "base",
+    "Name": "UR02",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Draw 2 cards",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "U"
+  },
+  {
+    "Set": "base",
+    "Name": "UR03",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Up to 2 target units gain unblockable until end of turn.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "U"
+  },
+  {
+    "Set": "base",
+    "Name": "UR04",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Return all cards to their controller's hands.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 6,
+    "Knowledge": "UUU"
+  },
+  {
+    "Set": "base",
+    "Name": "UR05",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Draw 3 cards. \nDiscard 1 card,",
+    "Attack": "",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "U"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "GR01",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Target unit you control strikes target unit you don't control.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "G"
+  },
+  {
+    "Set": "base",
+    "Name": "GR02",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Return target card from your discard pile to your hand.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "G"
+  },
+  {
+    "Set": "base",
+    "Name": "GR03",
+    "Type": "Ritual",
+    "Subtype": "",
+    "Effect": "Units you control gains +3 /+3 and trample until end of turn.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 5,
+    "Knowledge": "GGG"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
   }
 ]

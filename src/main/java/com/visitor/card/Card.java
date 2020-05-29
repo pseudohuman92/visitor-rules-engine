@@ -16,8 +16,8 @@ import java.io.Serializable;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import static com.visitor.game.Game.Zone.Hand;
 import static com.visitor.game.Game.Zone.Discard_Pile;
+import static com.visitor.game.Game.Zone.Hand;
 import static java.util.UUID.randomUUID;
 
 /**
@@ -96,10 +96,10 @@ public abstract class Card implements Serializable {
         depleted = true;
     }
 
-    public void ready() {
+    public void newTurn() {
         depleted = false;
         if (combat != null)
-            combat.ready();
+            combat.newTurn();
     }
 
     /**
@@ -189,6 +189,18 @@ public abstract class Card implements Serializable {
         runIfNotNull(combat, () -> combat.receiveDamage(damage, source));
     }
 
+    public void heal(int healAmount) {
+        runIfNotNull(combat, () -> combat.heal(healAmount));
+    }
+
+    public final int getAttack() {
+        return runIfNotNull(combat, () -> combat.getAttack());
+    }
+
+    public void gainHealth(int health) {
+        runIfNotNull(combat, () -> combat.gainHealth(health));
+    }
+
     public final void setAttacking(UUID attacker) {
         runIfNotNull(combat, () -> combat.setAttacking(attacker));
     }
@@ -253,25 +265,6 @@ public abstract class Card implements Serializable {
             combat.unsetBlocking();
         } else {
             System.out.println("Trying to unset blocking of a non-combat card!");
-            System.out.println(toCardMessage().toString());
-        }
-    }
-
-    public final int getAttack() {
-        if (combat != null) {
-            return combat.attack;
-        } else {
-            System.out.println("Trying to check death of a non-combat card!");
-            System.out.println(toCardMessage().toString());
-            return -1;
-        }
-    }
-
-    public void gainHealth(int health) {
-        if (combat != null) {
-            combat.gainHealth(health);
-        } else {
-            System.out.println("Trying to gain health of a non-combat card!");
             System.out.println(toCardMessage().toString());
         }
     }
@@ -359,7 +352,7 @@ public abstract class Card implements Serializable {
     }
 
     public final boolean isAttacking() {
-        return combat != null && combat.attackTarget != null;
+        return combat != null && combat.isAttacking();
     }
 
     public final boolean hasCombatAbility(Combat.CombatAbility combatAbility) {
@@ -402,6 +395,24 @@ public abstract class Card implements Serializable {
     public UUID getId() {
         return id;
     }
+
+    public void addTurnlyCombatAbility(Combat.CombatAbility combatAbility) {
+        runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
+    }
+
+    public void endTurn() {
+        if (combat != null)
+            combat.endTurn();
+    }
+
+    public void addTurnlyAttack(int attack) {
+        runIfNotNull(combat, ()-> combat.addTurnlyAttack(attack));
+    }
+
+    public void addTurnlyHealth(int health) {
+        runIfNotNull(combat, () -> combat.addTurnlyHealth(health));
+    }
+
 
     public enum CardType {
         Ally,

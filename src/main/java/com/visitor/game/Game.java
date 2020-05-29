@@ -307,7 +307,7 @@ public class Game implements Serializable {
             processEndEvents();
             //TODO: figure out logic here
         }
-        players.values().forEach(p -> p.resetShields());
+        players.values().forEach(p -> p.endTurn());
         if (players.get(turnPlayer).hand.size() > 7) {
             discard(turnPlayer, players.get(turnPlayer).hand.size() - 7);
 
@@ -324,7 +324,6 @@ public class Game implements Serializable {
         passCount = 0;
         players.get(turnPlayer).draw(1);
         players.get(turnPlayer).newTurn();
-        players.get(getOpponentName(turnPlayer)).resetShields();
         turnCount++;
         processBeginEvents();
     }
@@ -490,7 +489,7 @@ public class Game implements Serializable {
     }
 
     public void ready(UUID id) {
-        getCard(id).ready();
+        getCard(id).newTurn();
     }
 
     public boolean ownedByOpponent(UUID targetID) {
@@ -499,11 +498,7 @@ public class Game implements Serializable {
     }
 
     public void payLife(String username, int count) {
-        Player player = players.get(username);
-        player.payLife(count);
-        if (player.health <= 0) {
-            gameEnd(username, false);
-        }
+        players.get(username).payLife(count);
     }
 
     public void possessTo(String newController, UUID cardID, Zone zone) {
@@ -796,10 +791,6 @@ public class Game implements Serializable {
                         .setGame(toGameState(name)))));
     }
 
-    public void addShield(String username, int i) {
-        players.get(username).shield += i;
-    }
-
     public boolean hasEnergy(String username, int i) {
         return players.get(username).energy >= i;
     }
@@ -922,6 +913,7 @@ public class Game implements Serializable {
     public void gainHealth(String username, int health) {
         getPlayer(username).gainHealth(health);
     }
+
     public void gainHealth(UUID cardId, int health) {
         getCard(cardId).gainHealth(health);
     }
@@ -1042,6 +1034,10 @@ public class Game implements Serializable {
 
     public void returnAllCardsToHand() {
         getZone("", Both_Play).forEach(card -> card.returnToHand());
+    }
+
+    public void heal(UUID cardId, int healAmount) {
+        getCard(cardId).heal(healAmount);
     }
 
 

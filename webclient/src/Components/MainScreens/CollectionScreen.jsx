@@ -194,7 +194,7 @@ class CollectionScreen extends React.Component {
                         .sort(compareCardsByKnowledge)
                         .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
                         .map((card, i) => (
-                            <Grid item key={i} xs={2} style="text-align: center;">
+                            <Grid item key={i} xs={2} style={{textAlign: "center"}}>
                                 {collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
                                 {craft ? (
                                     <CraftableCard

@@ -1,8 +1,10 @@
 package com.visitor.game;
 
 import com.visitor.card.Card;
+import com.visitor.card.properties.Combat;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
@@ -31,8 +33,7 @@ public class Player implements Serializable {
     public Arraylist<Card> voidPile;
     public Arraylist<Card> playArea;
     public CounterMap<Knowledge> knowledgePool;
-    public int health;
-    public int shield;
+    public Combat combat;
 
     /**
      * @param username
@@ -50,8 +51,7 @@ public class Player implements Serializable {
         voidPile = new Arraylist<>();
         playArea = new Arraylist<>();
         knowledgePool = new CounterMap<>();
-        health = 30;
-        shield = 0;
+        combat = new Combat(game, null, 30);
     }
 
     public void draw(int count) {
@@ -59,27 +59,17 @@ public class Player implements Serializable {
     }
 
     public void receiveDamage(int damageAmount, Card source) {
-        int damage = damageAmount;
-
-        // Apply shield
-        if (shield >= damage) {
-            shield -= damage;
-            return;
-        }
-        damage -= shield;
-        shield = 0;
-
-        health -= damage;
-        if (source.combat.combatAbilityList.contains(Lifelink)){
-            game.gainHealth(source.controller, damage);
-        }
-        if (health <= 0) {
+        combat.receiveDamage(new Damage(damageAmount, false), source);
+        if (combat.getHealth() <= 0) {
             game.gameEnd(username, false);
         }
     }
 
-    public void payLife(int damage) {
-        health -= damage;
+    public void payLife(int amount) {
+        combat.loseHealth(amount);
+        if (combat.getHealth() <= 0) {
+            game.gameEnd(username, false);
+        }
     }
 
     public Card discard(UUID cardId) {
@@ -111,15 +101,7 @@ public class Player implements Serializable {
     public void newTurn() {
         energy = maxEnergy;
         numOfStudiesLeft = 1;
-        playArea.forEach((card) -> card.ready());
-        resetShields();
-    }
-
-    public void resetShields() {
-        playArea.forEach((card) -> {
-            if (card.combat != null)
-                card.combat.resetShields();
-        });
+        playArea.forEach((card) -> card.newTurn());
     }
 
     public void addKnowledge(CounterMap<Knowledge> knowledge) {
@@ -217,9 +199,9 @@ public class Player implements Serializable {
                 .setDeckSize(deck.size())
                 .setEnergy(energy)
                 .setMaxEnergy(maxEnergy)
-                .setShield(shield)
+                .setShield(combat.getShield())
                 .setHandSize(hand.size())
-                .setHealth(health)
+                .setHealth(combat.getHealth())
                 .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
                 .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()))
                 .addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));
@@ -236,6 +218,11 @@ public class Player implements Serializable {
 
 
     public void gainHealth(int health) {
-        this.health += health;
+        combat.gainHealth(health);
+    }
+
+    public void endTurn() {
+        playArea.forEach(card -> card.endTurn());
+        combat.endTurn();
     }
 }

@@ -61,16 +61,16 @@ public abstract class Ally extends Card {
     public void decreaseDelayCounter(Game game, int count) {
         delayCounter = max(0, delayCounter - count);
         if (delayCounter == 0) {
-            ready();
+            newTurn();
             game.addToStack(delayedAbility);
             delayedAbility = null;
         }
     }
 
     @Override
-    public void ready() {
+    public void newTurn() {
         if (delayCounter == 0) {
-            super.ready();
+            super.newTurn();
         }
     }
 

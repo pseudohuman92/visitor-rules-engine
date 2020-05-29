@@ -25,8 +25,7 @@ public class UR03 extends Ritual {
             targets = game.selectFromZone(playable.card.controller, Both_Play, Predicates::isUnit,2,true)
        )
         .setResolveEffect(() -> {
-            targets.forEach(cardId -> game.getCard(cardId).addCombatAbility(Unblockable));
-            new EndOfTurnEffect(game, this, ()-> targets.forEach(cardId -> game.getCard(cardId).removeCombatAbility(Unblockable)), targets);
+            targets.forEach(cardId -> game.getCard(cardId).addTurnlyCombatAbility(Unblockable));
         });
     }
 }
