@@ -1430,7 +1430,7 @@ export enum SelectFromType {
     LIST = 1,
     HAND = 3,
     PLAY = 4,
-    SCRAPYARD = 5,
+    DISCARD_PILE = 5,
     VOID = 6,
     STACK = 7
 }
@@ -2398,8 +2398,8 @@ export class Player implements IPlayer {
     /** Player play. */
     public play: ICard[];
 
-    /** Player scrapyard. */
-    public scrapyard: ICard[];
+    /** Player discardPile. */
+    public discardPile: ICard[];
 
     /** Player void. */
     public void: ICard[];

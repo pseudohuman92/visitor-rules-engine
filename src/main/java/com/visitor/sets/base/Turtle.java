@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Turtle extends Unit {
 
-    public Turtle(Game game, String owner) {
-        super(game, "Turtle",
-                1, new CounterMap(BLUE, 1),
-                "",
-                0, 5,
-                owner, Defender);
-    }
+	public Turtle (Game game, String owner) {
+		super(game, "Turtle",
+				1, new CounterMap(BLUE, 1),
+				"",
+				0, 5,
+				owner, Defender);
+	}
 }

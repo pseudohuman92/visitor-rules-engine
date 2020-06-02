@@ -16,53 +16,53 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public abstract class Predicates {
 
-    public static boolean isAsset(Card card) {
-        return card.hasType(Asset);
-    }
+	public static boolean isAsset (Card card) {
+		return card.hasType(Asset);
+	}
 
-    public static boolean isSpell(Card card) {
-        return card.hasType(Spell);
-    }
+	public static boolean isSpell (Card card) {
+		return card.hasType(Spell);
+	}
 
-    public static boolean isRitual(Card card) {
-        return card.hasType(Ritual);
-    }
+	public static boolean isRitual (Card card) {
+		return card.hasType(Ritual);
+	}
 
-    public static boolean isAlly(Card card) {
-        return card.hasType(Ally);
-    }
+	public static boolean isAlly (Card card) {
+		return card.hasType(Ally);
+	}
 
-    public static boolean isJunk(Card card) {
-        return card.hasType(Junk);
-    }
+	public static boolean isJunk (Card card) {
+		return card.hasType(Junk);
+	}
 
-    public static boolean isUnit(Card card) {
-        return card.hasType(Unit);
-    }
+	public static boolean isUnit (Card card) {
+		return card.hasType(Unit);
+	}
 
-    public static boolean isDamageable(Card c) {
-        return c.combat != null;
-    }
+	public static boolean isDamageable (Card c) {
+		return c.combat != null;
+	}
 
-    public static boolean isStudyable(Card c) {
-        return c.studiable != null;
-    }
+	public static boolean isStudyable (Card c) {
+		return c.studiable != null;
+	}
 
-    public static boolean isDamageable(Object o) {
-        return o instanceof Player || (o instanceof Card && ((Card) o).combat != null);
-    }
+	public static boolean isDamageable (Object o) {
+		return o instanceof Player || (o instanceof Card && ((Card) o).combat != null);
+	}
 
-    public static boolean isGreen(Card c) {
-        return c.knowledge.containsKey(GREEN);
-    }
+	public static boolean isGreen (Card c) {
+		return c.knowledge.containsKey(GREEN);
+	}
 
-    public static boolean any(Object o) {
-        return true;
-    }
+	public static boolean any (Object o) {
+		return true;
+	}
 
-    public static boolean none(Object o) {
-        return false;
-    }
+	public static boolean none (Object o) {
+		return false;
+	}
 
 
 }

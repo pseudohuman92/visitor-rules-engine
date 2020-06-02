@@ -10,7 +10,6 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class P07 extends Unit {
 
-    public P07(Game game, String owner) {
-        super(game, "Black Bear",
-                3, new CounterMap(PURPLE, 2),
-                "",
-                3, 3,
-                owner, Deathtouch);
-    }
+	public P07 (Game game, String owner) {
+		super(game, "Black Bear",
+				3, new CounterMap(PURPLE, 2),
+				"",
+				3, 3,
+				owner, Deathtouch);
+	}
 }

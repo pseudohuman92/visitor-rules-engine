@@ -18,11 +18,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Hawk extends Unit {
 
-    public Hawk(Game game, String owner) {
-        super(game, "Hawk",
-                3, new CounterMap(BLUE, 2),
-                "",
-                3, 2,
-                owner, Flying, Haste);
-    }
+	public Hawk (Game game, String owner) {
+		super(game, "Hawk",
+				3, new CounterMap(BLUE, 2),
+				"",
+				3, 2,
+				owner, Flying, Haste);
+	}
 }

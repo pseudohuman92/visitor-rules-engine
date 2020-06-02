@@ -19,45 +19,45 @@ import java.util.function.Consumer;
  */
 public class Triggering {
 
-    private final Card card;
-    private final Game game;
+	private final Card card;
+	private final Game game;
 
-    private Arraylist<Consumer<Event>> eventCheckerList;
+	private Arraylist<Consumer<Event>> eventCheckerList;
 
 
-    public Triggering(Game game, Card card) {
-        this.card = card;
-        this.game = game;
-        eventCheckerList = new Arraylist<>();
-    }
+	public Triggering (Game game, Card card) {
+		this.card = card;
+		this.game = game;
+		eventCheckerList = new Arraylist<>();
+	}
 
-    public Triggering(Game game, Card card, Consumer<Event> eventChecker) {
-        this(game, card);
-        eventCheckerList.add(eventChecker);
-    }
+	public Triggering (Game game, Card card, Consumer<Event> eventChecker) {
+		this(game, card);
+		eventCheckerList.add(eventChecker);
+	}
 
-    public final void checkEvent(Event event) {
-        eventCheckerList.forEachInOrder(ec -> ec.accept(event));
-    }
+	public final void checkEvent (Event event) {
+		eventCheckerList.forEachInOrder(ec -> ec.accept(event));
+	}
 
-    public final Triggering register() {
-        game.addTriggeringCard(card.controller, card);
-        return this;
-    }
+	public final Triggering register () {
+		game.addTriggeringCard(card.controller, card);
+		return this;
+	}
 
-    public final Triggering deregister() {
-        game.removeTriggeringCard(card);
-        return this;
-    }
+	public final Triggering deregister () {
+		game.removeTriggeringCard(card);
+		return this;
+	}
 
-    //Adders
-    public final Triggering addEventChecker(Consumer<Event> eventChecker) {
-        eventCheckerList.add(eventChecker);
-        return this;
-    }
+	//Adders
+	public final Triggering addEventChecker (Consumer<Event> eventChecker) {
+		eventCheckerList.add(eventChecker);
+		return this;
+	}
 
-    // Resetters
-    public final void resetEventCheckerList() {
-        eventCheckerList.clear();
-    }
+	// Resetters
+	public final void resetEventCheckerList () {
+		eventCheckerList.clear();
+	}
 }

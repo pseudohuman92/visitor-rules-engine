@@ -15,10 +15,10 @@ import com.visitor.protocol.Types.Knowledge;
  */
 public abstract class Ritual extends Card {
 
-    public Ritual(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
-        super(game, name, knowledge, CardType.Ritual, text, owner);
+	public Ritual (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
+		super(game, name, knowledge, CardType.Ritual, text, owner);
 
-        playable = new Playable(game, this, cost).setSlow().setEphemeral();
-        studiable = new Studiable(game, this);
-    }
+		playable = new Playable(game, this, cost).setSlow().setEphemeral();
+		studiable = new Studiable(game, this);
+	}
 }

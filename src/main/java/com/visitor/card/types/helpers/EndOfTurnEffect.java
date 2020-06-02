@@ -17,17 +17,18 @@ import java.util.UUID;
  */
 public class EndOfTurnEffect extends Effect {
 
-    public EndOfTurnEffect(Game game, Card creator, Runnable effect, UUID ...targets) {
-        this(game, creator, effect, new Arraylist<>(targets));
-    }
+	public EndOfTurnEffect (Game game, Card creator, Runnable effect, UUID... targets) {
+		this(game, creator, effect, new Arraylist<>(targets));
+	}
 
-    public EndOfTurnEffect(Game game, Card creator, Runnable effect, Arraylist<UUID> targets) {
-        super(game, creator, (event)->{}, targets);
-        triggering.addEventChecker((event) -> {
-            if (event.type == Event.EventType.CLEANUP){
-                effect.run();
-                triggering.deregister();
-            }
-        });
-    }
+	public EndOfTurnEffect (Game game, Card creator, Runnable effect, Arraylist<UUID> targets) {
+		super(game, creator, (event) -> {
+		}, targets);
+		triggering.addEventChecker((event) -> {
+			if (event.type == Event.EventType.CLEANUP) {
+				effect.run();
+				triggering.deregister();
+			}
+		});
+	}
 }

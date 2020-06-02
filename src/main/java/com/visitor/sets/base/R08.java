@@ -10,7 +10,6 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Haste;
-import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class R08 extends Unit {
 
-    public R08(Game game, String owner) {
-        super(game, "Black Bear",
-                2, new CounterMap(RED, 2),
-                "",
-                3, 1,
-                owner, Haste);
-    }
+	public R08 (Game game, String owner) {
+		super(game, "Black Bear",
+				2, new CounterMap(RED, 2),
+				"",
+				3, 1,
+				owner, Haste);
+	}
 }

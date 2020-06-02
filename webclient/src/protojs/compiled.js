@@ -1613,7 +1613,7 @@ $root.SelectFromResponse = (function() {
         case 4:
             message.messageType = 4;
             break;
-        case "SCRAPYARD":
+        case "DISCARD_PILE":
         case 5:
             message.messageType = 5;
             break;
@@ -3362,7 +3362,7 @@ $root.Phase = (function() {
  * @property {number} LIST=1 LIST value
  * @property {number} HAND=3 HAND value
  * @property {number} PLAY=4 PLAY value
- * @property {number} SCRAPYARD=5 SCRAPYARD value
+ * @property {number} DISCARD_PILE=5 DISCARD_PILE value
  * @property {number} VOID=6 VOID value
  * @property {number} STACK=7 STACK value
  */
@@ -3372,7 +3372,7 @@ $root.SelectFromType = (function() {
     values[valuesById[1] = "LIST"] = 1;
     values[valuesById[3] = "HAND"] = 3;
     values[valuesById[4] = "PLAY"] = 4;
-    values[valuesById[5] = "SCRAPYARD"] = 5;
+    values[valuesById[5] = "DISCARD_PILE"] = 5;
     values[valuesById[6] = "VOID"] = 6;
     values[valuesById[7] = "STACK"] = 7;
     return values;
@@ -6137,7 +6137,7 @@ $root.Player = (function() {
      * @property {number|null} [maxEnergy] Player maxEnergy
      * @property {Array.<ICard>|null} [hand] Player hand
      * @property {Array.<ICard>|null} [play] Player play
-     * @property {Array.<ICard>|null} [scrapyard] Player scrapyard
+     * @property {Array.<ICard>|null} [discardPile] Player discardPile
      * @property {Array.<ICard>|null} ["void"] Player void
      * @property {Array.<IKnowledgeGroup>|null} [knowledgePool] Player knowledgePool
      * @property {number|null} [shield] Player shield
@@ -6156,7 +6156,7 @@ $root.Player = (function() {
     function Player(properties) {
         this.hand = [];
         this.play = [];
-        this.scrapyard = [];
+        this.discardPile = [];
         this["void"] = [];
         this.knowledgePool = [];
         if (properties)
@@ -6222,12 +6222,12 @@ $root.Player = (function() {
     Player.prototype.play = $util.emptyArray;
 
     /**
-     * Player scrapyard.
-     * @member {Array.<ICard>} scrapyard
+     * Player discardPile.
+     * @member {Array.<ICard>} discardPile
      * @memberof Player
      * @instance
      */
-    Player.prototype.scrapyard = $util.emptyArray;
+    Player.prototype.discardPile = $util.emptyArray;
 
     /**
      * Player void.
@@ -6309,9 +6309,9 @@ $root.Player = (function() {
         if (message.play != null && message.play.length)
             for (var i = 0; i < message.play.length; ++i)
                 $root.Card.encode(message.play[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-        if (message.scrapyard != null && message.scrapyard.length)
-            for (var i = 0; i < message.scrapyard.length; ++i)
-                $root.Card.encode(message.scrapyard[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.discardPile != null && message.discardPile.length)
+            for (var i = 0; i < message.discardPile.length; ++i)
+                $root.Card.encode(message.discardPile[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         if (message["void"] != null && message["void"].length)
             for (var i = 0; i < message["void"].length; ++i)
                 $root.Card.encode(message["void"][i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
@@ -6384,9 +6384,9 @@ $root.Player = (function() {
                 message.play.push($root.Card.decode(reader, reader.uint32()));
                 break;
             case 8:
-                if (!(message.scrapyard && message.scrapyard.length))
-                    message.scrapyard = [];
-                message.scrapyard.push($root.Card.decode(reader, reader.uint32()));
+                if (!(message.discardPile && message.discardPile.length))
+                    message.discardPile = [];
+                message.discardPile.push($root.Card.decode(reader, reader.uint32()));
                 break;
             case 9:
                 if (!(message["void"] && message["void"].length))
@@ -6475,13 +6475,13 @@ $root.Player = (function() {
                     return "play." + error;
             }
         }
-        if (message.scrapyard != null && message.hasOwnProperty("scrapyard")) {
-            if (!Array.isArray(message.scrapyard))
-                return "scrapyard: array expected";
-            for (var i = 0; i < message.scrapyard.length; ++i) {
-                var error = $root.Card.verify(message.scrapyard[i]);
+        if (message.discardPile != null && message.hasOwnProperty("discardPile")) {
+            if (!Array.isArray(message.discardPile))
+                return "discardPile: array expected";
+            for (var i = 0; i < message.discardPile.length; ++i) {
+                var error = $root.Card.verify(message.discardPile[i]);
                 if (error)
-                    return "scrapyard." + error;
+                    return "discardPile." + error;
             }
         }
         if (message["void"] != null && message.hasOwnProperty("void")) {
@@ -6556,14 +6556,14 @@ $root.Player = (function() {
                 message.play[i] = $root.Card.fromObject(object.play[i]);
             }
         }
-        if (object.scrapyard) {
-            if (!Array.isArray(object.scrapyard))
-                throw TypeError(".Player.scrapyard: array expected");
-            message.scrapyard = [];
-            for (var i = 0; i < object.scrapyard.length; ++i) {
-                if (typeof object.scrapyard[i] !== "object")
-                    throw TypeError(".Player.scrapyard: object expected");
-                message.scrapyard[i] = $root.Card.fromObject(object.scrapyard[i]);
+        if (object.discardPile) {
+            if (!Array.isArray(object.discardPile))
+                throw TypeError(".Player.discardPile: array expected");
+            message.discardPile = [];
+            for (var i = 0; i < object.discardPile.length; ++i) {
+                if (typeof object.discardPile[i] !== "object")
+                    throw TypeError(".Player.discardPile: object expected");
+                message.discardPile[i] = $root.Card.fromObject(object.discardPile[i]);
             }
         }
         if (object["void"]) {
@@ -6611,7 +6611,7 @@ $root.Player = (function() {
         if (options.arrays || options.defaults) {
             object.hand = [];
             object.play = [];
-            object.scrapyard = [];
+            object.discardPile = [];
             object["void"] = [];
             object.knowledgePool = [];
         }
@@ -6645,10 +6645,10 @@ $root.Player = (function() {
             for (var j = 0; j < message.play.length; ++j)
                 object.play[j] = $root.Card.toObject(message.play[j], options);
         }
-        if (message.scrapyard && message.scrapyard.length) {
-            object.scrapyard = [];
-            for (var j = 0; j < message.scrapyard.length; ++j)
-                object.scrapyard[j] = $root.Card.toObject(message.scrapyard[j], options);
+        if (message.discardPile && message.discardPile.length) {
+            object.discardPile = [];
+            for (var j = 0; j < message.discardPile.length; ++j)
+                object.discardPile[j] = $root.Card.toObject(message.discardPile[j], options);
         }
         if (message["void"] && message["void"].length) {
             object["void"] = [];
@@ -9048,7 +9048,7 @@ $root.SelectFrom = (function() {
         case 4:
             message.messageType = 4;
             break;
-        case "SCRAPYARD":
+        case "DISCARD_PILE":
         case 5:
             message.messageType = 5;
             break;

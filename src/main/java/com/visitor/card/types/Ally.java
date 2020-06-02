@@ -25,71 +25,71 @@ import static java.lang.System.out;
 public abstract class Ally extends Card {
 
 
-    public int delayCounter;
-    public Ability delayedAbility;
-    public int loyalty;
+	public int delayCounter;
+	public Ability delayedAbility;
+	public int loyalty;
 
-    public Ally(Game game, String name, int cost,
-                CounterMap<Types.Knowledge> knowledge,
-                String text, int health, String owner) {
+	public Ally (Game game, String name, int cost,
+	             CounterMap<Types.Knowledge> knowledge,
+	             String text, int health, String owner) {
 
-        super(game, name, knowledge, CardType.Ally, text, owner);
+		super(game, name, knowledge, CardType.Ally, text, owner);
 
-        playable = new Playable(game, this, cost, () -> triggering.register()).setSlow().setPersistent();
-        studiable = new Studiable(game, this);
-        combat = new Combat(game, this, health);
-        triggering = new Triggering(game, this);
+		playable = new Playable(game, this, cost, () -> triggering.register()).setSlow().setPersistent();
+		studiable = new Studiable(game, this);
+		combat = new Combat(game, this, health);
+		triggering = new Triggering(game, this);
 
-        setDefaultUnitCheckEvent();
+		setDefaultUnitCheckEvent();
 
-        delayCounter = 0;
-        loyalty = 0;
-        delayedAbility = null;
-    }
+		delayCounter = 0;
+		loyalty = 0;
+		delayedAbility = null;
+	}
 
-    private void setDefaultUnitCheckEvent() {
-        triggering.resetEventCheckerList();
-        triggering.addEventChecker((event) -> {
-            out.println("Ally is checking event");
-            if (playersTurnStart(event, controller) && delayCounter > 0) {
-                out.println("Passed the check");
-                decreaseDelayCounter(game, 1);
-            }
-        });
-    }
+	private void setDefaultUnitCheckEvent () {
+		triggering.resetEventCheckerList();
+		triggering.addEventChecker((event) -> {
+			out.println("Ally is checking event");
+			if (playersTurnStart(event, controller) && delayCounter > 0) {
+				out.println("Passed the check");
+				decreaseDelayCounter(game, 1);
+			}
+		});
+	}
 
-    public void decreaseDelayCounter(Game game, int count) {
-        delayCounter = max(0, delayCounter - count);
-        if (delayCounter == 0) {
-            newTurn();
-            game.addToStack(delayedAbility);
-            delayedAbility = null;
-        }
-    }
+	public void decreaseDelayCounter (Game game, int count) {
+		delayCounter = max(0, delayCounter - count);
+		if (delayCounter == 0) {
+			newTurn();
+			game.addToStack(delayedAbility);
+			delayedAbility = null;
+		}
+	}
 
-    @Override
-    public void newTurn() {
-        if (delayCounter == 0) {
-            super.newTurn();
-        }
-    }
+	@Override
+	public void newTurn () {
+		if (delayCounter == 0) {
+			super.newTurn();
+		}
+	}
 
-    @Override
-    public Types.Card.Builder toCardMessage() {
-        return super.toCardMessage()
-                .setDelay(delayCounter)
-                .setLoyalty(loyalty);
-    }
+	@Override
+	public Types.Card.Builder toCardMessage () {
+		return super.toCardMessage()
+				.setDelay(delayCounter)
+				.setLoyalty(loyalty);
+	}
 
 
-    @Override
-    public void copyPropertiesFrom(Card c) {
-        super.copyPropertiesFrom(c);
-        if (c instanceof Ally) {
-            delayCounter = ((Ally) c).delayCounter;
-            loyalty = ((Ally) c).loyalty;
+	@Override
+	public void copyPropertiesFrom (Card c) {
+		super.copyPropertiesFrom(c);
+		if (c instanceof Ally) {
+			delayCounter = ((Ally) c).delayCounter;
+			loyalty = ((Ally) c).loyalty;
 
-        }
-    }
+		}
+	}
 
 }

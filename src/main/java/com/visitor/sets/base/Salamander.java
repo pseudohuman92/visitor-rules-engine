@@ -5,12 +5,12 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Combat.CombatAbility.Reach;
+import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -18,12 +18,12 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Salamander extends Unit {
 
-    public Salamander(Game game, String owner) {
-        super(game, "Komodo Dragon",
-                2, new CounterMap(GREEN, 2),
-                "",
-                1, 3,
-                owner, Reach, Regenerate);
-    }
+	public Salamander (Game game, String owner) {
+		super(game, "Komodo Dragon",
+				2, new CounterMap(GREEN, 2),
+				"",
+				1, 3,
+				owner, Reach, Regenerate);
+	}
 
 }

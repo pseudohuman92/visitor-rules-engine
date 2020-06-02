@@ -16,11 +16,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Defender;
  */
 public class Defendery extends Unit {
 
-    public Defendery(Game game, String owner) {
-        super(game, "Defendery",
-                0, new CounterMap(),
-                "",
-                0, 4,
-                owner, Defender);
-    }
+	public Defendery (Game game, String owner) {
+		super(game, "Defendery",
+				0, new CounterMap(),
+				"",
+				0, 4,
+				owner, Defender);
+	}
 }

@@ -9,7 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
+import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -17,11 +18,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class KomodoDragon extends Unit {
 
-    public KomodoDragon(Game game, String owner) {
-        super(game, "Komodo Dragon",
-                3, new CounterMap(GREEN, 3),
-                "",
-                3, 2,
-                owner, Deathtouch, Trample);
-    }
+	public KomodoDragon (Game game, String owner) {
+		super(game, "Komodo Dragon",
+				3, new CounterMap(GREEN, 3),
+				"",
+				3, 2,
+				owner, Deathtouch, Trample);
+	}
 }

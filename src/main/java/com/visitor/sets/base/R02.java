@@ -9,7 +9,6 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class R02 extends Unit {
 
-    public R02(Game game, String owner) {
-        super(game, "Black Bear",
-                5, new CounterMap(RED, 3),
-                "",
-                5, 3,
-                owner, Trample);
-    }
+	public R02 (Game game, String owner) {
+		super(game, "Black Bear",
+				5, new CounterMap(RED, 3),
+				"",
+				5, 3,
+				owner, Trample);
+	}
 }

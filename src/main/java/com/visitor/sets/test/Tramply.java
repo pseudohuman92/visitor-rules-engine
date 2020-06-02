@@ -16,11 +16,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Trample;
  */
 public class Tramply extends Unit {
 
-    public Tramply(Game game, String owner) {
-        super(game, "Tramply",
-                0, new CounterMap(),
-                "",
-                5, 1,
-                owner, Trample);
-    }
+	public Tramply (Game game, String owner) {
+		super(game, "Tramply",
+				0, new CounterMap(),
+				"",
+				5, 1,
+				owner, Trample);
+	}
 }

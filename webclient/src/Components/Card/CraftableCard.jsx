@@ -48,7 +48,7 @@ class CraftableCard extends PureComponent {
                   {"Dust: -"+ craftCost}
                 </Grid>
               <Grid item xs={8}>
-                <center style="text-align: center; text-align: center;">{count}</center>
+                <div style={{textAlign: "center"}}>{count}</div>
                 <CardDisplay cardData={cardData}  opacity="1" windowDimensions={windowDimensions}/>
               </Grid>
                 <Grid item xs={2}>

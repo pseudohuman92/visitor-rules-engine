@@ -16,11 +16,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
  */
 public class Vigilanty extends Unit {
 
-    public Vigilanty(Game game, String owner) {
-        super(game, "Vigilanty",
-                0, new CounterMap(),
-                "",
-                1, 4,
-                owner, Vigilance);
-    }
+	public Vigilanty (Game game, String owner) {
+		super(game, "Vigilanty",
+				0, new CounterMap(),
+				"",
+				1, 4,
+				owner, Vigilance);
+	}
 }

@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class R11 extends Unit {
 
-    public R11(Game game, String owner) {
-        super(game, "Black Bear",
-                3, new CounterMap(RED, 2),
-                "",
-                2, 4,
-                owner, Haste);
-    }
+	public R11 (Game game, String owner) {
+		super(game, "Black Bear",
+				3, new CounterMap(RED, 2),
+				"",
+				2, 4,
+				owner, Haste);
+	}
 }

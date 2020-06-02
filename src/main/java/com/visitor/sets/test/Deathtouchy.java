@@ -16,11 +16,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
  */
 public class Deathtouchy extends Unit {
 
-    public Deathtouchy(Game game, String owner) {
-        super(game, "Deathtouchy",
-                0, new CounterMap(),
-                "",
-                1, 1,
-                owner, Deathtouch);
-    }
+	public Deathtouchy (Game game, String owner) {
+		super(game, "Deathtouchy",
+				0, new CounterMap(),
+				"",
+				1, 1,
+				owner, Deathtouch);
+	}
 }

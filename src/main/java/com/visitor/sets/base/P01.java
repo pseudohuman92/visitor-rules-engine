@@ -5,13 +5,11 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
@@ -19,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class P01 extends Unit {
 
-    public P01(Game game, String owner) {
-        super(game, "Black Bear",
-                1, new CounterMap(PURPLE, 1),
-                "",
-                1, 1,
-                owner, Deathtouch);
-    }
+	public P01 (Game game, String owner) {
+		super(game, "Black Bear",
+				1, new CounterMap(PURPLE, 1),
+				"",
+				1, 1,
+				owner, Deathtouch);
+	}
 }

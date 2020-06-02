@@ -19,89 +19,88 @@ import static java.util.logging.Logger.getLogger;
  */
 public class Deck extends Arraylist<Card> {
 
-    public static Card createCard(Game game, String username, String cardName) {
-        try {
-            Class<?> cardClass = forName("com.visitor.sets." + cardName);
-            Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
-            Object card = cardConstructor.newInstance(game, username);
-            return ((Card) card);
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
-            getLogger(Deck.class.getName()).log(SEVERE, null, ex);
-        }
-        return null;
-    }
+	public Deck (String username) {
+	}
 
-    public Deck(String username) {
-    }
+	public Deck (Game game, String username, String[] decklist) {
+		for (int i = 0; i < decklist.length; i++) {
+			String[] tokens = decklist[i].split(";");
+			int count = parseInt(tokens[0]);
+			String name = tokens[1].replace(" ", "")
+					.replace("-", "")
+					.replace("'", "");
+			for (int j = 0; j < count; j++) {
+				add(createCard(game, username, name));
+			}
+		}
+	}
 
-    public Deck(Game game, String username, String[] decklist) {
-        for (int i = 0; i < decklist.length; i++) {
-            String[] tokens = decklist[i].split(";");
-            int count = parseInt(tokens[0]);
-            String name = tokens[1].replace(" ", "")
-                    .replace("-", "")
-                    .replace("'", "");
-            for (int j = 0; j < count; j++) {
-                add(createCard(game, username, name));
-            }
-        }
-    }
+	public static Card createCard (Game game, String username, String cardName) {
+		try {
+			Class<?> cardClass = forName("com.visitor.sets." + cardName);
+			Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
+			Object card = cardConstructor.newInstance(game, username);
+			return ((Card) card);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
+			getLogger(Deck.class.getName()).log(SEVERE, null, ex);
+		}
+		return null;
+	}
 
+	public Arraylist<Card> extractFromTop (int count) {
+		Arraylist<Card> cards = new Arraylist<>();
+		for (int i = 0; i < count && !isEmpty(); i++) {
+			cards.add(remove(0));
+		}
+		return cards;
+	}
 
-    public Arraylist<Card> extractFromTop(int count) {
-        Arraylist<Card> cards = new Arraylist<>();
-        for (int i = 0; i < count && !isEmpty(); i++) {
-            cards.add(remove(0));
-        }
-        return cards;
-    }
+	public Card extractTopmost (Predicate<Card> pred) {
+		for (int i = 0; i < size(); i++) {
+			if (pred.test(get(i))) {
+				return remove(i);
+			}
+		}
+		return null;
+	}
 
-    public Card extractTopmost(Predicate<Card> pred) {
-        for (int i = 0; i < size(); i++) {
-            if (pred.test(get(i))) {
-                return remove(i);
-            }
-        }
-        return null;
-    }
+	public Arraylist<Card> getFromTop (int count) {
+		Arraylist<Card> cards = new Arraylist<>();
+		for (int i = 0; i < count && i < size(); i++) {
+			cards.add(get(i));
+		}
+		return cards;
+	}
 
-    public Arraylist<Card> getFromTop(int count) {
-        Arraylist<Card> cards = new Arraylist<>();
-        for (int i = 0; i < count && i < size(); i++) {
-            cards.add(get(i));
-        }
-        return cards;
-    }
+	public Card getTopmost (Predicate<Card> pred) {
+		for (int i = 0; i < size(); i++) {
+			if (pred.test(get(i))) {
+				return get(i);
+			}
+		}
+		return null;
+	}
 
-    public Card getTopmost(Predicate<Card> pred) {
-        for (int i = 0; i < size(); i++) {
-            if (pred.test(get(i))) {
-                return get(i);
-            }
-        }
-        return null;
-    }
+	public void shuffle () {
+		Collections.shuffle(this, new SecureRandom());
+	}
 
-    public void shuffle() {
-        Collections.shuffle(this, new SecureRandom());
-    }
+	public void putToIndex (Arraylist<Card> cards, int index) {
+		addAll(index, cards);
+	}
 
-    public void putToIndex(Arraylist<Card> cards, int index) {
-        addAll(index, cards);
-    }
+	public void putToBottom (Arraylist<Card> cards) {
+		putToIndex(cards, size() - 1);
+	}
 
-    public void putToBottom(Arraylist<Card> cards) {
-        putToIndex(cards, size() - 1);
-    }
+	public void putToTop (Arraylist<Card> cards) {
+		putToIndex(cards, 0);
+	}
 
-    public void putToTop(Arraylist<Card> cards) {
-        putToIndex(cards, 0);
-    }
-
-    public void shuffleInto(Arraylist<Card> cards) {
-        SecureRandom rand = new SecureRandom();
-        for (int i = 0; i < cards.size(); i++) {
-            add(rand.nextInt(size()), cards.get(i));
-        }
-    }
+	public void shuffleInto (Arraylist<Card> cards) {
+		SecureRandom rand = new SecureRandom();
+		for (int i = 0; i < cards.size(); i++) {
+			add(rand.nextInt(size()), cards.get(i));
+		}
+	}
 }

@@ -123,11 +123,11 @@ class DeckBuilder extends React.Component {
               (card, i) =>
                 card && (
                   <Grid item key={i} xs={2}>
-                    <center style="text-align: center; text-align: center;">
+                    <div style={{textAlign: "center"}}>
                       {" "}
                       {collection[card.set+"."+card.name] -
                         (deck[card.set+"."+card.name] ? deck[card.set+"."+card.name] : 0)}{" "}
-                    </center>
+                    </div>
                     <CardDisplay
                       onClick={() => this.addToDeck(card.set+"."+card.name)}
                       opacity={

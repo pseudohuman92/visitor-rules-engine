@@ -10,7 +10,6 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
-import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Mantis extends Unit {
 
-    public Mantis(Game game, String owner) {
-        super(game, "Mantis",
-                1, new CounterMap(GREEN, 1),
-                "",
-                2, 1,
-                owner, Lifelink);
-    }
+	public Mantis (Game game, String owner) {
+		super(game, "Mantis",
+				1, new CounterMap(GREEN, 1),
+				"",
+				2, 1,
+				owner, Lifelink);
+	}
 }

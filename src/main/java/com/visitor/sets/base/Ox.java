@@ -18,11 +18,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Ox extends Unit {
 
-    public Ox(Game game, String owner) {
-        super(game, "Ox",
-                3, new CounterMap(BLUE, 2),
-                "",
-                3, 5,
-                owner, Defender, Lifelink);
-    }
+	public Ox (Game game, String owner) {
+		super(game, "Ox",
+				3, new CounterMap(BLUE, 2),
+				"",
+				3, 5,
+				owner, Defender, Lifelink);
+	}
 }

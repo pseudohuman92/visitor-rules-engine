@@ -9,7 +9,6 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class Y04 extends Unit {
 
-    public Y04(Game game, String owner) {
-        super(game, "Black Bear",
-                1, new CounterMap(YELLOW, 1),
-                "",
-                0, 4,
-                owner, Regenerate);
-    }
+	public Y04 (Game game, String owner) {
+		super(game, "Black Bear",
+				1, new CounterMap(YELLOW, 1),
+				"",
+				0, 4,
+				owner, Regenerate);
+	}
 }

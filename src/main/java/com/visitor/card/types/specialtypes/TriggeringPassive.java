@@ -13,19 +13,19 @@ import com.visitor.protocol.Types.Knowledge;
  */
 public abstract class TriggeringPassive extends Passive {
 
-    /**
-     * @param image
-     * @param name
-     * @param cost
-     * @param knowledge
-     * @param text
-     * @param owner
-     */
-    public TriggeringPassive(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
-        super(game, name, cost, knowledge, text, owner);
+	/**
+	 * @param image
+	 * @param name
+	 * @param cost
+	 * @param knowledge
+	 * @param text
+	 * @param owner
+	 */
+	public TriggeringPassive (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
+		super(game, name, cost, knowledge, text, owner);
 
-        playable.setResolveEffect(() -> triggering.register());
-        triggering = new Triggering(game, this);
-    }
+		playable.setResolveEffect(() -> triggering.register());
+		triggering = new Triggering(game, this);
+	}
 
 }

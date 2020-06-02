@@ -18,11 +18,11 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class P06 extends Unit {
 
-    public P06(Game game, String owner) {
-        super(game, "Black Bear",
-                1, new CounterMap(PURPLE, 1),
-                "",
-                1, 1,
-                owner, Deathtouch, Lifelink);
-    }
+	public P06 (Game game, String owner) {
+		super(game, "Black Bear",
+				1, new CounterMap(PURPLE, 1),
+				"",
+				1, 1,
+				owner, Deathtouch, Lifelink);
+	}
 }

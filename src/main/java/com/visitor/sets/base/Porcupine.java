@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Porcupine extends Unit {
 
-    public Porcupine(Game game, String owner) {
-        super(game, "Porcupine",
-                2, new CounterMap(BLUE, 1),
-                "",
-                1, 5,
-                owner, Defender);
-    }
+	public Porcupine (Game game, String owner) {
+		super(game, "Porcupine",
+				2, new CounterMap(BLUE, 1),
+				"",
+				1, 5,
+				owner, Defender);
+	}
 }

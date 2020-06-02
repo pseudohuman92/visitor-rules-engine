@@ -9,18 +9,18 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
 /**
  * @author pseudo
  */
 public class C04 extends Unit {
 
-    public C04(Game game, String owner) {
-        super(game, "Black Bear",
-                1, new CounterMap(),
-                "",
-                0, 4,
-                owner, Defender);
-    }
+	public C04 (Game game, String owner) {
+		super(game, "Black Bear",
+				1, new CounterMap(),
+				"",
+				0, 4,
+				owner, Defender);
+	}
 }

@@ -9,19 +9,16 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
-
 /**
  * @author pseudo
  */
 public class C02 extends Unit {
 
-    public C02(Game game, String owner) {
-        super(game, "Black Bear",
-                2, new CounterMap(),
-                "",
-                2, 1,
-                owner);
-    }
+	public C02 (Game game, String owner) {
+		super(game, "Black Bear",
+				2, new CounterMap(),
+				"",
+				2, 1,
+				owner);
+	}
 }

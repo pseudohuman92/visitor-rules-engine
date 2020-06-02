@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Seagull extends Unit {
 
-    public Seagull(Game game, String owner) {
-        super(game, "Seagull",
-                2, new CounterMap(BLUE, 1),
-                "",
-                2, 1,
-                owner, Flying);
-    }
+	public Seagull (Game game, String owner) {
+		super(game, "Seagull",
+				2, new CounterMap(BLUE, 1),
+				"",
+				2, 1,
+				owner, Flying);
+	}
 }

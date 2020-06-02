@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class Y08 extends Unit {
 
-    public Y08(Game game, String owner) {
-        super(game, "Black Bear",
-                3, new CounterMap(YELLOW, 2),
-                "",
-                3, 3,
-                owner, Flying);
-    }
+	public Y08 (Game game, String owner) {
+		super(game, "Black Bear",
+				3, new CounterMap(YELLOW, 2),
+				"",
+				3, 3,
+				owner, Flying);
+	}
 }

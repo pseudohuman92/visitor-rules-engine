@@ -9,7 +9,6 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Sparrow extends Unit {
 
-    public Sparrow(Game game, String owner) {
-        super(game, "Sparrow",
-                1, new CounterMap(BLUE, 1),
-                "",
-                1, 1,
-                owner, Flying);
-    }
+	public Sparrow (Game game, String owner) {
+		super(game, "Sparrow",
+				1, new CounterMap(BLUE, 1),
+				"",
+				1, 1,
+				owner, Flying);
+	}
 }

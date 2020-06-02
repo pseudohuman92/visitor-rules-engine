@@ -16,11 +16,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Flying;
  */
 public class Flyingy extends Unit {
 
-    public Flyingy(Game game, String owner) {
-        super(game, "Flyingy",
-                0, new CounterMap(),
-                "",
-                2, 2,
-                owner, Flying);
-    }
+	public Flyingy (Game game, String owner) {
+		super(game, "Flyingy",
+				0, new CounterMap(),
+				"",
+				2, 2,
+				owner, Flying);
+	}
 }

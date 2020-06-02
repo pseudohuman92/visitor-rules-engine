@@ -9,9 +9,7 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -19,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class DungBeetle extends Unit {
 
-    public DungBeetle(Game game, String owner) {
-        super(game, "Dung Beetle",
-                1, new CounterMap(GREEN, 1),
-                "",
-                1, 1,
-                owner, Trample);
-    }
+	public DungBeetle (Game game, String owner) {
+		super(game, "Dung Beetle",
+				1, new CounterMap(GREEN, 1),
+				"",
+				1, 1,
+				owner, Trample);
+	}
 }

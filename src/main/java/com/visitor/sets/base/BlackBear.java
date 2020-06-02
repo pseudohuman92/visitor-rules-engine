@@ -9,8 +9,6 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -18,11 +16,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class BlackBear extends Unit {
 
-    public BlackBear(Game game, String owner) {
-        super(game, "Black Bear",
-                2, new CounterMap(GREEN, 1),
-                "",
-                3, 3,
-                owner);
-    }
+	public BlackBear (Game game, String owner) {
+		super(game, "Black Bear",
+				2, new CounterMap(GREEN, 1),
+				"",
+				3, 3,
+				owner);
+	}
 }

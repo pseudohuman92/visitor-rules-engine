@@ -10,7 +10,6 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Reach;
-import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -18,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Frog extends Unit {
 
-    public Frog(Game game, String owner) {
-        super(game, "Frog",
-                1, new CounterMap(GREEN, 1),
-                "",
-                1, 2,
-                owner, Reach);
-    }
+	public Frog (Game game, String owner) {
+		super(game, "Frog",
+				1, new CounterMap(GREEN, 1),
+				"",
+				1, 2,
+				owner, Reach);
+	}
 }

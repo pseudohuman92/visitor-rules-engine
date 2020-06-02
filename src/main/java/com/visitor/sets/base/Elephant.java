@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Elephant extends Unit {
 
-    public Elephant(Game game, String owner) {
-        super(game, "Elephant",
-                4, new CounterMap(GREEN, 3),
-                "",
-                6, 6,
-                owner, Trample);
-    }
+	public Elephant (Game game, String owner) {
+		super(game, "Elephant",
+				4, new CounterMap(GREEN, 3),
+				"",
+				6, 6,
+				owner, Trample);
+	}
 }

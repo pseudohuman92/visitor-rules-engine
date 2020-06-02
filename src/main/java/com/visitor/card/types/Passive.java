@@ -14,17 +14,17 @@ import com.visitor.protocol.Types.Knowledge;
  */
 public abstract class Passive extends Card {
 
-    /**
-     * @param name
-     * @param cost
-     * @param knowledge
-     * @param text
-     * @param owner
-     */
-    public Passive(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
-        super(game, name, knowledge, CardType.Passive, text, owner);
+	/**
+	 * @param name
+	 * @param cost
+	 * @param knowledge
+	 * @param text
+	 * @param owner
+	 */
+	public Passive (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
+		super(game, name, knowledge, CardType.Passive, text, owner);
 
-        playable = new Playable(game, this, cost).setSlow().setPersistent();
-        studiable = new Studiable(game, this);
-    }
+		playable = new Playable(game, this, cost).setSlow().setPersistent();
+		studiable = new Studiable(game, this);
+	}
 }

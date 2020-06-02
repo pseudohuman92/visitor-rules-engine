@@ -17,11 +17,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class GrizzlyBear extends Unit {
 
-    public GrizzlyBear(Game game, String owner) {
-        super(game, "Grizzly Bear",
-                2, new CounterMap(GREEN, 2),
-                "",
-                3, 3,
-                owner, Trample);
-    }
+	public GrizzlyBear (Game game, String owner) {
+		super(game, "Grizzly Bear",
+				2, new CounterMap(GREEN, 2),
+				"",
+				3, 3,
+				owner, Trample);
+	}
 }

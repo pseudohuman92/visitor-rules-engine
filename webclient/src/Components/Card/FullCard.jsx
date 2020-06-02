@@ -26,6 +26,7 @@ class FullCard extends PureComponent {
       description,
       cost,
       types,
+        subtypes,
       knowledgeCost,
       delay,
       loyalty,
@@ -137,7 +138,7 @@ class FullCard extends PureComponent {
             {name}
           </div>
 
-          {!square && <div className="card-type">{types}</div>}
+          {!square && <div className="card-type">{types}{subtypes?" - " + subtypes : ""} </div>}
 
           {!square && (
             <div
@@ -148,7 +149,7 @@ class FullCard extends PureComponent {
               }}
             >
               <FittedText
-                text={(combat?combat.combatAbilities + "\n":"") + description}
+                text={(combat?(combat.combatAbilities?combat.combatAbilities + "\n":""):"") + description}
                 max={15}
                 windowDimensions={windowDimensions}
               />

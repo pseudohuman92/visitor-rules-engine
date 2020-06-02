@@ -9,7 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 /**
@@ -17,11 +18,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Owl extends Unit {
 
-    public Owl(Game game, String owner) {
-        super(game, "Owl",
-                3, new CounterMap(BLUE, 2),
-                "",
-                2, 2,
-                owner, Flying, Lifelink);
-    }
+	public Owl (Game game, String owner) {
+		super(game, "Owl",
+				3, new CounterMap(BLUE, 2),
+				"",
+				2, 2,
+				owner, Flying, Lifelink);
+	}
 }
