@@ -18,7 +18,7 @@ public class GR03 extends Ritual {
 
 		playable
 				.setResolveEffect(() ->
-						game.getZone(playable.card.controller, Play).forEach(card -> {
+						game.getZone(controller, Play).forEach(card -> {
 							card.addTurnlyAttack(3);
 							card.addTurnlyHealth(3);
 							card.addTurnlyCombatAbility(Trample);

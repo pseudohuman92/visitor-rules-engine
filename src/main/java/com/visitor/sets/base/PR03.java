@@ -22,15 +22,10 @@ public class PR03 extends Ritual {
 				owner);
 
 		playable
-				.setBeforePlay(() -> {
-					targets.add(game.selectFromZone(playable.card.controller, Discard_Pile, Predicates::isUnit, 1, false).get(0));
-				})
 				.setResolveEffect(() -> {
 					boolean hasUnit = game.hasIn(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1);
 					Arraylist<UUID> discardedCard = game.selectFromZone(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1, !hasUnit);
-					if (discardedCard.size() > 0) {
-						game.discard(game.getOpponentName(playable.card.controller), discardedCard.get(0));
-					}
+					discardedCard.forEach(cardId -> game.discard(game.getOpponentName(playable.card.controller), cardId));
 				});
 	}
 }

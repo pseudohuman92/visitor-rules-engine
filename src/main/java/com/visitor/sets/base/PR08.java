@@ -24,8 +24,9 @@ public class PR08 extends Ritual {
 				.setBeforePlay(() -> {
 					targets.addAll(game.selectFromZone(playable.card.controller, Discard_Pile, Predicates::isUnit, 1, false));
 				})
-				.setResolveEffect(() ->
-						game.resurrect(targets.get(0))
-				);
+				.setResolveEffect(() -> {
+					if (game.isIn(controller, Discard_Pile, targets.get(0)))
+						game.resurrect(targets.get(0));
+				});
 	}
 }

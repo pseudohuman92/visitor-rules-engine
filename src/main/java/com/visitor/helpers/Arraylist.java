@@ -74,6 +74,11 @@ public class Arraylist<T> extends ArrayList<T> {
 		return false;
 	}
 
+	public Arraylist<T> addAll(int index, T[] array){
+		super.addAll(index, Arrays.asList(array));
+		return this;
+	}
+
 	public <R> List<? extends R> transform (Function<? super T, ? extends R> f) {
 		return parallelStream().map(f).collect(Collectors.toList());
 	}

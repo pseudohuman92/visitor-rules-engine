@@ -14,8 +14,6 @@ public class UR04 extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(() ->
-						game.returnAllCardsToHand()
-				);
+				.setResolveEffect(game::returnAllCardsToHand);
 	}
 }

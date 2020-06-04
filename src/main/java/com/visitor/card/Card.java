@@ -31,7 +31,7 @@ public abstract class Card implements Serializable {
 	public String name;
 	public String text;
 	public Arraylist<CardType> types;
-	public Arraylist<String> subtypes;
+	public Arraylist<CardSubtype> subtypes;
 
 
 	public CounterMap<Knowledge> knowledge;
@@ -354,6 +354,10 @@ public abstract class Card implements Serializable {
 		return types.contains(type);
 	}
 
+	public boolean hasSubtype (CardSubtype type) {
+		return subtypes.contains(type);
+	}
+
 	public Types.Card.Builder toCardMessage () {
 		String packageName = this.getClass().getPackageName();
 		String set = packageName.substring(packageName.lastIndexOf(".") + 1);
@@ -366,7 +370,7 @@ public abstract class Card implements Serializable {
 				.setCombat(combat.toCombatMessage())
 				.setLoyalty(-1)
 				.addAllTypes(types.transformToStringList())
-				.addAllSubtypes(subtypes)
+				.addAllSubtypes(subtypes.transformToStringList())
 				.addAllTargets(targets.transformToStringList());
 
 		counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
@@ -404,18 +408,26 @@ public abstract class Card implements Serializable {
 		runIfNotNull(combat, () -> combat.addTurnlyHealth(health));
 	}
 
+	public boolean hasColor (Knowledge knowledge) {
+		return this.knowledge.contains(knowledge);
+	}
+
 
 	public enum CardType {
 		Ally,
 		Asset,
 		Junk,
 		Passive,
-		Ritual,
 		Spell,
 		Tome,
 		Unit,
 		Ability,
 		Effect
+	}
+
+	public enum CardSubtype {
+		Cantrip,
+		Ritual,
 	}
 
 }

@@ -8,8 +8,11 @@ package com.visitor.helpers;
 import com.visitor.card.Card;
 import com.visitor.game.Player;
 
+import java.util.function.Predicate;
+
+import static com.visitor.card.Card.CardSubtype.*;
 import static com.visitor.card.Card.CardType.*;
-import static com.visitor.protocol.Types.Knowledge.GREEN;
+import static com.visitor.protocol.Types.Knowledge.*;
 
 /**
  * @author pseudo
@@ -24,8 +27,12 @@ public abstract class Predicates {
 		return card.hasType(Spell);
 	}
 
+	public static boolean isCantrip (Card card) {
+		return card.hasSubtype(Cantrip);
+	}
+
 	public static boolean isRitual (Card card) {
-		return card.hasType(Ritual);
+		return card.hasSubtype(Ritual);
 	}
 
 	public static boolean isAlly (Card card) {
@@ -53,7 +60,7 @@ public abstract class Predicates {
 	}
 
 	public static boolean isGreen (Card c) {
-		return c.knowledge.containsKey(GREEN);
+		return c.hasColor(GREEN);
 	}
 
 	public static boolean any (Object o) {
@@ -65,4 +72,35 @@ public abstract class Predicates {
 	}
 
 
+	public static <T> Predicate<T> and(Predicate<T> ...predicates){
+		return (t -> {
+			for (Predicate<T> predicate : predicates) {
+				if(!predicate.test(t))
+					return false;
+			}
+			return true;
+		});
+	}
+
+	public static <T> Predicate<T> or(Predicate<T> ...predicates){
+		return (t -> {
+			for (Predicate<T> predicate : predicates) {
+				if(predicate.test(t));
+					return true;
+			}
+			return false;
+		});
+	}
+
+	public static <T> Predicate<T> not(Predicate<T> predicate){
+		return (t -> !predicate.test(t));
+	}
+
+	public static boolean isPurple (Card card) {
+		return card.hasColor(PURPLE);
+	}
+
+	public static boolean isRed (Card card) {
+		return card.hasColor(RED);
+	}
 }

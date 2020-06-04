@@ -23,8 +23,11 @@ public class PR04 extends Ritual {
 					targets.addAll(game.selectFromZone(controller, Discard_Pile, Predicates::isUnit, 2, true));
 				})
 				.setResolveEffect(() -> {
-							targets.forEach(targetId -> HelperFunctions.runIfNotNull(game.getCard(targetId),
-									() -> game.restore(targetId).returnToHand()));
+							targets.forEach(targetId -> {
+								if (game.isIn(controller, Discard_Pile, targetId)) {
+									game.restore(targetId).returnToHand();
+								}
+							});
 							game.discard(controller, 1);
 						}
 				);

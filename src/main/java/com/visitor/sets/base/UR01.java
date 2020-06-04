@@ -23,7 +23,10 @@ public class UR01 extends Ritual {
 						targets = game.selectFromZone(playable.card.controller, Both_Play, Predicates::isUnit, 3, true)
 				)
 				.setResolveEffect(() ->
-						targets.forEach(cardId -> game.getCard(cardId).returnToHand())
+						targets.forEach(cardId -> {
+							if (game.isIn(controller, Both_Play, cardId))
+								game.getCard(cardId).returnToHand();
+						})
 				);
 	}
 }

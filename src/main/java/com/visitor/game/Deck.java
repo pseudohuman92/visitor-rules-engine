@@ -6,6 +6,7 @@ import com.visitor.helpers.Arraylist;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;
 
@@ -85,22 +86,22 @@ public class Deck extends Arraylist<Card> {
 		Collections.shuffle(this, new SecureRandom());
 	}
 
-	public void putToIndex (Arraylist<Card> cards, int index) {
+	public void putToIndex (int index, Card ...cards) {
 		addAll(index, cards);
 	}
 
-	public void putToBottom (Arraylist<Card> cards) {
-		putToIndex(cards, size() - 1);
+	public void putToBottom (Card ...cards) {
+		putToIndex(size() - 1, cards);
 	}
 
-	public void putToTop (Arraylist<Card> cards) {
-		putToIndex(cards, 0);
+	public void putToTop (Card ...cards) {
+		putToIndex(0, cards);
 	}
 
-	public void shuffleInto (Arraylist<Card> cards) {
+	public void shuffleInto (Card ...cards) {
 		SecureRandom rand = new SecureRandom();
-		for (int i = 0; i < cards.size(); i++) {
-			add(rand.nextInt(size()), cards.get(i));
+		for (int i = 0; i < cards.length; i++) {
+			add(rand.nextInt(size()), cards[i]);
 		}
 	}
 }

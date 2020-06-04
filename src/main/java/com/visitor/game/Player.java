@@ -224,4 +224,12 @@ public class Player implements Serializable {
 		playArea.forEach(card -> card.endTurn());
 		combat.endTurn();
 	}
+
+	public void putToBottomOfDeck (Card card) {
+		deck.putToBottom(card);
+	}
+
+	public void shuffleIntoDeck (Card[] cards) {
+		deck.shuffleInto(cards);
+	}
 }

@@ -31,10 +31,9 @@ public class PR01 extends Ritual {
 					targets.add(game.selectFromZone(playable.card.controller, Both_Play, Predicates::isUnit, 1, false).get(0));
 					game.sacrifice(sacrificedUnit);
 				})
-				.setResolveEffect(() ->
-						HelperFunctions.runIfNotNull(game.getCard(targets.get(0)),
-								() -> game.destroy(targets.get(0)))
-
-				);
+				.setResolveEffect(() -> {
+						if (game.isIn(controller, Both_Play, targets.get(0)))
+								game.destroy(targets.get(0));
+					});
 	}
 }

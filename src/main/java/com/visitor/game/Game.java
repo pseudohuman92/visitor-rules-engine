@@ -407,8 +407,7 @@ public class Game implements Serializable {
 				return players.get(getOpponentName(username)).hand;
 			case Both_Play:
 				Arraylist<Card> total = new Arraylist<>();
-				total.addAll(players.get(username).playArea);
-				total.addAll(players.get(getOpponentName(username)).playArea);
+				players.values().forEach(player -> total.addAll(player.playArea));
 				return total;
 			default:
 				return null;
@@ -516,7 +515,7 @@ public class Game implements Serializable {
 		return getZone(username, zone).parallelStream().anyMatch(c -> ownedByOpponent(c.id));
 	}
 
-	public boolean isIn (String username, UUID cardID, Zone zone) {
+	public boolean isIn (String username, Zone zone, UUID cardID) {
 		return getZone(username, zone).parallelStream().anyMatch(getCard(cardID)::equals);
 	}
 
@@ -545,8 +544,8 @@ public class Game implements Serializable {
 	}
 
 
-	public void shuffleIntoDeck (String username, Arraylist<Card> cards) {
-		players.get(username).deck.shuffleInto(cards);
+	public void shuffleIntoDeck (String username, Card ...cards) {
+		players.get(username).shuffleIntoDeck(cards);
 	}
 
 	private SelectFromType getZoneLabel (Zone zone) {
@@ -1062,6 +1061,28 @@ public class Game implements Serializable {
 
   public void resurrect (UUID cardId) {
 		HelperFunctions.runIfNotNull(getCard(cardId), ()-> restore(cardId).resolve());
+	}
+
+	public Card getCardFromZone (String username, Zone zone, UUID cardId) {
+		Arraylist<Card> card = null;
+		getZone(username, zone).forEach(c-> {
+				if(c.id.equals(cardId))
+					card.add(c);
+		});
+		return card.size() > 0 ? card.get(0): null;
+	}
+
+	public void putToBottomOfDeck (UUID cardId) {
+		Card card = getCard(cardId);
+		getPlayer(card.controller).putToBottomOfDeck(card);
+	}
+
+	public void destroyAllUnits () {
+		getZone(null, Both_Play).forEach(c-> {
+					if (Predicates.isUnit(c)){
+						destroy(c.id);
+					}
+	  });
 	}
 
 	public enum Zone {

@@ -3,6 +3,7 @@ package com.visitor.card.types;
 import com.visitor.card.Card;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
+import com.visitor.card.types.Spell;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types.Knowledge;
@@ -13,12 +14,12 @@ import com.visitor.protocol.Types.Knowledge;
  *
  * @author pseudo
  */
-public abstract class Spell extends Card {
+public abstract class Cantrip extends Spell {
 
-	public Spell (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
-		super(game, name, knowledge, CardType.Spell, text, owner);
+	public Cantrip (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
+		super(game, name, cost, knowledge, text, owner);
 
-		playable = new Playable(game, this, cost);
-		studiable = new Studiable(game, this);
+		subtypes.add(CardSubtype.Cantrip);
+		playable.setFast().setEphemeral();
 	}
 }

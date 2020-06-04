@@ -29,9 +29,12 @@ public class GR01 extends Ritual {
 					targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false).get(0));
 				})
 				.setResolveEffect(() -> {
-					Card striker = game.getCard(targets.get(0));
-					Card receiver = game.getCard(targets.get(1));
-					receiver.receiveDamage(new Damage(striker.getAttack()), striker);
+					if(game.isIn(controller, Play, targets.get(0)) &&
+							game.isIn(controller, Opponent_Play, targets.get(1))) {
+						Card striker = game.getCard(targets.get(0));
+						Card receiver = game.getCard(targets.get(1));
+						receiver.receiveDamage(new Damage(striker.getAttack()), striker);
+					}
 				});
 	}
 }

@@ -13,7 +13,7 @@ public class UR03 extends Ritual {
 	public UR03 (Game game, String owner) {
 		super(game, "UR01", 2,
 				new CounterMap<>(BLUE, 1),
-				"Up to 2 target units to their controller's hands.",
+				"Up to 2 target units gains unblockable until end of turn",
 				owner);
 
 		playable
@@ -24,7 +24,10 @@ public class UR03 extends Ritual {
 						targets = game.selectFromZone(playable.card.controller, Both_Play, Predicates::isUnit, 2, true)
 				)
 				.setResolveEffect(() -> {
-					targets.forEach(cardId -> game.getCard(cardId).addTurnlyCombatAbility(Unblockable));
+					targets.forEach(cardId -> {
+						if (game.isIn(controller, Both_Play, cardId))
+							game.getCard(cardId).addTurnlyCombatAbility(Unblockable);
+					});
 				});
 	}
 }

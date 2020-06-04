@@ -13,12 +13,12 @@ import com.visitor.protocol.Types.Knowledge;
  *
  * @author pseudo
  */
-public abstract class Ritual extends Card {
+public abstract class Ritual extends Spell {
 
 	public Ritual (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
-		super(game, name, knowledge, CardType.Ritual, text, owner);
+		super(game, name, cost, knowledge, text, owner);
 
-		playable = new Playable(game, this, cost).setSlow().setEphemeral();
-		studiable = new Studiable(game, this);
+		subtypes.add(CardSubtype.Ritual);
+		playable.setSlow().setEphemeral();
 	}
 }
