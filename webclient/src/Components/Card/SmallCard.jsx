@@ -12,25 +12,40 @@ import "../../fonts/Fonts.css";
 
 class SmallCard extends PureComponent {
   render() {
-    const {
-      cardData,
-      play,
-      borderColor,
-      opacity
-    } = this.props;
+      const {
+          opacity,
+          cardData,
+          borderColor,
+          windowDimensions,
+          scale,
+      } = this.props;
 
-    const {
-      name,
-      cost,
-      knowledgeCost,
-    } = cardData
+      const {
+          name,
+          cost,
+          knowledgeCost,
+      } = cardData;
+
+      const scale_ = scale ? 7 / scale : 7;
+      const { width } = windowDimensions;
+      const wtohRatio = 4.25;
+      const cardWidth = width / scale_;
+      const cardHeight = cardWidth / wtohRatio;
 
     const backColor = borderColor ? borderColor : "black";
     return (
-      <div>
-        <Fonts />
         <div
-          //aspectRatio={[22, 3]}
+            style={{
+                width: cardWidth,
+                height: cardHeight,
+                position: "relative",
+                backgroundColor: backColor,
+                borderRadius: cardWidth / (4 * scale_) + "px",
+                zIndex: 1,
+            }}
+        >
+            {/*<Fonts />*/}
+        <div
           style={{
             opacity: opacity,
             backgroundColor: backColor,
@@ -39,15 +54,14 @@ class SmallCard extends PureComponent {
           }}
         >
           <div
-            className={"card-inner"+(play?"-play":"")}
+            className={"card-inner"}
             style={{ backgroundColor: getCardColor(knowledgeCost),
-              fontSize: 150/20+"px" }}
+              fontSize: 150/10+"px" }}
           >
-            <div className="small-card-name">
+            <div className="card-name" style={{textAlign: "left"}}>
                 <span style={{ fontWeight: "500" }}>{cost}</span>
                 <span
                 style={{
-                  fontFamily: "Visitor Font Small",
                   color: getIconColor(knowledgeCost)
                 }}
               >

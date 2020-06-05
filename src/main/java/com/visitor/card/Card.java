@@ -3,6 +3,7 @@ package com.visitor.card;
 import com.visitor.card.properties.*;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
+import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
@@ -33,17 +34,16 @@ public abstract class Card implements Serializable {
 	public Arraylist<CardType> types;
 	public Arraylist<CardSubtype> subtypes;
 
-
 	public CounterMap<Knowledge> knowledge;
 
 	public String owner;
 	public String controller;
 
-	public Activatable activatable;
-	public Triggering triggering;
-	public Combat combat;
-	public Playable playable;
-	public Studiable studiable;
+	protected Activatable activatable;
+	protected Triggering triggering;
+	protected Combat combat;
+	protected Playable playable;
+	protected Studiable studiable;
 
 	public boolean depleted;
 	public CounterMap<Counter> counters;
@@ -166,8 +166,8 @@ public abstract class Card implements Serializable {
 		runIfNotNull(playable, () -> playable.play());
 	}
 
-	public final void study (boolean normal) {
-		runIfNotNull(studiable, () -> studiable.study(normal));
+	public final void study (Player player, boolean normal) {
+		runIfNotNull(studiable, () -> studiable.study(player, normal));
 	}
 
 	public final void checkEvent (Event e) {
@@ -191,7 +191,7 @@ public abstract class Card implements Serializable {
 	}
 
 	public void gainHealth (int health) {
-		runIfNotNull(combat, () -> combat.gainHealth(health));
+		runIfNotNull(combat, () -> combat.addHealth(health));
 	}
 
 	//TODO: Refactor these like above
@@ -387,10 +387,6 @@ public abstract class Card implements Serializable {
 		return builder;
 	}
 
-	public UUID getId () {
-		return id;
-	}
-
 	public void addTurnlyCombatAbility (Combat.CombatAbility combatAbility) {
 		runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
 	}
@@ -410,6 +406,22 @@ public abstract class Card implements Serializable {
 
 	public boolean hasColor (Knowledge knowledge) {
 		return this.knowledge.contains(knowledge);
+	}
+
+	public void addAttack (int i) {
+		runIfNotNull(combat, ()-> combat.addAttack(i));
+	}
+
+	public boolean isDamagable () {
+		return combat != null;
+	}
+
+	public boolean isStudiable () {
+		return studiable != null;
+	}
+
+	public void addHealth (int i) {
+		runIfNotNull(combat, ()-> combat.addHealth(i));
 	}
 
 

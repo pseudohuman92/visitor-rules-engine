@@ -6,6 +6,7 @@ import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.game.Game.Zone.Play;
+import static com.visitor.helpers.Predicates.isUnit;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GR03 extends Ritual {
@@ -18,10 +19,12 @@ public class GR03 extends Ritual {
 
 		playable
 				.setResolveEffect(() ->
-						game.getZone(controller, Play).forEach(card -> {
-							card.addTurnlyAttack(3);
-							card.addTurnlyHealth(3);
-							card.addTurnlyCombatAbility(Trample);
+						game.forEachInZone(controller, Play, card -> {
+							if (isUnit(card)) {
+								card.addTurnlyAttack(3);
+								card.addTurnlyHealth(3);
+								card.addTurnlyCombatAbility(Trample);
+							}
 						})
 				);
 	}

@@ -18,15 +18,6 @@ public class PR02 extends Ritual {
 				owner);
 
 		playable
-				.setCanPlayAdditional(() ->
-						game.hasIn(playable.card.controller, Discard_Pile, Predicates::isUnit, 1)
-				)
-				.setBeforePlay(() -> {
-					targets.add(game.selectFromZone(playable.card.controller, Discard_Pile, Predicates::isUnit, 1, false).get(0));
-				})
-				.setResolveEffect(() -> {
-					if(game.isIn(controller, Discard_Pile, targets.get(0)))
-							game.restore(targets.get(0)).returnToHand();
-				});
+				.setTargetingSingleUnitInZone(Discard_Pile, cardId ->	game.restore(cardId).returnToHand());
 	}
 }

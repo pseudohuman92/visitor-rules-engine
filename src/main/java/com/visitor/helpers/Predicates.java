@@ -48,15 +48,15 @@ public abstract class Predicates {
 	}
 
 	public static boolean isDamageable (Card c) {
-		return c.combat != null;
+		return c.isDamagable();
 	}
 
 	public static boolean isStudyable (Card c) {
-		return c.studiable != null;
+		return c.isStudiable();
 	}
 
 	public static boolean isDamageable (Object o) {
-		return o instanceof Player || (o instanceof Card && ((Card) o).combat != null);
+		return o instanceof Player || (o instanceof Card && ((Card) o).isDamagable());
 	}
 
 	public static boolean isGreen (Card c) {

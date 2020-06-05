@@ -16,12 +16,6 @@ public class PR06 extends Ritual {
 				owner);
 
 		playable
-				.setBeforePlay(() ->
-						targets.addAll(game.selectPlayers(controller, Predicates::any, 1, false))
-				)
-				.setResolveEffect(() -> {
-							game.discard(game.getUsername(targets.get(0)), 2);
-						}
-				);
+				.setSinglePlayerTargetingResolve(playerId -> game.discard(game.getUsername(playerId), 2));
 	}
 }

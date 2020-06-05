@@ -7,6 +7,15 @@
   font-family: "Open Sans", sans-serif;
 }
 
+.card-inner-small {
+  position: "relative";
+  margin: 2.5%;
+  color: black;
+  overflow: hidden;
+  border: "1px black solid";
+  font-family: "Open Sans", sans-serif;
+}
+
 .card-name {
   margin: 3.5% 3.5% 0 3.5%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -23,13 +32,6 @@
   height: "100%";
   z-index: -1;
   background-color: "gainsboro";
-}
-
-.small-card-name {
-  margin: 3.5% 3.5% 0 3.5%;
-  background-color: beige;
-  overflow: hidden;
-  font-family: "Open Sans", sans-serif;
 }
 
 .card-type {

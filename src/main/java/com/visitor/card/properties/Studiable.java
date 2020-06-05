@@ -6,6 +6,7 @@ import com.visitor.game.Player;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -15,7 +16,7 @@ public class Studiable {
 	private Game game;
 
 	private Supplier<Boolean> canStudy;
-	private Consumer<Boolean> study;
+	private BiConsumer<Player, Boolean> study;
 	private Supplier<CounterMap<Types.Knowledge>> getKnowledgeType;
 
 	public Studiable (Game game, Card card) {
@@ -35,8 +36,8 @@ public class Studiable {
 	 * Called by the server when you choose to studyCard this card.
 	 * It increases player's maximum energy and adds knowledgePool.
 	 */
-	public final void study (boolean regular) {
-		study.accept(regular);
+	public final void study (Player player, boolean regular) {
+		study.accept(player, regular);
 	}
 
 	public final CounterMap<Types.Knowledge> getKnowledgeType () {
@@ -49,8 +50,7 @@ public class Studiable {
 	}
 
 	public void setDefaultStudy () {
-		study = (regular) -> {
-			Player player = game.getPlayer(card.controller);
+		study = (player, regular) -> {
 			player.voidPile.add(card);
 			player.energy++;
 			player.maxEnergy++;

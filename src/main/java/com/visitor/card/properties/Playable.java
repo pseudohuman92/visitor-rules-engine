@@ -2,7 +2,12 @@ package com.visitor.card.properties;
 
 import com.visitor.card.Card;
 import com.visitor.game.Game;
+import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
 
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static com.visitor.game.Game.Zone.Void;
@@ -12,6 +17,8 @@ public class Playable {
 
 	public Card card;
 	private Game game;
+
+	private Arraylist<UUID> targets;
 
 	private int cost;
 
@@ -32,6 +39,7 @@ public class Playable {
 		this.card = card;
 		this.game = game;
 		this.cost = cost;
+		this.targets = new Arraylist<>();
 
 		// Default Implementations
 		setDefaultCanPlayResource();
@@ -217,6 +225,64 @@ public class Playable {
 
 	public int getCost () {
 		return cost;
+	}
+
+	public void setTargetingResolveFromZone (Game.Zone zone, Predicate<Card> cardPredicate, int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		if (!upTo) {
+			setCanPlayAdditional(() ->
+					game.hasIn(card.controller, zone, cardPredicate, count)
+			);
+		}
+		setBeforePlay(() ->
+				targets.addAll(game.selectFromZone(card.controller, zone, cardPredicate, count, upTo))
+		);
+		setResolveEffect(() -> {
+			targets.forEach(targetId -> {
+				if (game.isIn(card.controller, zone, targetId)) {
+					perTargetEffect.accept(targetId);
+				}
+			});
+			afterTargetsEffect.run();
+		});
+	}
+
+	public void setTargetingMultipleUnitsInBothPlay (int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetingResolveFromZone(Both_Play, Predicates::isUnit, count, upTo, perTargetEffect, afterTargetsEffect);
+	}
+
+	public void setTargetingMultipleUnitsInBothPlay (int count, boolean upTo, Consumer<UUID> effect) {
+		setTargetingMultipleUnitsInBothPlay(count, upTo, effect, ()-> {});
+	}
+
+	public void setTargetingSingleUnitInZone (Game.Zone zone, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetingResolveFromZone(zone, Predicates::isUnit, 1, false, perTargetEffect, afterTargetsEffect);
+	}
+
+	public void setTargetingSingleUnitInZone (Game.Zone zone, Consumer<UUID> perTargetEffect) {
+		setTargetingSingleUnitInZone(zone, perTargetEffect, ()->{});
+	}
+
+	public void setTargetingSingleUnitInBothPlay (Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetingSingleUnitInZone(Both_Play, perTargetEffect, afterTargetsEffect);
+	}
+
+	public void setTargetingSingleUnitInBothPlay (Consumer<UUID> perTargetEffect) {
+		setTargetingSingleUnitInBothPlay(perTargetEffect, ()->{});
+	}
+
+	public void setTargetingSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetingResolveFromZone(Stack, cardPredicate, 1, false, perTargetEffect, afterTargetsEffect);
+	}
+
+	public void setTargetingSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect) {
+		setTargetingSingleCardInStack(cardPredicate, perTargetEffect, ()->{});
+	}
+
+	public void setSinglePlayerTargetingResolve(Consumer<UUID> playerEffect) {
+		setBeforePlay(() ->
+				targets.addAll(game.selectPlayers(card.controller, Predicates::any, 1, false))
+		);
+				setResolveEffect(() -> playerEffect.accept(targets.get(0)));
 	}
 
 	// Setters

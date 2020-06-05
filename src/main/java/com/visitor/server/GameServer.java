@@ -76,7 +76,7 @@ public class GameServer {
 
 	void studyCard (UUID gameID, String username, UUID cardID) {
 		System.out.println("Start Study Card");
-		games.get(gameID).studyCard(username, cardID);
+		games.get(gameID).studyCard(username, cardID, true);
 		out.println("Updating players from studyCard.");
 		games.get(gameID).updatePlayers();
 		System.out.println("End Study Card");
@@ -99,7 +99,7 @@ public class GameServer {
 			playerConnections.putIn(username, connection);
 			Arraylist<UUID> playerGames = new Arraylist<>();
 			games.forEach((id, game) -> {
-				if (game.isInGame(username)) {
+				if (game.isPlayerInGame(username)) {
 					playerGames.add(id);
 				}
 			});

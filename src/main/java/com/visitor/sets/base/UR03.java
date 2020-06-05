@@ -17,17 +17,6 @@ public class UR03 extends Ritual {
 				owner);
 
 		playable
-				.setCanPlayAdditional(() ->
-						game.hasIn(playable.card.controller, Both_Play, Predicates::isUnit, 1)
-				)
-				.setBeforePlay(() ->
-						targets = game.selectFromZone(playable.card.controller, Both_Play, Predicates::isUnit, 2, true)
-				)
-				.setResolveEffect(() -> {
-					targets.forEach(cardId -> {
-						if (game.isIn(controller, Both_Play, cardId))
-							game.getCard(cardId).addTurnlyCombatAbility(Unblockable);
-					});
-				});
+				.setTargetingMultipleUnitsInBothPlay(2, true, cardId ->	game.getCard(cardId).addTurnlyCombatAbility(Unblockable));
 	}
 }

@@ -3,7 +3,6 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.HelperFunctions;
 import com.visitor.helpers.Predicates;
 
 import static com.visitor.game.Game.Zone.Discard_Pile;
@@ -19,17 +18,11 @@ public class PR04 extends Ritual {
 				owner);
 
 		playable
-				.setBeforePlay(() -> {
-					targets.addAll(game.selectFromZone(controller, Discard_Pile, Predicates::isUnit, 2, true));
-				})
-				.setResolveEffect(() -> {
-							targets.forEach(targetId -> {
-								if (game.isIn(controller, Discard_Pile, targetId)) {
-									game.restore(targetId).returnToHand();
-								}
-							});
-							game.discard(controller, 1);
-						}
+				.setTargetingResolveFromZone(Discard_Pile, Predicates::isUnit, 2, true,
+						cardId ->	game.restore(cardId).returnToHand(),
+						() -> game.discard(controller, 1)
 				);
+
+
 	}
 }

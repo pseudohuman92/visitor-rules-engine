@@ -9,15 +9,15 @@ import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
 
-import java.io.Serializable;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import static java.util.UUID.randomUUID;
 
 /**
  * @author pseudo
  */
-public class Player implements Serializable {
+public class Player {
 
 	public final Game game;
 
@@ -217,11 +217,11 @@ public class Player implements Serializable {
 
 
 	public void gainHealth (int health) {
-		combat.gainHealth(health);
+		combat.addHealth(health);
 	}
 
 	public void endTurn () {
-		playArea.forEach(card -> card.endTurn());
+		playArea.forEach(Card::endTurn);
 		combat.endTurn();
 	}
 
@@ -231,5 +231,21 @@ public class Player implements Serializable {
 
 	public void shuffleIntoDeck (Card[] cards) {
 		deck.shuffleInto(cards);
+	}
+
+	public Arraylist<Card> extractFromTopOfDeck (int count) {
+		return deck.extractFromTop(count);
+	}
+
+	public int getHandSize () {
+		return hand.size();
+	}
+
+	public void shuffleDeck () {
+		deck.shuffle();
+	}
+
+	public Card extractTopmostMatchingFromDeck (Predicate<Card> cardPredicate) {
+		return deck.extractTopmost(cardPredicate);
 	}
 }

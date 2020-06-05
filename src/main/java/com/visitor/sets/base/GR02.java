@@ -17,15 +17,9 @@ public class GR02 extends Ritual {
 				owner);
 
 		playable
-				.setCanPlayAdditional(() ->
-						game.hasIn(playable.card.controller, Discard_Pile, Predicates::any, 1)
-				)
-				.setBeforePlay(() ->
-						targets.add(game.selectFromZone(playable.card.controller, Discard_Pile, Predicates::any, 1, false).get(0))
-				)
-				.setResolveEffect(() -> {
-					if (game.isIn(controller, Discard_Pile, targets.get(0)))
-							game.getCard(targets.get(0)).returnToHand();
-				});
+				.setTargetingResolveFromZone(Discard_Pile, Predicates::any, 1, false,
+						cardId ->	game.getCard(cardId).returnToHand(),
+						() -> {}
+				);
 	}
 }

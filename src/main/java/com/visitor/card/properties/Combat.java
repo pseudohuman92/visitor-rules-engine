@@ -315,7 +315,7 @@ public class Combat {
 		}
 	}
 
-	public final void gainHealth (int health) {
+	public final void addHealth (int health) {
 		this.health += health;
 	}
 
@@ -359,6 +359,10 @@ public class Combat {
 
 	public void addTurnlyHealth (int health) {
 		turnlyHealth += health;
+	}
+
+	public void addAttack (int i) {
+		attack += i;
 	}
 
 	public enum CombatAbility {
