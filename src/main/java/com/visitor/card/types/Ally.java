@@ -5,7 +5,7 @@
  */
 package com.visitor.card.types;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;

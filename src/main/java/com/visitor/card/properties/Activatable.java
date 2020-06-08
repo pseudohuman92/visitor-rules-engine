@@ -5,7 +5,7 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.containers.ActivatedAbility;

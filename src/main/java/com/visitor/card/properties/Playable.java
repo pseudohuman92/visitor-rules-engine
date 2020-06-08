@@ -1,6 +1,6 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Predicates;
@@ -262,12 +262,12 @@ public class Playable {
 		setTargetingSingleUnitInZone(zone, perTargetEffect, ()->{});
 	}
 
-	public void setTargetingSingleUnitInBothPlay (Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+	public void setTargetingSingleUnit (Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
 		setTargetingSingleUnitInZone(Both_Play, perTargetEffect, afterTargetsEffect);
 	}
 
-	public void setTargetingSingleUnitInBothPlay (Consumer<UUID> perTargetEffect) {
-		setTargetingSingleUnitInBothPlay(perTargetEffect, ()->{});
+	public void setTargetingSingleUnit (Consumer<UUID> perTargetEffect) {
+		setTargetingSingleUnit(perTargetEffect, ()->{});
 	}
 
 	public void setTargetingSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {

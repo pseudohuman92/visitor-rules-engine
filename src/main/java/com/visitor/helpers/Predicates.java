@@ -5,13 +5,13 @@
  */
 package com.visitor.helpers;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.game.Player;
 
 import java.util.function.Predicate;
 
-import static com.visitor.card.Card.CardSubtype.*;
-import static com.visitor.card.Card.CardType.*;
+import static com.visitor.game.Card.CardSubtype.*;
+import static com.visitor.game.Card.CardType.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 /**

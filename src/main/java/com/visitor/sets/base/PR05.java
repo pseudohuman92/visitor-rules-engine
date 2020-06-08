@@ -3,10 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.HelperFunctions;
-import com.visitor.helpers.Predicates;
 
-import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class PR05 extends Ritual {
@@ -18,6 +15,6 @@ public class PR05 extends Ritual {
 				owner);
 
 		playable
-				.setTargetingSingleUnitInBothPlay(cardId -> game.destroy(id, cardId));
+				.setTargetingSingleUnit(cardId -> game.destroy(id, cardId));
 	}
 }

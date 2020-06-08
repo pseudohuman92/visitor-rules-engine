@@ -3,9 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
-import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC05 extends Cantrip {
@@ -16,7 +14,7 @@ public class BC05 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnitInBothPlay((cardId)-> {
+				.setTargetingSingleUnit((cardId)-> {
 								game.getCard(targets.get(0)).addAttack(-2);
 						}
 				);

@@ -1,12 +1,10 @@
 package com.visitor.game;
 
-import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;
 

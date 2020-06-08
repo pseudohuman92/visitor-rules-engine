@@ -3,10 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
-import static com.visitor.game.Game.Zone.Both_Play;
-import static com.visitor.game.Game.Zone.Play;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GC02 extends Cantrip {
@@ -17,7 +14,7 @@ public class GC02 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnitInBothPlay((cardId) -> {
+				.setTargetingSingleUnit((cardId) -> {
 								game.getCard(cardId).heal(3);
 							}
 				);

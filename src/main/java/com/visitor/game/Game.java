@@ -1,6 +1,5 @@
 package com.visitor.game;
 
-import com.visitor.card.Card;
 import com.visitor.card.types.Junk;
 import com.visitor.helpers.*;
 import com.visitor.helpers.containers.Damage;
@@ -76,7 +75,31 @@ public class Game implements Serializable {
 		blockers = new Arraylist<>();
 	}
 
-	// Connection Methods - To deal with client connections
+	//This needs to be called to start the game.
+	public void addPlayers (Player p1, Player p2) {
+		triggeringCards.put(p1.username, new Arraylist<>());
+		triggeringCards.put(p2.username, new Arraylist<>());
+
+		players.put(p1.username, p1);
+		players.put(p2.username, p2);
+
+		p1.deck.shuffle();
+		p2.deck.shuffle();
+
+		phase = REDRAW;
+		turnPlayer = (random() < 0.5) ? p1.username : p2.username;
+		activePlayer = turnPlayer;
+		turnCount = 0;
+		passCount = 0;
+		p1.draw(5);
+		p2.draw(5);
+		out.println("Updating players from Game addPlayers. AP: " + activePlayer);
+		updatePlayers();
+	}
+
+	/** Connection Methods
+	 *  To deal with client connections
+	 */
 	public void addConnection (String username, GameEndpoint connection) {
 		connections.putIn(username, connection);
 	}
@@ -102,7 +125,9 @@ public class Game implements Serializable {
 	}
 
 
-	// Card Accessor Methods - Getting Card objects from various places
+	/** Card Accessor Methods
+	 *  Getting Card objects from various places
+ 	 */
 	public Card extractCard (UUID targetID) {
 		for (Player player : players.values()) {
 			Card c = player.extractCard(targetID);
@@ -160,7 +185,9 @@ public class Game implements Serializable {
 	}
 
 
-	// Game Action Methods - These are game actions taken by a client
+	/** Game Action Methods
+	 *  These are game actions taken by a client
+	 */
 	public void playCard (String username, UUID cardID) {
 		extractCard(cardID).play();
 		activePlayer = getOpponentName(username);
@@ -347,7 +374,6 @@ public class Game implements Serializable {
     */
 
 
-	// Eventually make this private.
 	private Arraylist<Card> getZone (String username, Zone zone) {
 		switch (zone) {
 			case Deck:
@@ -485,9 +511,9 @@ public class Game implements Serializable {
 	}
 
 
-
-
-	// Transformation Methods - To change one card to another in-place.
+	/** Transformation Methods
+	 *  To change one card to another in-place.
+	 */
 	private void replaceWith (Card oldCard, Card newCard) {
 		players.values().forEach(p -> p.replaceCardWith(oldCard, newCard));
 		for (int i = 0; i < stack.size(); i++) {
@@ -511,7 +537,17 @@ public class Game implements Serializable {
 	}
 
 
-	// Client Prompt Methods - When you need client to do something
+	/** Client Prompt Methods
+	 *  When you need client to do something
+	 * @param username
+	 * @param type
+	 * @param candidates
+	 * @param canSelect
+	 * @param canSelectPlayers
+	 * @param count
+	 * @param upTo
+	 * @return
+	 */
 
 	//// Helpers
 	private Arraylist<UUID> selectFrom (String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo) {
@@ -704,26 +740,7 @@ public class Game implements Serializable {
 		addEvent(e, false);
 	}
 
-	public void addPlayers (Player p1, Player p2) {
-		triggeringCards.put(p1.username, new Arraylist<>());
-		triggeringCards.put(p2.username, new Arraylist<>());
 
-		players.put(p1.username, p1);
-		players.put(p2.username, p2);
-
-		p1.deck.shuffle();
-		p2.deck.shuffle();
-
-		phase = REDRAW;
-		turnPlayer = (random() < 0.5) ? p1.username : p2.username;
-		activePlayer = turnPlayer;
-		turnCount = 0;
-		passCount = 0;
-		p1.draw(5);
-		p2.draw(5);
-		out.println("Updating players from Game addPlayers. AP: " + activePlayer);
-		updatePlayers();
-	}
 
 	public int getMaxEnergy (String username) {
 		return getPlayer(username).maxEnergy;
@@ -917,16 +934,19 @@ public class Game implements Serializable {
 		return getPlayer(username).id;
 	}
 
+	// Does nothing if called with non-positive amount of damage
 	public void dealDamage (UUID sourceId, UUID targetId, Damage damage) {
-		String username = getUsername(targetId);
-		Card source = getCard(sourceId);
-		if (!username.isEmpty()) {
-			getPlayer(username).receiveDamage(damage.amount, source);
-		} else {
-			Card c = getCard(targetId);
-			if (c != null) {
-				c.receiveDamage(damage, source);
+		if (damage.amount > 0) {
+			String username = getUsername(targetId);
+			Card source = getCard(sourceId);
+			if (!username.isEmpty()) {
+				getPlayer(username).receiveDamage(damage.amount, source);
+			} else {
+				Card c = getCard(targetId);
+				if (c != null) {
+					c.receiveDamage(damage, source);
 
+				}
 			}
 		}
 	}

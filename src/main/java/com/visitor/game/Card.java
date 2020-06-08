@@ -1,9 +1,6 @@
-package com.visitor.card;
+package com.visitor.game;
 
 import com.visitor.card.properties.*;
-import com.visitor.game.Event;
-import com.visitor.game.Game;
-import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;

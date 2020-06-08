@@ -1,6 +1,6 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -309,14 +309,18 @@ public class Combat {
 		return health + turnlyHealth;
 	}
 
+
 	public final void heal (int health) {
 		if (this.health < maxHealth) {
 			this.health = Math.min(maxHealth, this.health + health);
 		}
 	}
 
+	//Do not use to lose health (e.g. negative input)
 	public final void addHealth (int health) {
-		this.health += health;
+		if (health > 0) {
+			this.health += health;
+		}
 	}
 
 	public final void gainTurnlyHealth (int health) {
@@ -361,6 +365,7 @@ public class Combat {
 		turnlyHealth += health;
 	}
 
+	// Can use to remove attack
 	public void addAttack (int i) {
 		attack += i;
 	}

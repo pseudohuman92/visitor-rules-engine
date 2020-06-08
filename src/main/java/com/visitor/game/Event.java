@@ -5,7 +5,6 @@
  */
 package com.visitor.game;
 
-import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
 
 import static com.visitor.game.Event.EventType.*;

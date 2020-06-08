@@ -1,6 +1,6 @@
 package com.visitor.helpers;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 
 import java.util.UUID;
 

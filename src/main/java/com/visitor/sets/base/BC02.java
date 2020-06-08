@@ -1,6 +1,6 @@
 package com.visitor.sets.base;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
@@ -10,7 +10,6 @@ import com.visitor.helpers.UUIDHelper;
 
 import java.util.UUID;
 
-import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC02 extends Cantrip {

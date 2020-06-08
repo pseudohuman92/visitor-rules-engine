@@ -1,13 +1,12 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Studiable {

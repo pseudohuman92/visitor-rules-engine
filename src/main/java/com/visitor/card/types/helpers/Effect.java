@@ -5,7 +5,7 @@
  */
 package com.visitor.card.types.helpers;
 
-import com.visitor.card.Card;
+import com.visitor.game.Card;
 import com.visitor.card.properties.Triggering;
 import com.visitor.game.Event;
 import com.visitor.game.Game;

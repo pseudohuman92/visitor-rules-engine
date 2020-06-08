@@ -5,9 +5,7 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 
-import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.game.Game.Zone.Play;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GC01 extends Cantrip {
@@ -18,7 +16,7 @@ public class GC01 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnitInBothPlay((cardId) -> {
+				.setTargetingSingleUnit((cardId) -> {
 								int count = game.countInZone(controller, Play, Predicates::isUnit);
 								game.getCard(cardId).addTurnlyAttack(count);
 								game.getCard(cardId).addTurnlyHealth(count);

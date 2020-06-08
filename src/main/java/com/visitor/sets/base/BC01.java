@@ -1,12 +1,9 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Cantrip;
-import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
-import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC01 extends Cantrip {
@@ -17,7 +14,7 @@ public class BC01 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnitInBothPlay((cardId) -> {
+				.setTargetingSingleUnit((cardId) -> {
 								game.getCard(cardId).returnToHand();
 						}
 				);
