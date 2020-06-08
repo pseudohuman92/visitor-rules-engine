@@ -1362,5 +1362,170 @@
     "Health": "",
     "Energy": 1,
     "Knowledge": "GG"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "RC01",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Deal 2 damage to any target",
+    "Attack": "",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "R"
+  },
+  {
+    "Set": "base",
+    "Name": "RC02",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Target unit gets +3/+0 and gains first strike until end of turn.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "R"
+  },
+  {
+    "Set": "base",
+    "Name": "RC03",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Deal 2 damage to each unit.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "R"
+  },
+  {
+    "Set": "base",
+    "Name": "RC04",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Deal 4 damage to target unit and 2 damage to its controller.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 4,
+    "Knowledge": "RR"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "PC01",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Target unit gets -2/-2 until end of turn.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 1,
+    "Knowledge": "P"
+  },
+  {
+    "Set": "base",
+    "Name": "PC02",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Target unit gains deathtouch until end of turn. Draw 1 card.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "P"
+  },
+  {
+    "Set": "base",
+    "Name": "PC03",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Deal 2 damage to target unit. You gain 2 life.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "PP"
+  },
+  {
+    "Set": "base",
+    "Name": "PC04",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Destroy target unit.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 3,
+    "Knowledge": "PP"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "YC01",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Target unit gets +2/+2 and lifelink until end of turn.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "Y"
+  },
+  {
+    "Set": "base",
+    "Name": "YC02",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Target unit gets +2/+4 until end of turn.",
+    "Attack": "",
+    "Health": "",
+    "Energy": 2,
+    "Knowledge": "Y"
+  },
+  {
+    "Set": "base",
+    "Name": "YC03",
+    "Type": "Spell",
+    "Subtype": "Cantrip",
+    "Effect": "Units you control get +1/+2",
+    "Attack": "",
+    "Health": "",
+    "Energy": 4,
+    "Knowledge": "YYY"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": "X"
   }
 ]
