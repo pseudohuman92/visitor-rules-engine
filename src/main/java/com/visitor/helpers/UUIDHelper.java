@@ -27,8 +27,8 @@ public abstract class UUIDHelper {
 
 	public static Arraylist<UUID> toUUIDList (String[] cards) {
 		Arraylist<UUID> uuids = new Arraylist<>();
-		for (int i = 0; i < cards.length; i++) {
-			uuids.add(fromString(cards[i]));
+		for (String card : cards) {
+			uuids.add(fromString(card));
 		}
 		return uuids;
 	}
@@ -59,9 +59,9 @@ public abstract class UUIDHelper {
 
 	public static Arraylist<Card> getInList (Arraylist<Card> cards, Arraylist<UUID> uuids) {
 		Arraylist<Card> selected = new Arraylist<>();
-		for (int i = 0; i < cards.size(); i++) {
-			if (uuids.contains(cards.get(i).id)) {
-				selected.add(cards.get(i));
+		for (Card card : cards) {
+			if (uuids.contains(card.id)) {
+				selected.add(card);
 			}
 		}
 		return selected;
@@ -69,9 +69,9 @@ public abstract class UUIDHelper {
 
 	public static Arraylist<Card> getNotInList (Arraylist<Card> cards, Arraylist<UUID> uuids) {
 		Arraylist<Card> selected = new Arraylist<>();
-		for (int i = 0; i < cards.size(); i++) {
-			if (!uuids.contains(cards.get(i).id)) {
-				selected.add(cards.get(i));
+		for (Card card : cards) {
+			if (!uuids.contains(card.id)) {
+				selected.add(card);
 			}
 		}
 		return selected;

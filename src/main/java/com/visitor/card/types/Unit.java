@@ -1,9 +1,9 @@
 package com.visitor.card.types;
 
-import com.visitor.game.Card;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;

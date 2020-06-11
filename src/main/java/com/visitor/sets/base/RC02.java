@@ -15,9 +15,9 @@ public class RC02 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								game.getCard(cardId).addTurnlyAttack(3);
-								game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.FirstStrike);
+				.setTargetSingleUnit((cardId) -> {
+							game.getCard(cardId).addTurnlyAttack(3);
+							game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.FirstStrike);
 						}
 				);
 	}

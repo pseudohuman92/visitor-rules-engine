@@ -1,6 +1,5 @@
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
@@ -16,9 +15,9 @@ public class RC04 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								game.dealDamage(id, cardId, new Damage(4));
-								game.dealDamage(id, game.getUserId(game.getCard(cardId).controller), new Damage(2));
+				.setTargetSingleUnit((cardId) -> {
+							game.dealDamage(id, cardId, new Damage(4));
+							game.dealDamage(id, game.getUserId(game.getCard(cardId).controller), new Damage(2));
 						}
 				);
 	}

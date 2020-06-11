@@ -13,13 +13,15 @@ import { ClientPhase } from "../Helpers/Constants";
 import { Droppable } from "react-beautiful-dnd";
 
 import "../../css/ChooseDialog.css";
+import CardDisplay from "../Card/CardDisplay";
 
 const mapStateToProps = state => {
   return {
     clientPhase: state.extendedGameState.clientPhase,
     selected: state.extendedGameState.selectionData.selected,
     dialog: state.extendedGameState.dialogData,
-    upTo: state.extendedGameState.selectionData.upTo
+    upTo: state.extendedGameState.selectionData.upTo,
+    message: state.extendedGameState.message,
   };
 };
 
@@ -41,24 +43,24 @@ class ChooseDialog extends Component {
   };
 
   render = () => {
-    const { clientPhase, dialog, upTo } = this.props;
+    const { clientPhase, dialog, upTo, message } = this.props;
 
     const isSelectPhase =
       clientPhase === ClientPhase.SELECT_FROM_LIST ||
-      clientPhase === ClientPhase.SELECT_FROM_SCRAPYARD ||
+      clientPhase === ClientPhase.SELECT_FROM_DISCARD_PILE ||
       clientPhase === ClientPhase.SELECT_FROM_VOID;
 
     return (
       <Dialog
         open={dialog.open}
         onClose={this.onClose}
-        maxWidth={false}
+        maxWidth=false
         fullWidth
         disableBackdropClick={isSelectPhase}
         disableEscapeKeyDown={isSelectPhase}
         scroll="body"
       >
-        <DialogTitle> {dialog.title} </DialogTitle>
+        <DialogTitle> {message} </DialogTitle>
         <DialogContent>
           <Droppable droppableId={"modal-list"} isDropDisabled>
             {provided => (

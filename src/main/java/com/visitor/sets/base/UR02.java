@@ -15,7 +15,7 @@ public class UR02 extends Ritual {
 
 		playable
 				.setResolveEffect(() ->
-						game.draw(playable.card.controller, 2)
+						game.draw(controller, 2)
 				);
 	}
 }

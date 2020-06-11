@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 /**
  * @param <Key>
- * @param <Value>
  * @author pseudo
  */
 public class CounterMap<Key> extends HashMap<Key, Integer> {
@@ -56,6 +55,12 @@ public class CounterMap<Key> extends HashMap<Key, Integer> {
 	}
 
 	public void merge (CounterMap<Key> map) {
-		map.forEach((key, count) -> add(key, count));
+		map.forEach(this::add);
+	}
+
+	public Arraylist<String> transformToStringList () {
+		Arraylist<String> list = new Arraylist<>();
+		forEach((k, v) -> list.add(k.toString()));
+		return list;
 	}
 }

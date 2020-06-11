@@ -3,10 +3,8 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Unblockable;
-import static com.visitor.game.Game.Zone.Both_Play;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class UR03 extends Ritual {
@@ -17,6 +15,6 @@ public class UR03 extends Ritual {
 				owner);
 
 		playable
-				.setTargetingMultipleUnitsInBothPlay(2, true, cardId ->	game.getCard(cardId).addTurnlyCombatAbility(Unblockable));
+				.setTargetMultipleUnits(2, true, cardId -> game.getCard(cardId).addTurnlyCombatAbility(Unblockable));
 	}
 }

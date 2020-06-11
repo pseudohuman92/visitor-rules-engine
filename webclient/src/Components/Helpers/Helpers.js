@@ -53,8 +53,8 @@ export function getIconColor(knowledgeCost) {
     return "gray";
   }
   const knowlString = toKnowledgeString(knowledgeCost);
-  if (knowlString.startsWith("B")) {
-    return "black";
+  if (knowlString.startsWith("P")) {
+    return "purple";
   } else if (knowlString.startsWith("U")) {
     return "blue";
   } else if (knowlString.startsWith("R")) {
@@ -73,7 +73,7 @@ export function IsSelectCardPhase(clientPhase) {
     ClientPhase.SELECT_FROM_LIST,
     ClientPhase.SELECT_FROM_PLAY,
     ClientPhase.SELECT_FROM_HAND,
-    ClientPhase.SELECT_FROM_SCRAPYARD,
+    ClientPhase.SELECT_FROM_DISCARD_PILE,
     ClientPhase.SELECT_FROM_VOID,
     ClientPhase.SELECT_FROM_STACK
   ].includes(clientPhase);
@@ -89,8 +89,8 @@ export function toClientPhase(msgType, selectType) {
           return ClientPhase.SELECT_FROM_HAND;
         case proto.SelectFromType.PLAY:
           return ClientPhase.SELECT_FROM_PLAY;
-        case proto.SelectFromType.SCRAPYARD:
-          return ClientPhase.SELECT_FROM_SCRAPYARD;
+        case proto.SelectFromType.DISCARD_PILE:
+          return ClientPhase.SELECT_FROM_DISCARD_PILE;
         case proto.SelectFromType.VOID:
           return ClientPhase.SELECT_FROM_VOID;
         case proto.SelectFromType.STACK:
@@ -114,7 +114,7 @@ export function toClientPhase(msgType, selectType) {
     case "AssignDamage":  
       return ClientPhase.ASSIGN_DAMAGE;
     default:
-      return ClientPhase.NOT_STARTED;
+      return ClientPhase.WAITING;
   }
 }
 
@@ -126,8 +126,8 @@ export function toSelectFromType(clientPhase) {
       return proto.SelectFromType.HAND;
     case ClientPhase.SELECT_FROM_PLAY:
       return proto.SelectFromType.PLAY;
-    case ClientPhase.SELECT_FROM_SCRAPYARD:
-      return proto.SelectFromType.SCRAPYARD;
+    case ClientPhase.SELECT_FROM_DISCARD_PILE:
+      return proto.SelectFromType.DISCARD_PILE;
     case ClientPhase.SELECT_FROM_VOID:
       return proto.SelectFromType.VOID;
     case ClientPhase.SELECT_FROM_STACK:
@@ -146,8 +146,8 @@ export function getCardColor(knowledgeCost) {
   }
 
   const knowlString = toKnowledgeString(knowledgeCost);
-  if (knowlString.startsWith("B")) {
-    return "dimgray";
+  if (knowlString.startsWith("P")) {
+    return "purple";
   } else if (knowlString.startsWith("U")) {
     return "royalblue";
   } else if (knowlString.startsWith("R")) {

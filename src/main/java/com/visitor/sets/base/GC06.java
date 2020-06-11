@@ -16,9 +16,7 @@ public class GC06 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingResolveFromZone(Deck, Predicates::isUnit, 2, true,
-						cardId -> {
-					game.draw(controller, cardId);
-				}, ()-> game.shuffleDeck(controller));
+				.setTargetMultipleCards(Deck, Predicates::isUnit, 2, true,
+						"Select up to 2 units from your deck.", cardId -> game.draw(controller, cardId), () -> game.shuffleDeck(controller));
 	}
 }

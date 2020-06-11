@@ -3,7 +3,6 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
 import static com.visitor.game.Game.Zone.Discard_Pile;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
@@ -18,8 +17,8 @@ public class PR04 extends Ritual {
 				owner);
 
 		playable
-				.setTargetingResolveFromZone(Discard_Pile, Predicates::isUnit, 2, true,
-						cardId ->	game.restore(cardId).returnToHand(),
+				.setTargetMultipleUnits(Discard_Pile, 2, true,
+						cardId -> game.restore(cardId).returnToHand(),
 						() -> game.discard(controller, 1)
 				);
 

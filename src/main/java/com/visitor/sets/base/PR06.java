@@ -3,7 +3,6 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -16,6 +15,6 @@ public class PR06 extends Ritual {
 				owner);
 
 		playable
-				.setSinglePlayerTargetingResolve(playerId -> game.discard(game.getUsername(playerId), 2));
+				.setTargetSinglePlayer(playerId -> game.discard(game.getUsername(playerId), 2));
 	}
 }

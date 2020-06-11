@@ -54,7 +54,7 @@ public class GameEndpoint {
 	}
 
 	@OnMessage
-	public void onMessage (Session session, byte[] message) throws IOException {
+	public void onMessage (Session session, byte[] message) {
 		new Thread(() -> {
 			try {
 				ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
@@ -73,7 +73,7 @@ public class GameEndpoint {
 	}
 
 	@OnClose
-	public void onClose (Session session) throws IOException {
+	public void onClose (Session session) {
 		gameServer.removeGameConnection(gameID, username);
 	}
 
@@ -230,7 +230,7 @@ public class GameEndpoint {
 		try {
 			new File("../game-logs/").mkdirs();
 			writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString() + ".log", true));
-			writer.append("[FROM: " + username + "] " + cgm);
+			writer.append("[FROM: ").append(username).append("] ").append(String.valueOf(cgm));
 			writer.flush();
 			writer.close();
 			writer = null;
@@ -243,7 +243,7 @@ public class GameEndpoint {
 		try {
 			new File("../game-logs/").mkdirs();
 			writer = new BufferedWriter(new FileWriter("../game-logs/" + gameID.toString() + ".log", true));
-			writer.append("[TO: " + username + "] " + message);
+			writer.append("[TO: ").append(username).append("] ").append(String.valueOf(message));
 			writer.flush();
 			writer.close();
 			writer = null;

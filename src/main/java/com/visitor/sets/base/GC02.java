@@ -14,9 +14,7 @@ public class GC02 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								game.getCard(cardId).heal(3);
-							}
+				.setTargetSingleUnit((cardId) -> game.getCard(cardId).heal(3)
 				);
 	}
 }

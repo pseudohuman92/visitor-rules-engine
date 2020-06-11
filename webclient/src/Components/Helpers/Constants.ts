@@ -11,17 +11,17 @@ import { toKnowledgeCost } from "./Helpers";
 export enum ClientPhase {
   NOT_STARTED = "NotStarted",
   UPDATE_GAME = "UpdateGame",
+  WAITING = "Waiting",
   WIN = "Win",
   LOSE = "Lose",
   ORDER_CARDS = "OrderCards",
   SELECT_FROM_LIST = "SelectFromList",
   SELECT_FROM_PLAY = "SelectFromPlay",
   SELECT_FROM_HAND = "SelectFromHand",
-  SELECT_FROM_SCRAPYARD = "SelectFromScrapyard",
+  SELECT_FROM_DISCARD_PILE= "SelectFromDiscardPile",
   SELECT_FROM_VOID = "SelectFromVoid",
   SELECT_FROM_STACK = "SelectFromStack",
   SELECT_X_VALUE = "SelectXValue",
-  DONE_SELECT = "DoneSelect",
   SELECT_ATTACKERS = "SelectAttackers",
   ATTACK_PHASE = "AttackPhase",
   SELECT_BLOCKERS = "SelectBlockers",
@@ -134,7 +134,7 @@ export function initialSelectionData(): SelectionData {
     selectable: [],
     upTo: false,
     selected: [],
-    maxXValue: 0
+    maxXValue: 0,
   };
 }
 
@@ -157,6 +157,7 @@ export interface ExtendedGameState {
   game: GameState; //GameState object. See proto files
   clientPhase: ClientPhase; //Client defined phases
 
+  message: string;
   gameInitialized: boolean;
   autoPass: boolean;
   win: boolean;
@@ -177,6 +178,7 @@ export function initialExtendedGameState(): ExtendedGameState {
     game: game, //GameState object. See proto files
     clientPhase: ClientPhase.NOT_STARTED, //Client defined phases
 
+    message: "",
     gameInitialized: false,
     autoPass: false,
     win: false,
@@ -277,14 +279,14 @@ export const keywords = {
   Possess: "Acquire the control of a card.",
   Pay: "Trigger card's ability at the cost of additional energy.",
   Sacrifice:
-    "Trigger card's ability at the cost of putting it into your scrapyard.",
+    "Trigger card's ability at the cost of putting it into your discardPile.",
   Delay: "Postpone an action or effect for written number of rounds",
   Loyalty: "TODO",
   Shield: "Prevent the damage dealt to target.",
   Reflect:
     "Prevent the determined damage and deal that much damage back to its source.",
   Donate: "Transfer the control of the card to another player",
-  Health: "An asset or players total restitance to fatal damage",
+  Health: "An asset or players total resistance to fatal damage",
   Damage: "Reductions to Player health, shields or Card health",
   Trigger: "Activates on conditional interactions",
   Activate: "Change a cards play state form Ready to Depleted",

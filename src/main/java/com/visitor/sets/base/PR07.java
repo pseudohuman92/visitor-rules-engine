@@ -25,7 +25,7 @@ public class PR07 extends Ritual {
 				)
 				.setBeforePlay(() -> {
 					//Sacrificed Unit
-					UUID sacrificedUnit = game.selectFromZone(controller, Play, Predicates::isUnit, 1, false).get(0);
+					UUID sacrificedUnit = game.selectFromZone(controller, Play, Predicates::isUnit, 1, false, "").get(0);
 					game.sacrifice(sacrificedUnit);
 				})
 				.setResolveEffect(() ->

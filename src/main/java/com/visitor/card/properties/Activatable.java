@@ -35,8 +35,8 @@ public class Activatable {
 	}
 
 	public final boolean canActivate () {
-		for (int i = 0; i < abilityList.size(); i++) {
-			if (abilityList.get(i).canActivate.get())
+		for (ActivatedAbility activatedAbility : abilityList) {
+			if (activatedAbility.canActivate.get())
 				return true;
 		}
 		return false;
@@ -44,9 +44,9 @@ public class Activatable {
 
 	public final Arraylist getActivatableAbilities () {
 		Arraylist<ActivatedAbility> abilities = new Arraylist<>();
-		for (int i = 0; i < abilityList.size(); i++) {
-			if (abilityList.get(i).canActivate.get())
-				abilities.add(abilityList.get(i));
+		for (ActivatedAbility activatedAbility : abilityList) {
+			if (activatedAbility.canActivate.get())
+				abilities.add(activatedAbility);
 		}
 		return abilities;
 	}

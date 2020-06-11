@@ -14,7 +14,6 @@ import com.visitor.protocol.Types.Knowledge;
 public abstract class TriggeringPassive extends Passive {
 
 	/**
-	 * @param image
 	 * @param name
 	 * @param cost
 	 * @param knowledge

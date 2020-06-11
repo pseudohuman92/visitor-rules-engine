@@ -35,16 +35,14 @@ public abstract class Card implements Serializable {
 
 	public String owner;
 	public String controller;
-
+	public boolean depleted;
+	public CounterMap<Counter> counters;
+	public Arraylist<UUID> targets;
 	protected Activatable activatable;
 	protected Triggering triggering;
 	protected Combat combat;
 	protected Playable playable;
 	protected Studiable studiable;
-
-	public boolean depleted;
-	public CounterMap<Counter> counters;
-	public Arraylist<UUID> targets;
 
 	/**
 	 * This is the default constructor for creating a card.
@@ -146,13 +144,13 @@ public abstract class Card implements Serializable {
 		targets = c.targets;
 	}
 
-	private final void runIfNotNull (Object object, Runnable runnable) {
+	private void runIfNotNull (Object object, Runnable runnable) {
 		HelperFunctions.runIfNotNull(object, runnable, () ->
 				System.out.println(toCardMessage().toString())
 		);
 	}
 
-	private final <T> T runIfNotNull (Object object, Supplier<T> supplier) {
+	private <T> T runIfNotNull (Object object, Supplier<T> supplier) {
 		return HelperFunctions.runIfNotNull(object, supplier, () -> {
 			System.out.println(toCardMessage().toString());
 			return null;
@@ -364,11 +362,14 @@ public abstract class Card implements Serializable {
 				.setName(name)
 				.setDepleted(depleted)
 				.setDescription(text)
-				.setCombat(combat.toCombatMessage())
 				.setLoyalty(-1)
 				.addAllTypes(types.transformToStringList())
 				.addAllSubtypes(subtypes.transformToStringList())
 				.addAllTargets(targets.transformToStringList());
+
+		if (combat != null) {
+			builder.setCombat(combat.toCombatMessage());
+		}
 
 		counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
 				.setCounter(k)
@@ -406,7 +407,7 @@ public abstract class Card implements Serializable {
 	}
 
 	public void addAttack (int i) {
-		runIfNotNull(combat, ()-> combat.addAttack(i));
+		runIfNotNull(combat, () -> combat.addAttack(i));
 	}
 
 	public boolean isDamagable () {
@@ -418,7 +419,7 @@ public abstract class Card implements Serializable {
 	}
 
 	public void addHealth (int i) {
-		runIfNotNull(combat, ()-> combat.addHealth(i));
+		runIfNotNull(combat, () -> combat.addHealth(i));
 	}
 
 

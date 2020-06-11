@@ -46,7 +46,7 @@ public class GeneralEndpoint {
 	}
 
 	@OnClose
-	public void onClose (Session session) throws IOException {
+	public void onClose (Session session) {
 		out.println(username + " disconnected!");
 		gameServer.removeConnection(username);
 		this.session = null;

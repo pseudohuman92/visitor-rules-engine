@@ -1,6 +1,5 @@
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
@@ -18,6 +17,6 @@ public class RC03 extends Cantrip {
 		playable
 				.setResolveEffect(() ->
 						game.forEachInZone(controller, Game.Zone.Both_Play,
-							card -> game.dealDamage(id, card.id, new Damage(2))));
+								card -> game.dealDamage(id, card.id, new Damage(2))));
 	}
 }

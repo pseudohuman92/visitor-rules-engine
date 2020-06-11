@@ -8540,6 +8540,7 @@ $root.OrderCards = (function() {
      * @interface IOrderCards
      * @property {IGameState|null} [game] OrderCards game
      * @property {Array.<ICard>|null} [cardsToOrder] OrderCards cardsToOrder
+     * @property {string|null} [message] OrderCards message
      */
 
     /**
@@ -8575,6 +8576,14 @@ $root.OrderCards = (function() {
     OrderCards.prototype.cardsToOrder = $util.emptyArray;
 
     /**
+     * OrderCards message.
+     * @member {string} message
+     * @memberof OrderCards
+     * @instance
+     */
+    OrderCards.prototype.message = "";
+
+    /**
      * Creates a new OrderCards instance using the specified properties.
      * @function create
      * @memberof OrderCards
@@ -8603,6 +8612,8 @@ $root.OrderCards = (function() {
         if (message.cardsToOrder != null && message.cardsToOrder.length)
             for (var i = 0; i < message.cardsToOrder.length; ++i)
                 $root.Card.encode(message.cardsToOrder[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+            writer.uint32(/* id 7, wireType 2 =*/58).string(message.message);
         return writer;
     };
 
@@ -8644,6 +8655,9 @@ $root.OrderCards = (function() {
                 if (!(message.cardsToOrder && message.cardsToOrder.length))
                     message.cardsToOrder = [];
                 message.cardsToOrder.push($root.Card.decode(reader, reader.uint32()));
+                break;
+            case 7:
+                message.message = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -8694,6 +8708,9 @@ $root.OrderCards = (function() {
                     return "cardsToOrder." + error;
             }
         }
+        if (message.message != null && message.hasOwnProperty("message"))
+            if (!$util.isString(message.message))
+                return "message: string expected";
         return null;
     };
 
@@ -8724,6 +8741,8 @@ $root.OrderCards = (function() {
                 message.cardsToOrder[i] = $root.Card.fromObject(object.cardsToOrder[i]);
             }
         }
+        if (object.message != null)
+            message.message = String(object.message);
         return message;
     };
 
@@ -8742,8 +8761,10 @@ $root.OrderCards = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.cardsToOrder = [];
-        if (options.defaults)
+        if (options.defaults) {
             object.game = null;
+            object.message = "";
+        }
         if (message.game != null && message.hasOwnProperty("game"))
             object.game = $root.GameState.toObject(message.game, options);
         if (message.cardsToOrder && message.cardsToOrder.length) {
@@ -8751,6 +8772,8 @@ $root.OrderCards = (function() {
             for (var j = 0; j < message.cardsToOrder.length; ++j)
                 object.cardsToOrder[j] = $root.Card.toObject(message.cardsToOrder[j], options);
         }
+        if (message.message != null && message.hasOwnProperty("message"))
+            object.message = message.message;
         return object;
     };
 
@@ -8780,6 +8803,7 @@ $root.SelectFrom = (function() {
      * @property {Array.<ICard>|null} [candidates] SelectFrom candidates
      * @property {Array.<string>|null} [selectable] SelectFrom selectable
      * @property {boolean|null} [upTo] SelectFrom upTo
+     * @property {string|null} [message] SelectFrom message
      */
 
     /**
@@ -8848,6 +8872,14 @@ $root.SelectFrom = (function() {
     SelectFrom.prototype.upTo = false;
 
     /**
+     * SelectFrom message.
+     * @member {string} message
+     * @memberof SelectFrom
+     * @instance
+     */
+    SelectFrom.prototype.message = "";
+
+    /**
      * Creates a new SelectFrom instance using the specified properties.
      * @function create
      * @memberof SelectFrom
@@ -8885,6 +8917,8 @@ $root.SelectFrom = (function() {
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.selectable[i]);
         if (message.upTo != null && Object.hasOwnProperty.call(message, "upTo"))
             writer.uint32(/* id 6, wireType 0 =*/48).bool(message.upTo);
+        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+            writer.uint32(/* id 7, wireType 2 =*/58).string(message.message);
         return writer;
     };
 
@@ -8940,6 +8974,9 @@ $root.SelectFrom = (function() {
                 break;
             case 6:
                 message.upTo = reader.bool();
+                break;
+            case 7:
+                message.message = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -9016,6 +9053,9 @@ $root.SelectFrom = (function() {
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             if (typeof message.upTo !== "boolean")
                 return "upTo: boolean expected";
+        if (message.message != null && message.hasOwnProperty("message"))
+            if (!$util.isString(message.message))
+                return "message: string expected";
         return null;
     };
 
@@ -9087,6 +9127,8 @@ $root.SelectFrom = (function() {
         }
         if (object.upTo != null)
             message.upTo = Boolean(object.upTo);
+        if (object.message != null)
+            message.message = String(object.message);
         return message;
     };
 
@@ -9112,6 +9154,7 @@ $root.SelectFrom = (function() {
             object.game = null;
             object.selectionCount = 0;
             object.upTo = false;
+            object.message = "";
         }
         if (message.messageType != null && message.hasOwnProperty("messageType"))
             object.messageType = options.enums === String ? $root.SelectFromType[message.messageType] : message.messageType;
@@ -9131,6 +9174,8 @@ $root.SelectFrom = (function() {
         }
         if (message.upTo != null && message.hasOwnProperty("upTo"))
             object.upTo = message.upTo;
+        if (message.message != null && message.hasOwnProperty("message"))
+            object.message = message.message;
         return object;
     };
 
@@ -9156,6 +9201,7 @@ $root.SelectXValue = (function() {
      * @interface ISelectXValue
      * @property {IGameState|null} [game] SelectXValue game
      * @property {number|null} [maxXValue] SelectXValue maxXValue
+     * @property {string|null} [message] SelectXValue message
      */
 
     /**
@@ -9190,6 +9236,14 @@ $root.SelectXValue = (function() {
     SelectXValue.prototype.maxXValue = 0;
 
     /**
+     * SelectXValue message.
+     * @member {string} message
+     * @memberof SelectXValue
+     * @instance
+     */
+    SelectXValue.prototype.message = "";
+
+    /**
      * Creates a new SelectXValue instance using the specified properties.
      * @function create
      * @memberof SelectXValue
@@ -9217,6 +9271,8 @@ $root.SelectXValue = (function() {
             $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.maxXValue != null && Object.hasOwnProperty.call(message, "maxXValue"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.maxXValue);
+        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+            writer.uint32(/* id 7, wireType 2 =*/58).string(message.message);
         return writer;
     };
 
@@ -9256,6 +9312,9 @@ $root.SelectXValue = (function() {
                 break;
             case 2:
                 message.maxXValue = reader.int32();
+                break;
+            case 7:
+                message.message = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -9300,6 +9359,9 @@ $root.SelectXValue = (function() {
         if (message.maxXValue != null && message.hasOwnProperty("maxXValue"))
             if (!$util.isInteger(message.maxXValue))
                 return "maxXValue: integer expected";
+        if (message.message != null && message.hasOwnProperty("message"))
+            if (!$util.isString(message.message))
+                return "message: string expected";
         return null;
     };
 
@@ -9322,6 +9384,8 @@ $root.SelectXValue = (function() {
         }
         if (object.maxXValue != null)
             message.maxXValue = object.maxXValue | 0;
+        if (object.message != null)
+            message.message = String(object.message);
         return message;
     };
 
@@ -9341,11 +9405,14 @@ $root.SelectXValue = (function() {
         if (options.defaults) {
             object.game = null;
             object.maxXValue = 0;
+            object.message = "";
         }
         if (message.game != null && message.hasOwnProperty("game"))
             object.game = $root.GameState.toObject(message.game, options);
         if (message.maxXValue != null && message.hasOwnProperty("maxXValue"))
             object.maxXValue = message.maxXValue;
+        if (message.message != null && message.hasOwnProperty("message"))
+            object.message = message.message;
         return object;
     };
 

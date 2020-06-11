@@ -19,6 +19,8 @@ import PlayerArea from "../GameAreas/PlayerArea";
 import { debugPrint } from "../Helpers/Helpers";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
+import PhaseDisplay from "../GameAreas/PhaseDisplay";
+import SelectionMessage from "../GameAreas/SelectionMessage";
 
 const mapStateToProps = (state) => {
   return {
@@ -164,12 +166,22 @@ class GameScreen extends Component {
                       >
                         <Stack />
                       </div>
+                      <div
+                          className="level1-middle-2"
+                          style={{
+                            width: width * 0.15,
+                            height: midHeight * 0.05,
+                            flexGrow: 1,
+                          }}
+                      >
+                        <PhaseDisplay />
+                      </div>
 
                       <div
                         className="level1-middle-2"
                         style={{
-                          width: width * 0.15,
-                          height: midHeight * 0.2,
+                          width: width * 0.1,
+                          height: midHeight * 0.15,
                           flexGrow: 2,
                         }}
                       >
@@ -177,6 +189,7 @@ class GameScreen extends Component {
                       </div>
                     </div>
                   </div>
+                  <SelectionMessage/>
                   <PlayerArea
                     width={width}
                     height={sideHeight}

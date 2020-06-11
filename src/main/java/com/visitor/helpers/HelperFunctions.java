@@ -8,8 +8,7 @@ public class HelperFunctions {
 		if (object != null) {
 			runnable.run();
 		} else {
-			System.out.println("Trying to run following on null\n O: " + object.toString()
-					+ "\n R: " + runnable.toString());
+			System.out.println("Trying to run following on null\n R: " + runnable.toString());
 			elseRun.run();
 		}
 	}
@@ -18,8 +17,7 @@ public class HelperFunctions {
 		if (object != null) {
 			return supplier.get();
 		} else {
-			System.out.println("Trying to run following on null\n O: " + object.toString()
-					+ "\n R: " + supplier.toString());
+			System.out.println("Trying to run following on null\n R: " + supplier.toString());
 			return elseRun.get();
 		}
 	}

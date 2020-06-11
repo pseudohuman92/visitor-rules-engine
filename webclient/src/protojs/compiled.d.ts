@@ -3128,6 +3128,9 @@ export class OrderCards implements IOrderCards {
     /** OrderCards cardsToOrder. */
     public cardsToOrder: ICard[];
 
+    /** OrderCards message. */
+    public message: string;
+
     /**
      * Creates a new OrderCards instance using the specified properties.
      * @param [properties] Properties to set
@@ -3226,6 +3229,9 @@ export class SelectFrom implements ISelectFrom {
     /** SelectFrom upTo. */
     public upTo: boolean;
 
+    /** SelectFrom message. */
+    public message: string;
+
     /**
      * Creates a new SelectFrom instance using the specified properties.
      * @param [properties] Properties to set
@@ -3311,6 +3317,9 @@ export class SelectXValue implements ISelectXValue {
 
     /** SelectXValue maxXValue. */
     public maxXValue: number;
+
+    /** SelectXValue message. */
+    public message: string;
 
     /**
      * Creates a new SelectXValue instance using the specified properties.

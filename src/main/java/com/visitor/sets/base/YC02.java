@@ -1,6 +1,5 @@
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
@@ -15,9 +14,9 @@ public class YC02 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								game.getCard(cardId).addTurnlyAttack(2);
-							  game.getCard(cardId).addTurnlyHealth(4);
+				.setTargetSingleUnit((cardId) -> {
+							game.getCard(cardId).addTurnlyAttack(2);
+							game.getCard(cardId).addTurnlyHealth(4);
 						}
 				);
 	}

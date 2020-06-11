@@ -33,7 +33,7 @@ class InfoMessage extends Component {
           SelectFromList: "list",
           SelectFromPlay: "play",
           SelectFromHand: "hand",
-          SelectFromScrapyard: "scrapyard",
+          SelectFromDiscardPile: "discardPile",
           SelectFromVoid: "void",
           SelectFromStack: "stack"
         }[clientPhase]

@@ -22,14 +22,16 @@ public class Deck extends Arraylist<Card> {
 	}
 
 	public Deck (Game game, String username, String[] decklist) {
-		for (int i = 0; i < decklist.length; i++) {
-			String[] tokens = decklist[i].split(";");
+		for (String s : decklist) {
+			String[] tokens = s.split(";");
 			int count = parseInt(tokens[0]);
 			String name = tokens[1].replace(" ", "")
 					.replace("-", "")
 					.replace("'", "");
 			for (int j = 0; j < count; j++) {
-				add(createCard(game, username, name));
+				Card c = createCard(game, username, name);
+				if (c != null)
+					add(c);
 			}
 		}
 	}
@@ -72,9 +74,9 @@ public class Deck extends Arraylist<Card> {
 	}
 
 	public Card getTopmost (Predicate<Card> pred) {
-		for (int i = 0; i < size(); i++) {
-			if (pred.test(get(i))) {
-				return get(i);
+		for (Card card : this) {
+			if (pred.test(card)) {
+				return card;
 			}
 		}
 		return null;
@@ -84,22 +86,22 @@ public class Deck extends Arraylist<Card> {
 		Collections.shuffle(this, new SecureRandom());
 	}
 
-	public void putToIndex (int index, Card ...cards) {
+	public void putToIndex (int index, Card... cards) {
 		addAll(index, cards);
 	}
 
-	public void putToBottom (Card ...cards) {
+	public void putToBottom (Card... cards) {
 		putToIndex(size() - 1, cards);
 	}
 
-	public void putToTop (Card ...cards) {
+	public void putToTop (Card... cards) {
 		putToIndex(0, cards);
 	}
 
-	public void shuffleInto (Card ...cards) {
+	public void shuffleInto (Card... cards) {
 		SecureRandom rand = new SecureRandom();
-		for (int i = 0; i < cards.length; i++) {
-			add(rand.nextInt(size()), cards[i]);
+		for (Card card : cards) {
+			add(rand.nextInt(size()), card);
 		}
 	}
 }

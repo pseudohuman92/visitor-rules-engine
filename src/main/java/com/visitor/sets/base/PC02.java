@@ -6,7 +6,6 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
-import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class PC02 extends Cantrip {
 	public PC02 (Game game, String owner) {
@@ -16,9 +15,7 @@ public class PC02 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Deathtouch);
-						},
+				.setTargetSingleUnit(cardId -> game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Deathtouch),
 						() -> game.draw(controller, 1)
 				);
 	}

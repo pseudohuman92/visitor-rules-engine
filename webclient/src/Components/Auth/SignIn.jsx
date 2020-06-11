@@ -15,28 +15,48 @@ import Profile from "../MainScreens/Profile";
 import PasswordReset from "./PasswordReset";
 import { mapDispatchToProps } from "../Redux/Store";
 import { isProduction } from "../Helpers/Constants";
+import { withCookies } from 'react-cookie';
+import {debugPrint} from "../Helpers/Helpers";
 
 class SignIn extends Component {
-  state = {
-    value: 0,
-    email: "",
-    password: "",
-    error: null
-  };
+  constructor(props) {
+    super(props);
 
-  onChange = event => {
+    const { cookies } = props;
+    const loginCredentials = cookies.get("Login Credentials");
+    debugPrint(loginCredentials);
+    this.state = {
+      value: 0,
+      email: loginCredentials ? loginCredentials.email : "",
+      password: loginCredentials ? loginCredentials.password : "",
+      error: null,
+      rememberMe: loginCredentials?loginCredentials.rememberMe : false,
+    };
+  }
+
+  handleTextbox = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  handleCheckbox = event => {
+    this.setState({ [event.target.name]: event.target.checked });
+  };
+
   Signin = event => {
-    const { email, password } = this.state;
-    const { firebase, updateState } = this.props;
+    const { email, password, rememberMe } = this.state;
+    const { cookies, firebase, updateState } = this.props;
 
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(firebaseAuthData => {
         updateState({ firebaseAuthData: firebaseAuthData });
         firebase.setUserData(firebaseAuthData.user.uid, updateState);
+        if (rememberMe){
+          cookies.set("Login Credentials", {email: email, password: password, rememberMe: rememberMe});
+        } else {
+          cookies.remove("Login Credentials");
+        }
+
         this.setState({ value: 1 });
       })
       .catch(error => {
@@ -79,7 +99,7 @@ class SignIn extends Component {
   };
 
   render() {
-    const { value, email, password, error } = this.state;
+    const { value, email, password, rememberMe, error } = this.state;
 
     const isInvalid = password === "" || email === "";
 
@@ -94,25 +114,27 @@ class SignIn extends Component {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input
+                  value = {email}
                   id="email"
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  onChange={this.onChange}
+                  onChange={this.handleTextbox}
                 />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <Input
+                  value={password}
                   name="password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  onChange={this.onChange}
+                  onChange={this.handleTextbox}
                 />
               </FormControl>
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={<Checkbox name="rememberMe" color="primary" checked={rememberMe} onChange={this.handleCheckbox}/>}
                 label="Remember me"
               />
               {!isProduction && (
@@ -150,4 +172,4 @@ class SignIn extends Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(withFirebase(SignIn));
+export default connect(null, mapDispatchToProps)(withFirebase(withCookies(SignIn)));

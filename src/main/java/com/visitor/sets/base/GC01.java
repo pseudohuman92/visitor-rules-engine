@@ -16,11 +16,11 @@ public class GC01 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								int count = game.countInZone(controller, Play, Predicates::isUnit);
-								game.getCard(cardId).addTurnlyAttack(count);
-								game.getCard(cardId).addTurnlyHealth(count);
-							}
+				.setTargetSingleUnit((cardId) -> {
+							int count = game.countInZone(controller, Play, Predicates::isUnit);
+							game.getCard(cardId).addTurnlyAttack(count);
+							game.getCard(cardId).addTurnlyHealth(count);
+						}
 
 				);
 	}

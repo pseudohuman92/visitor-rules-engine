@@ -8,7 +8,6 @@ import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.game.Game.Zone.Discard_Pile;
 import static com.visitor.game.Game.Zone.Opponent_Hand;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -24,7 +23,7 @@ public class PR03 extends Ritual {
 		playable
 				.setResolveEffect(() -> {
 					boolean hasUnit = game.hasIn(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1);
-					Arraylist<UUID> discardedCard = game.selectFromZone(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1, !hasUnit);
+					Arraylist<UUID> discardedCard = game.selectFromZone(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1, !hasUnit, "Select a unit card from opponent's hand.");
 					discardedCard.forEach(cardId -> game.discard(game.getOpponentName(playable.card.controller), cardId));
 				});
 	}

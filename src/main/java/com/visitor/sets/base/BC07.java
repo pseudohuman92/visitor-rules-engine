@@ -14,6 +14,6 @@ public class BC07 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit(game::putToTopOfDeck);
+				.setTargetSingleUnit(game::putToTopOfDeck);
 	}
 }

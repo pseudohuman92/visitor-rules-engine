@@ -21,6 +21,7 @@ message GameEnd {
 message OrderCards {
     GameState game = 1;
     repeated Card cardsToOrder = 2;
+    string message = 7;
 }
 
 message SelectFrom {
@@ -30,11 +31,13 @@ message SelectFrom {
     repeated Card candidates = 4;
     repeated string selectable = 5;
     bool upTo = 6;
+    string message = 7;
 }
 
 message SelectXValue {
     GameState game = 1;
     int32 maxXValue = 2;
+    string message = 7;
 }
 
 message SelectAttackers {

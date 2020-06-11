@@ -3,7 +3,6 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
 import static com.visitor.game.Game.Zone.Discard_Pile;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -17,9 +16,8 @@ public class GR02 extends Ritual {
 				owner);
 
 		playable
-				.setTargetingResolveFromZone(Discard_Pile, Predicates::any, 1, false,
-						cardId ->	game.getCard(cardId).returnToHand(),
-						() -> {}
-				);
+				.setTargetSingleCard(Discard_Pile,
+						"Select a card from your discard pile.",
+						cardId -> game.getCard(cardId).returnToHand());
 	}
 }

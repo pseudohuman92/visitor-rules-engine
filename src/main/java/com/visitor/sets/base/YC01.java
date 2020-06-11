@@ -5,7 +5,6 @@ import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.protocol.Types.Knowledge.PURPLE;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 public class YC01 extends Cantrip {
@@ -16,10 +15,10 @@ public class YC01 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleUnit((cardId) -> {
-								game.getCard(cardId).addTurnlyAttack(2);
-							  game.getCard(cardId).addTurnlyHealth(2);
-								game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Lifelink);
+				.setTargetSingleUnit((cardId) -> {
+							game.getCard(cardId).addTurnlyAttack(2);
+							game.getCard(cardId).addTurnlyHealth(2);
+							game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Lifelink);
 						}
 				);
 	}

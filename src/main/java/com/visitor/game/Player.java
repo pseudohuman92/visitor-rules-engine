@@ -99,7 +99,7 @@ public class Player {
 	public void newTurn () {
 		energy = maxEnergy;
 		numOfStudiesLeft = 1;
-		playArea.forEach((card) -> card.newTurn());
+		playArea.forEach(Card::newTurn);
 	}
 
 	public void addKnowledge (CounterMap<Knowledge> knowledge) {

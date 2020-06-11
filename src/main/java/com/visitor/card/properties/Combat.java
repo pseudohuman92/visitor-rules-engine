@@ -123,7 +123,6 @@ public class Combat {
 		};
 
 		receiveDamage = (damage, source) -> {
-			UUID id = card.id;
 			int damageAmount = damage.amount;
 
 			//Apply shields
@@ -170,8 +169,8 @@ public class Combat {
 				}
 			}
 
-			if (damage.mayKill && (getHealth() == 0 || source.hasCombatAbility(Deathtouch))) {
-				game.destroy(source.id, id);
+			if (card != null && damage.mayKill && (getHealth() == 0 || source.hasCombatAbility(Deathtouch))) {
+				game.destroy(source.id, card.id);
 			}
 
 			if (source.hasCombatAbility(Lifelink)) {
@@ -266,7 +265,8 @@ public class Combat {
 				.setDeploying(!hasCombatAbility(Haste) && deploying)
 				.setHealth(getHealth())
 				.setShield(getShield())
-				.addAllCombatAbilities(new Arraylist<>(combatAbilityList.keySet()).transformToStringList());
+				.addAllCombatAbilities(combatAbilityList.transformToStringList())
+				.addAllCombatAbilities(turnlyCombatAbilityList.transformToStringList());
 	}
 
 	public void addCombatAbility (CombatAbility combatAbility, int i) {

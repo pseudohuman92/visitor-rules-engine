@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
 import Button from "../Primitives/Button";
 import { connect } from "react-redux";
 
@@ -76,69 +75,22 @@ class ButtonDisplay extends Component {
       damageAssignmentData
     } = this.props;
 
-    const gamePhaseStr = {
-      0: "NOPHASE",
-      1: "REDRAW",
-      2: "BEGIN",
-      3: "MAIN",
-      4: "MAIN_RESOLVING",
-      5: "END"
-    }[gamePhase];
-
     const amIActive = activePlayer === playerUserId;
     const actPlayer = amIActive ? playerName : opponentName;
     const turPlayer = turnPlayer === playerUserId ? playerName : opponentName;
 
     const canAssignDamage = damageAssignmentData.totalDamage !== damageAssignmentData.totalAssignedDamage;
 
-    /*
-    const activeDisplay = (
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <Textfit
-            mode="single"
-            forceSingleModeWidth={false}
-            style={{ margin: "5%" }}
-          >
-            Phase: {gamePhaseStr}
-          </Textfit>
-        </Grid>
-        <Grid item xs={12}>
-          <Textfit
-            mode="single"
-            forceSingleModeWidth={false}
-            style={{ margin: "5%" }}
-          >
-            Turn: {turPlayer}
-          </Textfit>
-        </Grid>
-        <Grid item xs={12}>
-          <Textfit
-            mode="single"
-            forceSingleModeWidth={false}
-            style={{ margin: "5%" }}
-          >
-            Active: {actPlayer}
-          </Textfit>
-        </Grid>
-      </Grid>
-    );
-    */
-
     let buttonMenu = <div />;
-    if (
-      clientPhase === ClientPhase.NOT_STARTED ||
-      gamePhase === proto.Phase.REDRAW
+    if (amIActive &&
+        (clientPhase === ClientPhase.NOT_STARTED ||
+      gamePhase === proto.Phase.REDRAW)
     ) {
       buttonMenu = (
-        <Grid container spacing={16}>
-          <Grid item xs={6}>
+        <div style={{display: "flex", flexDirection: "column"}}>
             <Button onClick={this.keep} disabled={!amIActive} text="Keep" />
-          </Grid>
-          <Grid item xs={6}>
             <Button onClick={this.redraw} disabled={!amIActive} text="Redraw" />
-          </Grid>
-        </Grid>
+        </div>
       );
     } else if (IsSelectCardPhase(clientPhase)) {
       buttonMenu = (
@@ -157,7 +109,7 @@ class ButtonDisplay extends Component {
     } else {
       buttonMenu = (
         <Button
-          disabled={!amIActive || autoPass}
+          disabled={!amIActive || autoPass || clientPhase === ClientPhase.WAITING}
           onClick={this.pass}
           text="Pass"
         />
@@ -165,20 +117,6 @@ class ButtonDisplay extends Component {
     }
 
     return (<div>{buttonMenu}</div>);
-    /*
-      return (
-      <Paper className="message-display">
-        <Grid container spacing={0} style={{ color: "black" }}>
-          <Grid item xs={12}>
-            {activeDisplay}
-          </Grid>
-          <Grid item xs={12}>
-            {buttonMenu}
-          </Grid>
-        </Grid>
-      </Paper>
-    );
-      */
   }
 }
 

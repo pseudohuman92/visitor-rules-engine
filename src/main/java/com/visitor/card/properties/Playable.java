@@ -2,6 +2,7 @@ package com.visitor.card.properties;
 
 import com.visitor.game.Card;
 import com.visitor.game.Game;
+import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Predicates;
 
@@ -12,6 +13,7 @@ import java.util.function.Supplier;
 
 import static com.visitor.game.Game.Zone.Void;
 import static com.visitor.game.Game.Zone.*;
+import static com.visitor.helpers.Predicates.and;
 
 public class Playable {
 
@@ -122,7 +124,7 @@ public class Playable {
 	 * This is the function that describes what is the effect of the card when it is resolved.
 	 * This function contains the business logic of the card effect.
 	 */
-	public void resolve () {
+	public final void resolve () {
 		resolveEffect.run();
 		resolvePlaceCard.run();
 		afterResolve.run();
@@ -227,18 +229,33 @@ public class Playable {
 		return cost;
 	}
 
-	public void setTargetingResolveFromZone (Game.Zone zone, Predicate<Card> cardPredicate, int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-		if (!upTo) {
+	// Setters
+	public void setCost (int cost) {
+		this.cost = cost;
+	}
+
+	/** Multiple Targets Setters
+	 *
+	 */
+	// For targeting MULTIPLE CARDS from a zone and/or PLAYERS.
+	public void setTargetMultipleCardsOrPlayers (Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate, int count,
+	                                             boolean upTo, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
+		if (!withPlayers) {
 			setCanPlayAdditional(() ->
-					game.hasIn(card.controller, zone, cardPredicate, count)
+					game.hasIn(card.controller, zone, cardPredicate, upTo ? 1 : count)
 			);
 		}
-		setBeforePlay(() ->
-				targets.addAll(game.selectFromZone(card.controller, zone, cardPredicate, count, upTo))
+		setBeforePlay(() -> {
+			if (withPlayers) {
+				targets.addAll(game.selectFromZoneWithPlayers(card.controller, zone, cardPredicate, playerPredicate, count, upTo, message));
+			} else {
+				targets.addAll(game.selectFromZone(card.controller, zone, cardPredicate, count, upTo, message));
+			}
+			}
 		);
 		setResolveEffect(() -> {
 			targets.forEach(targetId -> {
-				if (game.isIn(card.controller, zone, targetId)) {
+				if ((withPlayers && game.isPlayer(targetId)) || game.isIn(card.controller, zone, targetId)) {
 					perTargetEffect.accept(targetId);
 				}
 			});
@@ -246,47 +263,129 @@ public class Playable {
 		});
 	}
 
-	public void setTargetingMultipleUnitsInBothPlay (int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-		setTargetingResolveFromZone(Both_Play, Predicates::isUnit, count, upTo, perTargetEffect, afterTargetsEffect);
+	// For targeting MULTIPLE CARDS from a zone.
+	public void setTargetMultipleCards (Game.Zone zone, Predicate<Card> cardPredicate,
+	                                    int count, boolean upTo, String message,
+	                                    Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetMultipleCardsOrPlayers(zone, cardPredicate, null, count, upTo, message, perTargetEffect, afterTargetsEffect, false);
+	}
+	public void setTargetMultipleCards (Game.Zone zone, Predicate<Card> cardPredicate,
+	                                    int count, boolean upTo, String message,
+	                                    Consumer<UUID> perTargetEffect) {
+		setTargetMultipleCards(zone, cardPredicate, count, upTo, message, perTargetEffect, ()->{});
 	}
 
-	public void setTargetingMultipleUnitsInBothPlay (int count, boolean upTo, Consumer<UUID> effect) {
-		setTargetingMultipleUnitsInBothPlay(count, upTo, effect, ()-> {});
+	// For targeting MULTIPLE UNITS from a zone.
+	public void setTargetMultipleUnits (Game.Zone zone, int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetMultipleCards(zone, Predicates::isUnit, count, upTo, "Select " + (upTo ? " up to " : "") + (count > 1 ? count + " units." : "a unit."), perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetMultipleUnits (Game.Zone zone, int count, boolean upTo, Consumer<UUID> effect) {
+		setTargetMultipleUnits(zone, count, upTo, effect, () -> {
+		});
 	}
 
-	public void setTargetingSingleUnitInZone (Game.Zone zone, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-		setTargetingResolveFromZone(zone, Predicates::isUnit, 1, false, perTargetEffect, afterTargetsEffect);
+	// For targeting MULTIPLE UNITS in PLAY.
+	public void setTargetMultipleUnits (int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetMultipleUnits(Both_Play, count, upTo, perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetMultipleUnits (int count, boolean upTo, Consumer<UUID> effect) {
+		setTargetMultipleUnits(count, upTo, effect, () -> {
+		});
 	}
 
-	public void setTargetingSingleUnitInZone (Game.Zone zone, Consumer<UUID> perTargetEffect) {
-		setTargetingSingleUnitInZone(zone, perTargetEffect, ()->{});
+	/** Single Target Setters
+	 *
+	 */
+	// For targeting a SINGLE CARD with RESTRICTIONS from a zone or a PLAYER.
+	public void setTargetSingleCardOrPlayer (Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate,
+	                                         String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
+		setTargetMultipleCardsOrPlayers(zone, cardPredicate, playerPredicate, 1, false, message, perTargetEffect, afterTargetsEffect, withPlayers);
 	}
 
-	public void setTargetingSingleUnit (Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-		setTargetingSingleUnitInZone(Both_Play, perTargetEffect, afterTargetsEffect);
+	// For targeting a SINGLE CARD with RESTRICTIONS from a zone.
+	public void setTargetSingleCard (Game.Zone zone, Predicate<Card> cardPredicate,
+	                                 String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleCardOrPlayer(zone, cardPredicate, null, message, perTargetEffect, afterTargetsEffect, false);
+	}
+	public void setTargetSingleCard (Game.Zone zone, Predicate<Card> cardPredicate,
+	                                 String message, Consumer<UUID> perTargetEffect) {
+		setTargetSingleCard(zone, cardPredicate, message, perTargetEffect, ()->{});
 	}
 
-	public void setTargetingSingleUnit (Consumer<UUID> perTargetEffect) {
-		setTargetingSingleUnit(perTargetEffect, ()->{});
+	// For targeting a SINGLE CARD from a zone. No aftereffects.
+	public void setTargetSingleCard (Game.Zone zone, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleCard(zone, Predicates::any, message, perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleCard (Game.Zone zone, String message, Consumer<UUID> perTargetEffect) {
+		setTargetSingleCard(zone, message, perTargetEffect, ()->{});
 	}
 
-	public void setTargetingSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-		setTargetingResolveFromZone(Stack, cardPredicate, 1, false, perTargetEffect, afterTargetsEffect);
+	// For targeting a SINGLE UNIT from a zone or a PLAYER.
+	public void setTargetSingleUnitOrPlayer (Game.Zone zone, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleCardOrPlayer(zone, Predicates::isUnit, Predicates::any, "Select a unit or a player.", perTargetEffect, afterTargetsEffect, true);
+	}
+	public void setTargetSingleUnitOrPlayer (Game.Zone zone, Consumer<UUID> perTargetEffect) {
+		setTargetSingleUnitOrPlayer(zone, perTargetEffect, () -> {
+		});
 	}
 
-	public void setTargetingSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect) {
-		setTargetingSingleCardInStack(cardPredicate, perTargetEffect, ()->{});
+	// For targeting a SINGLE UNIT IN PLAY or a PLAYER.
+	public void setTargetSingleUnitOrPlayer (Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleUnitOrPlayer(Both_Play, perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleUnitOrPlayer (Consumer<UUID> perTargetEffect) {
+		setTargetSingleUnitOrPlayer(perTargetEffect, () -> {
+		});
 	}
 
-	public void setSinglePlayerTargetingResolve(Consumer<UUID> playerEffect) {
+	// For targeting a SINGLE UNIT with RESTRICTIONS from a zone.
+	public void setTargetSingleUnit (Game.Zone zone, Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleCard(zone, and(Predicates::isUnit, cardPredicate), "Select a unit.", perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleUnit (Game.Zone zone, Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect) {
+		setTargetSingleUnit(zone, cardPredicate, perTargetEffect, () -> {
+		});
+	}
+
+	// For targeting a SINGLE UNIT from a zone.
+	public void setTargetSingleUnit (Game.Zone zone, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleUnit(zone, Predicates::any, perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleUnit (Game.Zone zone, Consumer<UUID> perTargetEffect) {
+		setTargetSingleUnit(zone, perTargetEffect, ()->{});
+	}
+
+	// For targeting a SINGLE UNIT with RESTRICTIONS in PLAY.
+	public void setTargetSingleUnit (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleUnit(Both_Play, cardPredicate, perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleUnit (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect) {
+		setTargetSingleUnit(cardPredicate, perTargetEffect, () -> {
+		});
+	}
+
+	// For targeting a SINGLE UNIT in PLAY.
+	public void setTargetSingleUnit (Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleUnit(Predicates::any, perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleUnit (Consumer<UUID> perTargetEffect) {
+		setTargetSingleUnit(Predicates::any, perTargetEffect);
+	}
+
+	// For targeting a SINGLE CARD with RESTRICTIONS in STACK.
+	public void setTargetSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+		setTargetSingleCard(Stack, cardPredicate, "Select a card from stack.", perTargetEffect, afterTargetsEffect);
+	}
+	public void setTargetSingleCardInStack (Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect) {
+		setTargetSingleCardInStack(cardPredicate, perTargetEffect, () -> {
+		});
+	}
+
+	// For targeting a SINGLE PLAYER.
+	public void setTargetSinglePlayer (Consumer<UUID> playerEffect) {
 		setBeforePlay(() ->
 				targets.addAll(game.selectPlayers(card.controller, Predicates::any, 1, false))
 		);
-				setResolveEffect(() -> playerEffect.accept(targets.get(0)));
-	}
-
-	// Setters
-	public void setCost (int cost) {
-		this.cost = cost;
+		setResolveEffect(() -> playerEffect.accept(targets.get(0)));
 	}
 }

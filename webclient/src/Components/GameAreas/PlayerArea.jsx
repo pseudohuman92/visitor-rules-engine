@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Hand from "./Hand";
 import Deck from "./Deck";
-import Scrapyard from "./Scrapyard";
+import DiscardPile from "./DiscardPile";
 import PlayerDisplay from "./PlayerDisplay";
 import Void from "./Void";
 
@@ -33,7 +33,7 @@ class PlayerArea extends Component {
             maxHeight: "100%"
           }}
         >
-          <Scrapyard
+          <DiscardPile
             style={{ width: "33%", marginRight: "1%" }}
             isPlayer={isPlayer}
           />

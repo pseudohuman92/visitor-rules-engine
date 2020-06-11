@@ -15,6 +15,6 @@ public class PR05 extends Ritual {
 				owner);
 
 		playable
-				.setTargetingSingleUnit(cardId -> game.destroy(id, cardId));
+				.setTargetSingleUnit(cardId -> game.destroy(id, cardId));
 	}
 }

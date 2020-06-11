@@ -1,11 +1,13 @@
 package com.visitor.sets.base;
 
-import com.visitor.game.Card;
 import com.visitor.card.types.Ritual;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.Damage;
+
+import java.util.UUID;
 
 import static com.visitor.game.Game.Zone.Opponent_Play;
 import static com.visitor.game.Game.Zone.Play;
@@ -25,15 +27,16 @@ public class GR01 extends Ritual {
 								game.hasIn(playable.card.controller, Opponent_Play, Predicates::isUnit, 1)
 				)
 				.setBeforePlay(() -> {
-					targets.add(game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false).get(0));
-					targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false).get(0));
+					targets.add(game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false, "Select a unit you control.").get(0));
+					targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false, "Select a unit you don't control").get(0));
 				})
 				.setResolveEffect(() -> {
-					if(game.isIn(controller, Play, targets.get(0)) &&
-							game.isIn(controller, Opponent_Play, targets.get(1))) {
-						Card striker = game.getCard(targets.get(0));
-						Card receiver = game.getCard(targets.get(1));
-						receiver.receiveDamage(new Damage(striker.getAttack()), striker);
+					UUID strikerId = targets.get(0);
+					UUID receiverId = targets.get(1);
+					if (game.isIn(controller, Play, strikerId) &&
+							game.isIn(controller, Opponent_Play, receiverId)) {
+						Card striker = game.getCard(strikerId);
+						game.dealDamage(strikerId, receiverId, new Damage(striker.getAttack()));
 					}
 				});
 	}

@@ -3,7 +3,6 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.HelperFunctions;
 import com.visitor.helpers.Predicates;
 
 import static com.visitor.game.Game.Zone.Both_Play;
@@ -19,15 +18,6 @@ public class YR02 extends Ritual {
 				owner);
 
 		playable
-				.setCanPlayAdditional(() ->
-						game.hasIn(controller, Both_Play, and(Predicates::isUnit, c-> c.getAttack() >= 4), 1)
-				)
-				.setBeforePlay(() -> {
-					targets.addAll(game.selectFromZone(controller, Both_Play, and(Predicates::isUnit, c-> c.getAttack() >= 4), 1, false));
-				})
-				.setResolveEffect(() -> {
-					if (game.isIn(controller, Both_Play, targets.get(0)))
-						game.putToBottomOfDeck(targets.get(0));
-				});
+				.setTargetSingleUnit(c -> c.getAttack() >= 4, cardId -> game.putToBottomOfDeck(cardId));
 	}
 }

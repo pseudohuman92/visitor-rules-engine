@@ -97,8 +97,9 @@ public class Game implements Serializable {
 		updatePlayers();
 	}
 
-	/** Connection Methods
-	 *  To deal with client connections
+	/**
+	 * Connection Methods
+	 * To deal with client connections
 	 */
 	public void addConnection (String username, GameEndpoint connection) {
 		connections.putIn(username, connection);
@@ -125,9 +126,48 @@ public class Game implements Serializable {
 	}
 
 
-	/** Card Accessor Methods
-	 *  Getting Card objects from various places
- 	 */
+	/**
+	 * Card Accessor Methods
+	 * Getting Card objects from various places
+	 */
+	public Card getCard (UUID targetID) {
+		for (Player player : players.values()) {
+			Card c = player.getCard(targetID);
+			if (c != null) {
+				return c;
+			}
+		}
+		for (Card c : stack) {
+			if (c.id.equals(targetID)) {
+				return c;
+			}
+		}
+		return null;
+	}
+
+	public Card getCardFromZone (String username, Zone zone, UUID cardId) {
+		Arraylist<Card> card = new Arraylist<>();
+		getZone(username, zone).forEach(c -> {
+			if (c.id.equals(cardId))
+				card.add(c);
+		});
+		return card.size() > 0 ? card.get(0) : null;
+	}
+
+	public Arraylist<Card> getAllFrom (String username, Zone zone, Predicate<Card> pred) {
+		Arraylist<Card> cards = new Arraylist<>();
+		getZone(username, zone).forEach(c -> {
+			if (pred.test(c)) {
+				cards.add(c);
+			}
+		});
+		return cards;
+	}
+
+	public Arraylist<Card> getAll (List<UUID> list) {
+		return new Arraylist<>(list.stream().map(this::getCard).collect(Collectors.toList()));
+	}
+
 	public Card extractCard (UUID targetID) {
 		for (Player player : players.values()) {
 			Card c = player.extractCard(targetID);
@@ -144,37 +184,8 @@ public class Game implements Serializable {
 		return null;
 	}
 
-	public Card getCard (UUID targetID) {
-		for (Player player : players.values()) {
-			Card c = player.getCard(targetID);
-			if (c != null) {
-				return c;
-			}
-		}
-		for (Card c : stack) {
-			if (c.id.equals(targetID)) {
-				return c;
-			}
-		}
-		return null;
-	}
-
-	public Arraylist<Card> getAllFrom (String username, Zone zone, Predicate<Card> pred) {
-		Arraylist<Card> cards = new Arraylist<>();
-		getZone(username, zone).forEach(c -> {
-			if (pred.test(c)) {
-				cards.add(c);
-			}
-		});
-		return cards;
-	}
-
 	public Arraylist<Card> extractAll (List<UUID> list) {
-		return new Arraylist<>(list.stream().map(i -> extractCard(i)).collect(Collectors.toList()));
-	}
-
-	public Arraylist<Card> getAll (List<UUID> list) {
-		return new Arraylist<>(list.stream().map(i -> getCard(i)).collect(Collectors.toList()));
+		return new Arraylist<>(list.stream().map(this::extractCard).collect(Collectors.toList()));
 	}
 
 	public Arraylist<Card> extractAllCopiesFrom (String username, String cardName, Zone zone) {
@@ -185,8 +196,9 @@ public class Game implements Serializable {
 	}
 
 
-	/** Game Action Methods
-	 *  These are game actions taken by a client
+	/**
+	 * Game Action Methods
+	 * These are game actions taken by a client
 	 */
 	public void playCard (String username, UUID cardID) {
 		extractCard(cardID).play();
@@ -231,20 +243,10 @@ public class Game implements Serializable {
 	}
 
 
-	// Turn / phase methods
-	public void processEvents () {
-		if (!eventQueue.isEmpty()) {
-			Arraylist<Event> tempQueue = eventQueue;
-			eventQueue = new Arraylist<>();
-			while (!tempQueue.isEmpty()) {
-				Event e = tempQueue.remove(0);
-				out.println("Processing Event: " + e.type);
-				triggeringCards.get(turnPlayer).forEachInOrder(c -> c.checkEvent(e));
-				triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c -> c.checkEvent(e));
-			}
-		}
-	}
-
+	/**
+	 * Turn Structure Methods
+	 * These are the methods that handle turn / phase transitions.
+	 */
 	@SuppressWarnings("DuplicateBranchesInSwitch")
 	public void changePhase () {
 		out.println("Changing Phase from " + phase);
@@ -317,6 +319,59 @@ public class Game implements Serializable {
 		processBeginEvents();
 	}
 
+	/**
+	 * Event Related Methods
+	 * These are the methods that implements event mechanism.
+	 * Events are used to implement triggered abilities.
+	 */
+	public void addEvent (Event e, boolean process) {
+		eventQueue.add(e);
+		if (process)
+			processEvents();
+	}
+
+	public void addEvent (Event e) {
+		addEvent(e, false);
+	}
+
+	public void processEvents () {
+		if (!eventQueue.isEmpty()) {
+			Arraylist<Event> tempQueue = eventQueue;
+			eventQueue = new Arraylist<>();
+			while (!tempQueue.isEmpty()) {
+				Event e = tempQueue.remove(0);
+				out.println("Processing Event: " + e.type);
+				triggeringCards.get(turnPlayer).forEachInOrder(c -> c.checkEvent(e));
+				triggeringCards.get(getOpponentName(turnPlayer)).forEachInOrder(c -> c.checkEvent(e));
+			}
+		}
+	}
+
+	private void processBeginEvents () {
+		//out.println("Starting Begin Triggers");
+		addEvent(turnStart(turnPlayer), true);
+		//out.println("Ending Begin Triggers");
+	}
+
+	private void processEndEvents () {
+		//out.println("Starting End Triggers");
+		addEvent(turnEnd(turnPlayer), true);
+		//out.println("Ending End Triggers");
+	}
+
+	private void processCleanupEvents () {
+		//out.println("Starting Cleanup Triggers");
+		addEvent(Event.cleanup(turnPlayer), true);
+		//out.println("Ending Cleanup Triggers");
+	}
+
+	public void addTriggeringCard (String username, Card t) {
+		triggeringCards.get(username).add(t);
+	}
+
+	public void removeTriggeringCard (Card card) {
+		triggeringCards.values().forEach(l -> l.remove(card));
+	}
 
 	// Identifier accessor methods
 	public String getOpponentName (String playerName) {
@@ -333,7 +388,9 @@ public class Game implements Serializable {
 	}
 
 
-	// Stack methods
+	/**
+	 * Stack Methods
+	 */
 	public void addToStack (Card c) {
 		passCount = 0;
 		stack.add(0, c);
@@ -359,7 +416,7 @@ public class Game implements Serializable {
 		}
 	}
 
-    /*
+	/*
     // This is stop after each resolution version.
     private void resolveStack() {
         if (passCount == 2) {
@@ -373,7 +430,231 @@ public class Game implements Serializable {
     }
     */
 
+	/**
+	 * Transformation Methods
+	 * To change one card to another in-place.
+	 */
+	private void replaceWith (Card oldCard, Card newCard) {
+		players.values().forEach(p -> p.replaceCardWith(oldCard, newCard));
+		for (int i = 0; i < stack.size(); i++) {
+			if (stack.get(i).equals(oldCard)) {
+				stack.remove(i);
+				stack.add(i, newCard);
+			}
+		}
+	}
 
+	public void transformTo (Card transformingCard, Card transformedCard, Card transformTo) {
+		replaceWith(transformedCard, transformTo);
+		addEvent(Event.transform(transformingCard, transformedCard, transformTo));
+	}
+
+	public void transformToJunk (Card transformingCard, UUID cardID) {
+		Card card = getCard(cardID);
+		Junk junk = new Junk(this, card.controller);
+		junk.copyPropertiesFrom(card);
+		transformTo(transformingCard, card, junk);
+	}
+
+
+	/**
+	 * Client Prompt Methods
+	 * When you need client to do something.
+	 */
+	//// Helpers
+	private void send (String username, ServerGameMessage.Builder builder) {
+		try {
+			setLastMessage(username, builder.build());
+			GameEndpoint e = connections.get(username);
+			if (e != null) {
+				e.send(builder);
+			}
+		} catch (IOException | EncodeException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+	}
+
+	private Arraylist<UUID> selectFrom (String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo, String message) {
+		SelectFrom.Builder b = SelectFrom.newBuilder()
+				.addAllSelectable(canSelect.transformToStringList())
+				.addAllSelectable(canSelectPlayers.transformToStringList())
+				.addAllCandidates(candidates.transform(c -> c.toCardMessage().build()))
+				.setMessageType(type)
+				.setSelectionCount(count)
+				.setUpTo(upTo)
+				.setMessage(message)
+				.setGame(toGameState(username));
+		try {
+			send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
+			String[] l = (String[]) response.take();
+			return toUUIDList(l);
+		} catch (InterruptedException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	private Arraylist<AttackerAssignment> selectAttackers (String username) {
+
+		List<String> attackers = getZone(username, Zone.Play).parallelStream()
+				.filter(Card::canAttack)
+				.map(u -> u.id.toString()).collect(Collectors.toList());
+
+		if (attackers.isEmpty()) {
+			return (new Arraylist<>());
+		}
+		Arraylist<String> targets = new Arraylist<>(getOpponentId(username).toString());
+		List<String> allies = getZone(getOpponentName(username), Zone.Play).parallelStream()
+				.filter(Predicates::isAlly)
+				.map(u -> u.id.toString()).collect(Collectors.toList());
+		targets.addAll(allies);
+		List<Attacker> attackerList = attackers.parallelStream()
+				.map(a -> Attacker.newBuilder()
+						.setAttackerId(a)
+						.addAllPossibleAttackTargets(targets).build())
+				.collect(Collectors.toList());
+		out.println("Sending Select Attackers Message to " + username);
+		SelectAttackers.Builder b = SelectAttackers.newBuilder()
+				.addAllPossibleAttackers(attackerList)
+				.setGame(toGameState(username));
+		try {
+			send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
+			AttackerAssignment[] l = (AttackerAssignment[]) response.take();
+			return new Arraylist<>(l);
+		} catch (InterruptedException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	private Arraylist<BlockerAssignment> selectBlockers (String username) {
+
+		List<Card> potentialBlockers =
+				getZone(username, Zone.Play)
+						.parallelStream()
+						.filter(Card::canBlock)
+						.collect(Collectors.toList());
+
+		if (potentialBlockers.isEmpty()) {
+			return (new Arraylist<>());
+		}
+
+		Arraylist<Blocker> blockers = new Arraylist<>();
+		potentialBlockers.forEach(pb -> {
+			List<String> targets = attackers.parallelStream()
+					.filter(a -> pb.canBlock(getCard(a)))
+					.map(u -> getCard(u).id.toString())
+					.collect(Collectors.toList());
+			if (!targets.isEmpty()) {
+				blockers.add(Blocker.newBuilder()
+						.setBlockerId(pb.id.toString())
+						.addAllPossibleBlockTargets(targets)
+						.build());
+			}
+		});
+
+		if (blockers.isEmpty()) {
+			return (new Arraylist<>());
+		}
+
+		out.println("Sending Select Blockers Message to " + username);
+		SelectBlockers.Builder b = SelectBlockers.newBuilder()
+				.addAllPossibleBlockers(blockers)
+				.setGame(toGameState(username));
+		try {
+			send(username, ServerGameMessage.newBuilder().setSelectBlockers(b));
+			BlockerAssignment[] l = (BlockerAssignment[]) response.take();
+			return new Arraylist<>(l);
+		} catch (InterruptedException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	private Arraylist<DamageAssignment> assignDamage (String username, UUID id, Arraylist<UUID> possibleTargets, int damage) {
+		out.println("Sending Assign Damage Message to " + username);
+		AssignDamage.Builder b = AssignDamage.newBuilder()
+				.setDamageSource(id.toString())
+				.addAllPossibleTargets(possibleTargets.transformToStringList())
+				.setTotalDamage(damage)
+				.setGame(toGameState(username));
+		try {
+			send(username, ServerGameMessage.newBuilder().setAssignDamage(b));
+			DamageAssignment[] l = (DamageAssignment[]) response.take();
+			return new Arraylist<>(l);
+		} catch (InterruptedException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	//// Prompters
+	public Arraylist<UUID> selectFromZone (String username, Zone zone, Predicate<Card> validTarget, int count, boolean upTo, String message) {
+		Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
+				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
+		return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, new Arraylist<>(), count, upTo, message);
+	}
+
+	public Arraylist<UUID> selectFromZoneWithPlayers (String username, Zone zone, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo, String message) {
+		Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
+				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
+		Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
+				.filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
+		return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, canSelectPlayers, count, upTo, message);
+	}
+
+	public Arraylist<UUID> selectFromList (String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo, String message) {
+		Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
+				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
+		return selectFrom(username, LIST, candidates, canSelect, new Arraylist<>(), count, upTo, message);
+	}
+
+	public Arraylist<UUID> selectPlayers (String username, Predicate<Player> validPlayer, int count, boolean upTo) {
+		Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
+				.filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
+		String message = "Select " + (upTo ? " up to " : "") + count + " player" + (count > 1 ? "s." : ".");
+		return selectFrom(username, getZoneLabel(Zone.Play), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo, message);
+	}
+
+	public Arraylist<UUID> selectDamageTargetsConditional (String username, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo, String message) {
+		return selectFromZoneWithPlayers(username, Both_Play, validTarget, validPlayer, count, upTo, message);
+	}
+
+	public Arraylist<UUID> selectDamageTargets (String username, int count, boolean upTo, String message) {
+		return selectFromZoneWithPlayers(username, Both_Play, Predicates::isDamageable, Predicates::any, count, upTo, message);
+	}
+
+	public void assignDamage (UUID id, Arraylist<UUID> possibleTargets, Damage damage) {
+		out.println("Updating players from assignDamage. AP: " + activePlayer);
+		updatePlayers();
+		Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage.amount);
+		out.println("Damage distribution: " + assignedDamages);
+		assignedDamages.forEach(c -> {
+			UUID targetId = UUID.fromString(c.getTargetId());
+			int assignedDamage = c.getDamage();
+			dealDamage(id, targetId, new Damage(assignedDamage, damage.mayKill));
+		});
+	}
+
+	public int selectX (String username, int maxX) {
+		if (maxX == 0) {
+			return maxX;
+		}
+		SelectXValue.Builder b = SelectXValue.newBuilder()
+				.setMaxXValue(maxX)
+				.setGame(toGameState(username));
+		try {
+			send(username, ServerGameMessage.newBuilder().setSelectXValue(b));
+
+			return (int) response.take();
+		} catch (InterruptedException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+		return 0;
+	}
+
+
+	// Unsorted methods
 	private Arraylist<Card> getZone (String username, Zone zone) {
 		switch (zone) {
 			case Deck:
@@ -446,7 +727,7 @@ public class Game implements Serializable {
 	}
 
 	public void destroy (UUID targetId) {
-		destroy(targetId, null);
+		destroy(null, targetId);
 	}
 
 	public void destroy (UUID sourceId, UUID targetId) {
@@ -463,7 +744,8 @@ public class Game implements Serializable {
 	}
 
 	public void discard (String username, int count) {
-		Arraylist<Card> d = getPlayer(username).discardAll(selectFromZone(username, Zone.Hand, Predicates::any, count, false));
+		String message = "Discard " + (count > 1 ? count + " cards." : "a card.");
+		Arraylist<Card> d = getPlayer(username).discardAll(selectFromZone(username, Zone.Hand, Predicates::any, count, false, message));
 		d.forEach(c -> addEvent(Event.discard(username, c)));
 	}
 
@@ -511,237 +793,6 @@ public class Game implements Serializable {
 	}
 
 
-	/** Transformation Methods
-	 *  To change one card to another in-place.
-	 */
-	private void replaceWith (Card oldCard, Card newCard) {
-		players.values().forEach(p -> p.replaceCardWith(oldCard, newCard));
-		for (int i = 0; i < stack.size(); i++) {
-			if (stack.get(i).equals(oldCard)) {
-				stack.remove(i);
-				stack.add(i, newCard);
-			}
-		}
-	}
-
-	public void transformTo (Card transformingCard, Card transformedCard, Card transformTo) {
-		replaceWith(transformedCard, transformTo);
-		addEvent(Event.transform(transformingCard, transformedCard, transformTo));
-	}
-
-	public void transformToJunk (Card transformingCard, UUID cardID) {
-		Card card = getCard(cardID);
-		Junk junk = new Junk(this, card.controller);
-		junk.copyPropertiesFrom(card);
-		transformTo(transformingCard, card, junk);
-	}
-
-
-	/** Client Prompt Methods
-	 *  When you need client to do something
-	 * @param username
-	 * @param type
-	 * @param candidates
-	 * @param canSelect
-	 * @param canSelectPlayers
-	 * @param count
-	 * @param upTo
-	 * @return
-	 */
-
-	//// Helpers
-	private Arraylist<UUID> selectFrom (String username, SelectFromType type, Arraylist<Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo) {
-		SelectFrom.Builder b = SelectFrom.newBuilder()
-				.addAllSelectable(canSelect.transformToStringList())
-				.addAllSelectable(canSelectPlayers.transformToStringList())
-				.addAllCandidates(candidates.transform(c -> c.toCardMessage().build()))
-				.setMessageType(type)
-				.setSelectionCount(count)
-				.setUpTo(upTo)
-				.setGame(toGameState(username));
-		try {
-			send(username, ServerGameMessage.newBuilder().setSelectFrom(b));
-			String[] l = (String[]) response.take();
-			return toUUIDList(l);
-		} catch (InterruptedException ex) {
-			getLogger(Game.class.getName()).log(SEVERE, null, ex);
-		}
-		return null;
-	}
-
-	private Arraylist<AttackerAssignment> selectAttackers (String username) {
-
-		List<String> attackers = getZone(username, Zone.Play).parallelStream()
-				.filter(u -> u.canAttack())
-				.map(u -> u.id.toString()).collect(Collectors.toList());
-
-		if (attackers.isEmpty()) {
-			return (new Arraylist<>());
-		}
-		Arraylist<String> targets = new Arraylist<>(getOpponentId(username).toString());
-		List<String> allies = getZone(getOpponentName(username), Zone.Play).parallelStream()
-				.filter(Predicates::isAlly)
-				.map(u -> u.id.toString()).collect(Collectors.toList());
-		targets.addAll(allies);
-		List<Attacker> attackerList = attackers.parallelStream()
-				.map(a -> Attacker.newBuilder()
-						.setAttackerId(a)
-						.addAllPossibleAttackTargets(targets).build())
-				.collect(Collectors.toList());
-		out.println("Sending Select Attackers Message to " + username);
-		SelectAttackers.Builder b = SelectAttackers.newBuilder()
-				.addAllPossibleAttackers(attackerList)
-				.setGame(toGameState(username));
-		try {
-			send(username, ServerGameMessage.newBuilder().setSelectAttackers(b));
-			AttackerAssignment[] l = (AttackerAssignment[]) response.take();
-			return new Arraylist<>(l);
-		} catch (InterruptedException ex) {
-			getLogger(Game.class.getName()).log(SEVERE, null, ex);
-		}
-		return null;
-	}
-
-	private Arraylist<BlockerAssignment> selectBlockers (String username) {
-
-		List<Card> potentialBlockers =
-				getZone(username, Zone.Play)
-						.parallelStream()
-						.filter(u -> u.canBlock())
-						.collect(Collectors.toList());
-
-		if (potentialBlockers.isEmpty()) {
-			return (new Arraylist<>());
-		}
-
-		Arraylist<Blocker> blockers = new Arraylist<>();
-		potentialBlockers.forEach(pb -> {
-			List<String> targets = attackers.parallelStream()
-					.filter(a -> pb.canBlock(getCard(a)))
-					.map(u -> getCard(u).id.toString())
-					.collect(Collectors.toList());
-			if (!targets.isEmpty()) {
-				blockers.add(Blocker.newBuilder()
-						.setBlockerId(pb.id.toString())
-						.addAllPossibleBlockTargets(targets)
-						.build());
-			}
-		});
-
-		if (blockers.isEmpty()) {
-			return (new Arraylist<>());
-		}
-
-		out.println("Sending Select Blockers Message to " + username);
-		SelectBlockers.Builder b = SelectBlockers.newBuilder()
-				.addAllPossibleBlockers(blockers)
-				.setGame(toGameState(username));
-		try {
-			send(username, ServerGameMessage.newBuilder().setSelectBlockers(b));
-			BlockerAssignment[] l = (BlockerAssignment[]) response.take();
-			return new Arraylist<>(l);
-		} catch (InterruptedException ex) {
-			getLogger(Game.class.getName()).log(SEVERE, null, ex);
-		}
-		return null;
-	}
-
-	private Arraylist<DamageAssignment> assignDamage (String username, UUID id, Arraylist<UUID> possibleTargets, int damage) {
-		out.println("Sending Assign Damage Message to " + username);
-		AssignDamage.Builder b = AssignDamage.newBuilder()
-				.setDamageSource(id.toString())
-				.addAllPossibleTargets(possibleTargets.transformToStringList())
-				.setTotalDamage(damage)
-				.setGame(toGameState(username));
-		try {
-			send(username, ServerGameMessage.newBuilder().setAssignDamage(b));
-			DamageAssignment[] l = (DamageAssignment[]) response.take();
-			return new Arraylist<>(l);
-		} catch (InterruptedException ex) {
-			getLogger(Game.class.getName()).log(SEVERE, null, ex);
-		}
-		return null;
-	}
-
-	//// Prompters
-	public Arraylist<UUID> selectFromZone (String username, Zone zone, Predicate<Card> validTarget, int count, boolean upTo) {
-		Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
-				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
-		return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, new Arraylist<>(), count, upTo);
-	}
-
-	public Arraylist<UUID> selectFromZoneWithPlayers (String username, Zone zone, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {
-		Arraylist<UUID> canSelect = new Arraylist<>(getZone(username, zone).parallelStream()
-				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
-		Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
-				.filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
-		return selectFrom(username, getZoneLabel(zone), getZone(username, zone), canSelect, canSelectPlayers, count, upTo);
-	}
-
-	public Arraylist<UUID> selectFromList (String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo) {
-		Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
-				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
-		return selectFrom(username, LIST, candidates, canSelect, new Arraylist<>(), count, upTo);
-	}
-
-	public Arraylist<UUID> selectPlayers (String username, Predicate<Player> validPlayer, int count, boolean upTo) {
-		Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
-				.filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
-		return selectFrom(username, getZoneLabel(Zone.Play), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo);
-	}
-
-	public Arraylist<UUID> selectDamageTargetsConditional (String username, Predicate<Card> validTarget, Predicate<Player> validPlayer, int count, boolean upTo) {
-		return selectFromZoneWithPlayers(username, Both_Play, validTarget, validPlayer, count, upTo);
-	}
-
-	public Arraylist<UUID> selectDamageTargets (String username, int count, boolean upTo) {
-		return selectFromZoneWithPlayers(username, Both_Play, Predicates::isDamageable, Predicates::any, count, upTo);
-	}
-
-	public void assignDamage (UUID id, Arraylist<UUID> possibleTargets, Damage damage) {
-		out.println("Updating players from assignDamage. AP: " + activePlayer);
-		updatePlayers();
-		Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage.amount);
-		out.println("Damage distribution: " + assignedDamages);
-		assignedDamages.forEach(c -> {
-			UUID targetId = UUID.fromString(c.getTargetId());
-			int assignedDamage = c.getDamage();
-			dealDamage(id, targetId, new Damage(assignedDamage, damage.mayKill));
-		});
-	}
-
-	public int selectX (String username, int maxX) {
-		if (maxX == 0) {
-			return maxX;
-		}
-		SelectXValue.Builder b = SelectXValue.newBuilder()
-				.setMaxXValue(maxX)
-				.setGame(toGameState(username));
-		try {
-			send(username, ServerGameMessage.newBuilder().setSelectXValue(b));
-
-			int l = (int) response.take();
-			return l;
-		} catch (InterruptedException ex) {
-			getLogger(Game.class.getName()).log(SEVERE, null, ex);
-		}
-		return 0;
-	}
-
-
-	// Unsorted methods
-	public void addEvent (Event e, boolean process) {
-		eventQueue.add(e);
-		if (process)
-			processEvents();
-	}
-
-	public void addEvent (Event e) {
-		addEvent(e, false);
-	}
-
-
-
 	public int getMaxEnergy (String username) {
 		return getPlayer(username).maxEnergy;
 	}
@@ -777,16 +828,16 @@ public class Game implements Serializable {
 						.setTurnPlayer(turnPlayer)
 						.setActivePlayer(activePlayer)
 						.setPhase(phase);
-		for (int i = 0; i < stack.size(); i++) {
-			b.addStack(stack.get(i).toCardMessage());
+		for (Card card : stack) {
+			b.addStack(card.toCardMessage());
 		}
 
-		for (int i = 0; i < attackers.size(); i++) {
-			b.addAttackers(attackers.get(i).toString());
+		for (UUID attacker : attackers) {
+			b.addAttackers(attacker.toString());
 		}
 
-		for (int i = 0; i < blockers.size(); i++) {
-			b.addBlockers(blockers.get(i).toString());
+		for (UUID blocker : blockers) {
+			b.addBlockers(blocker.toString());
 		}
 
 
@@ -810,17 +861,6 @@ public class Game implements Serializable {
 		return b;
 	}
 
-	public void send (String username, ServerGameMessage.Builder builder) {
-		try {
-			setLastMessage(username, builder.build());
-			GameEndpoint e = connections.get(username);
-			if (e != null) {
-				e.send(builder);
-			}
-		} catch (IOException | EncodeException ex) {
-			getLogger(Game.class.getName()).log(SEVERE, null, ex);
-		}
-	}
 
 	public final void updatePlayers () {
 		players.forEach((name, player) -> send(name, ServerGameMessage.newBuilder()
@@ -852,7 +892,7 @@ public class Game implements Serializable {
 				&& getPlayer(username).numOfStudiesLeft > 0;
 	}
 
-	public void shuffleIntoDeck (String username, Card ...cards) {
+	public void shuffleIntoDeck (String username, Card... cards) {
 		getPlayer(username).shuffleIntoDeck(cards);
 	}
 
@@ -885,36 +925,10 @@ public class Game implements Serializable {
 	}
 
 
-	//Event process loops
-	private void processBeginEvents () {
-		//out.println("Starting Begin Triggers");
-		addEvent(turnStart(turnPlayer), true);
-		//out.println("Ending Begin Triggers");
-	}
-
-	private void processEndEvents () {
-		//out.println("Starting End Triggers");
-		addEvent(turnEnd(turnPlayer), true);
-		//out.println("Ending End Triggers");
-	}
-
-	private void processCleanupEvents () {
-		//out.println("Starting Cleanup Triggers");
-		addEvent(Event.cleanup(turnPlayer), true);
-		//out.println("Ending Cleanup Triggers");
-	}
-
-	public void addTriggeringCard (String username, Card t) {
-		triggeringCards.get(username).add(t);
-	}
-
-	public void removeTriggeringCard (Card card) {
-		triggeringCards.values().forEach(l -> l.remove(card));
-	}
-
-
 	// Player property getters
-	private Player getPlayer (String username) { return players.get(username);	}
+	private Player getPlayer (String username) {
+		return players.get(username);
+	}
 
 	public int getPlayerEnergy (String controller) {
 		return getPlayer(controller).energy;
@@ -988,7 +1002,9 @@ public class Game implements Serializable {
 		addEvent(Event.donate(oldController, newController, c));
 	}
 
-	// Combat helpers
+	/**
+	 * Combat Helper Methods
+	 */
 	private void chooseAttackers () {
 		out.println("Updating players from chooseAttackers. AP: " + activePlayer);
 		updatePlayers();
@@ -999,16 +1015,6 @@ public class Game implements Serializable {
 			u.setAttacking(UUID.fromString(c.getAttacksTo()));
 			attackers.add(u.id);
 		});
-	}
-
-	private void unsetAttackers () {
-		attackers.forEach(u -> getCard(u).unsetAttacking());
-		attackers.clear();
-	}
-
-	private void unsetBlockers () {
-		blockers.forEach(u -> getCard(u).unsetBlocking());
-		blockers.clear();
 	}
 
 	private void chooseBlockers () {
@@ -1038,10 +1044,20 @@ public class Game implements Serializable {
 		ArrayList<Card> normalBlockers = new Arraylist<>(getAll(blockers));
 
 		normalAttackers.forEach(a -> a.dealAttackDamage(false));
-		normalBlockers.forEach(b -> b.dealBlockDamage());
+		normalBlockers.forEach(Card::dealBlockDamage);
 
-		normalAttackers.forEach(attacker -> attacker.maybeDieFromBlock());
-		normalBlockers.forEach(blocker -> blocker.maybeDieFromAttack());
+		normalAttackers.forEach(Card::maybeDieFromBlock);
+		normalBlockers.forEach(Card::maybeDieFromAttack);
+	}
+
+	private void unsetAttackers () {
+		attackers.forEach(u -> getCard(u).unsetAttacking());
+		attackers.clear();
+	}
+
+	private void unsetBlockers () {
+		blockers.forEach(u -> getCard(u).unsetBlocking());
+		blockers.clear();
 	}
 
 
@@ -1059,10 +1075,8 @@ public class Game implements Serializable {
 		}
 	}
 
-
-
 	public void returnAllCardsToHand () {
-		getZone("", Both_Play).forEach(card -> card.returnToHand());
+		forEachInZone("", Both_Play, Card::returnToHand);
 	}
 
 	public void heal (UUID cardId, int healAmount) {
@@ -1085,18 +1099,10 @@ public class Game implements Serializable {
 		return createFreshCopy(extractCard(cardId));
 	}
 
-  public void resurrect (UUID cardId) {
-		HelperFunctions.runIfNotNull(getCard(cardId), ()-> restore(cardId).resolve());
+	public void resurrect (UUID cardId) {
+		HelperFunctions.runIfNotNull(getCard(cardId), () -> restore(cardId).resolve());
 	}
 
-	public Card getCardFromZone (String username, Zone zone, UUID cardId) {
-		Arraylist<Card> card = null;
-		getZone(username, zone).forEach(c-> {
-				if(c.id.equals(cardId))
-					card.add(c);
-		});
-		return card.size() > 0 ? card.get(0): null;
-	}
 
 	public void putToBottomOfDeck (UUID cardId) {
 		Card card = extractCard(cardId);
@@ -1104,11 +1110,11 @@ public class Game implements Serializable {
 	}
 
 	public void destroyAllUnits () {
-		getZone(null, Both_Play).forEach(c-> {
-					if (Predicates.isUnit(c)){
-						destroy(c.id);
-					}
-	  });
+		getZone(null, Both_Play).forEach(c -> {
+			if (Predicates.isUnit(c)) {
+				destroy(c.id);
+			}
+		});
 	}
 
 	public void cancel (UUID cardId) {
@@ -1131,14 +1137,14 @@ public class Game implements Serializable {
 		return getPlayer(username).extractFromTopOfDeck(count);
 	}
 
-	public void forEachInZone(String username, Zone zone, Consumer<Card> cardConsumer){
+	public void forEachInZone (String username, Zone zone, Consumer<Card> cardConsumer) {
 		getZone(username, zone).forEach(cardConsumer);
 	}
 
-	public int countInZone(String username, Zone zone, Predicate<Card> cardConsumer){
+	public int countInZone (String username, Zone zone, Predicate<Card> cardConsumer) {
 		Arraylist<Integer> count = new Arraylist<>();
 		getZone(username, zone).forEach(card -> {
-			if(cardConsumer.test(card)){
+			if (cardConsumer.test(card)) {
 				count.add(0);
 			}
 		});

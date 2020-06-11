@@ -10,7 +10,8 @@ import com.visitor.game.Player;
 
 import java.util.function.Predicate;
 
-import static com.visitor.game.Card.CardSubtype.*;
+import static com.visitor.game.Card.CardSubtype.Cantrip;
+import static com.visitor.game.Card.CardSubtype.Ritual;
 import static com.visitor.game.Card.CardType.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
@@ -72,27 +73,29 @@ public abstract class Predicates {
 	}
 
 
-	public static <T> Predicate<T> and(Predicate<T> ...predicates){
+	@SafeVarargs
+	public static <T> Predicate<T> and (Predicate<T>... predicates) {
 		return (t -> {
 			for (Predicate<T> predicate : predicates) {
-				if(!predicate.test(t))
+				if (!predicate.test(t))
 					return false;
 			}
 			return true;
 		});
 	}
 
-	public static <T> Predicate<T> or(Predicate<T> ...predicates){
+	@SafeVarargs
+	public static <T> Predicate<T> or (Predicate<T>... predicates) {
 		return (t -> {
 			for (Predicate<T> predicate : predicates) {
-				if(predicate.test(t));
+				if (predicate.test(t))
 					return true;
 			}
 			return false;
 		});
 	}
 
-	public static <T> Predicate<T> not(Predicate<T> predicate){
+	public static <T> Predicate<T> not (Predicate<T> predicate) {
 		return (t -> !predicate.test(t));
 	}
 

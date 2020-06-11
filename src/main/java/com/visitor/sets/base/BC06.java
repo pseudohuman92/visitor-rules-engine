@@ -15,6 +15,6 @@ public class BC06 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleCardInStack(Predicates::isUnit, game::cancel, () -> game.draw(controller, 1));
+				.setTargetSingleCardInStack(Predicates::isUnit, game::cancel, () -> game.draw(controller, 1));
 	}
 }

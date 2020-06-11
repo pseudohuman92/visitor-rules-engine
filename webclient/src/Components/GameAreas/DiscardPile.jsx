@@ -12,14 +12,14 @@ const mapStateToProps = state => {
   return {
     windowDimensions: state.windowDimensions,
     playerName: state.profile.username,
-    playerScrapyard: state.extendedGameState.game.player.scrapyard,
+    playerDiscardPile: state.extendedGameState.game.player.discardPile,
     opponentUserId: state.extendedGameState.game.opponent.userId,
     opponentName: state.extendedGameState.opponentUsername,
-    opponentScrapyard: state.extendedGameState.game.opponent.scrapyard
+    opponentDiscardPile: state.extendedGameState.game.opponent.discardPile
   };
 };
 
-class Scrapyard extends React.Component {
+class DiscardPile extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hover: false };
@@ -50,8 +50,8 @@ class Scrapyard extends React.Component {
       isPlayer,
       playerName,
       opponentName,
-      playerScrapyard,
-      opponentScrapyard,
+      playerDiscardPile,
+      opponentDiscardPile,
       updateExtendedGameState,
       style
     } = this.props;
@@ -61,32 +61,32 @@ class Scrapyard extends React.Component {
     const scrapHeight = scrapWidth * (88/63);
     const { hover } = this.state;
     const name = isPlayer ? playerName : opponentName;
-    const scrapyard = isPlayer ? playerScrapyard : opponentScrapyard;
+    const discardPile = isPlayer ? playerDiscardPile : opponentDiscardPile;
 
-    let showScrapyard = event => {
+    let showDiscardPile = event => {
       updateExtendedGameState({
         dialogData: {
           open: true,
-          title: `${name}'s Scrapyard`,
-          cards: scrapyard
+          title: `${name}'s DiscardPile`,
+          cards: discardPile
         }
       });
     };
-    const hasCard = scrapyard.length > 0;
+    const hasCard = discardPile.length > 0;
 
     return (
       <div
-        onClick={showScrapyard}
+        onClick={showDiscardPile}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
         style={{...style, width: scrapWidth, height: scrapHeight}}
       >
         {hasCard ? (
           <TextOnComponent
-            text={hover ? (scrapyard.length?scrapyard.length:0) : ""}
+            text={hover ? (discardPile.length?discardPile.length:0) : ""}
             component={
               <CardDisplay
-                cardData={scrapyard[scrapyard.length - 1]}
+                cardData={discardPile[discardPile.length - 1]}
                 windowDimensions={windowDimensions}
                 scale={0.75}
               />
@@ -97,8 +97,8 @@ class Scrapyard extends React.Component {
           />
         ) : (
           <TextOnImage
-            text={hover ? (scrapyard.length?scrapyard.length:0) : ""}
-            src={process.env.PUBLIC_URL + "/img/Scrapyard.png"}
+            text={hover ? (discardPile.length?discardPile.length:0) : ""}
+            src={process.env.PUBLIC_URL + "/img/DiscardPile.png"}
             imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
             scale={3}
             windowDimensions={windowDimensions}
@@ -112,4 +112,4 @@ class Scrapyard extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withHandlers(withFirebase(Scrapyard)));
+)(withHandlers(withFirebase(DiscardPile)));

@@ -60,21 +60,21 @@ public class Arraylist<T> extends ArrayList<T> {
 	}
 
 	public void forEachInOrder (Consumer<? super T> c) {
-		for (int i = 0; i < size(); i++) {
-			c.accept(get(i));
+		for (T t : this) {
+			c.accept(t);
 		}
 	}
 
 	public boolean hasOne (Predicate<? super T> predicate) {
-		for (int i = 0; i < this.size(); i++) {
-			if (predicate.test(get(i))) {
+		for (T t : this) {
+			if (predicate.test(t)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public Arraylist<T> addAll(int index, T[] array){
+	public Arraylist<T> addAll (int index, T[] array) {
 		super.addAll(index, Arrays.asList(array));
 		return this;
 	}
@@ -84,6 +84,6 @@ public class Arraylist<T> extends ArrayList<T> {
 	}
 
 	public List<String> transformToStringList () {
-		return parallelStream().map(t -> t.toString()).collect(Collectors.toList());
+		return parallelStream().map(Object::toString).collect(Collectors.toList());
 	}
 }

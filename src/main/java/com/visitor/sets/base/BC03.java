@@ -15,9 +15,7 @@ public class BC03 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetingSingleCardInStack(Predicates::isUnit, (cardId)-> {
-								game.cancel(cardId);
-						}
+				.setTargetSingleCardInStack(Predicates::isUnit, game::cancel
 				);
 	}
 }
