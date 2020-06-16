@@ -151,9 +151,6 @@ class CollectionScreen extends React.Component {
                 alignItems="center"
             >
                 <Grid item xs={1}>
-                    <Button onClick={this.props.back} text="Back"/>
-                </Grid>
-                <Grid item xs={1}>
                     <Button onClick={this.prev} text="Prev" disabled={page === 0}/>
                 </Grid>
                 <Grid item xs={1}>

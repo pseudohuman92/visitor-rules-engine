@@ -64,7 +64,8 @@ class Hand extends PureComponent {
               ref={provided.innerRef}
               {...provided.droppableProps}
               style={{ display: "flex", 
-              justifyContent: "center", }}
+              justifyContent: "center",
+              overflow: "auto"}}
             >
               {handCards}
               {provided.placeholder}

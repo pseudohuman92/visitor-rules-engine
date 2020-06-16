@@ -604,6 +604,9 @@ public class Game implements Serializable {
 	}
 
 	public Arraylist<UUID> selectFromList (String username, Arraylist<Card> candidates, Predicate<Card> validTarget, int count, boolean upTo, String message) {
+		if (message == null || message.equals("")){
+			message = "Select " + (upTo? "up to " : "") + count;
+		}
 		Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
 				.filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
 		return selectFrom(username, LIST, candidates, canSelect, new Arraylist<>(), count, upTo, message);

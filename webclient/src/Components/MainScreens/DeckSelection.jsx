@@ -93,8 +93,6 @@ class DeckSelection extends React.Component {
       <div>
         {value === 0 && (
           <div>
-
-            <Button onClick={this.props.back} text="Back"/>
         {!isProduction && <Button onClick={this.loadGame} text="Load"/> } 
             <Grid container spacing={8}>
               {decks.map((deck, i) => (

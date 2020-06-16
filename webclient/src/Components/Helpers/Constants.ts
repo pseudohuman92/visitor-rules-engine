@@ -246,6 +246,7 @@ const initializeFullCollection = () => {
             set: card.Set,
             name: name,
             types: [card.Type],
+            subtypes: [card.Subtype],
             description: card.Effect,
             combat : {
               attack: card.Attack,

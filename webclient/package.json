@@ -4,6 +4,8 @@
   "description": "",
   "keywords": [],
   "main": "src/index.js",
+  "prebuild": "npm run generate-build-meta",
+  "generate-build-meta": "./node_modules/react-clear-cache/bin/cli.js",
   "dependencies": {
     "@firebase/app-types": "0.6.1",
     "@firebase/util": "0.2.48",
@@ -24,7 +26,8 @@
     "react-scripts": "3.4.1",
     "react-textfit": "1.1.0",
     "redux": "4.0.5",
-    "react-cookie": "^4.0.3"
+    "react-cookie": "^4.0.3",
+    "react-clear-cache": "1.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.17",
@@ -43,4 +46,5 @@
     "not ie <= 11",
     "not op_mini all"
   ]
+
 }

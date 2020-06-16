@@ -90,7 +90,6 @@ class OpenPacks extends Component {
             <Button onClick={this.hideDialog} text="Done" />
           </Dialog>
         )}
-        <Button onClick={this.props.back} text="Back" />
         <Grid
           container
           alignContent="space-around"

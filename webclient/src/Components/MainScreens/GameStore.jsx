@@ -52,7 +52,6 @@ class GameStore extends Component {
             <Center>{"You successfuly bought a pack."}</Center>
           </Dialog>
         )}
-        <Button onClick={this.props.back} text="Back" />
         <Grid
           container
           alignContent="space-around"

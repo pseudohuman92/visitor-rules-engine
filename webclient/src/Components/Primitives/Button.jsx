@@ -17,7 +17,7 @@ class Button extends Component {
       <div
         style={{ opacity: opacity }}
         onClick={event => {
-          if (!disabled) {
+          if (onClick && !disabled) {
             onClick(event);
           }
         }}

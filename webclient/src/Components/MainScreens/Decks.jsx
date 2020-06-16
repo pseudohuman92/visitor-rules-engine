@@ -75,7 +75,6 @@ class Decks extends React.Component {
       <div>
         {value === 0 && (
           <div>
-            <Button onClick={this.props.back} text="Back" />
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
                 <Grid

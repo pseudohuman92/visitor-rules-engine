@@ -52,12 +52,6 @@ class DesignCard extends Component {
         <div>
           <Fonts />
           <Grid container spacing={24} justify="space-around">
-            <Grid item xs={2}>
-              <Button
-                onClick={this.props.back}
-                text="Back"
-              />
-            </Grid>
             <Grid item xs={8}>
               <TextField
                 id="creator"

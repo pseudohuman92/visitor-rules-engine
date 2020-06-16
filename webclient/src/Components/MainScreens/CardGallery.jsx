@@ -36,9 +36,6 @@ class CardGallery extends Component {
     return (
       <div>
         <Grid container spacing={8}>
-        <Grid item xs={4}>
-            <Button onClick={this.props.back} text="Back" />
-          </Grid>
           <Grid item xs={4}>
             <Button onClick={this.prev} text="Prev" disabled={page===0}/>
           </Grid>
