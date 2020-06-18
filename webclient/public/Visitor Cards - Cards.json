@@ -2,6 +2,7 @@
   {
     "Set": "test",
     "Name": "Deathtouchy",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "Deathtouch",
@@ -13,6 +14,7 @@
   {
     "Set": "test",
     "Name": "Defendery",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "Defender",
@@ -24,6 +26,7 @@
   {
     "Set": "test",
     "Name": "Tramply",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "Trample",
@@ -35,6 +38,7 @@
   {
     "Set": "test",
     "Name": "Flyingy",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "Flying",
@@ -46,6 +50,7 @@
   {
     "Set": "test",
     "Name": "Hasty",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Rat",
     "Effect": "Haste",
@@ -57,6 +62,7 @@
   {
     "Set": "test",
     "Name": "Vigilanty",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Dog",
     "Effect": "Vigilance",
@@ -68,6 +74,7 @@
   {
     "Set": "test",
     "Name": "Lifelinky",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "Lifelink",
@@ -79,6 +86,7 @@
   {
     "Set": "test",
     "Name": "Reachy",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "Reach",
@@ -90,6 +98,7 @@
   {
     "Set": "test",
     "Name": "First Striky",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "Fox",
     "Effect": "First Strike",
@@ -101,6 +110,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -112,6 +122,7 @@
   {
     "Set": "base",
     "Name": "Turtle",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -123,6 +134,7 @@
   {
     "Set": "base",
     "Name": "Porcupine",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -134,6 +146,7 @@
   {
     "Set": "base",
     "Name": "Ox",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender, Lifelink",
@@ -145,6 +158,7 @@
   {
     "Set": "base",
     "Name": "Sparrow",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -156,6 +170,7 @@
   {
     "Set": "base",
     "Name": "Seagull",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -167,6 +182,7 @@
   {
     "Set": "base",
     "Name": "Hawk",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Haste",
@@ -178,6 +194,7 @@
   {
     "Set": "base",
     "Name": "Eagle",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -189,6 +206,7 @@
   {
     "Set": "base",
     "Name": "Leech",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -200,6 +218,7 @@
   {
     "Set": "base",
     "Name": "Pistol Shrimp",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink, Haste",
@@ -211,6 +230,7 @@
   {
     "Set": "base",
     "Name": "Owl",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Lifelink",
@@ -222,6 +242,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -233,6 +254,7 @@
   {
     "Set": "base",
     "Name": "Dung Beetle",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Trample",
@@ -244,6 +266,7 @@
   {
     "Set": "base",
     "Name": "Grizzly Bear",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Trample",
@@ -255,6 +278,7 @@
   {
     "Set": "base",
     "Name": "Elephant",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Trample",
@@ -266,6 +290,7 @@
   {
     "Set": "base",
     "Name": "Frog",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Reach",
@@ -277,6 +302,7 @@
   {
     "Set": "base",
     "Name": "Salamander",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Reach, Regenerate 1",
@@ -288,6 +314,7 @@
   {
     "Set": "base",
     "Name": "Mantis",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -299,6 +326,7 @@
   {
     "Set": "base",
     "Name": "Panther",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink, Trample",
@@ -310,6 +338,7 @@
   {
     "Set": "base",
     "Name": "Spider",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch",
@@ -321,6 +350,7 @@
   {
     "Set": "base",
     "Name": "Rattlesnake",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch, Reach",
@@ -332,6 +362,7 @@
   {
     "Set": "base",
     "Name": "Komodo Dragon",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch, Trample",
@@ -343,6 +374,7 @@
   {
     "Set": "base",
     "Name": "Black Bear",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -354,6 +386,7 @@
   {
     "Set": "base",
     "Name": "Yak",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -365,6 +398,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -376,6 +410,7 @@
   {
     "Set": "base",
     "Name": "P01",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch",
@@ -387,6 +422,7 @@
   {
     "Set": "base",
     "Name": "P02",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch",
@@ -398,6 +434,7 @@
   {
     "Set": "base",
     "Name": "P03",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch",
@@ -409,6 +446,7 @@
   {
     "Set": "base",
     "Name": "P04",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -420,6 +458,7 @@
   {
     "Set": "base",
     "Name": "P05",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -431,6 +470,7 @@
   {
     "Set": "base",
     "Name": "P06",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch, Lifelink",
@@ -442,6 +482,7 @@
   {
     "Set": "base",
     "Name": "P07",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Deathtouch",
@@ -453,6 +494,7 @@
   {
     "Set": "base",
     "Name": "P08",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Trample",
@@ -464,6 +506,7 @@
   {
     "Set": "base",
     "Name": "P09",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -475,6 +518,7 @@
   {
     "Set": "base",
     "Name": "P10",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -486,6 +530,7 @@
   {
     "Set": "base",
     "Name": "P11",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Lifelink",
@@ -497,6 +542,7 @@
   {
     "Set": "base",
     "Name": "P12",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -508,6 +554,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -519,6 +566,7 @@
   {
     "Set": "base",
     "Name": "R01",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Haste",
@@ -530,6 +578,7 @@
   {
     "Set": "base",
     "Name": "R02",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Trample",
@@ -541,6 +590,7 @@
   {
     "Set": "base",
     "Name": "R03",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Haste",
@@ -552,6 +602,7 @@
   {
     "Set": "base",
     "Name": "R04",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -563,6 +614,7 @@
   {
     "Set": "base",
     "Name": "R05",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Trample",
@@ -574,6 +626,7 @@
   {
     "Set": "base",
     "Name": "R06",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Haste",
@@ -585,6 +638,7 @@
   {
     "Set": "base",
     "Name": "R07",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Reach",
@@ -596,6 +650,7 @@
   {
     "Set": "base",
     "Name": "R08",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Haste",
@@ -607,6 +662,7 @@
   {
     "Set": "base",
     "Name": "R09",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -618,6 +674,7 @@
   {
     "Set": "base",
     "Name": "R10",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -629,6 +686,7 @@
   {
     "Set": "base",
     "Name": "R11",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Haste",
@@ -640,6 +698,7 @@
   {
     "Set": "base",
     "Name": "R12",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Trample",
@@ -651,6 +710,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -662,6 +722,7 @@
   {
     "Set": "base",
     "Name": "Y01",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -673,6 +734,7 @@
   {
     "Set": "base",
     "Name": "Y02",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -684,6 +746,7 @@
   {
     "Set": "base",
     "Name": "Y03",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -695,6 +758,7 @@
   {
     "Set": "base",
     "Name": "Y04",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Regenerate 1",
@@ -706,6 +770,7 @@
   {
     "Set": "base",
     "Name": "Y05",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -717,6 +782,7 @@
   {
     "Set": "base",
     "Name": "Y06",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -728,6 +794,7 @@
   {
     "Set": "base",
     "Name": "Y07",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -739,6 +806,7 @@
   {
     "Set": "base",
     "Name": "Y08",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -750,6 +818,7 @@
   {
     "Set": "base",
     "Name": "Y09",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Vigilance",
@@ -761,6 +830,7 @@
   {
     "Set": "base",
     "Name": "Y10",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -772,6 +842,7 @@
   {
     "Set": "base",
     "Name": "Y11",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Vigilance",
@@ -783,6 +854,7 @@
   {
     "Set": "base",
     "Name": "Y12",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Vigilance",
@@ -794,6 +866,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -805,6 +878,7 @@
   {
     "Set": "base",
     "Name": "C01",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, First Strike",
@@ -816,6 +890,7 @@
   {
     "Set": "base",
     "Name": "C02",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -827,6 +902,7 @@
   {
     "Set": "base",
     "Name": "C03",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -838,6 +914,7 @@
   {
     "Set": "base",
     "Name": "C04",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -849,6 +926,7 @@
   {
     "Set": "base",
     "Name": "C05",
+    "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -860,6 +938,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -871,6 +950,7 @@
   {
     "Set": "base",
     "Name": "UR01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Return up to 3 target units to their controller's hands.",
@@ -882,6 +962,7 @@
   {
     "Set": "base",
     "Name": "UR02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Draw 2 cards",
@@ -893,6 +974,7 @@
   {
     "Set": "base",
     "Name": "UR03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Up to 2 target units gain unblockable until end of turn.",
@@ -904,6 +986,7 @@
   {
     "Set": "base",
     "Name": "UR04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Return all cards to their controller's hands.",
@@ -915,6 +998,7 @@
   {
     "Set": "base",
     "Name": "UR05",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Draw 3 cards. \nDiscard 1 card.",
@@ -926,6 +1010,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -937,6 +1022,7 @@
   {
     "Set": "base",
     "Name": "GR01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Target unit you control strikes target unit you don't control.",
@@ -948,6 +1034,7 @@
   {
     "Set": "base",
     "Name": "GR02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Return target card from your discard pile to your hand.",
@@ -959,6 +1046,7 @@
   {
     "Set": "base",
     "Name": "GR03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Units you control gains +3 /+3 and trample until end of turn.",
@@ -970,6 +1058,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -981,6 +1070,7 @@
   {
     "Set": "base",
     "Name": "PR01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "As an additional cost to cast this spell, sacrifice a unit.\nDestroy target unit.",
@@ -992,6 +1082,7 @@
   {
     "Set": "base",
     "Name": "PR02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Restore and return target unit card from your discard pile to your hand.",
@@ -1003,6 +1094,7 @@
   {
     "Set": "base",
     "Name": "PR03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Target opponent reveals their hand. You choose a unit card from it. \nThat player discards that card.",
@@ -1014,6 +1106,7 @@
   {
     "Set": "base",
     "Name": "PR04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Restore and return up to 2 target unit cards from your discard pile to your hand, \nthen discard 1 card.",
@@ -1025,6 +1118,7 @@
   {
     "Set": "base",
     "Name": "PR05",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Destroy target unit.",
@@ -1036,6 +1130,7 @@
   {
     "Set": "base",
     "Name": "PR06",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Target player discards 2 cards",
@@ -1047,6 +1142,7 @@
   {
     "Set": "base",
     "Name": "PR07",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "As an additional cost to cast this spell, sacrifice a unit.\nDraw three cards.",
@@ -1058,6 +1154,7 @@
   {
     "Set": "base",
     "Name": "PR08",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Resurrect a unit from your discard pile.",
@@ -1069,6 +1166,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1080,6 +1178,7 @@
   {
     "Set": "base",
     "Name": "RR01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Deal 3 damage to target unit with flying.",
@@ -1091,6 +1190,7 @@
   {
     "Set": "base",
     "Name": "RR02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Deal 5 damage to target unit.",
@@ -1102,6 +1202,7 @@
   {
     "Set": "base",
     "Name": "RR03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Deal 5 damage to target unit.",
@@ -1113,6 +1214,7 @@
   {
     "Set": "base",
     "Name": "RR04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Deal 3 damage to a target.",
@@ -1124,6 +1226,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1135,6 +1238,7 @@
   {
     "Set": "base",
     "Name": "YR01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Destroy target purple or red unit.",
@@ -1146,6 +1250,7 @@
   {
     "Set": "base",
     "Name": "YR02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Put target unit with attack 4 or greater to bottom of its controller's deck.",
@@ -1157,6 +1262,7 @@
   {
     "Set": "base",
     "Name": "YR03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Destroy target depleted unit.",
@@ -1168,6 +1274,7 @@
   {
     "Set": "base",
     "Name": "YR04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Destroy target depleted unit. Gain 3 health.",
@@ -1179,6 +1286,7 @@
   {
     "Set": "base",
     "Name": "YR05",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Destroy all units.",
@@ -1190,6 +1298,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1201,6 +1310,7 @@
   {
     "Set": "base",
     "Name": "BC01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Return target unit to its controller's hand.",
@@ -1212,6 +1322,7 @@
   {
     "Set": "base",
     "Name": "BC02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Look at the top three cards of your library. Draw one of them and put the rest on the bottom of your library.",
@@ -1223,6 +1334,7 @@
   {
     "Set": "base",
     "Name": "BC03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Cancel target unit card.",
@@ -1234,6 +1346,7 @@
   {
     "Set": "base",
     "Name": "BC04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Cancel target non-unit card.",
@@ -1245,6 +1358,7 @@
   {
     "Set": "base",
     "Name": "BC05",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets -2/-0.",
@@ -1256,6 +1370,7 @@
   {
     "Set": "base",
     "Name": "BC06",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Cancel target unit card. Draw 1 card.",
@@ -1267,6 +1382,7 @@
   {
     "Set": "base",
     "Name": "BC07",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Put target card on top of controller's deck.",
@@ -1278,6 +1394,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1289,6 +1406,7 @@
   {
     "Set": "base",
     "Name": "GC01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +1/+1 until end of turn for each unit you control.",
@@ -1300,6 +1418,7 @@
   {
     "Set": "base",
     "Name": "GC02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit heals 3.",
@@ -1311,6 +1430,7 @@
   {
     "Set": "base",
     "Name": "GC03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +1/+2",
@@ -1322,6 +1442,7 @@
   {
     "Set": "base",
     "Name": "GC04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +2/+4 until end of turn",
@@ -1333,6 +1454,7 @@
   {
     "Set": "base",
     "Name": "GC05",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +3/+3",
@@ -1344,6 +1466,7 @@
   {
     "Set": "base",
     "Name": "GC06",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Choose and draw up to 2 units from your deck.",
@@ -1355,6 +1478,7 @@
   {
     "Set": "base",
     "Name": "GC07",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Draw the top unit from your deck.",
@@ -1366,6 +1490,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1377,6 +1502,7 @@
   {
     "Set": "base",
     "Name": "RC01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Deal 2 damage to any target",
@@ -1388,6 +1514,7 @@
   {
     "Set": "base",
     "Name": "RC02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +3/+0 and gains first strike until end of turn.",
@@ -1399,6 +1526,7 @@
   {
     "Set": "base",
     "Name": "RC03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Deal 2 damage to each unit.",
@@ -1410,6 +1538,7 @@
   {
     "Set": "base",
     "Name": "RC04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Deal 4 damage to target unit and 2 damage to its controller.",
@@ -1421,6 +1550,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1432,6 +1562,7 @@
   {
     "Set": "base",
     "Name": "PC01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets -2/-2 until end of turn.",
@@ -1443,6 +1574,7 @@
   {
     "Set": "base",
     "Name": "PC02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gains deathtouch until end of turn. Draw 1 card.",
@@ -1454,6 +1586,7 @@
   {
     "Set": "base",
     "Name": "PC03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Deal 2 damage to target unit. You gain 2 life.",
@@ -1465,6 +1598,7 @@
   {
     "Set": "base",
     "Name": "PC04",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Destroy target unit.",
@@ -1476,6 +1610,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1487,6 +1622,7 @@
   {
     "Set": "base",
     "Name": "YC01",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +2/+2 and lifelink until end of turn.",
@@ -1498,6 +1634,7 @@
   {
     "Set": "base",
     "Name": "YC02",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Target unit gets +2/+4 until end of turn.",
@@ -1509,6 +1646,7 @@
   {
     "Set": "base",
     "Name": "YC03",
+    "JADE NAME": "",
     "Type": "Spell",
     "Subtype": "Cantrip",
     "Effect": "Units you control get +1/+2",
@@ -1520,6 +1658,7 @@
   {
     "Set": "",
     "Name": "",
+    "JADE NAME": "",
     "Type": "",
     "Subtype": "",
     "Effect": "",
@@ -1527,5 +1666,41 @@
     "Health": "",
     "Energy": "",
     "Knowledge": "X"
+  },
+  {
+    "Set": "base",
+    "Name": "GU01",
+    "JADE NAME": "",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "Flying",
+    "Attack": 2,
+    "Health": 2,
+    "Energy": 2,
+    "Knowledge": "GU"
+  },
+  {
+    "Set": "base",
+    "Name": "GU02",
+    "JADE NAME": "",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "Unblockable",
+    "Attack": 2,
+    "Health": 2,
+    "Energy": 2,
+    "Knowledge": "GU"
+  },
+  {
+    "Set": "base",
+    "Name": "GU03",
+    "JADE NAME": "",
+    "Type": "Unit",
+    "Subtype": "",
+    "Effect": "Flying, Trample",
+    "Attack": 3,
+    "Health": 3,
+    "Energy": 1,
+    "Knowledge": "GU"
   }
 ]

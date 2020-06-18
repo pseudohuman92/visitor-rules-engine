@@ -30,11 +30,12 @@ public class CounterMap<Key> extends HashMap<Key, Integer> {
 		super.put(key, value);
 	}
 
-	public Integer add (Key key, Integer value) {
-		return super.put(key, super.getOrDefault(key, 0) + value);
+	public CounterMap<Key> add (Key key, Integer value) {
+		super.put(key, super.getOrDefault(key, 0) + value);
+		return this;
 	}
 
-	public Integer add (Key key) {
+	public CounterMap<Key> add (Key key) {
 		return add(key, 1);
 	}
 

@@ -21,6 +21,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import PhaseDisplay from "../GameAreas/PhaseDisplay";
 import SelectionMessage from "../GameAreas/SelectionMessage";
+import KnowledgeDialog from "../Dialogs/KnowledgeDialog";
 
 const mapStateToProps = (state) => {
   return {
@@ -101,7 +102,7 @@ class GameScreen extends Component {
           onDragEnd={this.onDragEnd}
         >
           <div className="App">
-            <img
+            { /*<img
               src={process.env.PUBLIC_URL + "/img/background.jpg"}
               style={{
                 position: "absolute",
@@ -111,13 +112,14 @@ class GameScreen extends Component {
                 zIndex: -1,
               }}
               alt=""
-            />
+            />*/}
 
               <div className="App-header">
                 <EscapeMenu open={this.state.menuOpen} close={this.closeMenu} />
                 <EndGameDialog back={back} />
                 <SelectXDialog />
                 <ChooseDialog />
+                <KnowledgeDialog />
 
                 <div className="level0">
                   <PlayerArea

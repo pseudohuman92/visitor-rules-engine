@@ -16,6 +16,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Consumer;
@@ -654,6 +655,20 @@ public class Game implements Serializable {
 			getLogger(Game.class.getName()).log(SEVERE, null, ex);
 		}
 		return 0;
+	}
+
+	public CounterMap<Knowledge> selectKnowledge (String username, Set<Knowledge> knowledgeSet) {
+		SelectKnowledge.Builder b = SelectKnowledge.newBuilder()
+				.addAllKnowledgeList(knowledgeSet)
+				.setGame(toGameState(username));
+		out.println(b.build());
+		try {
+			send(username, ServerGameMessage.newBuilder().setSelectKnowledge(b));
+			return new CounterMap<>((Knowledge) response.take(), 1);
+		} catch (InterruptedException ex) {
+			getLogger(Game.class.getName()).log(SEVERE, null, ex);
+		}
+		return new CounterMap<>();
 	}
 
 

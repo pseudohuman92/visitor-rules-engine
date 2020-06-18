@@ -57,6 +57,11 @@ message AssignDamage {
     int32 totalDamage = 4;
 }
 
+message SelectKnowledge {
+    GameState game = 1;
+    repeated Knowledge knowledgeList = 2;
+}
+
 message ServerGameMessage {
     oneof payload {
         UpdateGameState         updateGameState = 8;
@@ -66,6 +71,7 @@ message ServerGameMessage {
         SelectXValue            selectXValue = 19;
         SelectAttackers         selectAttackers = 20;
         SelectBlockers          selectBlockers = 21;
-        AssignDamage        assignDamage = 22;
+        AssignDamage            assignDamage = 22;
+        SelectKnowledge         selectKnowledge = 23;
     }
 }

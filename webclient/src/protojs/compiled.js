@@ -2488,6 +2488,226 @@ $root.AssignDamageResponse = (function() {
     return AssignDamageResponse;
 })();
 
+$root.SelectKnowledgeResponse = (function() {
+
+    /**
+     * Properties of a SelectKnowledgeResponse.
+     * @exports ISelectKnowledgeResponse
+     * @interface ISelectKnowledgeResponse
+     * @property {Knowledge|null} [selectedKnowledge] SelectKnowledgeResponse selectedKnowledge
+     */
+
+    /**
+     * Constructs a new SelectKnowledgeResponse.
+     * @exports SelectKnowledgeResponse
+     * @classdesc Represents a SelectKnowledgeResponse.
+     * @implements ISelectKnowledgeResponse
+     * @constructor
+     * @param {ISelectKnowledgeResponse=} [properties] Properties to set
+     */
+    function SelectKnowledgeResponse(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SelectKnowledgeResponse selectedKnowledge.
+     * @member {Knowledge} selectedKnowledge
+     * @memberof SelectKnowledgeResponse
+     * @instance
+     */
+    SelectKnowledgeResponse.prototype.selectedKnowledge = 0;
+
+    /**
+     * Creates a new SelectKnowledgeResponse instance using the specified properties.
+     * @function create
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {ISelectKnowledgeResponse=} [properties] Properties to set
+     * @returns {SelectKnowledgeResponse} SelectKnowledgeResponse instance
+     */
+    SelectKnowledgeResponse.create = function create(properties) {
+        return new SelectKnowledgeResponse(properties);
+    };
+
+    /**
+     * Encodes the specified SelectKnowledgeResponse message. Does not implicitly {@link SelectKnowledgeResponse.verify|verify} messages.
+     * @function encode
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {ISelectKnowledgeResponse} message SelectKnowledgeResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectKnowledgeResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.selectedKnowledge != null && Object.hasOwnProperty.call(message, "selectedKnowledge"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.selectedKnowledge);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SelectKnowledgeResponse message, length delimited. Does not implicitly {@link SelectKnowledgeResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {ISelectKnowledgeResponse} message SelectKnowledgeResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectKnowledgeResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SelectKnowledgeResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SelectKnowledgeResponse} SelectKnowledgeResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectKnowledgeResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectKnowledgeResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.selectedKnowledge = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SelectKnowledgeResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SelectKnowledgeResponse} SelectKnowledgeResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectKnowledgeResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SelectKnowledgeResponse message.
+     * @function verify
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SelectKnowledgeResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.selectedKnowledge != null && message.hasOwnProperty("selectedKnowledge"))
+            switch (message.selectedKnowledge) {
+            default:
+                return "selectedKnowledge: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a SelectKnowledgeResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SelectKnowledgeResponse} SelectKnowledgeResponse
+     */
+    SelectKnowledgeResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.SelectKnowledgeResponse)
+            return object;
+        var message = new $root.SelectKnowledgeResponse();
+        switch (object.selectedKnowledge) {
+        case "NONE":
+        case 0:
+            message.selectedKnowledge = 0;
+            break;
+        case "PURPLE":
+        case 1:
+            message.selectedKnowledge = 1;
+            break;
+        case "GREEN":
+        case 2:
+            message.selectedKnowledge = 2;
+            break;
+        case "RED":
+        case 3:
+            message.selectedKnowledge = 3;
+            break;
+        case "BLUE":
+        case 4:
+            message.selectedKnowledge = 4;
+            break;
+        case "YELLOW":
+        case 5:
+            message.selectedKnowledge = 5;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SelectKnowledgeResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SelectKnowledgeResponse
+     * @static
+     * @param {SelectKnowledgeResponse} message SelectKnowledgeResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SelectKnowledgeResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.selectedKnowledge = options.enums === String ? "NONE" : 0;
+        if (message.selectedKnowledge != null && message.hasOwnProperty("selectedKnowledge"))
+            object.selectedKnowledge = options.enums === String ? $root.Knowledge[message.selectedKnowledge] : message.selectedKnowledge;
+        return object;
+    };
+
+    /**
+     * Converts this SelectKnowledgeResponse to JSON.
+     * @function toJSON
+     * @memberof SelectKnowledgeResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SelectKnowledgeResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SelectKnowledgeResponse;
+})();
+
 $root.SaveGameState = (function() {
 
     /**
@@ -2695,6 +2915,7 @@ $root.ClientGameMessage = (function() {
      * @property {ISelectBlockersResponse|null} [selectBlockersResponse] ClientGameMessage selectBlockersResponse
      * @property {ISaveGameState|null} [saveGameState] ClientGameMessage saveGameState
      * @property {IAssignDamageResponse|null} [assignDamageResponse] ClientGameMessage assignDamageResponse
+     * @property {ISelectKnowledgeResponse|null} [selectKnowledgeResponse] ClientGameMessage selectKnowledgeResponse
      */
 
     /**
@@ -2824,17 +3045,25 @@ $root.ClientGameMessage = (function() {
      */
     ClientGameMessage.prototype.assignDamageResponse = null;
 
+    /**
+     * ClientGameMessage selectKnowledgeResponse.
+     * @member {ISelectKnowledgeResponse|null|undefined} selectKnowledgeResponse
+     * @memberof ClientGameMessage
+     * @instance
+     */
+    ClientGameMessage.prototype.selectKnowledgeResponse = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|"selectKnowledgeResponse"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState", "assignDamageResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState", "assignDamageResponse", "selectKnowledgeResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2890,6 +3119,8 @@ $root.ClientGameMessage = (function() {
             $root.SaveGameState.encode(message.saveGameState, writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
         if (message.assignDamageResponse != null && Object.hasOwnProperty.call(message, "assignDamageResponse"))
             $root.AssignDamageResponse.encode(message.assignDamageResponse, writer.uint32(/* id 27, wireType 2 =*/218).fork()).ldelim();
+        if (message.selectKnowledgeResponse != null && Object.hasOwnProperty.call(message, "selectKnowledgeResponse"))
+            $root.SelectKnowledgeResponse.encode(message.selectKnowledgeResponse, writer.uint32(/* id 28, wireType 2 =*/226).fork()).ldelim();
         return writer;
     };
 
@@ -2965,6 +3196,9 @@ $root.ClientGameMessage = (function() {
                 break;
             case 27:
                 message.assignDamageResponse = $root.AssignDamageResponse.decode(reader, reader.uint32());
+                break;
+            case 28:
+                message.selectKnowledgeResponse = $root.SelectKnowledgeResponse.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3140,6 +3374,16 @@ $root.ClientGameMessage = (function() {
                     return "assignDamageResponse." + error;
             }
         }
+        if (message.selectKnowledgeResponse != null && message.hasOwnProperty("selectKnowledgeResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SelectKnowledgeResponse.verify(message.selectKnowledgeResponse);
+                if (error)
+                    return "selectKnowledgeResponse." + error;
+            }
+        }
         return null;
     };
 
@@ -3224,6 +3468,11 @@ $root.ClientGameMessage = (function() {
             if (typeof object.assignDamageResponse !== "object")
                 throw TypeError(".ClientGameMessage.assignDamageResponse: object expected");
             message.assignDamageResponse = $root.AssignDamageResponse.fromObject(object.assignDamageResponse);
+        }
+        if (object.selectKnowledgeResponse != null) {
+            if (typeof object.selectKnowledgeResponse !== "object")
+                throw TypeError(".ClientGameMessage.selectKnowledgeResponse: object expected");
+            message.selectKnowledgeResponse = $root.SelectKnowledgeResponse.fromObject(object.selectKnowledgeResponse);
         }
         return message;
     };
@@ -3310,6 +3559,11 @@ $root.ClientGameMessage = (function() {
             object.assignDamageResponse = $root.AssignDamageResponse.toObject(message.assignDamageResponse, options);
             if (options.oneofs)
                 object.payload = "assignDamageResponse";
+        }
+        if (message.selectKnowledgeResponse != null && message.hasOwnProperty("selectKnowledgeResponse")) {
+            object.selectKnowledgeResponse = $root.SelectKnowledgeResponse.toObject(message.selectKnowledgeResponse, options);
+            if (options.oneofs)
+                object.payload = "selectKnowledgeResponse";
         }
         return object;
     };
@@ -10178,6 +10432,280 @@ $root.AssignDamage = (function() {
     return AssignDamage;
 })();
 
+$root.SelectKnowledge = (function() {
+
+    /**
+     * Properties of a SelectKnowledge.
+     * @exports ISelectKnowledge
+     * @interface ISelectKnowledge
+     * @property {IGameState|null} [game] SelectKnowledge game
+     * @property {Array.<Knowledge>|null} [knowledgeList] SelectKnowledge knowledgeList
+     */
+
+    /**
+     * Constructs a new SelectKnowledge.
+     * @exports SelectKnowledge
+     * @classdesc Represents a SelectKnowledge.
+     * @implements ISelectKnowledge
+     * @constructor
+     * @param {ISelectKnowledge=} [properties] Properties to set
+     */
+    function SelectKnowledge(properties) {
+        this.knowledgeList = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * SelectKnowledge game.
+     * @member {IGameState|null|undefined} game
+     * @memberof SelectKnowledge
+     * @instance
+     */
+    SelectKnowledge.prototype.game = null;
+
+    /**
+     * SelectKnowledge knowledgeList.
+     * @member {Array.<Knowledge>} knowledgeList
+     * @memberof SelectKnowledge
+     * @instance
+     */
+    SelectKnowledge.prototype.knowledgeList = $util.emptyArray;
+
+    /**
+     * Creates a new SelectKnowledge instance using the specified properties.
+     * @function create
+     * @memberof SelectKnowledge
+     * @static
+     * @param {ISelectKnowledge=} [properties] Properties to set
+     * @returns {SelectKnowledge} SelectKnowledge instance
+     */
+    SelectKnowledge.create = function create(properties) {
+        return new SelectKnowledge(properties);
+    };
+
+    /**
+     * Encodes the specified SelectKnowledge message. Does not implicitly {@link SelectKnowledge.verify|verify} messages.
+     * @function encode
+     * @memberof SelectKnowledge
+     * @static
+     * @param {ISelectKnowledge} message SelectKnowledge message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectKnowledge.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.game != null && Object.hasOwnProperty.call(message, "game"))
+            $root.GameState.encode(message.game, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.knowledgeList != null && message.knowledgeList.length) {
+            writer.uint32(/* id 2, wireType 2 =*/18).fork();
+            for (var i = 0; i < message.knowledgeList.length; ++i)
+                writer.int32(message.knowledgeList[i]);
+            writer.ldelim();
+        }
+        return writer;
+    };
+
+    /**
+     * Encodes the specified SelectKnowledge message, length delimited. Does not implicitly {@link SelectKnowledge.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof SelectKnowledge
+     * @static
+     * @param {ISelectKnowledge} message SelectKnowledge message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    SelectKnowledge.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a SelectKnowledge message from the specified reader or buffer.
+     * @function decode
+     * @memberof SelectKnowledge
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {SelectKnowledge} SelectKnowledge
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectKnowledge.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.SelectKnowledge();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.game = $root.GameState.decode(reader, reader.uint32());
+                break;
+            case 2:
+                if (!(message.knowledgeList && message.knowledgeList.length))
+                    message.knowledgeList = [];
+                if ((tag & 7) === 2) {
+                    var end2 = reader.uint32() + reader.pos;
+                    while (reader.pos < end2)
+                        message.knowledgeList.push(reader.int32());
+                } else
+                    message.knowledgeList.push(reader.int32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a SelectKnowledge message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof SelectKnowledge
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {SelectKnowledge} SelectKnowledge
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    SelectKnowledge.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a SelectKnowledge message.
+     * @function verify
+     * @memberof SelectKnowledge
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    SelectKnowledge.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.game != null && message.hasOwnProperty("game")) {
+            var error = $root.GameState.verify(message.game);
+            if (error)
+                return "game." + error;
+        }
+        if (message.knowledgeList != null && message.hasOwnProperty("knowledgeList")) {
+            if (!Array.isArray(message.knowledgeList))
+                return "knowledgeList: array expected";
+            for (var i = 0; i < message.knowledgeList.length; ++i)
+                switch (message.knowledgeList[i]) {
+                default:
+                    return "knowledgeList: enum value[] expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    break;
+                }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a SelectKnowledge message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof SelectKnowledge
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {SelectKnowledge} SelectKnowledge
+     */
+    SelectKnowledge.fromObject = function fromObject(object) {
+        if (object instanceof $root.SelectKnowledge)
+            return object;
+        var message = new $root.SelectKnowledge();
+        if (object.game != null) {
+            if (typeof object.game !== "object")
+                throw TypeError(".SelectKnowledge.game: object expected");
+            message.game = $root.GameState.fromObject(object.game);
+        }
+        if (object.knowledgeList) {
+            if (!Array.isArray(object.knowledgeList))
+                throw TypeError(".SelectKnowledge.knowledgeList: array expected");
+            message.knowledgeList = [];
+            for (var i = 0; i < object.knowledgeList.length; ++i)
+                switch (object.knowledgeList[i]) {
+                default:
+                case "NONE":
+                case 0:
+                    message.knowledgeList[i] = 0;
+                    break;
+                case "PURPLE":
+                case 1:
+                    message.knowledgeList[i] = 1;
+                    break;
+                case "GREEN":
+                case 2:
+                    message.knowledgeList[i] = 2;
+                    break;
+                case "RED":
+                case 3:
+                    message.knowledgeList[i] = 3;
+                    break;
+                case "BLUE":
+                case 4:
+                    message.knowledgeList[i] = 4;
+                    break;
+                case "YELLOW":
+                case 5:
+                    message.knowledgeList[i] = 5;
+                    break;
+                }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a SelectKnowledge message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof SelectKnowledge
+     * @static
+     * @param {SelectKnowledge} message SelectKnowledge
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    SelectKnowledge.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.knowledgeList = [];
+        if (options.defaults)
+            object.game = null;
+        if (message.game != null && message.hasOwnProperty("game"))
+            object.game = $root.GameState.toObject(message.game, options);
+        if (message.knowledgeList && message.knowledgeList.length) {
+            object.knowledgeList = [];
+            for (var j = 0; j < message.knowledgeList.length; ++j)
+                object.knowledgeList[j] = options.enums === String ? $root.Knowledge[message.knowledgeList[j]] : message.knowledgeList[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this SelectKnowledge to JSON.
+     * @function toJSON
+     * @memberof SelectKnowledge
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    SelectKnowledge.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return SelectKnowledge;
+})();
+
 $root.ServerGameMessage = (function() {
 
     /**
@@ -10192,6 +10720,7 @@ $root.ServerGameMessage = (function() {
      * @property {ISelectAttackers|null} [selectAttackers] ServerGameMessage selectAttackers
      * @property {ISelectBlockers|null} [selectBlockers] ServerGameMessage selectBlockers
      * @property {IAssignDamage|null} [assignDamage] ServerGameMessage assignDamage
+     * @property {ISelectKnowledge|null} [selectKnowledge] ServerGameMessage selectKnowledge
      */
 
     /**
@@ -10273,17 +10802,25 @@ $root.ServerGameMessage = (function() {
      */
     ServerGameMessage.prototype.assignDamage = null;
 
+    /**
+     * ServerGameMessage selectKnowledge.
+     * @member {ISelectKnowledge|null|undefined} selectKnowledge
+     * @memberof ServerGameMessage
+     * @instance
+     */
+    ServerGameMessage.prototype.selectKnowledge = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ServerGameMessage payload.
-     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|undefined} payload
+     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|"selectKnowledge"|undefined} payload
      * @memberof ServerGameMessage
      * @instance
      */
     Object.defineProperty(ServerGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers", "assignDamage"]),
+        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers", "assignDamage", "selectKnowledge"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -10327,6 +10864,8 @@ $root.ServerGameMessage = (function() {
             $root.SelectBlockers.encode(message.selectBlockers, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
         if (message.assignDamage != null && Object.hasOwnProperty.call(message, "assignDamage"))
             $root.AssignDamage.encode(message.assignDamage, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
+        if (message.selectKnowledge != null && Object.hasOwnProperty.call(message, "selectKnowledge"))
+            $root.SelectKnowledge.encode(message.selectKnowledge, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
         return writer;
     };
 
@@ -10384,6 +10923,9 @@ $root.ServerGameMessage = (function() {
                 break;
             case 22:
                 message.assignDamage = $root.AssignDamage.decode(reader, reader.uint32());
+                break;
+            case 23:
+                message.selectKnowledge = $root.SelectKnowledge.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -10499,6 +11041,16 @@ $root.ServerGameMessage = (function() {
                     return "assignDamage." + error;
             }
         }
+        if (message.selectKnowledge != null && message.hasOwnProperty("selectKnowledge")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.SelectKnowledge.verify(message.selectKnowledge);
+                if (error)
+                    return "selectKnowledge." + error;
+            }
+        }
         return null;
     };
 
@@ -10553,6 +11105,11 @@ $root.ServerGameMessage = (function() {
             if (typeof object.assignDamage !== "object")
                 throw TypeError(".ServerGameMessage.assignDamage: object expected");
             message.assignDamage = $root.AssignDamage.fromObject(object.assignDamage);
+        }
+        if (object.selectKnowledge != null) {
+            if (typeof object.selectKnowledge !== "object")
+                throw TypeError(".ServerGameMessage.selectKnowledge: object expected");
+            message.selectKnowledge = $root.SelectKnowledge.fromObject(object.selectKnowledge);
         }
         return message;
     };
@@ -10609,6 +11166,11 @@ $root.ServerGameMessage = (function() {
             object.assignDamage = $root.AssignDamage.toObject(message.assignDamage, options);
             if (options.oneofs)
                 object.payload = "assignDamage";
+        }
+        if (message.selectKnowledge != null && message.hasOwnProperty("selectKnowledge")) {
+            object.selectKnowledge = $root.SelectKnowledge.toObject(message.selectKnowledge, options);
+            if (options.oneofs)
+                object.payload = "selectKnowledge";
         }
         return object;
     };

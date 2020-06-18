@@ -62,12 +62,15 @@ public class Studiable {
 
 	public void setDefaultGetKnowledgeType () {
 		getKnowledgeType = () -> {
-			CounterMap<Types.Knowledge> knowledgeType = new CounterMap<>();
-			card.knowledge.forEach((k, i) -> knowledgeType.add(k));
-			return knowledgeType;
+			if (card.knowledge.keySet().size() < 2) {
+				CounterMap<Types.Knowledge> knowledgeType = new CounterMap<>();
+				card.knowledge.forEach((k, i) -> knowledgeType.add(k));
+				return knowledgeType;
+			} else {
+				return game.selectKnowledge(card.controller, card.knowledge.keySet());
+			}
 		};
 	}
-
 
 	//Setters
 	public Studiable setGetKnowledgeType (Supplier<CounterMap<Types.Knowledge>> getKnowledgeType) {

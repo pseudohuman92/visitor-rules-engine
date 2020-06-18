@@ -113,6 +113,8 @@ export function toClientPhase(msgType, selectType) {
       return ClientPhase.SELECT_BLOCKERS;
     case "AssignDamage":  
       return ClientPhase.ASSIGN_DAMAGE;
+    case "SelectKnowledge":
+      return ClientPhase.SELECT_KNOWLEDGE;
     default:
       return ClientPhase.WAITING;
   }
@@ -195,6 +197,11 @@ export function toKnowledgeCost(knowledgeString) {
     res.push({ knowledge: parseInt(k), count: cost[k] });
   }
   return res;
+}
+
+export function toKnowledgeName(number) {
+
+  return proto.Knowledge. toString(number);
 }
 
 export function delayClick(onClick, onDoubleClick, delay) {

@@ -148,6 +148,18 @@ export default class ServerGameMessageHandler {
         });
     };
 
+    SelectKnowledge = selected => {
+        this.send("SelectKnowledgeResponse", {
+            selectedKnowledge: selected
+        });
+        this.updateExtendedGameState({
+            message: "",
+            clientPhase: ClientPhase.WAITING,
+            dialogData: initialDialogData()
+        });
+
+    }
+
     SaveGameState = filename => {
         this.send("SaveGameState", {
             filename: filename
@@ -214,6 +226,12 @@ export default class ServerGameMessageHandler {
                     totalDamage: params.totalDamage
                 };
                 break;
+            case "SelectKnowledge":
+                newExtendedState["dialogData"] = {
+                    open: true,
+                    title: "Select a knowledge type.",
+                    cards: params.knowledgeList,
+                };
             default:
                 let game = params.game;
                 if (

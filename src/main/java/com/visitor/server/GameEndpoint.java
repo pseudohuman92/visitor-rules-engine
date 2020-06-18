@@ -150,6 +150,11 @@ public class GameEndpoint {
 					waitingResponse = false;
 					gameServer.addToResponseQueue(gameID, ddr.getDamageAssignmentsList().toArray(new Types.DamageAssignment[ddr.getDamageAssignmentsCount()]));
 					break;
+				case SELECTKNOWLEDGERESPONSE:
+					ClientGameMessages.SelectKnowledgeResponse skr = message.getSelectKnowledgeResponse();
+					waitingResponse = false;
+					gameServer.addToResponseQueue(gameID, skr.getSelectedKnowledge());
+					break;
 				default:
 					out.println("Wrong Message received from " + username
 							+ "\nExpected " + responseType + " Received: " + message);
@@ -194,31 +199,29 @@ public class GameEndpoint {
 	}
 
 	private void checkResponseType (ServerGameMessage message) {
+		waitingResponse = true;
 		switch (message.getPayloadCase()) {
 			case ORDERCARDS:
-				waitingResponse = true;
 				responseType = ORDERCARDSRESPONSE;
 				break;
 			case SELECTFROM:
-				waitingResponse = true;
 				responseType = SELECTFROMRESPONSE;
 				selectFromType = message.getSelectFrom().getMessageType();
 				break;
 			case SELECTXVALUE:
-				waitingResponse = true;
 				responseType = SELECTXVALUERESPONSE;
 				break;
 			case SELECTATTACKERS:
-				waitingResponse = true;
 				responseType = SELECTATTACKERSRESPONSE;
 				break;
 			case SELECTBLOCKERS:
-				waitingResponse = true;
 				responseType = SELECTBLOCKERSRESPONSE;
 				break;
 			case ASSIGNDAMAGE:
-				waitingResponse = true;
 				responseType = ASSIGNDAMAGERESPONSE;
+				break;
+			case SELECTKNOWLEDGE:
+				responseType = SELECTKNOWLEDGERESPONSE;
 				break;
 			default:
 				waitingResponse = false;

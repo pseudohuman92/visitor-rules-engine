@@ -60,7 +60,7 @@ class SignIn extends Component {
                 } else {
                     cookies.remove("Login Credentials");
                 }
-                this.setState({value: 1});
+                setTimeout(() => this.setState({value: 1}), 200);
 
             })
             .catch(error => {
@@ -77,7 +77,7 @@ class SignIn extends Component {
             .then(firebaseAuthData => {
                 updateState({firebaseAuthData: firebaseAuthData});
                 firebase.setUserData(firebaseAuthData.user.uid, updateState);
-                this.setState({value: 1});
+                setTimeout(() => this.setState({value: 1}), 1000);
             })
             .catch(error => {
                 this.setState({error});
@@ -93,7 +93,7 @@ class SignIn extends Component {
             .then(firebaseAuthData => {
                 updateState({firebaseAuthData: firebaseAuthData});
                 firebase.setUserData(firebaseAuthData.user.uid, updateState)
-                this.setState({value: 1})
+                setTimeout(() => this.setState({value: 1}), 1000);
             })
             .catch(error => {
                 this.setState({error});

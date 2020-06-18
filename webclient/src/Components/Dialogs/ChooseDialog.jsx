@@ -1,8 +1,5 @@
 import React, {Component} from "react";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 
@@ -13,7 +10,6 @@ import {ClientPhase} from "../Helpers/Constants";
 import {Droppable} from "react-beautiful-dnd";
 
 import "../../css/ChooseDialog.css";
-import CardDisplay from "../Card/CardDisplay";
 
 const mapStateToProps = state => {
     return {
@@ -52,29 +48,36 @@ class ChooseDialog extends Component {
 
         return (
             <Dialog
-                open={dialog.open}
+                open={dialog.open && isSelectPhase}
                 onClose={this.onClose}
-                maxWidth
                 fullWidth
                 disableBackdropClick={isSelectPhase}
                 disableEscapeKeyDown={isSelectPhase}
                 scroll="body"
                 PaperComponent="div"
             >
-                <div style={{height: "10%", width: "100%", textAlign: "center", fontSize:"20px", color:"white", marginBottom:"10px"}}> {dialog.title} </div>
-                <Droppable style={{position: "absolute", top: "20%", height: "60%%", width: "100%",}} droppableId={"modal-list"} isDropDisabled>
+                <div style={{
+                    height: "10%",
+                    width: "100%",
+                    textAlign: "center",
+                    fontSize: "20px",
+                    color: "white",
+                    marginBottom: "10px"
+                }}> {dialog.title} </div>
+                <Droppable style={{position: "absolute", top: "20%", height: "60%%", width: "100%",}}
+                           droppableId={"modal-list"} isDropDisabled>
                     {provided => (
                         <div style={{height: "100%", width: "100%",}}
                              ref={provided.innerRef} {...provided.droppableProps}>
                             <div style={{display: "flex", justifyContent: "center"}}
-                                 >
+                            >
                                 {dialog.cards.map((card, i) => (
                                     <div style={{margin: "3px"}} DnDIndex={i}>
-                                    <PlayingCard
-                                        cardData={card}
-                                        isDragDisabled
-                                        popoverDisabled
-                                    />
+                                        <PlayingCard
+                                            cardData={card}
+                                            isDragDisabled
+                                            popoverDisabled
+                                        />
                                     </div>
                                 ))}
                             </div>

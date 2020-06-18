@@ -4,6 +4,7 @@
   height: 97vh;
   width: 99vw;
   overflow: hidden;
+  background-color: lightslategray;
 }
 
 .App-header {

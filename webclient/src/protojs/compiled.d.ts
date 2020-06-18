@@ -1151,6 +1151,96 @@ export class AssignDamageResponse implements IAssignDamageResponse {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a SelectKnowledgeResponse. */
+export interface ISelectKnowledgeResponse {
+
+    /** SelectKnowledgeResponse selectedKnowledge */
+    selectedKnowledge?: (Knowledge|null);
+}
+
+/** Represents a SelectKnowledgeResponse. */
+export class SelectKnowledgeResponse implements ISelectKnowledgeResponse {
+
+    /**
+     * Constructs a new SelectKnowledgeResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ISelectKnowledgeResponse);
+
+    /** SelectKnowledgeResponse selectedKnowledge. */
+    public selectedKnowledge: Knowledge;
+
+    /**
+     * Creates a new SelectKnowledgeResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns SelectKnowledgeResponse instance
+     */
+    public static create(properties?: ISelectKnowledgeResponse): SelectKnowledgeResponse;
+
+    /**
+     * Encodes the specified SelectKnowledgeResponse message. Does not implicitly {@link SelectKnowledgeResponse.verify|verify} messages.
+     * @param message SelectKnowledgeResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ISelectKnowledgeResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified SelectKnowledgeResponse message, length delimited. Does not implicitly {@link SelectKnowledgeResponse.verify|verify} messages.
+     * @param message SelectKnowledgeResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ISelectKnowledgeResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a SelectKnowledgeResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns SelectKnowledgeResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SelectKnowledgeResponse;
+
+    /**
+     * Decodes a SelectKnowledgeResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns SelectKnowledgeResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SelectKnowledgeResponse;
+
+    /**
+     * Verifies a SelectKnowledgeResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a SelectKnowledgeResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns SelectKnowledgeResponse
+     */
+    public static fromObject(object: { [k: string]: any }): SelectKnowledgeResponse;
+
+    /**
+     * Creates a plain object from a SelectKnowledgeResponse message. Also converts values to other types if specified.
+     * @param message SelectKnowledgeResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: SelectKnowledgeResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this SelectKnowledgeResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a SaveGameState. */
 export interface ISaveGameState {
 
@@ -1285,6 +1375,9 @@ export interface IClientGameMessage {
 
     /** ClientGameMessage assignDamageResponse */
     assignDamageResponse?: (IAssignDamageResponse|null);
+
+    /** ClientGameMessage selectKnowledgeResponse */
+    selectKnowledgeResponse?: (ISelectKnowledgeResponse|null);
 }
 
 /** Represents a ClientGameMessage. */
@@ -1338,8 +1431,11 @@ export class ClientGameMessage implements IClientGameMessage {
     /** ClientGameMessage assignDamageResponse. */
     public assignDamageResponse?: (IAssignDamageResponse|null);
 
+    /** ClientGameMessage selectKnowledgeResponse. */
+    public selectKnowledgeResponse?: (ISelectKnowledgeResponse|null);
+
     /** ClientGameMessage payload. */
-    public payload?: ("playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse");
+    public payload?: ("playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|"selectKnowledgeResponse");
 
     /**
      * Creates a new ClientGameMessage instance using the specified properties.
@@ -3656,6 +3752,92 @@ export class AssignDamage implements IAssignDamage {
     public toJSON(): { [k: string]: any };
 }
 
+/** Represents a SelectKnowledge. */
+export class SelectKnowledge implements ISelectKnowledge {
+
+    /**
+     * Constructs a new SelectKnowledge.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ISelectKnowledge);
+
+    /** SelectKnowledge game. */
+    public game?: (IGameState|null);
+
+    /** SelectKnowledge knowledgeList. */
+    public knowledgeList: Knowledge[];
+
+    /**
+     * Creates a new SelectKnowledge instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns SelectKnowledge instance
+     */
+    public static create(properties?: ISelectKnowledge): SelectKnowledge;
+
+    /**
+     * Encodes the specified SelectKnowledge message. Does not implicitly {@link SelectKnowledge.verify|verify} messages.
+     * @param message SelectKnowledge message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ISelectKnowledge, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified SelectKnowledge message, length delimited. Does not implicitly {@link SelectKnowledge.verify|verify} messages.
+     * @param message SelectKnowledge message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ISelectKnowledge, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a SelectKnowledge message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns SelectKnowledge
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): SelectKnowledge;
+
+    /**
+     * Decodes a SelectKnowledge message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns SelectKnowledge
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): SelectKnowledge;
+
+    /**
+     * Verifies a SelectKnowledge message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a SelectKnowledge message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns SelectKnowledge
+     */
+    public static fromObject(object: { [k: string]: any }): SelectKnowledge;
+
+    /**
+     * Creates a plain object from a SelectKnowledge message. Also converts values to other types if specified.
+     * @param message SelectKnowledge
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: SelectKnowledge, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this SelectKnowledge to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Represents a ServerGameMessage. */
 export class ServerGameMessage implements IServerGameMessage {
 
@@ -3689,8 +3871,11 @@ export class ServerGameMessage implements IServerGameMessage {
     /** ServerGameMessage assignDamage. */
     public assignDamage?: (IAssignDamage|null);
 
+    /** ServerGameMessage selectKnowledge. */
+    public selectKnowledge?: (ISelectKnowledge|null);
+
     /** ServerGameMessage payload. */
-    public payload?: ("updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage");
+    public payload?: ("updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|"selectKnowledge");
 
     /**
      * Creates a new ServerGameMessage instance using the specified properties.

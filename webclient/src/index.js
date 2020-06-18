@@ -17,6 +17,7 @@ import CollectionScreen from "./Components/MainScreens/CollectionScreen";
 import DeckSelection from "./Components/MainScreens/DeckSelection";
 import GameStore from "./Components/MainScreens/GameStore";
 import OpenPacks from "./Components/MainScreens/OpenPacks";
+import AuthRequired from "./Components/Primitives/AuthRequired";
 
 
 class App extends React.Component {
@@ -72,25 +73,26 @@ class App extends React.Component {
                         <Route path={"/resetpassword"}>
                             <ResetPassword/>
                         </Route>
-
-                        <Route exact path={"/profile"}>
-                            <Profile/>
-                        </Route>
-                        <Route path={"/profile/decks"}>
-                            <Decks/>
-                        </Route>
-                        <Route path={"/profile/collection"}>
-                            <CollectionScreen/>
-                        </Route>
-                        <Route path={"/profile/playgame"}>
-                            <DeckSelection/>
-                        </Route>
-                        <Route path={"/profile/store"}>
-                            <GameStore/>
-                        </Route>
-                        <Route path={"/profile/packs"}>
-                            <OpenPacks/>
-                        </Route>
+                        <AuthRequired>
+                            <Route exact path={"/profile"}>
+                                <Profile/>
+                            </Route>
+                            <Route path={"/profile/decks"}>
+                                <Decks/>
+                            </Route>
+                            <Route path={"/profile/collection"}>
+                                <CollectionScreen/>
+                            </Route>
+                            <Route path={"/profile/playgame"}>
+                                <DeckSelection/>
+                            </Route>
+                            <Route path={"/profile/store"}>
+                                <GameStore/>
+                            </Route>
+                            <Route path={"/profile/packs"}>
+                                <OpenPacks/>
+                            </Route>
+                        </AuthRequired>
                     </Switch>
                 </BrowserRouter>
             </HandlerContext.Provider>

@@ -26,7 +26,8 @@ export enum ClientPhase {
   ATTACK_PHASE = "AttackPhase",
   SELECT_BLOCKERS = "SelectBlockers",
   BLOCK_PHASE = "BlockPhase",
-  ASSIGN_DAMAGE = "AssignDamage"
+  ASSIGN_DAMAGE = "AssignDamage",
+  SELECT_KNOWLEDGE = "SelectKnowledge",
 }
 
 export const knowledgeMap: any = {};
@@ -40,6 +41,14 @@ knowledgeMap["U"] = proto.Knowledge.BLUE;
 knowledgeMap["R"] = proto.Knowledge.RED;
 knowledgeMap["G"] = proto.Knowledge.GREEN;
 knowledgeMap["Y"] = proto.Knowledge.YELLOW;
+
+export const knowledgeNameMap: any = {};
+knowledgeNameMap[proto.Knowledge.PURPLE] = "Purple";
+knowledgeNameMap[proto.Knowledge.GREEN] = "Green";
+knowledgeNameMap[proto.Knowledge.RED] = "Red";
+knowledgeNameMap[proto.Knowledge.BLUE] = "Blue";
+knowledgeNameMap[proto.Knowledge.YELLOW] = "Yellow";
+knowledgeNameMap[proto.Knowledge.NONE] = "None";
 
 export interface Dimension {
   width: number;
@@ -200,6 +209,7 @@ export interface Profile {
   dust: number;
   username: string;
   packs: any; //TODO: Lookup its type
+  isAuthenticated: boolean;
 }
 
 export function initialProfile(): Profile {
@@ -211,7 +221,8 @@ export function initialProfile(): Profile {
     decks: "",
     dust: 0,
     username: "",
-    packs: {}
+    packs: {},
+    isAuthenticated: false,
   };
 }
 

@@ -128,7 +128,7 @@ class Firebase {
         this.collection(data.collectionId)
           .get()
           .then(coll => {
-            Return({profile : { ...data, collection: coll.data().cards }});
+            Return({profile : { ...data, collection: coll.data().cards, isAuthenticated: true }});
           });
       });
   };

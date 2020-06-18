@@ -84,7 +84,7 @@ class PlayingCard extends React.Component {
         style["height"] = (width / 5) * (88 / 63);
         style["display"] = "flex";
         style["textAlign"] = "left";
-        style["border"] = "2px solid red";
+        //style["border"] = "2px solid red";
 
         if (rect.top < height / 2) {
             style["top"] = rect.height;
@@ -645,7 +645,7 @@ class PlayingCard extends React.Component {
                                             height: popoverStyle.height,
                                             justify: "center",
                                             alignContent: "center",
-                                            border: "2px blue solid"
+                                            //border: "2px blue solid"
                                         }}
                                     >
                                         <CardDisplay
@@ -659,12 +659,13 @@ class PlayingCard extends React.Component {
                                             flexDirection: "column",
                                             width: popoverStyle.width / 2,
                                             height: popoverStyle.height,
-                                            border: "2px green solid"
+                                            //border: "2px green solid"
                                         }}
                                     >
                                         {cardData.description &&
                                         Object.keys(keywords).map((keyword, i) => {
-                                            if (cardData.description.indexOf(keyword) !== -1) {
+                                            if (cardData.description.indexOf(keyword) !== -1 ||
+                                                (combat && combat.combatAbilities.indexOf(keyword) !== -1)) {
                                                 return (
                                                     <div
                                                         key={i}

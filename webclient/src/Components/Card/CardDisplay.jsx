@@ -18,7 +18,7 @@ export class CardDisplay extends PureComponent {
   };
 
   render() {
-    const { small, square, style, dragHandleProps, ...rest } = this.props;
+    const { small, style, dragHandleProps, ...rest } = this.props;
     return (
       <div
         {...dragHandleProps}
@@ -39,7 +39,7 @@ export class CardDisplay extends PureComponent {
           {small ? (
             <SmallCard {...rest} />
           ) : (
-            <FullCard square={square} {...rest} />
+            <FullCard {...rest} />
           )}
         </div>
       </div>
