@@ -2708,6 +2708,193 @@ $root.SelectKnowledgeResponse = (function() {
     return SelectKnowledgeResponse;
 })();
 
+$root.PickCardResponse = (function() {
+
+    /**
+     * Properties of a PickCardResponse.
+     * @exports IPickCardResponse
+     * @interface IPickCardResponse
+     * @property {string|null} [pickedCard] PickCardResponse pickedCard
+     */
+
+    /**
+     * Constructs a new PickCardResponse.
+     * @exports PickCardResponse
+     * @classdesc Represents a PickCardResponse.
+     * @implements IPickCardResponse
+     * @constructor
+     * @param {IPickCardResponse=} [properties] Properties to set
+     */
+    function PickCardResponse(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * PickCardResponse pickedCard.
+     * @member {string} pickedCard
+     * @memberof PickCardResponse
+     * @instance
+     */
+    PickCardResponse.prototype.pickedCard = "";
+
+    /**
+     * Creates a new PickCardResponse instance using the specified properties.
+     * @function create
+     * @memberof PickCardResponse
+     * @static
+     * @param {IPickCardResponse=} [properties] Properties to set
+     * @returns {PickCardResponse} PickCardResponse instance
+     */
+    PickCardResponse.create = function create(properties) {
+        return new PickCardResponse(properties);
+    };
+
+    /**
+     * Encodes the specified PickCardResponse message. Does not implicitly {@link PickCardResponse.verify|verify} messages.
+     * @function encode
+     * @memberof PickCardResponse
+     * @static
+     * @param {IPickCardResponse} message PickCardResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PickCardResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.pickedCard != null && Object.hasOwnProperty.call(message, "pickedCard"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.pickedCard);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified PickCardResponse message, length delimited. Does not implicitly {@link PickCardResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof PickCardResponse
+     * @static
+     * @param {IPickCardResponse} message PickCardResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PickCardResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a PickCardResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof PickCardResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {PickCardResponse} PickCardResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PickCardResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PickCardResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.pickedCard = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a PickCardResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof PickCardResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {PickCardResponse} PickCardResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PickCardResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a PickCardResponse message.
+     * @function verify
+     * @memberof PickCardResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    PickCardResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.pickedCard != null && message.hasOwnProperty("pickedCard"))
+            if (!$util.isString(message.pickedCard))
+                return "pickedCard: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a PickCardResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof PickCardResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {PickCardResponse} PickCardResponse
+     */
+    PickCardResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.PickCardResponse)
+            return object;
+        var message = new $root.PickCardResponse();
+        if (object.pickedCard != null)
+            message.pickedCard = String(object.pickedCard);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a PickCardResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof PickCardResponse
+     * @static
+     * @param {PickCardResponse} message PickCardResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    PickCardResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.pickedCard = "";
+        if (message.pickedCard != null && message.hasOwnProperty("pickedCard"))
+            object.pickedCard = message.pickedCard;
+        return object;
+    };
+
+    /**
+     * Converts this PickCardResponse to JSON.
+     * @function toJSON
+     * @memberof PickCardResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    PickCardResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return PickCardResponse;
+})();
+
 $root.SaveGameState = (function() {
 
     /**
@@ -2916,6 +3103,7 @@ $root.ClientGameMessage = (function() {
      * @property {ISaveGameState|null} [saveGameState] ClientGameMessage saveGameState
      * @property {IAssignDamageResponse|null} [assignDamageResponse] ClientGameMessage assignDamageResponse
      * @property {ISelectKnowledgeResponse|null} [selectKnowledgeResponse] ClientGameMessage selectKnowledgeResponse
+     * @property {IPickCardResponse|null} [pickCardResponse] ClientGameMessage pickCardResponse
      */
 
     /**
@@ -3053,17 +3241,25 @@ $root.ClientGameMessage = (function() {
      */
     ClientGameMessage.prototype.selectKnowledgeResponse = null;
 
+    /**
+     * ClientGameMessage pickCardResponse.
+     * @member {IPickCardResponse|null|undefined} pickCardResponse
+     * @memberof ClientGameMessage
+     * @instance
+     */
+    ClientGameMessage.prototype.pickCardResponse = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ClientGameMessage payload.
-     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|"selectKnowledgeResponse"|undefined} payload
+     * @member {"playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|"selectKnowledgeResponse"|"pickCardResponse"|undefined} payload
      * @memberof ClientGameMessage
      * @instance
      */
     Object.defineProperty(ClientGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState", "assignDamageResponse", "selectKnowledgeResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["playCard", "activateCard", "studyCard", "pass", "redraw", "keep", "concede", "orderCardsResponse", "selectFromResponse", "selectXValueResponse", "selectAttackersResponse", "selectBlockersResponse", "saveGameState", "assignDamageResponse", "selectKnowledgeResponse", "pickCardResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -3121,6 +3317,8 @@ $root.ClientGameMessage = (function() {
             $root.AssignDamageResponse.encode(message.assignDamageResponse, writer.uint32(/* id 27, wireType 2 =*/218).fork()).ldelim();
         if (message.selectKnowledgeResponse != null && Object.hasOwnProperty.call(message, "selectKnowledgeResponse"))
             $root.SelectKnowledgeResponse.encode(message.selectKnowledgeResponse, writer.uint32(/* id 28, wireType 2 =*/226).fork()).ldelim();
+        if (message.pickCardResponse != null && Object.hasOwnProperty.call(message, "pickCardResponse"))
+            $root.PickCardResponse.encode(message.pickCardResponse, writer.uint32(/* id 29, wireType 2 =*/234).fork()).ldelim();
         return writer;
     };
 
@@ -3199,6 +3397,9 @@ $root.ClientGameMessage = (function() {
                 break;
             case 28:
                 message.selectKnowledgeResponse = $root.SelectKnowledgeResponse.decode(reader, reader.uint32());
+                break;
+            case 29:
+                message.pickCardResponse = $root.PickCardResponse.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -3384,6 +3585,16 @@ $root.ClientGameMessage = (function() {
                     return "selectKnowledgeResponse." + error;
             }
         }
+        if (message.pickCardResponse != null && message.hasOwnProperty("pickCardResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.PickCardResponse.verify(message.pickCardResponse);
+                if (error)
+                    return "pickCardResponse." + error;
+            }
+        }
         return null;
     };
 
@@ -3473,6 +3684,11 @@ $root.ClientGameMessage = (function() {
             if (typeof object.selectKnowledgeResponse !== "object")
                 throw TypeError(".ClientGameMessage.selectKnowledgeResponse: object expected");
             message.selectKnowledgeResponse = $root.SelectKnowledgeResponse.fromObject(object.selectKnowledgeResponse);
+        }
+        if (object.pickCardResponse != null) {
+            if (typeof object.pickCardResponse !== "object")
+                throw TypeError(".ClientGameMessage.pickCardResponse: object expected");
+            message.pickCardResponse = $root.PickCardResponse.fromObject(object.pickCardResponse);
         }
         return message;
     };
@@ -3565,6 +3781,11 @@ $root.ClientGameMessage = (function() {
             if (options.oneofs)
                 object.payload = "selectKnowledgeResponse";
         }
+        if (message.pickCardResponse != null && message.hasOwnProperty("pickCardResponse")) {
+            object.pickCardResponse = $root.PickCardResponse.toObject(message.pickCardResponse, options);
+            if (options.oneofs)
+                object.payload = "pickCardResponse";
+        }
         return object;
     };
 
@@ -3629,6 +3850,22 @@ $root.SelectFromType = (function() {
     values[valuesById[5] = "DISCARD_PILE"] = 5;
     values[valuesById[6] = "VOID"] = 6;
     values[valuesById[7] = "STACK"] = 7;
+    return values;
+})();
+
+/**
+ * GameType enum.
+ * @exports GameType
+ * @enum {number}
+ * @property {number} NOGAME=0 NOGAME value
+ * @property {number} BO1_CONSTRUCTED=1 BO1_CONSTRUCTED value
+ * @property {number} P2_DRAFT=2 P2_DRAFT value
+ */
+$root.GameType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NOGAME"] = 0;
+    values[valuesById[1] = "BO1_CONSTRUCTED"] = 1;
+    values[valuesById[2] = "P2_DRAFT"] = 2;
     return values;
 })();
 
@@ -7523,6 +7760,248 @@ $root.GameState = (function() {
     return GameState;
 })();
 
+$root.DraftState = (function() {
+
+    /**
+     * Properties of a DraftState.
+     * @exports IDraftState
+     * @interface IDraftState
+     * @property {string|null} [id] DraftState id
+     * @property {IPlayer|null} [player] DraftState player
+     * @property {IPlayer|null} [opponent] DraftState opponent
+     */
+
+    /**
+     * Constructs a new DraftState.
+     * @exports DraftState
+     * @classdesc Represents a DraftState.
+     * @implements IDraftState
+     * @constructor
+     * @param {IDraftState=} [properties] Properties to set
+     */
+    function DraftState(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * DraftState id.
+     * @member {string} id
+     * @memberof DraftState
+     * @instance
+     */
+    DraftState.prototype.id = "";
+
+    /**
+     * DraftState player.
+     * @member {IPlayer|null|undefined} player
+     * @memberof DraftState
+     * @instance
+     */
+    DraftState.prototype.player = null;
+
+    /**
+     * DraftState opponent.
+     * @member {IPlayer|null|undefined} opponent
+     * @memberof DraftState
+     * @instance
+     */
+    DraftState.prototype.opponent = null;
+
+    /**
+     * Creates a new DraftState instance using the specified properties.
+     * @function create
+     * @memberof DraftState
+     * @static
+     * @param {IDraftState=} [properties] Properties to set
+     * @returns {DraftState} DraftState instance
+     */
+    DraftState.create = function create(properties) {
+        return new DraftState(properties);
+    };
+
+    /**
+     * Encodes the specified DraftState message. Does not implicitly {@link DraftState.verify|verify} messages.
+     * @function encode
+     * @memberof DraftState
+     * @static
+     * @param {IDraftState} message DraftState message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    DraftState.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.player != null && Object.hasOwnProperty.call(message, "player"))
+            $root.Player.encode(message.player, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.opponent != null && Object.hasOwnProperty.call(message, "opponent"))
+            $root.Player.encode(message.opponent, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified DraftState message, length delimited. Does not implicitly {@link DraftState.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof DraftState
+     * @static
+     * @param {IDraftState} message DraftState message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    DraftState.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a DraftState message from the specified reader or buffer.
+     * @function decode
+     * @memberof DraftState
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {DraftState} DraftState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    DraftState.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.DraftState();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.player = $root.Player.decode(reader, reader.uint32());
+                break;
+            case 3:
+                message.opponent = $root.Player.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a DraftState message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof DraftState
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {DraftState} DraftState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    DraftState.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a DraftState message.
+     * @function verify
+     * @memberof DraftState
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    DraftState.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.player != null && message.hasOwnProperty("player")) {
+            var error = $root.Player.verify(message.player);
+            if (error)
+                return "player." + error;
+        }
+        if (message.opponent != null && message.hasOwnProperty("opponent")) {
+            var error = $root.Player.verify(message.opponent);
+            if (error)
+                return "opponent." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a DraftState message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof DraftState
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {DraftState} DraftState
+     */
+    DraftState.fromObject = function fromObject(object) {
+        if (object instanceof $root.DraftState)
+            return object;
+        var message = new $root.DraftState();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.player != null) {
+            if (typeof object.player !== "object")
+                throw TypeError(".DraftState.player: object expected");
+            message.player = $root.Player.fromObject(object.player);
+        }
+        if (object.opponent != null) {
+            if (typeof object.opponent !== "object")
+                throw TypeError(".DraftState.opponent: object expected");
+            message.opponent = $root.Player.fromObject(object.opponent);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a DraftState message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof DraftState
+     * @static
+     * @param {DraftState} message DraftState
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    DraftState.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.player = null;
+            object.opponent = null;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.player != null && message.hasOwnProperty("player"))
+            object.player = $root.Player.toObject(message.player, options);
+        if (message.opponent != null && message.hasOwnProperty("opponent"))
+            object.opponent = $root.Player.toObject(message.opponent, options);
+        return object;
+    };
+
+    /**
+     * Converts this DraftState to JSON.
+     * @function toJSON
+     * @memberof DraftState
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    DraftState.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return DraftState;
+})();
+
 $root.JoinQueue = (function() {
 
     /**
@@ -7530,6 +8009,7 @@ $root.JoinQueue = (function() {
      * @exports IJoinQueue
      * @interface IJoinQueue
      * @property {Array.<string>|null} [decklist] JoinQueue decklist
+     * @property {GameType|null} [gameType] JoinQueue gameType
      */
 
     /**
@@ -7555,6 +8035,14 @@ $root.JoinQueue = (function() {
      * @instance
      */
     JoinQueue.prototype.decklist = $util.emptyArray;
+
+    /**
+     * JoinQueue gameType.
+     * @member {GameType} gameType
+     * @memberof JoinQueue
+     * @instance
+     */
+    JoinQueue.prototype.gameType = 0;
 
     /**
      * Creates a new JoinQueue instance using the specified properties.
@@ -7583,6 +8071,8 @@ $root.JoinQueue = (function() {
         if (message.decklist != null && message.decklist.length)
             for (var i = 0; i < message.decklist.length; ++i)
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.decklist[i]);
+        if (message.gameType != null && Object.hasOwnProperty.call(message, "gameType"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.gameType);
         return writer;
     };
 
@@ -7621,6 +8111,9 @@ $root.JoinQueue = (function() {
                 if (!(message.decklist && message.decklist.length))
                     message.decklist = [];
                 message.decklist.push(reader.string());
+                break;
+            case 4:
+                message.gameType = reader.int32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -7664,6 +8157,15 @@ $root.JoinQueue = (function() {
                 if (!$util.isString(message.decklist[i]))
                     return "decklist: string[] expected";
         }
+        if (message.gameType != null && message.hasOwnProperty("gameType"))
+            switch (message.gameType) {
+            default:
+                return "gameType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+                break;
+            }
         return null;
     };
 
@@ -7686,6 +8188,20 @@ $root.JoinQueue = (function() {
             for (var i = 0; i < object.decklist.length; ++i)
                 message.decklist[i] = String(object.decklist[i]);
         }
+        switch (object.gameType) {
+        case "NOGAME":
+        case 0:
+            message.gameType = 0;
+            break;
+        case "BO1_CONSTRUCTED":
+        case 1:
+            message.gameType = 1;
+            break;
+        case "P2_DRAFT":
+        case 2:
+            message.gameType = 2;
+            break;
+        }
         return message;
     };
 
@@ -7704,11 +8220,15 @@ $root.JoinQueue = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.decklist = [];
+        if (options.defaults)
+            object.gameType = options.enums === String ? "NOGAME" : 0;
         if (message.decklist && message.decklist.length) {
             object.decklist = [];
             for (var j = 0; j < message.decklist.length; ++j)
                 object.decklist[j] = message.decklist[j];
         }
+        if (message.gameType != null && message.hasOwnProperty("gameType"))
+            object.gameType = options.enums === String ? $root.GameType[message.gameType] : message.gameType;
         return object;
     };
 
@@ -10706,6 +11226,265 @@ $root.SelectKnowledge = (function() {
     return SelectKnowledge;
 })();
 
+$root.PickCard = (function() {
+
+    /**
+     * Properties of a PickCard.
+     * @exports IPickCard
+     * @interface IPickCard
+     * @property {IDraftState|null} [draft] PickCard draft
+     * @property {Array.<ICard>|null} [candidates] PickCard candidates
+     * @property {string|null} [message] PickCard message
+     */
+
+    /**
+     * Constructs a new PickCard.
+     * @exports PickCard
+     * @classdesc Represents a PickCard.
+     * @implements IPickCard
+     * @constructor
+     * @param {IPickCard=} [properties] Properties to set
+     */
+    function PickCard(properties) {
+        this.candidates = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * PickCard draft.
+     * @member {IDraftState|null|undefined} draft
+     * @memberof PickCard
+     * @instance
+     */
+    PickCard.prototype.draft = null;
+
+    /**
+     * PickCard candidates.
+     * @member {Array.<ICard>} candidates
+     * @memberof PickCard
+     * @instance
+     */
+    PickCard.prototype.candidates = $util.emptyArray;
+
+    /**
+     * PickCard message.
+     * @member {string} message
+     * @memberof PickCard
+     * @instance
+     */
+    PickCard.prototype.message = "";
+
+    /**
+     * Creates a new PickCard instance using the specified properties.
+     * @function create
+     * @memberof PickCard
+     * @static
+     * @param {IPickCard=} [properties] Properties to set
+     * @returns {PickCard} PickCard instance
+     */
+    PickCard.create = function create(properties) {
+        return new PickCard(properties);
+    };
+
+    /**
+     * Encodes the specified PickCard message. Does not implicitly {@link PickCard.verify|verify} messages.
+     * @function encode
+     * @memberof PickCard
+     * @static
+     * @param {IPickCard} message PickCard message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PickCard.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.draft != null && Object.hasOwnProperty.call(message, "draft"))
+            $root.DraftState.encode(message.draft, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.candidates != null && message.candidates.length)
+            for (var i = 0; i < message.candidates.length; ++i)
+                $root.Card.encode(message.candidates[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.message != null && Object.hasOwnProperty.call(message, "message"))
+            writer.uint32(/* id 7, wireType 2 =*/58).string(message.message);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified PickCard message, length delimited. Does not implicitly {@link PickCard.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof PickCard
+     * @static
+     * @param {IPickCard} message PickCard message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PickCard.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a PickCard message from the specified reader or buffer.
+     * @function decode
+     * @memberof PickCard
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {PickCard} PickCard
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PickCard.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.PickCard();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 2:
+                message.draft = $root.DraftState.decode(reader, reader.uint32());
+                break;
+            case 4:
+                if (!(message.candidates && message.candidates.length))
+                    message.candidates = [];
+                message.candidates.push($root.Card.decode(reader, reader.uint32()));
+                break;
+            case 7:
+                message.message = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a PickCard message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof PickCard
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {PickCard} PickCard
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PickCard.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a PickCard message.
+     * @function verify
+     * @memberof PickCard
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    PickCard.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.draft != null && message.hasOwnProperty("draft")) {
+            var error = $root.DraftState.verify(message.draft);
+            if (error)
+                return "draft." + error;
+        }
+        if (message.candidates != null && message.hasOwnProperty("candidates")) {
+            if (!Array.isArray(message.candidates))
+                return "candidates: array expected";
+            for (var i = 0; i < message.candidates.length; ++i) {
+                var error = $root.Card.verify(message.candidates[i]);
+                if (error)
+                    return "candidates." + error;
+            }
+        }
+        if (message.message != null && message.hasOwnProperty("message"))
+            if (!$util.isString(message.message))
+                return "message: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a PickCard message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof PickCard
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {PickCard} PickCard
+     */
+    PickCard.fromObject = function fromObject(object) {
+        if (object instanceof $root.PickCard)
+            return object;
+        var message = new $root.PickCard();
+        if (object.draft != null) {
+            if (typeof object.draft !== "object")
+                throw TypeError(".PickCard.draft: object expected");
+            message.draft = $root.DraftState.fromObject(object.draft);
+        }
+        if (object.candidates) {
+            if (!Array.isArray(object.candidates))
+                throw TypeError(".PickCard.candidates: array expected");
+            message.candidates = [];
+            for (var i = 0; i < object.candidates.length; ++i) {
+                if (typeof object.candidates[i] !== "object")
+                    throw TypeError(".PickCard.candidates: object expected");
+                message.candidates[i] = $root.Card.fromObject(object.candidates[i]);
+            }
+        }
+        if (object.message != null)
+            message.message = String(object.message);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a PickCard message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof PickCard
+     * @static
+     * @param {PickCard} message PickCard
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    PickCard.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.candidates = [];
+        if (options.defaults) {
+            object.draft = null;
+            object.message = "";
+        }
+        if (message.draft != null && message.hasOwnProperty("draft"))
+            object.draft = $root.DraftState.toObject(message.draft, options);
+        if (message.candidates && message.candidates.length) {
+            object.candidates = [];
+            for (var j = 0; j < message.candidates.length; ++j)
+                object.candidates[j] = $root.Card.toObject(message.candidates[j], options);
+        }
+        if (message.message != null && message.hasOwnProperty("message"))
+            object.message = message.message;
+        return object;
+    };
+
+    /**
+     * Converts this PickCard to JSON.
+     * @function toJSON
+     * @memberof PickCard
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    PickCard.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return PickCard;
+})();
+
 $root.ServerGameMessage = (function() {
 
     /**
@@ -10721,6 +11500,7 @@ $root.ServerGameMessage = (function() {
      * @property {ISelectBlockers|null} [selectBlockers] ServerGameMessage selectBlockers
      * @property {IAssignDamage|null} [assignDamage] ServerGameMessage assignDamage
      * @property {ISelectKnowledge|null} [selectKnowledge] ServerGameMessage selectKnowledge
+     * @property {IPickCard|null} [pickCard] ServerGameMessage pickCard
      */
 
     /**
@@ -10810,17 +11590,25 @@ $root.ServerGameMessage = (function() {
      */
     ServerGameMessage.prototype.selectKnowledge = null;
 
+    /**
+     * ServerGameMessage pickCard.
+     * @member {IPickCard|null|undefined} pickCard
+     * @memberof ServerGameMessage
+     * @instance
+     */
+    ServerGameMessage.prototype.pickCard = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ServerGameMessage payload.
-     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|"selectKnowledge"|undefined} payload
+     * @member {"updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|"selectKnowledge"|"pickCard"|undefined} payload
      * @memberof ServerGameMessage
      * @instance
      */
     Object.defineProperty(ServerGameMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers", "assignDamage", "selectKnowledge"]),
+        get: $util.oneOfGetter($oneOfFields = ["updateGameState", "gameEnd", "orderCards", "selectFrom", "selectXValue", "selectAttackers", "selectBlockers", "assignDamage", "selectKnowledge", "pickCard"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -10866,6 +11654,8 @@ $root.ServerGameMessage = (function() {
             $root.AssignDamage.encode(message.assignDamage, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
         if (message.selectKnowledge != null && Object.hasOwnProperty.call(message, "selectKnowledge"))
             $root.SelectKnowledge.encode(message.selectKnowledge, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
+        if (message.pickCard != null && Object.hasOwnProperty.call(message, "pickCard"))
+            $root.PickCard.encode(message.pickCard, writer.uint32(/* id 24, wireType 2 =*/194).fork()).ldelim();
         return writer;
     };
 
@@ -10926,6 +11716,9 @@ $root.ServerGameMessage = (function() {
                 break;
             case 23:
                 message.selectKnowledge = $root.SelectKnowledge.decode(reader, reader.uint32());
+                break;
+            case 24:
+                message.pickCard = $root.PickCard.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -11051,6 +11844,16 @@ $root.ServerGameMessage = (function() {
                     return "selectKnowledge." + error;
             }
         }
+        if (message.pickCard != null && message.hasOwnProperty("pickCard")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.PickCard.verify(message.pickCard);
+                if (error)
+                    return "pickCard." + error;
+            }
+        }
         return null;
     };
 
@@ -11110,6 +11913,11 @@ $root.ServerGameMessage = (function() {
             if (typeof object.selectKnowledge !== "object")
                 throw TypeError(".ServerGameMessage.selectKnowledge: object expected");
             message.selectKnowledge = $root.SelectKnowledge.fromObject(object.selectKnowledge);
+        }
+        if (object.pickCard != null) {
+            if (typeof object.pickCard !== "object")
+                throw TypeError(".ServerGameMessage.pickCard: object expected");
+            message.pickCard = $root.PickCard.fromObject(object.pickCard);
         }
         return message;
     };
@@ -11171,6 +11979,11 @@ $root.ServerGameMessage = (function() {
             object.selectKnowledge = $root.SelectKnowledge.toObject(message.selectKnowledge, options);
             if (options.oneofs)
                 object.payload = "selectKnowledge";
+        }
+        if (message.pickCard != null && message.hasOwnProperty("pickCard")) {
+            object.pickCard = $root.PickCard.toObject(message.pickCard, options);
+            if (options.oneofs)
+                object.payload = "pickCard";
         }
         return object;
     };
@@ -11568,6 +12381,198 @@ $root.NewGame = (function() {
     return NewGame;
 })();
 
+$root.NewDraft = (function() {
+
+    /**
+     * Properties of a NewDraft.
+     * @exports INewDraft
+     * @interface INewDraft
+     * @property {IDraftState|null} [draft] NewDraft draft
+     */
+
+    /**
+     * Constructs a new NewDraft.
+     * @exports NewDraft
+     * @classdesc Represents a NewDraft.
+     * @implements INewDraft
+     * @constructor
+     * @param {INewDraft=} [properties] Properties to set
+     */
+    function NewDraft(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * NewDraft draft.
+     * @member {IDraftState|null|undefined} draft
+     * @memberof NewDraft
+     * @instance
+     */
+    NewDraft.prototype.draft = null;
+
+    /**
+     * Creates a new NewDraft instance using the specified properties.
+     * @function create
+     * @memberof NewDraft
+     * @static
+     * @param {INewDraft=} [properties] Properties to set
+     * @returns {NewDraft} NewDraft instance
+     */
+    NewDraft.create = function create(properties) {
+        return new NewDraft(properties);
+    };
+
+    /**
+     * Encodes the specified NewDraft message. Does not implicitly {@link NewDraft.verify|verify} messages.
+     * @function encode
+     * @memberof NewDraft
+     * @static
+     * @param {INewDraft} message NewDraft message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    NewDraft.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.draft != null && Object.hasOwnProperty.call(message, "draft"))
+            $root.DraftState.encode(message.draft, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified NewDraft message, length delimited. Does not implicitly {@link NewDraft.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof NewDraft
+     * @static
+     * @param {INewDraft} message NewDraft message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    NewDraft.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a NewDraft message from the specified reader or buffer.
+     * @function decode
+     * @memberof NewDraft
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {NewDraft} NewDraft
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    NewDraft.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.NewDraft();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.draft = $root.DraftState.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a NewDraft message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof NewDraft
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {NewDraft} NewDraft
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    NewDraft.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a NewDraft message.
+     * @function verify
+     * @memberof NewDraft
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    NewDraft.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.draft != null && message.hasOwnProperty("draft")) {
+            var error = $root.DraftState.verify(message.draft);
+            if (error)
+                return "draft." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a NewDraft message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof NewDraft
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {NewDraft} NewDraft
+     */
+    NewDraft.fromObject = function fromObject(object) {
+        if (object instanceof $root.NewDraft)
+            return object;
+        var message = new $root.NewDraft();
+        if (object.draft != null) {
+            if (typeof object.draft !== "object")
+                throw TypeError(".NewDraft.draft: object expected");
+            message.draft = $root.DraftState.fromObject(object.draft);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a NewDraft message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof NewDraft
+     * @static
+     * @param {NewDraft} message NewDraft
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    NewDraft.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.draft = null;
+        if (message.draft != null && message.hasOwnProperty("draft"))
+            object.draft = $root.DraftState.toObject(message.draft, options);
+        return object;
+    };
+
+    /**
+     * Converts this NewDraft to JSON.
+     * @function toJSON
+     * @memberof NewDraft
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    NewDraft.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return NewDraft;
+})();
+
 $root.ServerMessage = (function() {
 
     /**
@@ -11576,6 +12581,7 @@ $root.ServerMessage = (function() {
      * @interface IServerMessage
      * @property {ILoginResponse|null} [loginResponse] ServerMessage loginResponse
      * @property {INewGame|null} [newGame] ServerMessage newGame
+     * @property {INewDraft|null} [newDraft] ServerMessage newDraft
      */
 
     /**
@@ -11609,17 +12615,25 @@ $root.ServerMessage = (function() {
      */
     ServerMessage.prototype.newGame = null;
 
+    /**
+     * ServerMessage newDraft.
+     * @member {INewDraft|null|undefined} newDraft
+     * @memberof ServerMessage
+     * @instance
+     */
+    ServerMessage.prototype.newDraft = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * ServerMessage payload.
-     * @member {"loginResponse"|"newGame"|undefined} payload
+     * @member {"loginResponse"|"newGame"|"newDraft"|undefined} payload
      * @memberof ServerMessage
      * @instance
      */
     Object.defineProperty(ServerMessage.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["loginResponse", "newGame"]),
+        get: $util.oneOfGetter($oneOfFields = ["loginResponse", "newGame", "newDraft"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -11651,6 +12665,8 @@ $root.ServerMessage = (function() {
             $root.LoginResponse.encode(message.loginResponse, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.newGame != null && Object.hasOwnProperty.call(message, "newGame"))
             $root.NewGame.encode(message.newGame, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+        if (message.newDraft != null && Object.hasOwnProperty.call(message, "newDraft"))
+            $root.NewDraft.encode(message.newDraft, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         return writer;
     };
 
@@ -11690,6 +12706,9 @@ $root.ServerMessage = (function() {
                 break;
             case 7:
                 message.newGame = $root.NewGame.decode(reader, reader.uint32());
+                break;
+            case 8:
+                message.newDraft = $root.NewDraft.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -11745,6 +12764,16 @@ $root.ServerMessage = (function() {
                     return "newGame." + error;
             }
         }
+        if (message.newDraft != null && message.hasOwnProperty("newDraft")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.NewDraft.verify(message.newDraft);
+                if (error)
+                    return "newDraft." + error;
+            }
+        }
         return null;
     };
 
@@ -11769,6 +12798,11 @@ $root.ServerMessage = (function() {
             if (typeof object.newGame !== "object")
                 throw TypeError(".ServerMessage.newGame: object expected");
             message.newGame = $root.NewGame.fromObject(object.newGame);
+        }
+        if (object.newDraft != null) {
+            if (typeof object.newDraft !== "object")
+                throw TypeError(".ServerMessage.newDraft: object expected");
+            message.newDraft = $root.NewDraft.fromObject(object.newDraft);
         }
         return message;
     };
@@ -11795,6 +12829,11 @@ $root.ServerMessage = (function() {
             object.newGame = $root.NewGame.toObject(message.newGame, options);
             if (options.oneofs)
                 object.payload = "newGame";
+        }
+        if (message.newDraft != null && message.hasOwnProperty("newDraft")) {
+            object.newDraft = $root.NewDraft.toObject(message.newDraft, options);
+            if (options.oneofs)
+                object.payload = "newDraft";
         }
         return object;
     };

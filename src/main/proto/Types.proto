@@ -25,6 +25,12 @@ enum SelectFromType {
     VOID = 6;
     STACK = 7;
 }
+
+enum GameType {
+    NOGAME = 0;
+    BO1_CONSTRUCTED = 1;
+    P2_DRAFT = 2;
+}
  
 message Table
 {
@@ -139,5 +145,11 @@ message GameState {
     repeated string attackers = 11;
     repeated string blockers = 12;
     Phase phase = 10;
+}
+
+message DraftState {
+    string id = 1;
+    Player player = 2;
+    Player opponent = 3;
 }
 

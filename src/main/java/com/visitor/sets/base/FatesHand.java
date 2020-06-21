@@ -9,20 +9,20 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
-import static com.visitor.card.properties.Combat.CombatAbility.Trample;
+import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
+import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P08 extends Unit {
+public class FatesHand extends Unit {
 
-	public P08 (Game game, String owner) {
-		super(game, "Black Bear",
-				5, new CounterMap(PURPLE, 3),
+	public FatesHand (Game game, String owner) {
+		super(game, "Fate's Hand",
+				1, new CounterMap(PURPLE, 1),
 				"",
-				4, 4,
-				owner, Flying, Trample);
+				1, 1,
+				owner, Deathtouch, Lifelink);
 	}
 }

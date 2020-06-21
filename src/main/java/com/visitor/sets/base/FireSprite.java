@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Reach;
-import static com.visitor.protocol.Types.Knowledge.RED;
+import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class R07 extends Unit {
+public class FireSprite extends Unit {
 
-	public R07 (Game game, String owner) {
-		super(game, "Black Bear",
-				3, new CounterMap(RED, 1),
+	public FireSprite (Game game, String owner) {
+		super(game, "Fire Sprite",
+				5, new CounterMap(PURPLE, 2),
 				"",
-				2, 3,
-				owner, Reach);
+				3, 4,
+				owner, Flying);
 	}
 }

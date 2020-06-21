@@ -16,6 +16,7 @@ export default class ServerGameMessageHandler {
     constructor(
         userId,
         gameId,
+        gameType,
         updateExtendedGameState,
         continueGame
     ) {
@@ -24,7 +25,7 @@ export default class ServerGameMessageHandler {
         this.gameId = gameId;
         this.continueGame = continueGame;
         this.protoSocket = new GameProtoSocket(
-            GetGameURL(userId, gameId),
+            GetGameURL(userId, gameId, gameType),
             this.handleMsg
         );
     }
@@ -160,6 +161,17 @@ export default class ServerGameMessageHandler {
 
     }
 
+    PickCard = selected => {
+        this.send("PickCardResponse", {
+            pickedCard: selected
+        });
+        this.updateExtendedGameState({
+            message: "",
+            clientPhase: ClientPhase.WAITING,
+            dialogData: initialDialogData()
+        });
+    }
+
     SaveGameState = filename => {
         this.send("SaveGameState", {
             filename: filename
@@ -232,6 +244,14 @@ export default class ServerGameMessageHandler {
                     title: "Select a knowledge type.",
                     cards: params.knowledgeList,
                 };
+                break;
+            case "PickCard":
+                newExtendedState["dialogData"] = {
+                    open: true,
+                    title: params.message,
+                    cards: params.candidates,
+                };
+                break;
             default:
                 let game = params.game;
                 if (

@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-import static com.visitor.protocol.Types.Knowledge.PURPLE;
+import static com.visitor.card.properties.Combat.CombatAbility.Haste;
+import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class P07 extends Unit {
+public class BladeDervish extends Unit {
 
-	public P07 (Game game, String owner) {
-		super(game, "Black Bear",
-				3, new CounterMap(PURPLE, 2),
+	public BladeDervish (Game game, String owner) {
+		super(game, "Blade Dervish",
+				4, new CounterMap(RED, 1),
 				"",
 				3, 3,
-				owner, Deathtouch);
+				owner, Haste);
 	}
 }

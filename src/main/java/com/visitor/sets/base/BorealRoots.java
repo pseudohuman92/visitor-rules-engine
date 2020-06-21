@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P04 extends Unit {
+public class BorealRoots extends Unit {
 
-	public P04 (Game game, String owner) {
-		super(game, "Black Bear",
-				4, new CounterMap(PURPLE, 1),
+	public BorealRoots (Game game, String owner) {
+		super(game, "Boreal Roots",
+				2, new CounterMap(PURPLE, 1),
 				"",
-				3, 1,
-				owner, Flying);
+				2, 1,
+				owner, Lifelink);
 	}
 }

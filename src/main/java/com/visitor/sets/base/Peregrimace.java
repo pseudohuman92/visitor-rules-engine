@@ -10,19 +10,19 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
-import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
+import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P11 extends Unit {
+public class Peregrimace extends Unit {
 
-	public P11 (Game game, String owner) {
-		super(game, "Black Bear",
-				6, new CounterMap(PURPLE, 3),
+	public Peregrimace (Game game, String owner) {
+		super(game, "Peregrimace",
+				5, new CounterMap(PURPLE, 3),
 				"",
 				4, 4,
-				owner, Flying, Lifelink);
+				owner, Flying, Trample);
 	}
 }

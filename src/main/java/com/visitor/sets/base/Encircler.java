@@ -9,18 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class R10 extends Unit {
+public class Encircler extends Unit {
 
-	public R10 (Game game, String owner) {
-		super(game, "Black Bear",
+	public Encircler (Game game, String owner) {
+		super(game, "Encircler",
 				3, new CounterMap(RED, 1),
 				"",
-				3, 2,
-				owner);
+				2, 3,
+				owner, Reach);
 	}
 }

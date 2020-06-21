@@ -48,4 +48,12 @@ public class Hashmap<Key, Value> extends HashMap<Key, Value> {
 		super.remove(key);
 		return this;
 	}
+
+	//This is not random
+	public Key getArbitraryKey() {
+		if (!isEmpty()){
+			return (Key) keySet().toArray()[0];
+		}
+		return null;
+	}
 }

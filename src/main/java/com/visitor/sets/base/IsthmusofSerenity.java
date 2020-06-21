@@ -9,19 +9,20 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
+import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P01 extends Unit {
+public class IsthmusofSerenity extends Unit {
 
-	public P01 (Game game, String owner) {
-		super(game, "Black Bear",
-				1, new CounterMap(PURPLE, 1),
+	public IsthmusofSerenity (Game game, String owner) {
+		super(game, "Isthmus of Serenity",
+				6, new CounterMap(PURPLE, 3),
 				"",
-				1, 1,
-				owner, Deathtouch);
+				4, 4,
+				owner, Flying, Lifelink);
 	}
 }

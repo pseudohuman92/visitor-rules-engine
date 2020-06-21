@@ -13,9 +13,14 @@ message NewGame {
     GameState game = 1;
 }
 
+message NewDraft {
+    DraftState draft = 1;
+}
+
 message ServerMessage {
     oneof payload {
         LoginResponse           loginResponse = 2;
         NewGame                 newGame = 7;
+        NewDraft                newDraft = 8;
     }
 }

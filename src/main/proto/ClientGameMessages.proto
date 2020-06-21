@@ -68,6 +68,10 @@ message SelectKnowledgeResponse {
     Knowledge selectedKnowledge = 1;
 }
 
+message PickCardResponse {
+    string pickedCard = 1;
+}
+
 message SaveGameState {
     string filename = 1;
 }
@@ -88,6 +92,7 @@ message ClientGameMessage {
         SelectBlockersResponse          selectBlockersResponse = 25;
         SaveGameState                   saveGameState = 26;
         AssignDamageResponse            assignDamageResponse = 27;
-        SelectKnowledgeResponse            selectKnowledgeResponse = 28;
+        SelectKnowledgeResponse         selectKnowledgeResponse = 28;
+        PickCardResponse                pickCardResponse = 29;
     }
 };

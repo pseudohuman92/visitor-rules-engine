@@ -16,10 +16,10 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 /**
  * @author pseudo
  */
-public class R03 extends Unit {
+public class StarlingSwarm extends Unit {
 
-	public R03 (Game game, String owner) {
-		super(game, "Black Bear",
+	public StarlingSwarm (Game game, String owner) {
+		super(game, "Starling Swarm",
 				6, new CounterMap(RED, 3),
 				"",
 				4, 4,

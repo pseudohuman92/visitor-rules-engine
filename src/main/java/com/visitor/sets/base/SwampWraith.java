@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P10 extends Unit {
+public class SwampWraith extends Unit {
 
-	public P10 (Game game, String owner) {
-		super(game, "Black Bear",
-				3, new CounterMap(PURPLE, 1),
+	public SwampWraith (Game game, String owner) {
+		super(game, "Swamp Wraith",
+				1, new CounterMap(PURPLE, 1),
 				"",
-				2, 1,
-				owner, Flying);
+				1, 1,
+				owner, Deathtouch);
 	}
 }

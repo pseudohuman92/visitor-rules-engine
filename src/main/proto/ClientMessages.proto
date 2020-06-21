@@ -1,12 +1,13 @@
 syntax = "proto3";
 option java_package = "com.visitor.protocol";
-
+import "Types.proto";
 /**
  * Messages from client to server.
  */
 
 message JoinQueue {
     repeated string decklist = 3;
+    GameType gameType = 4;
 }
 
 message LoadGame {

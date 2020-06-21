@@ -27,7 +27,8 @@
     "react-textfit": "1.1.0",
     "redux": "4.0.5",
     "react-cookie": "^4.0.3",
-    "react-clear-cache": "1.2.0"
+    "react-clear-cache": "1.2.0",
+    "react-lazy-load": "^3.0.13"
   },
   "devDependencies": {
     "@types/react": "^16.9.17",

@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Trample;
+import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class R05 extends Unit {
+public class EndlessHorizon extends Unit {
 
-	public R05 (Game game, String owner) {
-		super(game, "Black Bear",
-				4, new CounterMap(RED, 2),
+	public EndlessHorizon (Game game, String owner) {
+		super(game, "Endless Horizon",
+				3, new CounterMap(RED, 2),
 				"",
-				4, 3,
-				owner, Trample);
+				2, 4,
+				owner, Haste);
 	}
 }

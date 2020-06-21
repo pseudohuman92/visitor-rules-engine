@@ -1241,6 +1241,96 @@ export class SelectKnowledgeResponse implements ISelectKnowledgeResponse {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a PickCardResponse. */
+export interface IPickCardResponse {
+
+    /** PickCardResponse pickedCard */
+    pickedCard?: (string|null);
+}
+
+/** Represents a PickCardResponse. */
+export class PickCardResponse implements IPickCardResponse {
+
+    /**
+     * Constructs a new PickCardResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IPickCardResponse);
+
+    /** PickCardResponse pickedCard. */
+    public pickedCard: string;
+
+    /**
+     * Creates a new PickCardResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns PickCardResponse instance
+     */
+    public static create(properties?: IPickCardResponse): PickCardResponse;
+
+    /**
+     * Encodes the specified PickCardResponse message. Does not implicitly {@link PickCardResponse.verify|verify} messages.
+     * @param message PickCardResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IPickCardResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified PickCardResponse message, length delimited. Does not implicitly {@link PickCardResponse.verify|verify} messages.
+     * @param message PickCardResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IPickCardResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a PickCardResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns PickCardResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): PickCardResponse;
+
+    /**
+     * Decodes a PickCardResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns PickCardResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): PickCardResponse;
+
+    /**
+     * Verifies a PickCardResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a PickCardResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns PickCardResponse
+     */
+    public static fromObject(object: { [k: string]: any }): PickCardResponse;
+
+    /**
+     * Creates a plain object from a PickCardResponse message. Also converts values to other types if specified.
+     * @param message PickCardResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: PickCardResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this PickCardResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a SaveGameState. */
 export interface ISaveGameState {
 
@@ -1378,6 +1468,9 @@ export interface IClientGameMessage {
 
     /** ClientGameMessage selectKnowledgeResponse */
     selectKnowledgeResponse?: (ISelectKnowledgeResponse|null);
+
+    /** ClientGameMessage pickCardResponse */
+    pickCardResponse?: (IPickCardResponse|null);
 }
 
 /** Represents a ClientGameMessage. */
@@ -1434,8 +1527,11 @@ export class ClientGameMessage implements IClientGameMessage {
     /** ClientGameMessage selectKnowledgeResponse. */
     public selectKnowledgeResponse?: (ISelectKnowledgeResponse|null);
 
+    /** ClientGameMessage pickCardResponse. */
+    public pickCardResponse?: (IPickCardResponse|null);
+
     /** ClientGameMessage payload. */
-    public payload?: ("playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|"selectKnowledgeResponse");
+    public payload?: ("playCard"|"activateCard"|"studyCard"|"pass"|"redraw"|"keep"|"concede"|"orderCardsResponse"|"selectFromResponse"|"selectXValueResponse"|"selectAttackersResponse"|"selectBlockersResponse"|"saveGameState"|"assignDamageResponse"|"selectKnowledgeResponse"|"pickCardResponse");
 
     /**
      * Creates a new ClientGameMessage instance using the specified properties.
@@ -1529,6 +1625,13 @@ export enum SelectFromType {
     DISCARD_PILE = 5,
     VOID = 6,
     STACK = 7
+}
+
+/** GameType enum. */
+export enum GameType {
+    NOGAME = 0,
+    BO1_CONSTRUCTED = 1,
+    P2_DRAFT = 2
 }
 
 /** Represents a Table. */
@@ -2699,6 +2802,95 @@ export class GameState implements IGameState {
     public toJSON(): { [k: string]: any };
 }
 
+/** Represents a DraftState. */
+export class DraftState implements IDraftState {
+
+    /**
+     * Constructs a new DraftState.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IDraftState);
+
+    /** DraftState id. */
+    public id: string;
+
+    /** DraftState player. */
+    public player?: (IPlayer|null);
+
+    /** DraftState opponent. */
+    public opponent?: (IPlayer|null);
+
+    /**
+     * Creates a new DraftState instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns DraftState instance
+     */
+    public static create(properties?: IDraftState): DraftState;
+
+    /**
+     * Encodes the specified DraftState message. Does not implicitly {@link DraftState.verify|verify} messages.
+     * @param message DraftState message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IDraftState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified DraftState message, length delimited. Does not implicitly {@link DraftState.verify|verify} messages.
+     * @param message DraftState message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IDraftState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a DraftState message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns DraftState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): DraftState;
+
+    /**
+     * Decodes a DraftState message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns DraftState
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): DraftState;
+
+    /**
+     * Verifies a DraftState message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a DraftState message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns DraftState
+     */
+    public static fromObject(object: { [k: string]: any }): DraftState;
+
+    /**
+     * Creates a plain object from a DraftState message. Also converts values to other types if specified.
+     * @param message DraftState
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: DraftState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this DraftState to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Represents a JoinQueue. */
 export class JoinQueue implements IJoinQueue {
 
@@ -2710,6 +2902,9 @@ export class JoinQueue implements IJoinQueue {
 
     /** JoinQueue decklist. */
     public decklist: string[];
+
+    /** JoinQueue gameType. */
+    public gameType: GameType;
 
     /**
      * Creates a new JoinQueue instance using the specified properties.
@@ -3838,6 +4033,95 @@ export class SelectKnowledge implements ISelectKnowledge {
     public toJSON(): { [k: string]: any };
 }
 
+/** Represents a PickCard. */
+export class PickCard implements IPickCard {
+
+    /**
+     * Constructs a new PickCard.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IPickCard);
+
+    /** PickCard draft. */
+    public draft?: (IDraftState|null);
+
+    /** PickCard candidates. */
+    public candidates: ICard[];
+
+    /** PickCard message. */
+    public message: string;
+
+    /**
+     * Creates a new PickCard instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns PickCard instance
+     */
+    public static create(properties?: IPickCard): PickCard;
+
+    /**
+     * Encodes the specified PickCard message. Does not implicitly {@link PickCard.verify|verify} messages.
+     * @param message PickCard message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IPickCard, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified PickCard message, length delimited. Does not implicitly {@link PickCard.verify|verify} messages.
+     * @param message PickCard message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IPickCard, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a PickCard message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns PickCard
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): PickCard;
+
+    /**
+     * Decodes a PickCard message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns PickCard
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): PickCard;
+
+    /**
+     * Verifies a PickCard message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a PickCard message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns PickCard
+     */
+    public static fromObject(object: { [k: string]: any }): PickCard;
+
+    /**
+     * Creates a plain object from a PickCard message. Also converts values to other types if specified.
+     * @param message PickCard
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: PickCard, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this PickCard to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Represents a ServerGameMessage. */
 export class ServerGameMessage implements IServerGameMessage {
 
@@ -3874,8 +4158,11 @@ export class ServerGameMessage implements IServerGameMessage {
     /** ServerGameMessage selectKnowledge. */
     public selectKnowledge?: (ISelectKnowledge|null);
 
+    /** ServerGameMessage pickCard. */
+    public pickCard?: (IPickCard|null);
+
     /** ServerGameMessage payload. */
-    public payload?: ("updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|"selectKnowledge");
+    public payload?: ("updateGameState"|"gameEnd"|"orderCards"|"selectFrom"|"selectXValue"|"selectAttackers"|"selectBlockers"|"assignDamage"|"selectKnowledge"|"pickCard");
 
     /**
      * Creates a new ServerGameMessage instance using the specified properties.
@@ -4114,6 +4401,89 @@ export class NewGame implements INewGame {
     public toJSON(): { [k: string]: any };
 }
 
+/** Represents a NewDraft. */
+export class NewDraft implements INewDraft {
+
+    /**
+     * Constructs a new NewDraft.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: INewDraft);
+
+    /** NewDraft draft. */
+    public draft?: (IDraftState|null);
+
+    /**
+     * Creates a new NewDraft instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns NewDraft instance
+     */
+    public static create(properties?: INewDraft): NewDraft;
+
+    /**
+     * Encodes the specified NewDraft message. Does not implicitly {@link NewDraft.verify|verify} messages.
+     * @param message NewDraft message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: INewDraft, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified NewDraft message, length delimited. Does not implicitly {@link NewDraft.verify|verify} messages.
+     * @param message NewDraft message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: INewDraft, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a NewDraft message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns NewDraft
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): NewDraft;
+
+    /**
+     * Decodes a NewDraft message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns NewDraft
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): NewDraft;
+
+    /**
+     * Verifies a NewDraft message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a NewDraft message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns NewDraft
+     */
+    public static fromObject(object: { [k: string]: any }): NewDraft;
+
+    /**
+     * Creates a plain object from a NewDraft message. Also converts values to other types if specified.
+     * @param message NewDraft
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: NewDraft, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this NewDraft to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Represents a ServerMessage. */
 export class ServerMessage implements IServerMessage {
 
@@ -4129,8 +4499,11 @@ export class ServerMessage implements IServerMessage {
     /** ServerMessage newGame. */
     public newGame?: (INewGame|null);
 
+    /** ServerMessage newDraft. */
+    public newDraft?: (INewDraft|null);
+
     /** ServerMessage payload. */
-    public payload?: ("loginResponse"|"newGame");
+    public payload?: ("loginResponse"|"newGame"|"newDraft");
 
     /**
      * Creates a new ServerMessage instance using the specified properties.

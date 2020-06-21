@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
+import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P03 extends Unit {
+public class BreathofZephyrus extends Unit {
 
-	public P03 (Game game, String owner) {
-		super(game, "Black Bear",
-				6, new CounterMap(PURPLE, 1),
+	public BreathofZephyrus (Game game, String owner) {
+		super(game, "Breath of Zephyrus",
+				3, new CounterMap(PURPLE, 1),
 				"",
-				5, 5,
-				owner, Deathtouch);
+				2, 1,
+				owner, Flying);
 	}
 }

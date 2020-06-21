@@ -29,7 +29,7 @@ import static java.util.logging.Logger.getLogger;
 /**
  * @author pseudo
  */
-@ServerEndpoint(value = "/games/{gameID}/{username}")
+@ServerEndpoint(value = "/games/{username}/{gameID}")
 public class GameEndpoint {
 
 	Session session;

@@ -6,8 +6,13 @@ export function GetProfileURL(userId) {
   return `ws://${ServerName}/profiles/${userId}`;
 }
 
-export function GetGameURL(userId, gameID) {
-  return `ws://${ServerName}/games/${gameID}/${userId}`;
+export function GetGameURL(userId, gameID, gameType) {
+  switch(gameType){
+    case proto.GameType.BO1_CONSTRUCTED:
+      return `ws://${ServerName}/games/${userId}/${gameID}`;
+    case proto.GameType.P2_DRAFT:
+      return `ws://${ServerName}/drafts/${userId}/${gameID}`;
+  }
 }
 
 export function debugPrint() {
@@ -115,6 +120,8 @@ export function toClientPhase(msgType, selectType) {
       return ClientPhase.ASSIGN_DAMAGE;
     case "SelectKnowledge":
       return ClientPhase.SELECT_KNOWLEDGE;
+    case "PickCard":
+      return ClientPhase.PICK_CARD;
     default:
       return ClientPhase.WAITING;
   }

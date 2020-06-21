@@ -1,13 +1,16 @@
 package com.visitor.server;
 
+import com.visitor.game.Draft;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
+import com.visitor.protocol.ServerMessages;
 import com.visitor.protocol.ServerMessages.LoginResponse;
 import com.visitor.protocol.ServerMessages.NewGame;
 import com.visitor.protocol.ServerMessages.ServerMessage;
+import com.visitor.protocol.Types;
 
 import javax.websocket.EncodeException;
 import java.io.FileInputStream;
@@ -27,14 +30,18 @@ public class GameServer {
 
 	public Hashmap<String, GeneralEndpoint> playerConnections;
 	public Hashmap<UUID, Game> games;
+	public Hashmap<UUID, Draft> drafts;
 	public Arraylist<String> chatLog;
-	public Arraylist<QueuePlayer> gameQueue;
+	public Arraylist<QueuePlayer> Bo1ConstructedQueue;
+	public Arraylist<QueuePlayer> P2DraftQueue;
 
 	public GameServer () {
 		playerConnections = new Hashmap<>();
 		chatLog = new Arraylist<>();
 		games = new Hashmap<>();
-		gameQueue = new Arraylist<>();
+		drafts = new Hashmap<>();
+		Bo1ConstructedQueue = new Arraylist<>();
+		P2DraftQueue = new Arraylist<>();
 	}
 
 
@@ -112,10 +119,10 @@ public class GameServer {
 
 	synchronized void removeConnection (String username) {
 		playerConnections.removeFrom(username);
-		for (int i = 0; i < gameQueue.size(); i++) {
-			QueuePlayer p = gameQueue.get(i);
+		for (int i = 0; i < Bo1ConstructedQueue.size(); i++) {
+			QueuePlayer p = Bo1ConstructedQueue.get(i);
 			if (p.username.equals(username)) {
-				gameQueue.remove(p);
+				Bo1ConstructedQueue.remove(p);
 				i--;
 			}
 		}
@@ -129,16 +136,53 @@ public class GameServer {
 		games.get(gameID).removeConnection(username);
 	}
 
-	synchronized void joinQueue (String username, String[] decklist) {
-		if (gameQueue.isEmpty()) {
-			out.println("Adding " + username + " to game queue!");
-			gameQueue.add(new QueuePlayer(username, decklist));
+	synchronized void joinQueue (String username, Types.GameType gameType, String[] decklist) {
+		switch(gameType){
+			case BO1_CONSTRUCTED:
+				join1Bo1ConstructedQueue(username, decklist);
+				break;
+			case P2_DRAFT:
+				joinP2DraftQueue(username);
+				break;
+		}
+
+	}
+
+	private void joinP2DraftQueue (String username) {
+		if (P2DraftQueue.isEmpty()) {
+			out.println("Adding " + username + " to draft game queue!");
+			P2DraftQueue.add(new QueuePlayer(username, null));
 		} else {
-			if (gameQueue.get(0).username.equals(username)) {
+			if (P2DraftQueue.get(0).username.equals(username)) {
 				return;
 			}
-			QueuePlayer waitingPlayer = gameQueue.remove(0);
-			out.println("Starting a new game with " + username + " and " + waitingPlayer.username);
+			QueuePlayer waitingPlayer = P2DraftQueue.remove(0);
+			out.println("Starting a new draft with " + username + " and " + waitingPlayer.username);
+			Draft draft = new Draft(waitingPlayer.username, username);
+			drafts.putIn(draft.getId(), draft);
+			try {
+				playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
+						.setNewDraft(ServerMessages.NewDraft.newBuilder()
+								.setDraft(draft.toDraftState(waitingPlayer.username))));
+				playerConnections.get(username).send(ServerMessage.newBuilder()
+						.setNewDraft(ServerMessages.NewDraft.newBuilder()
+								.setDraft(draft.toDraftState(username))));
+			} catch (IOException | EncodeException ex) {
+				getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+			}
+		}
+	}
+
+	private void join1Bo1ConstructedQueue (String username, String[] decklist) {
+		if (Bo1ConstructedQueue.isEmpty()) {
+			out.println("Adding " + username + " to constructed game queue!");
+			Bo1ConstructedQueue.add(new QueuePlayer(username, decklist));
+		} else {
+			if (Bo1ConstructedQueue.get(0).username.equals(username)) {
+				return;
+			}
+			QueuePlayer waitingPlayer = Bo1ConstructedQueue.remove(0);
+			out.println("Starting a new constructed game with " + username + " and " + waitingPlayer.username);
 			Game game = new Game();
 			game.addPlayers(new Player(game, waitingPlayer.username, waitingPlayer.decklist), new Player(game, username, decklist));
 			games.putIn(game.getId(), game);
@@ -192,5 +236,23 @@ public class GameServer {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	synchronized public void addDraftConnection (UUID draftID, String username, DraftEndpoint connection) {
+		drafts.get(draftID).addConnection(username, connection);
+	}
+
+	synchronized public void removeDraftConnection (UUID draftID, String username) {
+		drafts.get(draftID).removeConnection(username);
+	}
+
+	public void draftPick (UUID draftID, String username, UUID cardId) {
+		System.out.println("Start Draft Pick");
+		drafts.get(draftID).draftPick(username, cardId);
+		System.out.println("End Draft Pick");
+	}
+
+	public ServerGameMessage getDraftLastMessage (UUID draftID, String username) {
+		return drafts.get(draftID).getLastMessage(username);
 	}
 }

@@ -18,6 +18,7 @@ import DeckSelection from "./Components/MainScreens/DeckSelection";
 import GameStore from "./Components/MainScreens/GameStore";
 import OpenPacks from "./Components/MainScreens/OpenPacks";
 import AuthRequired from "./Components/Primitives/AuthRequired";
+import DraftScreen from "./Components/MainScreens/DraftScreen";
 
 
 class App extends React.Component {
@@ -91,6 +92,9 @@ class App extends React.Component {
                             </Route>
                             <Route path={"/profile/packs"}>
                                 <OpenPacks/>
+                            </Route>
+                            <Route path={"/profile/draft"}>
+                                <DraftScreen/>
                             </Route>
                         </AuthRequired>
                     </Switch>

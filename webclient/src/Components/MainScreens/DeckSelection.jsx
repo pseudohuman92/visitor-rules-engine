@@ -11,6 +11,7 @@ import GameScreen from './GameScreen';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { debugPrint } from "../Helpers/Helpers";
 import { isProduction } from "../Helpers/Constants";
+import * as proto from "../../protojs/compiled";
 
 const mapStateToProps = state => {
   return {
@@ -32,19 +33,17 @@ class DeckSelection extends React.Component {
   componentWillMount() {
     const Return = this.addDeck.bind(this);
     this.props.firebase.getAllDecks(this.props.userId, Return);
-  }
-
-  componentDidMount() {
     const { userId, updateHandlers, updateExtendedGameState } = this.props;
     updateHandlers({
       serverHandler: new ServerMessageHandler(
-        userId,
-        updateHandlers,
-        updateExtendedGameState,
-        () => this.setState({ value: 1 })
+          userId,
+          updateHandlers,
+          updateExtendedGameState,
+          () => this.setState({ value: 1 })
       )
     });
   }
+
 
   addDeck = deck => {
     this.setState((state, props) => ({ decks: state.decks.concat([deck]) }));
@@ -55,7 +54,7 @@ class DeckSelection extends React.Component {
     debugPrint(deck);
     const decklist = this.toDecklist(deck);
     if (decklist) {
-      this.props.serverHandler.joinQueue(decklist);
+      this.props.serverHandler.joinQueue(proto.GameType.BO1_CONSTRUCTED, decklist);
       this.setState({message: "", value: 1 });
     } else {
       this.setState({message: "Invalid Deck" });

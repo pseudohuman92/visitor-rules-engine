@@ -28,6 +28,7 @@ export enum ClientPhase {
   BLOCK_PHASE = "BlockPhase",
   ASSIGN_DAMAGE = "AssignDamage",
   SELECT_KNOWLEDGE = "SelectKnowledge",
+  PICK_CARD = "PickCard",
 }
 
 export const knowledgeMap: any = {};

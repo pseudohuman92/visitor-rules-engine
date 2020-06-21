@@ -9,20 +9,18 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P06 extends Unit {
+public class ShieldofNorn extends Unit {
 
-	public P06 (Game game, String owner) {
-		super(game, "Black Bear",
-				1, new CounterMap(PURPLE, 1),
+	public ShieldofNorn (Game game, String owner) {
+		super(game, "Shield of Norn",
+				4, new CounterMap(PURPLE, 2),
 				"",
-				1, 1,
-				owner, Deathtouch, Lifelink);
+				4, 4,
+				owner);
 	}
 }

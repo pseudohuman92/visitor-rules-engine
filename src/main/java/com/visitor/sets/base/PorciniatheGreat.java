@@ -9,18 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.protocol.Types.Knowledge.PURPLE;
+import static com.visitor.card.properties.Combat.CombatAbility.Trample;
+import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class P12 extends Unit {
+public class PorciniatheGreat extends Unit {
 
-	public P12 (Game game, String owner) {
-		super(game, "Black Bear",
-				4, new CounterMap(PURPLE, 2),
+	public PorciniatheGreat (Game game, String owner) {
+		super(game, "Porcinia the Great",
+				1, new CounterMap(RED, 1),
 				"",
-				4, 4,
-				owner);
+				1, 1,
+				owner, Trample);
 	}
 }

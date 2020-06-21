@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
+import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
-public class P05 extends Unit {
+public class EngorgedLamprey extends Unit {
 
-	public P05 (Game game, String owner) {
-		super(game, "Black Bear",
-				2, new CounterMap(PURPLE, 1),
+	public EngorgedLamprey (Game game, String owner) {
+		super(game, "Engorged Lamprey",
+				3, new CounterMap(PURPLE, 1),
 				"",
-				2, 1,
-				owner, Lifelink);
+				2, 2,
+				owner, Deathtouch);
 	}
 }

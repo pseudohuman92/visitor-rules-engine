@@ -62,6 +62,14 @@ message SelectKnowledge {
     repeated Knowledge knowledgeList = 2;
 }
 
+
+//Draft Messages
+message PickCard {
+    DraftState draft = 2;
+    repeated Card candidates = 4;
+    string message = 7;
+}
+
 message ServerGameMessage {
     oneof payload {
         UpdateGameState         updateGameState = 8;
@@ -73,5 +81,6 @@ message ServerGameMessage {
         SelectBlockers          selectBlockers = 21;
         AssignDamage            assignDamage = 22;
         SelectKnowledge         selectKnowledge = 23;
+        PickCard                pickCard = 24;
     }
 }

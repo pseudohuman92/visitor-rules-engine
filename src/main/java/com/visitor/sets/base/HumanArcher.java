@@ -9,19 +9,18 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class R08 extends Unit {
+public class HumanArcher extends Unit {
 
-	public R08 (Game game, String owner) {
-		super(game, "Black Bear",
-				2, new CounterMap(RED, 2),
+	public HumanArcher (Game game, String owner) {
+		super(game, "Human Archer",
+				2, new CounterMap(RED, 1),
 				"",
-				3, 1,
-				owner, Haste);
+				2, 1,
+				owner);
 	}
 }

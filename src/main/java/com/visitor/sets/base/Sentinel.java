@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class R04 extends Unit {
+public class Sentinel extends Unit {
 
-	public R04 (Game game, String owner) {
-		super(game, "Black Bear",
-				5, new CounterMap(RED, 1),
+	public Sentinel (Game game, String owner) {
+		super(game, "Sentinel",
+				5, new CounterMap(RED, 3),
 				"",
-				3, 3,
-				owner, Flying);
+				5, 3,
+				owner, Trample);
 	}
 }

@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-import static com.visitor.protocol.Types.Knowledge.PURPLE;
+import static com.visitor.card.properties.Combat.CombatAbility.Haste;
+import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class P02 extends Unit {
+public class Leapfrog extends Unit {
 
-	public P02 (Game game, String owner) {
-		super(game, "Black Bear",
-				3, new CounterMap(PURPLE, 1),
+	public Leapfrog (Game game, String owner) {
+		super(game, "Leapfrog",
+				1, new CounterMap(RED, 1),
 				"",
-				2, 2,
-				owner, Deathtouch);
+				1, 1,
+				owner, Haste);
 	}
 }

@@ -10,6 +10,7 @@ export default class Profile extends Component {
                 <ProfileBar style={{maxHeight:"10%"}}/>
                 <div style={{display: "flex"}}>
                     <LinkedButton to={"/profile/playgame"} text="Play"/>
+                    <LinkedButton to={"/profile/draft"} text="Draft"/>
                     <LinkedButton to={"/profile/decks"} text="Decks"/>
                     <LinkedButton to={"/profile/packs"} text="Packs"/>
                     <LinkedButton to={"/profile/collection"} text="Collection"/>

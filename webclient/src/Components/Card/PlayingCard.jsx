@@ -38,7 +38,6 @@ class PlayingCard extends React.Component {
         super(props);
         const relations = this.getArrowRelations();
         this.state = {
-            popoverStyle: {display: "none", width: 0},
             arrowRelations: relations,
             showArrows: false,
         };
@@ -67,45 +66,13 @@ class PlayingCard extends React.Component {
 
     onMouseEnter = (event) => {
         this.setState({showArrows: true});
-        this.handlePopoverOpen(event);
     };
 
     onMouseLeave = (event) => {
         this.setState({showArrows: false});
-        this.handlePopoverClose(event);
     };
 
-    handlePopoverOpen = (event) => {
-        const {width, height} = this.props.windowDimensions;
-        const rect = event.currentTarget.getBoundingClientRect();
 
-        const style = {};
-        style["width"] = width / 5;
-        style["height"] = (width / 5) * (88 / 63);
-        style["display"] = "flex";
-        style["textAlign"] = "left";
-        //style["border"] = "2px solid red";
-
-        if (rect.top < height / 2) {
-            style["top"] = rect.height;
-        } else {
-            style["bottom"] = rect.height;
-        }
-
-        if (rect.left < width / 2) {
-            style["left"] = rect.width;
-        } else {
-            style["right"] = rect.width;
-            style["flexDirection"] = "row-reverse";
-        }
-        this.setState({
-            popoverStyle: style,
-        });
-    };
-
-    handlePopoverClose = (event) => {
-        this.setState({popoverStyle: {display: "none", width: 0}});
-    };
 
     //! ///// Attack Handlers /////////
 
@@ -623,72 +590,11 @@ class PlayingCard extends React.Component {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             style={{
-                                //width: "100%",
-                                //height: "100%",
                                 ...style,
-                                //width: width / 5,
-                                //height: height / 3,
                                 position: "relative",
                             }}
                         >
-                            {!isDragging && !popoverDisabled && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        zIndex: 20,
-                                        ...popoverStyle,
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            width: popoverStyle.width / 2,
-                                            height: popoverStyle.height,
-                                            justify: "center",
-                                            alignContent: "center",
-                                            //border: "2px blue solid"
-                                        }}
-                                    >
-                                        <CardDisplay
-                                            cardData={cardData}
-                                            windowDimensions={windowDimensions}
-                                        />
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: popoverStyle.width / 2,
-                                            height: popoverStyle.height,
-                                            //border: "2px green solid"
-                                        }}
-                                    >
-                                        {cardData.description &&
-                                        Object.keys(keywords).map((keyword, i) => {
-                                            if (cardData.description.indexOf(keyword) !== -1 ||
-                                                (combat && combat.combatAbilities.indexOf(keyword) !== -1)) {
-                                                return (
-                                                    <div
-                                                        key={i}
-                                                        style={{
-                                                            color: "white",
-                                                            backgroundColor: "black",
-                                                            border: "1px white solid",
-                                                            borderRadius: "5px",
-                                                            whiteSpace: "pre-wrap",
-                                                        }}
-                                                    >
-                                                        <FittedText
-                                                            text={keyword + "\n" + keywords[keyword]}
-                                                            windowDimensions={windowDimensions}
-                                                        />
-                                                    </div>
-                                                );
-                                            }
-                                            return <div key={i}/>;
-                                        })}
-                                    </div>
-                                </div>
-                            )}
+
 
                             <div {...provided.dragHandleProps}>
                                 {
@@ -726,6 +632,9 @@ class PlayingCard extends React.Component {
                                         style={{transform: rotation}}
                                         cardData={cardData}
                                         windowDimensions={windowDimensions}
+                                        isDragging = {isDragging}
+                                        popoverDisabled = {popoverDisabled}
+                                        withKeywords
                                     />
                                 </div>
                             </div>
