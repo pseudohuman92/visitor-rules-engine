@@ -14,6 +14,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.UUID;
 
 import static java.lang.System.out;
 
@@ -41,7 +42,7 @@ public class GeneralEndpoint {
 	@OnMessage
 	public void onMessage (Session session, byte[] message) throws IOException {
 		ClientMessage cm = ClientMessage.parseFrom(message);
-		out.println(username + " sent a message: " + cm);
+		//out.println(username + " sent a message: " + cm);
 		handleMessage(cm);
 	}
 
@@ -59,22 +60,23 @@ public class GeneralEndpoint {
 	}
 
 	public void send (ServerMessage message) throws IOException, EncodeException {
-		out.println("Server sending a message to " + username + ": " + message);
+		//out.println("Server sending a message to " + username + ": " + message);
 		session.getBasicRemote().sendObject(message.toByteArray());
 	}
 
 	public void send (ServerMessage.Builder builder) throws IOException, EncodeException {
 		ServerMessage message = builder.build();
-		out.println("Server sending a message to " + username + ": " + message);
+		//out.println("Server sending a message to " + username + ": " + message);
 		session.getBasicRemote().sendObject(message.toByteArray());
 	}
 
 	private void handleMessage (ClientMessage cm) {
 		switch (cm.getPayloadCase()) {
 			case JOINQUEUE:
-				//Temporary implementation
 				JoinQueue jqm = cm.getJoinQueue();
-				gameServer.joinQueue(username, jqm.getGameType(), jqm.getDecklistList().toArray(new String[jqm.getDecklistCount()]));
+				String draftId = jqm.getDraftId();
+				gameServer.joinQueue(username, jqm.getGameType(), jqm.getDecklistList().toArray(new String[jqm.getDecklistCount()]),
+						draftId.equals("") ? null : UUID.fromString(draftId));
 				break;
 			case LOADGAME:
 				gameServer.loadGame(username, cm.getLoadGame().getFilename());

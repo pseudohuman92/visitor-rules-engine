@@ -1631,7 +1631,8 @@ export enum SelectFromType {
 export enum GameType {
     NOGAME = 0,
     BO1_CONSTRUCTED = 1,
-    P2_DRAFT = 2
+    P2_DRAFT = 2,
+    P2_DRAFT_GAME = 3
 }
 
 /** Represents a Table. */
@@ -2814,11 +2815,11 @@ export class DraftState implements IDraftState {
     /** DraftState id. */
     public id: string;
 
-    /** DraftState player. */
-    public player?: (IPlayer|null);
+    /** DraftState decklist. */
+    public decklist: string[];
 
-    /** DraftState opponent. */
-    public opponent?: (IPlayer|null);
+    /** DraftState completed. */
+    public completed: boolean;
 
     /**
      * Creates a new DraftState instance using the specified properties.
@@ -2905,6 +2906,9 @@ export class JoinQueue implements IJoinQueue {
 
     /** JoinQueue gameType. */
     public gameType: GameType;
+
+    /** JoinQueue draftId. */
+    public draftId: string;
 
     /**
      * Creates a new JoinQueue instance using the specified properties.

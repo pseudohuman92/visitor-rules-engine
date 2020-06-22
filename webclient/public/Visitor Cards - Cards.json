@@ -409,7 +409,7 @@
   },
   {
     "Set": "base",
-    "Name": "P01",
+    "Name": "Swamp Wraith",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -421,7 +421,7 @@
   },
   {
     "Set": "base",
-    "Name": "P02",
+    "Name": "Engorged Lamprey",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -433,7 +433,7 @@
   },
   {
     "Set": "base",
-    "Name": "P03",
+    "Name": "Poison Wisp",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -445,7 +445,7 @@
   },
   {
     "Set": "base",
-    "Name": "P04",
+    "Name": "Fury of Avra",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -457,7 +457,7 @@
   },
   {
     "Set": "base",
-    "Name": "P05",
+    "Name": "Boreal Roots",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -469,7 +469,7 @@
   },
   {
     "Set": "base",
-    "Name": "P06",
+    "Name": "Fate's Hand",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -481,7 +481,7 @@
   },
   {
     "Set": "base",
-    "Name": "P07",
+    "Name": "Blood Moon",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -493,7 +493,7 @@
   },
   {
     "Set": "base",
-    "Name": "P08",
+    "Name": "Peregrimace",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -505,7 +505,7 @@
   },
   {
     "Set": "base",
-    "Name": "P09",
+    "Name": "Fire Sprite",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -517,7 +517,7 @@
   },
   {
     "Set": "base",
-    "Name": "P10",
+    "Name": "Breath of Zephyrus",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -529,7 +529,7 @@
   },
   {
     "Set": "base",
-    "Name": "P11",
+    "Name": "Isthmus of Serenity",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -541,7 +541,7 @@
   },
   {
     "Set": "base",
-    "Name": "P12",
+    "Name": "Shield of Norn",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -565,7 +565,7 @@
   },
   {
     "Set": "base",
-    "Name": "R01",
+    "Name": "Leapfrog",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -577,7 +577,7 @@
   },
   {
     "Set": "base",
-    "Name": "R02",
+    "Name": "Sentinel",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -589,7 +589,7 @@
   },
   {
     "Set": "base",
-    "Name": "R03",
+    "Name": "Starling Swarm",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -601,7 +601,7 @@
   },
   {
     "Set": "base",
-    "Name": "R04",
+    "Name": "Divine Light",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -613,7 +613,7 @@
   },
   {
     "Set": "base",
-    "Name": "R05",
+    "Name": "Battering Ram",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -625,7 +625,7 @@
   },
   {
     "Set": "base",
-    "Name": "R06",
+    "Name": "Blade Dervish",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -637,7 +637,7 @@
   },
   {
     "Set": "base",
-    "Name": "R07",
+    "Name": "Encircler",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -649,7 +649,7 @@
   },
   {
     "Set": "base",
-    "Name": "R08",
+    "Name": "Creeping Canopy Vine",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -661,7 +661,7 @@
   },
   {
     "Set": "base",
-    "Name": "R09",
+    "Name": "Human Archer",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -673,7 +673,7 @@
   },
   {
     "Set": "base",
-    "Name": "R10",
+    "Name": "Dwarven Helm",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -685,7 +685,7 @@
   },
   {
     "Set": "base",
-    "Name": "R11",
+    "Name": "Endless Horizon",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -697,7 +697,7 @@
   },
   {
     "Set": "base",
-    "Name": "R12",
+    "Name": "Porcinia the Great",
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
@@ -722,7 +722,7 @@
   {
     "Set": "base",
     "Name": "Y01",
-    "JADE NAME": "",
+    "JADE NAME": "Sudden Projectile",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -734,7 +734,7 @@
   {
     "Set": "base",
     "Name": "Y02",
-    "JADE NAME": "",
+    "JADE NAME": "Chains of Yore",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -746,7 +746,7 @@
   {
     "Set": "base",
     "Name": "Y03",
-    "JADE NAME": "",
+    "JADE NAME": "Polar Vortex",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -758,7 +758,7 @@
   {
     "Set": "base",
     "Name": "Y04",
-    "JADE NAME": "",
+    "JADE NAME": "Blooming Orchard",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Regenerate 1",
@@ -770,7 +770,7 @@
   {
     "Set": "base",
     "Name": "Y05",
-    "JADE NAME": "",
+    "JADE NAME": "Winged Messenger",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -782,7 +782,7 @@
   {
     "Set": "base",
     "Name": "Y06",
-    "JADE NAME": "",
+    "JADE NAME": "Unending Fields",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Lifelink",
@@ -794,7 +794,7 @@
   {
     "Set": "base",
     "Name": "Y07",
-    "JADE NAME": "",
+    "JADE NAME": "Gorgoth's Revenge",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -806,7 +806,7 @@
   {
     "Set": "base",
     "Name": "Y08",
-    "JADE NAME": "",
+    "JADE NAME": "Beesmirch",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -818,7 +818,7 @@
   {
     "Set": "base",
     "Name": "Y09",
-    "JADE NAME": "",
+    "JADE NAME": "Bindings of Hanomine",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Vigilance",
@@ -830,7 +830,7 @@
   {
     "Set": "base",
     "Name": "Y10",
-    "JADE NAME": "",
+    "JADE NAME": "Acid Rain",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying",
@@ -842,7 +842,7 @@
   {
     "Set": "base",
     "Name": "Y11",
-    "JADE NAME": "",
+    "JADE NAME": "Teo the Nomad",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, Vigilance",
@@ -854,7 +854,7 @@
   {
     "Set": "base",
     "Name": "Y12",
-    "JADE NAME": "",
+    "JADE NAME": "Night Guardian",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Vigilance",
@@ -878,7 +878,7 @@
   {
     "Set": "base",
     "Name": "C01",
-    "JADE NAME": "",
+    "JADE NAME": "Slingshot",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Flying, First Strike",
@@ -890,7 +890,7 @@
   {
     "Set": "base",
     "Name": "C02",
-    "JADE NAME": "",
+    "JADE NAME": "Forlo's Rejection",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -902,7 +902,7 @@
   {
     "Set": "base",
     "Name": "C03",
-    "JADE NAME": "",
+    "JADE NAME": "Rock Giant",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -914,7 +914,7 @@
   {
     "Set": "base",
     "Name": "C04",
-    "JADE NAME": "",
+    "JADE NAME": "Thistle and Spire",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "Defender",
@@ -926,7 +926,7 @@
   {
     "Set": "base",
     "Name": "C05",
-    "JADE NAME": "",
+    "JADE NAME": "Storyteller",
     "Type": "Unit",
     "Subtype": "",
     "Effect": "",
@@ -950,7 +950,7 @@
   {
     "Set": "base",
     "Name": "UR01",
-    "JADE NAME": "",
+    "JADE NAME": "The Great Odyssey",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Return up to 3 target units to their controller's hands.",
@@ -962,7 +962,7 @@
   {
     "Set": "base",
     "Name": "UR02",
-    "JADE NAME": "",
+    "JADE NAME": "Greta's Gamble",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Draw 2 cards",
@@ -974,7 +974,7 @@
   {
     "Set": "base",
     "Name": "UR03",
-    "JADE NAME": "",
+    "JADE NAME": "Firm Resolution",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Up to 2 target units gain unblockable until end of turn.",
@@ -986,7 +986,7 @@
   {
     "Set": "base",
     "Name": "UR04",
-    "JADE NAME": "",
+    "JADE NAME": "Reflective Pool",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Return all cards to their controller's hands.",
@@ -998,7 +998,7 @@
   {
     "Set": "base",
     "Name": "UR05",
-    "JADE NAME": "",
+    "JADE NAME": "From Dawn Till Dusk",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Draw 3 cards. \nDiscard 1 card.",
@@ -1118,7 +1118,7 @@
   {
     "Set": "base",
     "Name": "PR05",
-    "JADE NAME": "",
+    "JADE NAME": "Unwanted Visitor",
     "Type": "Spell",
     "Subtype": "Ritual",
     "Effect": "Destroy target unit.",

@@ -8,6 +8,7 @@ import "Types.proto";
 message JoinQueue {
     repeated string decklist = 3;
     GameType gameType = 4;
+    string draftId = 5; //To be used when starting a draft game between two matched opponents
 }
 
 message LoadGame {

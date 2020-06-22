@@ -6,18 +6,22 @@ import LazyLoad from 'react-lazy-load';
 import {withFirebase} from "../Firebase";
 import CardDisplay from "../Card/CardDisplay";
 import {mapDispatchToProps} from "../Redux/Store";
-import {compareCardsByKnowledge, toFullCards} from "../Helpers/Helpers";
+import {compareCardsByKnowledge, debugPrint, toDeck, toDecklist, toFullCards} from "../Helpers/Helpers";
 import TextField from "@material-ui/core/TextField";
+import * as proto from "../../protojs/compiled";
+import {Redirect} from "react-router-dom";
+import {withHandlers} from "../MessageHandlers/HandlerContext";
 
 const mapStateToProps = state => {
     return {
-        collection: state.profile.collection,
+        collection_: state.profile.collection,
         userId: state.firebaseAuthData.user.uid,
-        windowDimensions: state.windowDimensions
+        windowDimensions: state.windowDimensions,
+        draft: state.extendedGameState.draft,
     };
 };
 
-const cardsPerPage = 18;
+
 
 class DeckBuilder extends React.Component {
     constructor(props) {
@@ -25,38 +29,37 @@ class DeckBuilder extends React.Component {
         this.state = {
             name: "",
             deck: {},
-            initialized: false,
-            page: 0,
-            maxPage: Math.floor(Object.keys(props.collection).length / cardsPerPage),
             changed: false
         };
     }
-
-    prev = () => {
-        this.setState(state => ({page: Math.max(state.page - 1, 0)}));
-    };
-
-    next = () => {
-        this.setState(state => ({page: Math.min(state.page + 1, state.maxPage)}));
-    };
 
     setDeck = (name, deck) => {
         this.setState({
             name: name,
             deck: deck,
-            initialized: true
         });
     };
 
     componentWillMount() {
         const {firebase, deckId, updateState, userId} = this.props;
-        const setDeck = this.setDeck.bind(this);
-        firebase.getDeck(deckId, setDeck);
-        firebase.setUserData(userId, updateState);
+        if (deckId) {
+            const setDeck = this.setDeck.bind(this);
+            firebase.getDeck(deckId, setDeck);
+            firebase.setUserData(userId, updateState);
+        }
+    }
+
+    joinDraftGame = event => {
+        const { serverHandler, draft } = this.props;
+        const { deck } = this.state;
+        serverHandler.joinQueue(proto.GameType.P2_DRAFT_GAME, toDecklist(deck), draft.id);
+        this.setState({name: "SUBMITTED"});
+
     }
 
     addToDeck = cardName => {
-        const collection = this.props.collection;
+        const {forDraft, draft, collection_} = this.props;
+        const collection = forDraft ? toDeck(draft.decklist) : collection_;
         const deck = this.state.deck;
         if (collection[cardName] - (deck[cardName] ? deck[cardName] : 0) > 0) {
             if (deck[cardName]) {
@@ -89,28 +92,30 @@ class DeckBuilder extends React.Component {
     };
 
     render() {
-        const {name, deck, initialized, page, maxPage, changed, forDraft} = this.state;
-        const {collection, windowDimensions} = this.props;
-        return collection && initialized ? (
+        const {name, deck, changed} = this.state;
+        const {forDraft, draft, collection_, windowDimensions} = this.props;
+        const collection = forDraft ? toDeck(draft.decklist) : collection_;
+        return (
             <div style={{display: "flex", flexDirection: "column", maxHeight: "95vh"}}>
-                {!forDraft && (
-                    <div style={{display: "flex"}}>
-                        <Button onClick={this.props.back} text="Back"/>
-                        <Button onClick={this.saveDeck} disabled={!changed} text="Save"/>
-                        <TextField
-                            value={name}
-                            fullWidth
-                            onChange={event => {
-                                this.changeName(event.target.value);
-                            }}
-                        />
-                    </div>)
+                {forDraft && name === "SUBMITTED" && <Redirect to={"/profile/play/game"}/>}
+                {forDraft ? (<Button onClick={this.joinDraftGame} text="Submit"/>)
+                    : (
+                        <div style={{display: "flex", flexDirection: "row"}}>
+                            <Button onClick={this.props.back} text="Back"/>
+                            <Button onClick={this.saveDeck} disabled={!changed} text="Save"/>
+                            <TextField
+                                value={name}
+                                fullWidth
+                                onChange={event => {
+                                    this.changeName(event.target.value);
+                                }}
+                            />
+                        </div>)
                 }
                 <div style={{display: "flex"}}>
                     <div style={{display: "flex", flexWrap: "wrap", flexGrow: 9}}>
                         {Object.values(toFullCards(collection))
                             .sort(compareCardsByKnowledge)
-                            //.slice(page * cardsPerPage, (page + 1) * cardsPerPage)
                             .map(
                                 (card, i) =>
                                     card && (
@@ -139,7 +144,6 @@ class DeckBuilder extends React.Component {
                                     )
                             )}
                     </div>
-
                     <div
                         style={{
                             display: "flex",
@@ -157,7 +161,6 @@ class DeckBuilder extends React.Component {
                                     <div style={{paddingRight: "3px"}}>{deck[card.set + "." + card.name]}</div>
                                     <CardDisplay
                                         small
-
                                         cardData={card}
                                         windowDimensions={windowDimensions}
                                     />
@@ -166,8 +169,6 @@ class DeckBuilder extends React.Component {
                     </div>
                 </div>
             </div>
-        ) : (
-            <div>Loading Deck</div>
         );
     }
 }
@@ -175,4 +176,4 @@ class DeckBuilder extends React.Component {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withFirebase(DeckBuilder));
+)(withFirebase(withHandlers(DeckBuilder)));

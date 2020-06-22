@@ -3860,12 +3860,14 @@ $root.SelectFromType = (function() {
  * @property {number} NOGAME=0 NOGAME value
  * @property {number} BO1_CONSTRUCTED=1 BO1_CONSTRUCTED value
  * @property {number} P2_DRAFT=2 P2_DRAFT value
+ * @property {number} P2_DRAFT_GAME=3 P2_DRAFT_GAME value
  */
 $root.GameType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NOGAME"] = 0;
     values[valuesById[1] = "BO1_CONSTRUCTED"] = 1;
     values[valuesById[2] = "P2_DRAFT"] = 2;
+    values[valuesById[3] = "P2_DRAFT_GAME"] = 3;
     return values;
 })();
 
@@ -7767,8 +7769,8 @@ $root.DraftState = (function() {
      * @exports IDraftState
      * @interface IDraftState
      * @property {string|null} [id] DraftState id
-     * @property {IPlayer|null} [player] DraftState player
-     * @property {IPlayer|null} [opponent] DraftState opponent
+     * @property {Array.<string>|null} [decklist] DraftState decklist
+     * @property {boolean|null} [completed] DraftState completed
      */
 
     /**
@@ -7780,6 +7782,7 @@ $root.DraftState = (function() {
      * @param {IDraftState=} [properties] Properties to set
      */
     function DraftState(properties) {
+        this.decklist = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -7795,20 +7798,20 @@ $root.DraftState = (function() {
     DraftState.prototype.id = "";
 
     /**
-     * DraftState player.
-     * @member {IPlayer|null|undefined} player
+     * DraftState decklist.
+     * @member {Array.<string>} decklist
      * @memberof DraftState
      * @instance
      */
-    DraftState.prototype.player = null;
+    DraftState.prototype.decklist = $util.emptyArray;
 
     /**
-     * DraftState opponent.
-     * @member {IPlayer|null|undefined} opponent
+     * DraftState completed.
+     * @member {boolean} completed
      * @memberof DraftState
      * @instance
      */
-    DraftState.prototype.opponent = null;
+    DraftState.prototype.completed = false;
 
     /**
      * Creates a new DraftState instance using the specified properties.
@@ -7836,10 +7839,11 @@ $root.DraftState = (function() {
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.player != null && Object.hasOwnProperty.call(message, "player"))
-            $root.Player.encode(message.player, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.opponent != null && Object.hasOwnProperty.call(message, "opponent"))
-            $root.Player.encode(message.opponent, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.decklist != null && message.decklist.length)
+            for (var i = 0; i < message.decklist.length; ++i)
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.decklist[i]);
+        if (message.completed != null && Object.hasOwnProperty.call(message, "completed"))
+            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.completed);
         return writer;
     };
 
@@ -7878,10 +7882,12 @@ $root.DraftState = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.player = $root.Player.decode(reader, reader.uint32());
+                if (!(message.decklist && message.decklist.length))
+                    message.decklist = [];
+                message.decklist.push(reader.string());
                 break;
             case 3:
-                message.opponent = $root.Player.decode(reader, reader.uint32());
+                message.completed = reader.bool();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -7921,16 +7927,16 @@ $root.DraftState = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
-        if (message.player != null && message.hasOwnProperty("player")) {
-            var error = $root.Player.verify(message.player);
-            if (error)
-                return "player." + error;
+        if (message.decklist != null && message.hasOwnProperty("decklist")) {
+            if (!Array.isArray(message.decklist))
+                return "decklist: array expected";
+            for (var i = 0; i < message.decklist.length; ++i)
+                if (!$util.isString(message.decklist[i]))
+                    return "decklist: string[] expected";
         }
-        if (message.opponent != null && message.hasOwnProperty("opponent")) {
-            var error = $root.Player.verify(message.opponent);
-            if (error)
-                return "opponent." + error;
-        }
+        if (message.completed != null && message.hasOwnProperty("completed"))
+            if (typeof message.completed !== "boolean")
+                return "completed: boolean expected";
         return null;
     };
 
@@ -7948,16 +7954,15 @@ $root.DraftState = (function() {
         var message = new $root.DraftState();
         if (object.id != null)
             message.id = String(object.id);
-        if (object.player != null) {
-            if (typeof object.player !== "object")
-                throw TypeError(".DraftState.player: object expected");
-            message.player = $root.Player.fromObject(object.player);
+        if (object.decklist) {
+            if (!Array.isArray(object.decklist))
+                throw TypeError(".DraftState.decklist: array expected");
+            message.decklist = [];
+            for (var i = 0; i < object.decklist.length; ++i)
+                message.decklist[i] = String(object.decklist[i]);
         }
-        if (object.opponent != null) {
-            if (typeof object.opponent !== "object")
-                throw TypeError(".DraftState.opponent: object expected");
-            message.opponent = $root.Player.fromObject(object.opponent);
-        }
+        if (object.completed != null)
+            message.completed = Boolean(object.completed);
         return message;
     };
 
@@ -7974,17 +7979,21 @@ $root.DraftState = (function() {
         if (!options)
             options = {};
         var object = {};
+        if (options.arrays || options.defaults)
+            object.decklist = [];
         if (options.defaults) {
             object.id = "";
-            object.player = null;
-            object.opponent = null;
+            object.completed = false;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
-        if (message.player != null && message.hasOwnProperty("player"))
-            object.player = $root.Player.toObject(message.player, options);
-        if (message.opponent != null && message.hasOwnProperty("opponent"))
-            object.opponent = $root.Player.toObject(message.opponent, options);
+        if (message.decklist && message.decklist.length) {
+            object.decklist = [];
+            for (var j = 0; j < message.decklist.length; ++j)
+                object.decklist[j] = message.decklist[j];
+        }
+        if (message.completed != null && message.hasOwnProperty("completed"))
+            object.completed = message.completed;
         return object;
     };
 
@@ -8010,6 +8019,7 @@ $root.JoinQueue = (function() {
      * @interface IJoinQueue
      * @property {Array.<string>|null} [decklist] JoinQueue decklist
      * @property {GameType|null} [gameType] JoinQueue gameType
+     * @property {string|null} [draftId] JoinQueue draftId
      */
 
     /**
@@ -8045,6 +8055,14 @@ $root.JoinQueue = (function() {
     JoinQueue.prototype.gameType = 0;
 
     /**
+     * JoinQueue draftId.
+     * @member {string} draftId
+     * @memberof JoinQueue
+     * @instance
+     */
+    JoinQueue.prototype.draftId = "";
+
+    /**
      * Creates a new JoinQueue instance using the specified properties.
      * @function create
      * @memberof JoinQueue
@@ -8073,6 +8091,8 @@ $root.JoinQueue = (function() {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.decklist[i]);
         if (message.gameType != null && Object.hasOwnProperty.call(message, "gameType"))
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.gameType);
+        if (message.draftId != null && Object.hasOwnProperty.call(message, "draftId"))
+            writer.uint32(/* id 5, wireType 2 =*/42).string(message.draftId);
         return writer;
     };
 
@@ -8114,6 +8134,9 @@ $root.JoinQueue = (function() {
                 break;
             case 4:
                 message.gameType = reader.int32();
+                break;
+            case 5:
+                message.draftId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -8164,8 +8187,12 @@ $root.JoinQueue = (function() {
             case 0:
             case 1:
             case 2:
+            case 3:
                 break;
             }
+        if (message.draftId != null && message.hasOwnProperty("draftId"))
+            if (!$util.isString(message.draftId))
+                return "draftId: string expected";
         return null;
     };
 
@@ -8201,7 +8228,13 @@ $root.JoinQueue = (function() {
         case 2:
             message.gameType = 2;
             break;
+        case "P2_DRAFT_GAME":
+        case 3:
+            message.gameType = 3;
+            break;
         }
+        if (object.draftId != null)
+            message.draftId = String(object.draftId);
         return message;
     };
 
@@ -8220,8 +8253,10 @@ $root.JoinQueue = (function() {
         var object = {};
         if (options.arrays || options.defaults)
             object.decklist = [];
-        if (options.defaults)
+        if (options.defaults) {
             object.gameType = options.enums === String ? "NOGAME" : 0;
+            object.draftId = "";
+        }
         if (message.decklist && message.decklist.length) {
             object.decklist = [];
             for (var j = 0; j < message.decklist.length; ++j)
@@ -8229,6 +8264,8 @@ $root.JoinQueue = (function() {
         }
         if (message.gameType != null && message.hasOwnProperty("gameType"))
             object.gameType = options.enums === String ? $root.GameType[message.gameType] : message.gameType;
+        if (message.draftId != null && message.hasOwnProperty("draftId"))
+            object.draftId = message.draftId;
         return object;
     };
 

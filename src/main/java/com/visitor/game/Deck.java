@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 import static java.lang.Class.forName;
@@ -103,5 +104,27 @@ public class Deck extends Arraylist<Card> {
 		for (Card card : cards) {
 			add(rand.nextInt(size()), card);
 		}
+	}
+
+	public Arraylist<String> toDeckList () {
+		Arraylist<String> decklist = new Arraylist<>();
+		sort(Comparator.comparing(card -> card.name));
+		String lastName = "";
+		int count = 0;
+		for (Card c : this) {
+			if (!lastName.equals(c.name)) {
+				if (!lastName.equals("")) {
+					decklist.add(count + ";base." + lastName);
+				}
+				lastName = c.name;
+				count = 1;
+			} else {
+				count++;
+			}
+		}
+		if (!lastName.equals("")) {
+			decklist.add(count + ";base." + lastName);
+		}
+		return decklist;
 	}
 }

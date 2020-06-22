@@ -9,14 +9,14 @@ import { mapDispatchToProps } from "../Redux/Store";
 import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import GameScreen from './GameScreen';
 import { withHandlers } from "../MessageHandlers/HandlerContext";
-import { debugPrint } from "../Helpers/Helpers";
+import {debugPrint, toDecklist} from "../Helpers/Helpers";
 import { isProduction } from "../Helpers/Constants";
 import * as proto from "../../protojs/compiled";
+import {Redirect} from "react-router-dom";
 
 const mapStateToProps = state => {
   return {
     userId: state.firebaseAuthData.user.uid,
-    gameInitialized: state.extendedGameState.gameInitialized
   };
 };
 
@@ -24,7 +24,6 @@ class DeckSelection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
       decks: [],
       message: ""
     };
@@ -33,15 +32,6 @@ class DeckSelection extends React.Component {
   componentWillMount() {
     const Return = this.addDeck.bind(this);
     this.props.firebase.getAllDecks(this.props.userId, Return);
-    const { userId, updateHandlers, updateExtendedGameState } = this.props;
-    updateHandlers({
-      serverHandler: new ServerMessageHandler(
-          userId,
-          updateHandlers,
-          updateExtendedGameState,
-          () => this.setState({ value: 1 })
-      )
-    });
   }
 
 
@@ -52,10 +42,9 @@ class DeckSelection extends React.Component {
 
   loadDeck = (name, deck) => {
     debugPrint(deck);
-    const decklist = this.toDecklist(deck);
+    const decklist = toDecklist(deck);
     if (decklist) {
       this.props.serverHandler.joinQueue(proto.GameType.BO1_CONSTRUCTED, decklist);
-      this.setState({message: "", value: 1 });
     } else {
       this.setState({message: "Invalid Deck" });
     }
@@ -73,25 +62,11 @@ class DeckSelection extends React.Component {
     this.props.firebase.getDeck(deckId, Return);
   };
 
-  toDecklist = deck => {
-      const decklist = [];
-      Object.keys(deck).forEach(cardName => {
-      let count = deck[cardName];
-      if (count <= 3 && count > 0) {
-        decklist.push("" + count + ";" + cardName);
-      } else {
-        return [];
-      }
-    });
-    return decklist;
-  };
 
   render() {
-    const { value, decks} = this.state;
+    const {decks} = this.state;
     return (
-      <div>
-        {value === 0 && (
-          <div>
+        <div>
         {!isProduction && <Button onClick={this.loadGame} text="Load"/> } 
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
@@ -117,18 +92,6 @@ class DeckSelection extends React.Component {
             </Grid>
             {this.state.message}
           </div>
-        )}
-        {value === 1 &&
-          (this.props.gameInitialized ? (
-            <GameScreen back={this.props.back} />
-          ) : (
-            <div>
-              {
-                "Waiting For An Opponent... You can open a second tab and login with a different account to play against yourself"
-              }
-            </div>
-          ))}
-      </div>
     );
   }
 }

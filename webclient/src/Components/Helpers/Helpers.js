@@ -15,6 +15,29 @@ export function GetGameURL(userId, gameID, gameType) {
   }
 }
 
+export function toDeck(decklist) {
+  let deck = {}
+  decklist.forEach(entry => {
+    const sep_entry = entry.split(";");
+    deck[sep_entry[1]] = parseInt(sep_entry[0]);
+  })
+  debugPrint(deck);
+  return deck;
+}
+
+export function toDecklist(deck) {
+  const decklist = [];
+  Object.keys(deck).forEach(cardName => {
+    let count = deck[cardName];
+    if (count <= 3 && count > 0) {
+      decklist.push("" + count + ";" + cardName);
+    } else {
+      return [];
+    }
+  });
+  return decklist;
+}
+
 export function debugPrint() {
   if (PrintDebug) {
     console.log(...arguments);
@@ -204,11 +227,6 @@ export function toKnowledgeCost(knowledgeString) {
     res.push({ knowledge: parseInt(k), count: cost[k] });
   }
   return res;
-}
-
-export function toKnowledgeName(number) {
-
-  return proto.Knowledge. toString(number);
 }
 
 export function delayClick(onClick, onDoubleClick, delay) {

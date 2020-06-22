@@ -274,8 +274,12 @@ export default class ServerGameMessageHandler {
                 break;
         }
         newExtendedState["game"] = params.game;
+        newExtendedState["draft"] = params.draft;
         selectionData["selected"] = [];
         newExtendedState["selectionData"] = selectionData;
+        if (msgType !== "PickCard"){
+            newExtendedState["gameInitialized"] = true;
+        }
         if (this.continueGame) {
             newExtendedState["gameInitialized"] = true;
             this.continueGame = false;

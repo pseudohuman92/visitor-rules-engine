@@ -17,8 +17,10 @@ import CollectionScreen from "./Components/MainScreens/CollectionScreen";
 import DeckSelection from "./Components/MainScreens/DeckSelection";
 import GameStore from "./Components/MainScreens/GameStore";
 import OpenPacks from "./Components/MainScreens/OpenPacks";
-import AuthRequired from "./Components/Primitives/AuthRequired";
 import DraftScreen from "./Components/MainScreens/DraftScreen";
+import GameScreen from "./Components/MainScreens/GameScreen";
+import AuthRequired from "./Components/Primitives/AuthRequired";
+import SwitchPage from "./Components/MainScreens/SwitchPage";
 
 
 class App extends React.Component {
@@ -58,46 +60,7 @@ class App extends React.Component {
         return (
             <HandlerContext.Provider value={this.state}>
                 <BrowserRouter>
-                    <Switch>
-                        <Route exact path="/">
-                            <MainPage/>
-                        </Route>
-                        <Route path="/signin">
-                            <SignIn/>
-                        </Route>
-                        <Route path="/signup">
-                            <SignUp/>
-                        </Route>
-                        <Route path="/cardgallery">
-                            <CardGallery/>
-                        </Route>
-                        <Route path={"/resetpassword"}>
-                            <ResetPassword/>
-                        </Route>
-                        <AuthRequired>
-                            <Route exact path={"/profile"}>
-                                <Profile/>
-                            </Route>
-                            <Route path={"/profile/decks"}>
-                                <Decks/>
-                            </Route>
-                            <Route path={"/profile/collection"}>
-                                <CollectionScreen/>
-                            </Route>
-                            <Route path={"/profile/playgame"}>
-                                <DeckSelection/>
-                            </Route>
-                            <Route path={"/profile/store"}>
-                                <GameStore/>
-                            </Route>
-                            <Route path={"/profile/packs"}>
-                                <OpenPacks/>
-                            </Route>
-                            <Route path={"/profile/draft"}>
-                                <DraftScreen/>
-                            </Route>
-                        </AuthRequired>
-                    </Switch>
+                    <SwitchPage/>
                 </BrowserRouter>
             </HandlerContext.Provider>
         );

@@ -40,7 +40,6 @@ class EndGameDialog extends Component {
       gameInitialized: false,
       clientPhase: ClientPhase.NOT_STARTED
     });
-    back();
   };
 
   submit = event => {
@@ -58,7 +57,6 @@ class EndGameDialog extends Component {
       replay: "",
       other: ""
     });
-    this.back();
   };
 
 
@@ -183,9 +181,6 @@ class EndGameDialog extends Component {
             </Grid>
           </Grid>
         </DialogContent>
-        <Button type="submit" variant="contained" onClick={this.back}>
-          Back
-        </Button>
       </Dialog>
     );
   };

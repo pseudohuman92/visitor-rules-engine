@@ -47,7 +47,7 @@ export class CardDisplay extends PureComponent {
 
   render() {
     const {popoverStyle} = this.state;
-    const { small, style, popoverDisabled, isDragging, withKeywords, dragHandleProps, ...rest } = this.props;
+    const { onClick, small, style, popoverDisabled, isDragging, withKeywords, dragHandleProps, ...rest } = this.props;
     return (
       <div
         {...dragHandleProps}
@@ -112,7 +112,8 @@ export class CardDisplay extends PureComponent {
               }
             </div>
         )}
-        <div onMouseEnter={this.handlePopoverOpen} onMouseLeave={this.handlePopoverClose} style={style}>
+        <div onMouseEnter={this.handlePopoverOpen} onMouseLeave={this.handlePopoverClose} onClick={onClick? onClick : ()=>{}}
+             style={style}>
           {small ? (
             <SmallCard {...rest} />
           ) : (

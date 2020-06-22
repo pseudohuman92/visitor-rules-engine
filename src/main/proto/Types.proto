@@ -30,6 +30,7 @@ enum GameType {
     NOGAME = 0;
     BO1_CONSTRUCTED = 1;
     P2_DRAFT = 2;
+    P2_DRAFT_GAME = 3;
 }
  
 message Table
@@ -149,7 +150,7 @@ message GameState {
 
 message DraftState {
     string id = 1;
-    Player player = 2;
-    Player opponent = 3;
+    repeated string decklist = 2;
+    bool completed = 3;
 }
 

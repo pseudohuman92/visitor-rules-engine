@@ -131,7 +131,7 @@ public class Draft {
 			if (roundsCompleted < TOTAL_ROUNDS) {
 				startDraftRound();
 			} else {
-				System.out.println("Draft completed!");
+				players.keySet().forEach(this::sendCompleted);
 			}
 		}
 	}
@@ -139,7 +139,13 @@ public class Draft {
 	private void pick (String username, Arraylist<Card> cards) {
 		ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
 				.addAllCandidates(cards.transform(c -> c.toCardMessage().build()))
-				.setMessage("Pick a card to draft.").setDraft(toDraftState(username));
+				.setMessage("Pick a card to draft.").setDraft(toDraftState(username, false));
+		send(username, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
+	}
+
+	private void sendCompleted (String username) {
+		ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
+				.setMessage("Draft Completed.").setDraft(toDraftState(username, true));
 		send(username, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
 	}
 
@@ -193,12 +199,12 @@ public class Draft {
 		return null;
 	}
 
-	public Types.DraftState.Builder toDraftState (String username) {
+	public Types.DraftState.Builder toDraftState (String username, boolean completed) {
 		Types.DraftState.Builder b =
 				Types.DraftState.newBuilder()
 						.setId(id.toString())
-						.setPlayer(players.get(username).toPlayerMessage(true))
-						.setOpponent(players.get(getOpponentName(username)).toPlayerMessage(false));
+						.addAllDecklist(players.get(username).deck.toDeckList())
+						.setCompleted(completed);
 		return b;
 	}
 

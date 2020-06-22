@@ -5,34 +5,24 @@ import {mapDispatchToProps} from "../Redux/Store";
 
 import "../../css/ChooseDialog.css";
 import CardDisplay from "../Card/CardDisplay";
-import ServerMessageHandler from "../MessageHandlers/ServerMessageHandler";
 import * as proto from "../../protojs/compiled";
+import {Redirect} from "react-router-dom";
+import {compareCardsByKnowledge, toDeck, toFullCards} from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
     return {
-        clientPhase: state.extendedGameState.clientPhase,
         dialog: state.extendedGameState.dialogData,
         windowDimensions: state.windowDimensions,
-        userId: state.firebaseAuthData.user.uid,
-        gameInitialized: state.extendedGameState.gameInitialized
+        draft : state.extendedGameState.draft,
     };
 };
 
 class DraftScreen extends Component {
 
     componentWillMount() {
-        const {userId, updateHandlers, updateExtendedGameState} = this.props;
-        const handler = new ServerMessageHandler(
-            userId,
-            updateHandlers,
-            updateExtendedGameState,
-            () => {
-            }
-        );
-        updateHandlers({
-            serverHandler: handler
-        });
-        handler.joinQueue(proto.GameType.P2_DRAFT, "");
+
+        const {serverHandler} = this.props;
+            serverHandler.joinQueue(proto.GameType.P2_DRAFT);
     }
 
     pickCard = selected => event => {
@@ -40,10 +30,12 @@ class DraftScreen extends Component {
     };
 
     render = () => {
-        const {windowDimensions, dialog} = this.props;
-
+        const {windowDimensions, dialog, draft} = this.props;
+        const deck = toDeck(draft.decklist);
         return (
-            <div>
+            <div style={{display:"flex"}}>
+            <div style={{flexGrow: 9}}>
+                {draft.completed && <Redirect to={"/profile/play/draft/deck_builder"}/>}
                 <div style={{
                     textAlign: "center",
                     fontSize: "20px",
@@ -60,6 +52,29 @@ class DraftScreen extends Component {
                             />
                         </div>
                     ))}
+                </div>
+            </div>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        backgroundColor: "#ffe6ff",
+                        flexGrow: 1
+                    }}
+                >
+                    <div style={{textAlign: "center"}}>{"Drafted Cards"}</div>
+                    {Object.values(toFullCards(deck))
+                        .sort(compareCardsByKnowledge)
+                        .map((card, i) => (
+                            <div style={{display: "flex", padding: "3px"}} key={i}>
+                                <div style={{paddingRight: "3px"}}>{deck[card.set + "." + card.name]}</div>
+                                <CardDisplay
+                                    small
+                                    cardData={card}
+                                    windowDimensions={windowDimensions}
+                                />
+                            </div>
+                        ))}
                 </div>
             </div>
         );

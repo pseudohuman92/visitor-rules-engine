@@ -33,10 +33,6 @@ export default class ServerMessageHandler {
                 break;
             case "NewGame":
                 this.gameId = params.game.id;
-                this.updateExtendedGameState({
-                    gameInitialized: true,
-                    game: params.game
-                });
                 this.updateHandlers({
                     gameHandler: new ServerGameMessageHandler(
                         this.userId,
@@ -46,12 +42,12 @@ export default class ServerMessageHandler {
                         false
                     )
                 });
+                this.updateExtendedGameState({
+                    game: params.game
+                });
                 break;
             case "NewDraft":
                 this.gameId = params.draft.id;
-                this.updateExtendedGameState({
-                    gameInitialized: true,
-                });
                 this.updateHandlers({
                     gameHandler: new ServerGameMessageHandler(
                         this.userId,
@@ -61,14 +57,18 @@ export default class ServerMessageHandler {
                         false
                     )
                 });
+                this.updateExtendedGameState({
+                    draft: params.draft,
+                });
                 break;
         }
     };
 
-    joinQueue = (gameType, decklist) => {
+    joinQueue = (gameType, decklist=[], draftId="") => {
         this.protoSocket.send("JoinQueue", {
             gameType: gameType,
-            decklist: decklist
+            decklist: decklist,
+            draftId: draftId,
         });
     };
 

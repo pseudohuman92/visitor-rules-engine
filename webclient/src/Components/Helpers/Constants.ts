@@ -4,7 +4,7 @@ import proto, {
   AttackerAssignment,
   Player,
   BlockerAssignment,
-  DamageAssignment
+  DamageAssignment, DraftState
 } from "../../protojs/compiled";
 import { toKnowledgeCost } from "./Helpers";
 
@@ -165,6 +165,7 @@ export function initialArrowData(): ArrowData {
 export interface ExtendedGameState {
   opponentUsername: string;
   game: GameState; //GameState object. See proto files
+  draft: DraftState; //DraftState object. See proto files
   clientPhase: ClientPhase; //Client defined phases
 
   message: string;
@@ -183,9 +184,14 @@ export function initialExtendedGameState(): ExtendedGameState {
   let game = GameState.create();
   game.player = Player.create();
   game.opponent = Player.create();
+
+  let draft = DraftState.create();
+  game.player = Player.create();
+  game.opponent = Player.create();
   return {
     opponentUsername: "",
     game: game, //GameState object. See proto files
+    draft: draft,
     clientPhase: ClientPhase.NOT_STARTED, //Client defined phases
 
     message: "",

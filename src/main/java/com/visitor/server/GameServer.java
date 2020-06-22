@@ -34,6 +34,7 @@ public class GameServer {
 	public Arraylist<String> chatLog;
 	public Arraylist<QueuePlayer> Bo1ConstructedQueue;
 	public Arraylist<QueuePlayer> P2DraftQueue;
+	public Hashmap<UUID, QueuePlayer> P2DraftGameQueue;
 
 	public GameServer () {
 		playerConnections = new Hashmap<>();
@@ -42,6 +43,7 @@ public class GameServer {
 		drafts = new Hashmap<>();
 		Bo1ConstructedQueue = new Arraylist<>();
 		P2DraftQueue = new Arraylist<>();
+		P2DraftGameQueue = new Hashmap<>();
 	}
 
 
@@ -136,7 +138,7 @@ public class GameServer {
 		games.get(gameID).removeConnection(username);
 	}
 
-	synchronized void joinQueue (String username, Types.GameType gameType, String[] decklist) {
+	synchronized void joinQueue (String username, Types.GameType gameType, String[] decklist, UUID draftId) {
 		switch(gameType){
 			case BO1_CONSTRUCTED:
 				join1Bo1ConstructedQueue(username, decklist);
@@ -144,13 +146,42 @@ public class GameServer {
 			case P2_DRAFT:
 				joinP2DraftQueue(username);
 				break;
+			case P2_DRAFT_GAME:
+				joinP2DraftGameQueue(draftId, username, decklist);
+				break;
 		}
 
 	}
 
+	private void joinP2DraftGameQueue (UUID draftId, String username, String[] decklist) {
+		if (!P2DraftGameQueue.containsKey(draftId)) {
+			out.println("Adding " + username + " to draft game queue!");
+			P2DraftGameQueue.put(draftId, new QueuePlayer(username, decklist));
+		} else {
+			if (P2DraftGameQueue.get(draftId).username.equals(username)) {
+				return;
+			}
+			QueuePlayer waitingPlayer = P2DraftGameQueue.remove(draftId);
+			out.println("Starting a new draft game with " + username + " and " + waitingPlayer.username);
+			Game game = new Game();
+			game.addPlayers(new Player(game, waitingPlayer.username, waitingPlayer.decklist), new Player(game, username, decklist));
+			games.putIn(game.getId(), game);
+			try {
+				playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
+						.setNewGame(NewGame.newBuilder()
+								.setGame(game.toGameState(waitingPlayer.username))));
+				playerConnections.get(username).send(ServerMessage.newBuilder()
+						.setNewGame(NewGame.newBuilder()
+								.setGame(game.toGameState(username))));
+			} catch (IOException | EncodeException ex) {
+				getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+			}
+		}
+	}
+
 	private void joinP2DraftQueue (String username) {
 		if (P2DraftQueue.isEmpty()) {
-			out.println("Adding " + username + " to draft game queue!");
+			out.println("Adding " + username + " to draft queue!");
 			P2DraftQueue.add(new QueuePlayer(username, null));
 		} else {
 			if (P2DraftQueue.get(0).username.equals(username)) {
@@ -163,10 +194,10 @@ public class GameServer {
 			try {
 				playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
 						.setNewDraft(ServerMessages.NewDraft.newBuilder()
-								.setDraft(draft.toDraftState(waitingPlayer.username))));
+								.setDraft(draft.toDraftState(waitingPlayer.username, false))));
 				playerConnections.get(username).send(ServerMessage.newBuilder()
 						.setNewDraft(ServerMessages.NewDraft.newBuilder()
-								.setDraft(draft.toDraftState(username))));
+								.setDraft(draft.toDraftState(username, false))));
 			} catch (IOException | EncodeException ex) {
 				getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
 			}
