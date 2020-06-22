@@ -9,19 +9,18 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
+import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
 /**
  * @author pseudo
  */
-public class Y02 extends Unit {
+public class RockGiant extends Unit {
 
-	public Y02 (Game game, String owner) {
-		super(game, "Black Bear",
-				1, new CounterMap(YELLOW, 1),
+	public RockGiant (Game game, String owner) {
+		super(game, "Rock Giant",
+				3, new CounterMap(),
 				"",
-				1, 1,
-				owner, Lifelink);
+				3, 3,
+				owner, Defender);
 	}
 }

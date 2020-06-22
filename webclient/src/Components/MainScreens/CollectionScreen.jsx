@@ -1,20 +1,13 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import Button from "../Primitives/Button";
-import Center from "react-center";
 import {connect} from "react-redux";
 
 import {withFirebase} from "../Firebase";
 import CardDisplay from "../Card/CardDisplay";
-import {fullCollection, craftCost, salvageValue, isProduction} from "../Helpers/Constants";
+import {craftCost, fullCollection, isProduction, salvageValue} from "../Helpers/Constants";
 import {mapDispatchToProps} from "../Redux/Store";
-import {Typography} from "@material-ui/core";
 import CraftableCard from "../Card/CraftableCard";
-import {
-    debugPrint,
-    toFullCards,
-    compareCardsByKnowledge, sleep
-} from "../Helpers/Helpers";
+import {compareCardsByKnowledge, debugPrint, sleep, toFullCards} from "../Helpers/Helpers";
 
 const mapStateToProps = state => {
     return {
@@ -25,11 +18,8 @@ const mapStateToProps = state => {
     };
 };
 
-const cardsPerPage = 12;
-
 class CollectionScreen extends React.Component {
     state = {
-        page: 0,
         craft: false
     };
 
@@ -37,22 +27,6 @@ class CollectionScreen extends React.Component {
         const {firebase, updateState, userId} = this.props;
         firebase.setUserData(userId, updateState);
     }
-
-    prev = () => {
-        this.setState(state => ({page: Math.max(state.page - 1, 0)}));
-    };
-
-    next = () => {
-        this.setState(state => ({
-            page: Math.min(
-                state.page + 1,
-                Math.floor(
-                    Object.keys(state.craft ? fullCollection : this.props.collection)
-                        .length / cardsPerPage
-                )
-            )
-        }));
-    };
 
     craft = () => {
         this.setState(state => ({page: 0, craft: !state.craft}));
@@ -137,85 +111,80 @@ class CollectionScreen extends React.Component {
     };
 
     render() {
-        const {page, craft} = this.state;
+        const {craft} = this.state;
         const {collection, dust, windowDimensions} = this.props;
         const displayCollection = craft ? fullCollection : toFullCards(collection);
-        const maxPage = Math.floor(
-            Object.keys(craft ? fullCollection : collection).length / cardsPerPage
-        );
         return collection ? (
-            <Grid
-                container
-                spacing={8}
-                style={{maxHeight: "95vh"}}
-                alignItems="center"
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    maxHeight: "95vh"
+                }}
             >
-                <Grid item xs={1}>
-                    <Button onClick={this.prev} text="Prev" disabled={page === 0}/>
-                </Grid>
-                <Grid item xs={1}>
-                    <Button onClick={this.next} text="Next" disabled={page === maxPage}/>
-                </Grid>
-                <Grid item xs={1}>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flexGrow: 1
+                }}>
                     <Button
                         onClick={this.craft}
-                        text={craft ? "Craft Mode" : "Display Mode"}
+                        text={craft ? "Craft" : "Display"}
                     />
-                </Grid>
-                <Grid item xs={1}>
-                    <Center>
-                        <Typography style={{fontFamily: "Cinzel, serif"}}>
-                            {"Dust: " + dust}
-                        </Typography>
-                    </Center>
-                </Grid>
-                {craft && (
-                    <Grid item xs={1}>
+                    <div style={{fontFamily: "Cinzel, serif"}}>
+                        {"Dust: " + dust}
+                    </div>
+                    {craft && (
                         <Button
                             onClick={this.salvageExtras}
                             disabled={!this.hasExtras()}
                             text="Salvage Extras"
                         />
-                    </Grid>
-                )}
-                {craft && !isProduction && (
-                    <Grid item xs={1}>
+                    )}
+                    {craft && !isProduction && (
                         <Button
                             onClick={this.craftMissing}
                             text="Craft Missing"
                         />
-                    </Grid>
-                )}
-                <Grid container item xs={12} spacing={8}>
-                    {Object.values(displayCollection)
-                        .sort(compareCardsByKnowledge)
-                        .slice(page * cardsPerPage, (page + 1) * cardsPerPage)
-                        .map((card, i) => (
-                            <Grid item key={i} xs={2} style={{textAlign: "center"}}>
-                                {collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
-                                {craft ? (
-                                    <CraftableCard
-                                        opacity={collection[card.set + "." + card.name] ? 1 : 0.5}
-                                        craft={craft}
-                                        count={collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
-                                        onCraft={this.onCraft(card.set + "." + card.name)}
-                                        onSalvage={this.onSalvage(card.set + "." + card.name)}
-                                        craftDisabled={dust < craftCost}
-                                        salvageDisabled={!collection[card.set + "." + card.name]}
-                                        cardData={card}
-                                        windowDimensions={windowDimensions}
-                                    />
-                                ) : (
-                                    <CardDisplay
-                                        opacity={collection[card.set + "." + card.name] ? 1 : 0.5}
-                                        cardData={card}
-                                        windowDimensions={windowDimensions}
-                                    />
-                                )}
-                            </Grid>
-                        ))}
-                </Grid>
-            </Grid>
+                    )}
+                </div>
+                <div style={{display: "flex"}}>
+                    <div style={{display: "flex", flexWrap: "wrap"}}>
+                        {Object.values(displayCollection)
+                            .sort(compareCardsByKnowledge)
+                            .filter(card => {
+                                return card;
+                            })
+                            .map((card, i) => (
+                                <div key={i} style={{textAlign: "center"}}>
+                                    {collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
+                                    {craft ? (
+                                        <CraftableCard
+                                            scale = {1.5}
+                                            opacity={collection[card.set + "." + card.name] ? 1 : 0.5}
+                                            craft={craft}
+                                            count={collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
+                                            onCraft={this.onCraft(card.set + "." + card.name)}
+                                            onSalvage={this.onSalvage(card.set + "." + card.name)}
+                                            craftDisabled={dust < craftCost}
+                                            salvageDisabled={!collection[card.set + "." + card.name]}
+                                            cardData={card}
+                                            windowDimensions={windowDimensions}
+                                        />
+                                    ) : (
+                                        <CardDisplay
+                                            scale = {1.5}
+                                            opacity={collection[card.set + "." + card.name] ? 1 : 0.5}
+                                            cardData={card}
+                                            windowDimensions={windowDimensions}
+                                        />
+                                    )}
+                                </div>)
+                            )}
+                    </div>
+                </div>
+            </div>
         ) : (
             <div>Loading Collection</div>
         );

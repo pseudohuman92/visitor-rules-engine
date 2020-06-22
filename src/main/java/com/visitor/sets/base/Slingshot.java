@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
+import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
+import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 
 /**
  * @author pseudo
  */
-public class Y04 extends Unit {
+public class Slingshot extends Unit {
 
-	public Y04 (Game game, String owner) {
-		super(game, "Black Bear",
-				1, new CounterMap(YELLOW, 1),
+	public Slingshot (Game game, String owner) {
+		super(game, "Slingshot",
+				4, new CounterMap(),
 				"",
-				0, 4,
-				owner, Regenerate);
+				2, 1,
+				owner, Flying, FirstStrike);
 	}
 }

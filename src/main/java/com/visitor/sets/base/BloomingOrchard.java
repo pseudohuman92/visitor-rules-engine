@@ -9,18 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
-public class Y07 extends Unit {
+public class BloomingOrchard extends Unit {
 
-	public Y07 (Game game, String owner) {
-		super(game, "Black Bear",
-				2, new CounterMap(YELLOW, 1),
+	public BloomingOrchard (Game game, String owner) {
+		super(game, "Blooming Orchard",
+				1, new CounterMap(YELLOW, 1),
 				"",
-				3, 1,
-				owner);
+				0, 4,
+				owner, Regenerate);
 	}
 }

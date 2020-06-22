@@ -9,18 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Defender;
+import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
-public class C03 extends Unit {
+public class UnendingFields extends Unit {
 
-	public C03 (Game game, String owner) {
-		super(game, "Black Bear",
-				3, new CounterMap(),
+	public UnendingFields (Game game, String owner) {
+		super(game, "Unending Fields",
+				2, new CounterMap(YELLOW, 1),
 				"",
-				3, 3,
-				owner, Defender);
+				1, 3,
+				owner, Lifelink);
 	}
 }

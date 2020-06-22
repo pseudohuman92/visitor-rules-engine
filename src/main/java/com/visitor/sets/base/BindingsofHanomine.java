@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
-public class Y05 extends Unit {
+public class BindingsofHanomine extends Unit {
 
-	public Y05 (Game game, String owner) {
-		super(game, "Black Bear",
-				2, new CounterMap(YELLOW, 1),
+	public BindingsofHanomine (Game game, String owner) {
+		super(game, "Bindings of Hanomine",
+				4, new CounterMap(YELLOW, 2),
 				"",
-				1, 3,
-				owner, Flying);
+				3, 5,
+				owner, Vigilance);
 	}
 }

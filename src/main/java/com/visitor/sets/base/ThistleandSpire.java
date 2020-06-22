@@ -9,19 +9,18 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
-import static com.visitor.protocol.Types.Knowledge.YELLOW;
+import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
 /**
  * @author pseudo
  */
-public class Y12 extends Unit {
+public class ThistleandSpire extends Unit {
 
-	public Y12 (Game game, String owner) {
-		super(game, "Black Bear",
-				5, new CounterMap(YELLOW, 3),
+	public ThistleandSpire (Game game, String owner) {
+		super(game, "Thistle and Spire",
+				1, new CounterMap(),
 				"",
-				4, 6,
-				owner, Vigilance);
+				0, 4,
+				owner, Defender);
 	}
 }

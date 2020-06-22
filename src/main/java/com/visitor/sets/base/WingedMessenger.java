@@ -9,19 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
-public class C01 extends Unit {
+public class WingedMessenger extends Unit {
 
-	public C01 (Game game, String owner) {
-		super(game, "Black Bear",
-				4, new CounterMap(),
+	public WingedMessenger (Game game, String owner) {
+		super(game, "Winged Messenger",
+				2, new CounterMap(YELLOW, 1),
 				"",
-				2, 1,
-				owner, Flying, FirstStrike);
+				1, 3,
+				owner, Flying);
 	}
 }

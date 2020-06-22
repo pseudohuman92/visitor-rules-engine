@@ -6,9 +6,9 @@ import com.visitor.helpers.CounterMap;
 
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
-public class UR05 extends Ritual {
-	public UR05 (Game game, String owner) {
-		super(game, "UR01", 3,
+public class FromDawnTillDusk extends Ritual {
+	public FromDawnTillDusk (Game game, String owner) {
+		super(game, "From Dawn Till Dusk", 3,
 				new CounterMap<>(BLUE, 1),
 				"Draw 3 cards.\nDiscard 1 card.",
 				owner);

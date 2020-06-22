@@ -9,20 +9,19 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
-import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
+import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
-public class Y11 extends Unit {
+public class PolarVortex extends Unit {
 
-	public Y11 (Game game, String owner) {
-		super(game, "Black Bear",
-				5, new CounterMap<>(YELLOW, 2),
+	public PolarVortex (Game game, String owner) {
+		super(game, "Polar Vortex",
+				1, new CounterMap(YELLOW, 1),
 				"",
-				3, 2,
-				owner, Flying, Vigilance);
+				2, 3,
+				owner, Defender);
 	}
 }

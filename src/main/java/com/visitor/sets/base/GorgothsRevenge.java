@@ -9,19 +9,18 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
-public class Y10 extends Unit {
+public class GorgothsRevenge extends Unit {
 
-	public Y10 (Game game, String owner) {
-		super(game, "Black Bear",
-				6, new CounterMap(YELLOW, 3),
+	public GorgothsRevenge (Game game, String owner) {
+		super(game, "Gorgoth's Revenge",
+				2, new CounterMap(YELLOW, 1),
 				"",
-				5, 5,
-				owner, Flying);
+				3, 1,
+				owner);
 	}
 }

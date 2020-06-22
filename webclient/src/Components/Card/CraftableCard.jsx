@@ -24,7 +24,8 @@ class CraftableCard extends PureComponent {
             salvageDisabled,
             count,
             cardData,
-            windowDimensions
+            windowDimensions,
+            scale
         } = this.props;
         return (
             <div>
@@ -57,7 +58,7 @@ class CraftableCard extends PureComponent {
                                 alignContents: "center"
                             }}>
                                 <div style={{textAlign: "center"}}>{count}</div>
-                                <CardDisplay cardData={cardData} opacity="1" windowDimensions={windowDimensions}/>
+                                <CardDisplay popupDisabled scale={scale} cardData={cardData} opacity="1" windowDimensions={windowDimensions}/>
                             </div>
                             <div style={{
                                 display: "flex",
@@ -76,7 +77,7 @@ class CraftableCard extends PureComponent {
                     </DialogContent>
                 </Dialog>
                 <div onClick={this.openDialog}>
-                    <CardDisplay cardData={cardData} windowDimensions={windowDimensions}/>
+                    <CardDisplay popupDisabled scale={scale} cardData={cardData} windowDimensions={windowDimensions}/>
                 </div>
             </div>
         );

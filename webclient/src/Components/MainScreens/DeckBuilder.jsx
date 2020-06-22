@@ -29,7 +29,7 @@ class DeckBuilder extends React.Component {
         this.state = {
             name: "",
             deck: {},
-            changed: false
+            changed: false,
         };
     }
 
@@ -115,6 +115,7 @@ class DeckBuilder extends React.Component {
                 <div style={{display: "flex"}}>
                     <div style={{display: "flex", flexWrap: "wrap", flexGrow: 9}}>
                         {Object.values(toFullCards(collection))
+                            .filter(card => {return card})
                             .sort(compareCardsByKnowledge)
                             .map(
                                 (card, i) =>
@@ -154,6 +155,7 @@ class DeckBuilder extends React.Component {
                     >
                         <div style={{textAlign: "center"}}>{"Deck List"}</div>
                         {Object.values(toFullCards(deck))
+                            .filter(card => {return card})
                             .sort(compareCardsByKnowledge)
                             .map((card, i) => (
                                 <div style={{display: "flex", padding: "3px"}}

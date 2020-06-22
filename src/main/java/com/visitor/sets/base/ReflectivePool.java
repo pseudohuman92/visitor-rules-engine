@@ -6,9 +6,9 @@ import com.visitor.helpers.CounterMap;
 
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
-public class UR04 extends Ritual {
-	public UR04 (Game game, String owner) {
-		super(game, "UR01", 6,
+public class ReflectivePool extends Ritual {
+	public ReflectivePool (Game game, String owner) {
+		super(game, "Reflective Pool", 6,
 				new CounterMap<>(BLUE, 3),
 				"Return all cards to their controller's hands.",
 				owner);

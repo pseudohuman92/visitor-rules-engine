@@ -12,10 +12,10 @@ import com.visitor.helpers.CounterMap;
 /**
  * @author pseudo
  */
-public class C05 extends Unit {
+public class Storyteller extends Unit {
 
-	public C05 (Game game, String owner) {
-		super(game, "Black Bear",
+	public Storyteller (Game game, String owner) {
+		super(game, "Storyteller",
 				5, new CounterMap(),
 				"",
 				4, 4,

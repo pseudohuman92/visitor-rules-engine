@@ -15,13 +15,13 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
 /**
  * @author pseudo
  */
-public class Y08 extends Unit {
+public class AcidRain extends Unit {
 
-	public Y08 (Game game, String owner) {
-		super(game, "Black Bear",
-				3, new CounterMap(YELLOW, 2),
+	public AcidRain (Game game, String owner) {
+		super(game, "Acid Rain",
+				6, new CounterMap(YELLOW, 3),
 				"",
-				3, 3,
+				5, 5,
 				owner, Flying);
 	}
 }

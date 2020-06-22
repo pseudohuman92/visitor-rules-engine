@@ -7,9 +7,9 @@ import com.visitor.helpers.CounterMap;
 import static com.visitor.card.properties.Combat.CombatAbility.Unblockable;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
-public class UR03 extends Ritual {
-	public UR03 (Game game, String owner) {
-		super(game, "UR01", 2,
+public class FirmResolution extends Ritual {
+	public FirmResolution (Game game, String owner) {
+		super(game, "Firm Resolution", 2,
 				new CounterMap<>(BLUE, 1),
 				"Up to 2 target units gains unblockable until end of turn",
 				owner);
