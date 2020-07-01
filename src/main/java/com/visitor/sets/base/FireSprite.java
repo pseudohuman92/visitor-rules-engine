@@ -6,8 +6,13 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
+
+import java.util.UUID;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
@@ -15,13 +20,21 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 /**
  * @author pseudo
  */
-public class FireSprite extends Unit {
+public class FireSprite extends ActivatableUnit {
 
 	public FireSprite (Game game, String owner) {
 		super(game, "Fire Sprite",
 				5, new CounterMap(PURPLE, 2),
-				"",
+				"Sacrifice a unit: {~} gains +2/+2 until end of turn.",
 				3, 4,
 				owner, Flying);
+
+		activatable
+				.addActivatedAbility(new ActivatedAbility(game, this, 0, "{~} gains +2/+2 until end of turn.",
+						() -> {
+							UUID sacrificedId = game.selectFromZone(controller, Game.Zone.Play, Predicates::isUnit, 1, false, "Sacrifice a unit.").get(0);
+							game.sacrifice(sacrificedId);
+						},
+						() -> game.addTurnlyAttackAndHealth(id, 2, 2)));
 	}
 }

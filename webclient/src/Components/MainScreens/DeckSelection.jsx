@@ -45,6 +45,7 @@ class DeckSelection extends React.Component {
     const decklist = toDecklist(deck);
     if (decklist) {
       this.props.serverHandler.joinQueue(proto.GameType.BO1_CONSTRUCTED, decklist);
+      this.setState({message: "JOINED" });
     } else {
       this.setState({message: "Invalid Deck" });
     }
@@ -64,10 +65,11 @@ class DeckSelection extends React.Component {
 
 
   render() {
-    const {decks} = this.state;
+    const {decks, message} = this.state;
     return (
         <div>
-        {!isProduction && <Button onClick={this.loadGame} text="Load"/> } 
+        {!isProduction && <Button onClick={this.loadGame} text="Load"/> }
+          {message === "JOINED" && <Redirect to={"/profile/play/game"}/>}
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
                 <Grid
@@ -90,7 +92,7 @@ class DeckSelection extends React.Component {
                 </Grid>
               ))}
             </Grid>
-            {this.state.message}
+            {message}
           </div>
     );
   }

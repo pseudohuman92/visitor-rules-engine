@@ -14,6 +14,7 @@ import {Draggable} from "react-beautiful-dnd";
 const mapStateToProps = (state) => {
     return {
         clientPhase: state.extendedGameState.clientPhase,
+        gamePhase: state.extendedGameState.game.phase,
         windowDimensions: state.windowDimensions,
 
         playableCards: state.extendedGameState.game.canPlay,
@@ -31,6 +32,10 @@ const mapStateToProps = (state) => {
 
 function playablePhase(clientPhase) {
     return clientPhase === ClientPhase.UPDATE_GAME || clientPhase === ClientPhase.ATTACK_PHASE || clientPhase === ClientPhase.BLOCK_PHASE;
+}
+
+function combatPhase(phase) {
+    return phase === proto.Phase.ATTACK || phase === proto.Phase.BLOCK;
 }
 
 class PlayingCard extends React.Component {
@@ -403,6 +408,7 @@ class PlayingCard extends React.Component {
     //! Rendering //////
     render() {
         const {
+            gamePhase,
             clientPhase,
             DnDIndex,
             isDragDisabled,
@@ -598,7 +604,7 @@ class PlayingCard extends React.Component {
 
                             <div {...provided.dragHandleProps}>
                                 {
-                                    (showArrows || canBeBlocked || canBeAssignedDamage) &&
+                                    (showArrows || combatPhase(gamePhase)) &&
                                     arrowRelations.map((rel, i) => {
                                         return <LineTo key={i} {...rel} />;
                                     })

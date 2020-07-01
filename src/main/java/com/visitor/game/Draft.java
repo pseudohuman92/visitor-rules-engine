@@ -2,6 +2,7 @@ package com.visitor.game;
 
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
+import com.visitor.helpers.HelperFunctions;
 import com.visitor.helpers.UUIDHelper;
 import com.visitor.protocol.ServerGameMessages;
 import com.visitor.protocol.Types;
@@ -12,6 +13,7 @@ import com.visitor.sets.base.Eagle;
 
 import javax.websocket.EncodeException;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -20,7 +22,7 @@ import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
 public class Draft {
-
+	public static final List<String> cardClasses = HelperFunctions.getClassesInPackage("com.visitor.sets.base");
 	public transient Hashmap<String, DraftEndpoint> connections;
 	public transient Hashmap<String, ArrayBlockingQueue<Object>> responses;
 	Hashmap<String, Player> players;
@@ -31,6 +33,7 @@ public class Draft {
 	int roundPickCount;
 	int roundsCompleted;
 	boolean started;
+	private Game game = new Game(); //Dummy game
 
 	private final int TOTAL_ROUNDS = 3;
 
@@ -70,11 +73,26 @@ public class Draft {
 	//TODO: implement this
 	private Arraylist<Card> getRandomCards (String username, int count) {
 		Arraylist<Card> cards = new Arraylist<>();
+		Arraylist<Integer> indexes = new Arraylist<>();
+		System.out.println("Class Count " + cardClasses.size());
+		while (indexes.size() < count){
+			int rand = -1;
+			do {
+				rand = (int) (cardClasses.size() * Math.random());
+			} while (indexes.contains(rand));
+			indexes.add(rand);
+		}
 
-		cards.add(new BladeDervish(null, username));
-		cards.add(new CreepingCanopyVine(null, username));
-		cards.add(new Eagle(null, username));
+		System.out.println("INDEXES");
+		System.out.println(indexes);
 
+		for (int i: indexes) {
+			System.out.println("Card Name: " + cardClasses.get(i));
+			cards.add(HelperFunctions.createCard(game, username, "base." + cardClasses.get(i)));
+		}
+
+		System.out.println("CARDS");
+		System.out.println(cards);
 		return cards;
 	}
 

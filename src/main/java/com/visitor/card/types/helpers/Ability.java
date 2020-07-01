@@ -10,6 +10,7 @@ import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types;
 
 import java.util.UUID;
@@ -19,15 +20,23 @@ import java.util.UUID;
  */
 public class Ability extends Card {
 
-	public Ability (Game game, Card creator, String text, Runnable effect, UUID... targets) {
-		this(game, creator, text, effect, new Arraylist<>(targets));
-	}
+
 
 	public Ability (Game game, Card creator, String text, Runnable effect, Arraylist<UUID> targets) {
 		super(game, creator.name + "'s Ability", new CounterMap<>(), CardType.Ability, text, creator.controller);
 		this.targets = new Arraylist<>(creator.id).putAllIn(targets);
 
-		playable = new Playable(game, this).setResolveEffect(effect);
+		playable = new Playable(game, this).setResolveEffect(effect).setDisappering();
+
+	}
+
+	public Ability (Game game, Card creator, String text, Runnable effect, UUID... targets) {
+		this(game, creator, text, effect, new Arraylist<>(targets));
+	}
+
+	public Ability (Game game, Card creator, ActivatedAbility activatedAbility) {
+		this(game, creator, activatedAbility.getText(), activatedAbility.getActivate());
+		this.id = activatedAbility.id;
 	}
 
 	@Override

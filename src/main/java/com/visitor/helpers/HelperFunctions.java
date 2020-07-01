@@ -1,6 +1,26 @@
 package com.visitor.helpers;
 
+import com.visitor.game.Card;
+import com.visitor.game.Deck;
+import com.visitor.game.Game;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+
+import static java.lang.Class.forName;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Logger.getLogger;
 
 public class HelperFunctions {
 
@@ -30,4 +50,42 @@ public class HelperFunctions {
 	public static <T> T runIfNotNull (Object object, Supplier<T> supplier) {
 		return runIfNotNull(object, supplier, () -> null);
 	}
+
+	// Taken from stackoverflow
+	public static List<String> getClassesInPackage(String packageName) {
+		List<String> classes = new ArrayList<String>();
+		URL root = Thread.currentThread().getContextClassLoader().getResource(packageName.replace(".", "/"));
+
+		// Filter .class files.
+		File[] files = new File[0];
+		try {
+			files = new File(URLDecoder.decode(root.getFile(), "UTF-8")).listFiles(new FilenameFilter() {
+				public boolean accept (File dir, String name) {
+					return name.endsWith(".class");
+				}
+			});
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+// Find classes implementing ICommand.
+		for (File file : files) {
+			classes.add(file.getName().replaceAll(".class$", ""));
+
+		}
+		return classes;
+	}
+
+	public static Card createCard (Game game, String username, String cardName) {
+		try {
+			Class<?> cardClass = forName("com.visitor.sets." + cardName);
+			Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
+			Object card = cardConstructor.newInstance(game, username);
+			return ((Card) card);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
+			getLogger(HelperFunctions.class.getName()).log(SEVERE, null, ex);
+		}
+		return null;
+	}
+
 }

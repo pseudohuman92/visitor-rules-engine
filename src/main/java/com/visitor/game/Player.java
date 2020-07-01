@@ -63,7 +63,7 @@ public class Player {
 		}
 	}
 
-	public void payLife (int amount) {
+	public void payHealth (int amount) {
 		combat.loseHealth(amount);
 		if (combat.getHealth() <= 0) {
 			game.gameEnd(username, false);
@@ -246,5 +246,13 @@ public class Player {
 
 	public Card extractTopmostMatchingFromDeck (Predicate<Card> cardPredicate) {
 		return deck.extractTopmost(cardPredicate);
+	}
+
+	public int getKnowledgeCount (Knowledge knowledge) {
+		return knowledgePool.getOrDefault(knowledge, 0);
+	}
+
+	public boolean hasHealth (int i) {
+		return combat.getHealth() >= i;
 	}
 }

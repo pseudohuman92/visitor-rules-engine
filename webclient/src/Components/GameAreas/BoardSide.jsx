@@ -33,6 +33,7 @@ class BoardSide extends Component {
             style={{
               height: "100%",
               display: "flex",
+              flexWrap: "wrap",
               justifyContent: "center",
               alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
             }}

@@ -1,7 +1,7 @@
 import React from "react";
 import {PureComponent} from "react";
 
-import {toKnowledgeString} from "../Helpers/Helpers";
+import {replaceSpecialCharacters, toKnowledgeString} from "../Helpers/Helpers";
 import "./css/Card.css";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
@@ -149,7 +149,7 @@ class FullCard extends PureComponent {
                             }}
                         >
                             <FittedText
-                                text={(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + description}
+                                text={(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)}
                                 max={15}
                                 windowDimensions={windowDimensions}
                             />

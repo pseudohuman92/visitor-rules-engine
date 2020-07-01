@@ -1,34 +1,35 @@
 import proto, {
-  GameState,
-  Card,
-  AttackerAssignment,
-  Player,
-  BlockerAssignment,
-  DamageAssignment, DraftState
+    AttackerAssignment,
+    BlockerAssignment,
+    Card,
+    DamageAssignment,
+    DraftState,
+    GameState,
+    Player
 } from "../../protojs/compiled";
-import { toKnowledgeCost } from "./Helpers";
+import {toKnowledgeCost} from "./Helpers";
 
 export enum ClientPhase {
-  NOT_STARTED = "NotStarted",
-  UPDATE_GAME = "UpdateGame",
-  WAITING = "Waiting",
-  WIN = "Win",
-  LOSE = "Lose",
-  ORDER_CARDS = "OrderCards",
-  SELECT_FROM_LIST = "SelectFromList",
-  SELECT_FROM_PLAY = "SelectFromPlay",
-  SELECT_FROM_HAND = "SelectFromHand",
-  SELECT_FROM_DISCARD_PILE= "SelectFromDiscardPile",
-  SELECT_FROM_VOID = "SelectFromVoid",
-  SELECT_FROM_STACK = "SelectFromStack",
-  SELECT_X_VALUE = "SelectXValue",
-  SELECT_ATTACKERS = "SelectAttackers",
-  ATTACK_PHASE = "AttackPhase",
-  SELECT_BLOCKERS = "SelectBlockers",
-  BLOCK_PHASE = "BlockPhase",
-  ASSIGN_DAMAGE = "AssignDamage",
-  SELECT_KNOWLEDGE = "SelectKnowledge",
-  PICK_CARD = "PickCard",
+    NOT_STARTED = "NotStarted",
+    UPDATE_GAME = "UpdateGame",
+    WAITING = "Waiting",
+    WIN = "Win",
+    LOSE = "Lose",
+    ORDER_CARDS = "OrderCards",
+    SELECT_FROM_LIST = "SelectFromList",
+    SELECT_FROM_PLAY = "SelectFromPlay",
+    SELECT_FROM_HAND = "SelectFromHand",
+    SELECT_FROM_DISCARD_PILE = "SelectFromDiscardPile",
+    SELECT_FROM_VOID = "SelectFromVoid",
+    SELECT_FROM_STACK = "SelectFromStack",
+    SELECT_X_VALUE = "SelectXValue",
+    SELECT_ATTACKERS = "SelectAttackers",
+    ATTACK_PHASE = "AttackPhase",
+    SELECT_BLOCKERS = "SelectBlockers",
+    BLOCK_PHASE = "BlockPhase",
+    ASSIGN_DAMAGE = "AssignDamage",
+    SELECT_KNOWLEDGE = "SelectKnowledge",
+    PICK_CARD = "PickCard",
 }
 
 export const knowledgeMap: any = {};
@@ -52,100 +53,100 @@ knowledgeNameMap[proto.Knowledge.YELLOW] = "Yellow";
 knowledgeNameMap[proto.Knowledge.NONE] = "None";
 
 export interface Dimension {
-  width: number;
-  height: number;
+    width: number;
+    height: number;
 }
 
 export function initialDimension(): Dimension {
-  return {
-    width: 0,
-    height: 0
-  };
+    return {
+        width: 0,
+        height: 0
+    };
 }
 
 export interface DialogData {
-  //Data for modal dialogue screen
-  title: string;
-  open: boolean;
-  cards: Card[];
+    //Data for modal dialogue screen
+    title: string;
+    open: boolean;
+    cards: Card[];
 }
 
 export function initialDialogData(): DialogData {
-  return {
-    title: "",
-    open: false,
-    cards: []
-  };
+    return {
+        title: "",
+        open: false,
+        cards: []
+    };
 }
 
 export interface AttackerAssignmentData {
-  possibleAttackers: string[];
-  attackerAssignments: AttackerAssignment[];
-  currentAttacker: string;
-  possibleAttackTargets: string[];
+    possibleAttackers: string[];
+    attackerAssignments: AttackerAssignment[];
+    currentAttacker: string;
+    possibleAttackTargets: string[];
 }
 
 export function initialAttackerAssignmentData(): AttackerAssignmentData {
-  return {
-    possibleAttackers: [],
-    attackerAssignments: [],
-    currentAttacker: "",
-    possibleAttackTargets: []
-  };
+    return {
+        possibleAttackers: [],
+        attackerAssignments: [],
+        currentAttacker: "",
+        possibleAttackTargets: []
+    };
 }
 
 export interface BlockerAssignmentData {
-  possibleBlockers: string[];
-  blockerAssignments: BlockerAssignment[];
-  currentBlocker: string;
-  possibleBlockTargets: string[];
+    possibleBlockers: string[];
+    blockerAssignments: BlockerAssignment[];
+    currentBlocker: string;
+    possibleBlockTargets: string[];
 }
 
 export function initialBlockerAssignmentData(): BlockerAssignmentData {
-  return {
-    possibleBlockers: [],
-    blockerAssignments: [],
-    currentBlocker: "",
-    possibleBlockTargets: []
-  };
+    return {
+        possibleBlockers: [],
+        blockerAssignments: [],
+        currentBlocker: "",
+        possibleBlockTargets: []
+    };
 }
 
 export interface DamageAssignmentData {
-  damageSource: string;
-  possibleTargets: string[];
-  totalDamage: number;
-  damageAssignments: DamageAssignment[];
-  totalAssignedDamage: number;
+    damageSource: string;
+    possibleTargets: string[];
+    totalDamage: number;
+    damageAssignments: DamageAssignment[];
+    totalAssignedDamage: number;
 }
 
 export function initialDamageAssignmentData(): DamageAssignmentData {
-  return {
-    damageSource: "",
-    possibleTargets: [],
-    totalDamage: 0,
-    damageAssignments: [],
-    totalAssignedDamage: 0,
-  };
+    return {
+        damageSource: "",
+        possibleTargets: [],
+        totalDamage: 0,
+        damageAssignments: [],
+        totalAssignedDamage: 0,
+    };
 }
 
 export interface SelectionData {
-  selectionCount: number;
-  candidates: Card[];
-  selectable: string[];
-  upTo: boolean;
-  selected: string[];
-  maxXValue: number;
+    selectionCount: number;
+    candidates: Card[];
+    selectable: string[];
+    upTo: boolean;
+    selected: string[];
+    maxXValue: number;
 }
 
 export function initialSelectionData(): SelectionData {
-  return {
-    selectionCount: 0,
-    candidates: [],
-    selectable: [],
-    upTo: false,
-    selected: [],
-    maxXValue: 0,
-  };
+    return {
+        selectionCount: 0,
+        candidates: [],
+        selectable: [],
+        upTo: false,
+        selected: [],
+        maxXValue: 0,
+    };
 }
 
 /*
@@ -163,160 +164,180 @@ export function initialArrowData(): ArrowData {
 */
 
 export interface ExtendedGameState {
-  opponentUsername: string;
-  game: GameState; //GameState object. See proto files
-  draft: DraftState; //DraftState object. See proto files
-  clientPhase: ClientPhase; //Client defined phases
+    opponentUsername: string;
+    game: GameState; //GameState object. See proto files
+    draft: DraftState; //DraftState object. See proto files
+    clientPhase: ClientPhase; //Client defined phases
 
-  message: string;
-  gameInitialized: boolean;
-  autoPass: boolean;
-  win: boolean;
+    message: string;
+    gameInitialized: boolean;
+    autoPass: boolean;
+    win: boolean;
 
-  dialogData: DialogData;
-  selectionData: SelectionData;
-  attackerAssignmentData: AttackerAssignmentData;
-  blockerAssignmentData: BlockerAssignmentData;
-  damageAssignmentData: DamageAssignmentData;
+    dialogData: DialogData;
+    selectionData: SelectionData;
+    attackerAssignmentData: AttackerAssignmentData;
+    blockerAssignmentData: BlockerAssignmentData;
+    damageAssignmentData: DamageAssignmentData;
 }
 
 export function initialExtendedGameState(): ExtendedGameState {
-  let game = GameState.create();
-  game.player = Player.create();
-  game.opponent = Player.create();
+    let game = GameState.create();
+    game.player = Player.create();
+    game.opponent = Player.create();
 
-  let draft = DraftState.create();
-  game.player = Player.create();
-  game.opponent = Player.create();
-  return {
-    opponentUsername: "",
-    game: game, //GameState object. See proto files
-    draft: draft,
-    clientPhase: ClientPhase.NOT_STARTED, //Client defined phases
+    let draft = DraftState.create();
+    game.player = Player.create();
+    game.opponent = Player.create();
+    return {
+        opponentUsername: "",
+        game: game, //GameState object. See proto files
+        draft: draft,
+        clientPhase: ClientPhase.NOT_STARTED, //Client defined phases
 
-    message: "",
-    gameInitialized: false,
-    autoPass: false,
-    win: false,
+        message: "",
+        gameInitialized: false,
+        autoPass: false,
+        win: false,
 
-    dialogData: initialDialogData(),
-    attackerAssignmentData: initialAttackerAssignmentData(),
-    blockerAssignmentData: initialBlockerAssignmentData(),
-    damageAssignmentData: initialDamageAssignmentData(),
-    selectionData: initialSelectionData()
-  };
+        dialogData: initialDialogData(),
+        attackerAssignmentData: initialAttackerAssignmentData(),
+        blockerAssignmentData: initialBlockerAssignmentData(),
+        damageAssignmentData: initialDamageAssignmentData(),
+        selectionData: initialSelectionData()
+    };
 }
 
 export interface Profile {
-  coins: number;
-  collection: any; //TODO: Lookup its type
-  collectionId: string;
-  dailyWins: number;
-  decks: any; //TODO: Lookup its type
-  dust: number;
-  username: string;
-  packs: any; //TODO: Lookup its type
-  isAuthenticated: boolean;
+    coins: number;
+    collection: any; //TODO: Lookup its type
+    collectionId: string;
+    dailyWins: number;
+    decks: any; //TODO: Lookup its type
+    dust: number;
+    username: string;
+    packs: any; //TODO: Lookup its type
+    isAuthenticated: boolean;
 }
 
 export function initialProfile(): Profile {
-  return {
-    coins: 0,
-    collection: {},
-    collectionId: "",
-    dailyWins: 0,
-    decks: "",
-    dust: 0,
-    username: "",
-    packs: {},
-    isAuthenticated: false,
-  };
+    return {
+        coins: 0,
+        collection: {},
+        collectionId: "",
+        dailyWins: 0,
+        decks: "",
+        dust: 0,
+        username: "",
+        packs: {},
+        isAuthenticated: false,
+    };
 }
 
 export interface State {
-  extendedGameState: ExtendedGameState;
-  firebaseAuthData: any; // Object received from firebase
-  profile: Profile;
-  windowDimensions: Dimension;
+    extendedGameState: ExtendedGameState;
+    firebaseAuthData: any; // Object received from firebase
+    profile: Profile;
+    windowDimensions: Dimension;
 }
 
 export function initialState(): State {
-  return {
-    extendedGameState: initialExtendedGameState(),
-    firebaseAuthData: {}, // Object received from firebase
-    profile: initialProfile(),
-    windowDimensions: initialDimension(),
-  };
+    return {
+        extendedGameState: initialExtendedGameState(),
+        firebaseAuthData: {}, // Object received from firebase
+        profile: initialProfile(),
+        windowDimensions: initialDimension(),
+    };
 }
 
 const initializeFullCollection = () => {
-  const result: any = {};
-  fetch("/Visitor Cards - Cards.json")
-    .then(r => r.text())
-    .then(file =>
-      JSON.parse(file).forEach((card: any) => {
-        let name = card.Name;
-        if (
-          name !== "" //&&
-          //!card.Code.startsWith("Code") //&& !card.Code.startsWith("A")
-        ) {
-          result[card.Set+"."+name] = {
-            set: card.Set,
-            name: name,
-            types: [card.Type],
-            subtypes: [card.Subtype],
-            description: card.Effect,
-            combat : {
-              attack: card.Attack,
-              health: card.Health,
-              shield: card.Shield,
-            },
-            cost: card.Energy,
-            knowledgeCost: toKnowledgeCost(card.Knowledge),
-            loyalty: card.Loyalty
-          };
-        }
-      })
-    );
-  return result;
+    const result: any = {};
+    fetch("/Visitor Cards - Cards.json")
+        .then(r => r.text())
+        .then(file =>
+            JSON.parse(file).forEach((card: any) => {
+                let name = card.Name;
+                if (
+                    name !== "" //&&
+                    //!card.Code.startsWith("Code") //&& !card.Code.startsWith("A")
+                ) {
+                    result[card.Set + "." + name] = {
+                        set: card.Set,
+                        name: name,
+                        types: [card.Type],
+                        subtypes: [card.Subtype],
+                        description: card.Effect,
+                        combat: {
+                            attack: card.Attack,
+                            health: card.Health,
+                            shield: card.Shield,
+                        },
+                        cost: card.Energy,
+                        knowledgeCost: toKnowledgeCost(card.Knowledge),
+                        loyalty: card.Loyalty
+                    };
+                }
+            })
+        );
+    return result;
 };
 
 export const fullCollection = initializeFullCollection();
 
 function getNewUserCollection() {
-  let newUserCollection: any = {};
-  Object.keys(fullCollection).forEach(function(key) {
-    newUserCollection[key] = 3;
-  });
-  return newUserCollection;
+    let newUserCollection: any = {};
+    Object.keys(fullCollection).forEach(function (key) {
+        newUserCollection[key] = 3;
+    });
+    return newUserCollection;
 }
 
 export const newUserCollection = getNewUserCollection();
 
 export const keywords = {
-  Transform: "Transforms the card into another one.",
-  Possess: "Acquire the control of a card.",
-  Pay: "Trigger card's ability at the cost of additional energy.",
-  Sacrifice:
-    "Trigger card's ability at the cost of putting it into your discardPile.",
-  Delay: "Postpone an action or effect for written number of rounds",
-  Loyalty: "TODO",
-  Shield: "Prevent the damage dealt to target.",
-  Reflect:
-    "Prevent the determined damage and deal that much damage back to its source.",
-  Donate: "Transfer the control of the card to another player",
-  Health: "An asset or players total resistance to fatal damage",
-  Damage: "Reductions to Player health, shields or Card health",
-  Trigger: "Activates on conditional interactions",
-  Activate: "Change a cards play state form Ready to Depleted",
-  Discharge: "Remove specified number of charge counters.",
-  Charge: "Add specified number of charge counters."
+    Transform: "Transforms the card into another one.",
+    Possess: "Acquire the control of a card.",
+    Pay: "Trigger card's ability at the cost of additional energy.",
+    Sacrifice:
+        "Trigger card's ability at the cost of putting it into your discardPile.",
+    Delay: "Postpone an action or effect for written number of rounds",
+    Loyalty: "TODO",
+    Shield: "Prevent the damage dealt to target.",
+    Reflect:
+        "Prevent the determined damage and deal that much damage back to its source.",
+    Donate: "Transfer the control of the card to another player",
+    Health: "An asset or players total resistance to fatal damage",
+    Damage: "Reductions to Player health, shields or Card health",
+    Trigger: "Activates on conditional interactions",
+    Activate: "Change a cards play state form Ready to Depleted",
+    Discharge: "Remove specified number of charge counters.",
+    Charge: "Add specified number of charge counters."
 };
 
 export const craftCost = 1000;
 export const salvageValue = 100;
 
 export const packList = ["Set1"];
-export const packCosts = { Set1: 1000 };
+export const packCosts = {Set1: 1000};
 
 export const isProduction: boolean = process.env.NODE_ENV === "production";
+
+export const specialCharacters = {
+    "{1}": "①",
+    "{2}": "②",
+    "{3}": "③",
+    "{4}": "④",
+    "{5}": "⑤",
+    "{6}": "⑥",
+    "{7}": "⑦",
+    "{8}": "⑧",
+    "{9}": "⑨",
+    "{0}": "⓪",
+    "{U}": "Ⓤ",
+    "{G}": "Ⓖ",
+    "{P}": "Ⓟ",
+    "{R}": "Ⓡ",
+    "{Y}": "Ⓨ",
+    "{S}": "⧗", //Slow
+    "{D}": "↷", //Depleted
+};

@@ -21,10 +21,10 @@ public class PR01 extends Ritual {
 				owner);
 
 		playable
-				.setCanPlayAdditional(() ->
+				.addCanPlayAdditional(() ->
 						game.hasIn(playable.card.controller, Play, Predicates::isUnit, 1)
 				)
-				.setBeforePlay(() -> {
+				.addBeforePlay(() -> {
 					//Sacrificed Unit
 					UUID sacrificedUnit = game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false, "").get(0);
 					targets.add(game.selectFromZone(playable.card.controller, Both_Play, Predicates::isUnit, 1, false, "").get(0));

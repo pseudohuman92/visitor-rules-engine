@@ -6,8 +6,10 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -15,13 +17,17 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 /**
  * @author pseudo
  */
-public class Elephant extends Unit {
+public class Elephant extends ActivatableUnit {
 
 	public Elephant (Game game, String owner) {
 		super(game, "Elephant",
 				4, new CounterMap(GREEN, 3),
-				"",
+				"{D}: Gain 3 energy.",
 				6, 6,
 				owner, Trample);
+
+		activatable
+				.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain 3 energy.",
+						() -> game.addEnergy(controller, 3)).setDepleting());
 	}
 }

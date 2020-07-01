@@ -6,8 +6,13 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
+
+import java.util.UUID;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
@@ -16,13 +21,21 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 /**
  * @author pseudo
  */
-public class FatesHand extends Unit {
+public class FatesHand extends ActivatableUnit {
 
 	public FatesHand (Game game, String owner) {
 		super(game, "Fate's Hand",
 				1, new CounterMap(PURPLE, 1),
-				"",
+				"Sacrifice a unit: {~} gains +1/+1",
 				1, 1,
 				owner, Deathtouch, Lifelink);
+
+		activatable
+				.addActivatedAbility(new ActivatedAbility(game, this, 0, "{~} gains +1/+1",
+						() -> {
+							UUID sacrificedId = game.selectFromZone(controller, Game.Zone.Play, Predicates::isUnit, 1, false, "Sacrifice a unit.").get(0);
+							game.sacrifice(sacrificedId);
+						},
+						() -> game.addAttackAndHealth(id, 1, 1)));
 	}
 }

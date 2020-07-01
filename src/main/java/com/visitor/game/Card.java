@@ -30,13 +30,12 @@ public abstract class Card implements Serializable {
 	public String text;
 	public Arraylist<CardType> types;
 	public Arraylist<CardSubtype> subtypes;
-
 	public CounterMap<Knowledge> knowledge;
 
 	public String owner;
 	public String controller;
-	public boolean depleted;
-	public CounterMap<Counter> counters;
+	protected boolean depleted;
+	protected CounterMap<Counter> counters;
 	public Arraylist<UUID> targets;
 	protected Activatable activatable;
 	protected Triggering triggering;
@@ -422,6 +421,22 @@ public abstract class Card implements Serializable {
 		runIfNotNull(combat, () -> combat.addHealth(i));
 	}
 
+	public void setAttack (int i) {
+		runIfNotNull(combat, () -> combat.setAttack(i));
+	}
+
+	public void setHealth (int i) {
+		runIfNotNull(combat, () -> combat.setHealth(i));
+	}
+
+	public boolean isDeploying () {
+		return combat != null && !combat.isDeploying();
+	}
+
+	public boolean isDepleted () {
+		return depleted;
+	}
+
 
 	public enum CardType {
 		Ally,
@@ -438,6 +453,11 @@ public abstract class Card implements Serializable {
 	public enum CardSubtype {
 		Cantrip,
 		Ritual,
+
+		//Unit Subtypes
+		Zombie,
+		Wizard,
+		Bat
 	}
 
 }

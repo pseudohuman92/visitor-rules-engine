@@ -8,6 +8,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
@@ -21,8 +22,15 @@ public class Peregrimace extends Unit {
 	public Peregrimace (Game game, String owner) {
 		super(game, "Peregrimace",
 				5, new CounterMap(PURPLE, 3),
-				"",
+				"When {~} enters play, draw X cards and lose 2X life where X is equal to number of units you control.",
 				4, 4,
 				owner, Flying, Trample);
+
+		playable.addEnterPlayEffect("When {~} enters play, draw X cards and lose 2X life where X is equal to number of units you control.",
+				()->{
+					int x = game.countInZone(controller, Game.Zone.Play, Predicates::isUnit);
+					game.draw(controller, x);
+					game.payHealth(controller, 2 * x);
+				});
 	}
 }

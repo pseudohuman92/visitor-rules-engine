@@ -185,7 +185,7 @@ class PlayerDisplay extends React.Component {
           }}
         >
           {maxEnergy &&
-            Array(maxEnergy)
+            Array(Math.max(maxEnergy, energy))
               .fill(null)
               .map((c, i) => (
                 <div
@@ -205,7 +205,7 @@ class PlayerDisplay extends React.Component {
                       maxWidth: "100%",
                       maxHeight: "100%",
                       objectFit: "scale-down",
-                      opacity: i >= energy ? 0.3 : 1
+                      opacity: energy ? (i >= energy ? 0.3 : 1) : 0.3
                     }}
                     alt=""
                   />

@@ -6,21 +6,30 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 
+import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
  * @author pseudo
  */
-public class BlackBear extends Unit {
+public class BlackBear extends ActivatableUnit {
 
 	public BlackBear (Game game, String owner) {
 		super(game, "Black Bear",
 				2, new CounterMap(GREEN, 1),
-				"",
+				"{2}, Return {~} to your hand: Draw a card.",
 				3, 3,
 				owner);
+
+		activatable
+				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Draw a card.",
+						() -> game.returnToHand(id),
+						() -> game.draw(controller, 1)));
 	}
 }

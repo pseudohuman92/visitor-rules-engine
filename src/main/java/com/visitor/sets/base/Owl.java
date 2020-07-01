@@ -6,8 +6,11 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
@@ -16,13 +19,18 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 /**
  * @author pseudo
  */
-public class Owl extends Unit {
+public class Owl extends ActivatableUnit {
 
 	public Owl (Game game, String owner) {
 		super(game, "Owl",
 				3, new CounterMap(BLUE, 2),
-				"",
+				"{1}, {D}: Draw a card.",
 				2, 2,
 				owner, Flying, Lifelink);
+
+		activatable
+				.addActivatedAbility(new ActivatedAbility(game, this, 1, "Draw a card",
+						()-> game.draw(controller, 1))
+						.setDepleting());
 	}
 }

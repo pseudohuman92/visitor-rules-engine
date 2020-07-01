@@ -1,6 +1,7 @@
 package com.visitor.game;
 
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.HelperFunctions;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -30,24 +31,13 @@ public class Deck extends Arraylist<Card> {
 					.replace("-", "")
 					.replace("'", "");
 			for (int j = 0; j < count; j++) {
-				Card c = createCard(game, username, name);
+				Card c = HelperFunctions.createCard(game, username, name);
 				if (c != null)
 					add(c);
 			}
 		}
 	}
 
-	public static Card createCard (Game game, String username, String cardName) {
-		try {
-			Class<?> cardClass = forName("com.visitor.sets." + cardName);
-			Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
-			Object card = cardConstructor.newInstance(game, username);
-			return ((Card) card);
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
-			getLogger(Deck.class.getName()).log(SEVERE, null, ex);
-		}
-		return null;
-	}
 
 	public Arraylist<Card> extractFromTop (int count) {
 		Arraylist<Card> cards = new Arraylist<>();

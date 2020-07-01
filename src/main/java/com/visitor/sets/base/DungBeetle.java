@@ -5,9 +5,10 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -15,13 +16,17 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 /**
  * @author pseudo
  */
-public class DungBeetle extends Unit {
+public class DungBeetle extends ActivatableUnit {
 
 	public DungBeetle (Game game, String owner) {
 		super(game, "Dung Beetle",
 				1, new CounterMap(GREEN, 1),
-				"",
+				"{2}: Gain +1/+1 until end of turn.",
 				1, 1,
 				owner, Trample);
+
+		activatable
+				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Gain +1/+1 until end of turn.",
+						()-> game.runIfInZone(controller, Game.Zone.Both_Play, id, ()->game.addTurnlyAttackAndHealth(id, 1,1))));
 	}
 }

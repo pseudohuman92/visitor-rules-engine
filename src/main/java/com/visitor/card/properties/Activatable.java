@@ -5,10 +5,15 @@
  */
 package com.visitor.card.properties;
 
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.UUIDHelper;
 import com.visitor.helpers.containers.ActivatedAbility;
+
+import java.util.UUID;
 
 /**
  * Interface for cards that has an activating ability.
@@ -36,16 +41,16 @@ public class Activatable {
 
 	public final boolean canActivate () {
 		for (ActivatedAbility activatedAbility : abilityList) {
-			if (activatedAbility.canActivate.get())
+			if (activatedAbility.canActivate())
 				return true;
 		}
 		return false;
 	}
 
-	public final Arraylist getActivatableAbilities () {
+	public final Arraylist<ActivatedAbility> getActivatableAbilities () {
 		Arraylist<ActivatedAbility> abilities = new Arraylist<>();
 		for (ActivatedAbility activatedAbility : abilityList) {
-			if (activatedAbility.canActivate.get())
+			if (activatedAbility.canActivate())
 				abilities.add(activatedAbility);
 		}
 		return abilities;
@@ -55,9 +60,15 @@ public class Activatable {
 	public final void activate () {
 		Arraylist<ActivatedAbility> abilities = getActivatableAbilities();
 		if (abilities.size() == 1) {
-			abilities.get(0).activate.run();
+			abilities.get(0).activate();
 		} else if (abilities.size() > 1) {
-			// TODO: figure this out
+			Arraylist<Card> abilityCards = new Arraylist<>(abilityList.transform(aa -> (Card)new Ability(game, card, aa)));
+			UUID chosenAbility = game.selectFromList(card.controller,  abilityCards, Predicates::any, 1, false, "Choose an ability to activate.").get(0);
+			abilities.forEach(aa -> {
+				if(aa.id.equals(chosenAbility)){
+					aa.activate();
+				}
+			});
 		}
 	}
 
@@ -66,8 +77,8 @@ public class Activatable {
 		abilityList.add(ability);
 		return this;
 	}
-	// Resetters
 
+	// Resetters
 	public final void resetAbilityList () {
 		abilityList.clear();
 	}

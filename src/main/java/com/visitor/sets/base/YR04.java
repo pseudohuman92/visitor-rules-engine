@@ -1,6 +1,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Ritual;
+import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -19,6 +20,6 @@ public class YR04 extends Ritual {
 				owner);
 
 		playable
-				.setTargetSingleUnit(c->c.depleted, cardId -> game.destroy(id, cardId), () -> game.gainHealth(controller, 3));
+				.setTargetSingleUnit(Card::isDepleted, cardId -> game.destroy(id, cardId), () -> game.gainHealth(controller, 3));
 	}
 }

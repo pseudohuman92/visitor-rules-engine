@@ -1,5 +1,6 @@
 package com.visitor.game;
 
+import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Junk;
 import com.visitor.helpers.*;
 import com.visitor.helpers.containers.Damage;
@@ -790,8 +791,8 @@ public class Game implements Serializable {
 		return c.owner.equals(getOpponentName(c.controller));
 	}
 
-	public void payLife (String username, int count) {
-		getPlayer(username).payLife(count);
+	public void payHealth (String username, int count) {
+		getPlayer(username).payHealth(count);
 	}
 
 	public void possessTo (String newController, UUID cardID, Zone zone) {
@@ -1159,6 +1160,14 @@ public class Game implements Serializable {
 		getZone(username, zone).forEach(cardConsumer);
 	}
 
+	public void forEachInZone (String username, Zone zone, Predicate<Card> filter, Consumer<UUID> cardIdConsumer) {
+		getZone(username, zone).forEach(card -> {
+			if(filter.test(card)){
+				cardIdConsumer.accept(card.id);
+			}
+		});
+	}
+
 	public int countInZone (String username, Zone zone, Predicate<Card> cardConsumer) {
 		Arraylist<Integer> count = new Arraylist<>();
 		getZone(username, zone).forEach(card -> {
@@ -1175,6 +1184,66 @@ public class Game implements Serializable {
 
 	public Card extractTopmostMatchingFromDeck (String username, Predicate<Card> cardPredicate) {
 		return getPlayer(username).extractTopmostMatchingFromDeck(cardPredicate);
+	}
+
+	public void addAttack (UUID cardId, int i) {
+		getCard(cardId).addAttack(i);
+	}
+
+	public void gainControlFromZone (String newController, Zone oldZone, Zone newZone, UUID targetId) {
+		runIfInZone(newController, oldZone, targetId,
+				()->{
+			Card c = extractCard(targetId);
+			c.controller = newController;
+			putTo(newController, c, newZone);
+		});
+	}
+
+	public void runIfInZone(String username, Zone zone, UUID cardId, Runnable function){
+		if(isIn(username, zone, cardId)){
+			function.run();
+		}
+	}
+
+	public void addTurnlyCombatAbility (UUID targetId, Combat.CombatAbility combatAbility) {
+		getCard(targetId).addTurnlyCombatAbility(combatAbility);
+	}
+
+	public void setAttackAndHealth (UUID cardId, int attack, int health) {
+		getCard(cardId).setAttack(attack);
+		getCard(cardId).setHealth(health);
+	}
+
+	public void addTurnlyAttackAndHealth (UUID cardId, int attack, int health) {
+		getCard(cardId).addTurnlyAttack(attack);
+		getCard(cardId).addTurnlyHealth(health);
+	}
+
+	public void addAttackAndHealth (UUID cardId, int attack, int health) {
+		getCard(cardId).addAttack(attack);
+		getCard(cardId).addHealth(health);
+	}
+
+	public int getKnowledgeCount (String username, Knowledge knowledge) {
+		return getPlayer(username).getKnowledgeCount(knowledge);
+	}
+
+	public void returnToHand (UUID cardId) {
+		getCard(cardId).returnToHand();
+	}
+
+	public int getAttack (UUID cardId) {
+		return getCard(cardId).getAttack();
+	}
+
+	public void runIfHasKnowledge (String username, CounterMap<Knowledge> knowledge, Runnable effect) {
+		if (getPlayer(username).hasKnowledge(knowledge)){
+			effect.run();
+		}
+	}
+
+	public boolean hasHealth (String username, int i) {
+		return getPlayer(username).hasHealth(i);
 	}
 
 	public enum Zone {

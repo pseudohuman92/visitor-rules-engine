@@ -22,11 +22,11 @@ public class GR01 extends Ritual {
 				owner);
 
 		playable
-				.setCanPlayAdditional(() ->
+				.addCanPlayAdditional(() ->
 						game.hasIn(playable.card.controller, Play, Predicates::isUnit, 1) &&
 								game.hasIn(playable.card.controller, Opponent_Play, Predicates::isUnit, 1)
 				)
-				.setBeforePlay(() -> {
+				.addBeforePlay(() -> {
 					targets.add(game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false, "Select a unit you control.").get(0));
 					targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false, "Select a unit you don't control").get(0));
 				})

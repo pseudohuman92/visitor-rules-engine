@@ -1,11 +1,15 @@
 package com.visitor.card.properties;
 
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
+import com.visitor.protocol.Types;
 
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -14,6 +18,7 @@ import java.util.function.Supplier;
 import static com.visitor.game.Game.Zone.Void;
 import static com.visitor.game.Game.Zone.*;
 import static com.visitor.helpers.Predicates.and;
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class Playable {
 
@@ -24,17 +29,17 @@ public class Playable {
 
 	private int cost;
 
-	private Supplier<Boolean> canPlayAdditional;
+	private Arraylist<Supplier<Boolean>> canPlayAdditional;
 	private Supplier<Boolean> canPlayTiming;
 	private Supplier<Boolean> canPlayResource;
 
-	private Runnable beforePlay;
-	private Runnable play;
-	private Runnable afterPlay;
+	private Arraylist<Runnable> beforePlay;
+	private Arraylist<Runnable> play;
+	private Arraylist<Runnable> afterPlay;
 
 	private Runnable resolveEffect;
 	private Runnable resolvePlaceCard;
-	private Runnable afterResolve;
+	private Arraylist<Runnable> afterResolve;
 
 
 	public Playable (Game game, Card card, int cost) {
@@ -42,20 +47,18 @@ public class Playable {
 		this.game = game;
 		this.cost = cost;
 		this.targets = new Arraylist<>();
+		this.afterResolve = new Arraylist<>();
+		this.canPlayAdditional = new Arraylist<>();
+		this.beforePlay = new Arraylist<>();
+		this.play = new Arraylist<>();
+		this.afterPlay = new Arraylist<>();
 
 		// Default Implementations
 		setDefaultCanPlayResource();
 		setDefaultCanPlayTiming();
-		setDefaultCanPlayAdditional();
-
 		setDefaultResolveEffect();
 		setDefaultResolvePlaceCard();
-		setDefaultAfterResolve();
-
-		setDefaultBeforePlay();
 		setDefaultPlay();
-		setDefaultAfterPlay();
-
 	}
 
 	public Playable (Game game, Card card) {
@@ -70,7 +73,7 @@ public class Playable {
 
 
 	public Playable setNotPlayable () {
-		canPlayAdditional = () -> false;
+		canPlayAdditional.add(() -> false);
 		return this;
 	}
 
@@ -99,13 +102,24 @@ public class Playable {
 		return this;
 	}
 
+	public Playable setDisappering () {
+		resolvePlaceCard = () -> {};
+		return this;
+	}
+
 	/**
 	 * Called by client to check if you can play this card in current game state.
 	 *
 	 * @return
 	 */
 	public final boolean canPlay () {
-		return canPlayResource.get() && canPlayTiming.get() && canPlayAdditional.get();
+		boolean result = canPlayResource.get() && canPlayTiming.get();
+		int index = -1;
+		while (result && index < canPlayAdditional.size() - 1) {
+			index++;
+			result = result && canPlayAdditional.get(index).get();
+		}
+		return result;
 	}
 
 
@@ -115,9 +129,9 @@ public class Playable {
 	 * removes it from player's hand and then puts on the stack.
 	 */
 	public final void play () {
-		beforePlay.run();
-		play.run();
-		afterPlay.run();
+		beforePlay.forEachInOrder(Runnable::run);
+		play.forEachInOrder(Runnable::run);
+		afterPlay.forEachInOrder(Runnable::run);
 	}
 
 	/**
@@ -127,25 +141,14 @@ public class Playable {
 	public final void resolve () {
 		resolveEffect.run();
 		resolvePlaceCard.run();
-		afterResolve.run();
-	}
-
-	// Default Setters
-	private void setDefaultAfterPlay () {
-		afterPlay = () -> {
-		};
+		afterResolve.forEachInOrder(Runnable::run);
 	}
 
 	private void setDefaultPlay () {
-		play = () -> {
+		play.add(() -> {
 			game.spendEnergy(card.controller, cost);
 			game.addToStack(card);
-		};
-	}
-
-	private void setDefaultBeforePlay () {
-		beforePlay = () -> {
-		};
+		});
 	}
 
 	private void setDefaultResolvePlaceCard () {
@@ -155,15 +158,6 @@ public class Playable {
 	private void setDefaultResolveEffect () {
 		resolveEffect = () -> {
 		};
-	}
-
-	private void setDefaultAfterResolve () {
-		afterResolve = () -> {
-		};
-	}
-
-	private void setDefaultCanPlayAdditional () {
-		canPlayAdditional = () -> true;
 	}
 
 	private void setDefaultCanPlayTiming () {
@@ -176,8 +170,8 @@ public class Playable {
 						game.hasKnowledge(card.controller, card.knowledge);
 	}
 
-	public Playable setCanPlayAdditional (Supplier<Boolean> canPlayAdditional) {
-		this.canPlayAdditional = canPlayAdditional;
+	public Playable addCanPlayAdditional (Supplier<Boolean> ...canPlayAdditional) {
+		this.canPlayAdditional.addAll(Arrays.asList(canPlayAdditional));
 		return this;
 	}
 
@@ -189,17 +183,17 @@ public class Playable {
 		this.canPlayResource = canPlayResource;
 	}
 
-	public Playable setBeforePlay (Runnable beforePlay) {
-		this.beforePlay = beforePlay;
+	public Playable addBeforePlay (Runnable ...beforePlay) {
+		this.beforePlay.addAll(Arrays.asList(beforePlay));
 		return this;
 	}
 
-	public void setPlay (Runnable play) {
-		this.play = play;
+	public void addPlay (Runnable ...play) {
+		this.play.addAll(Arrays.asList(play));
 	}
 
-	public void setAfterPlay (Runnable afterPlay) {
-		this.afterPlay = afterPlay;
+	public void addAfterPlay (Runnable ...afterPlay) {
+		this.afterPlay.addAll(Arrays.asList(afterPlay));
 	}
 
 	public Playable setResolveEffect (Runnable resolveEffect) {
@@ -211,17 +205,8 @@ public class Playable {
 		this.resolvePlaceCard = resolvePlaceCard;
 	}
 
-	public Playable setAfterResolve (Runnable afterResolve) {
-		this.afterResolve = afterResolve;
-		return this;
-	}
-
-	public Playable addAfterResolve (Runnable afterResolve) {
-		Runnable oldAfterResolve = this.afterResolve;
-		this.afterResolve = () -> {
-			oldAfterResolve.run();
-			afterResolve.run();
-		};
+	public Playable addAfterResolve (Runnable ...afterResolve) {
+		this.afterResolve.addAll(Arrays.asList(afterResolve));
 		return this;
 	}
 
@@ -241,11 +226,11 @@ public class Playable {
 	public void setTargetMultipleCardsOrPlayers (Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate, int count,
 	                                             boolean upTo, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
 		if (!withPlayers) {
-			setCanPlayAdditional(() ->
+			addCanPlayAdditional(() ->
 					game.hasIn(card.controller, zone, cardPredicate, upTo ? 1 : count)
 			);
 		}
-		setBeforePlay(() -> {
+		addBeforePlay(() -> {
 			if (withPlayers) {
 				targets.addAll(game.selectFromZoneWithPlayers(card.controller, zone, cardPredicate, playerPredicate, count, upTo, message));
 			} else {
@@ -383,9 +368,17 @@ public class Playable {
 
 	// For targeting a SINGLE PLAYER.
 	public void setTargetSinglePlayer (Consumer<UUID> playerEffect) {
-		setBeforePlay(() ->
+		addBeforePlay(() ->
 				targets.addAll(game.selectPlayers(card.controller, Predicates::any, 1, false))
 		);
 		setResolveEffect(() -> playerEffect.accept(targets.get(0)));
+	}
+
+	public void addEnterPlayEffect(String text, Runnable effect){
+		addAfterResolve(()->game.addToStack(new Ability(game, card, text, effect)));
+	}
+
+	public void addEnterPlayEffectWithKnowledge(CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
+		addAfterResolve(() -> game.runIfHasKnowledge(card.controller, knowledge, ()->game.addToStack(new Ability(game, card, text, effect))));
 	}
 }

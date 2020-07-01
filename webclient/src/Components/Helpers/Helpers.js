@@ -1,6 +1,6 @@
 import proto from "../../protojs/compiled";
 import { ServerName, PrintDebug } from "../../Config.js";
-import {  ClientPhase, knowledgeMap, fullCollection } from "./Constants";
+import {ClientPhase, knowledgeMap, fullCollection, specialCharacters} from "./Constants";
 
 export function GetProfileURL(userId) {
   return `ws://${ServerName}/profiles/${userId}`;
@@ -296,4 +296,15 @@ export function mergeDeep(target, source) {
     });
   }
   return output;
+}
+
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+export function replaceSpecialCharacters(inputString, name){
+  for (const [key, value] of Object.entries(specialCharacters)) {
+    inputString = replaceAll(inputString, key, value);
+  }
+  return replaceAll(inputString, "{~}", name);
 }

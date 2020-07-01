@@ -48,7 +48,7 @@ class ChooseDialog extends Component {
 
         return (
             <Dialog
-                open={dialog.open && isSelectPhase}
+                open={dialog.open}
                 onClose={this.onClose}
                 fullWidth
                 disableBackdropClick={isSelectPhase}

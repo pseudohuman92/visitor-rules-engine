@@ -64,7 +64,7 @@ public class Combat {
 		canAttackAdditional = () -> true;
 
 		canAttack = () ->
-				!card.depleted &&
+				!card.isDepleted() &&
 						(!deploying || hasCombatAbility(Haste)) &&
 						!hasCombatAbility(Defender) &&
 						canAttackAdditional.get();
@@ -72,16 +72,16 @@ public class Combat {
 		canBlockAdditional = (unit) -> true;
 
 		canBlock = (unit) ->
-				!card.depleted &&
+				!card.isDepleted() &&
 						!unit.hasCombatAbility(Unblockable) &&
 						(!unit.hasCombatAbility(Flying) || hasCombatAbility(Flying) || hasCombatAbility(Reach)) &&
 						canBlockAdditional.test(unit);
 
-		canBlockGeneral = () -> !card.depleted;
+		canBlockGeneral = () -> !card.isDepleted();
 
 		setAttacking = (target) -> {
 			if (!hasCombatAbility(Vigilance))
-				card.depleted = true;
+				card.deplete();
 			attackTarget = target;
 		};
 
@@ -317,9 +317,11 @@ public class Combat {
 	}
 
 	//Do not use to lose health (e.g. negative input)
+	//Also raises the max health
 	public final void addHealth (int health) {
 		if (health > 0) {
 			this.health += health;
+			this.maxHealth += health;
 		}
 	}
 
@@ -368,6 +370,20 @@ public class Combat {
 	// Can use to remove attack
 	public void addAttack (int i) {
 		attack += i;
+	}
+
+	public void setAttack (int i) {
+		attack = i;
+	}
+
+	//Also sets the max health
+	public void setHealth (int i) {
+		health = i;
+		maxHealth = i;
+	}
+
+	public boolean isDeploying () {
+		return deploying;
 	}
 
 	public enum CombatAbility {

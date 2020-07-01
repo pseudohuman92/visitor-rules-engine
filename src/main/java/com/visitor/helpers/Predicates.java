@@ -106,4 +106,8 @@ public abstract class Predicates {
 	public static boolean isRed (Card card) {
 		return card.hasColor(RED);
 	}
+
+	public static boolean isDepleted (Card card) {
+		return card.isDepleted();
+	}
 }

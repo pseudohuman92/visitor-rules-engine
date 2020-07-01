@@ -273,7 +273,14 @@ export default class ServerGameMessageHandler {
                 }
                 break;
         }
+        if(params.game && params.game.player && !params.game.player.energy){
+            params.game.player.energy = 0;
+        }
+        if(params.game && params.game.opponent && !params.game.opponent.energy){
+            params.game.opponent.energy = 0;
+        }
         newExtendedState["game"] = params.game;
+
         newExtendedState["draft"] = params.draft;
         selectionData["selected"] = [];
         newExtendedState["selectionData"] = selectionData;

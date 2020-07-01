@@ -74,6 +74,10 @@ public class Arraylist<T> extends ArrayList<T> {
 		return false;
 	}
 
+	public void add (T ...ts) {
+		super.addAll(Arrays.asList(ts));
+	}
+
 	public Arraylist<T> addAll (int index, T[] array) {
 		super.addAll(index, Arrays.asList(array));
 		return this;
