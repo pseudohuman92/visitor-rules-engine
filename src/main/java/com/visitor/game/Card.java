@@ -4,6 +4,7 @@ import com.visitor.card.properties.*;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
+import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Counter;
@@ -190,30 +191,15 @@ public abstract class Card implements Serializable {
 
 	//TODO: Refactor these like above
 	public final void unsetAttacking () {
-		if (combat != null) {
-			combat.unsetAttacking();
-		} else {
-			System.out.println("Trying to unset attacking a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, combat::unsetAttacking);
 	}
 
 	public final void addBlocker (UUID blockerId) {
-		if (combat != null) {
-			combat.addBlocker(blockerId);
-		} else {
-			System.out.println("Trying to add blocker to a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, ()-> combat.addBlocker(blockerId));
 	}
 
 	public final void setBlocking (UUID blockedBy) {
-		if (combat != null) {
-			combat.setBlocking(blockedBy);
-		} else {
-			System.out.println("Trying to set blocking of a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, ()-> combat.setBlocking(blockedBy));
 	}
 
 	public final void dealAttackDamage (boolean firstStrike) {
@@ -389,8 +375,8 @@ public abstract class Card implements Serializable {
 	}
 
 	public void endTurn () {
-		if (combat != null)
-			combat.endTurn();
+		runIfNotNull(combat, () -> combat.endTurn());
+		runIfNotNull(activatable, () -> activatable.endTurn());
 	}
 
 	public void addTurnlyAttack (int attack) {
@@ -437,6 +423,14 @@ public abstract class Card implements Serializable {
 		return depleted;
 	}
 
+	public void addTurnlyActivatedAbility (ActivatedAbility ability) {
+		runIfNotNull(activatable, ()-> activatable.addTurnlyActivatedAbility(ability));
+	}
+
+	public int getHealth () {
+		return runIfNotNull(combat, ()-> combat.getHealth());
+	}
+
 
 	public enum CardType {
 		Ally,
@@ -446,15 +440,18 @@ public abstract class Card implements Serializable {
 		Spell,
 		Tome,
 		Unit,
+
+		// Internal types
 		Ability,
 		Effect
 	}
 
 	public enum CardSubtype {
+		// Spell subtypes
 		Cantrip,
 		Ritual,
 
-		//Unit Subtypes
+		// Unit Subtypes
 		Zombie,
 		Wizard,
 		Bat

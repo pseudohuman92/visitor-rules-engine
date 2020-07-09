@@ -70,7 +70,6 @@ public class Draft {
 		possiblePicks.forEach(this::pick);
 	}
 
-	//TODO: implement this
 	private Arraylist<Card> getRandomCards (String username, int count) {
 		Arraylist<Card> cards = new Arraylist<>();
 		Arraylist<Integer> indexes = new Arraylist<>();

@@ -9,7 +9,7 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
 import com.visitor.card.properties.Triggering;
-import com.visitor.card.types.helpers.Ability;
+import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
@@ -26,7 +26,7 @@ public abstract class Ally extends Card {
 
 
 	public int delayCounter;
-	public Ability delayedAbility;
+	public AbilityCard delayedAbility;
 	public int loyalty;
 
 	public Ally (Game game, String name, int cost,

@@ -143,7 +143,7 @@ public class Combat {
 			int dealtDamageAmount = damageAmount;
 
 			//Trample Damage
-			//TODO: Figure out assigning more than health to make trample go through
+			// TODO: Figure out assigning more than health to make trample go through
 			// while there are other blockers to assign damage
 			if (source.isAttacking() &&
 					source.hasCombatAbility(Trample) &&

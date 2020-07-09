@@ -6,8 +6,11 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -15,13 +18,24 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 /**
  * @author pseudo
  */
-public class Encircler extends Unit {
+public class Encircler extends ActivatableUnit {
 
 	public Encircler (Game game, String owner) {
 		super(game, "Encircler",
 				3, new CounterMap(RED, 1),
-				"",
+				"{R}{R} - {D}: Destroy target unit. That unit's controller gains control of {~}.",
 				2, 3,
 				owner, Reach);
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: Destroy target unit. That unit's controller gains control of {~}.")
+				.setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
+						(targetId)->{
+							String newController = game.getCard(targetId).controller;
+							game.destroy(id, targetId);
+							if (!controller.equals(newController))
+								game.gainControlFromZone(newController, Game.Zone.Opponent_Play, Game.Zone.Play, id);
+					})
+				.setDepleting()
+				.setKnowledgeRequirement(new CounterMap<>(RED, 2))
+		);
 	}
 }

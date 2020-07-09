@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;

@@ -1,12 +1,17 @@
 package com.visitor.helpers.containers;
 
-import com.visitor.card.types.helpers.Ability;
+import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
+import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
+import com.visitor.sets.base.SwampWraith;
 
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class ActivatedAbility {
@@ -20,13 +25,13 @@ public class ActivatedAbility {
 	private boolean sacrificing;
 	private String text;
 	private CounterMap<Types.Knowledge> knowledgeRequirement;
-	private Supplier<Boolean> canActivateAdditional;
-	private Runnable beforeActivate;
+	private Arraylist<Supplier<Boolean>> canActivateAdditional;
+	private Arraylist<Runnable> beforeActivate;
 	private Runnable activate;
 
-	public ActivatedAbility (Game game, Card card, int cost, String text,
-	                         Supplier<Boolean> canActivateAdditional,
-	                         Runnable beforeActivate, Runnable activate) {
+	private Arraylist<UUID> targets;
+
+	public ActivatedAbility (Game game, Card card, int cost, String text) {
 		this.id = UUID.randomUUID();
 		this.game = game;
 		this.card = card;
@@ -36,33 +41,51 @@ public class ActivatedAbility {
 		this.slow = false;
 		this.sacrificing = false;
 		this.knowledgeRequirement = new CounterMap<>();
-		this.canActivateAdditional = canActivateAdditional;
-		this.beforeActivate = beforeActivate;
-		this.activate = activate;
+		this.canActivateAdditional = new Arraylist<>();
+		this.beforeActivate = new Arraylist<>();
+		this.activate = ()->{};
+		this.targets = new Arraylist<>();
 	}
 
-	public ActivatedAbility (Game game, Card card, int cost, String text, Runnable activate) {
-		this (game, card, cost, text, ()->true, ()->{}, activate);
+	public ActivatedAbility (Game game, Card card, int cost, String text, Supplier<Boolean> o, Runnable o1, Runnable o2) {
+		this(game, card, cost, text);
+		addCanActivateAdditional(o);
+		addBeforeActivate(o1);
+		setActivate(o2);
 	}
 
-	public ActivatedAbility (Game game, Card card, int cost, String text, Supplier<Boolean> canActivateAdditional, Runnable activate) {
-		this (game, card, cost, text, canActivateAdditional, ()->{}, activate);
+	public ActivatedAbility (Game game, Card card, int cost, String text, Runnable o1, Runnable o2) {
+		this(game, card, cost, text);
+		addBeforeActivate(o1);
+		setActivate(o2);
 	}
 
-	public ActivatedAbility (Game game, Card card, int cost, String text, Runnable beforeActivate, Runnable activate) {
-		this (game, card, cost, text, ()->true, beforeActivate, activate);
+	public ActivatedAbility (Game game, Card card, int cost, String text, Supplier<Boolean> o, Runnable o2) {
+		this(game, card, cost, text);
+		addCanActivateAdditional(o);
+		setActivate(o2);
+	}
+
+	public ActivatedAbility (Game game, Card card, int cost, String text, Runnable o2) {
+		this(game, card, cost, text);
+		setActivate(o2);
 	}
 
 	public final boolean canActivate(){
-		return game.hasKnowledge(card.controller, knowledgeRequirement) &&
+		boolean canActivate =  game.hasKnowledge(card.controller, knowledgeRequirement) &&
 					 game.hasEnergy(card.controller, cost) &&
 					 (!depleting || (!card.isDepleted() && !card.isDeploying())) &&
-					 (!slow || game.canPlaySlow(card.controller)) &&
-					 canActivateAdditional.get();
+					 (!slow || game.canPlaySlow(card.controller));
+					 for (Supplier<Boolean> caa : canActivateAdditional){
+					 	 canActivate = canActivate && caa.get();
+					 }
+					 return canActivate;
 	}
 
 	public final void activate(){
-		beforeActivate.run();
+		for (Runnable ba : beforeActivate){
+			ba.run();
+		}
 		game.spendEnergy(card.controller, cost);
 		if (depleting) {
 			game.deplete(card.id);
@@ -70,7 +93,7 @@ public class ActivatedAbility {
 		if (sacrificing) {
 			game.sacrifice(card.id);
 		}
-		game.addToStack(new Ability(game, card, this));
+		game.addToStack(new AbilityCard(game, card, this));
 	}
 
 	public ActivatedAbility setSlow(){
@@ -105,7 +128,42 @@ public class ActivatedAbility {
 		cost = x;
 	}
 
-	public void setBeforeActivate (Runnable beforeActivate) {
-		this.beforeActivate = beforeActivate;
+	public ActivatedAbility addBeforeActivate (Runnable ...beforeActivates) {
+		this.beforeActivate.addAll(Arrays.asList(beforeActivates));
+		return this;
+	}
+
+	// TODO: Refactor cards to use this.
+	// Overrides targets
+	public ActivatedAbility setTargeting(Game.Zone zone, Predicate<Card> validCards, int count, boolean upTo, Consumer<UUID> targetIdConsumer){
+		addBeforeActivate(() -> targets = game.selectFromZone(card.controller, zone, validCards, 1, false, ""));
+		setActivate(()-> targetIdConsumer.accept(targets.get(0)));
+		return this;
+	}
+
+	// Overrides targets
+	public ActivatedAbility setTargetingForDamage(int count, boolean upTo, Consumer<UUID> targetIdConsumer){
+		addBeforeActivate(() -> targets = game.selectDamageTargets(card.controller, count, upTo, ""));
+		setActivate(()-> targets.forEach(targetIdConsumer::accept));
+		return this;
+	}
+
+	// Overrides targets
+	public ActivatedAbility setTargetingForDamage(Consumer<UUID> targetIdConsumer){
+		return setTargetingForDamage(1, false, targetIdConsumer);
+	}
+
+	public ActivatedAbility setActivate (Runnable activate) {
+		this.activate = activate;
+		return this;
+	}
+
+	public Arraylist<UUID> getTargets () {
+		return targets;
+	}
+
+	public ActivatedAbility addCanActivateAdditional (Supplier<Boolean> ...canActivateAdditionals) {
+		canActivateAdditional.addAll(Arrays.asList(canActivateAdditionals));
+		return this;
 	}
 }

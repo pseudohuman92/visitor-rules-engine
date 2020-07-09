@@ -1,6 +1,6 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.types.helpers.Ability;
+import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
@@ -18,7 +18,6 @@ import java.util.function.Supplier;
 import static com.visitor.game.Game.Zone.Void;
 import static com.visitor.game.Game.Zone.*;
 import static com.visitor.helpers.Predicates.and;
-import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class Playable {
 
@@ -102,7 +101,7 @@ public class Playable {
 		return this;
 	}
 
-	public Playable setDisappering () {
+	public Playable setDisappearing () {
 		resolvePlaceCard = () -> {};
 		return this;
 	}
@@ -374,11 +373,15 @@ public class Playable {
 		setResolveEffect(() -> playerEffect.accept(targets.get(0)));
 	}
 
+
+	/** Enter Play Effect setters
+	 *
+	 */
 	public void addEnterPlayEffect(String text, Runnable effect){
-		addAfterResolve(()->game.addToStack(new Ability(game, card, text, effect)));
+		addAfterResolve(()->game.addToStack(new AbilityCard(game, card, text, effect)));
 	}
 
 	public void addEnterPlayEffectWithKnowledge(CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
-		addAfterResolve(() -> game.runIfHasKnowledge(card.controller, knowledge, ()->game.addToStack(new Ability(game, card, text, effect))));
+		addAfterResolve(() -> game.runIfHasKnowledge(card.controller, knowledge, ()->game.addToStack(new AbilityCard(game, card, text, effect))));
 	}
 }

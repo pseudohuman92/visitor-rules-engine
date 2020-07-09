@@ -255,4 +255,13 @@ public class Player {
 	public boolean hasHealth (int i) {
 		return combat.getHealth() >= i;
 	}
+
+	public void purgeFromDeck (int i) {
+		Arraylist<Card> topCards = extractFromTopOfDeck(i);
+		voidPile.addAll(topCards);
+	}
+
+	public Card discardAtRandom () {
+		return hand.remove((int) (Math.random() * getHandSize()));
+	}
 }

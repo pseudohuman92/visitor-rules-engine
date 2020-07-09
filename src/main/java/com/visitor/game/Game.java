@@ -3,6 +3,7 @@ package com.visitor.game;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Junk;
 import com.visitor.helpers.*;
+import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.ServerGameMessages.*;
 import com.visitor.protocol.Types.*;
@@ -984,6 +985,10 @@ public class Game implements Serializable {
 		}
 	}
 
+	public void dealDamage (UUID sourceId, UUID targetId, int damage) {
+		dealDamage(sourceId, targetId, new Damage(damage));
+	}
+
 	public boolean isTurnPlayer (String username) {
 		return turnPlayer.equals(username);
 	}
@@ -1244,6 +1249,30 @@ public class Game implements Serializable {
 
 	public boolean hasHealth (String username, int i) {
 		return getPlayer(username).hasHealth(i);
+	}
+
+	public int getDeckSize (String controller) {
+		return getPlayer(controller).deck.size();
+	}
+
+	public void purgeFromDeck (String controller, int i) {
+		getPlayer(controller).purgeFromDeck(i);
+	}
+
+	public void addTurnlyActivatedAbility (UUID cardId, ActivatedAbility ability) {
+		getCard(cardId).addTurnlyActivatedAbility(ability);
+	}
+
+	public Card discardAtRandom (String username) {
+		return getPlayer(username).discardAtRandom();
+	}
+
+	public void runIfInPlay (UUID id, Runnable r) {
+		runIfInZone("", Both_Play, id, r);
+	}
+
+	public int getHealth (UUID id) {
+		return getCard(id).getHealth();
 	}
 
 	public enum Zone {

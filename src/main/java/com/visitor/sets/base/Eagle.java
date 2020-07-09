@@ -27,11 +27,11 @@ public class Eagle extends ActivatableUnit {
 				4, 4,
 				owner, Flying);
 
-		ActivatedAbility ability = new ActivatedAbility(game, this, 0, "{~} becomes" + x + "/" + x,
-				() -> game.runIfInZone(controller, Game.Zone.Both_Play, id,
+		ActivatedAbility ability = new ActivatedAbility(game, this, 0, "{~} becomes" + x + "/" + x)
+				.setActivate(() -> game.runIfInZone(controller, Game.Zone.Both_Play, id,
 						() -> game.setAttackAndHealth(id, x, x)))
 				.setDepleting();
-		ability.setBeforeActivate(() -> {
+		ability.addBeforeActivate(() -> {
 			x = game.selectX(controller, game.getPlayerEnergy(controller));
 			ability.setCost(x);
 		});

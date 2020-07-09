@@ -26,7 +26,7 @@ public class DungBeetle extends ActivatableUnit {
 				owner, Trample);
 
 		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Gain +1/+1 until end of turn.",
-						()-> game.runIfInZone(controller, Game.Zone.Both_Play, id, ()->game.addTurnlyAttackAndHealth(id, 1,1))));
+				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Gain +1/+1 until end of turn.")
+						.setActivate(()-> game.runIfInZone(controller, Game.Zone.Both_Play, id, ()->game.addTurnlyAttackAndHealth(id, 1,1))));
 	}
 }
