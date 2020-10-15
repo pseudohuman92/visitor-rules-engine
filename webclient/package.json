@@ -15,7 +15,7 @@
     "firebase": "7.23.0",
     "prop-types": "15.7.2",
     "protobufjs": "6.10.1",
-    "react": "16.13.1",
+    "react": "16.14.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-center": "1.1.1",
     "react-dom": "16.13.1",
