@@ -10,18 +10,16 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GC01 extends Cantrip {
 	public GC01 (Game game, String owner) {
-		super(game, "UR01", 1,
+		super(game, "GC01", 1,
 				new CounterMap<>(GREEN, 1),
 				"Target unit gets +1/+1 until end of turn for each unit you control.",
 				owner);
 
 		playable
-				.setTargetSingleUnit((cardId) -> {
+				.setTargetSingleUnit(null, null, cardId -> {
 							int count = game.countInZone(controller, Play, Predicates::isUnit);
 							game.getCard(cardId).addTurnlyAttack(count);
 							game.getCard(cardId).addTurnlyHealth(count);
-						}
-
-				);
+						}, null);
 	}
 }

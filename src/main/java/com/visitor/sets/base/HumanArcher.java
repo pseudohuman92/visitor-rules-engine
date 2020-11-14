@@ -6,13 +6,10 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
-
-import java.util.function.Predicate;
 
 import static com.visitor.helpers.Predicates.and;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -20,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 /**
  * @author pseudo
  */
-public class HumanArcher extends ActivatableUnit {
+public class HumanArcher extends Unit {
 
 	public HumanArcher (Game game, String owner) {
 		super(game, "Human Archer",
@@ -42,7 +39,7 @@ public class HumanArcher extends ActivatableUnit {
 				.setTargeting(Game.Zone.Both_Play, and(Predicates::isUnit, c->!c.id.equals(id)), 1, false,
 						targetId -> game.dealDamage(id, targetId, 4))
 				.setDepleting()
-				.setSacrificing()
+				.setSelfSacrificing()
 				.setKnowledgeRequirement(new CounterMap<>(RED, 2)));
 	}
 }

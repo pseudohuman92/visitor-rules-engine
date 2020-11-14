@@ -28,6 +28,12 @@ public abstract class Tome extends Card {
 		studiable.setGetKnowledgeType(getKnowledgeType);
 	}
 
+	public Tome (Game game, String name, String text, String owner, CounterMap<Knowledge> studyKnowledgeType) {
+		this(game, name, text, owner);
+
+		studiable.setGetKnowledgeType(() -> studyKnowledgeType);
+	}
+
 
 	@Override
 	public Types.Card.Builder toCardMessage () {

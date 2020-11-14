@@ -26,7 +26,7 @@ public class Peregrimace extends Unit {
 				4, 4,
 				owner, Flying, Trample);
 
-		playable.addEnterPlayEffect("When {~} enters play, draw X cards and lose 2X life where X is equal to number of units you control.",
+		addEnterPlayEffect(null, "When {~} enters play, draw X cards and lose 2X life where X is equal to number of units you control.",
 				()->{
 					int x = game.countInZone(controller, Game.Zone.Play, Predicates::isUnit);
 					game.draw(controller, x);

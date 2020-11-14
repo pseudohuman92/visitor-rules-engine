@@ -16,7 +16,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 public class GR01 extends Ritual {
 
 	public GR01 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "GR01", 2,
 				new CounterMap<>(GREEN, 1),
 				"Target unit you control strikes target unit you don't control.",
 				owner);

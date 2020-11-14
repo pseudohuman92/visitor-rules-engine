@@ -8,8 +8,10 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.sets.token.UnitToken;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
+import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
@@ -19,9 +21,14 @@ public class UnendingFields extends Unit {
 
 	public UnendingFields (Game game, String owner) {
 		super(game, "Unending Fields",
-				2, new CounterMap(YELLOW, 1),
-				"",
-				1, 3,
-				owner, Lifelink);
+				5, new CounterMap(YELLOW, 2),
+				"When {~} enters play, destroy up to one target unit. Its controller plays a 3/3 Golem.",
+				4, 6,
+				owner, Vigilance);
+		playable.setTargetSingleUnit(null, null, targetId -> {
+			String targetedCardController = game.getCard(targetId).controller;
+			game.destroy(id, targetId);
+			UnitToken.Golem_3_3(game, targetedCardController).resolve();
+		}, null);
 	}
 }

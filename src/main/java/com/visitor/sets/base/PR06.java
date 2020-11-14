@@ -9,7 +9,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 public class PR06 extends Ritual {
 
 	public PR06 (Game game, String owner) {
-		super(game, "UR01", 3,
+		super(game, "PR06", 3,
 				new CounterMap<>(PURPLE, 1),
 				"Target player discards 2 cards",
 				owner);

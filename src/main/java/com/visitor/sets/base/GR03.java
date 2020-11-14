@@ -12,7 +12,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 public class GR03 extends Ritual {
 
 	public GR03 (Game game, String owner) {
-		super(game, "UR01", 5,
+		super(game, "GR03", 5,
 				new CounterMap<>(GREEN, 3),
 				"Units you control gains +3/+3 and trample until end of turn.",
 				owner);

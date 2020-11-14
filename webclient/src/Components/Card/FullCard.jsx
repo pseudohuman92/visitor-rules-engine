@@ -6,6 +6,7 @@ import "./css/Card.css";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
 import FittedText from "../Primitives/FittedText";
+import FitText from '@plutonium-js/react-fit-text';
 
 class FullCard extends PureComponent {
     state = {showDialog: false};
@@ -18,6 +19,7 @@ class FullCard extends PureComponent {
             square,
             windowDimensions,
             scale,
+            preview,
         } = this.props;
 
         const {
@@ -63,6 +65,34 @@ class FullCard extends PureComponent {
                         borderRadius: cardWidth / ((square ? 3 : 2.5) * scale_) + "px",
                     }}
                 >
+                    {!preview && combat && combat.deploying &&
+                    <img
+                        src={
+                            process.env.PUBLIC_URL +
+                            "/img/deploying.png"
+                        }
+                        style={
+                            square
+                                ? {
+                                    maxWidth: "50%",
+                                    objectFit: "scale-down",
+                                    position: "absolute",
+                                    top: "25%",
+                                    left: "25%",
+                                    zIndex: 10
+                                }
+                                : {
+                                    maxHeight: "50%",
+                                    objectFit: "scale-down",
+                                    position: "absolute",
+                                    top: "25%",
+                                    left: "25%",
+                                    zIndex: 10
+                                }
+                        }
+                        alt=""
+                    />
+                    }
                     <div
                         style={{
                             position: "absolute",
@@ -148,11 +178,12 @@ class FullCard extends PureComponent {
                                 whiteSpace: "pre-wrap",
                             }}
                         >
-                            <FittedText
+                            {/*<FittedText
                                 text={(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)}
                                 max={15}
                                 windowDimensions={windowDimensions}
-                            />
+                            />*/}
+                            <FitText updateOnResize = {{ delay:0 }}> {(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)} </FitText>
                         </div>
                     )}
 

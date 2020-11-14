@@ -5,7 +5,7 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.types.specialtypes.ActivatableUnit;
+import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 /**
  * @author pseudo
  */
-public class KomodoDragon extends ActivatableUnit {
+public class KomodoDragon extends Unit {
 
 	public KomodoDragon (Game game, String owner) {
 		super(game, "Komodo Dragon",

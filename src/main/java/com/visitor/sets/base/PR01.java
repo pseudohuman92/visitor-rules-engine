@@ -14,7 +14,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 public class PR01 extends Ritual {
 
 	public PR01 (Game game, String owner) {
-		super(game, "UR01", 1,
+		super(game, "PR01", 1,
 				new CounterMap<>(PURPLE, 1),
 				"As an additional cost to cast this spell, sacrifice a unit.\n" +
 						"Destroy target unit.",

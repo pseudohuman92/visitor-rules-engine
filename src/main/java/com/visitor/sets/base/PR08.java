@@ -10,12 +10,12 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 public class PR08 extends Ritual {
 
 	public PR08 (Game game, String owner) {
-		super(game, "UR01", 5,
+		super(game, "PR08", 5,
 				new CounterMap<>(PURPLE, 1),
 				"Resurrect a unit from your discard pile.",
 				owner);
 
 		playable
-				.setTargetSingleUnit(Discard_Pile, game::resurrect);
+				.setTargetSingleUnit(Discard_Pile, null, game::resurrect, null);
 	}
 }

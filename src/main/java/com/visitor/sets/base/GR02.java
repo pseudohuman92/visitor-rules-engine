@@ -10,14 +10,14 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 public class GR02 extends Ritual {
 
 	public GR02 (Game game, String owner) {
-		super(game, "UR01", 3,
+		super(game, "GR02", 3,
 				new CounterMap<>(GREEN, 1),
 				"Return target card from your discard pile to your hand.",
 				owner);
 
 		playable
-				.setTargetSingleCard(Discard_Pile,
+				.setTargetSingleCard(Discard_Pile, null,
 						"Select a card from your discard pile.",
-						cardId -> game.getCard(cardId).returnToHand());
+						cardId -> game.getCard(cardId).returnToHand(), null);
 	}
 }

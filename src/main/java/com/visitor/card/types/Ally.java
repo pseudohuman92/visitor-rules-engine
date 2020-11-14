@@ -15,7 +15,6 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 
-import static com.visitor.game.Event.playersTurnStart;
 import static java.lang.Math.max;
 import static java.lang.System.out;
 
@@ -51,7 +50,7 @@ public abstract class Ally extends Card {
 		triggering.resetEventCheckerList();
 		triggering.addEventChecker((event) -> {
 			out.println("Ally is checking event");
-			if (playersTurnStart(event, controller) && delayCounter > 0) {
+			if (event.playersTurnStart(controller) && delayCounter > 0) {
 				out.println("Passed the check");
 				decreaseDelayCounter(game, 1);
 			}

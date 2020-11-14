@@ -9,7 +9,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
 public class YR05 extends Ritual {
 
 	public YR05 (Game game, String owner) {
-		super(game, "UR01", 5,
+		super(game, "YR05", 5,
 				new CounterMap<>(YELLOW, 3),
 				"Destroy all units.",
 				owner);

@@ -6,7 +6,6 @@
 package com.visitor.sets.set1;
 
 import com.visitor.card.types.helpers.AbilityCard;
-import com.visitor.card.types.specialtypes.TriggeringPassive;
 import com.visitor.game.Game;
 import com.visitor.helpers.Hashmap;
 

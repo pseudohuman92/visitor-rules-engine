@@ -5,7 +5,7 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.types.specialtypes.ActivatableUnit;
+import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 /**
  * @author pseudo
  */
-public class SwampWraith extends ActivatableUnit {
+public class SwampWraith extends Unit {
 
 	public SwampWraith (Game game, String owner) {
 		super(game, "Swamp Wraith",

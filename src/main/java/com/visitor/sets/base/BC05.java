@@ -8,13 +8,12 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC05 extends Cantrip {
 	public BC05 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "BC05", 2,
 				new CounterMap<>(BLUE, 1),
 				"Target unit gets -2/-0.",
 				owner);
 
 		playable
-				.setTargetSingleUnit((cardId) -> game.getCard(targets.get(0)).addAttack(-2)
-				);
+				.setTargetSingleUnit(null, null, cardId -> game.getCard(targets.get(0)).addAttack(-2), null);
 	}
 }

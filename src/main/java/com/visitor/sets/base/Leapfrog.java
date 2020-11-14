@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -22,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 /**
  * @author pseudo
  */
-public class Leapfrog extends ActivatableUnit {
+public class Leapfrog extends Unit {
 
 	Arraylist<UUID> purgeTargets;
 	UUID damageTarget;

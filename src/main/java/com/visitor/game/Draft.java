@@ -140,8 +140,8 @@ public class Draft {
 			possiblePicks.forEach(this::pick);
 		} else {
 			roundPickCount = 0;
-			System.out.println("Adding last cards");
-			addLastCards();
+			//System.out.println("Adding last cards");
+			//addLastCards();
 			System.out.println("Ending draft round " + (roundsCompleted + 1));
 
 			roundsCompleted++;

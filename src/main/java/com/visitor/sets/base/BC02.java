@@ -14,7 +14,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC02 extends Cantrip {
 	public BC02 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "BC02", 2,
 				new CounterMap<>(BLUE, 1),
 				"Look at the top three cards of your library. Draw one of them and put the rest on the bottom of your library.",
 				owner);

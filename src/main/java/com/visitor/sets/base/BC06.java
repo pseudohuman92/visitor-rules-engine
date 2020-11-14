@@ -9,12 +9,12 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC06 extends Cantrip {
 	public BC06 (Game game, String owner) {
-		super(game, "UR01", 4,
+		super(game, "BC06", 4,
 				new CounterMap<>(BLUE, 2),
 				"Cancel target unit card. Draw 1 card.",
 				owner);
 
 		playable
-				.setTargetSingleCardInStack(Predicates::isUnit, game::cancel, () -> game.draw(controller, 1));
+				.setTargetSingleUnit(Game.Zone.Stack, null, game::cancel, () -> game.draw(controller, 1));
 	}
 }

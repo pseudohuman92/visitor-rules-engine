@@ -6,10 +6,8 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.HelperFunctions;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
@@ -22,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 /**
  * @author pseudo
  */
-public class Turtle extends ActivatableUnit {
+public class Turtle extends Unit {
 
 	UUID target;
 

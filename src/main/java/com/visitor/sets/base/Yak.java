@@ -6,9 +6,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -18,7 +16,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 /**
  * @author pseudo
  */
-public class Yak extends ActivatableUnit {
+public class Yak extends Unit {
 
 	public Yak (Game game, String owner) {
 		super(game, "Yak",
@@ -41,6 +39,6 @@ public class Yak extends ActivatableUnit {
 						})
 				.setSlow()
 				.setDepleting()
-				.setSacrificing());
+				.setSelfSacrificing());
 	}
 }

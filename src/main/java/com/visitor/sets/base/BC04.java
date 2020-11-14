@@ -10,13 +10,12 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC04 extends Cantrip {
 	public BC04 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "BC04", 2,
 				new CounterMap<>(BLUE, 1),
 				"Cancel target non-unit card.",
 				owner);
 
 		playable
-				.setTargetSingleCardInStack(not(Predicates::isUnit), (cardId) -> game.cancel(targets.get(0))
-				);
+				.setTargetSingleCard(Game.Zone.Stack, not(Predicates::isUnit), "Select a non-unit card.", game::cancel,null);
 	}
 }

@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -17,7 +16,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 /**
  * @author pseudo
  */
-public class Elephant extends ActivatableUnit {
+public class Elephant extends Unit {
 
 	public Elephant (Game game, String owner) {
 		super(game, "Elephant",

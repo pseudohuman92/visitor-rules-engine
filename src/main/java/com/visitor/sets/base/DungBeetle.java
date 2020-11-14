@@ -5,7 +5,7 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.types.specialtypes.ActivatableUnit;
+import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -16,7 +16,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 /**
  * @author pseudo
  */
-public class DungBeetle extends ActivatableUnit {
+public class DungBeetle extends Unit {
 
 	public DungBeetle (Game game, String owner) {
 		super(game, "Dung Beetle",

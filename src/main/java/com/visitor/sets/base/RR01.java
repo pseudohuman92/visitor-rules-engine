@@ -15,12 +15,12 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 public class RR01 extends Ritual {
 
 	public RR01 (Game game, String owner) {
-		super(game, "UR01", 1,
+		super(game, "RR01", 1,
 				new CounterMap<>(RED, 1),
 				"Deal 3 damage to target unit with flying.",
 				owner);
 
 		playable
-				.setTargetSingleUnit(c -> c.hasCombatAbility(Flying), cardId -> game.dealDamage(this.id, cardId, new Damage(3)));
+				.setTargetSingleUnit(null, c -> c.hasCombatAbility(Flying), cardId -> game.dealDamage(this.id, cardId, new Damage(3)), null);
 	}
 }

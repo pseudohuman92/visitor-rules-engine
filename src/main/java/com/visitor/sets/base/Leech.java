@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -14,15 +13,13 @@ import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
-import static com.visitor.helpers.Predicates.and;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 /**
  * @author pseudo
  */
-public class Leech extends ActivatableUnit {
+public class Leech extends Unit {
 
 	UUID target;
 
@@ -38,7 +35,7 @@ public class Leech extends ActivatableUnit {
 				()-> game.hasIn(controller, Game.Zone.Stack, Predicates::isUnit, 1),
 				()-> target = game.selectFromZone(controller, Game.Zone.Stack, Predicates::isUnit, 1, false,"Select a unit from stack.").get(0),
 				()-> game.runIfInZone(controller, Game.Zone.Stack, target, ()->game.cancel(target)))
-				.setSacrificing()
+				.setSelfSacrificing()
 				.setKnowledgeRequirement(new CounterMap<>(BLUE, 2)));
 	}
 }

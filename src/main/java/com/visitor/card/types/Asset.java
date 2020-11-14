@@ -1,5 +1,6 @@
 package com.visitor.card.types;
 
+import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
 import com.visitor.game.Card;
@@ -19,5 +20,6 @@ public abstract class Asset extends Card {
 
 		playable = new Playable(game, this, cost).setSlow().setPersistent();
 		studiable = new Studiable(game, this);
+		activatable = new Activatable(game, this);
 	}
 }

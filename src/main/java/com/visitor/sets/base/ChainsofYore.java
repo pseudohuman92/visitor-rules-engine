@@ -8,8 +8,11 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
+import static com.visitor.helpers.Predicates.*;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
@@ -20,8 +23,12 @@ public class ChainsofYore extends Unit {
 	public ChainsofYore (Game game, String owner) {
 		super(game, "Chains of Yore",
 				1, new CounterMap(YELLOW, 1),
-				"",
+				"{2}, {D}: Deplete another target unit.",
 				1, 1,
 				owner, Lifelink);
+
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {D}: Deplete another target unit.")
+				.setTargeting(Game.Zone.Both_Play, and(not(Predicates::isDepleted), anotherUnit(this)), 1, false, game::deplete)
+				.setDepleting());
 	}
 }

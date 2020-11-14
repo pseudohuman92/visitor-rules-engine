@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -18,14 +17,12 @@ import java.util.UUID;
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.helpers.Predicates.and;
-import static com.visitor.helpers.Predicates.not;
-import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
  * @author pseudo
  */
-public class Frog extends ActivatableUnit {
+public class Frog extends Unit {
 
 	UUID target;
 

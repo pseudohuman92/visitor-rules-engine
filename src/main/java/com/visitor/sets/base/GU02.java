@@ -20,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 public class GU02 extends Unit {
 
 	public GU02 (Game game, String owner) {
-		super(game, "Black Bear",
+		super(game, "GU02",
 				2, new CounterMap(BLUE, 1).add(GREEN, 1),
 				"",
 				2, 2,

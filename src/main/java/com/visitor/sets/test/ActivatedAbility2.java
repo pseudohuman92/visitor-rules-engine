@@ -5,7 +5,7 @@
  */
 package com.visitor.sets.test;
 
-import com.visitor.card.types.specialtypes.ActivatableUnit;
+import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -13,7 +13,7 @@ import com.visitor.helpers.containers.ActivatedAbility;
 /**
  * @author pseudo
  */
-public class ActivatedAbility2 extends ActivatableUnit {
+public class ActivatedAbility2 extends Unit {
 
 	public ActivatedAbility2 (Game game, String owner) {
 		super(game, "Activated Ability 2",

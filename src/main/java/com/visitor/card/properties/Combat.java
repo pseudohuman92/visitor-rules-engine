@@ -49,6 +49,7 @@ public class Combat {
 	private Consumer<Boolean> dealAttackDamage;
 	private Runnable dealBlockDamage;
 	private BiConsumer<Damage, Card> receiveDamage;
+	private Arraylist<BiConsumer<UUID, Damage>> damageEffects;
 
 	public Combat (Game game, Card card, int attack, int health) {
 		this.card = card;
@@ -59,7 +60,7 @@ public class Combat {
 		blockedBy = new Arraylist<>();
 		combatAbilityList = new CounterMap<>();
 		turnlyCombatAbilityList = new CounterMap<>();
-
+		damageEffects = new Arraylist<>();
 		//Default implementations
 		canAttackAdditional = () -> true;
 
@@ -106,12 +107,12 @@ public class Combat {
 		dealAttackDamage = (firstStrike) -> {
 			UUID id = card.id;
 			if (blockedBy.isEmpty()) {
-				game.dealDamage(id, attackTarget, new Damage(getAttack(), firstStrike));
+				game.dealDamage(id, attackTarget, new Damage(getAttack(), firstStrike, true));
 			} else {
 				if (blockedBy.size() == 1) {
-					game.dealDamage(id, blockedBy.get(0), new Damage(getAttack(), firstStrike));
+					game.dealDamage(id, blockedBy.get(0), new Damage(getAttack(), firstStrike, true));
 				} else {
-					game.assignDamage(id, blockedBy, new Damage(getAttack(), firstStrike));
+					game.assignDamage(id, blockedBy, new Damage(getAttack(), firstStrike, true));
 				}
 			}
 		};
@@ -119,7 +120,7 @@ public class Combat {
 		dealBlockDamage = () -> {
 			UUID id = card.id;
 			if (blockedAttacker != null)
-				game.dealDamage(id, blockedAttacker, new Damage(getAttack(), false));
+				game.dealDamage(id, blockedAttacker, new Damage(getAttack(), false, true));
 		};
 
 		receiveDamage = (damage, source) -> {
@@ -293,6 +294,10 @@ public class Combat {
 		removeCombatAbility(combatAbility, 1);
 	}
 
+	public void addDamageEffect (BiConsumer<UUID, Damage> effect) {
+		damageEffects.add(effect);
+	}
+
 	public final boolean hasCombatAbility (CombatAbility combatAbility) {
 		return combatAbilityList.contains(combatAbility) || turnlyCombatAbilityList.contains(combatAbility);
 	}
@@ -384,6 +389,14 @@ public class Combat {
 
 	public boolean isDeploying () {
 		return deploying;
+	}
+
+	public void addShield (int i) {
+		shield += i;
+	}
+
+	public void triggerDamageEffects (UUID targetId, Damage damage) {
+		damageEffects.forEach(effect -> effect.accept(targetId, damage));
 	}
 
 	public enum CombatAbility {

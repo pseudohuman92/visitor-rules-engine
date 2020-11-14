@@ -14,7 +14,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 public class PR03 extends Ritual {
 
 	public PR03 (Game game, String owner) {
-		super(game, "UR01", 1,
+		super(game, "PR03", 1,
 				new CounterMap<>(PURPLE, 1),
 				"Target opponent reveals their hand. You choose a unit card from it. \n" +
 						"That player discards that card.",

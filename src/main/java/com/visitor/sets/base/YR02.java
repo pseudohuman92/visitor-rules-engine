@@ -12,12 +12,12 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
 public class YR02 extends Ritual {
 
 	public YR02 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "YR02", 2,
 				new CounterMap<>(YELLOW, 1),
 				"Put target unit with attack >= 4 to bottom of its controller's deck.",
 				owner);
 
 		playable
-				.setTargetSingleUnit(c -> c.getAttack() >= 4, cardId -> game.putToBottomOfDeck(cardId));
+				.setTargetSingleUnit(null, c -> c.getAttack() >= 4, game::putToBottomOfDeck, null);
 	}
 }

@@ -110,4 +110,12 @@ public abstract class Predicates {
 	public static boolean isDepleted (Card card) {
 		return card.isDepleted();
 	}
+
+	public static Predicate<Card> anotherUnit (Card card) {
+		return c -> isUnit(c) && !c.id.equals(card.id);
+	}
+
+	public static boolean isColorless (Card card) {
+		return card.isColorless();
+	}
 }

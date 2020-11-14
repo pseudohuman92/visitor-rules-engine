@@ -57,7 +57,7 @@ public class Player {
 	}
 
 	public void receiveDamage (int damageAmount, Card source) {
-		combat.receiveDamage(new Damage(damageAmount, false), source);
+		combat.receiveDamage(new Damage(damageAmount, false, false), source);
 		if (combat.getHealth() <= 0) {
 			game.gameEnd(username, false);
 		}

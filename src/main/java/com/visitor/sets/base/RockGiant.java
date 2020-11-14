@@ -8,6 +8,8 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
@@ -19,8 +21,10 @@ public class RockGiant extends Unit {
 	public RockGiant (Game game, String owner) {
 		super(game, "Rock Giant",
 				3, new CounterMap(),
-				"",
+				"{2}: {~} fights another target unit.",
 				3, 3,
 				owner, Defender);
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}: {~} fights another target unit.").setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(this), 1, false,
+				targetId -> game.fight(id, targetId)));
 	}
 }

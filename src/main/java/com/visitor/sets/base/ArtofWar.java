@@ -1,28 +1,23 @@
-/*
+package com.visitor.sets.base;/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.visitor.sets.set1;
 
 import com.visitor.card.types.Tome;
+import com.visitor.game.Game;
+import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
 
+import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
-public class TacticalBriefing extends Tome {
+public class ArtofWar extends Tome {
 
-    public TacticalBriefing(String owner) {
-        super("Tactical Briefing", "Study: Gain RR", owner);
+    public ArtofWar(Game game, String owner) {
+        super(game, "Art of War", "Study: Gain {U}{R}", owner, new CounterMap<>(BLUE, 1).add(RED, 1));
     }
-
-    @Override
-    public Hashmap<Types.Knowledge, Integer> getKnowledgeType() {
-        return new Hashmap(RED, 2);
-    }
-
 }

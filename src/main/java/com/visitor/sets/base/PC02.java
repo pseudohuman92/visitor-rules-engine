@@ -9,14 +9,13 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class PC02 extends Cantrip {
 	public PC02 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "PC02", 2,
 				new CounterMap<>(PURPLE, 1),
 				"Target unit gains deathtouch until end of turn. Draw 1 card.",
 				owner);
 
 		playable
-				.setTargetSingleUnit(cardId -> game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Deathtouch),
-						() -> game.draw(controller, 1)
-				);
+				.setTargetSingleUnit(null, null, cardId -> game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Deathtouch),
+						() -> game.draw(controller, 1));
 	}
 }

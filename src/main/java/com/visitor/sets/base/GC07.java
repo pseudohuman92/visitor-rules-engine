@@ -9,7 +9,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GC07 extends Cantrip {
 	public GC07 (Game game, String owner) {
-		super(game, "UR01", 1,
+		super(game, "GC07", 1,
 				new CounterMap<>(GREEN, 2),
 				"Draw the top unit from your deck.",
 				owner);

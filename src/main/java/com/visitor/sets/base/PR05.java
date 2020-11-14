@@ -9,12 +9,12 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 public class PR05 extends Ritual {
 
 	public PR05 (Game game, String owner) {
-		super(game, "UR01", 3,
+		super(game, "PR05", 3,
 				new CounterMap<>(PURPLE, 1),
 				"Destroy target unit.",
 				owner);
 
 		playable
-				.setTargetSingleUnit(cardId -> game.destroy(id, cardId));
+				.setTargetSingleUnit(null, null, cardId -> game.destroy(id, cardId), null);
 	}
 }

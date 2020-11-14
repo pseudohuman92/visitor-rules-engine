@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -20,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 /**
  * @author pseudo
  */
-public class StarlingSwarm extends ActivatableUnit {
+public class StarlingSwarm extends Unit {
 
 	public StarlingSwarm (Game game, String owner) {
 		super(game, "Starling Swarm",

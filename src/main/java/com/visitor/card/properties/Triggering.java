@@ -56,6 +56,57 @@ public class Triggering {
 		return this;
 	}
 
+	//Adders
+	public final Triggering addStartOfControllerTurnChecker (Runnable startTurnChecker) {
+		Consumer<Event> eventChecker = event -> {
+			if (event.playersTurnStart(card.controller)) {
+				startTurnChecker.run();
+			}
+		};
+		eventCheckerList.add(eventChecker);
+		return this;
+	}
+
+	public final Triggering addStartOfOpponentTurnChecker (Runnable startTurnChecker) {
+		Consumer<Event> eventChecker = event -> {
+			if (event.playersTurnStart(game.getOpponentName(card.controller))) {
+				startTurnChecker.run();
+			}
+		};
+		eventCheckerList.add(eventChecker);
+		return this;
+	}
+
+	public final Triggering addEndOfControllerTurnChecker (Runnable endTurnChecker) {
+		Consumer<Event> eventChecker = event -> {
+			if (event.playersTurnEnd(card.controller)) {
+				endTurnChecker.run();
+			}
+		};
+		eventCheckerList.add(eventChecker);
+		return this;
+	}
+
+	public final Triggering addEndOfOpponentTurnChecker (Runnable endTurnChecker) {
+		Consumer<Event> eventChecker = event -> {
+			if (event.playersTurnEnd(game.getOpponentName(card.controller))) {
+				endTurnChecker.run();
+			}
+		};
+		eventCheckerList.add(eventChecker);
+		return this;
+	}
+
+	public final Triggering addAttackChecker (Card attacker, Consumer<Event> attackChecker) {
+		Consumer<Event> eventChecker = event -> {
+			if (event.type == Event.EventType.Attack && ((Arraylist<Card>)event.data.get(0)).contains(attacker)) {
+				attackChecker.accept(event);
+			}
+		};
+		eventCheckerList.add(eventChecker);
+		return this;
+	}
+
 	// Resetters
 	public final void resetEventCheckerList () {
 		eventCheckerList.clear();

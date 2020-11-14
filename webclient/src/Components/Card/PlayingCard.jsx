@@ -288,17 +288,19 @@ class PlayingCard extends React.Component {
         });
         let relations = [];
 
-        targets.forEach((target) => {
-            relations.push({
-                from: id,
-                to: target,
-                fromAnchor: "center center",
-                toAnchor: "center center",
-                borderColor: "yellow",
-                borderWidth: 4,
-                zIndex: 10,
+        if (targets) {
+            targets.forEach((target) => {
+                relations.push({
+                    from: id,
+                    to: target,
+                    fromAnchor: "center center",
+                    toAnchor: "center center",
+                    borderColor: "yellow",
+                    borderWidth: 4,
+                    zIndex: 10,
+                });
             });
-        });
+        }
 
         // if card is attacking
         const attackerIndex = attackerAssignmentIds.indexOf(id);
@@ -564,12 +566,13 @@ class PlayingCard extends React.Component {
         //Deployed and depleted visual indicators
         let opacity = 1;
         if (combat && combat.deploying) {
-            opacity = 0.5;
+
         }
 
         let rotation = "rotate(0deg)";
         if (depleted) {
-            rotation = "rotate(7.5deg)";
+            opacity = 0.5;
+            //rotation = "rotate(7.5deg)";
         }
 
         const counterMap = {};
@@ -624,6 +627,7 @@ class PlayingCard extends React.Component {
                                         }}
                                     />
                                 )}
+
                                 <div
                                     className={cardData.id}
                                     onMouseEnter={this.onMouseEnter}

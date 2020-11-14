@@ -9,16 +9,15 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class RC04 extends Cantrip {
 	public RC04 (Game game, String owner) {
-		super(game, "UR01", 4,
+		super(game, "RC04", 4,
 				new CounterMap<>(RED, 2),
 				"Deal 4 damage to target unit and 2 damage to its controller.",
 				owner);
 
 		playable
-				.setTargetSingleUnit((cardId) -> {
+				.setTargetSingleUnit(null, null, cardId -> {
 							game.dealDamage(id, cardId, new Damage(4));
 							game.dealDamage(id, game.getUserId(game.getCard(cardId).controller), new Damage(2));
-						}
-				);
+						},null);
 	}
 }

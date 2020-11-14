@@ -8,6 +8,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -20,8 +21,11 @@ public class BloomingOrchard extends Unit {
 	public BloomingOrchard (Game game, String owner) {
 		super(game, "Blooming Orchard",
 				1, new CounterMap(YELLOW, 1),
-				"",
+				"{D}: Gain 1 health.",
 				0, 4,
 				owner, Regenerate);
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: Gain 1 health.",
+				() -> game.gainHealth(controller, 1))
+				.setDepleting());
 	}
 }

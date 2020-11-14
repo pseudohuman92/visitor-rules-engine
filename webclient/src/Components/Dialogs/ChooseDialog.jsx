@@ -48,7 +48,7 @@ class ChooseDialog extends Component {
 
         return (
             <Dialog
-                open={dialog.open}
+                open={clientPhase !== ClientPhase.SELECT_KNOWLEDGE && dialog.open}
                 onClose={this.onClose}
                 fullWidth
                 disableBackdropClick={isSelectPhase}

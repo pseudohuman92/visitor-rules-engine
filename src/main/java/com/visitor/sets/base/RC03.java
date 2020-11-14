@@ -9,7 +9,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class RC03 extends Cantrip {
 	public RC03 (Game game, String owner) {
-		super(game, "UR01", 3,
+		super(game, "RC03", 3,
 				new CounterMap<>(RED, 1),
 				"Deal 2 damage to each unit.",
 				owner);

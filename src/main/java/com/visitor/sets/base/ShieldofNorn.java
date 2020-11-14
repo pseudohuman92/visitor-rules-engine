@@ -6,7 +6,6 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -19,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 /**
  * @author pseudo
  */
-public class ShieldofNorn extends ActivatableUnit {
+public class ShieldofNorn extends Unit {
 
 	UUID target;
 	public ShieldofNorn (Game game, String owner) {

@@ -8,6 +8,8 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
@@ -19,8 +21,15 @@ public class ThistleandSpire extends Unit {
 	public ThistleandSpire (Game game, String owner) {
 		super(game, "Thistle and Spire",
 				1, new CounterMap(),
-				"",
+				"{1}, {D}: {~} deals 1 damage to another unit and 1 damage to itself.",
 				0, 4,
 				owner, Defender);
+
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1}, {D}: {~} deals 1 damage to another unit and 1 damage to itself.").setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(this), 1, false,
+				targetId -> {
+					game.dealDamage(id, targetId, 1);
+					game.dealDamage(id, id, 1);
+				})
+		.setDepleting());
 	}
 }

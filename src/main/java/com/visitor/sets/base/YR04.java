@@ -14,12 +14,12 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
 public class YR04 extends Ritual {
 
 	public YR04 (Game game, String owner) {
-		super(game, "UR01", 3,
+		super(game, "YR04", 3,
 				new CounterMap<>(YELLOW, 1),
 				"Destroy target depleted unit. Gain 3 health",
 				owner);
 
 		playable
-				.setTargetSingleUnit(Card::isDepleted, cardId -> game.destroy(id, cardId), () -> game.gainHealth(controller, 3));
+				.setTargetSingleUnit(null, Card::isDepleted, cardId -> game.destroy(id, cardId), () -> game.gainHealth(controller, 3));
 	}
 }

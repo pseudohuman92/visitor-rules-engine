@@ -24,85 +24,93 @@ public class Event {
 	}
 
 	//Creators
-	public static Event draw (String username, Card drawn) {
-		Event e = new Event(DRAW);
+	public static Event draw (String username, Arraylist<Card> drawnCards) {
+		Event e = new Event(Draw);
 		e.data.add(username);
-		e.data.add(drawn);
+		e.data.add(drawnCards);
 		return e;
 	}
 
-	public static Event discard (String username, Card discarded) {
-		Event e = new Event(DISCARD);
+	public static Event discard (String username, Arraylist<Card> discardedCards) {
+		Event e = new Event(Discard);
 		e.data.add(username);
-		e.data.add(discarded);
+		e.data.add(discardedCards);
 		return e;
 	}
 
-	public static Event possess (String oldController, String newController, Card c) {
-		Event e = new Event(POSSESS);
-		e.data.add(oldController);
-		e.data.add(newController);
-		e.data.add(c);
+	public static Event discard (String username, Card ...discardedCard) {
+		Event e = new Event(Discard);
+		e.data.add(username);
+		e.data.add(new Arraylist<>(discardedCard));
 		return e;
 	}
 
-	public static Event donate (String oldController, String newController, Card c) {
-		Event e = new Event(DONATE);
-		e.data.add(oldController);
-		e.data.add(newController);
-		e.data.add(c);
+	public static Event attack (Arraylist<Card> attackers) {
+		Event e = new Event(Attack);
+		e.data.add(attackers);
 		return e;
 	}
 
 	public static Event turnStart (String turnPlayer) {
-		Event e = new Event(TURN_START);
+		Event e = new Event(Turn_Start);
 		e.data.add(turnPlayer);
 		return e;
 	}
 
 	public static Event turnEnd (String turnPlayer) {
-		Event e = new Event(TURN_END);
-		e.data.add(turnPlayer);
-		return e;
-	}
-
-	public static Event cleanup (String turnPlayer) {
-		Event e = new Event(CLEANUP);
+		Event e = new Event(Turn_End);
 		e.data.add(turnPlayer);
 		return e;
 	}
 
 	public static Event study (String studyingPlayer, Card studiedCard) {
-		Event e = new Event(STUDY);
+		Event e = new Event(Study);
 		e.data.add(studyingPlayer);
 		e.data.add(studiedCard);
 		return e;
 	}
 
 	public static Event destroy (Card destroyingCard, Card destroyedCard) {
-		Event e = new Event(DESTROY);
+		Event e = new Event(Destroy);
 		e.data.add(destroyingCard);
 		e.data.add(destroyedCard);
 		return e;
 	}
 
+	public static Event sacrifice (Card sacrificedCard) {
+		Event e = new Event(Sacrifice);
+		e.data.add(sacrificedCard);
+		return e;
+	}
+
 	public static Event transform (Card transformingCard, Card transformedFrom, Card transformedTo) {
-		Event e = new Event(TRANSFORM);
+		Event e = new Event(Transform);
 		e.data.add(transformingCard);
 		e.data.add(transformedFrom);
 		e.data.add(transformedTo);
 		return e;
 	}
 
+	public static Event playCard (Card card) {
+		Event e = new Event(Play_Card);
+		e.data.add(card);
+		return e;
+	}
+
 	//Checkers
-	public static boolean playersTurnStart (Event event, String playerName) {
-		return (event.type == TURN_START && event.data.get(0).equals(playerName));
+	public boolean playersTurnStart (String playerName) {
+		return (type == Turn_Start && data.get(0).equals(playerName));
+	}
+
+	public boolean playersTurnEnd (String playerName) {
+		return (type == Turn_End && data.get(0).equals(playerName));
 	}
 
 	public enum EventType {
-		POSSESS, TURN_START, TURN_END, CLEANUP,
-		DRAW, DISCARD, STUDY,
-		DESTROY, TRANSFORM, DONATE
+		Turn_Start, Turn_End,
+		Draw, Discard, Study,
+		Destroy, Transform,
+		Play_Card, Sacrifice, Attack
 	}
 
 }

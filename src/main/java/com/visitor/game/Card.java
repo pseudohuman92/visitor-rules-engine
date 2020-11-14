@@ -1,6 +1,7 @@
 package com.visitor.game;
 
 import com.visitor.card.properties.*;
+import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
@@ -43,6 +44,9 @@ public abstract class Card implements Serializable {
 	protected Combat combat;
 	protected Playable playable;
 	protected Studiable studiable;
+
+	protected Runnable enterPlay = ()->{};
+	protected Runnable leavePlay = ()->{};
 
 	/**
 	 * This is the default constructor for creating a card.
@@ -108,31 +112,41 @@ public abstract class Card implements Serializable {
 			combat.clear();
 	}
 
-	public void destroy () {
+	public void enterPlay(){
+		if (triggering != null) {
+			triggering.register();
+		}
+		enterPlay.run();
+	}
+
+	public void leavePlay () {
 		clear();
 		if (triggering != null) {
 			triggering.deregister();
 		}
+		leavePlay.run();
+	}
+
+	public void moveToZone(Game.Zone zone){
+		leavePlay();
 		game.extractCard(id);
-		game.putTo(controller, this, Discard_Pile);
+		game.putTo(controller, this, zone);
+	}
+
+	public void destroy () {
+		moveToZone(Discard_Pile);
 	}
 
 	public void sacrifice () {
-		clear();
-		if (triggering != null) {
-			triggering.deregister();
-		}
-		game.extractCard(id);
-		game.putTo(controller, this, Discard_Pile);
+		moveToZone(Discard_Pile);
 	}
 
 	public void returnToHand () {
-		clear();
-		if (triggering != null) {
-			triggering.deregister();
-		}
-		game.extractCard(id);
-		game.putTo(controller, this, Hand);
+		moveToZone(Hand);
+	}
+
+	public void purge () {
+		moveToZone(Game.Zone.Void);
 	}
 
 	public void copyPropertiesFrom (Card c) {
@@ -370,13 +384,15 @@ public abstract class Card implements Serializable {
 		return builder;
 	}
 
-	public void addTurnlyCombatAbility (Combat.CombatAbility combatAbility) {
-		runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
-	}
+
 
 	public void endTurn () {
 		runIfNotNull(combat, () -> combat.endTurn());
 		runIfNotNull(activatable, () -> activatable.endTurn());
+	}
+
+	public void addTurnlyCombatAbility (Combat.CombatAbility combatAbility) {
+		runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
 	}
 
 	public void addTurnlyAttack (int attack) {
@@ -387,13 +403,33 @@ public abstract class Card implements Serializable {
 		runIfNotNull(combat, () -> combat.addTurnlyHealth(health));
 	}
 
-	public boolean hasColor (Knowledge knowledge) {
-		return this.knowledge.contains(knowledge);
+	public void addTurnlyActivatedAbility (ActivatedAbility ability) {
+		runIfNotNull(activatable, ()-> activatable.addTurnlyActivatedAbility(ability));
 	}
+
+
 
 	public void addAttack (int i) {
 		runIfNotNull(combat, () -> combat.addAttack(i));
 	}
+
+	public void addHealth (int i) {
+		runIfNotNull(combat, () -> combat.addHealth(i));
+	}
+
+	public void addShield (int i) {
+		runIfNotNull(combat, ()->combat.addShield(i));
+	}
+
+
+	public void setAttack (int i) {
+		runIfNotNull(combat, () -> combat.setAttack(i));
+	}
+
+	public void setHealth (int i) {
+		runIfNotNull(combat, () -> combat.setHealth(i));
+	}
+
 
 	public boolean isDamagable () {
 		return combat != null;
@@ -403,16 +439,8 @@ public abstract class Card implements Serializable {
 		return studiable != null;
 	}
 
-	public void addHealth (int i) {
-		runIfNotNull(combat, () -> combat.addHealth(i));
-	}
-
-	public void setAttack (int i) {
-		runIfNotNull(combat, () -> combat.setAttack(i));
-	}
-
-	public void setHealth (int i) {
-		runIfNotNull(combat, () -> combat.setHealth(i));
+	public boolean hasColor (Knowledge knowledge) {
+		return this.knowledge.contains(knowledge);
 	}
 
 	public boolean isDeploying () {
@@ -423,14 +451,25 @@ public abstract class Card implements Serializable {
 		return depleted;
 	}
 
-	public void addTurnlyActivatedAbility (ActivatedAbility ability) {
-		runIfNotNull(activatable, ()-> activatable.addTurnlyActivatedAbility(ability));
-	}
 
 	public int getHealth () {
 		return runIfNotNull(combat, ()-> combat.getHealth());
 	}
 
+	public boolean isColorless () {
+		return knowledge.isEmpty();
+	}
+
+	/** Enter Play Effect setters
+	 *
+	 */
+	public void addEnterPlayEffect (CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
+		if (knowledge == null){
+			knowledge = new CounterMap<>();
+		}
+		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
+		enterPlay = () -> game.runIfHasKnowledge(controller, finalKnowledge, ()->game.addToStack(new AbilityCard(game, this, text, effect)));
+	}
 
 	public enum CardType {
 		Ally,
@@ -454,7 +493,12 @@ public abstract class Card implements Serializable {
 		// Unit Subtypes
 		Zombie,
 		Wizard,
-		Bat
+		Bat,
+		Spirit,
+		Warrior,
+		Golem,
+		Elf,
+		Insect, Plant;
 	}
 
 }

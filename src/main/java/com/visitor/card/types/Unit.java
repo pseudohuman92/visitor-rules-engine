@@ -1,5 +1,6 @@
 package com.visitor.card.types;
 
+import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
@@ -20,6 +21,7 @@ public abstract class Unit extends Card {
 		super(game, name, knowledge, CardType.Unit, text, owner);
 		playable = new Playable(game, this, cost, () -> combat.setDeploying()).setSlow().setPersistent();
 		studiable = new Studiable(game, this);
+		activatable = new Activatable(game, this);
 		combat = new Combat(game, this, attack, health);
 		for (Combat.CombatAbility combatAbility : combatAbilities) {
 			combat.addCombatAbility(combatAbility);

@@ -25,7 +25,7 @@ public class EndOfTurnEffect extends Effect {
 		super(game, creator, (event) -> {
 		}, targets);
 		triggering.addEventChecker((event) -> {
-			if (event.type == Event.EventType.CLEANUP) {
+			if (event.type == Event.EventType.Turn_End) {
 				effect.run();
 				triggering.deregister();
 			}

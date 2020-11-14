@@ -13,12 +13,12 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
 public class YR01 extends Ritual {
 
 	public YR01 (Game game, String owner) {
-		super(game, "UR01", 2,
+		super(game, "YR01", 2,
 				new CounterMap<>(YELLOW, 1),
 				"Destroy target purple or red unit.",
 				owner);
 
 		playable
-				.setTargetSingleUnit(or(Predicates::isPurple, Predicates::isRed), cardId -> game.destroy(id, cardId));
+				.setTargetSingleUnit(null, or(Predicates::isPurple, Predicates::isRed), cardId -> game.destroy(id, cardId), null);
 	}
 }

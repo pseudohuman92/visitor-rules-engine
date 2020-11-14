@@ -6,17 +6,14 @@
 package com.visitor.sets.test;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.specialtypes.ActivatableUnit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
-
 /**
  * @author pseudo
  */
-public class ActivatedAbility1 extends ActivatableUnit {
+public class ActivatedAbility1 extends Unit {
 
 	public ActivatedAbility1 (Game game, String owner) {
 		super(game, "Activated Ability 1",

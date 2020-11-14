@@ -72,7 +72,7 @@ export class CardDisplay extends PureComponent {
                     //border: "2px blue solid"
                   }}
               >
-                <FullCard scale={1.5} {...rest} opacity={1} square={false} />
+                <FullCard scale={1.5} {...rest} opacity={1} square={false} preview={true} />
               </div>
               {withKeywords &&
               <div
