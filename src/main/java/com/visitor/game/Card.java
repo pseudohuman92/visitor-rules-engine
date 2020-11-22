@@ -471,6 +471,12 @@ public abstract class Card implements Serializable {
 		enterPlay = () -> game.runIfHasKnowledge(controller, finalKnowledge, ()->game.addToStack(new AbilityCard(game, this, text, effect)));
 	}
 
+	public boolean isPlayable () { return playable != null;
+	}
+
+	public int getCost () { return playable.getCost();
+	}
+
 	public enum CardType {
 		Ally,
 		Asset,
@@ -498,7 +504,7 @@ public abstract class Card implements Serializable {
 		Warrior,
 		Golem,
 		Elf,
-		Insect, Plant;
+		Insect, Plant, Wurm, Wolf;
 	}
 
 }

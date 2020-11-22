@@ -7,8 +7,10 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 import com.visitor.sets.base.GP01;
+import com.visitor.sets.base.GY03;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 public class UnitToken extends Unit {
@@ -47,6 +49,14 @@ public class UnitToken extends Unit {
 
 	public static UnitToken Plant_1_1 (Game game, String owner) {
 		return new UnitToken(game, "Plant", CardSubtype.Plant, 1, new CounterMap<>(GREEN, 1), "", 1, 1, owner);
+	}
+
+	public static UnitToken Wurm_5_5 (Game game, String owner) {
+		return new UnitToken(game, "Wurm", CardSubtype.Wurm, 5, new CounterMap<>(GREEN, 2), "", 5, 5, owner, Trample);
+	}
+
+	public static UnitToken Wolf_3_3 (Game game, String owner) {
+		return new UnitToken(game, "Wolf", CardSubtype.Wolf, 3, new CounterMap<>(GREEN, 1).add(YELLOW, 1), "", 3, 3, owner);
 	}
 }
 

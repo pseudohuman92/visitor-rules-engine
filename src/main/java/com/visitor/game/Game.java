@@ -1304,6 +1304,10 @@ public class Game implements Serializable {
 			destroy(c1.id);
 	}
 
+	public Arraylist<Card> getTopCardsFromDeck (String controller, int i) {
+		return getPlayer(controller).getFromTopOfDeck(i);
+	}
+
 	public enum Zone {
 		Deck, Hand, Opponent_Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Stack
 	}

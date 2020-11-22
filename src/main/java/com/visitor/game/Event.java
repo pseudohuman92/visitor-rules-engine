@@ -110,7 +110,7 @@ public class Event {
 		Turn_Start, Turn_End,
 		Draw, Discard, Study,
 		Destroy, Transform,
-		Play_Card, Sacrifice, Attack
+		Play_Card, Sacrifice, Enter_Play, Attack
 	}
 
 }

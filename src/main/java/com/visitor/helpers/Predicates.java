@@ -118,4 +118,8 @@ public abstract class Predicates {
 	public static boolean isColorless (Card card) {
 		return card.isColorless();
 	}
+
+	public static boolean isReady (Card card) {
+		return !card.isDepleted();
+	}
 }

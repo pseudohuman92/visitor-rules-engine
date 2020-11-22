@@ -264,4 +264,8 @@ public class Player {
 	public Card discardAtRandom () {
 		return hand.remove((int) (Math.random() * getHandSize()));
 	}
+
+	public Arraylist<Card> getFromTopOfDeck (int i) {
+		return deck.getFromTop(i);
+	}
 }

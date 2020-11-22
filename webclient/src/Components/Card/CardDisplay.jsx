@@ -2,6 +2,8 @@ import React from "react";
 import { PureComponent } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 import FullCard from "./FullCard";
 import SmallCard from "./SmallCard";
@@ -54,7 +56,10 @@ export class CardDisplay extends PureComponent {
         style={{ width: "100%", height: "100%" }}
 
       >
-        {!isDragging && !popoverDisabled && (
+        <Tooltip
+            title={
+
+        //{!isDragging && !popoverDisabled && (
             <div
                 style={{
                   position: "absolute",
@@ -111,7 +116,9 @@ export class CardDisplay extends PureComponent {
               </div>
               }
             </div>
-        )}
+        //)}
+            }
+        >
         <div onMouseEnter={this.handlePopoverOpen} onMouseLeave={this.handlePopoverClose} onClick={onClick? onClick : ()=>{}}
              style={style}>
           {small ? (
@@ -120,6 +127,8 @@ export class CardDisplay extends PureComponent {
             <FullCard {...rest} />
           )}
         </div>
+
+        </Tooltip>
       </div>
     );
   }
