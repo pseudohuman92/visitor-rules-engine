@@ -171,8 +171,8 @@ public abstract class Card implements Serializable {
 		});
 	}
 
-	public final void play () {
-		runIfNotNull(playable, () -> playable.play());
+	public final void play (boolean withCost) {
+		runIfNotNull(playable, () -> playable.play(withCost));
 	}
 
 	public final void study (Player player, boolean normal) {
@@ -320,8 +320,8 @@ public abstract class Card implements Serializable {
 		return combat != null && combat.canBlock(c);
 	}
 
-	public final boolean canPlay () {
-		return playable != null && playable.canPlay();
+	public final boolean canPlay (boolean withCost) {
+		return playable != null && playable.canPlay(withCost);
 	}
 
 	public final boolean canActivate () {
@@ -475,6 +475,10 @@ public abstract class Card implements Serializable {
 	}
 
 	public int getCost () { return playable.getCost();
+	}
+
+	public void setPurging () {
+		runIfNotNull(playable, ()-> playable.setPurging());
 	}
 
 	public enum CardType {

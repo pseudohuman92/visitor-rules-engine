@@ -205,11 +205,19 @@ public class Game implements Serializable {
 	 * Game Action Methods
 	 * These are game actions taken by a client
 	 */
-	public void playCard (String username, UUID cardID) {
+	public void playCard (String username, UUID cardID, boolean withCost) {
 		Card card = extractCard(cardID);
-		card.play();
+		card.play(withCost);
 		addEvent(Event.playCard(card), true);
 		activePlayer = getOpponentName(username);
+	}
+
+	public void playCard (String username, UUID cardID) {
+		playCard(username, cardID, true);
+	}
+
+	public void playCardWithoutCost (String username, UUID cardID) {
+		playCard(username, cardID, false);
 	}
 
 	public void activateCard (String username, UUID cardID) {
@@ -687,6 +695,8 @@ public class Game implements Serializable {
 				return getPlayer(getOpponentName(username)).playArea;
 			case Opponent_Hand:
 				return getPlayer(getOpponentName(username)).hand;
+			case Opponent_Discard_Pile:
+				return getPlayer(getOpponentName(username)).discardPile;
 			case Both_Play:
 				Arraylist<Card> total = new Arraylist<>();
 				players.values().forEach(player -> total.addAll(player.playArea));
@@ -861,7 +871,7 @@ public class Game implements Serializable {
 		players.forEach((s, p) -> {
 			if (username.equals(s) && isPlayerActive(s)) {
 				p.hand.forEach(c -> {
-					if (c.canPlay()) {
+					if (c.canPlay(true)) {
 						b.addCanPlay(c.id.toString());
 					}
 					if (c.canStudy()) {
@@ -922,6 +932,7 @@ public class Game implements Serializable {
 			case Opponent_Play:
 				return SelectFromType.PLAY;
 			case Discard_Pile:
+			case Opponent_Discard_Pile:
 				return SelectFromType.DISCARD_PILE;
 			case Void:
 				return SelectFromType.VOID;
@@ -1309,7 +1320,7 @@ public class Game implements Serializable {
 	}
 
 	public enum Zone {
-		Deck, Hand, Opponent_Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Stack
+		Deck, Hand, Opponent_Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Opponent_Discard_Pile, Stack
 	}
 
 }

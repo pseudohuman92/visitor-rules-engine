@@ -33,7 +33,7 @@ public class Playable {
 	private Supplier<Boolean> canPlayResource;
 
 	private Arraylist<Runnable> beforePlay;
-	private Arraylist<Runnable> play;
+	private Arraylist<Consumer<Boolean>> play;
 	private Arraylist<Runnable> afterPlay;
 
 	private Runnable resolveEffect;
@@ -114,8 +114,8 @@ public class Playable {
 	 *
 	 * @return
 	 */
-	public final boolean canPlay () {
-		boolean result = canPlayResource.get() && canPlayTiming.get();
+	public final boolean canPlay (boolean withResources) {
+		boolean result = (!withResources || canPlayResource.get()) && canPlayTiming.get();
 		int index = -1;
 		while (result && index < canPlayAdditional.size() - 1) {
 			index++;
@@ -130,9 +130,9 @@ public class Playable {
 	 * Default behavior is that it deducts the energy cost of the card,
 	 * removes it from player's hand and then puts on the stack.
 	 */
-	public final void play () {
+	public final void play (boolean withCost) {
 		beforePlay.forEachInOrder(Runnable::run);
-		play.forEachInOrder(Runnable::run);
+		play.forEachInOrder(p -> p.accept(withCost));
 		afterPlay.forEachInOrder(Runnable::run);
 	}
 
@@ -147,8 +147,10 @@ public class Playable {
 	}
 
 	private void setDefaultPlay () {
-		play.add(() -> {
-			game.spendEnergy(card.controller, cost);
+		play.add((withCost) -> {
+			if (withCost) {
+				game.spendEnergy(card.controller, cost);
+			}
 			game.addToStack(card);
 		});
 	}
@@ -190,7 +192,7 @@ public class Playable {
 		return this;
 	}
 
-	public void addPlay (Runnable ...play) {
+	public void addPlay (Consumer<Boolean> ...play) {
 		this.play.addAll(Arrays.asList(play));
 	}
 

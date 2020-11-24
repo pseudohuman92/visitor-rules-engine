@@ -7,6 +7,7 @@ package com.visitor.helpers;
 
 import com.visitor.game.Card;
 import com.visitor.game.Player;
+import com.visitor.protocol.Types;
 
 import java.util.function.Predicate;
 
@@ -121,5 +122,9 @@ public abstract class Predicates {
 
 	public static boolean isReady (Card card) {
 		return !card.isDepleted();
+	}
+
+	public static Predicate<Card> isColor (Types.Knowledge color) {
+		return c -> c.hasColor(color);
 	}
 }
