@@ -5,8 +5,6 @@ import {replaceSpecialCharacters, toKnowledgeString} from "../Helpers/Helpers";
 import "./css/Card.css";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
-import FittedText from "../Primitives/FittedText";
-import FitText from '@plutonium-js/react-fit-text';
 
 class FullCard extends PureComponent {
     state = {showDialog: false};
@@ -183,7 +181,7 @@ class FullCard extends PureComponent {
                                 max={15}
                                 windowDimensions={windowDimensions}
                             />*/}
-                            <FitText updateOnResize = {{ delay:0 }}> {(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)} </FitText>
+                            {(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)}
                         </div>
                     )}
 

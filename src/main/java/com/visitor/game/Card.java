@@ -17,8 +17,7 @@ import java.io.Serializable;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import static com.visitor.game.Game.Zone.Discard_Pile;
-import static com.visitor.game.Game.Zone.Hand;
+import static com.visitor.game.Game.Zone.*;
 import static java.util.UUID.randomUUID;
 
 /**
@@ -117,6 +116,7 @@ public abstract class Card implements Serializable {
 			triggering.register();
 		}
 		enterPlay.run();
+		game.addEvent(Event.enterPlay(this), true);
 	}
 
 	public void leavePlay () {
@@ -128,7 +128,9 @@ public abstract class Card implements Serializable {
 	}
 
 	public void moveToZone(Game.Zone zone){
-		leavePlay();
+		if (zone != Play || zone != Opponent_Play) {
+			leavePlay();
+		}
 		game.extractCard(id);
 		game.putTo(controller, this, zone);
 	}
@@ -444,7 +446,7 @@ public abstract class Card implements Serializable {
 	}
 
 	public boolean isDeploying () {
-		return combat != null && !combat.isDeploying();
+		return combat != null && combat.isDeploying();
 	}
 
 	public boolean isDepleted () {

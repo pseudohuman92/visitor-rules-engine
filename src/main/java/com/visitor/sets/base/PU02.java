@@ -39,7 +39,7 @@ public class PU02 extends Unit {
 						                                            "spell from that player’s discard pile without paying its cost. \n" +
 						                                            "Purge the spell after it resolves.",
 								() -> {
-									Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Discard_Pile, Predicates::isSpell, 1, true, "Select a spell to play.");
+									Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Discard_Pile, Predicates.and(Predicates::isSpell, c-> c.canPlay(false)), 1, true, "Select a spell to play.");
 									if (!maybePlay.isEmpty()){
 										game.getCard(maybePlay.get(0)).controller = controller;
 										game.getCard(maybePlay.get(0)).setPurging();

@@ -49,7 +49,7 @@ public class GY04 extends Unit {
 										game.gainHealth(controller, 3);
 										ArrayList<UUID> maybeTarget = game.selectFromZone(controller, Game.Zone.Opponent_Play, Predicates::isUnit, 1, true, "Choose a unit to fight.");
 										if (!maybeTarget.isEmpty()){
-												game.fight(id, maybeTarget.get(0));
+												game.fight(((Card)event.data.get(0)).id, maybeTarget.get(0));
 										}
 						}));
 					}

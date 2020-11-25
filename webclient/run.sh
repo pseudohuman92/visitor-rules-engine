@@ -1,4 +1,4 @@
-yarn install --ignore-engines
+yarn install
 cd bin/
 ./gen-proto-js.sh
 cd ..

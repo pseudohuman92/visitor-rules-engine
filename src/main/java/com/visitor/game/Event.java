@@ -97,6 +97,12 @@ public class Event {
 		return e;
 	}
 
+	public static Event enterPlay (Card card) {
+		Event e = new Event(Enter_Play);
+		e.data.add(card);
+		return e;
+	}
+
 	//Checkers
 	public boolean playersTurnStart (String playerName) {
 		return (type == Turn_Start && data.get(0).equals(playerName));

@@ -938,6 +938,9 @@ public class Game implements Serializable {
 				return SelectFromType.VOID;
 			case Stack:
 				return SelectFromType.STACK;
+			case Deck:
+			case Opponent_Hand:
+				return SelectFromType.LIST;
 			default:
 				return NOTYPE;
 		}

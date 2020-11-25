@@ -115,7 +115,7 @@ public class Playable {
 	 * @return
 	 */
 	public final boolean canPlay (boolean withResources) {
-		boolean result = (!withResources || canPlayResource.get()) && canPlayTiming.get();
+		boolean result = !withResources || (canPlayResource.get() && canPlayTiming.get());
 		int index = -1;
 		while (result && index < canPlayAdditional.size() - 1) {
 			index++;
