@@ -12,7 +12,7 @@ import FittedText from "../Primitives/FittedText";
 
 export class CardDisplay extends PureComponent {
   state = {
-    popoverStyle: {display: "none", width: 0}
+    popoverStyle: {}
   };
 
   handlePopoverOpen = (event) => {
@@ -20,11 +20,32 @@ export class CardDisplay extends PureComponent {
     const rect = event.currentTarget.getBoundingClientRect();
 
     const style = {};
+      if (rect.top < height / 2) {
+          //Upper half
+          if (rect.left < width / 2) {
+              //Card is in Upper Left quadrant
+              style["placement"] = "bottom-end";
+          } else {
+              //Card is in Upper Right quadrant
+              style["placement"] = "bottom-begin";
+          }
+      } else {
+          //Lower half
+          if (rect.left < width / 2) {
+              //Card is in Lower Left quadrant
+              style["placement"] = "top-end";
+          } else {
+              //Card is in Lower Right quadrant
+              style["placement"] = "top-begin";
+          }
+      }
+    /*
     style["width"] = width / 5;
     style["height"] = (width / 5) * (88 / 63);
     style["display"] = "flex";
     style["textAlign"] = "left";
     //style["border"] = "2px solid red";
+
 
     if (rect.top < height / 2) {
       style["top"] = rect.height;
@@ -38,13 +59,14 @@ export class CardDisplay extends PureComponent {
       style["right"] = rect.width;
       style["flexDirection"] = "row-reverse";
     }
+    */
     this.setState({
       popoverStyle: style,
     });
   };
 
   handlePopoverClose = (event) => {
-    this.setState({popoverStyle: {display: "none", width: 0}});
+    this.setState({popoverStyle: {}});
   };
 
   render() {
@@ -57,21 +79,15 @@ export class CardDisplay extends PureComponent {
 
       >
         <Tooltip
+            style ={{...popoverStyle}}
             title={
 
-        //{!isDragging && !popoverDisabled && (
+        !isDragging ? !popoverDisabled  ? (
             <div
-                style={{
-                  position: "absolute",
-                  zIndex: 20,
-                  ...popoverStyle,
-                }}
                 opacity={1}
             >
               <div
                   style={{
-                    width: popoverStyle.width / (withKeywords? 2:1),
-                    height: popoverStyle.height,
                     justify: "center",
                     alignContent: "center",
                     //border: "2px blue solid"
@@ -84,8 +100,6 @@ export class CardDisplay extends PureComponent {
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    width: popoverStyle.width / 2,
-                    height: popoverStyle.height,
                     //border: "2px green solid"
                   }}
               >
@@ -116,7 +130,7 @@ export class CardDisplay extends PureComponent {
               </div>
               }
             </div>
-        //)}
+        ) : <div/> : <div/>
             }
         >
         <div onMouseEnter={this.handlePopoverOpen} onMouseLeave={this.handlePopoverClose} onClick={onClick? onClick : ()=>{}}

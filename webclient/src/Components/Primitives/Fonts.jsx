@@ -33,6 +33,14 @@ export default class Fonts extends Component {
           font: 'Metal Mania',
           weights: [400],
         },
+          {
+              font: 'Texturina',
+              weights: [400],
+          },
+          {
+              font: 'Archivo',
+              weights: [400],
+          },
       ]}
     />
             </div>

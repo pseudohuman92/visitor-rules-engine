@@ -70,6 +70,8 @@ message PickCard {
     string message = 7;
 }
 
+//TODO: Add draft state update message so you can instantly show that they picked the card.
+
 message ServerGameMessage {
     oneof payload {
         UpdateGameState         updateGameState = 8;

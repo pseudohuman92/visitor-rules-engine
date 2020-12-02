@@ -229,6 +229,7 @@ public class Draft {
 		try {
 			responses.get(username).put(cardId);
 			picksReceived++;
+			//TODO: Update the player so their picks gets shown
 			if (picksReceived == 2){
 				picksReceived = 0;
 				processPicks();

@@ -118,7 +118,7 @@ class GameScreen extends Component {
 
                             <div className="App-header">
                                 <EscapeMenu open={this.state.menuOpen} close={this.closeMenu}/>
-                                <EndGameDialog/>
+                                {/*<EndGameDialog/>*/}
                                 <SelectXDialog/>
                                 <ChooseDialog/>
                                 <KnowledgeDialog/>

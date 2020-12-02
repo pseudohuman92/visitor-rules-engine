@@ -17,9 +17,11 @@ const mapStateToProps = state => {
 class Hand extends PureComponent {
   render() {
     const { hand, opponentHandSize, isPlayer, windowDimensions } = this.props;
+    const { width } = windowDimensions;
+     const stepSize = (width * 0.7) / (Math.max(hand.length +1 , 8));
     const handCards = isPlayer
       ? hand.map((card, i) => {
-          return <PlayingCard key={card.id} cardData={card} DnDIndex={i} play />;
+          return <PlayingCard  key={card.id} cardData={card} DnDIndex={i} play />;
         })
       : Array.apply(null, Array(opponentHandSize)).map((x, i) => {
         return <img
@@ -63,11 +65,18 @@ class Hand extends PureComponent {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              style={{ display: "flex", 
-              justifyContent: "center",
-              overflow: "auto"}}
+              style={{overflow: "auto"}}
             >
-              {handCards}
+              {isPlayer? handCards.map((card, i) => {
+                  return (<div
+                      key={i}
+                          style={{
+                              position: "absolute",
+                              left: "" + stepSize * i + "px",
+                              top: 0,
+                              zIndex: i,
+                          }}
+                      > {card} </div>);}) : handCards}
               {provided.placeholder}
             </div>
           );

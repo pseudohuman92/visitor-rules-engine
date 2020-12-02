@@ -5,6 +5,8 @@ import {replaceSpecialCharacters, toKnowledgeString} from "../Helpers/Helpers";
 import "./css/Card.css";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
+import FittedText from "../Primitives/FittedText";
+import Fonts from "../Primitives/Fonts";
 
 class FullCard extends PureComponent {
     state = {showDialog: false};
@@ -52,7 +54,7 @@ class FullCard extends PureComponent {
                     zIndex: 1,
                 }}
             >
-                {/*<Fonts />*/}
+                {<Fonts />}
                 <div
                     className="card-inner"
                     style={{
@@ -162,8 +164,15 @@ class FullCard extends PureComponent {
                                 />
                             </div>
                         ))}
-                    <div className="card-name" style={{height: square ? "9%" : "6%"}}>
-                        {name}
+                    <div className="card-name" style={{height: square ? "9%" : "6%",
+                        }}>
+                        {<FittedText
+                            text={name}
+                            font = {{fontFamily: "Texturina"}}
+                            max={12}
+                            pad={0}
+                            windowDimensions={windowDimensions}
+                        />}
                     </div>
 
                     {!square && <div className="card-type">{types}{subtypes ? " - " + subtypes : ""} </div>}
@@ -176,12 +185,15 @@ class FullCard extends PureComponent {
                                 whiteSpace: "pre-wrap",
                             }}
                         >
-                            {/*<FittedText
-                                text={(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)}
-                                max={15}
+                            {<FittedText
+                                text={(combat ? (combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "") : "")
+                                + replaceSpecialCharacters(description, name)}
+                                max={12}
+                                padding={0}
+                                font = {{fontFamily: "Archivo"}}
                                 windowDimensions={windowDimensions}
-                            />*/}
-                            {(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)}
+                            />}
+                            {/*(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)*/}
                         </div>
                     )}
 
