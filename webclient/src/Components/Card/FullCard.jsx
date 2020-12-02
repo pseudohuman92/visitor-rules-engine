@@ -102,6 +102,9 @@ class FullCard extends PureComponent {
                             height: "100%",
                             zIndex: -1,
                             backgroundColor: "gainsboro",
+                            display: "block",
+                            marginLeft: "auto",
+                            marginRight: "auto",
                         }}
                     >
                         <img
@@ -110,8 +113,12 @@ class FullCard extends PureComponent {
                                 "/img/sets/" + set + "/"
                                 + name + ".jpg"
                             }
-                            style={
-                                square
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                ...(square
                                     ? {
                                         maxWidth: "100%",
                                         objectFit: "scale-down",
@@ -119,8 +126,8 @@ class FullCard extends PureComponent {
                                     : {
                                         maxHeight: "100%",
                                         objectFit: "scale-down",
-                                    }
-                            }
+                                    })
+                            }}
                             alt=""
                         />
                     </div>
