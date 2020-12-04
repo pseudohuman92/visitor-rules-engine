@@ -22,11 +22,14 @@ import {withHandlers} from "../MessageHandlers/HandlerContext";
 import PhaseDisplay from "../GameAreas/PhaseDisplay";
 import SelectionMessage from "../GameAreas/SelectionMessage";
 import KnowledgeDialog from "../Dialogs/KnowledgeDialog";
+import {ClientPhase} from "../Helpers/Constants";
+import {Redirect} from "react-router-dom";
 
 const mapStateToProps = (state) => {
     return {
         windowDimensions: state.windowDimensions,
         gameInitialized: state.extendedGameState.gameInitialized,
+        clientPhase: state.extendedGameState.clientPhase,
     };
 };
 
@@ -36,7 +39,7 @@ class GameScreen extends Component {
     openMenu = (event) => {
         if (event.keyCode === 27) {
             //ESC key
-            this.setState({menuOpen: true});
+            this.setState({menuOpen: !this.state.menuOpen});
         }
     };
 
@@ -90,7 +93,7 @@ class GameScreen extends Component {
     };
 
     render() {
-        const {windowDimensions, gameInitialized} = this.props;
+        const {windowDimensions, gameInitialized, clientPhase} = this.props;
         const {width, height} = windowDimensions;
 
         const sideHeight = height * 0.2;
@@ -98,6 +101,7 @@ class GameScreen extends Component {
 
         return (
                 <ErrorBoundary>
+                    {(clientPhase === ClientPhase.WIN || clientPhase === ClientPhase.LOSE) && <Redirect to={"/profile"}/>}
                     {gameInitialized &&
                     <DragDropContext
                         onDragStart={this.onDragStart}

@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../Primitives/Button";
 import {connect} from "react-redux";
 
 import {withFirebase} from "../Firebase";
@@ -8,6 +7,9 @@ import {craftCost, fullCollection, isProduction, salvageValue} from "../Helpers/
 import {mapDispatchToProps} from "../Redux/Store";
 import CraftableCard from "../Card/CraftableCard";
 import {compareCardsByKnowledge, debugPrint, sleep, toFullCards} from "../Helpers/Helpers";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Button from "@material-ui/core/Button";
 
 const mapStateToProps = state => {
     return {
@@ -128,9 +130,15 @@ class CollectionScreen extends React.Component {
                     alignItems: "center",
                     flexGrow: 1
                 }}>
-                    <Button
-                        onClick={this.craft}
-                        text={craft ? "Craft" : "Display"}
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={craft}
+                                onChange={this.craft}
+                                color="primary"
+                            />
+                        }
+                        label={craft ? "Craft" : "Display"}
                     />
                     <div style={{fontFamily: "Cinzel, serif"}}>
                         {"Dust: " + dust}
@@ -139,14 +147,16 @@ class CollectionScreen extends React.Component {
                         <Button
                             onClick={this.salvageExtras}
                             disabled={!this.hasExtras()}
+                            variant="contained"
                             text="Salvage Extras"
-                        />
+                        >Salvage Extras</Button>
                     )}
                     {craft && !isProduction && (
                         <Button
                             onClick={this.craftMissing}
+                            variant="contained"
                             text="Craft Missing"
-                        />
+                        > Craft Missing </Button>
                     )}
                 </div>
                 <div style={{display: "flex"}}>

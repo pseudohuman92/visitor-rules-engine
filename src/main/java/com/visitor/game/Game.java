@@ -576,12 +576,13 @@ public class Game implements Serializable {
 		return null;
 	}
 
-	private Arraylist<DamageAssignment> assignDamage (String username, UUID id, Arraylist<UUID> possibleTargets, int damage) {
+	private Arraylist<DamageAssignment> assignDamage (String username, UUID id, Arraylist<UUID> possibleTargets, int damage, boolean trample) {
 		out.println("Sending Assign Damage Message to " + username);
 		AssignDamage.Builder b = AssignDamage.newBuilder()
 				.setDamageSource(id.toString())
 				.addAllPossibleTargets(possibleTargets.transformToStringList())
 				.setTotalDamage(damage)
+				.setTrample(trample)
 				.setGame(toGameState(username));
 		try {
 			send(username, ServerGameMessage.newBuilder().setAssignDamage(b));
@@ -632,10 +633,10 @@ public class Game implements Serializable {
 		return selectFromZoneWithPlayers(username, Both_Play, Predicates::isDamageable, Predicates::any, count, upTo, message);
 	}
 
-	public void assignDamage (UUID id, Arraylist<UUID> possibleTargets, Damage damage) {
+	public void assignDamage (UUID id, Arraylist<UUID> possibleTargets, Damage damage, boolean trample) {
 		out.println("Updating players from assignDamage. AP: " + activePlayer);
 		updatePlayers();
-		Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage.amount);
+		Arraylist<DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage.amount, trample);
 		out.println("Damage distribution: " + assignedDamages);
 		assignedDamages.forEach(c -> {
 			UUID targetId = fromString(c.getTargetId());

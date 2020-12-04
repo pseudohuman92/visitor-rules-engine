@@ -117,6 +117,7 @@ export interface DamageAssignmentData {
     totalDamage: number;
     damageAssignments: DamageAssignment[];
     totalAssignedDamage: number;
+    trample: boolean;
 }
 
 export function initialDamageAssignmentData(): DamageAssignmentData {
@@ -126,6 +127,7 @@ export function initialDamageAssignmentData(): DamageAssignmentData {
         totalDamage: 0,
         damageAssignments: [],
         totalAssignedDamage: 0,
+        trample: false,
     };
 }
 

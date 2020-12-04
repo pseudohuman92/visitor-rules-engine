@@ -68,19 +68,21 @@ class DeckSelection extends React.Component {
     const {decks, message} = this.state;
     return (
         <div>
-        {!isProduction && <Button onClick={this.loadGame} text="Load"/> }
-          {message === "JOINED" && <Redirect to={"/profile/play/game"}/>}
+        {/*!isProduction && <Button onClick={this.loadGame} text="Load"/> */}
+          {//If there is a joined game, go to there
+            message === "JOINED" && <Redirect to={"/profile/play/game"}/>}
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
                 <Grid
                   item
                   key={i}
-                  xs={4}
-                  onDoubleClick={event => this.joinQueue(deck.id)}
+                  xs={2}
+                  onClick={event => this.joinQueue(deck.id)}
                 >
+                  <Center>{deck.name}</Center>
                   <Center>
                     <img
-                      src={process.env.PUBLIC_URL + "/img/Logo.png"}
+                      src={process.env.PUBLIC_URL + "/img/deckbox.png"}
                       style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
@@ -88,7 +90,6 @@ class DeckSelection extends React.Component {
                       alt=""
                     />
                   </Center>
-                  <Center>{deck.name}</Center>
                 </Grid>
               ))}
             </Grid>

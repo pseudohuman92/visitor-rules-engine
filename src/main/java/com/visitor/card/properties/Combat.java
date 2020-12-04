@@ -112,7 +112,7 @@ public class Combat {
 				if (blockedBy.size() == 1) {
 					game.dealDamage(id, blockedBy.get(0), new Damage(getAttack(), firstStrike, true));
 				} else {
-					game.assignDamage(id, blockedBy, new Damage(getAttack(), firstStrike, true));
+					game.assignDamage(id, blockedBy, new Damage(getAttack(), firstStrike, true), hasCombatAbility(Trample));
 				}
 			}
 		};

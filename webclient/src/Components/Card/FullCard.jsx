@@ -216,7 +216,7 @@ class FullCard extends PureComponent {
                     >
                         <div style={{
                             position: "relative", display: "flex",
-                            width : cardWidth * 0.93 * 0.94,
+                            width : cardWidth * 0.93 * 0.94 * 0.5,
                             height: cardHeight * 0.1,
                             justifyContent:"flex-begin"
                         }}>
@@ -278,6 +278,7 @@ class FullCard extends PureComponent {
                         </div>
                     </div>
 
+                    { !square && <div className="illustrator" style={{textAlign : "right", fontSize: "10px"}}> Illustrator Name </div> }
                 </div>
 
             </div>

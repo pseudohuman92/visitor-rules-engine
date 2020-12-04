@@ -3,6 +3,7 @@ package com.visitor.card.types;
 import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
+import com.visitor.card.properties.Triggering;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
@@ -21,5 +22,6 @@ public abstract class Asset extends Card {
 		playable = new Playable(game, this, cost).setSlow().setPersistent();
 		studiable = new Studiable(game, this);
 		activatable = new Activatable(game, this);
+		triggering = new Triggering(game, this);
 	}
 }

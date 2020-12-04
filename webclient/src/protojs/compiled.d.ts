@@ -3880,6 +3880,9 @@ export class AssignDamage implements IAssignDamage {
     /** AssignDamage totalDamage. */
     public totalDamage: number;
 
+    /** AssignDamage trample. */
+    public trample: boolean;
+
     /**
      * Creates a new AssignDamage instance using the specified properties.
      * @param [properties] Properties to set

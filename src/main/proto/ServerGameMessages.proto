@@ -55,6 +55,7 @@ message AssignDamage {
     string damageSource = 2;
     repeated string possibleTargets = 3;
     int32 totalDamage = 4;
+    bool trample = 5;
 }
 
 message SelectKnowledge {

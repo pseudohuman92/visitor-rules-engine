@@ -10723,6 +10723,7 @@ $root.AssignDamage = (function() {
      * @property {string|null} [damageSource] AssignDamage damageSource
      * @property {Array.<string>|null} [possibleTargets] AssignDamage possibleTargets
      * @property {number|null} [totalDamage] AssignDamage totalDamage
+     * @property {boolean|null} [trample] AssignDamage trample
      */
 
     /**
@@ -10774,6 +10775,14 @@ $root.AssignDamage = (function() {
     AssignDamage.prototype.totalDamage = 0;
 
     /**
+     * AssignDamage trample.
+     * @member {boolean} trample
+     * @memberof AssignDamage
+     * @instance
+     */
+    AssignDamage.prototype.trample = false;
+
+    /**
      * Creates a new AssignDamage instance using the specified properties.
      * @function create
      * @memberof AssignDamage
@@ -10806,6 +10815,8 @@ $root.AssignDamage = (function() {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.possibleTargets[i]);
         if (message.totalDamage != null && Object.hasOwnProperty.call(message, "totalDamage"))
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.totalDamage);
+        if (message.trample != null && Object.hasOwnProperty.call(message, "trample"))
+            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.trample);
         return writer;
     };
 
@@ -10853,6 +10864,9 @@ $root.AssignDamage = (function() {
                 break;
             case 4:
                 message.totalDamage = reader.int32();
+                break;
+            case 5:
+                message.trample = reader.bool();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -10907,6 +10921,9 @@ $root.AssignDamage = (function() {
         if (message.totalDamage != null && message.hasOwnProperty("totalDamage"))
             if (!$util.isInteger(message.totalDamage))
                 return "totalDamage: integer expected";
+        if (message.trample != null && message.hasOwnProperty("trample"))
+            if (typeof message.trample !== "boolean")
+                return "trample: boolean expected";
         return null;
     };
 
@@ -10938,6 +10955,8 @@ $root.AssignDamage = (function() {
         }
         if (object.totalDamage != null)
             message.totalDamage = object.totalDamage | 0;
+        if (object.trample != null)
+            message.trample = Boolean(object.trample);
         return message;
     };
 
@@ -10960,6 +10979,7 @@ $root.AssignDamage = (function() {
             object.game = null;
             object.damageSource = "";
             object.totalDamage = 0;
+            object.trample = false;
         }
         if (message.game != null && message.hasOwnProperty("game"))
             object.game = $root.GameState.toObject(message.game, options);
@@ -10972,6 +10992,8 @@ $root.AssignDamage = (function() {
         }
         if (message.totalDamage != null && message.hasOwnProperty("totalDamage"))
             object.totalDamage = message.totalDamage;
+        if (message.trample != null && message.hasOwnProperty("trample"))
+            object.trample = message.trample;
         return object;
     };
 

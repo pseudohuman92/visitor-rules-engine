@@ -12,8 +12,7 @@ public class Damage {
 	}
 
 	public Damage (int amount) {
-		this.amount = amount;
-		this.mayKill = true;
+		this(amount, true, false);
 	}
 
 }

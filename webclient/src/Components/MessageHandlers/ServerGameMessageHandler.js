@@ -205,7 +205,7 @@ export default class ServerGameMessageHandler {
                 }
                 break;
             case "GameEnd":
-                newExtendedState["win"] = params.win;
+                newExtendedState["clientPhase"] = params.win ? ClientPhase.WIN : ClientPhase.LOSE;
                 break;
             case "OrderCards":
                 newExtendedState["dialogData"] = {
@@ -235,7 +235,8 @@ export default class ServerGameMessageHandler {
                 newExtendedState["damageAssignmentData"] = {
                     damageSource: params.damageSource,
                     possibleTargets: params.possibleTargets,
-                    totalDamage: params.totalDamage
+                    totalDamage: params.totalDamage,
+                    trample: params.trample
                 };
                 break;
             case "SelectKnowledge":

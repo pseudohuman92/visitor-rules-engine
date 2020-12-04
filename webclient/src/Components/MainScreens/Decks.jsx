@@ -75,20 +75,33 @@ class Decks extends React.Component {
       <div>
         {value === 0 && (
           <div>
+            <Grid container item xs={12} spacing={8}>
+              <Grid item xs>
+                <Button onClick={this.createDeck} text="Create" />
+              </Grid>
+              <Grid item xs>
+                <Button
+                    disabled={selectedDeckId === ""}
+                    onClick={this.deleteDeck}
+                    text="Delete"
+                />
+              </Grid>
+            </Grid>
             <Grid container spacing={8}>
               {decks.map((deck, i) => (
                 <Grid
                   item
                   key={i}
-                  xs={4}
+                  xs={2}
                   onClick={delayClick(
                     () => this.selectDeck(deck.id),
                     () => this.setState({ value: 1, loadedDeck: deck.id })
                   )}
                 >
+                  <Center>{deck.name}</Center>
                   <Center>
                     <img
-                      src={process.env.PUBLIC_URL + "/img/Logo.png"}
+                      src={process.env.PUBLIC_URL + "/img/deckbox.png"}
                       style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
@@ -97,21 +110,9 @@ class Decks extends React.Component {
                       alt=""
                     />
                   </Center>
-                  <Center>{deck.name}</Center>
                 </Grid>
               ))}
-              <Grid container item xs={12} spacing={8}>
-                <Grid item xs>
-                  <Button onClick={this.createDeck} text="Create" />
-                </Grid>
-                <Grid item xs>
-                  <Button
-                    disabled={selectedDeckId === ""}
-                    onClick={this.deleteDeck}
-                    text="Delete"
-                  />
-                </Grid>
-              </Grid>
+
             </Grid>
           </div>
         )}

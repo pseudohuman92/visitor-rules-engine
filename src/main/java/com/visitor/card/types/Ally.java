@@ -34,7 +34,7 @@ public abstract class Ally extends Card {
 
 		super(game, name, knowledge, CardType.Ally, text, owner);
 
-		playable = new Playable(game, this, cost, () -> triggering.register()).setSlow().setPersistent();
+		playable = new Playable(game, this, cost).setSlow().setPersistent();
 		studiable = new Studiable(game, this);
 		combat = new Combat(game, this, health);
 		triggering = new Triggering(game, this);

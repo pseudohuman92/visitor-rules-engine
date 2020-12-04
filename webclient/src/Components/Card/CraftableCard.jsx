@@ -2,9 +2,9 @@ import React, {PureComponent} from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import Button from '../Primitives/Button';
 import {craftCost, salvageValue} from "../Helpers/Constants";
 import {CardDisplay} from "./CardDisplay";
+import Button from "@material-ui/core/Button";
 
 class CraftableCard extends PureComponent {
     state = {showDialog: false};
@@ -48,7 +48,10 @@ class CraftableCard extends PureComponent {
                                     onClick={onCraft}
                                     disabled={craftDisabled}
                                     text="Craft"
-                                />
+                                    variant="contained"
+                                    color="primary"
+                                >Craft</Button>
+
                                 {"Dust: -" + craftCost}
                             </div>
                             <div style={{
@@ -70,7 +73,9 @@ class CraftableCard extends PureComponent {
                                     onClick={onSalvage}
                                     disabled={salvageDisabled}
                                     text="Salvage"
-                                />
+                                    variant="contained"
+                                    color="secondary"
+                                >Salvage</Button>
                                 {"Dust: +" + salvageValue}
                             </div>
                         </div>
