@@ -9712,10 +9712,10 @@ react-center@1.1.1:
   dependencies:
     inline-style-prefixer "^0.6.7"
 
-react-clear-cache@1.4.8:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/react-clear-cache/-/react-clear-cache-1.4.8.tgz#431a69706593886a5bf65361cc7a683b87477be5"
-  integrity sha512-vyAovNnK+nDXRXNeJsb9qwgQOnPIMJkFvSwRyzAebqf1x2Yvu2jlo5321CrmAWVsZjhKn5uMAkQTXP2oT0gKNQ==
+react-clear-cache@1.4.10:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/react-clear-cache/-/react-clear-cache-1.4.10.tgz#2bfdb205fcfec0445363a5fdaa439377591e8086"
+  integrity sha512-3tOXhhBzEfTvGSNXV0GaYi206qIRfJbszIp+FYvOmQ+/0e2Vbm08M7sfTpDjJKW25Wyqes3NefgoOyatbtwbwA==
   dependencies:
     minimist "^1.2.5"
     use-persisted-state "^0.3.0"
