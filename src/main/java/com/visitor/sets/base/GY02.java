@@ -8,6 +8,7 @@ package com.visitor.sets.base;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
@@ -32,7 +33,7 @@ public class GY02 extends Unit {
 				owner);
 
 
-		triggering = new Triggering(game, this).addAttackChecker(this,
+		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
 				event ->
 						game.addToStack(new AbilityCard(game, this, "Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control.",
 								() ->
@@ -40,6 +41,7 @@ public class GY02 extends Unit {
 												game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)),
 												game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)))
 						))
-		);
+		).addTypeChecker(Event.EventType.Attack)
+				.addCardListChecker(cardlist -> cardlist.contains(this)));
 	}
 }

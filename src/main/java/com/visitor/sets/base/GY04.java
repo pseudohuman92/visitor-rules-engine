@@ -9,6 +9,7 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
@@ -41,9 +42,8 @@ public class GY04 extends Unit {
 					UnitToken.Wolf_3_3(game, controller).resolve();
 				});
 
-		triggering = new Triggering(game, this).addEventChecker(
+		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
 				event -> {
-					if (event.type == Event.EventType.Enter_Play && ((Card)event.data.get(0)).hasSubtype(CardSubtype.Wolf)){
 						game.addToStack(new AbilityCard(game, this, "Whenever a Wolf enters play under your control, you gain 3 life and that unit fights up to one target unit you don’t control.",
 								() -> {
 										game.gainHealth(controller, 3);
@@ -52,7 +52,7 @@ public class GY04 extends Unit {
 												game.fight(((Card)event.data.get(0)).id, maybeTarget.get(0));
 										}
 						}));
-					}
-				});
+				}).addTypeChecker(Event.EventType.Enter_Play)
+		.addCardChecker(card -> card.hasSubtype(CardSubtype.Wolf)));
 	}
 }

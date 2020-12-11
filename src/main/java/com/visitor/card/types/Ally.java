@@ -10,6 +10,7 @@ import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
@@ -47,22 +48,22 @@ public abstract class Ally extends Card {
 	}
 
 	private void setDefaultUnitCheckEvent () {
-		triggering.resetEventCheckerList();
-		triggering.addEventChecker((event) -> {
-			out.println("Ally is checking event");
-			if (event.playersTurnStart(controller) && delayCounter > 0) {
-				out.println("Passed the check");
+		triggering.addEventChecker(new EventChecker(game, this,
+				event -> {
+				if (delayCounter > 0) {
 				decreaseDelayCounter(game, 1);
 			}
-		});
+		}).addStartOfControllerTurnChecker());
 	}
 
 	public void decreaseDelayCounter (Game game, int count) {
 		delayCounter = max(0, delayCounter - count);
 		if (delayCounter == 0) {
 			newTurn();
-			game.addToStack(delayedAbility);
-			delayedAbility = null;
+			if (delayedAbility != null) {
+				game.addToStack(delayedAbility);
+				delayedAbility = null;
+			}
 		}
 	}
 
@@ -80,7 +81,7 @@ public abstract class Ally extends Card {
 				.setLoyalty(loyalty);
 	}
 
-
+/*
 	@Override
 	public void copyPropertiesFrom (Card c) {
 		super.copyPropertiesFrom(c);
@@ -90,5 +91,5 @@ public abstract class Ally extends Card {
 
 		}
 	}
-
+*/
 }

@@ -9,6 +9,7 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
@@ -32,9 +33,8 @@ public class GD02 extends Unit {
 				owner, Combat.CombatAbility.Trample);
 
 		triggering = new Triggering(game, this)
-				.addEventChecker(
+				.addEventChecker(new EventChecker(game, this,
 				event -> {
-					if (event.type == Event.EventType.Attack) {
 						((Arraylist<Card>) event.data.get(0)).forEach(card -> {
 							if (card.controller.equals(controller) && card.hasCombatAbility(Combat.CombatAbility.Trample)) {
 								game.addToStack(new AbilityCard(game, this, "Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
@@ -43,6 +43,6 @@ public class GD02 extends Unit {
 
 						});
 					}
-				});
+				).addTypeChecker(Event.EventType.Attack));
 	}
 }

@@ -8,6 +8,7 @@ package com.visitor.sets.base;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
@@ -32,18 +33,19 @@ public class GP01 extends Unit {
 				4, 4,
 				owner);
 
-		triggering = new Triggering(game, this).addStartOfControllerTurnChecker(
-				() -> {
+		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
+				event -> {
 					game.addToStack(new AbilityCard(game, this, "At the start of your turn, your opponent discard a card.", () -> game.discard(game.getOpponentName(controller), 1)));
 
-				}).addEventChecker(
-				(event -> {
-					if (event.type == Event.EventType.Discard && event.data.get(0).equals(game.getOpponentName(controller))){
+				}).addStartOfControllerTurnChecker())
+				.addEventChecker(new EventChecker(game, this,
+				event -> {
 						((Arraylist<Card>) event.data.get(1)).forEach(card ->
 								game.addToStack(new AbilityCard(game, this, "Whenever an opponent discards a card, you create a 1/1 green Elf.",
 										() -> UnitToken.Elf_1_1(game, controller).resolve())));
-					}
-				})
+
+				}).addTypeChecker(Event.EventType.Discard)
+						.addPlayerChecker(playerName -> playerName.equals(game.getOpponentName(controller)))
 		);
 	}
 }

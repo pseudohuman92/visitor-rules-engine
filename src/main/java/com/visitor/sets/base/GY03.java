@@ -9,6 +9,8 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
+import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -33,14 +35,14 @@ public class GY03 extends Unit {
 				() -> {
 					UnitToken.Wurm_5_5(game, controller).resolve();
 				});
-		triggering = new Triggering(game, this).addAttackChecker(this,
-				event ->
-						game.addToStack(new AbilityCard(game, this, "Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control.",
-								() ->
-										game.addTurnlyAttackAndHealth(id,
-												game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)),
-												game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)))
-						))
-		);
+		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this, event ->
+				game.addToStack(new AbilityCard(game, this, "Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control.",
+						() ->
+								game.addTurnlyAttackAndHealth(id,
+										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)),
+										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)))
+				)))
+				.addTypeChecker(Event.EventType.Attack)
+				.addCardListChecker(cardlist -> cardlist.contains(this)));
 	}
 }

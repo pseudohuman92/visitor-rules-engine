@@ -127,4 +127,8 @@ public abstract class Predicates {
 	public static Predicate<Card> isColor (Types.Knowledge color) {
 		return c -> c.hasColor(color);
 	}
+
+	public static Predicate<Card> controlledBy (String controller) {
+		return c -> c.controller.equals(controller);
+	}
 }

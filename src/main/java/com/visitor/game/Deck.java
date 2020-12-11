@@ -32,8 +32,10 @@ public class Deck extends Arraylist<Card> {
 					.replace("'", "");
 			for (int j = 0; j < count; j++) {
 				Card c = HelperFunctions.createCard(game, username, name);
-				if (c != null)
+				if (c != null){
+					c.zone = Game.Zone.Deck;
 					add(c);
+				}
 			}
 		}
 	}

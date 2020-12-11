@@ -35,6 +35,7 @@ public abstract class Card implements Serializable {
 
 	public String owner;
 	public String controller;
+	public Game.Zone zone;
 	protected boolean depleted;
 	protected CounterMap<Counter> counters;
 	public Arraylist<UUID> targets;
@@ -128,10 +129,11 @@ public abstract class Card implements Serializable {
 	}
 
 	public void moveToZone(Game.Zone zone){
-		if (zone != Play || zone != Opponent_Play) {
+		if ((zone != Play) || (zone != Opponent_Play)) {
 			leavePlay();
 		}
 		game.extractCard(id);
+		this.zone = zone;
 		game.putTo(controller, this, zone);
 	}
 
@@ -151,7 +153,9 @@ public abstract class Card implements Serializable {
 		moveToZone(Game.Zone.Void);
 	}
 
+	/*
 	public void copyPropertiesFrom (Card c) {
+
 		id = c.id;
 		owner = c.owner;
 		controller = c.controller;
@@ -159,6 +163,7 @@ public abstract class Card implements Serializable {
 		depleted = c.depleted;
 		targets = c.targets;
 	}
+	*/
 
 	private void runIfNotNull (Object object, Runnable runnable) {
 		HelperFunctions.runIfNotNull(object, runnable, () ->
@@ -219,21 +224,13 @@ public abstract class Card implements Serializable {
 	}
 
 	public final void dealAttackDamage (boolean firstStrike) {
-		if (combat != null) {
-			combat.dealAttackDamage(firstStrike);
-		} else {
-			System.out.println("Trying to deal attack damage from a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+			runIfNotNull(combat, ()->
+					combat.dealAttackDamage(firstStrike));
 	}
 
 	public final void dealBlockDamage () {
-		if (combat != null) {
-			combat.dealBlockDamage();
-		} else {
-			System.out.println("Trying to deal block damage from a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, ()->
+				combat.dealBlockDamage());
 	}
 
 	public final void activate () {

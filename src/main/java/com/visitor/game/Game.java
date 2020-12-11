@@ -61,7 +61,6 @@ public class Game implements Serializable {
 	UUID id;
 	Hashmap<String, Arraylist<Card>> triggeringCards;
 	Arraylist<Event> eventQueue;
-	boolean endProcessed;
 
 	Arraylist<UUID> attackers;
 	Arraylist<UUID> blockers;
@@ -314,6 +313,7 @@ public class Game implements Serializable {
 			discard(turnPlayer, getPlayer(turnPlayer).hand.size() - 7);
 		}
 		processEvents();
+		changePhase();
 	}
 
 	private void newTurn () {
@@ -327,6 +327,7 @@ public class Game implements Serializable {
 		getPlayer(turnPlayer).newTurn();
 		turnCount++;
 		processBeginEvents();
+		changePhase();
 	}
 
 	/**
@@ -438,7 +439,7 @@ public class Game implements Serializable {
 	/**
 	 * Transformation Methods
 	 * To change one card to another in-place.
-	 */
+
 	private void replaceWith (Card oldCard, Card newCard) {
 		players.values().forEach(p -> p.replaceCardWith(oldCard, newCard));
 		for (int i = 0; i < stack.size(); i++) {
@@ -454,12 +455,14 @@ public class Game implements Serializable {
 		addEvent(Event.transform(transformingCard, transformedCard, transformTo));
 	}
 
+
 	public void transformToJunk (Card transformingCard, UUID cardID) {
 		Card card = getCard(cardID);
 		Junk junk = new Junk(this, card.controller);
 		junk.copyPropertiesFrom(card);
 		transformTo(transformingCard, card, junk);
 	}
+	 */
 
 
 	/**

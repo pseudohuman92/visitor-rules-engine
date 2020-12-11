@@ -86,26 +86,31 @@ public class Playable {
 		return this;
 	}
 
-	public Playable setPersistent () {
+	private Playable setResolveZone (Game.Zone zone){
 		resolvePlaceCard = () -> {
-			game.putTo(card.controller, card, Play);
-			card.enterPlay();
+			card.zone = zone;
+			game.putTo(card.controller, card, zone);
+			if (zone == Play){
+				card.enterPlay();
+			}
 		};
 		return this;
 	}
 
+	public Playable setPersistent () {
+		return setResolveZone(Play);
+	}
+
 	public Playable setEphemeral () {
-		resolvePlaceCard = () -> game.putTo(card.controller, card, Discard_Pile);
-		return this;
+		return setResolveZone(Discard_Pile);
 	}
 
 	public Playable setPurging () {
-		resolvePlaceCard = () -> game.putTo(card.controller, card, Void);
-		return this;
+		return setResolveZone(Void);
 	}
 
 	public Playable setDisappearing () {
-		resolvePlaceCard = () -> {};
+		resolvePlaceCard = () -> {card.zone = null;};
 		return this;
 	}
 

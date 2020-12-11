@@ -9,6 +9,7 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
@@ -31,12 +32,13 @@ public class GD04 extends Unit {
 				1, 1,
 				owner);
 
-		triggering = new Triggering(game, this).addAttackChecker(this,
+		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
 				event ->
 					game.addToStack(new AbilityCard(game, this, "Whenever {~} attacks, {~} gains +X/+X where X is the number of attacking units you control.",
 					() ->
 						game.addAttackAndHealth(id, ((Arraylist<Card>)event.data.get(0)).size(), ((Arraylist<Card>)event.data.get(0)).size())
-					))
-		);
+					)))
+				.addTypeChecker(Event.EventType.Attack)
+				.addCardListChecker(cardlist -> cardlist.contains(this)));
 	}
 }

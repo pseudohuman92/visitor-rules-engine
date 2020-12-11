@@ -9,11 +9,13 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 import com.visitor.sets.token.UnitToken;
 
 import static com.visitor.protocol.Types.Knowledge.*;
@@ -31,12 +33,12 @@ public class GD01 extends Unit {
 				owner, Combat.CombatAbility.Reach);
 
 		triggering = new Triggering(game, this)
-				.addEventChecker(
+				.addEventChecker(new EventChecker(game, this,
 				event -> {
-					if (event.type == Event.EventType.Play_Card && ((Card)event.data.get(0)).controller.equals(game.getOpponentName(controller))){
 								game.addToStack(new AbilityCard(game, this, "Whenever an opponent plays a card, create a 1/1 green Insect.",
 										() -> UnitToken.Insect_1_1(game, controller).resolve()));
-					}
-				});
+				})
+						.addTypeChecker(Event.EventType.Play_Card)
+				.addCardChecker(Predicates.controlledBy(game.getOpponentName(controller))));
 	}
 }

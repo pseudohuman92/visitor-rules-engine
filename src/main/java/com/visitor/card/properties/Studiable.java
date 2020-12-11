@@ -50,6 +50,7 @@ public class Studiable {
 
 	public void setDefaultStudy () {
 		study = (player, regular) -> {
+			card.zone = Game.Zone.Void;
 			player.voidPile.add(card);
 			player.energy++;
 			player.maxEnergy++;

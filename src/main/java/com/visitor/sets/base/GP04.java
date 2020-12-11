@@ -9,6 +9,7 @@ import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
@@ -34,21 +35,22 @@ public class GP04 extends Unit {
 				3, 3,
 				owner, Combat.CombatAbility.Trample);
 
-		triggering = new Triggering(game, this).addEndOfControllerTurnChecker(
-				() -> {
+		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
+				event -> {
 					game.addToStack(new AbilityCard(game, this, "At the end of your turn, each player creates a 1/1 green Plant.",
 							() -> {
-						UnitToken.Plant_1_1(game, controller).resolve();
-						UnitToken.Plant_1_1(game, game.getOpponentName(controller)).resolve();
+								UnitToken.Plant_1_1(game, controller).resolve();
+								UnitToken.Plant_1_1(game, game.getOpponentName(controller)).resolve();
 							}));
 
-				})
-				.addEventChecker(
-				event -> {
-					if (event.type == Event.EventType.Destroy || event.type == Event.EventType.Sacrifice){
-						game.addToStack(new AbilityCard(game, this, "Whenever a unit dies, {~} gains +1/+1.", () -> game.addAttackAndHealth(id, 1, 1)));
-					}
-				}
-		);
+				}).addEndOfControllerTurnChecker())
+				.addEventChecker(new EventChecker(game, this,
+					event ->
+						game.addToStack(new AbilityCard(game, this, "Whenever a unit dies, {~} gains +1/+1.", () -> game.addAttackAndHealth(id, 1, 1))))
+						.addTypeChecker(Event.EventType.Destroy))
+				.addEventChecker(new EventChecker(game, this,
+						event ->
+							game.addToStack(new AbilityCard(game, this, "Whenever a unit dies, {~} gains +1/+1.", () -> game.addAttackAndHealth(id, 1, 1))))
+				.addTypeChecker(Event.EventType.Sacrifice));
 	}
 }
