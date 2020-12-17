@@ -32,12 +32,6 @@ Install npm: https://www.npmjs.com/
 
 ---
 
-### Before Building
+### To start the client
 
-Go to the "webclient" directory.
-
----
-
-To install dependencies: yarn install
-
-To start client: yarn start
+sh ./webclient/run.sh
