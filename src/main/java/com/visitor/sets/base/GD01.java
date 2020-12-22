@@ -34,11 +34,9 @@ public class GD01 extends Unit {
 
 		triggering = new Triggering(game, this)
 				.addEventChecker(new EventChecker(game, this,
-				event -> {
-								game.addToStack(new AbilityCard(game, this, "Whenever an opponent plays a card, create a 1/1 green Insect.",
-										() -> UnitToken.Insect_1_1(game, controller).resolve()));
-				})
-						.addTypeChecker(Event.EventType.Play_Card)
-				.addCardChecker(Predicates.controlledBy(game.getOpponentName(controller))));
+				event -> UnitToken.Insect_1_1(game, controller).resolve())
+				.addTypeChecker(Event.EventType.Play_Card)
+				.addCardChecker(Predicates.controlledBy(game.getOpponentName(controller)))
+				.createAbility("Whenever an opponent plays a card, create a 1/1 green Insect."));
 	}
 }

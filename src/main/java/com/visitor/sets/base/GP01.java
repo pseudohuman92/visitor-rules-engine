@@ -33,19 +33,20 @@ public class GP01 extends Unit {
 				4, 4,
 				owner);
 
-		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
-				event -> {
-					game.addToStack(new AbilityCard(game, this, "At the start of your turn, your opponent discard a card.", () -> game.discard(game.getOpponentName(controller), 1)));
+		triggering.addEventChecker(new EventChecker(game, this,
+				event -> game.discard(game.getOpponentName(controller), 1))
+				.addStartOfControllerTurnChecker()
+				.createAbility("At the start of your turn, your opponent discard a card."));
 
-				}).addStartOfControllerTurnChecker())
-				.addEventChecker(new EventChecker(game, this,
+		triggering.addEventChecker(new EventChecker(game, this,
 				event -> {
 						((Arraylist<Card>) event.data.get(1)).forEach(card ->
 								game.addToStack(new AbilityCard(game, this, "Whenever an opponent discards a card, you create a 1/1 green Elf.",
 										() -> UnitToken.Elf_1_1(game, controller).resolve())));
 
-				}).addTypeChecker(Event.EventType.Discard)
-						.addPlayerChecker(playerName -> playerName.equals(game.getOpponentName(controller)))
+				})
+				.addTypeChecker(Event.EventType.Discard)
+				.addPlayerChecker(playerName -> playerName.equals(game.getOpponentName(controller)))
 		);
 	}
 }

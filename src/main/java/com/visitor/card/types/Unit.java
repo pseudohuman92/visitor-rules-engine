@@ -1,9 +1,6 @@
 package com.visitor.card.types;
 
-import com.visitor.card.properties.Activatable;
-import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Playable;
-import com.visitor.card.properties.Studiable;
+import com.visitor.card.properties.*;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
@@ -26,6 +23,7 @@ public abstract class Unit extends Card {
 		playable = new Playable(game, this, cost, () -> combat.setDeploying()).setSlow().setPersistent();
 		studiable = new Studiable(game, this);
 		activatable = new Activatable(game, this);
+		triggering = new Triggering(game, this);
 		combat = new Combat(game, this, attack, health);
 		for (Combat.CombatAbility combatAbility : combatAbilities) {
 			combat.addCombatAbility(combatAbility);

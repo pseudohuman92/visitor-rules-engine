@@ -35,14 +35,13 @@ public class GY03 extends Unit {
 				() -> {
 					UnitToken.Wurm_5_5(game, controller).resolve();
 				});
-		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this, event ->
-				game.addToStack(new AbilityCard(game, this, "Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control.",
-						() ->
+		triggering.addEventChecker(new EventChecker(game, this,
+				event ->
 								game.addTurnlyAttackAndHealth(id,
 										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)),
-										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)))
-				)))
+										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady))))
 				.addTypeChecker(Event.EventType.Attack)
-				.addCardListChecker(cardlist -> cardlist.contains(this)));
+				.addCardListChecker(cardlist -> cardlist.contains(this))
+				.createAbility("Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control."));
 	}
 }

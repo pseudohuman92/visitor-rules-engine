@@ -44,15 +44,14 @@ public class GY04 extends Unit {
 
 		triggering = new Triggering(game, this).addEventChecker(new EventChecker(game, this,
 				event -> {
-						game.addToStack(new AbilityCard(game, this, "Whenever a Wolf enters play under your control, you gain 3 life and that unit fights up to one target unit you don’t control.",
-								() -> {
-										game.gainHealth(controller, 3);
-										ArrayList<UUID> maybeTarget = game.selectFromZone(controller, Game.Zone.Opponent_Play, Predicates::isUnit, 1, true, "Choose a unit to fight.");
-										if (!maybeTarget.isEmpty()){
-												game.fight(((Card)event.data.get(0)).id, maybeTarget.get(0));
-										}
-						}));
-				}).addTypeChecker(Event.EventType.Enter_Play)
-		.addCardChecker(card -> card.hasSubtype(CardSubtype.Wolf)));
+							game.gainHealth(controller, 3);
+							ArrayList<UUID> maybeTarget = game.selectFromZone(controller, Game.Zone.Opponent_Play, Predicates::isUnit, 1, true, "Choose a unit to fight.");
+							if (!maybeTarget.isEmpty()){
+									game.fight(((Card)event.data.get(0)).id, maybeTarget.get(0));
+							}
+				})
+				.addTypeChecker(Event.EventType.Enter_Play)
+				.addCardChecker(card -> card.hasSubtype(CardSubtype.Wolf))
+				.createAbility("Whenever a Wolf enters play under your control, you gain 3 life and that unit fights up to one target unit you don’t control."));
 	}
 }

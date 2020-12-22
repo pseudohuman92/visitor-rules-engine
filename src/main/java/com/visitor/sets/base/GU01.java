@@ -38,9 +38,7 @@ public class GU01 extends Unit {
 
 		triggering = new Triggering(game, this)
 		.addEventChecker(new EventChecker(game, this,
-			event ->
-				game.addToStack(new AbilityCard(game, this, "Whenever you play a green unit, search your library for a unit, shuffle your library and put that card on top of it.",
-						() -> {
+			event -> {
 							Arraylist<UUID> selectedUnit = game.selectFromZone(controller,
 									Game.Zone.Deck,
 									Predicates::isUnit,
@@ -51,25 +49,23 @@ public class GU01 extends Unit {
 								game.shuffleDeck(controller);
 								game.putToTopOfDeck(selectedUnit.get(0));
 							}
-						}
-						)))
+			})
 		.addTypeChecker(Event.EventType.Play_Card)
 		.addCardChecker(playedCard -> playedCard.controller.equals(controller))
 		.addCardChecker(Predicates::isUnit)
-		.addCardChecker(Predicates.isColor(GREEN)))
+		.addCardChecker(Predicates.isColor(GREEN))
+		.createAbility("Whenever you play a green unit, search your library for a unit, shuffle your library and put that card on top of it."));
 
-		.addEventChecker(new EventChecker(game,this,
-			event ->
-				game.addToStack(new AbilityCard(game, this, "Whenever you play a blue unit, Draw the top card of your deck if it's a unit.",
-				() -> {
+		triggering.addEventChecker(new EventChecker(game,this,
+			event -> {
 					if (game.getTopCardsFromDeck(controller, 1).get(0).hasType(CardType.Unit)) {
 						game.draw(controller, 1);
 					}
-				}))
-			)
+				})
 		.addTypeChecker(Event.EventType.Play_Card)
 		.addCardChecker(Predicates.controlledBy(controller))
 		.addCardChecker(Predicates::isUnit)
-		.addCardChecker(Predicates.isColor(BLUE)));
+		.addCardChecker(Predicates.isColor(BLUE))
+		.createAbility("Whenever you play a blue unit, Draw the top card of your deck if it's a unit."));
 	}
 }
