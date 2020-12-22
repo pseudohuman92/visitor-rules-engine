@@ -21,23 +21,22 @@ public class GR01 extends Ritual {
 				"Target unit you control strikes target unit you don't control.",
 				owner);
 
-		playable
-				.addCanPlayAdditional(() ->
-						game.hasIn(playable.card.controller, Play, Predicates::isUnit, 1) &&
-								game.hasIn(playable.card.controller, Opponent_Play, Predicates::isUnit, 1)
-				)
-				.addBeforePlay(() -> {
-					targets.add(game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false, "Select a unit you control.").get(0));
-					targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false, "Select a unit you don't control").get(0));
-				})
-				.setResolveEffect(() -> {
-					UUID strikerId = targets.get(0);
-					UUID receiverId = targets.get(1);
-					if (game.isIn(controller, Play, strikerId) &&
-							game.isIn(controller, Opponent_Play, receiverId)) {
-						Card striker = game.getCard(strikerId);
-						game.dealDamage(strikerId, receiverId, new Damage(striker.getAttack()));
-					}
-				});
+		playable.addCanPlayAdditional(() ->
+				game.hasIn(controller, Play, Predicates::isUnit, 1) &&
+				game.hasIn(controller, Opponent_Play, Predicates::isUnit, 1)
+		);
+		playable.addBeforePlay(() -> {
+			targets.add(game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false, "Select a unit you control.").get(0));
+			targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false, "Select a unit you don't control").get(0));
+		});
+		playable.setResolveEffect(() -> {
+			UUID strikerId = targets.get(0);
+			UUID receiverId = targets.get(1);
+			if (game.isIn(controller, Play, strikerId) &&
+			    game.isIn(controller, Opponent_Play, receiverId)) {
+				Card striker = game.getCard(strikerId);
+				game.dealDamage(strikerId, receiverId, new Damage(striker.getAttack()));
+			}
+		});
 	}
 }

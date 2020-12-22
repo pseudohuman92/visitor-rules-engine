@@ -14,6 +14,8 @@ public class EventChecker implements Consumer<Event> {
 	private Consumer<Event> checker;
 	private Card card;
 	private Game game;
+	private boolean createAbility;
+	private String abilityText;
 
 	public EventChecker(Game game, Card card, Consumer<Event> checker){
 		this.game = game;
@@ -43,14 +45,17 @@ public class EventChecker implements Consumer<Event> {
 		return and(event -> event.type == type);
 	}
 
+	//Make sure that card list is the first argument of event.data before using.
 	public final EventChecker addCardListChecker (Predicate<Arraylist<Card>> predicate) {
 		return and(event -> predicate.test((Arraylist<Card>)event.data.get(0)));
 	}
 
+	//Make sure that card is the first argument of event.data before using.
 	public final EventChecker addCardChecker (Predicate<Card> predicate) {
 		return and(event -> predicate.test((Card)event.data.get(0)));
 	}
 
+	//Make sure that player name is the first argument of event.data before using.
 	public final EventChecker addPlayerChecker (Predicate<String> predicate) {
 		return and(event -> predicate.test((String)event.data.get(0)));
 	}
@@ -63,7 +68,17 @@ public class EventChecker implements Consumer<Event> {
 
 	public final void accept(Event event){
 		if (condition.test(event)) {
-			checker.accept(event);
+			if (createAbility) {
+				game.addToStack(new AbilityCard(game, card, abilityText, () -> checker.accept(event)));
+			} else {
+				checker.accept(event);
+			}
 		}
+	}
+
+	public EventChecker createAbility (String abilityText) {
+		createAbility = true;
+		this.abilityText = abilityText;
+		return this;
 	}
 }

@@ -16,7 +16,7 @@ public class PC03 extends Cantrip {
 
 		playable
 				.setTargetSingleUnit(null, null,
-						cardId -> game.dealDamage(id, cardId, new Damage(2)),
+						cardId -> game.dealDamage(id, cardId, 2),
 						() -> game.gainHealth(controller, 2)
 				);
 	}

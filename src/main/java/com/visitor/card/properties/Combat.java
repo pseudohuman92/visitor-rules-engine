@@ -186,7 +186,8 @@ public class Combat {
 
 	public Combat (Game game, Card card, int health) {
 		this(game, card, -1, health);
-		canAttackAdditional = () -> false;
+		canAttack = () -> false;
+		canBlockGeneral = () -> false;
 	}
 
 

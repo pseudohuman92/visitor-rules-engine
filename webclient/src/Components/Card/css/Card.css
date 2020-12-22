@@ -22,6 +22,7 @@
   overflow: hidden;
   text-align: center;
   font-family: "Open Sans", sans-serif;
+  border-radius: 5px;
 }
 
 .card-image {
@@ -43,6 +44,7 @@
   overflow: hidden;
   text-align: center;
   height: 6%;
+  border-radius: 5px;
 }
 
 .illustrator {
@@ -51,7 +53,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
   text-align: right;
-  right: 3%
+  right: 3%;
+  border-radius: 3px;
 }
 
 .card-description {
@@ -63,6 +66,7 @@
   overflow: hidden;
   padding: 1%;
   height: 30%;
+  border-radius: 5px;
 }
 
 .card-cost {

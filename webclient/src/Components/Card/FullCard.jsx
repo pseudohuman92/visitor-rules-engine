@@ -6,6 +6,7 @@ import "./css/Card.css";
 import "../../fonts/Fonts.css";
 import TextOnImage from "../Primitives/TextOnImage";
 import FittedText from "../Primitives/FittedText";
+import TextFit from "react-textfit";
 import Fonts from "../Primitives/Fonts";
 
 class FullCard extends PureComponent {
@@ -173,13 +174,13 @@ class FullCard extends PureComponent {
                         ))}
                     <div className="card-name" style={{height: square ? "9%" : "6%",
                         }}>
-                        {<FittedText
+                        {<TextFit>{name}</TextFit>/*<FittedText
                             text={name}
                             font = {{fontFamily: "Texturina"}}
                             max={12}
                             pad={0}
                             windowDimensions={windowDimensions}
-                        />}
+                        />*/}
                     </div>
 
                     {!square && <div className="card-type">{types}{subtypes ? " - " + subtypes : ""} </div>}
@@ -192,14 +193,16 @@ class FullCard extends PureComponent {
                                 whiteSpace: "pre-wrap",
                             }}
                         >
-                            {<FittedText
+                            <TextFit>{(combat ? (combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "") : "")
+                            + replaceSpecialCharacters(description, name)}</TextFit>
+                            {/*<FittedText
                                 text={(combat ? (combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "") : "")
                                 + replaceSpecialCharacters(description, name)}
                                 max={12}
                                 padding={0}
                                 font = {{fontFamily: "Archivo"}}
                                 windowDimensions={windowDimensions}
-                            />}
+                            />*/}
                             {/*(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)*/}
                         </div>
                     )}

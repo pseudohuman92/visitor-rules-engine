@@ -121,10 +121,8 @@ public class Playable {
 	 */
 	public final boolean canPlay (boolean withResources) {
 		boolean result = !withResources || (canPlayResource.get() && canPlayTiming.get());
-		int index = -1;
-		while (result && index < canPlayAdditional.size() - 1) {
-			index++;
-			result = result && canPlayAdditional.get(index).get();
+		for (Supplier<Boolean> additionalCondition : canPlayAdditional) {
+			result = result && additionalCondition.get();
 		}
 		return result;
 	}
@@ -179,7 +177,7 @@ public class Playable {
 						game.hasKnowledge(card.controller, card.knowledge);
 	}
 
-	public Playable addCanPlayAdditional (Supplier<Boolean> ...canPlayAdditional) {
+	public final Playable addCanPlayAdditional (Supplier<Boolean>... canPlayAdditional) {
 		this.canPlayAdditional.addAll(Arrays.asList(canPlayAdditional));
 		return this;
 	}
@@ -197,7 +195,7 @@ public class Playable {
 		return this;
 	}
 
-	public void addPlay (Consumer<Boolean> ...play) {
+	public final void addPlay (Consumer<Boolean>... play) {
 		this.play.addAll(Arrays.asList(play));
 	}
 
@@ -235,36 +233,16 @@ public class Playable {
 	public void setTargetMultipleCardsOrPlayers (Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate, Integer count,
 	                                             Boolean upTo, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
 
-		if (zone == null){
-			zone = Both_Play;
-		}
-		if (cardPredicate == null){
-			cardPredicate = Predicates::any;
-		}
-		if (playerPredicate == null){
-			playerPredicate = Predicates::any;
-		}
-		if (afterTargetsEffect == null){
-			afterTargetsEffect = ()->{};
-		}
-		if (count == null){
-			count = 1;
-		}
-		if (upTo == null){
-			upTo = false;
-		}
-		if (message == null){
-			message = "Select " + (upTo?"up to ":"") +
-					(count == 1? "a card ": count + " cards ") + (withPlayers?" or a player.":".");
-		}
+		Game.Zone finalZone = zone != null ? zone : Both_Play;
+		Predicate<Card> finalCardPredicate = cardPredicate != null ? cardPredicate : Predicates::any;
+		Predicate<Player> finalPlayerPredicate = playerPredicate != null ? playerPredicate : Predicates::any;
+		boolean finalUpTo = upTo != null ? upTo : false;
+		int finalCount = count != null ? count : 1;
+		String finalMessage = message != null ? message : "Select " + (finalUpTo?"up to ":"") +
+		                                                  (finalCount == 1? "a card ": finalCount + " cards ") + (withPlayers?" or a player.":".");
+		Runnable finalAfterTargetsEffect = afterTargetsEffect != null ? afterTargetsEffect : ()->{};
 
-		Game.Zone finalZone = zone;
-		Predicate<Card> finalCardPredicate = cardPredicate;
-		Predicate<Player> finalPlayerPredicate = playerPredicate;
-		Boolean finalUpTo = upTo;
-		Integer finalCount = count;
-		String finalMessage = message;
-		Runnable finalAfterTargetsEffect = afterTargetsEffect;
+
 
 		if (!withPlayers) {
 			addCanPlayAdditional(() ->
@@ -308,10 +286,8 @@ public class Playable {
 	// For targeting a SINGLE CARD with RESTRICTIONS from a zone or a PLAYER.
 	public void setTargetSingleCardOrPlayer (Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate,
 	                                         String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
-		if (message == null){
-			message = "Select a card" + (withPlayers?" or a player.":".");
-		}
-		setTargetMultipleCardsOrPlayers(zone, cardPredicate, playerPredicate, null, null, message, perTargetEffect, afterTargetsEffect, withPlayers);
+		String finalMessage = message != null ? message : "Select a card" + (withPlayers?" or a player.":".");
+		setTargetMultipleCardsOrPlayers(zone, cardPredicate, playerPredicate, null, null, finalMessage, perTargetEffect, afterTargetsEffect, withPlayers);
 	}
 
 	// For targeting a SINGLE CARD with RESTRICTIONS from a zone.
@@ -334,7 +310,8 @@ public class Playable {
 	 * @param afterTargetsEffect = ()->{}
 	 */
 	public void setTargetSingleUnit (Game.Zone zone, Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-		setTargetSingleCard(zone, and(Predicates::isUnit, cardPredicate), "Select a unit.", perTargetEffect, afterTargetsEffect);
+		Predicate<Card> finalCardPredicate = cardPredicate != null ? cardPredicate : Predicates::any;
+		setTargetSingleCard(zone, and(Predicates::isUnit, finalCardPredicate), "Select a unit.", perTargetEffect, afterTargetsEffect);
 	}
 
 	// For targeting a SINGLE PLAYER.

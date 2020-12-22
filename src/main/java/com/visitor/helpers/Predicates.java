@@ -8,6 +8,7 @@ package com.visitor.helpers;
 import com.visitor.game.Card;
 import com.visitor.game.Player;
 import com.visitor.protocol.Types;
+import com.visitor.sets.base.GrandOrator;
 
 import java.util.function.Predicate;
 
@@ -53,7 +54,7 @@ public abstract class Predicates {
 		return c.isDamagable();
 	}
 
-	public static boolean isStudyable (Card c) {
+	public static boolean isStudiable (Card c) {
 		return c.isStudiable();
 	}
 
@@ -74,7 +75,6 @@ public abstract class Predicates {
 	}
 
 
-	@SafeVarargs
 	public static <T> Predicate<T> and (Predicate<T>... predicates) {
 		return (t -> {
 			for (Predicate<T> predicate : predicates) {
@@ -85,7 +85,6 @@ public abstract class Predicates {
 		});
 	}
 
-	@SafeVarargs
 	public static <T> Predicate<T> or (Predicate<T>... predicates) {
 		return (t -> {
 			for (Predicate<T> predicate : predicates) {
@@ -130,5 +129,9 @@ public abstract class Predicates {
 
 	public static Predicate<Card> controlledBy (String controller) {
 		return c -> c.controller.equals(controller);
+	}
+
+	public static Predicate<Card> anotherCard (Card card) {
+		return c -> c != card;
 	}
 }

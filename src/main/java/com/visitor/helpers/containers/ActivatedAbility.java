@@ -157,8 +157,23 @@ public class ActivatedAbility {
 	}
 
 	// Overrides targets
+	public ActivatedAbility setTargetingForDamageDuringResolve(int count, boolean upTo, Consumer<UUID> targetIdConsumer){
+		setActivate(()-> {
+			targets = game.selectDamageTargets(card.controller, count, upTo, "");
+			targets.forEach(targetIdConsumer::accept);
+		});
+		return this;
+	}
+
+
+	// Overrides targets
 	public ActivatedAbility setTargetingForDamage(Consumer<UUID> targetIdConsumer){
 		return setTargetingForDamage(1, false, targetIdConsumer);
+	}
+
+	// Overrides targets
+	public ActivatedAbility setTargetingForDamageDuringResolve(Consumer<UUID> targetIdConsumer){
+		return setTargetingForDamageDuringResolve(1, false, targetIdConsumer);
 	}
 
 	// Overrides targets

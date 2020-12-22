@@ -254,7 +254,7 @@ export function initialState(): State {
 
 const initializeFullCollection = () => {
     const result: any = {};
-    fetch("/Visitor Cards - Cards.json")
+    fetch("/Cards.json")
         .then(r => r.text())
         .then(file =>
             JSON.parse(file).forEach((card: any) => {

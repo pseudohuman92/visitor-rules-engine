@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
 import static com.visitor.game.Event.*;
-import static com.visitor.game.Game.Zone.Both_Play;
-import static com.visitor.game.Game.Zone.Discard_Pile;
+import static com.visitor.game.Game.Zone.*;
 import static com.visitor.helpers.UUIDHelper.toUUIDList;
 import static com.visitor.protocol.Types.Phase.*;
 import static com.visitor.protocol.Types.SelectFromType.LIST;
@@ -774,9 +773,11 @@ public class Game implements Serializable {
 	}
 
 	public void discard (String username, int count) {
-		String message = "Discard " + (count > 1 ? count + " cards." : "a card.");
-		Arraylist<Card> d = getPlayer(username).discardAll(selectFromZone(username, Zone.Hand, Predicates::any, count, false, message));
-		addEvent(Event.discard(username, d));
+		if (!getZone(username, Hand).isEmpty()) {
+			String message = "Discard " + (count > 1 ? count + " cards." : "a card.");
+			Arraylist<Card> d = getPlayer(username).discardAll(selectFromZone(username, Zone.Hand, Predicates::any, Math.min(count, getZone(username, Hand).size()), false, message));
+			addEvent(Event.discard(username, d));
+		}
 	}
 
 	public void discard (String username, UUID cardID) {

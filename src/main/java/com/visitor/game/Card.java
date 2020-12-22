@@ -45,8 +45,8 @@ public abstract class Card implements Serializable {
 	protected Playable playable;
 	protected Studiable studiable;
 
-	protected Runnable enterPlay = ()->{};
-	protected Runnable leavePlay = ()->{};
+	protected Runnable enterPlayEffect = ()->{};
+	protected Runnable leavePlayEffect = ()->{};
 
 	/**
 	 * This is the default constructor for creating a card.
@@ -116,7 +116,7 @@ public abstract class Card implements Serializable {
 		if (triggering != null) {
 			triggering.register();
 		}
-		enterPlay.run();
+		enterPlayEffect.run();
 		game.addEvent(Event.enterPlay(this), true);
 	}
 
@@ -125,11 +125,11 @@ public abstract class Card implements Serializable {
 		if (triggering != null) {
 			triggering.deregister();
 		}
-		leavePlay.run();
+		leavePlayEffect.run();
 	}
 
 	public void moveToZone(Game.Zone zone){
-		if ((zone != Play) || (zone != Opponent_Play)) {
+		if (this.zone == Play && (zone != Play && zone != Opponent_Play)) {
 			leavePlay();
 		}
 		game.extractCard(id);
@@ -272,7 +272,7 @@ public abstract class Card implements Serializable {
 	}
 
 	public void maybeDieFromBlock () {
-		if (canDieFromBlock() && combat != null) {
+		if (canDieFromBlock()) {
 			game.destroy(id);
 		} else {
 			System.out.println("Trying to kill a non-combat card!");
@@ -281,7 +281,7 @@ public abstract class Card implements Serializable {
 	}
 
 	public void maybeDieFromAttack () {
-		if (canDieFromAttack() && combat != null) {
+		if (canDieFromAttack()) {
 			game.destroy(id);
 		} else {
 			System.out.println("Trying to kill a non-combat card!");
@@ -467,7 +467,7 @@ public abstract class Card implements Serializable {
 			knowledge = new CounterMap<>();
 		}
 		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
-		enterPlay = () -> game.runIfHasKnowledge(controller, finalKnowledge, ()->game.addToStack(new AbilityCard(game, this, text, effect)));
+		enterPlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, ()->game.addToStack(new AbilityCard(game, this, text, effect)));
 	}
 
 	public boolean isPlayable () { return playable != null;

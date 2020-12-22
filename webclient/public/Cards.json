@@ -1989,7 +1989,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "x"
   },
   {
     "Set": "base",
@@ -2049,7 +2049,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "x"
   },
   {
     "Set": "base",
@@ -2081,7 +2081,7 @@
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
-    "Effect": "Trample\nWhen {~} enters the battlefield, create a 5/5 green Wurm  with trample.",
+    "Effect": "Trample\nWhen {~} enters play, create a 5/5 green Wurm with trample.",
     "Attack": 5,
     "Health": 5,
     "Energy": 6,
@@ -2093,7 +2093,7 @@
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
-    "Effect": "When {~} enters play, a  3/3 green and white Wolf.\nWhenever a Wolf enters play under your control, \nyou gain 3 life and that unit fights up to one target unit you don’t control.",
+    "Effect": "When {~} enters play, create a 3/3 green and white Wolf.\nWhenever a Wolf enters play under your control, \nyou gain 3 life and that unit fights up to one target unit you don’t control.",
     "Attack": 3,
     "Health": 3,
     "Energy": 5,
@@ -2109,7 +2109,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "x"
   },
   {
     "Set": "base",
@@ -2141,7 +2141,7 @@
     "JADE NAME": "",
     "Type": "Unit",
     "Subtype": "",
-    "Effect": "Flying\nWhen {~} enters play, return a blue or black unit you control to its controller’s hand.\nWhenever {~} deals combat damage to a player, look at that player’s hand and \nchoose a card from it. The player discards that card.",
+    "Effect": "Flying\nWhen {~} enters play, return a blue or purple unit you control to its controller’s hand.\nWhenever {~} deals combat damage to a player, look at that player’s hand and \nchoose a card from it. The player discards that card.",
     "Attack": 2,
     "Health": 2,
     "Energy": 4,
@@ -2169,7 +2169,7 @@
     "Attack": "",
     "Health": "",
     "Energy": "",
-    "Knowledge": ""
+    "Knowledge": "x"
   },
   {
     "Set": "base",
@@ -2458,5 +2458,89 @@
     "Health": 3,
     "Energy": 5,
     "Knowledge": "UUYY"
+  },
+  {
+    "Set": "",
+    "Name": "",
+    "JADE NAME": "",
+    "Type": "",
+    "Subtype": "",
+    "Effect": "",
+    "Attack": "",
+    "Health": "",
+    "Energy": "",
+    "Knowledge": ""
+  },
+  {
+    "Set": "base",
+    "Name": "The Highwayman",
+    "JADE NAME": "",
+    "Type": "Ally",
+    "Subtype": "",
+    "Effect": "{3}, {D}: \n  +2 {Loyalty}\n\n-1 {Loyalty}, {D}:\n  {Delay} 2 - Draw the top Unit of opponent's deck.",
+    "Attack": "",
+    "Health": 5,
+    "Energy": 2,
+    "Knowledge": "PP"
+  },
+  {
+    "Set": "base",
+    "Name": "The Boss",
+    "JADE NAME": "",
+    "Type": "Ally",
+    "Subtype": "",
+    "Effect": "Discard a card, {D}:    \n    +1 {Loyalty}. Opponent discards a card.\n\n{Condition} - Opponent has no cards in hand\n  -2 {Loyalty}, {D}: \n       {Delay} 1 - Deal 2 damage",
+    "Attack": "",
+    "Health": 1,
+    "Energy": 2,
+    "Knowledge": "P"
+  },
+  {
+    "Set": "base",
+    "Name": "Sa'ulgolath Enforcer",
+    "JADE NAME": "",
+    "Type": "Ally",
+    "Subtype": "",
+    "Effect": "Pay 2 life, {D}: +2 Loyalty\n-X Loyalty, {D}: \n  Delay 1 - Deal 2X damage to opponent",
+    "Attack": "",
+    "Health": 5,
+    "Energy": 1,
+    "Knowledge": "R"
+  },
+  {
+    "Set": "base",
+    "Name": "Grand Orator",
+    "JADE NAME": "",
+    "Type": "Ally",
+    "Subtype": "Human Bard",
+    "Effect": "2, {D}: +1 Loyalty.\n-1 Loyalty, {D}:\n      Delay 1 - All other allies you control gain 1 Loyalty",
+    "Attack": "",
+    "Health": 2,
+    "Energy": 2,
+    "Knowledge": "GG"
+  },
+  {
+    "Set": "base",
+    "Name": "Mystic Gnome",
+    "JADE NAME": "",
+    "Type": "Ally",
+    "Subtype": "Gnome Wizard",
+    "Effect": "1, {D}: +1 Loyalty \n-2 Loyalty, {D}: \n    Delay 1 - Deal X damage to a target. \n    X = Your max energy.",
+    "Attack": "",
+    "Health": 2,
+    "Energy": 1,
+    "Knowledge": "G"
+  },
+  {
+    "Set": "base",
+    "Name": "Curious Scholar",
+    "JADE NAME": "",
+    "Type": "Ally",
+    "Subtype": "Alien Scholar",
+    "Effect": "Trigger - When you study\n    +1 Loyalty\n-2 Loyalty, {D}: \n    Delay 1 - Search your deck for a Green card and draw it",
+    "Attack": "",
+    "Health": 3,
+    "Energy": 2,
+    "Knowledge": "G"
   }
 ]

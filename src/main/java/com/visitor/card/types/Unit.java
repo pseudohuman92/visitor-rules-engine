@@ -8,7 +8,11 @@ import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
+import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types.Knowledge;
+
+import static com.visitor.game.Game.Zone.Hand;
 
 /**
  * Abstract class for the Asset card type.
@@ -32,4 +36,6 @@ public abstract class Unit extends Card {
 		this(game, name, cost, knowledge, text, attack, health, owner);
 		combatAbilities.forEach(combatAbility -> combat.addCombatAbility(combatAbility));
 	}
+
+
 }
