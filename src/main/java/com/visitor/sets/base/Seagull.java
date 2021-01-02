@@ -24,7 +24,7 @@ public class Seagull extends Unit {
 
 	UUID target;
 
-	public Seagull (Game game, String owner) {
+	public Seagull (Game game, UUID owner) {
 		super(game, "Seagull",
 				2, new CounterMap(BLUE, 1),
 				"{2}, {D}: Another target unit gains flying until end of turn.",

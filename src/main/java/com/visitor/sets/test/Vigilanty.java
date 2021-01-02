@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
  */
 public class Vigilanty extends Unit {
 
-	public Vigilanty (Game game, String owner) {
+	public Vigilanty (Game game, UUID owner) {
 		super(game, "Vigilanty",
 				0, new CounterMap(),
 				"",

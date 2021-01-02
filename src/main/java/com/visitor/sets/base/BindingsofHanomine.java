@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class BindingsofHanomine extends Unit {
 
-	public BindingsofHanomine (Game game, String owner) {
+	public BindingsofHanomine (Game game, UUID owner) {
 		super(game, "Bindings of Hanomine",
 				4, new CounterMap(YELLOW, 2),
 				"",

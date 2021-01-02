@@ -7,13 +7,13 @@ package com.visitor.sets.base;
 
 
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
 
 import static com.visitor.game.Game.Zone.Hand;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
@@ -23,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class TheHighwayman extends Ally {
 
-    public TheHighwayman(Game game, String owner) {
+    public TheHighwayman(Game game, UUID owner) {
         super(game,"The Highwayman", 2, new CounterMap<>(PURPLE, 2),
                 "{S} | {3}, {D}: \n" +
 				                "  +2 {Loyalty}\n" +
@@ -37,7 +37,7 @@ public class TheHighwayman extends Ally {
 			addMinusLoyaltyAbility(0,"-1 {Loyalty}, {D}:\n\t{Delay} 2 - Draw the top Unit of opponent's deck.", 1, 2,
 					    new ActivatedAbility(game, this, 0, "Draw the top unit of opponent's deck.",
 									    () -> {
-										    Card c = game.extractTopmostMatchingFromDeck(game.getOpponentName(controller), Predicates::isUnit);
+										    Card c = game.extractTopmostMatchingFromDeck(game.getOpponentId(controller), Predicates::isUnit);
 										    if (c != null) {
 											    c.controller = controller;
 											    c.knowledge = new CounterMap<>();

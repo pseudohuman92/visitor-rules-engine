@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -76,11 +77,11 @@ public class HelperFunctions {
 		return classes;
 	}
 
-	public static Card createCard (Game game, String username, String cardName) {
+	public static Card createCard (Game game, UUID playerId, String cardName) {
 		try {
 			Class<?> cardClass = forName("com.visitor.sets." + cardName);
 			Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
-			Object card = cardConstructor.newInstance(game, username);
+			Object card = cardConstructor.newInstance(game, playerId);
 			return ((Card) card);
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
 			getLogger(HelperFunctions.class.getName()).log(SEVERE, null, ex);

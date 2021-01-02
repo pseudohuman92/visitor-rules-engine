@@ -12,6 +12,9 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types.Counter;
+
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 
@@ -20,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class TickingBomb extends Asset {
 
-    public TickingBomb(Game game, String owner) {
+    public TickingBomb(Game game, UUID owner) {
         super(game, "Ticking Bomb", 2, new CounterMap<>(PURPLE, 2),
                 "Donate, Charge 2\n" +
                         "Trigger - At the beginning of your turn\n" +
@@ -35,7 +38,7 @@ public class TickingBomb extends Asset {
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 3, "3: Sacrifice {~}", ()-> game.sacrifice(id)));
 
-        addEnterPlayEffect(null, "Donate", ()-> game.gainControlFromZone(game.getOpponentName(controller), Game.Zone.Play, Game.Zone.Opponent_Play, id));
+        addEnterPlayEffect(null, "Donate", ()-> game.donate(id, game.getOpponentId(controller), Game.Zone.Play));
 
         triggering.addEventChecker(new EventChecker(game, this,
 		        event -> {

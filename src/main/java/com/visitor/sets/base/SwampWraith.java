@@ -12,6 +12,8 @@ import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -20,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class SwampWraith extends Unit {
 
-	public SwampWraith (Game game, String owner) {
+	public SwampWraith (Game game, UUID owner) {
 		super(game, "Swamp Wraith",
 				1, new CounterMap(PURPLE, 1),
 				"{P}{P} - {2}, {D}, Discard a card: Put a 2/2 Zombie into play.\n" +

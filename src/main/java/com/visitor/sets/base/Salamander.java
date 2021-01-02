@@ -11,7 +11,10 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import java.util.UUID;
+
+import static com.visitor.card.properties.Combat.CombatAbility.Reach;
+import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -19,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Salamander extends Unit {
 
-	public Salamander (Game game, String owner) {
+	public Salamander (Game game, UUID owner) {
 		super(game, "Salamander",
 				2, new CounterMap(GREEN, 2),
 				"Discard a card: {~} gains +1/+1",

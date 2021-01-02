@@ -7,17 +7,18 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
 
-import static com.visitor.protocol.Types.Knowledge.*;
+import java.util.UUID;
+
+import static com.visitor.protocol.Types.Knowledge.BLUE;
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
 public class NeuromancyVolI extends Tome {
 
-    public NeuromancyVolI(Game game, String owner) {
+    public NeuromancyVolI(Game game, UUID owner) {
         super(game, "Neuromancy Vol. I", "Study: Gain {P}{U}", owner, new CounterMap<>(PURPLE, 1).add(BLUE, 1));
     }
 

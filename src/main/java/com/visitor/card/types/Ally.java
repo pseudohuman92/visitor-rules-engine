@@ -15,6 +15,7 @@ import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -36,7 +37,7 @@ public abstract class Ally extends Card {
 
 	public Ally (Game game, String name, int cost,
 	             CounterMap<Types.Knowledge> knowledge,
-	             String text, int health, String owner) {
+	             String text, int health, UUID owner) {
 
 		super(game, name, knowledge, CardType.Ally, text, owner);
 

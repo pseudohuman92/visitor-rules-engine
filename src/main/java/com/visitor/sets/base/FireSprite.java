@@ -21,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class FireSprite extends Unit {
 
-	public FireSprite (Game game, String owner) {
+	public FireSprite (Game game, UUID owner) {
 		super(game, "Fire Sprite",
 				5, new CounterMap(PURPLE, 2),
 				"Sacrifice a unit: {~} gains +2/+2 until end of turn.",

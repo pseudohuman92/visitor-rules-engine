@@ -8,7 +8,6 @@ package com.visitor.sets.base;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
@@ -28,7 +27,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class GY04 extends Unit {
 
-	public GY04 (Game game, String owner) {
+	public GY04 (Game game, UUID owner) {
 		super(game, "GY04",
 				5, new CounterMap(YELLOW, 1).add(GREEN, 2),
 				"When {~} enters play, create a 3/3 green and white Wolf.\n" +

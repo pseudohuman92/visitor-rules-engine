@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class DungBeetle extends Unit {
 
-	public DungBeetle (Game game, String owner) {
+	public DungBeetle (Game game, UUID owner) {
 		super(game, "Dung Beetle",
 				1, new CounterMap(GREEN, 1),
 				"{2}: Gain +1/+1 until end of turn.",

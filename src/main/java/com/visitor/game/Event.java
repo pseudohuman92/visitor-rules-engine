@@ -7,6 +7,8 @@ package com.visitor.game;
 
 import com.visitor.helpers.Arraylist;
 
+import java.util.UUID;
+
 import static com.visitor.game.Event.EventType.*;
 
 /**
@@ -24,23 +26,23 @@ public class Event {
 	}
 
 	//Creators
-	public static Event draw (String username, Arraylist<Card> drawnCards) {
+	public static Event draw (UUID playerId, Arraylist<Card> drawnCards) {
 		Event e = new Event(Draw);
-		e.data.add(username);
+		e.data.add(playerId);
 		e.data.add(drawnCards);
 		return e;
 	}
 
-	public static Event discard (String username, Arraylist<Card> discardedCards) {
+	public static Event discard (UUID playerId, Arraylist<Card> discardedCards) {
 		Event e = new Event(Discard);
-		e.data.add(username);
+		e.data.add(playerId);
 		e.data.add(discardedCards);
 		return e;
 	}
 
-	public static Event discard (String username, Card ...discardedCard) {
+	public static Event discard (UUID playerId, Card ...discardedCard) {
 		Event e = new Event(Discard);
-		e.data.add(username);
+		e.data.add(playerId);
 		e.data.add(new Arraylist<>(discardedCard));
 		return e;
 	}
@@ -51,19 +53,19 @@ public class Event {
 		return e;
 	}
 
-	public static Event turnStart (String turnPlayer) {
+	public static Event turnStart (UUID turnPlayer) {
 		Event e = new Event(Turn_Start);
 		e.data.add(turnPlayer);
 		return e;
 	}
 
-	public static Event turnEnd (String turnPlayer) {
+	public static Event turnEnd (UUID turnPlayer) {
 		Event e = new Event(Turn_End);
 		e.data.add(turnPlayer);
 		return e;
 	}
 
-	public static Event study (String studyingPlayer, Card studiedCard) {
+	public static Event study (UUID studyingPlayer, Card studiedCard) {
 		Event e = new Event(Study);
 		e.data.add(studyingPlayer);
 		e.data.add(studiedCard);
@@ -104,12 +106,12 @@ public class Event {
 	}
 
 	//Checkers
-	public boolean playersTurnStart (String playerName) {
-		return (type == Turn_Start && data.get(0).equals(playerName));
+	public boolean playersTurnStart (UUID playerId) {
+		return (type == Turn_Start && data.get(0).equals(playerId));
 	}
 
-	public boolean playersTurnEnd (String playerName) {
-		return (type == Turn_End && data.get(0).equals(playerName));
+	public boolean playersTurnEnd (UUID playerId) {
+		return (type == Turn_End && data.get(0).equals(playerId));
 	}
 
 	public enum EventType {

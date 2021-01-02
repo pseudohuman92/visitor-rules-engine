@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
@@ -20,7 +22,7 @@ public class Eagle extends Unit {
 
 	int x;
 
-	public Eagle (Game game, String owner) {
+	public Eagle (Game game, UUID owner) {
 		super(game, "Eagle",
 				5, new CounterMap(BLUE, 3),
 				"{X}, {D}: {~} becomes X/X",

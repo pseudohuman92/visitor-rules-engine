@@ -12,7 +12,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class PR07 extends Ritual {
 
-	public PR07 (Game game, String owner) {
+	public PR07 (Game game, UUID owner) {
 		super(game, "PR07", 4,
 				new CounterMap<>(PURPLE, 2),
 				"As an additional cost to cast this spell, sacrifice a unit.\n" +

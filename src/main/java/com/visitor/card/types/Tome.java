@@ -7,6 +7,7 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 /**
@@ -16,19 +17,19 @@ import java.util.function.Supplier;
  */
 public abstract class Tome extends Card {
 
-	public Tome (Game game, String name, String text, String owner) {
+	public Tome (Game game, String name, String text, UUID owner) {
 		super(game, name, new CounterMap<>(), CardType.Tome, text, owner);
 
 		studiable = new Studiable(game, this);
 	}
 
-	public Tome (Game game, String name, String text, String owner, Supplier<CounterMap<Knowledge>> getKnowledgeType) {
+	public Tome (Game game, String name, String text, UUID owner, Supplier<CounterMap<Knowledge>> getKnowledgeType) {
 		this(game, name, text, owner);
 
 		studiable.setGetKnowledgeType(getKnowledgeType);
 	}
 
-	public Tome (Game game, String name, String text, String owner, CounterMap<Knowledge> studyKnowledgeType) {
+	public Tome (Game game, String name, String text, UUID owner, CounterMap<Knowledge> studyKnowledgeType) {
 		this(game, name, text, owner);
 
 		studiable.setGetKnowledgeType(() -> studyKnowledgeType);

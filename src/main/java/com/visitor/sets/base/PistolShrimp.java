@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class PistolShrimp extends Unit {
 
-	public PistolShrimp (Game game, String owner) {
+	public PistolShrimp (Game game, UUID owner) {
 		super(game, "Pistol Shrimp",
 				2, new CounterMap(BLUE, 2),
 				"",

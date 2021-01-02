@@ -7,9 +7,6 @@ import com.visitor.helpers.UUIDHelper;
 import com.visitor.protocol.ServerGameMessages;
 import com.visitor.protocol.Types;
 import com.visitor.server.DraftEndpoint;
-import com.visitor.sets.base.BladeDervish;
-import com.visitor.sets.base.CreepingCanopyVine;
-import com.visitor.sets.base.Eagle;
 
 import javax.websocket.EncodeException;
 import java.io.IOException;
@@ -23,21 +20,22 @@ import static java.util.logging.Logger.getLogger;
 
 public class Draft {
 	public static final List<String> cardClasses = HelperFunctions.getClassesInPackage("com.visitor.sets.base");
-	public transient Hashmap<String, DraftEndpoint> connections;
-	public transient Hashmap<String, ArrayBlockingQueue<Object>> responses;
-	Hashmap<String, Player> players;
-	Hashmap<String, ServerGameMessages.ServerGameMessage> lastMessages;
-	Hashmap<String, Arraylist<Card>> possiblePicks;
+	public transient Hashmap<UUID, DraftEndpoint> connections;
+	public transient Hashmap<UUID, ArrayBlockingQueue<Object>> responses;
+	Hashmap<UUID, Player> players;
+	Hashmap<UUID, ServerGameMessages.ServerGameMessage> lastMessages;
+	Hashmap<UUID, Arraylist<Card>> possiblePicks;
 	UUID id;
 	int picksReceived;
 	int roundPickCount;
 	int roundsCompleted;
 	boolean started;
+
 	private Game game = new Game(); //Dummy game
 
 	private final int TOTAL_ROUNDS = 3;
 
-	public Draft (String username1, String username2) {
+	public Draft (String playerName1, String playerName2) {
 		id = randomUUID();
 		players = new Hashmap<>();
 		connections = new Hashmap<>();
@@ -49,10 +47,13 @@ public class Draft {
 		roundPickCount = 0;
 		roundsCompleted = 0;
 
-		responses.put(username1, new ArrayBlockingQueue<>(1));
-		responses.put(username2, new ArrayBlockingQueue<>(1));
-		players.put(username1, new Player(null, username1, new String[0]));
-		players.put(username2, new Player(null, username2, new String[0]));
+
+		Player player1 = new Player(null, playerName1, new String[0]);
+		Player player2 = new Player(null, playerName2, new String[0]);
+		players.put(player1.id, player1);
+		players.put(player2.id, player2);
+		responses.put(player1.id, new ArrayBlockingQueue<>(1));
+		responses.put(player2.id, new ArrayBlockingQueue<>(1));
 	}
 
 	public void startDraft () {
@@ -63,14 +64,14 @@ public class Draft {
 	private void startDraftRound () {
 		System.out.println("Starting draft round " + (roundsCompleted + 1));
 		possiblePicks.clear();
-		players.keySet().forEach(username ->
-				possiblePicks.put(username, getRandomCards(username, 3))
+		players.keySet().forEach(playerId ->
+				possiblePicks.put(playerId, getRandomCards(playerId, 3))
 		);
 		System.out.println("Sending first picks");
 		possiblePicks.forEach(this::pick);
 	}
 
-	private Arraylist<Card> getRandomCards (String username, int count) {
+	private Arraylist<Card> getRandomCards (UUID playerId, int count) {
 		Arraylist<Card> cards = new Arraylist<>();
 		Arraylist<Integer> indexes = new Arraylist<>();
 		System.out.println("Class Count " + cardClasses.size());
@@ -87,7 +88,7 @@ public class Draft {
 
 		for (int i: indexes) {
 			System.out.println("Card Name: " + cardClasses.get(i));
-			cards.add(HelperFunctions.createCard(game, username, "base." + cardClasses.get(i)));
+			cards.add(HelperFunctions.createCard(game, playerId, "base." + cardClasses.get(i)));
 		}
 
 		System.out.println("CARDS");
@@ -96,23 +97,23 @@ public class Draft {
 	}
 
 	private void addLastCards () {
-		String arbitraryPlayer = possiblePicks.getArbitraryKey();
-		players.get(getOpponentName(arbitraryPlayer)).deck.addAll(possiblePicks.get(arbitraryPlayer));
-		players.get(arbitraryPlayer).deck.addAll(possiblePicks.get(getOpponentName(arbitraryPlayer)));
+		UUID arbitraryPlayer = possiblePicks.getArbitraryKey();
+		players.get(getOpponentId(arbitraryPlayer)).deck.addAll(possiblePicks.get(arbitraryPlayer));
+		players.get(arbitraryPlayer).deck.addAll(possiblePicks.get(getOpponentId(arbitraryPlayer)));
 	}
 
 	private void swapPossiblePicks () {
-		String arbitraryPlayer = possiblePicks.getArbitraryKey();
+		UUID arbitraryPlayer = possiblePicks.getArbitraryKey();
 		Arraylist<Card> tempCards = possiblePicks.get(arbitraryPlayer);
-		Hashmap<String, Arraylist<Card>> tempPossiblePicks = new Hashmap<>();
+		Hashmap<UUID, Arraylist<Card>> tempPossiblePicks = new Hashmap<>();
 
-		tempPossiblePicks.put(arbitraryPlayer, possiblePicks.get(getOpponentName(arbitraryPlayer)));
-		tempPossiblePicks.put(getOpponentName(arbitraryPlayer), tempCards);
+		tempPossiblePicks.put(arbitraryPlayer, possiblePicks.get(getOpponentId(arbitraryPlayer)));
+		tempPossiblePicks.put(getOpponentId(arbitraryPlayer), tempCards);
 		possiblePicks = tempPossiblePicks;
 	}
 
 	public void processPicks () {
-		responses.forEach((username, response) -> {
+		responses.forEach((playerId, response) -> {
 					UUID pickedCardId = null;
 					try {
 						pickedCardId = (UUID) response.take();
@@ -120,11 +121,11 @@ public class Draft {
 						e.printStackTrace();
 					}
 
-					//System.out.println("Received Pick\nFrom: " + username + "\nCard ID: " + pickedCardId);
+					//System.out.println("Received Pick\nFrom: " + playerId + "\nCard ID: " + pickedCardId);
 
-					Card pickedCard = UUIDHelper.getInList(possiblePicks.get(username), new Arraylist<>(pickedCardId)).get(0);
-					possiblePicks.get(username).remove(pickedCard);
-					players.get(username).deck.putIn(pickedCard);
+					Card pickedCard = UUIDHelper.getInList(possiblePicks.get(playerId), new Arraylist<>(pickedCardId)).get(0);
+					possiblePicks.get(playerId).remove(pickedCard);
+					players.get(playerId).deck.putIn(pickedCard);
 				});
 
 			roundPickCount++;
@@ -153,27 +154,27 @@ public class Draft {
 		}
 	}
 
-	private void pick (String username, Arraylist<Card> cards) {
+	private void pick (UUID playerId, Arraylist<Card> cards) {
 		ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
 				.addAllCandidates(cards.transform(c -> c.toCardMessage().build()))
-				.setMessage("Pick a card to draft.").setDraft(toDraftState(username, false));
-		send(username, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
+				.setMessage("Pick a card to draft.").setDraft(toDraftState(playerId, false));
+		send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
 	}
 
-	private void sendCompleted (String username) {
+	private void sendCompleted (UUID playerId) {
 		ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
-				.setMessage("Draft Completed.").setDraft(toDraftState(username, true));
-		send(username, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
+				.setMessage("Draft Completed.").setDraft(toDraftState(playerId, true));
+		send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
 	}
 
-	private void send (String username, ServerGameMessages.ServerGameMessage.Builder builder) {
+	private void send (UUID playerId, ServerGameMessages.ServerGameMessage.Builder builder) {
 		try {
-			setLastMessage(username, builder.build());
-			DraftEndpoint e = connections.get(username);
+			setLastMessage(playerId, builder.build());
+			DraftEndpoint e = connections.get(playerId);
 			if (e != null) {
 				e.send(builder);
 			} else {
-				System.out.println(username + " Connection not found!");
+				System.out.println(playerId + " Connection not found!");
 			}
 		} catch (IOException | EncodeException ex) {
 			getLogger(Game.class.getName()).log(SEVERE, null, ex);
@@ -184,50 +185,63 @@ public class Draft {
 	 * Connection Methods
 	 * To deal with client connections
 	 */
-	public void addConnection (String username, DraftEndpoint connection) {
-		connections.putIn(username, connection);
+	public void addConnection (UUID playerId, DraftEndpoint connection) {
+		connections.putIn(playerId, connection);
 		if (!started && connections.keySet().size() > 1){
 			startDraft();
 		}
 	}
 
-	public void removeConnection (String username) {
-		connections.removeFrom(username);
+	public void removeConnection (UUID playerId) {
+		connections.removeFrom(playerId);
 	}
 
-	public void setLastMessage (String username, ServerGameMessages.ServerGameMessage lastMessage) {
-		lastMessages.put(username, lastMessage);
+	public void setLastMessage (UUID playerId, ServerGameMessages.ServerGameMessage lastMessage) {
+		lastMessages.put(playerId, lastMessage);
 	}
 
-	public ServerGameMessages.ServerGameMessage getLastMessage (String username) {
-		return lastMessages.get(username);
+	public ServerGameMessages.ServerGameMessage getLastMessage (UUID playerId) {
+		return lastMessages.get(playerId);
 	}
 
 	public UUID getId () {
 		return id;
 	}
 
-	public String getOpponentName (String playerName) {
-		for (String name : players.keySet()) {
-			if (!name.equals(playerName)) {
-				return name;
+	public UUID getOpponentId (UUID playerId) {
+		for (UUID id : players.keySet()) {
+			if (!id.equals(playerId)) {
+				return id;
 			}
 		}
 		return null;
 	}
 
-	public Types.DraftState.Builder toDraftState (String username, boolean completed) {
+	public Types.DraftState.Builder toDraftState (UUID playerId, boolean completed) {
 		Types.DraftState.Builder b =
 				Types.DraftState.newBuilder()
 						.setId(id.toString())
-						.addAllDecklist(players.get(username).deck.toDeckList())
+						.addAllDecklist(players.get(playerId).deck.toDeckList())
 						.setCompleted(completed);
 		return b;
 	}
 
-	public void draftPick (String username, UUID cardId) {
+	public Types.DraftState.Builder toDraftState (String playerName, boolean completed) {
+		return toDraftState(getPlayerId(playerName), completed);
+	}
+
+	private UUID getPlayerId (String playerName) {
+		for (Player p : players.values()){
+			if (p.username.equals(playerName)){
+				return p.id;
+			}
+		}
+		return null;
+	}
+
+	public void draftPick (UUID playerId, UUID cardId) {
 		try {
-			responses.get(username).put(cardId);
+			responses.get(playerId).put(cardId);
 			picksReceived++;
 			//TODO: Update the player so their picks gets shown
 			if (picksReceived == 2){

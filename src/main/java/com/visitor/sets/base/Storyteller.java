@@ -11,12 +11,14 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 /**
  * @author pseudo
  */
 public class Storyteller extends Unit {
 
-	public Storyteller (Game game, String owner) {
+	public Storyteller (Game game, UUID owner) {
 		super(game, "Storyteller",
 				5, new CounterMap(),
 				"{D}: {~} deals 1 damage to any target.\n" +

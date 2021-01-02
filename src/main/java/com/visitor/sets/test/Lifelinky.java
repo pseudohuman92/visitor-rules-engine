@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
  */
 public class Lifelinky extends Unit {
 
-	public Lifelinky (Game game, String owner) {
+	public Lifelinky (Game game, UUID owner) {
 		super(game, "Lifelinky",
 				0, new CounterMap(),
 				"",

@@ -4,10 +4,12 @@ import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class FromDawnTillDusk extends Ritual {
-	public FromDawnTillDusk (Game game, String owner) {
+	public FromDawnTillDusk (Game game, UUID owner) {
 		super(game, "From Dawn Till Dusk", 3,
 				new CounterMap<>(BLUE, 1),
 				"Draw 3 cards.\nDiscard 1 card.",

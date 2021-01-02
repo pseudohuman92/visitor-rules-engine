@@ -5,27 +5,24 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.protocol.Types.Knowledge.*;
+import static com.visitor.protocol.Types.Knowledge.GREEN;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
 public class GY02 extends Unit {
 
-	public GY02 (Game game, String owner) {
+	public GY02 (Game game, UUID owner) {
 		super(game, "GY02",
 				2, new CounterMap(YELLOW, 1).add(GREEN, 1),
 				"Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control.",

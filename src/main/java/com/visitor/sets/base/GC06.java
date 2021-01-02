@@ -5,11 +5,13 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 
+import java.util.UUID;
+
 import static com.visitor.game.Game.Zone.Deck;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GC06 extends Cantrip {
-	public GC06 (Game game, String owner) {
+	public GC06 (Game game, UUID owner) {
 		super(game, "GC06", 5,
 				new CounterMap<>(GREEN, 3),
 				"Choose and draw up to 2 units from your deck.",

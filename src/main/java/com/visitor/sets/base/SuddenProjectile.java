@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.helpers.Predicates.anotherUnit;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -20,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class SuddenProjectile extends Unit {
 
-	public SuddenProjectile (Game game, String owner) {
+	public SuddenProjectile (Game game, UUID owner) {
 		super(game, "Sudden Projectile",
 				3, new CounterMap(YELLOW, 1),
 				"When {~} enters the battlefield, play a 1/1 Spirit with flying.\n" +

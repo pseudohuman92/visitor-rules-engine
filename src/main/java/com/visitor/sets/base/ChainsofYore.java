@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.helpers.Predicates.*;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -20,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class ChainsofYore extends Unit {
 
-	public ChainsofYore (Game game, String owner) {
+	public ChainsofYore (Game game, UUID owner) {
 		super(game, "Chains of Yore",
 				1, new CounterMap(YELLOW, 1),
 				"{2}, {D}: Deplete another target unit.",

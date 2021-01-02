@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
  */
 public class Deathtouchy extends Unit {
 
-	public Deathtouchy (Game game, String owner) {
+	public Deathtouchy (Game game, UUID owner) {
 		super(game, "Deathtouchy",
 				0, new CounterMap(),
 				"",

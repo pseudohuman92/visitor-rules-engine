@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.helpers.Predicates.and;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class HumanArcher extends Unit {
 
-	public HumanArcher (Game game, String owner) {
+	public HumanArcher (Game game, UUID owner) {
 		super(game, "Human Archer",
 				2, new CounterMap(RED, 1),
 				"{1}, {D}, Discard a card: Draw a card.\n" +

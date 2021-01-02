@@ -10,6 +10,9 @@ import com.visitor.card.types.Ally;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
+
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
@@ -17,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class SaulgolathEnforcer extends Ally {
 
-    public SaulgolathEnforcer(Game game, String owner) {
+    public SaulgolathEnforcer(Game game, UUID owner) {
         super(game, "Sa'ulgolath Enforcer", 1, new CounterMap<>(RED, 1),
                 "Pay 2 life, {D}: +2 Loyalty\n" +
                         "-{X} Loyalty, {D}: \n" +

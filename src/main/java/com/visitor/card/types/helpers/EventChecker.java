@@ -4,7 +4,6 @@ import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Predicates;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -30,7 +29,7 @@ public class EventChecker implements Consumer<Event> {
 	}
 
 	public final EventChecker addStartOfOpponentTurnChecker () {
-		return and(event -> event.playersTurnStart(game.getOpponentName(card.controller)));
+		return and(event -> event.playersTurnStart(game.getOpponentId(card.controller)));
 	}
 
 	public final EventChecker addEndOfControllerTurnChecker () {
@@ -38,7 +37,7 @@ public class EventChecker implements Consumer<Event> {
 	}
 
 	public final EventChecker addEndOfOpponentTurnChecker () {
-		return and(event -> event.playersTurnEnd(game.getOpponentName(card.controller)));
+		return and(event -> event.playersTurnEnd(game.getOpponentId(card.controller)));
 	}
 
 	public final EventChecker addTypeChecker (Event.EventType type) {

@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class Peregrimace extends Unit {
 
-	public Peregrimace (Game game, String owner) {
+	public Peregrimace (Game game, UUID owner) {
 		super(game, "Peregrimace",
 				5, new CounterMap(PURPLE, 3),
 				"When {~} enters play, draw X cards and lose 2X life where X is equal to number of units you control.",

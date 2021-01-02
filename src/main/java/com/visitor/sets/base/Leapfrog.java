@@ -25,7 +25,7 @@ public class Leapfrog extends Unit {
 
 	Arraylist<UUID> purgeTargets;
 	UUID damageTarget;
-	public Leapfrog (Game game, String owner) {
+	public Leapfrog (Game game, UUID owner) {
 		super(game, "Leapfrog",
 				1, new CounterMap(RED, 1),
 				"{1}, {D}, Purge 2 cards from your discard pile: {~} deals 2 damage to any target.",

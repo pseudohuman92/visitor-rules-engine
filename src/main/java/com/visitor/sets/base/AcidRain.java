@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class AcidRain extends Unit {
 
-	public AcidRain (Game game, String owner) {
+	public AcidRain (Game game, UUID owner) {
 		super(game, "Acid Rain",
 				6, new CounterMap(YELLOW, 3),
 				"",

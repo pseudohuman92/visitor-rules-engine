@@ -6,10 +6,11 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -19,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class GU04 extends Unit {
 
-	public GU04 (Game game, String owner) {
+	public GU04 (Game game, UUID owner) {
 		super(game, "GU04",
 				5, new CounterMap(BLUE, 2).add(GREEN, 1),
 				"When {~} enters play, draw a card for each card you control with cost 3 or greater.",

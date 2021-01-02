@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class BreathofZephyrus extends Unit {
 
-	public BreathofZephyrus (Game game, String owner) {
+	public BreathofZephyrus (Game game, UUID owner) {
 		super(game, "Breath of Zephyrus",
 				3, new CounterMap(PURPLE, 1),
 				"",

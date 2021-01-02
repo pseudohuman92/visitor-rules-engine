@@ -5,17 +5,15 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -25,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class GD04 extends Unit {
 
-	public GD04 (Game game, String owner) {
+	public GD04 (Game game, UUID owner) {
 		super(game, "GD04",
 				4, new CounterMap(GREEN, 2).add(RED, 1),
 						"Whenever {~} attacks, {~} gains +X/+X where X is the number of attacking units you control.",

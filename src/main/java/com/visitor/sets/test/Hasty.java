@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Haste;
  */
 public class Hasty extends Unit {
 
-	public Hasty (Game game, String owner) {
+	public Hasty (Game game, UUID owner) {
 		super(game, "Hasty",
 				0, new CounterMap(),
 				"",

@@ -8,12 +8,12 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
-import static com.visitor.game.Game.Zone.Play;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
@@ -21,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class IsthmusofSerenity extends Unit {
 
-	public IsthmusofSerenity (Game game, String owner) {
+	public IsthmusofSerenity (Game game, UUID owner) {
 		super(game, "Isthmus of Serenity",
 				6, new CounterMap(PURPLE, 3),
 				"When {~} enters play, put X 1/1 Bat with flying into play where X equal to your {P}",

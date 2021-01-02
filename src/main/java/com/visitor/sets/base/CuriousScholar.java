@@ -15,6 +15,7 @@ import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
+
 import static com.visitor.game.Event.EventType.Study;
 import static com.visitor.game.Game.Zone.Deck;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -24,7 +25,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class CuriousScholar extends Ally {
 
-    public CuriousScholar(Game game, String owner) {
+    public CuriousScholar(Game game, UUID owner) {
         super(game, "Curious Scholar", 2, new CounterMap<>(GREEN, 1),
                 "Trigger - When you study\n" +
                         "    +1 Loyalty\n" +

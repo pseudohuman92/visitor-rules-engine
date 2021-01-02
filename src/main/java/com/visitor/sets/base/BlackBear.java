@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class BlackBear extends Unit {
 
-	public BlackBear (Game game, String owner) {
+	public BlackBear (Game game, UUID owner) {
 		super(game, "Black Bear",
 				2, new CounterMap(GREEN, 1),
 				"{2}, Return {~} to your hand: Draw a card.",

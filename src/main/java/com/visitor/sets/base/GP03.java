@@ -11,6 +11,8 @@ import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class GP03 extends Unit {
 
-	public GP03 (Game game, String owner) {
+	public GP03 (Game game, UUID owner) {
 		super(game, "GP03",
 				2, new CounterMap(GREEN, 1).add(PURPLE, 1),
 				"Whenever {~} deals combat damage to a player, {~} gains +1/+1.",

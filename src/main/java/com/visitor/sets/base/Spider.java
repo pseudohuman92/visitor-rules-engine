@@ -23,7 +23,7 @@ public class Spider extends Unit {
 
 	UUID target;
 
-	public Spider (Game game, String owner) {
+	public Spider (Game game, UUID owner) {
 		super(game, "Spider",
 				1, new CounterMap(GREEN, 1),
 				"{G}{G}{G}- {4}, {D}: Target unit gains +X/+X until end of turn where X is the number of {G} you have.",

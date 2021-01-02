@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Ox extends Unit {
 
-	public Ox (Game game, String owner) {
+	public Ox (Game game, UUID owner) {
 		super(game, "Ox",
 				3, new CounterMap(BLUE, 2),
 				"",

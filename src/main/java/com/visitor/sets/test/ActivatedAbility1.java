@@ -10,12 +10,14 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 /**
  * @author pseudo
  */
 public class ActivatedAbility1 extends Unit {
 
-	public ActivatedAbility1 (Game game, String owner) {
+	public ActivatedAbility1 (Game game, UUID owner) {
 		super(game, "Activated Ability 1",
 				0, new CounterMap(),
 				"0: Gain +0/+1",

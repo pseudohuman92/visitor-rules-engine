@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Yak extends Unit {
 
-	public Yak (Game game, String owner) {
+	public Yak (Game game, UUID owner) {
 		super(game, "Yak",
 				4, new CounterMap(GREEN, 1),
 				"{S} | {D}, Sacrifice {~}: Draw X cards where X is equal to greatest attack among the units you control.",

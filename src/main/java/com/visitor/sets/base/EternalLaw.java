@@ -8,14 +8,17 @@ import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
-import static com.visitor.protocol.Types.Knowledge.*;
+import java.util.UUID;
+
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
+import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
  * @author pseudo
  */
 public class EternalLaw extends Tome {
 
-    public EternalLaw (Game game, String owner) {
+    public EternalLaw (Game game, UUID owner) {
         super(game, "Eternal Law", "Study: Gain {P}{Y}", owner, new CounterMap<>(PURPLE, 1).add(YELLOW, 1));
     }
 

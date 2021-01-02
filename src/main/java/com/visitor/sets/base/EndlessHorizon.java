@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class EndlessHorizon extends Unit {
 
-	public EndlessHorizon (Game game, String owner) {
+	public EndlessHorizon (Game game, UUID owner) {
 		super(game, "Endless Horizon",
 				3, new CounterMap(RED, 2),
 				"",

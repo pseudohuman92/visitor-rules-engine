@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.RED;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class GorgothsRevenge extends Unit {
 
-	public GorgothsRevenge (Game game, String owner) {
+	public GorgothsRevenge (Game game, UUID owner) {
 		super(game, "Gorgoth's Revenge",
 				2, new CounterMap(YELLOW, 1),
 				"{R} - {4}: {~} gains +2/+0 and Trample.",

@@ -22,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class FatesHand extends Unit {
 
-	public FatesHand (Game game, String owner) {
+	public FatesHand (Game game, UUID owner) {
 		super(game, "Fate's Hand",
 				1, new CounterMap(PURPLE, 1),
 				"Sacrifice a unit: {~} gains +1/+1",

@@ -154,7 +154,7 @@ public class Combat {
 				this.turnlyHealth = 0;
 				this.health = 0;
 				try {
-					game.dealDamage(source.id, game.getUserId(card.controller), new Damage(leftoverDamage));
+					game.dealDamage(source.id, card.controller, new Damage(leftoverDamage));
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 					e.printStackTrace();

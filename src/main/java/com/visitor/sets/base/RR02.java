@@ -5,11 +5,13 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.Damage;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class RR02 extends Ritual {
 
-	public RR02 (Game game, String owner) {
+	public RR02 (Game game, UUID owner) {
 		super(game, "RR02", 4,
 				new CounterMap<>(RED, 2),
 				"Deal 5 damage to target unit.",

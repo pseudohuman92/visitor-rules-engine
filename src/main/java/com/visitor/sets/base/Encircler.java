@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class Encircler extends Unit {
 
-	public Encircler (Game game, String owner) {
+	public Encircler (Game game, UUID owner) {
 		super(game, "Encircler",
 				3, new CounterMap(RED, 1),
 				"{R}{R} - {D}: Destroy target unit. That unit's controller gains control of {~}.",
@@ -28,7 +30,7 @@ public class Encircler extends Unit {
 		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: Destroy target unit. That unit's controller gains control of {~}.")
 				.setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
 						(targetId)->{
-							String newController = game.getCard(targetId).controller;
+							UUID newController = game.getCard(targetId).controller;
 							game.destroy(id, targetId);
 							if (!controller.equals(newController))
 								game.gainControlFromZone(newController, Game.Zone.Opponent_Play, Game.Zone.Play, id);

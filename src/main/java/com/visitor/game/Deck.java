@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 import static java.lang.Class.forName;
@@ -20,10 +21,10 @@ import static java.util.logging.Logger.getLogger;
  */
 public class Deck extends Arraylist<Card> {
 
-	public Deck (String username) {
+	public Deck (UUID playerId) {
 	}
 
-	public Deck (Game game, String username, String[] decklist) {
+	public Deck (Game game, UUID playerId, String[] decklist) {
 		for (String s : decklist) {
 			String[] tokens = s.split(";");
 			int count = parseInt(tokens[0]);
@@ -31,7 +32,7 @@ public class Deck extends Arraylist<Card> {
 					.replace("-", "")
 					.replace("'", "");
 			for (int j = 0; j < count; j++) {
-				Card c = HelperFunctions.createCard(game, username, name);
+				Card c = HelperFunctions.createCard(game, playerId, name);
 				if (c != null){
 					c.zone = Game.Zone.Deck;
 					add(c);

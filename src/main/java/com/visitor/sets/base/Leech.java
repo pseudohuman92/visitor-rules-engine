@@ -23,7 +23,7 @@ public class Leech extends Unit {
 
 	UUID target;
 
-	public Leech (Game game, String owner) {
+	public Leech (Game game, UUID owner) {
 		super(game, "Leech",
 				1, new CounterMap(BLUE, 1),
 				"{U}{U} - {2}, Sacrifice {~}: Cancel target unit card.",

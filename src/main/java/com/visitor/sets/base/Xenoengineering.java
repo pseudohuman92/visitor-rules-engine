@@ -7,8 +7,8 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
@@ -17,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Xenoengineering extends Tome {
 
-    public Xenoengineering(Game game, String owner) {
+    public Xenoengineering(Game game, UUID owner) {
         super(game, "Xenoengineering", "Study: Gain {U}{U}", owner, new CounterMap<>(BLUE, 2));
     }
 

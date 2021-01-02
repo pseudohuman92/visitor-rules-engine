@@ -7,16 +7,18 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
 
-import static com.visitor.protocol.Types.Knowledge.*;
+import java.util.UUID;
+
+import static com.visitor.protocol.Types.Knowledge.GREEN;
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
 public class DarkPhonebook extends Tome {
 
-    public DarkPhonebook(Game game, String owner) {
+    public DarkPhonebook(Game game, UUID owner) {
         super(game, "Dark Phonebook", "Study: Gain {G}{P}", owner, () -> new CounterMap<>(PURPLE, 1).add(GREEN, 1));
     }
 

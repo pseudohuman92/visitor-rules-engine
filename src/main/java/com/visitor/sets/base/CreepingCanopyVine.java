@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Haste;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class CreepingCanopyVine extends Unit {
 
-	public CreepingCanopyVine (Game game, String owner) {
+	public CreepingCanopyVine (Game game, UUID owner) {
 		super(game, "Creeping Canopy Vine",
 				2, new CounterMap(RED, 2),
 				"{R}{R}{R} - {3}: {~} gains +1/+1.\n" +

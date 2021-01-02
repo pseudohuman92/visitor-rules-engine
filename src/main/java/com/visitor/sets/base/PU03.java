@@ -23,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class PU03 extends Unit {
 
-	public PU03 (Game game, String owner) {
+	public PU03 (Game game, UUID owner) {
 		super(game, "PU03",
 				4, new CounterMap(BLUE, 1).add(PURPLE, 1),
 				"When {~} enters play, return a blue or purple unit you control to its controller’s hand.\n" +
@@ -47,7 +47,7 @@ public class PU03 extends Unit {
 								() -> {
 									Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Hand, card -> card.canPlay(false), 1, !game.hasIn(controller, Game.Zone.Opponent_Hand, Predicates::any, 1), "Select a card to to discard.");
 									if (!maybePlay.isEmpty()){
-										game.discard(game.getOpponentName(controller), maybePlay.get(0));
+										game.discard(game.getOpponentId(controller), maybePlay.get(0));
 									}
 								}));
 

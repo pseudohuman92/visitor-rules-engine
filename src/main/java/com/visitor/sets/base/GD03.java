@@ -6,15 +6,13 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
-import com.visitor.game.Card;
-import com.visitor.game.Event;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -24,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class GD03 extends Unit {
 
-	public GD03 (Game game, String owner) {
+	public GD03 (Game game, UUID owner) {
 		super(game, "GD03",
 				4, new CounterMap(GREEN, 1).add(RED, 1),
 						"Whenever {~} deals combat damage to a player, create that many 1/1 green Insect",

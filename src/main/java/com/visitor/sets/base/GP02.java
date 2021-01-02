@@ -5,13 +5,8 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
-import com.visitor.game.Card;
-import com.visitor.game.Event;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -19,7 +14,6 @@ import com.visitor.sets.token.UnitToken;
 
 import java.util.UUID;
 
-import static com.visitor.helpers.Predicates.isUnit;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -28,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class GP02 extends Unit {
 
-	public GP02 (Game game, String owner) {
+	public GP02 (Game game, UUID owner) {
 		super(game, "GP02",
 				6, new CounterMap(GREEN, 2).add(PURPLE, 2),
 				"When {~} enters play, Create a 1/1 black and green Insect for each unit card in your discard pile.\n" +

@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class NightGuardian extends Unit {
 
-	public NightGuardian (Game game, String owner) {
+	public NightGuardian (Game game, UUID owner) {
 		super(game, "Night Guardian",
 				5, new CounterMap(YELLOW, 3),
 				"{3}, {D}: Target unit gains shield 2.",

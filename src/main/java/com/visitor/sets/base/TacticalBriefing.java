@@ -7,8 +7,8 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.RED;
 
@@ -17,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class TacticalBriefing extends Tome {
 
-    public TacticalBriefing(Game game, String owner) {
+    public TacticalBriefing(Game game, UUID owner) {
         super(game, "Tactical Briefing", "Study: Gain {R}{R}", owner, new CounterMap<>(RED, 2));
     }
 

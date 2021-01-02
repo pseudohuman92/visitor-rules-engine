@@ -33,8 +33,8 @@ public abstract class Card implements Serializable {
 	public Arraylist<CardSubtype> subtypes;
 	public CounterMap<Knowledge> knowledge;
 
-	public String owner;
-	public String controller;
+	public UUID owner;
+	public UUID controller;
 	public Game.Zone zone;
 	protected boolean depleted;
 	protected CounterMap<Counter> counters;
@@ -58,7 +58,7 @@ public abstract class Card implements Serializable {
 	 */
 	public Card (Game game, String name,
 	             CounterMap<Knowledge> knowledge,
-	             CardType type, String text, String owner) {
+	             CardType type, String text, UUID owner) {
 		this.game = game;
 		id = randomUUID();
 		counters = new CounterMap<>();

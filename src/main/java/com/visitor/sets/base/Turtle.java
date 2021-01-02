@@ -24,7 +24,7 @@ public class Turtle extends Unit {
 
 	UUID target;
 
-	public Turtle (Game game, String owner) {
+	public Turtle (Game game, UUID owner) {
 		super(game, "Turtle",
 				1, new CounterMap(BLUE, 1),
 						"{U}{U}{U}{U}{U} - {S} | {5}, {D}: Gain control of target depleted unit.",

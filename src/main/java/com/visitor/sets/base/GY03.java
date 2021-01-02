@@ -6,15 +6,15 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -24,7 +24,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class GY03 extends Unit {
 
-	public GY03 (Game game, String owner) {
+	public GY03 (Game game, UUID owner) {
 		super(game, "GY03",
 				6, new CounterMap(YELLOW, 2).add(GREEN, 2),
 				"When {~} enters the battlefield, create a 5/5 green Wurm with trample.",

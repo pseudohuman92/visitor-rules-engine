@@ -6,18 +6,14 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
@@ -27,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class GP04 extends Unit {
 
-	public GP04 (Game game, String owner) {
+	public GP04 (Game game, UUID owner) {
 		super(game, "GP04",
 				3, new CounterMap(GREEN, 1).add(PURPLE, 1),
 				"At the end of your turn, each player creates a 1/1 green Plant.\n" +
@@ -38,7 +34,7 @@ public class GP04 extends Unit {
 		triggering.addEventChecker(new EventChecker(game, this,
 				event -> {
 					UnitToken.Plant_1_1(game, controller).resolve();
-					UnitToken.Plant_1_1(game, game.getOpponentName(controller)).resolve();
+					UnitToken.Plant_1_1(game, game.getOpponentId(controller)).resolve();
 				})
 				.addEndOfControllerTurnChecker()
 				.createAbility("At the end of your turn, each player creates a 1/1 green Plant."));

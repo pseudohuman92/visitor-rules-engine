@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Regenerate;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class BloomingOrchard extends Unit {
 
-	public BloomingOrchard (Game game, String owner) {
+	public BloomingOrchard (Game game, UUID owner) {
 		super(game, "Blooming Orchard",
 				1, new CounterMap(YELLOW, 1),
 				"{D}: Gain 1 health.",

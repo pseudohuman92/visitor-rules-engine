@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Elephant extends Unit {
 
-	public Elephant (Game game, String owner) {
+	public Elephant (Game game, UUID owner) {
 		super(game, "Elephant",
 				4, new CounterMap(GREEN, 3),
 				"{D}: Gain 3 energy.",

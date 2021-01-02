@@ -9,12 +9,14 @@ import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 /**
  * @author pseudo
  */
 public class Junk extends Card {
 
-	public Junk (Game game, String owner) {
+	public Junk (Game game, UUID owner) {
 		super(game, "Junk", new CounterMap<>(), CardType.Junk, "Junk can't be played or studied.", owner);
 	}
 

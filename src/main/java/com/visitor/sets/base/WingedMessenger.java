@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class WingedMessenger extends Unit {
 
-	public WingedMessenger (Game game, String owner) {
+	public WingedMessenger (Game game, UUID owner) {
 		super(game, "Winged Messenger",
 				2, new CounterMap(YELLOW, 1),
 				"{1} {D}: Create 1/1 Warrior.",

@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -20,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class KomodoDragon extends Unit {
 
-	public KomodoDragon (Game game, String owner) {
+	public KomodoDragon (Game game, UUID owner) {
 		super(game, "Komodo Dragon",
 				3, new CounterMap(GREEN, 3),
 				"{5}: Units you control gains +3/+3 and Trample until end of turn",

@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class PolarVortex extends Unit {
 
-	public PolarVortex (Game game, String owner) {
+	public PolarVortex (Game game, UUID owner) {
 		super(game, "Polar Vortex",
 				1, new CounterMap(YELLOW, 1),
 				"",

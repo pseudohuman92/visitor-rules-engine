@@ -10,6 +10,9 @@ import com.visitor.card.types.Ally;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
+
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -17,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class MysticGnome extends Ally {
 
-    public MysticGnome(Game game, String owner) {
+    public MysticGnome(Game game, UUID owner) {
         super(game,"Mystic Gnome", 1, new CounterMap<>(GREEN, 1),
                 "{1}, {D}: +1 Loyalty \n" +
                         "-2 Loyalty, {D}: \n" +

@@ -7,8 +7,8 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -17,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class MysticalMixology extends Tome {
 
-    public MysticalMixology(Game game, String owner) {
+    public MysticalMixology(Game game, UUID owner) {
         super(game, "Mystical Mixology", "Study: Gain {P}{P}", owner, new CounterMap<>(PURPLE, 2));
     }
 

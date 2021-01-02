@@ -10,6 +10,9 @@ import com.visitor.card.types.Ally;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
+
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -17,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class FocusingMaster extends Ally {
 
-    public FocusingMaster(Game game, String owner) {
+    public FocusingMaster(Game game, UUID owner) {
         super(game, "Focusing Master", 2, new CounterMap<>(GREEN, 1),
                 "-1 Max Energy, {D}: \n" +
                         "    +2 Loyalty\n" +

@@ -5,7 +5,6 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
@@ -14,8 +13,9 @@ import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
@@ -25,7 +25,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class GP01 extends Unit {
 
-	public GP01 (Game game, String owner) {
+	public GP01 (Game game, UUID owner) {
 		super(game, "GP01",
 				5, new CounterMap(GREEN, 1).add(PURPLE, 1),
 				"At the start of your turn, your opponent discard a card.\n" +
@@ -34,7 +34,7 @@ public class GP01 extends Unit {
 				owner);
 
 		triggering.addEventChecker(new EventChecker(game, this,
-				event -> game.discard(game.getOpponentName(controller), 1))
+				event -> game.discard(game.getOpponentId(controller), 1))
 				.addStartOfControllerTurnChecker()
 				.createAbility("At the start of your turn, your opponent discard a card."));
 
@@ -46,7 +46,7 @@ public class GP01 extends Unit {
 
 				})
 				.addTypeChecker(Event.EventType.Discard)
-				.addPlayerChecker(playerName -> playerName.equals(game.getOpponentName(controller)))
+				.addPlayerChecker(playerName -> playerName.equals(game.getOpponentId(controller)))
 		);
 	}
 }

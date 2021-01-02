@@ -13,6 +13,8 @@ import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.helpers.containers.Damage;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.helpers.Predicates.and;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -22,7 +24,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class Sentinel extends Unit {
 
-	public Sentinel (Game game, String owner) {
+	public Sentinel (Game game, UUID owner) {
 		super(game, "Sentinel",
 				5, new CounterMap(RED, 3),
 				"When {~} enters play, other units you control gain “{D}: This unit deals 2 damage to any target” until end of turn.",

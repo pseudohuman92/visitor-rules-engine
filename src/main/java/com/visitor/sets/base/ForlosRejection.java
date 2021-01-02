@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.helpers.Predicates.and;
 
 /**
@@ -18,7 +20,7 @@ import static com.visitor.helpers.Predicates.and;
  */
 public class ForlosRejection extends Unit {
 
-	public ForlosRejection (Game game, String owner) {
+	public ForlosRejection (Game game, UUID owner) {
 		super(game, "Forlo's Rejection",
 				2, new CounterMap(),
 				"{D}: Each colorless unit you control gains +1/+1",

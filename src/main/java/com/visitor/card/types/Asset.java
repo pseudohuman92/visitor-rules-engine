@@ -9,6 +9,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types.Knowledge;
 
+import java.util.UUID;
+
 /**
  * Abstract class for the Asset card type.
  *
@@ -16,7 +18,7 @@ import com.visitor.protocol.Types.Knowledge;
  */
 public abstract class Asset extends Card {
 
-	public Asset (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
+	public Asset (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
 		super(game, name, knowledge, CardType.Asset, text, owner);
 
 		playable = new Playable(game, this, cost).setSlow().setPersistent();

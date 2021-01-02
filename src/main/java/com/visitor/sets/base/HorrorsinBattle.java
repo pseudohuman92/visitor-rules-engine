@@ -7,17 +7,18 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
-import com.visitor.protocol.Types;
 
-import static com.visitor.protocol.Types.Knowledge.*;
+import java.util.UUID;
+
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
+import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
  * @author pseudo
  */
 public class HorrorsinBattle extends Tome {
 
-    public HorrorsinBattle(Game game, String owner) {
+    public HorrorsinBattle(Game game, UUID owner) {
         super(game,"Horrors in Battle", "Study: Gain {P}{R}", owner, new CounterMap<>(PURPLE, 1).add(RED, 1));
     }
 

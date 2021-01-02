@@ -21,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
 public class ShieldofNorn extends Unit {
 
 	UUID target;
-	public ShieldofNorn (Game game, String owner) {
+	public ShieldofNorn (Game game, UUID owner) {
 		super(game, "Shield of Norn",
 				4, new CounterMap(PURPLE, 2),
 				"{P}{P}{P}{P} - {S} | {5}, {D}: Resurrect target unit.",

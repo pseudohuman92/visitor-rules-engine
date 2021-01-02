@@ -26,7 +26,7 @@ public class Porcupine extends Unit {
 
 	UUID target;
 
-	public Porcupine (Game game, String owner) {
+	public Porcupine (Game game, UUID owner) {
 		super(game, "Porcupine",
 				2, new CounterMap(BLUE, 1),
 				"{U}{U} - {2}: Deplete another target unit without flying.",

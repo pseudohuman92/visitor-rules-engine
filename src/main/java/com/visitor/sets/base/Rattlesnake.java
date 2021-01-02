@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Deathtouch;
 import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Rattlesnake extends Unit {
 
-	public Rattlesnake (Game game, String owner) {
+	public Rattlesnake (Game game, UUID owner) {
 		super(game, "Rattlesnake",
 				2, new CounterMap(GREEN, 2),
 				"",

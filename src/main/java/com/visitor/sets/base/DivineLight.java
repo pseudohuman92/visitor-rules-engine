@@ -22,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 public class DivineLight extends Unit {
 
 	UUID target;
-	public DivineLight (Game game, String owner) {
+	public DivineLight (Game game, UUID owner) {
 		super(game, "Divine Light",
 				5, new CounterMap(RED, 1),
 				"{R}{R}{R} - {1}, purge top 10 cards of your deck: {~} deals 2 damage to any target.",

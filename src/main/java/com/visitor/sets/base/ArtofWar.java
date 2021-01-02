@@ -7,7 +7,8 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -17,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class ArtofWar extends Tome {
 
-    public ArtofWar(Game game, String owner) {
+    public ArtofWar(Game game, UUID owner) {
         super(game, "Art of War", "Study: Gain {U}{R}", owner, new CounterMap<>(BLUE, 1).add(RED, 1));
     }
 }

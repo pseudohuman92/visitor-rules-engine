@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class FuryofAvra extends Unit {
 
-	public FuryofAvra (Game game, String owner) {
+	public FuryofAvra (Game game, UUID owner) {
 		super(game, "Fury of Avra",
 				4, new CounterMap(PURPLE, 1),
 				"{P}{P} - {2}, Pay 2 health: Draw a card.",

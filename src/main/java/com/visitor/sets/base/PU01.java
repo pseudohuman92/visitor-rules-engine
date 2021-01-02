@@ -15,14 +15,15 @@ import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.protocol.Types.Knowledge.*;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
+import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**
  * @author pseudo
  */
 public class PU01 extends Unit {
 
-	public PU01 (Game game, String owner) {
+	public PU01 (Game game, UUID owner) {
 		super(game, "PU01",
 				8, new CounterMap(BLUE, 2).add(PURPLE, 2),
 				"Whenever {~} deals combat damage to a player,\n" +

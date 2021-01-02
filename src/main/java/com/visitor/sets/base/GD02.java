@@ -15,7 +15,8 @@ import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.sets.token.UnitToken;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -25,7 +26,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class GD02 extends Unit {
 
-	public GD02 (Game game, String owner) {
+	public GD02 (Game game, UUID owner) {
 		super(game, "GD02",
 				5, new CounterMap(GREEN, 2).add(RED, 1),
 				"Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",

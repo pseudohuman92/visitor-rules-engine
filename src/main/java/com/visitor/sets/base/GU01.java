@@ -7,28 +7,24 @@ package com.visitor.sets.base;
 
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
-import static com.visitor.card.properties.Combat.CombatAbility.Haste;
-import static com.visitor.protocol.Types.Knowledge.*;
+import static com.visitor.protocol.Types.Knowledge.BLUE;
+import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
  * @author pseudo
  */
 public class GU01 extends Unit {
 
-	public GU01 (Game game, String owner) {
+	public GU01 (Game game, UUID owner) {
 		super(game, "GU01",
 				5, new CounterMap(BLUE, 1).add(GREEN, 1),
 				"Whenever you play a green unit, search your library for a unit, shuffle your library and put that card on top of it.\n" +

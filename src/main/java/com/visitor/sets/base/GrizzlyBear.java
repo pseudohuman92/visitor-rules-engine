@@ -10,6 +10,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class GrizzlyBear extends Unit {
 
-	public GrizzlyBear (Game game, String owner) {
+	public GrizzlyBear (Game game, UUID owner) {
 		super(game, "Grizzly Bear",
 				2, new CounterMap(GREEN, 2),
 				"{D}: Gain 1 energy.",

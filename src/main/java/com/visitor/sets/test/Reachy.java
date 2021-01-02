@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Reach;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Reach;
  */
 public class Reachy extends Unit {
 
-	public Reachy (Game game, String owner) {
+	public Reachy (Game game, UUID owner) {
 		super(game, "Reachy",
 				0, new CounterMap(),
 				"",

@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
  */
 public class FirstStriky extends Unit {
 
-	public FirstStriky (Game game, String owner) {
+	public FirstStriky (Game game, UUID owner) {
 		super(game, "First Striky",
 				0, new CounterMap(),
 				"",

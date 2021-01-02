@@ -10,6 +10,7 @@ import com.visitor.game.Player;
 import com.visitor.protocol.Types;
 import com.visitor.sets.base.GrandOrator;
 
+import java.util.UUID;
 import java.util.function.Predicate;
 
 import static com.visitor.game.Card.CardSubtype.Cantrip;
@@ -127,7 +128,7 @@ public abstract class Predicates {
 		return c -> c.hasColor(color);
 	}
 
-	public static Predicate<Card> controlledBy (String controller) {
+	public static Predicate<Card> controlledBy (UUID controller) {
 		return c -> c.controller.equals(controller);
 	}
 

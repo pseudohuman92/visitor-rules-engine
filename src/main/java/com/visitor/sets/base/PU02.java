@@ -5,7 +5,6 @@
  */
 package com.visitor.sets.base;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Game;
@@ -23,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class PU02 extends Unit {
 
-	public PU02 (Game game, String owner) {
+	public PU02 (Game game, UUID owner) {
 		super(game, "PU02",
 				6, new CounterMap(BLUE, 2).add(PURPLE, 1),
 				"Whenever {~} deals combat damage to a player, you may play target \n" +

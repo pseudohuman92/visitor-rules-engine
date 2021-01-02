@@ -7,7 +7,6 @@ package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
 import com.visitor.card.types.helpers.AbilityCard;
-import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -15,8 +14,6 @@ import com.visitor.helpers.Predicates;
 import java.util.UUID;
 
 import static com.visitor.card.properties.Combat.CombatAbility.Haste;
-import static com.visitor.helpers.Predicates.isUnit;
-import static com.visitor.helpers.Predicates.none;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
@@ -24,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class BladeDervish extends Unit {
 
-	public BladeDervish (Game game, String owner) {
+	public BladeDervish (Game game, UUID owner) {
 		super(game, "Blade Dervish",
 				4, new CounterMap(RED, 1),
 				"When {~} enters play, it deals 3 damage to target unit.",

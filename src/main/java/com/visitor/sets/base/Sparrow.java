@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
@@ -17,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Sparrow extends Unit {
 
-	public Sparrow (Game game, String owner) {
+	public Sparrow (Game game, UUID owner) {
 		super(game, "Sparrow",
 				1, new CounterMap(BLUE, 1),
 				"",

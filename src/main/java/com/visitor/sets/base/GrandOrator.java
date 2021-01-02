@@ -7,9 +7,7 @@ package com.visitor.sets.base;
 
 
 import com.visitor.card.types.Ally;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
@@ -18,7 +16,6 @@ import java.util.UUID;
 
 import static com.visitor.game.Game.Zone.Play;
 import static com.visitor.helpers.Predicates.and;
-import static com.visitor.helpers.UUIDHelper.getInList;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -26,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class GrandOrator extends Ally {
 
-    public GrandOrator(Game game, String owner) {
+    public GrandOrator(Game game, UUID owner) {
         super(game, "Grand Orator", 2, new CounterMap<>(GREEN, 2),
                 "2, {D}: +1 Loyalty.\n" +
                         "-1 Loyalty, {D}:\n" +

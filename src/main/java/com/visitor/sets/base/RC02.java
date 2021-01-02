@@ -5,10 +5,12 @@ import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class RC02 extends Cantrip {
-	public RC02 (Game game, String owner) {
+	public RC02 (Game game, UUID owner) {
 		super(game, "RC02", 2,
 				new CounterMap<>(RED, 1),
 				"Target unit gets +3/+0 and gains first strike until end of turn.",

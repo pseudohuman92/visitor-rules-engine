@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
 /**
@@ -18,7 +20,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Defender;
  */
 public class ThistleandSpire extends Unit {
 
-	public ThistleandSpire (Game game, String owner) {
+	public ThistleandSpire (Game game, UUID owner) {
 		super(game, "Thistle and Spire",
 				1, new CounterMap(),
 				"{1}, {D}: {~} deals 1 damage to another unit and 1 damage to itself.",

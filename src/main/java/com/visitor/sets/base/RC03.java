@@ -5,10 +5,12 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.Damage;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class RC03 extends Cantrip {
-	public RC03 (Game game, String owner) {
+	public RC03 (Game game, UUID owner) {
 		super(game, "RC03", 3,
 				new CounterMap<>(RED, 1),
 				"Deal 2 damage to each unit.",

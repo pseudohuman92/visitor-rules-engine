@@ -33,14 +33,11 @@ public class Player {
 	public CounterMap<Knowledge> knowledgePool;
 	public Combat combat;
 
-	/**
-	 * @param username
-	 */
 	public Player (Game game, String username, String[] decklist) {
 		this.game = game;
 		this.username = username;
 		id = randomUUID();
-		this.deck = new Deck(game, username, decklist);
+		this.deck = new Deck(game, id, decklist);
 		energy = 0;
 		maxEnergy = 0;
 		numOfStudiesLeft = 1;
@@ -59,14 +56,14 @@ public class Player {
 	public void receiveDamage (int damageAmount, Card source) {
 		combat.receiveDamage(new Damage(damageAmount, false, false), source);
 		if (combat.getHealth() <= 0) {
-			game.gameEnd(username, false);
+			game.gameEnd(id, false);
 		}
 	}
 
 	public void payHealth (int amount) {
 		combat.loseHealth(amount);
 		if (combat.getHealth() <= 0) {
-			game.gameEnd(username, false);
+			game.gameEnd(id, false);
 		}
 	}
 
@@ -193,7 +190,7 @@ public class Player {
 	public Types.Player.Builder toPlayerMessage (boolean player) {
 		Types.Player.Builder builder = Types.Player.newBuilder()
 				.setId(id.toString())
-				.setUserId(username)
+				.setUsername(username)
 				.setDeckSize(deck.size())
 				.setEnergy(energy)
 				.setMaxEnergy(maxEnergy)

@@ -7,6 +7,8 @@ import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types.Knowledge;
 
+import java.util.UUID;
+
 
 /**
  * Abstract class for the Spell card type.
@@ -15,7 +17,7 @@ import com.visitor.protocol.Types.Knowledge;
  */
 public abstract class Spell extends Card {
 
-	public Spell (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, String owner) {
+	public Spell (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
 		super(game, name, knowledge, CardType.Spell, text, owner);
 
 		playable = new Playable(game, this, cost);

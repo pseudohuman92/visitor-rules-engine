@@ -26,7 +26,7 @@ public class Frog extends Unit {
 
 	UUID target;
 
-	public Frog (Game game, String owner) {
+	public Frog (Game game, UUID owner) {
 		super(game, "Frog",
 				1, new CounterMap(GREEN, 1),
 				"{D}: Deal 1 damage to target unit with flying.",

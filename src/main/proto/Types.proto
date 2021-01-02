@@ -119,7 +119,7 @@ message Card {
 
 message Player {
     string id = 1;
-    string userId = 2;
+    string username = 2;
     int32 deckSize = 3;
     int32 energy = 4;
     int32 maxEnergy = 5;

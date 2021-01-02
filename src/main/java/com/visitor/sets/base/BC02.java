@@ -13,7 +13,7 @@ import java.util.UUID;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class BC02 extends Cantrip {
-	public BC02 (Game game, String owner) {
+	public BC02 (Game game, UUID owner) {
 		super(game, "BC02", 2,
 				new CounterMap<>(BLUE, 1),
 				"Look at the top three cards of your library. Draw one of them and put the rest on the bottom of your library.",

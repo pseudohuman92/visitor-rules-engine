@@ -7,7 +7,8 @@ package com.visitor.sets.base;/*
 import com.visitor.card.types.Tome;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
+
+import java.util.UUID;
 
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 import static com.visitor.protocol.Types.Knowledge.RED;
@@ -17,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class DestructiveLeadership extends Tome {
 
-    public DestructiveLeadership(Game game, String owner) {
+    public DestructiveLeadership(Game game, UUID owner) {
         super(game, "Destructive Leadership", "Study: Gain {G}{R}", owner, () -> new CounterMap<>(GREEN, 1).add(RED, 1));
     }
 

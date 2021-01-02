@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Flying;
  */
 public class Flyingy extends Unit {
 
-	public Flyingy (Game game, String owner) {
+	public Flyingy (Game game, UUID owner) {
 		super(game, "Flyingy",
 				0, new CounterMap(),
 				"",

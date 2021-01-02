@@ -23,7 +23,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class PoisonWisp extends Unit {
 
-	public PoisonWisp (Game game, String owner) {
+	public PoisonWisp (Game game, UUID owner) {
 		super(game, "Poison Wisp",
 				6, new CounterMap(PURPLE, 1),
 				"When {~} enters play, you may destroy another target unit.",

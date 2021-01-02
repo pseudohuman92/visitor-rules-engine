@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
@@ -19,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class Beesmirch extends Unit {
 
-	public Beesmirch (Game game, String owner) {
+	public Beesmirch (Game game, UUID owner) {
 		super(game, "Beesmirch",
 				3, new CounterMap(YELLOW, 2),
 				"{Y}{Y}{Y} - {2}: Play a 1/1 Spirit with flying.",

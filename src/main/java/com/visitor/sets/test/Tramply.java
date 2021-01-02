@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Trample;
 
 /**
@@ -16,7 +18,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Trample;
  */
 public class Tramply extends Unit {
 
-	public Tramply (Game game, String owner) {
+	public Tramply (Game game, UUID owner) {
 		super(game, "Tramply",
 				0, new CounterMap(),
 				"",

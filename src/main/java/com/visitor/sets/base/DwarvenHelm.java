@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.*;
 
 /**
@@ -18,7 +20,7 @@ import static com.visitor.protocol.Types.Knowledge.*;
  */
 public class DwarvenHelm extends Unit {
 
-	public DwarvenHelm (Game game, String owner) {
+	public DwarvenHelm (Game game, UUID owner) {
 		super(game, "Dwarven Helm",
 				3, new CounterMap(RED, 1),
 				"{P}{P} - {2}, {D}: Target opponent loses 2 health and you gain 2 health.\n" +
@@ -27,7 +29,7 @@ public class DwarvenHelm extends Unit {
 				owner);
 		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {D}: Target opponent loses 2 health and you gain 2 health.",
 				()-> {
-					game.payHealth(game.getOpponentName(controller), 2);
+					game.payHealth(game.getOpponentId(controller), 2);
 					game.gainHealth(controller, 2);
 				})
 		.setDepleting()

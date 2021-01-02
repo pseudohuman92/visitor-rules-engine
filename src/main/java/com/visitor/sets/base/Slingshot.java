@@ -9,6 +9,8 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 
@@ -17,7 +19,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Flying;
  */
 public class Slingshot extends Unit {
 
-	public Slingshot (Game game, String owner) {
+	public Slingshot (Game game, UUID owner) {
 		super(game, "Slingshot",
 				4, new CounterMap(),
 				"",

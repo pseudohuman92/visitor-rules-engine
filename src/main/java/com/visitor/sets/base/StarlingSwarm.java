@@ -21,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class StarlingSwarm extends Unit {
 
-	public StarlingSwarm (Game game, String owner) {
+	public StarlingSwarm (Game game, UUID owner) {
 		super(game, "Starling Swarm",
 				6, new CounterMap(RED, 3),
 				"Discard another card named {~}: {~} gets +X/+X until end of turn, where X is its attack.",

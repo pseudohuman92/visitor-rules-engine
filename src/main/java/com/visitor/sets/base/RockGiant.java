@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Defender;
 
 /**
@@ -18,7 +20,7 @@ import static com.visitor.card.properties.Combat.CombatAbility.Defender;
  */
 public class RockGiant extends Unit {
 
-	public RockGiant (Game game, String owner) {
+	public RockGiant (Game game, UUID owner) {
 		super(game, "Rock Giant",
 				3, new CounterMap(),
 				"{2}: {~} fights another target unit.",

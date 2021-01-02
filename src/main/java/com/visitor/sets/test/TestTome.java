@@ -1,9 +1,11 @@
 package com.visitor.sets.test;
 
-import com.visitor.card.types.*;
-import com.visitor.game.*;
-import com.visitor.helpers.*;
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import com.visitor.card.types.Tome;
+import com.visitor.game.Game;
+import com.visitor.helpers.CounterMap;
+
+import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.*;
 
 /**
@@ -11,7 +13,7 @@ import static com.visitor.protocol.Types.Knowledge.*;
  */
 public class TestTome extends Tome {
 
-	public TestTome (Game game, String owner) {
+	public TestTome (Game game, UUID owner) {
 		super(game, "Test Tome", "{~} card text", owner, new CounterMap().add(GREEN, 2).add(PURPLE, 1).add(RED, 1).add(BLUE, 1).add(YELLOW, 3));
 	}
 }

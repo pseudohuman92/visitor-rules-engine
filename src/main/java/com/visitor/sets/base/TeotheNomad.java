@@ -11,6 +11,8 @@ import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
 
+import java.util.UUID;
+
 import static com.visitor.card.properties.Combat.CombatAbility.Flying;
 import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
@@ -20,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class TeotheNomad extends Unit {
 
-	public TeotheNomad (Game game, String owner) {
+	public TeotheNomad (Game game, UUID owner) {
 		super(game, "Teo the Nomad",
 				5, new CounterMap<>(YELLOW, 2),
 				"{Y}{Y}{Y}{Y}{Y} - {7}: Resurrect target unit.",

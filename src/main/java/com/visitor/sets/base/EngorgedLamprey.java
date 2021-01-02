@@ -21,7 +21,7 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class EngorgedLamprey extends Unit {
 
-	public EngorgedLamprey (Game game, String owner) {
+	public EngorgedLamprey (Game game, UUID owner) {
 		super(game, "Engorged Lamprey",
 				3, new CounterMap(PURPLE, 1),
 				"{P}{P}{P} - When {~} enters play, you may sacrifice a unit, if you do, draw X cards and gain X health where X is that unit's attack.",

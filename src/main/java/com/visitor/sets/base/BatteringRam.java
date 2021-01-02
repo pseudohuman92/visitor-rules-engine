@@ -10,7 +10,6 @@ import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
 
@@ -23,7 +22,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class BatteringRam extends Unit {
 
-	public BatteringRam (Game game, String owner) {
+	public BatteringRam (Game game, UUID owner) {
 		super(game, "Battering Ram",
 				4, new CounterMap(RED, 2),
 				"When {~} enters play, discard a random card. If you discard a unit card this way, {~} deals damage equal to that card’s attack to any target.",
