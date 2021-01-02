@@ -162,6 +162,7 @@ class GameScreen extends Component {
                                                 width: width * 0.15,
                                                 height: midHeight,
                                                 flexDirection: "column",
+                                                justifyContent: "flex-end"
                                             }}
                                         >
                                             <div

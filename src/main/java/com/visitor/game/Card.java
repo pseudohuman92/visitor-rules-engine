@@ -92,6 +92,10 @@ public abstract class Card implements Serializable {
 		return counters.remove(name);
 	}
 
+	public boolean hasCounters (Counter name, int i) {
+		return counters.getOrDefault(name, 0) >= i;
+	}
+
 	public void deplete () {
 		depleted = true;
 	}

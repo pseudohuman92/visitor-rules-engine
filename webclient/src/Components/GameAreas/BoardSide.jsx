@@ -14,6 +14,16 @@ const mapStateToProps = state => {
   };
 };
 
+function getCardsOfType(cards, type){
+  let units = [];
+  for (const card of cards){
+    if(card.types.indexOf(type) !== -1){
+      units.push(card)
+    }
+  }
+  return units;
+}
+
 class BoardSide extends Component {
   render() {
     const {
@@ -33,23 +43,54 @@ class BoardSide extends Component {
             style={{
               height: "100%",
               display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
+              flexDirection: isPlayer ? "column" : "column-reverse"
             }}
           >
-            {cards.map((card, i) => (
+            <div
+                style={{
+                  height: "50%",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
+                }}
+            >
+            {getCardsOfType(cards,"Unit").map((card, i) => (
               <div
                 key={card.id}
                 style={{
                   //width: Math.min(width / (cards.length * 2), width / 20),
-                  margin: "1%"
+                  leftMargin: "1%",
+                  rightMargin: "1%"
                 }}
               >
                 <PlayingCard square cardData={card} isDragDisabled DnDIndex={i}/>
               </div>
             ))}
+        </div>
+            <div
+              style={{
+                height: "50%",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "flex-end",
+                alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
+              }}
+          >
+            {getCardsOfType(cards,"Ally").map((card, i) => (
+                <div
+                    key={card.id}
+                    style={{
+                      //width: Math.min(width / (cards.length * 2), width / 20),
+                      leftMargin: "1%",
+                      rightMargin: "1%"
+                    }}
+                >
+                  <PlayingCard square cardData={card} isDragDisabled DnDIndex={i}/>
+                </div>
+            ))}
           </div>
+            </div>
         )}
       </Droppable>
    
