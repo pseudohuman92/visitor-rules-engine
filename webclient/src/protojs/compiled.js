@@ -6624,7 +6624,7 @@ $root.Player = (function() {
      * @exports IPlayer
      * @interface IPlayer
      * @property {string|null} [id] Player id
-     * @property {string|null} [userId] Player userId
+     * @property {string|null} [username] Player username
      * @property {number|null} [deckSize] Player deckSize
      * @property {number|null} [energy] Player energy
      * @property {number|null} [maxEnergy] Player maxEnergy
@@ -6667,12 +6667,12 @@ $root.Player = (function() {
     Player.prototype.id = "";
 
     /**
-     * Player userId.
-     * @member {string} userId
+     * Player username.
+     * @member {string} username
      * @memberof Player
      * @instance
      */
-    Player.prototype.userId = "";
+    Player.prototype.username = "";
 
     /**
      * Player deckSize.
@@ -6788,8 +6788,8 @@ $root.Player = (function() {
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
+        if (message.username != null && Object.hasOwnProperty.call(message, "username"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.username);
         if (message.deckSize != null && Object.hasOwnProperty.call(message, "deckSize"))
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.deckSize);
         if (message.energy != null && Object.hasOwnProperty.call(message, "energy"))
@@ -6855,7 +6855,7 @@ $root.Player = (function() {
                 message.id = reader.string();
                 break;
             case 2:
-                message.userId = reader.string();
+                message.username = reader.string();
                 break;
             case 3:
                 message.deckSize = reader.int32();
@@ -6938,9 +6938,9 @@ $root.Player = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+        if (message.username != null && message.hasOwnProperty("username"))
+            if (!$util.isString(message.username))
+                return "username: string expected";
         if (message.deckSize != null && message.hasOwnProperty("deckSize"))
             if (!$util.isInteger(message.deckSize))
                 return "deckSize: integer expected";
@@ -7021,8 +7021,8 @@ $root.Player = (function() {
         var message = new $root.Player();
         if (object.id != null)
             message.id = String(object.id);
-        if (object.userId != null)
-            message.userId = String(object.userId);
+        if (object.username != null)
+            message.username = String(object.username);
         if (object.deckSize != null)
             message.deckSize = object.deckSize | 0;
         if (object.energy != null)
@@ -7110,7 +7110,7 @@ $root.Player = (function() {
         }
         if (options.defaults) {
             object.id = "";
-            object.userId = "";
+            object.username = "";
             object.deckSize = 0;
             object.energy = 0;
             object.maxEnergy = 0;
@@ -7120,8 +7120,8 @@ $root.Player = (function() {
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+        if (message.username != null && message.hasOwnProperty("username"))
+            object.username = message.username;
         if (message.deckSize != null && message.hasOwnProperty("deckSize"))
             object.deckSize = message.deckSize;
         if (message.energy != null && message.hasOwnProperty("energy"))
@@ -12068,6 +12068,7 @@ $root.LoginResponse = (function() {
      * @exports ILoginResponse
      * @interface ILoginResponse
      * @property {string|null} [gameId] LoginResponse gameId
+     * @property {string|null} [playerId] LoginResponse playerId
      */
 
     /**
@@ -12092,6 +12093,14 @@ $root.LoginResponse = (function() {
      * @instance
      */
     LoginResponse.prototype.gameId = "";
+
+    /**
+     * LoginResponse playerId.
+     * @member {string} playerId
+     * @memberof LoginResponse
+     * @instance
+     */
+    LoginResponse.prototype.playerId = "";
 
     /**
      * Creates a new LoginResponse instance using the specified properties.
@@ -12119,6 +12128,8 @@ $root.LoginResponse = (function() {
             writer = $Writer.create();
         if (message.gameId != null && Object.hasOwnProperty.call(message, "gameId"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.gameId);
+        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.playerId);
         return writer;
     };
 
@@ -12155,6 +12166,9 @@ $root.LoginResponse = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.gameId = reader.string();
+                break;
+            case 2:
+                message.playerId = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -12194,6 +12208,9 @@ $root.LoginResponse = (function() {
         if (message.gameId != null && message.hasOwnProperty("gameId"))
             if (!$util.isString(message.gameId))
                 return "gameId: string expected";
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (!$util.isString(message.playerId))
+                return "playerId: string expected";
         return null;
     };
 
@@ -12211,6 +12228,8 @@ $root.LoginResponse = (function() {
         var message = new $root.LoginResponse();
         if (object.gameId != null)
             message.gameId = String(object.gameId);
+        if (object.playerId != null)
+            message.playerId = String(object.playerId);
         return message;
     };
 
@@ -12227,10 +12246,14 @@ $root.LoginResponse = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults)
+        if (options.defaults) {
             object.gameId = "";
+            object.playerId = "";
+        }
         if (message.gameId != null && message.hasOwnProperty("gameId"))
             object.gameId = message.gameId;
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            object.playerId = message.playerId;
         return object;
     };
 

@@ -13,7 +13,7 @@ const mapStateToProps = state => {
   return {
     gamePhase: state.extendedGameState.game.phase,
     playerName: state.username,
-    playerUserId: state.extendedGameState.game.player.userId,
+    playerUserId: state.extendedGameState.game.player.id,
     opponentName: state.extendedGameState.opponentUsername,
     activePlayer: state.extendedGameState.game.activePlayer,
     turnPlayer: state.extendedGameState.game.turnPlayer,

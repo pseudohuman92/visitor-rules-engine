@@ -30,8 +30,7 @@ class Hand extends PureComponent {
         src={process.env.PUBLIC_URL + "/img/CardBack.png"}
         alt=""
         style={{
-          margin: "1px",
-          maxWidth: (100/ (opponentHandSize > 5?opponentHandSize:5)) +"%",
+          maxWidth: "100%",
           maxHeight: "100%",
           width: "auto",
           height: "auto",
@@ -67,16 +66,18 @@ class Hand extends PureComponent {
               {...provided.droppableProps}
               style={{overflow: "auto"}}
             >
-              {isPlayer? handCards.map((card, i) => {
+              {handCards.map((card, i) => {
                   return (<div
                       key={i}
                           style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
                               position: "absolute",
                               left: "" + stepSize * i + "px",
                               top: 0,
                               zIndex: i,
                           }}
-                      > {card} </div>);}) : handCards}
+                      > {card} </div>);})}
               {provided.placeholder}
             </div>
           );

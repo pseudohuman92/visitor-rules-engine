@@ -11,6 +11,7 @@ export default class ServerMessageHandler {
         this.updateHandlers = updateHandlers;
         this.updateExtendedGameState = updateExtendedGameState;
         this.gameId = "";
+        this.playerId = "";
         this.callback = callback;
     }
 
@@ -19,9 +20,10 @@ export default class ServerMessageHandler {
             case "LoginResponse":
                 if (params.gameId !== "") {
                     this.gameId = params.gameId;
+                    this.playerId = params.playerId;
                     this.updateHandlers({
                         gameHandler: new ServerGameMessageHandler(
-                            this.userId,
+                            this.playerId,
                             this.gameId,
                             proto.GameType.BO1_CONSTRUCTED,
                             this.updateExtendedGameState,
@@ -33,9 +35,10 @@ export default class ServerMessageHandler {
                 break;
             case "NewGame":
                 this.gameId = params.game.id;
+                this.playerId = params.game.player.id;
                 this.updateHandlers({
                     gameHandler: new ServerGameMessageHandler(
-                        this.userId,
+                        this.playerId,
                         this.gameId,
                         proto.GameType.BO1_CONSTRUCTED,
                         this.updateExtendedGameState,
@@ -48,9 +51,10 @@ export default class ServerMessageHandler {
                 break;
             case "NewDraft":
                 this.gameId = params.draft.id;
+                this.playerId = params.draft.player.id;
                 this.updateHandlers({
                     gameHandler: new ServerGameMessageHandler(
-                        this.userId,
+                        this.playerId,
                         this.gameId,
                         proto.GameType.P2_DRAFT,
                         this.updateExtendedGameState,

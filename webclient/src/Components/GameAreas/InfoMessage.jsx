@@ -42,7 +42,7 @@ class InfoMessage extends Component {
       instMessage = "Select an X value.";
     } else if (clientPhase === ClientPhase.SELECT_PLAYER) {
       instMessage = "Select a player.";
-    } else if (game.activePlayer !== game.player.userId) {
+    } else if (game.activePlayer !== game.player.id) {
       instMessage = "Waiting for opponent...";
     } else if (
       game.canStudy.length > 0 ||

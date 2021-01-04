@@ -106,14 +106,17 @@ public class GameServer {
 	synchronized void addConnection (String username, GeneralEndpoint connection) {
 		try {
 			playerConnections.putIn(username, connection);
-			Arraylist<UUID> playerGames = new Arraylist<>();
+			final UUID[] playerGame = {null};
+			final UUID[] playerId = {null};
 			games.forEach((id, game) -> {
 				if (game.isPlayerInGame(username)) {
-					playerGames.add(id);
+					playerGame[0] = id;
+					playerId[0] = game.getPlayerId(username);
 				}
 			});
 			connection.send(ServerMessage.newBuilder().setLoginResponse(LoginResponse.newBuilder()
-					.setGameId(playerGames.size() > 0 ? playerGames.get(0).toString() : "")));
+					.setGameId(playerGame[0] != null ? playerGame[0].toString() : "")
+					.setPlayerId(playerId[0] != null ? playerId[0].toString() : "")));
 		} catch (IOException | EncodeException ex) {
 			getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
 		}

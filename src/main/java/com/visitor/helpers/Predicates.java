@@ -133,6 +133,6 @@ public abstract class Predicates {
 	}
 
 	public static Predicate<Card> anotherCard (Card card) {
-		return c -> c != card;
+		return c -> !c.id.equals(card.id);
 	}
 }

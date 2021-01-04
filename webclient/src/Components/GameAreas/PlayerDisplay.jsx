@@ -20,7 +20,7 @@ const mapStateToProps = state => {
     playerKnowledgePool: state.extendedGameState.game.player.knowledgePool,
 
     opponentId: state.extendedGameState.game.opponent.id,
-    opponentUserId: state.extendedGameState.game.opponent.userId,
+    opponentUserId: state.extendedGameState.game.opponent.username,
     opponentName: state.extendedGameState.opponentUsername,
     opponentHealth: state.extendedGameState.game.opponent.health,
     opponentEnergy: state.extendedGameState.game.opponent.energy,
@@ -35,7 +35,7 @@ const mapStateToProps = state => {
 
     clientPhase: state.extendedGameState.clientPhase,
     activePlayer: state.extendedGameState.game.activePlayer,
-    playerUserId: state.extendedGameState.game.player.userId
+    playerUserId: state.extendedGameState.game.player.username
   };
 };
 
@@ -172,7 +172,9 @@ class PlayerDisplay extends React.Component {
           height: "100%",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          border: (activePlayer === id ? "5px green solid" : ""),
+          borderRadius: "10px"
         }}
       >
         <div
@@ -181,35 +183,31 @@ class PlayerDisplay extends React.Component {
             flexGrow: 9,
             height: heightRound,
             display: "flex",
-            flexDirection: "row-reverse"
+            flexDirection: "row-reverse",
+            position: "relative"
           }}
         >
           {maxEnergy &&
             Array(Math.max(maxEnergy, energy))
               .fill(null)
               .map((c, i) => (
-                <div
-                  key={i}
-                  style={{
-                    height: heightRound * 0.75,
-                    alignSelf: "center",
-                    marginLeft: "1%"
-                  }}
-                >
+
                   <img
                     src={
                       process.env.PUBLIC_URL +
-                      "/img/card-components/energy-display.png"
+                      "/img/card-components/energy.png"
                     }
                     style={{
                       maxWidth: "100%",
                       maxHeight: "100%",
                       objectFit: "scale-down",
+                      position: "absolute",
+                      right: 5 * i + "%",
+                      zIndex: i,
                       opacity: energy ? (i >= energy ? 0.3 : 1) : 0.3
                     }}
                     alt=""
                   />
-                </div>
               ))}
         </div>
           <div
@@ -222,18 +220,13 @@ class PlayerDisplay extends React.Component {
             }}
           >
             <TextOnImage
-              style={{
-                backgroundColor: borderColor
-              }}
               src={
                 process.env.PUBLIC_URL +
-                "/img/card-components/health" +
-                (activePlayer === userId ? "-active" : "") +
-                ".png"
+                "/img/card-components/health.png"
               }
               text={health}
               min={1}
-              max={15}
+              max={25}
               scale={2}
               windowDimensions={windowDimensions}
             />
@@ -252,7 +245,7 @@ class PlayerDisplay extends React.Component {
               key={i}
               style={{
                 width: (width * 0.9) / 2,
-                height: heightRound * 0.75,
+                height: heightRound,
                 position: "relative"
               }}
             >
@@ -272,7 +265,7 @@ class PlayerDisplay extends React.Component {
                       maxHeight: "100%",
                       objectFit: "scale-down",
                       position: "absolute",
-                      left: 30 * j + "%",
+                      left: 50 * j + "%",
                       zIndex: k.count - j
                     }}
                     alt=""

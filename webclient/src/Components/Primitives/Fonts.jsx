@@ -41,6 +41,22 @@ export default class Fonts extends Component {
               font: 'Archivo',
               weights: [400],
           },
+          {
+              font: 'Staatliches',
+              weights: [400],
+          },
+          {
+              font: 'Lobster',
+              weights: [400],
+          },
+          {
+              font: 'Oleo Script',
+              weights: [400, 700],
+          },
+          {
+              font: 'Merriweather',
+              weights: [400, 700],
+          },
       ]}
     />
             </div>

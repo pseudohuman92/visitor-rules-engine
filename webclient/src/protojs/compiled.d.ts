@@ -2580,8 +2580,8 @@ export class Player implements IPlayer {
     /** Player id. */
     public id: string;
 
-    /** Player userId. */
-    public userId: string;
+    /** Player username. */
+    public username: string;
 
     /** Player deckSize. */
     public deckSize: number;
@@ -4253,6 +4253,9 @@ export class LoginResponse implements ILoginResponse {
 
     /** LoginResponse gameId. */
     public gameId: string;
+
+    /** LoginResponse playerId. */
+    public playerId: string;
 
     /**
      * Creates a new LoginResponse instance using the specified properties.

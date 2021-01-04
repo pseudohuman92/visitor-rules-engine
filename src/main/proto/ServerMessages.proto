@@ -7,6 +7,7 @@ option java_package = "com.visitor.protocol";
  */
 message LoginResponse {
     string gameId = 1;
+    string playerId = 2;
 }
     
 message NewGame {

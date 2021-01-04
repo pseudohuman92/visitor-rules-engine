@@ -8,6 +8,25 @@ import TextOnImage from "../Primitives/TextOnImage";
 import FittedText from "../Primitives/FittedText";
 import TextFit from "react-textfit";
 import Fonts from "../Primitives/Fonts";
+import { Text } from '@visx/text';
+
+function stripAbilityFromTitle(name){
+    return name.replaceAll("'s Ability", "");
+}
+
+function toMultilineSVG(text, color, width){
+    return (<Text style={{
+            textAlign: "left",
+            whiteSpace: "pre-wrap",
+        }} verticalAnchor="start" fill={color} width={width}>{text}</Text>);
+
+    return text.split("\n").map((s, i) =>
+            <Text key={i} style={{
+                textAlign: "left",
+                whiteSpace: "pre-wrap",
+            }} verticalAnchor="start" fill={color} width={width}>{s}</Text>
+    );
+}
 
 class FullCard extends PureComponent {
     state = {showDialog: false};
@@ -112,7 +131,7 @@ class FullCard extends PureComponent {
                             src={
                                 process.env.PUBLIC_URL +
                                 "/img/sets/" + set + "/"
-                                + name + ".jpg"
+                                + stripAbilityFromTitle(name) + ".jpg"
                             }
                             style={{
                                 position: "absolute",
@@ -143,7 +162,7 @@ class FullCard extends PureComponent {
                             />
                             <div
                                 className="card-cost-text"
-                                style={{fontSize: cardWidth / (1.3 * scale_) + "px"}}
+                                style={{fontSize: cardWidth / 10 + "px"}}
                             >
                                 {cost}
                             </div>
@@ -155,7 +174,7 @@ class FullCard extends PureComponent {
                         .map((c, i) => (
                             <div
                                 className="card-knowledge"
-                                style={{top: (square ? 17 : 11) + i * (square ? 4 : 3) + "%"}}
+                                style={{top: (square ? 17 : 11) + i * (square ? 4 : 3.5) + "%"}}
                                 key={i}
                             >
                                 <img
@@ -174,7 +193,12 @@ class FullCard extends PureComponent {
                         ))}
                     <div className="card-name" style={{height: square ? "9%" : "6%",
                         }}>
-                        {<TextFit>{name}</TextFit>/*<FittedText
+                        {<TextFit style={{
+                            position: "static",
+                            margin: 0,
+                        }}>
+                            {name}
+                        </TextFit>/*<FittedText
                             text={name}
                             font = {{fontFamily: "Texturina"}}
                             max={12}
@@ -183,7 +207,7 @@ class FullCard extends PureComponent {
                         />*/}
                     </div>
 
-                    {!square && <div className="card-type">{types}{subtypes ? " - " + subtypes : ""} </div>}
+                    {!square && <div className="card-type">{types}{subtypes && subtypes.length > 0 ? " - " + subtypes.join(' ') : ""} </div>}
 
                     {!square && (
                         <div
@@ -193,8 +217,11 @@ class FullCard extends PureComponent {
                                 whiteSpace: "pre-wrap",
                             }}
                         >
-                            <TextFit>{(combat ? (combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "") : "")
+                            <TextFit>{(combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities.join(" ") + "\n" : "")
                             + replaceSpecialCharacters(description, name)}</TextFit>
+
+                            {/*toMultilineSVG((combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities.join(" ") + "\n" : "")
+                            + replaceSpecialCharacters(description, name), "white", 200 * scale)*/}
                             {/*<FittedText
                                 text={(combat ? (combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "") : "")
                                 + replaceSpecialCharacters(description, name)}

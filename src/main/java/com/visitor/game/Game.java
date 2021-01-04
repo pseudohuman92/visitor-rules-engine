@@ -1037,6 +1037,7 @@ public class Game implements Serializable {
 		normalAttackers.forEach(a -> a.dealAttackDamage(false));
 		normalBlockers.forEach(Card::dealBlockDamage);
 
+		//TODO: these kill if they blocked by a deathtouch unit even if it is not damaged by it.
 		normalAttackers.forEach(Card::maybeDieFromBlock);
 		normalBlockers.forEach(Card::maybeDieFromAttack);
 

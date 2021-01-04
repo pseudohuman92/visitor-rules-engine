@@ -42,14 +42,14 @@ public class GameEndpoint {
 
 
 	@OnOpen
-	public void onOpen (Session session, @PathParam("gameID") String gameID, @PathParam("playerId") UUID playerId) throws IOException, EncodeException {
+	public void onOpen (Session session, @PathParam("gameID") String gameID, @PathParam("playerId") String playerId) throws IOException, EncodeException {
 		this.session = session;
-		this.playerId = playerId;
+		this.playerId = UUID.fromString(playerId);
 		this.gameID = UUID.fromString(gameID);
 		session.getBasicRemote().setBatchingAllowed(false);
 		session.getAsyncRemote().setBatchingAllowed(false);
 		session.setMaxIdleTimeout(0);
-		gameServer.addGameConnection(this.gameID, playerId, this);
+		gameServer.addGameConnection(this.gameID, this.playerId, this);
 		resendLastMessage();
 	}
 

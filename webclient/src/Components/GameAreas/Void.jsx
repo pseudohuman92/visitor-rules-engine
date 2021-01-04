@@ -15,7 +15,7 @@ const mapStateToProps = state => {
     windowDimensions: state.windowDimensions,
     playerName: state.profile.username,
     opponentName: state.extendedGameState.opponentUsername,
-    opponentUserId: state.extendedGameState.game.opponent.userId,
+    opponentUserId: state.extendedGameState.game.opponent.username,
     playerVoid: state.extendedGameState.game.player.void,
     opponentVoid: state.extendedGameState.game.opponent.void,
     clientPhase: state.extendedGameState.clientPhase,
@@ -91,7 +91,7 @@ class Void extends Component {
     const hasStudyable =
       isPlayer &&
       clientPhase === ClientPhase.UPDATE_GAME &&
-      game.activePlayer === game.player.userId &&
+      game.activePlayer === game.player.id &&
       game.canStudy.length > 0;
 
     return (

@@ -85,9 +85,11 @@ export class CardDisplay extends PureComponent {
         !isDragging ? !popoverDisabled  ? (
             <div
                 opacity={1}
+                style ={{placement: "center"}}
             >
               <div
                   style={{
+                  position: "relative",
                     justify: "center",
                     alignContent: "center",
                     //border: "2px blue solid"

@@ -22,12 +22,12 @@ class PhaseDisplay extends PureComponent {
         const {gamePhase} = this.props;
         return (
             <div style={{display: "flex", justifyContent:"space-around", borderRadius: "10px", backgroundColor: "rgba(0,0,0,0.75)", color: "white", width: "90%"}}>
-                <div style={{backgroundColor: gamePhase === proto.Phase.BEGIN ? "green" : ""}}>S</div>
-                <div style={{backgroundColor: gamePhase === proto.Phase.MAIN_BEFORE ? "green" : ""}}>M1</div>
-                <div style={{backgroundColor: gamePhase === proto.Phase.ATTACK ? "green" : ""}}>A</div>
-                <div style={{backgroundColor: gamePhase === proto.Phase.BLOCK ? "green" : ""}}>B</div>
-                <div style={{backgroundColor: gamePhase === proto.Phase.MAIN_AFTER ? "green" : ""}}>M2</div>
-                <div style={{backgroundColor: gamePhase === proto.Phase.END ? "green" : ""}}>E</div>
+                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.BEGIN ? "green" : ""}}>S</div>
+                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.MAIN_BEFORE ? "green" : ""}}>M1</div>
+                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.ATTACK ? "green" : ""}}>A</div>
+                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.BLOCK ? "green" : ""}}>B</div>
+                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.MAIN_AFTER ? "green" : ""}}>M2</div>
+                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.END ? "green" : ""}}>E</div>
             </div>);
     }
 }

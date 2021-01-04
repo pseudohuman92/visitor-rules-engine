@@ -4,7 +4,6 @@
   color: white;
   overflow: hidden;
   border: "3px black solid";
-  font-family: "Open Sans", sans-serif;
 }
 
 .card-inner-small {
@@ -13,7 +12,6 @@
   color: black;
   overflow: hidden;
   border: "1px black solid";
-  font-family: "Open Sans", sans-serif;
 }
 
 .card-name {
@@ -21,8 +19,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
   text-align: center;
-  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
+  font-family: 'Oleo Script', cursive;
 }
 
 .card-image {
@@ -45,6 +43,7 @@
   text-align: center;
   height: 6%;
   border-radius: 5px;
+  font-family: 'Oleo Script', cursive;
 }
 
 .illustrator {
@@ -55,6 +54,7 @@
   text-align: right;
   right: 3%;
   border-radius: 3px;
+  font-family: 'Oleo Script', cursive;
 }
 
 .card-description {
@@ -67,6 +67,7 @@
   padding: 1%;
   height: 30%;
   border-radius: 5px;
+  font-family: 'Merriweather', serif;
 }
 
 .card-cost {
@@ -80,7 +81,7 @@
   position: absolute;
   top: 1%;
   left: 1%;
-  max-width: 8%;
+  max-width: 10%;
 }
 
 .card-health {
@@ -102,12 +103,13 @@
 }
 
 .card-cost-text {
-  color: skyblue;
+  color: black;
   position: absolute;
-  top: 53%;
-  left: 50%;
+  top: 50%;
+  left: 45%;
   transform: translate(-50%, -50%);
-  font-family: "Special Elite", cursive;
+  font-family: 'Oleo Script', cursive;
+  font-weight: bold;
 }
 
 .card-health-text {
@@ -116,7 +118,8 @@
   top: 57%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Special Elite", cursive;
+  font-family: 'Oleo Script', cursive;
+  font-weight: bold;
 }
 
 .card-shield-text {
@@ -125,7 +128,8 @@
   top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Special Elite", cursive;
+  font-family: 'Oleo Script', cursive;
+  font-weight: bold;
 }
 
 .card-loyalty-text {
@@ -134,5 +138,6 @@
   top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Special Elite", cursive;
+  font-family: 'Oleo Script', cursive;
+  font-weight: bold;
 }

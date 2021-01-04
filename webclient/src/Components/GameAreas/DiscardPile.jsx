@@ -13,7 +13,7 @@ const mapStateToProps = state => {
     windowDimensions: state.windowDimensions,
     playerName: state.profile.username,
     playerDiscardPile: state.extendedGameState.game.player.discardPile,
-    opponentUserId: state.extendedGameState.game.opponent.userId,
+    opponentUserId: state.extendedGameState.game.opponent.username,
     opponentName: state.extendedGameState.opponentUsername,
     opponentDiscardPile: state.extendedGameState.game.opponent.discardPile
   };

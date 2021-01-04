@@ -80,7 +80,7 @@ public class HelperFunctions {
 	public static Card createCard (Game game, UUID playerId, String cardName) {
 		try {
 			Class<?> cardClass = forName("com.visitor.sets." + cardName);
-			Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
+			Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, UUID.class);
 			Object card = cardConstructor.newInstance(game, playerId);
 			return ((Card) card);
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {

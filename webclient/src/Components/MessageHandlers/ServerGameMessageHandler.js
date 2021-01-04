@@ -257,7 +257,7 @@ export default class ServerGameMessageHandler {
                 let game = params.game;
                 if (
                     game.phase !== Phase.REDRAW &&
-                    game.activePlayer === game.player.userId &&
+                    game.activePlayer === game.player.id &&
                     game.canStudy.length === 0 &&
                     game.canActivate.length === 0 &&
                     game.canPlay.length === 0
@@ -267,7 +267,7 @@ export default class ServerGameMessageHandler {
                 }
                 if (
                     game.phase === Phase.REDRAW &&
-                    game.activePlayer === game.player.userId &&
+                    game.activePlayer === game.player.id &&
                     game.player.hand.length === 0
                 ) {
                     this.Keep();
