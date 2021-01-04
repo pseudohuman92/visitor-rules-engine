@@ -325,6 +325,7 @@ export const packCosts = {Set1: 1000};
 export const isProduction: boolean = process.env.NODE_ENV === "production";
 
 export const specialCharacters = {
+    /*
     "{1}": "①",
     "{2}": "②",
     "{3}": "③",
@@ -340,6 +341,7 @@ export const specialCharacters = {
     "{P}": "Ⓟ",
     "{R}": "Ⓡ",
     "{Y}": "Ⓨ",
+     */
     "{S}": "⧗", //Slow
     "{D}": "↷", //Depleted
 };

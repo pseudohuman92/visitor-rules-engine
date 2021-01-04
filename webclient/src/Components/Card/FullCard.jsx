@@ -193,12 +193,12 @@ class FullCard extends PureComponent {
                         ))}
                     <div className="card-name" style={{height: square ? "9%" : "6%",
                         }}>
-                        {<TextFit style={{
+                        {<div style={{
                             position: "static",
                             margin: 0,
                         }}>
                             {name}
-                        </TextFit>/*<FittedText
+                        </div>/*<FittedText
                             text={name}
                             font = {{fontFamily: "Texturina"}}
                             max={12}
