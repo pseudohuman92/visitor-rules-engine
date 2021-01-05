@@ -23,7 +23,7 @@ public class Yak extends Unit {
 	public Yak (Game game, UUID owner) {
 		super(game, "Yak",
 				4, new CounterMap(GREEN, 1),
-				"{S} | {D}, Sacrifice {~}: Draw X cards where X is equal to greatest attack among the units you control.",
+				"{Slow} | {Use}, Sacrifice {~}: Draw X cards where X is equal to greatest attack among the units you control.",
 				5, 5,
 				owner);
 

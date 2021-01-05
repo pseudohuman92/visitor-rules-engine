@@ -48,7 +48,7 @@ class SignIn extends Component {
         firebase
             .doSignInWithEmailAndPassword(email, password)
             .then(firebaseAuthData => {
-                updateState({firebaseAuthData: firebaseAuthData});
+                updateState({firebaseAuthData: {user: {uid: firebaseAuthData.user.uid}}});
                 firebase.setUserData(firebaseAuthData.user.uid, updateState);
 
                 if (rememberMe) {
@@ -75,7 +75,7 @@ class SignIn extends Component {
         firebase
             .doSignInWithEmailAndPassword("tester1@testers.com", "asdqwe")
             .then(firebaseAuthData => {
-                updateState({firebaseAuthData: firebaseAuthData});
+                updateState({firebaseAuthData: {user: {uid: firebaseAuthData.user.uid}}});
                 firebase.setUserData(firebaseAuthData.user.uid, updateState);
                 setTimeout(() => this.setState({value: 1}), 1000);
             })
@@ -91,7 +91,7 @@ class SignIn extends Component {
         firebase
             .doSignInWithEmailAndPassword("tester2@testers.com", "asdqwe")
             .then(firebaseAuthData => {
-                updateState({firebaseAuthData: firebaseAuthData});
+                updateState({firebaseAuthData: {user: {uid: firebaseAuthData.user.uid}}});
                 firebase.setUserData(firebaseAuthData.user.uid, updateState)
                 setTimeout(() => this.setState({value: 1}), 1000);
             })

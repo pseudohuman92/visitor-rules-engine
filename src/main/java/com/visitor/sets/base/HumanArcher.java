@@ -24,19 +24,19 @@ public class HumanArcher extends Unit {
 	public HumanArcher (Game game, UUID owner) {
 		super(game, "Human Archer",
 				2, new CounterMap(RED, 1),
-				"{1}, {D}, Discard a card: Draw a card.\n" +
-							"{R}{R} - {3}, {D}, Sacrifice {~}, {~} deals 4 damage to target unit.",
+				"{1}, {Use}, Discard a card: Draw a card.\n" +
+							"{R}{R} - {3}, {Use}, Sacrifice {~}, {~} deals 4 damage to target unit.",
 				2, 1,
 				owner);
 		activatable.addActivatedAbility(
-				new ActivatedAbility(game, this, 1, "{1}, {D}, Discard a card: Draw a card.",
+				new ActivatedAbility(game, this, 1, "{1}, {Use}, Discard a card: Draw a card.",
 					()-> game.hasIn(controller, Game.Zone.Hand, Predicates::any,1),
 					()-> game.discard(controller, 1),
 					()-> game.draw(controller, 1))
 				.setDepleting());
 
 		activatable.addActivatedAbility(
-				new ActivatedAbility(game, this, 3, "{3}, {D}, Sacrifice {~}, {~} deals 4 damage to target unit.")
+				new ActivatedAbility(game, this, 3, "{3}, {Use}, Sacrifice {~}, {~} deals 4 damage to target unit.")
 				.addCanActivateAdditional(()-> game.hasIn(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c->!c.id.equals(id)),1))
 				.setTargeting(Game.Zone.Both_Play, and(Predicates::isUnit, c->!c.id.equals(id)), 1, false,
 						targetId -> game.dealDamage(id, targetId, 4))

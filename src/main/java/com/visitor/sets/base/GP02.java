@@ -39,7 +39,7 @@ public class GP02 extends Unit {
 				});
 
 		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, Sacrifice another unit: You gain 1 life and draw a card.")
-				.setTargetingForSacrifice(Game.Zone.Play, Predicates.anotherUnit(this), 1, false,
+				.setTargetingForSacrifice(Game.Zone.Play, Predicates.anotherUnit(id), 1, false,
 						targetId -> {
 							game.draw(controller, 1);
 							game.gainHealth(controller, 1);

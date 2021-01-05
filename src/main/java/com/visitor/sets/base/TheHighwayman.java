@@ -25,16 +25,16 @@ public class TheHighwayman extends Ally {
 
     public TheHighwayman(Game game, UUID owner) {
         super(game,"The Highwayman", 2, new CounterMap<>(PURPLE, 2),
-                "{S} | {3}, {D}: \n" +
+                "{Slow} | {3}, {Use}: \n" +
 				                "  +2 {Loyalty}\n" +
 				                "\n" +
-				                "{S} | -1 {Loyalty}, {D}:\n" +
+				                "{Slow} | -1 {Loyalty}, {Use}:\n" +
 				                "  {Delay} 2 - Draw the top Unit of opponent's deck.", 5,
                 owner);
 
-	    addPlusLoyaltyAbility(3, "{3}, {D}: +2 {Loyalty}", 2, null, null, null);
+	    addPlusLoyaltyAbility(3, "{3}, {Use}: +2 {Loyalty}", 2, null, null, null);
 
-			addMinusLoyaltyAbility(0,"-1 {Loyalty}, {D}:\n\t{Delay} 2 - Draw the top Unit of opponent's deck.", 1, 2,
+			addMinusLoyaltyAbility(0,"-1 {Loyalty}, {Use}:\n\t{Delay} 2 - Draw the top Unit of opponent's deck.", 1, 2,
 					    new ActivatedAbility(game, this, 0, "Draw the top unit of opponent's deck.",
 									    () -> {
 										    Card c = game.extractTopmostMatchingFromDeck(game.getOpponentId(controller), Predicates::isUnit);

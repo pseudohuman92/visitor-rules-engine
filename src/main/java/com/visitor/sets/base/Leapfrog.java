@@ -28,13 +28,13 @@ public class Leapfrog extends Unit {
 	public Leapfrog (Game game, UUID owner) {
 		super(game, "Leapfrog",
 				1, new CounterMap(RED, 1),
-				"{1}, {D}, Purge 2 cards from your discard pile: {~} deals 2 damage to any target.",
+				"{1}, {Use}, Purge 2 cards from your discard pile: {~} deals 2 damage to any target.",
 				1, 1,
 				owner, Haste);
 
 		activatable.addActivatedAbility(new ActivatedAbility(
 				game, this, 1,
-				"{1}, {D}, Purge 2 cards from your discard pile: {~} deals 2 damage to any target.")
+				"{1}, {Use}, Purge 2 cards from your discard pile: {~} deals 2 damage to any target.")
 				.addCanActivateAdditional(()->game.hasIn(controller, Game.Zone.Discard_Pile, Predicates::any, 2))
 				.setTargetingForDamage(targetId -> game.dealDamage(id, targetId, new Damage(2)))
 				.addBeforeActivate(()->{

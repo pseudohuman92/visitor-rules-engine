@@ -344,4 +344,5 @@ export const specialCharacters = {
      */
     "{S}": "⧗", //Slow
     "{D}": "↷", //Depleted
+    "{Loyalty}": "\uD83D\uDC64",
 };

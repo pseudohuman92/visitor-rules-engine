@@ -144,13 +144,18 @@ class GameScreen extends Component {
                                         >
                                             <div
                                                 className="level1-middle-1-1"
-                                                style={{width: width * 0.85, height: midHeight * 0.5}}
+                                                style={{width: width * 0.85, height: midHeight * 0.495}}
                                             >
                                                 <BoardSide isPlayer={false}/>
                                             </div>
                                             <div
+                                                className="level1-middle-1-1"
+                                                style={{width: width, height: midHeight * 0.01, backgroundColor:"black"}}
+                                            >
+                                            </div>
+                                            <div
                                                 className="level1-middle-1-2"
-                                                style={{width: width * 0.85, height: midHeight * 0.5}}
+                                                style={{width: width * 0.85, height: midHeight * 0.495}}
                                             >
                                                 <BoardSide isPlayer={true}/>
                                             </div>

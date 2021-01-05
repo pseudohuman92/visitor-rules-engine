@@ -22,9 +22,9 @@ public class FocusingMaster extends Ally {
 
     public FocusingMaster(Game game, UUID owner) {
         super(game, "Focusing Master", 2, new CounterMap<>(GREEN, 1),
-                "-1 Max Energy, {D}: \n" +
+                "-1 Max Energy, {Use}: \n" +
                         "    +2 Loyalty\n" +
-                        "-1 Loyalty, {D}:\n" +
+                        "-1 Loyalty, {Use}:\n" +
                         "    Delay 1 - Deal X damage, X = your energy.",
                 3,
                 owner);

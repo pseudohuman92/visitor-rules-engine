@@ -77,7 +77,12 @@ class PlayingCard extends React.Component {
         this.setState({showArrows: false});
     };
 
-
+    // General Properties
+    isActivatable = () => this.props.activatableCards.includes(this.props.cardData.id);
+    isStudyable = () => this.props.studyableCards.includes(this.props.cardData.id);
+    isPlayable = () => this.props.playableCards.includes(this.props.cardData.id) && playablePhase(this.props.clientPhase);
+    isSelectable = () => this.props.selectionData.selectable.includes(this.props.cardData.id);
+    isSelected = () => this.props.selectionData.selected.includes(this.props.cardData.id);
 
     //! ///// Attack Handlers /////////
 
@@ -157,6 +162,32 @@ class PlayingCard extends React.Component {
         });
     };
 
+    //Attacker Properties
+    isAttacking = () => (this.props.clientPhase === ClientPhase.SELECT_ATTACKERS ||
+        this.props.clientPhase === ClientPhase.SELECT_BLOCKERS ||
+        this.props.clientPhase === ClientPhase.UPDATE_GAME) &&
+            (this.props.attackerAssignmentData.attackerAssignments
+                    .map((c) => {
+                        return c.attackerId;
+                    })
+                    .includes(this.props.cardData.id) ||
+                this.props.attackerAssignmentData.currentAttacker === this.props.cardData.id ||
+                this.props.attackers.includes(this.props.cardData.id));
+
+    canAttack = () =>
+        !this.isAttacking &&
+        !this.props.attackerAssignmentData.currentAttacker &&
+        this.props.clientPhase === ClientPhase.SELECT_ATTACKERS &&
+        this.props.attackerAssignmentData.possibleAttackers
+            .map((c) => {
+                return c.attackerId;
+            })
+            .includes(this.props.cardData.id );
+
+    canBeBlocked = () =>
+        this.props.clientPhase === ClientPhase.SELECT_BLOCKERS &&
+        this.props.blockerAssignmentData.possibleBlockTargets.includes(this.props.cardData.id);
+
     //! /////// Block Handlers /////////
 
     setBlocking = (event) => {
@@ -233,6 +264,34 @@ class PlayingCard extends React.Component {
             },
         });
     };
+
+    //Blocker Properties
+    isBlocking = () =>
+        (this.props.clientPhase === ClientPhase.SELECT_ATTACKERS ||
+            this.props.clientPhase === ClientPhase.SELECT_BLOCKERS ||
+            this.props.clientPhase === ClientPhase.UPDATE_GAME) &&
+        (this.props.blockerAssignmentData.blockerAssignments
+                .map((c) => {
+                    return c.blockerId;
+                })
+                .includes(this.props.cardData.id) ||
+            this.props.blockerAssignmentData.currentBlocker === this.props.cardData.id ||
+            this.props.blockers.includes(this.props.cardData.id));
+
+    canBlock = () =>
+        !this.isBlocking &&
+        !this.props.blockerAssignmentData.currentBlocker &&
+        this.props.clientPhase === ClientPhase.SELECT_BLOCKERS &&
+        this.props.blockerAssignmentData.possibleBlockers
+            .map((c) => {
+                return c.blockerId;
+            })
+            .includes(this.props.cardData.id);
+
+    canBeAttacked = () =>
+        this.props.clientPhase === ClientPhase.SELECT_ATTACKERS &&
+        this.props.attackerAssignmentData.currentAttacker &&
+        this.props.attackerAssignmentData.possibleAttackTargets.includes(this.props.cardData.id);
 
     //! /////// Selection Handlers ///////////
 
@@ -407,6 +466,76 @@ class PlayingCard extends React.Component {
         }
     };
 
+    //Damage Assignment Properties
+    itsDamageIsGettingAssigned = () =>
+        this.props.clientPhase === ClientPhase.ASSIGN_DAMAGE &&
+        this.props.damageAssignmentData.damageSource === this.props.cardData.id;
+
+    canBeAssignedDamage = () =>
+        this.props.clientPhase === ClientPhase.ASSIGN_DAMAGE &&
+        this.props.damageAssignmentData.possibleTargets.includes(this.props.cardData.id);
+
+    damageAssignments = () => this.props.damageAssignmentData.damageAssignments;
+    damageAssignmentIndex = () => this.damageAssignments()
+        .map((a) => {
+            return a.targetId;
+        })
+        .indexOf(this.props.cardData.id);
+    damageAssignment = () =>this.damageAssignments()[this.damageAssignmentIndex()];
+    assignedDamage = () => this.damageAssignment() ? this.damageAssignment().damage : 0;
+
+    //Highlighting
+    getBorderColor = () => {
+        let borderColor = "";
+        if (this.isSelected() || this.isBlocking() || this.canBeAssignedDamage()) {
+            borderColor = "blue";
+        } else if (
+            this.canAttack() ||
+            this.canBeAttacked() ||
+            this.canBlock() ||
+            this.canBeBlocked() ||
+            this.isSelectable() ||
+            this.isActivatable() ||
+            this.isPlayable()
+        ) {
+            borderColor = "green";
+        } else if (this.isAttacking() || this.itsDamageIsGettingAssigned()) {
+            borderColor = "red";
+        }
+        return borderColor;
+    }
+
+    //Click behavior
+    getClickHandler = () => {
+        let clickHandler = undefined;
+        if (this.canAttack()) {
+            clickHandler = this.setAttacking;
+            console.log("Set Attacking");
+        } else if (this.isAttacking() && this.props.clientPhase === ClientPhase.SELECT_ATTACKERS) {
+            clickHandler = this.unsetAttacking;
+            console.log("Unset Attacking");
+        } else if (this.canBeAttacked()) {
+            clickHandler = this.setAttacked;
+        } else if (this.canBlock()) {
+            clickHandler = this.setBlocking;
+            console.log("Set Blocking");
+        } else if (this.isBlocking() && this.props.clientPhase === ClientPhase.SELECT_BLOCKERS) {
+            clickHandler = this.unsetBlocking;
+            console.log("Unset Blocking");
+        } else if (this.canBeBlocked()) {
+            clickHandler = this.setBlocked;
+        } else if (this.isSelected()) {
+            clickHandler = this.unselect;
+        } else if (this.isSelectable()) {
+            clickHandler = this.select;
+        } else if (this.isActivatable()) {
+            clickHandler = (event) => {
+                this.props.gameHandler.ActivateCard(this.props.cardData.id);
+            };
+        }
+        return clickHandler;
+    }
+
     //! Rendering //////
     render() {
         const {
@@ -415,18 +544,6 @@ class PlayingCard extends React.Component {
             DnDIndex,
             isDragDisabled,
             windowDimensions,
-
-            selectionData,
-            attackerAssignmentData,
-            blockerAssignmentData,
-            damageAssignmentData,
-
-            activatableCards,
-            playableCards,
-            studyableCards,
-            attackers,
-            blockers,
-
             gameHandler,
             small,
             square,
@@ -435,154 +552,18 @@ class PlayingCard extends React.Component {
             popoverDisabled,
         } = this.props;
 
-        const {id, depleted, combat} = cardData;
-        const {arrowRelations, showArrows, popoverStyle} = this.state;
+        const {id, depleted} = cardData;
+        const {arrowRelations, showArrows} = this.state;
 
-        const activatable = activatableCards.includes(id);
-        const studyable = studyableCards.includes(id);
-        const playable = playableCards.includes(id) && playablePhase(clientPhase);
-        const selectable_ = selectionData.selectable.includes(id);
-        const selected_ = selectionData.selected.includes(id);
-
-        //Attacker Properties
-        const attacking =
-            (clientPhase === ClientPhase.SELECT_ATTACKERS ||
-                clientPhase === ClientPhase.SELECT_BLOCKERS ||
-                clientPhase === ClientPhase.UPDATE_GAME) &&
-            (attackerAssignmentData.attackerAssignments
-                    .map((c) => {
-                        return c.attackerId;
-                    })
-                    .includes(id) ||
-                attackerAssignmentData.currentAttacker === id ||
-                attackers.includes(id));
-
-        const canAttack =
-            !attacking &&
-            !attackerAssignmentData.currentAttacker &&
-            clientPhase === ClientPhase.SELECT_ATTACKERS &&
-            attackerAssignmentData.possibleAttackers
-                .map((c) => {
-                    return c.attackerId;
-                })
-                .includes(id);
-
-        const canBeAttacked =
-            clientPhase === ClientPhase.SELECT_ATTACKERS &&
-            attackerAssignmentData.currentAttacker &&
-            attackerAssignmentData.possibleAttackTargets.includes(id);
-
-        //Blocker Properties
-        const blocking =
-            (clientPhase === ClientPhase.SELECT_ATTACKERS ||
-                clientPhase === ClientPhase.SELECT_BLOCKERS ||
-                clientPhase === ClientPhase.UPDATE_GAME) &&
-            (blockerAssignmentData.blockerAssignments
-                    .map((c) => {
-                        return c.blockerId;
-                    })
-                    .includes(id) ||
-                blockerAssignmentData.currentBlocker === id ||
-                blockers.includes(id));
-
-        const canBlock =
-            !blocking &&
-            !blockerAssignmentData.currentBlocker &&
-            clientPhase === ClientPhase.SELECT_BLOCKERS &&
-            blockerAssignmentData.possibleBlockers
-                .map((c) => {
-                    return c.blockerId;
-                })
-                .includes(id);
-
-        const canBeBlocked =
-            clientPhase === ClientPhase.SELECT_BLOCKERS &&
-            blockerAssignmentData.possibleBlockTargets.includes(id);
-
-        //Damage Assignment Properties
-        const itsDamageIsGettingAssigned =
-            clientPhase === ClientPhase.ASSIGN_DAMAGE &&
-            damageAssignmentData.damageSource === id;
-
-        const canBeAssignedDamage =
-            clientPhase === ClientPhase.ASSIGN_DAMAGE &&
-            damageAssignmentData.possibleTargets.includes(id);
-
-        const damageAssignments = damageAssignmentData.damageAssignments;
-        const damageAssignmentIndex = damageAssignments
-            .map((a) => {
-                return a.targetId;
-            })
-            .indexOf(id);
-        const damageAssignment = damageAssignments[damageAssignmentIndex];
-        const assignedDamage = damageAssignment ? damageAssignment.damage : 0;
-
-        //Highlighting
-        let borderColor = "";
-        if (selected_ || blocking || canBeAssignedDamage) {
-            borderColor = "blue";
-        } else if (
-            canAttack ||
-            canBeAttacked ||
-            canBlock ||
-            canBeBlocked ||
-            selectable_ ||
-            activatable ||
-            playable
-        ) {
-            borderColor = "green";
-        } else if (attacking || itsDamageIsGettingAssigned) {
-            borderColor = "red";
-        }
-
-        //Click behavior
-        let clickHandler = undefined;
-        if (canAttack) {
-            clickHandler = this.setAttacking;
-            console.log("Set Attacking");
-        } else if (attacking && clientPhase === ClientPhase.SELECT_ATTACKERS) {
-            clickHandler = this.unsetAttacking;
-            console.log("Unset Attacking");
-        } else if (canBeAttacked) {
-            clickHandler = this.setAttacked;
-        } else if (canBlock) {
-            clickHandler = this.setBlocking;
-            console.log("Set Blocking");
-        } else if (blocking && clientPhase === ClientPhase.SELECT_BLOCKERS) {
-            clickHandler = this.unsetBlocking;
-            console.log("Unset Blocking");
-        } else if (canBeBlocked) {
-            clickHandler = this.setBlocked;
-        } else if (selected_) {
-            clickHandler = this.unselect;
-        } else if (selectable_) {
-            clickHandler = this.select;
-        } else if (activatable) {
-            clickHandler = (event) => {
-                gameHandler.ActivateCard(id);
-            };
-        }
-
-        //Deployed and depleted visual indicators
-        let opacity = 1;
-        if (combat && combat.deploying) {
-
-        }
-
-        let rotation = "rotate(0deg)";
-        if (depleted) {
-            opacity = 0.5;
-            //rotation = "rotate(7.5deg)";
-        }
 
         const counterMap = {};
         counterMap[proto.Counter.CHARGE] = "C";
 
         let draggableId = id;
-        if (studyable) {
+        if (this.isStudyable()) {
             draggableId = "[STUDYABLE]" + draggableId;
         }
-        if (playable) {
+        if (this.isPlayable()) {
             draggableId = "[PLAYABLE]" + draggableId;
         }
 
@@ -590,7 +571,7 @@ class PlayingCard extends React.Component {
             <Draggable
                 draggableId={draggableId}
                 index={DnDIndex}
-                isDragDisabled={isDragDisabled || (!playable && !studyable)}
+                isDragDisabled={isDragDisabled || (!this.isPlayable() && !this.isStudyable())}
             >
                 {(provided, snapshot) => {
                     const isDragging = snapshot.isDragging;
@@ -612,11 +593,11 @@ class PlayingCard extends React.Component {
                                         return <LineTo key={i} {...rel} />;
                                     })
                                 }
-                                {canBeAssignedDamage && (
+                                {this.canBeAssignedDamage() && (
                                     <input
                                         type="number"
-                                        value={assignedDamage}
-                                        onChange={this.handleDamageAssignment}
+                                        value={this.assignedDamage()}
+                                        onChange={this.handleDamageAssignment()}
                                         style={{
                                             position: "absolute",
                                             top: "33%",
@@ -634,12 +615,11 @@ class PlayingCard extends React.Component {
                                     onMouseLeave={this.onMouseLeave}
                                 >
                                     <CardDisplay
-                                        opacity={opacity}
-                                        borderColor={borderColor}
-                                        onClick={clickHandler}
+                                        opacity={depleted ? 0.5 : 1}
+                                        borderColor={this.getBorderColor()}
+                                        onClick={this.getClickHandler()}
                                         small={small}
                                         square={square}
-                                        style={{transform: rotation}}
                                         cardData={cardData}
                                         windowDimensions={windowDimensions}
                                         isDragging = {isDragging}

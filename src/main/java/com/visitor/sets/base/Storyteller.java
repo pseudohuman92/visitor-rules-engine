@@ -21,18 +21,18 @@ public class Storyteller extends Unit {
 	public Storyteller (Game game, UUID owner) {
 		super(game, "Storyteller",
 				5, new CounterMap(),
-				"{D}: {~} deals 1 damage to any target.\n" +
-						"{2}, {D}: Draw a card.\n" +
+				"{Use}: {~} deals 1 damage to any target.\n" +
+						"{2}, {Use}: Draw a card.\n" +
 						"{5}: Ready {~}.",
 				4, 4,
 				owner);
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: {~} deals 1 damage to any target.")
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: {~} deals 1 damage to any target.")
 				.setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
 						targetId -> game.dealDamage(id, targetId, 1))
 				.setDepleting());
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {D}: Draw a card.",
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {Use}: Draw a card.",
 				()-> game.draw(controller, 1))
 				.setDepleting());
 

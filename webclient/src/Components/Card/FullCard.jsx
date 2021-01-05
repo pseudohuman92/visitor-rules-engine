@@ -217,7 +217,7 @@ class FullCard extends PureComponent {
                                 whiteSpace: "pre-wrap",
                             }}
                         >
-                            <TextFit>{(combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities.join(" ") + "\n" : "")
+                            <TextFit>{(combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "")
                             + replaceSpecialCharacters(description, name)}</TextFit>
 
                             {/*toMultilineSVG((combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities.join(" ") + "\n" : "")

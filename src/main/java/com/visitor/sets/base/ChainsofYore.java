@@ -25,12 +25,12 @@ public class ChainsofYore extends Unit {
 	public ChainsofYore (Game game, UUID owner) {
 		super(game, "Chains of Yore",
 				1, new CounterMap(YELLOW, 1),
-				"{2}, {D}: Deplete another target unit.",
+				"{2}, {Use}: Deplete another target unit.",
 				1, 1,
 				owner, Lifelink);
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {D}: Deplete another target unit.")
-				.setTargeting(Game.Zone.Both_Play, and(not(Predicates::isDepleted), anotherUnit(this)), 1, false, game::deplete)
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {Use}: Deplete another target unit.")
+				.setTargeting(Game.Zone.Both_Play, and(not(Predicates::isDepleted), anotherUnit(id)), 1, false, game::deplete)
 				.setDepleting());
 	}
 }

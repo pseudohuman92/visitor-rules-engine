@@ -112,8 +112,8 @@ public abstract class Predicates {
 		return card.isDepleted();
 	}
 
-	public static Predicate<Card> anotherUnit (Card card) {
-		return c -> isUnit(c) && !c.id.equals(card.id);
+	public static Predicate<Card> anotherUnit (UUID id) {
+		return c -> isUnit(c) && !c.id.equals(id);
 	}
 
 	public static boolean isColorless (Card card) {
@@ -132,7 +132,7 @@ public abstract class Predicates {
 		return c -> c.controller.equals(controller);
 	}
 
-	public static Predicate<Card> anotherCard (Card card) {
-		return c -> !c.id.equals(card.id);
+	public static Predicate<Card> anotherCard (UUID id) {
+		return c -> !c.id.equals(id);
 	}
 }

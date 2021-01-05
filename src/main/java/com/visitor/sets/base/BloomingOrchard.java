@@ -23,10 +23,10 @@ public class BloomingOrchard extends Unit {
 	public BloomingOrchard (Game game, UUID owner) {
 		super(game, "Blooming Orchard",
 				1, new CounterMap(YELLOW, 1),
-				"{D}: Gain 1 health.",
+				"{Use}: Gain 1 health.",
 				0, 4,
 				owner, Regenerate);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: Gain 1 health.",
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Gain 1 health.",
 				() -> game.gainHealth(controller, 1))
 				.setDepleting());
 	}

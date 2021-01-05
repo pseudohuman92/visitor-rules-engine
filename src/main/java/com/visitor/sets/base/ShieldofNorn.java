@@ -24,7 +24,7 @@ public class ShieldofNorn extends Unit {
 	public ShieldofNorn (Game game, UUID owner) {
 		super(game, "Shield of Norn",
 				4, new CounterMap(PURPLE, 2),
-				"{P}{P}{P}{P} - {S} | {5}, {D}: Resurrect target unit.",
+				"{P}{P}{P}{P} - {Slow} | {5}, {Use}: Resurrect target unit.",
 				4, 4,
 				owner);
 

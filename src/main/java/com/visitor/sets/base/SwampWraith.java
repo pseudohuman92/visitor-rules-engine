@@ -25,7 +25,7 @@ public class SwampWraith extends Unit {
 	public SwampWraith (Game game, UUID owner) {
 		super(game, "Swamp Wraith",
 				1, new CounterMap(PURPLE, 1),
-				"{P}{P} - {2}, {D}, Discard a card: Put a 2/2 Zombie into play.\n" +
+				"{P}{P} - {2}, {Use}, Discard a card: Put a 2/2 Zombie into play.\n" +
 						"Deplete 3 zombies you control: Draw a card and lose 1 life.",
 				1, 1,
 				owner, Deathtouch);

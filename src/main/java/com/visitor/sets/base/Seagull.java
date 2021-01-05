@@ -22,19 +22,17 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Seagull extends Unit {
 
-	UUID target;
-
 	public Seagull (Game game, UUID owner) {
 		super(game, "Seagull",
 				2, new CounterMap(BLUE, 1),
-				"{2}, {D}: Another target unit gains flying until end of turn.",
+				"{2}, {Use}: Another target unit gains flying until end of turn.",
 				2, 1,
 				owner, Flying);
 		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Another target unit gains flying until end of turn.",
-						()-> game.hasIn(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c->!c.id.equals(id)), 1),
-						()-> target = game.selectFromZone(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c->!c.id.equals(id)), 1, false,"Select a unit.").get(0),
-						()-> game.runIfInZone(controller, Game.Zone.Both_Play, target, ()->game.addTurnlyCombatAbility(target, Flying)))
+				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Another target unit gains flying until end of turn.")
+						//TODO: another unit doesn't work because lambda binds this to activated ability card not the original one
+						.setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+						targetId -> game.runIfInZone(controller, Game.Zone.Both_Play, targetId, ()->game.addTurnlyCombatAbility(targetId, Flying)))
 						.setDepleting());
 
 	}

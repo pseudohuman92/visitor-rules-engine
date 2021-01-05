@@ -29,7 +29,7 @@ public class CuriousScholar extends Ally {
         super(game, "Curious Scholar", 2, new CounterMap<>(GREEN, 1),
                 "Trigger - When you study\n" +
                         "    +1 Loyalty\n" +
-                        "-2 Loyalty, {D}: \n" +
+                        "-2 Loyalty, {Use}: \n" +
                         "    Delay 1 - Search your deck for a Green card and draw it",
                 3,
                 owner);
@@ -37,7 +37,7 @@ public class CuriousScholar extends Ally {
         triggering.addEventChecker(new EventChecker(game, this, event -> loyalty++).addTypeChecker(Study).addPlayerChecker(c -> c.equals(controller))
 		        .createAbility("+1 Loyalty"));
 
-        addMinusLoyaltyAbility(0, "-2 Loyalty, {D}: Delay 1 - Search your deck for a green card and draw it", 2, 1,
+        addMinusLoyaltyAbility(0, "-2 Loyalty, {Use}: Delay 1 - Search your deck for a green card and draw it", 2, 1,
 		        new ActivatedAbility(game, this, 0, "Search your deck for a green card and draw it",
 				        () -> {
 		        	    Arraylist<UUID> maybeSelected = game.selectFromZone(controller, Deck, Predicates::isGreen, 1, !game.hasIn(controller,

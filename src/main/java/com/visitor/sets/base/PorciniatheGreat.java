@@ -24,11 +24,11 @@ public class PorciniatheGreat extends Unit {
 	public PorciniatheGreat (Game game, UUID owner) {
 		super(game, "Porcinia the Great",
 				1, new CounterMap(RED, 1),
-				"{D}: Target opponent gains control of target unit you control.",
+				"{Use}: Target opponent gains control of target unit you control.",
 				1, 1,
 				owner, Trample);
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: Target opponent gains control of target unit you control.")
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Target opponent gains control of target unit you control.")
 				.setTargeting(Game.Zone.Play, Predicates::isUnit, 1, false,
 						targetId -> game.gainControlFromZone(game.getOpponentId(controller), Game.Zone.Opponent_Play, Game.Zone.Play, targetId))
 		.setDepleting());

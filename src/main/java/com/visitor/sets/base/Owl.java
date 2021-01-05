@@ -24,7 +24,7 @@ public class Owl extends Unit {
 	public Owl (Game game, UUID owner) {
 		super(game, "Owl",
 				3, new CounterMap(BLUE, 2),
-				"{1}, {D}: Draw a card.",
+				"{1}, {Use}: Draw a card.",
 				2, 2,
 				owner, Flying, Lifelink);
 

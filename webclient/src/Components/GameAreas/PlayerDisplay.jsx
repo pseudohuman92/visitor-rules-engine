@@ -173,7 +173,7 @@ class PlayerDisplay extends React.Component {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          border: (activePlayer === id ? "5px green solid" : ""),
+          border: (activePlayer === id ? "5px orangered solid" : ""),
           borderRadius: "10px"
         }}
       >
@@ -203,7 +203,7 @@ class PlayerDisplay extends React.Component {
                       objectFit: "scale-down",
                       position: "absolute",
                       right: 5 * i + "%",
-                      zIndex: i,
+                      zIndex: maxEnergy - i,
                       opacity: energy ? (i >= energy ? 0.3 : 1) : 0.3
                     }}
                     alt=""

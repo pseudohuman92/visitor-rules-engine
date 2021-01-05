@@ -60,8 +60,8 @@ class BoardSide extends Component {
                 key={card.id}
                 style={{
                   //width: Math.min(width / (cards.length * 2), width / 20),
-                  leftMargin: "1%",
-                  rightMargin: "1%"
+                  margin: "0 1% 1% 1%",
+                  maxHeight:"100%"
                 }}
               >
                 <PlayingCard square cardData={card} isDragDisabled DnDIndex={i}/>

@@ -24,10 +24,10 @@ public class Encircler extends Unit {
 	public Encircler (Game game, UUID owner) {
 		super(game, "Encircler",
 				3, new CounterMap(RED, 1),
-				"{R}{R} - {D}: Destroy target unit. That unit's controller gains control of {~}.",
+				"{R}{R} - {Use}: Destroy target unit. That unit's controller gains control of {~}.",
 				2, 3,
 				owner, Reach);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{D}: Destroy target unit. That unit's controller gains control of {~}.")
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Destroy target unit. That unit's controller gains control of {~}.")
 				.setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
 						(targetId)->{
 							UUID newController = game.getCard(targetId).controller;

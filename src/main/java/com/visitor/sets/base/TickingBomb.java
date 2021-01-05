@@ -28,12 +28,12 @@ public class TickingBomb extends Asset {
                 "Donate, Charge 2\n" +
                         "Trigger - At the beginning of your turn\n" +
                         "    Dischage 1. If ~ has no counters on it, sacrifice it and lose 5 health.\n" +
-                        "1, {D}: Charge 1\n" +
+                        "1, {Use}: Charge 1\n" +
                         "3: Sacrifice {~}", owner);
         addCounters(Counter.CHARGE, 2);
 
         activatable.addActivatedAbility(
-        		new ActivatedAbility(game, this, 1, "1, {D}: Charge 1",
+        		new ActivatedAbility(game, this, 1, "1, {Use}: Charge 1",
 		        () -> addCounters(Counter.CHARGE, 1)).setDepleting());
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 3, "3: Sacrifice {~}", ()-> game.sacrifice(id)));

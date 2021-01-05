@@ -26,7 +26,7 @@ public class Spider extends Unit {
 	public Spider (Game game, UUID owner) {
 		super(game, "Spider",
 				1, new CounterMap(GREEN, 1),
-				"{G}{G}{G}- {4}, {D}: Target unit gains +X/+X until end of turn where X is the number of {G} you have.",
+				"{G}{G}{G}- {4}, {Use}: Target unit gains +X/+X until end of turn where X is the number of {G} you have.",
 				1, 1,
 				owner, Deathtouch);
 

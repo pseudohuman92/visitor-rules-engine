@@ -25,7 +25,7 @@ public class Eagle extends Unit {
 	public Eagle (Game game, UUID owner) {
 		super(game, "Eagle",
 				5, new CounterMap(BLUE, 3),
-				"{X}, {D}: {~} becomes X/X",
+				"{X}, {Use}: {~} becomes X/X",
 				4, 4,
 				owner, Flying);
 

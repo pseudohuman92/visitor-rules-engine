@@ -23,7 +23,7 @@ public class GrizzlyBear extends Unit {
 	public GrizzlyBear (Game game, UUID owner) {
 		super(game, "Grizzly Bear",
 				2, new CounterMap(GREEN, 2),
-				"{D}: Gain 1 energy.",
+				"{Use}: Gain 1 energy.",
 				3, 3,
 				owner, Trample);
 

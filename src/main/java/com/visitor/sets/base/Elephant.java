@@ -23,7 +23,7 @@ public class Elephant extends Unit {
 	public Elephant (Game game, UUID owner) {
 		super(game, "Elephant",
 				4, new CounterMap(GREEN, 3),
-				"{D}: Gain 3 energy.",
+				"{Use}: Gain 3 energy.",
 				6, 6,
 				owner, Trample);
 
