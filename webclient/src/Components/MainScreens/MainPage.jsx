@@ -9,7 +9,6 @@ import Fonts from "../Primitives/Fonts";
 import "../../css/App.css";
 import {Link} from "react-router-dom";
 
-console.warn(process.env.PUBLIC_URL)
 export default class MainPage extends Component {
     render() {
         return (
