@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Center from "react-center";
 import {Grid} from "@material-ui/core";
+import {Link as MatLink } from "@material-ui/core";
 import Fonts from "../Primitives/Fonts";
 
 import "../../css/App.css";
@@ -59,9 +60,9 @@ export default class MainPage extends Component {
                         </Typography>
                         <Typography variant="body1" paragraph>
                             Please join us in our{" "}
-                            <Link href="https://discord.gg/JSMPStm" gutterBottom>
+                            <MatLink href="https://discord.gg/JSMPStm" gutterBottom>
                                 Discord Server
-                            </Link>{" "}
+                            </MatLink>{" "}
                             to learn the game and follow the development process.
                         </Typography>
 
