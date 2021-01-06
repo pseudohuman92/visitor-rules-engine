@@ -13,13 +13,13 @@ export default class MainPage extends Component {
     render() {
         return (
             <div>
-                <Center>
+                <Center style={{width: "90%", margin: "auto", padding: "1rem"} }>
                     <Fonts/>
                     <Paper>
                         <Center>
                             <Typography
                                 variant="h3"
-                                style={{fontFamily: "Cinzel, serif"}}
+                                style={{fontFamily: "Cinzel, serif", fontWeight: "800"}}
                             >
                                 Visitor: The Card Game
                             </Typography>
