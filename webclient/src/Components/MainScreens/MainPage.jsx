@@ -9,13 +9,14 @@ import Fonts from "../Primitives/Fonts";
 import "../../css/App.css";
 import {Link} from "react-router-dom";
 
+console.warn(process.env.PUBLIC_URL)
 export default class MainPage extends Component {
     render() {
         return (
-            <div>
-                <Center style={{width: "90%", margin: "auto", padding: "1rem"} }>
+            <div style={{backgroundImage: "url("+process.env.PUBLIC_URL + "/img/castle.jpg)", backgroundSize: "100%"}}>
+                <Center style={{width: "90%", margin: "auto"  }} className="pa-3" >
                     <Fonts/>
-                    <Paper>
+                    <Paper className="pa-4" style={{ backgroundColor: "#ffffff44"}}>
                         <Center>
                             <Typography
                                 variant="h3"
