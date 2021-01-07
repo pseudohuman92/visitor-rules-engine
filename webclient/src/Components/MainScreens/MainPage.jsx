@@ -13,14 +13,14 @@ import {Link} from "react-router-dom";
 export default class MainPage extends Component {
     render() {
         return (
-            <div>
-                <Center>
+            <div style={{backgroundImage: "url("+process.env.PUBLIC_URL + "/img/castle.jpg)", backgroundSize: "100%"}}>
+                <Center style={{width: "90%", margin: "auto"  }} className="pa-3" >
                     <Fonts/>
-                    <Paper>
+                    <Paper className="pa-4" style={{ backgroundColor: "#ffffff44"}}>
                         <Center>
                             <Typography
                                 variant="h3"
-                                style={{fontFamily: "Cinzel, serif"}}
+                                style={{fontFamily: "Cinzel, serif", fontWeight: "800"}}
                             >
                                 Visitor: The Card Game
                             </Typography>

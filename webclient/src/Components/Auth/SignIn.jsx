@@ -108,9 +108,9 @@ class SignIn extends Component {
         const isInvalid = password === "" || email === "";
 
         return (
-            <div>
-                {value === 0 && <Center>
-                    <Paper>
+            <div >
+                {value === 0 && <Center style={{minHeight: "100vh",  backgroundSize: "cover", /*, backgroundImage: "url("+process.env.PUBLIC_URL + "/img/gate.jpg)"*/}}>
+                    <Paper style={{backgroundColor: "#ffffff44", width: "30%", marginLeft: "50%"}} className="pa-3">
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>

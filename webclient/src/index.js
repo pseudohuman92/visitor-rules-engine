@@ -21,6 +21,7 @@ import DraftScreen from "./Components/MainScreens/DraftScreen";
 import GameScreen from "./Components/MainScreens/GameScreen";
 import AuthRequired from "./Components/Primitives/AuthRequired";
 import SwitchPage from "./Components/MainScreens/SwitchPage";
+import "./css/Normalize.css";
 
 
 class App extends React.Component {
