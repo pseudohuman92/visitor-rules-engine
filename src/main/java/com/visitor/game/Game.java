@@ -484,7 +484,7 @@ public class Game implements Serializable {
 				.setSelectionCount(count)
 				.setUpTo(upTo)
 				.setMessage(message)
-				.setGame(toGameState(playerId));
+				.setGame(toGameState(playerId, true));
 		try {
 			send(playerId, ServerGameMessage.newBuilder().setSelectFrom(b));
 			String[] l = (String[]) response.take();
@@ -517,7 +517,7 @@ public class Game implements Serializable {
 		out.println("Sending Select Attackers Message to " + playerId);
 		SelectAttackers.Builder b = SelectAttackers.newBuilder()
 				.addAllPossibleAttackers(attackerList)
-				.setGame(toGameState(playerId));
+				.setGame(toGameState(playerId, true));
 		try {
 			send(playerId, ServerGameMessage.newBuilder().setSelectAttackers(b));
 			AttackerAssignment[] l = (AttackerAssignment[]) response.take();
@@ -561,7 +561,7 @@ public class Game implements Serializable {
 		out.println("Sending Select Blockers Message to " + playerId);
 		SelectBlockers.Builder b = SelectBlockers.newBuilder()
 				.addAllPossibleBlockers(blockers)
-				.setGame(toGameState(playerId));
+				.setGame(toGameState(playerId, true));
 		try {
 			send(playerId, ServerGameMessage.newBuilder().setSelectBlockers(b));
 			BlockerAssignment[] l = (BlockerAssignment[]) response.take();
@@ -579,7 +579,7 @@ public class Game implements Serializable {
 				.addAllPossibleTargets(possibleTargets.transformToStringList())
 				.setTotalDamage(damage)
 				.setTrample(trample)
-				.setGame(toGameState(playerId));
+				.setGame(toGameState(playerId, true));
 		try {
 			send(playerId, ServerGameMessage.newBuilder().setAssignDamage(b));
 			DamageAssignment[] l = (DamageAssignment[]) response.take();
@@ -647,7 +647,7 @@ public class Game implements Serializable {
 		}
 		SelectXValue.Builder b = SelectXValue.newBuilder()
 				.setMaxXValue(maxX)
-				.setGame(toGameState(playerId));
+				.setGame(toGameState(playerId, true));
 		try {
 			send(playerId, ServerGameMessage.newBuilder().setSelectXValue(b));
 
@@ -661,7 +661,7 @@ public class Game implements Serializable {
 	public CounterMap<Knowledge> selectKnowledge (UUID playerId, Set<Knowledge> knowledgeSet) {
 		SelectKnowledge.Builder b = SelectKnowledge.newBuilder()
 				.addAllKnowledgeList(knowledgeSet)
-				.setGame(toGameState(playerId));
+				.setGame(toGameState(playerId, true));
 		out.println(b.build());
 		try {
 			send(playerId, ServerGameMessage.newBuilder().setSelectKnowledge(b));
@@ -834,11 +834,11 @@ public class Game implements Serializable {
 	public void gameEnd (UUID playerId, boolean win) {
 		send(playerId, ServerGameMessage.newBuilder()
 				.setGameEnd(GameEnd.newBuilder()
-						.setGame(toGameState(playerId))
+						.setGame(toGameState(playerId, true))
 						.setWin(win)));
 		send(getOpponentId(playerId), ServerGameMessage.newBuilder()
 				.setGameEnd(GameEnd.newBuilder()
-						.setGame(toGameState(getOpponentId(playerId)))
+						.setGame(toGameState(getOpponentId(playerId), true))
 						.setWin(!win)));
 		connections.forEach((s, c) -> c.close());
 		connections = new Hashmap<>();
@@ -851,7 +851,7 @@ public class Game implements Serializable {
 	public final void updatePlayers () {
 		players.forEach((name, player) -> send(name, ServerGameMessage.newBuilder()
 				.setUpdateGameState(UpdateGameState.newBuilder()
-						.setGame(toGameState(name)))));
+						.setGame(toGameState(name, false)))));
 	}
 
 	public boolean hasEnergy (UUID playerId, int i) {
@@ -1274,7 +1274,7 @@ public class Game implements Serializable {
 		return getPlayer(playerId).getFromTopOfDeck(i);
 	}
 
-	public GameState.Builder toGameState (UUID playerId) {
+	public GameState.Builder toGameState (UUID playerId, boolean noAction) {
 		GameState.Builder b =
 				GameState.newBuilder()
 						.setId(id.toString())
@@ -1295,6 +1295,8 @@ public class Game implements Serializable {
 			b.addBlockers(blocker.toString());
 		}
 
+if(noAction)
+	return b;
 
 		players.forEach((s, p) -> {
 			if (playerId.equals(s) && isPlayerActive(s)) {
@@ -1317,7 +1319,7 @@ public class Game implements Serializable {
 	}
 
 	public GameState.Builder toGameState (String username) {
-		return toGameState(getPlayerId(username));
+		return toGameState(getPlayerId(username), false);
 	}
 
 	public enum Zone {

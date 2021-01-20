@@ -27,10 +27,12 @@ public class TickingBomb extends Asset {
         super(game, "Ticking Bomb", 2, new CounterMap<>(PURPLE, 2),
                 "Donate, Charge 2\n" +
                         "Trigger - At the beginning of your turn\n" +
-                        "    Dischage 1. If ~ has no counters on it, sacrifice it and lose 5 health.\n" +
+                        "    Dischage 1. If {~} has no counters on it, sacrifice it and lose 5 health.\n" +
                         "1, {Use}: Charge 1\n" +
                         "3: Sacrifice {~}", owner);
         addCounters(Counter.CHARGE, 2);
+
+        setDonating();
 
         activatable.addActivatedAbility(
         		new ActivatedAbility(game, this, 1, "1, {Use}: Charge 1",
@@ -38,7 +40,7 @@ public class TickingBomb extends Asset {
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 3, "3: Sacrifice {~}", ()-> game.sacrifice(id)));
 
-        addEnterPlayEffect(null, "Donate", ()-> game.donate(id, game.getOpponentId(controller), Game.Zone.Play));
+
 
         triggering.addEventChecker(new EventChecker(game, this,
 		        event -> {
@@ -47,6 +49,6 @@ public class TickingBomb extends Asset {
         	    	game.sacrifice(id);
         	    	game.payHealth(controller, 5);
 	            }
-		        }).addStartOfControllerTurnChecker().createAbility("Dischage 1. If ~ has no counters on it, sacrifice it and lose 5 health."));
+		        }).addStartOfControllerTurnChecker().createAbility("Dischage 1. If {~} has no counters on it, sacrifice it and lose 5 health."));
     }
 }

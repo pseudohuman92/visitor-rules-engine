@@ -484,6 +484,11 @@ public abstract class Card implements Serializable {
 		runIfNotNull(playable, ()-> playable.setPurging());
 	}
 
+	public void setDonating()
+	{
+		addEnterPlayEffect(null, "Donate", ()-> game.donate(id, game.getOpponentId(controller), Game.Zone.Play));
+	}
+
 	public enum CardType {
 		Ally,
 		Asset,

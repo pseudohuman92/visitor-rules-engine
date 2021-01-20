@@ -9,6 +9,7 @@ import Fonts from "../Primitives/Fonts";
 
 import "../../css/App.css";
 import {Link} from "react-router-dom";
+import LinkedButton from "../Primitives/LinkedButton";
 
 export default class MainPage extends Component {
     render() {
@@ -68,14 +69,10 @@ export default class MainPage extends Component {
 
                         <Grid container spacing={8}>
                             <Grid item xs>
-                                <Link to="/signin">
-                                    <Button text="Sign In" />
-                                </Link>
+                                <LinkedButton to="/signin" text="Sign In" />
                             </Grid>
                             <Grid item xs>
-                                <Link to="/signup">
-                                    <Button text="Sign Up" />
-                                </Link>
+                                <LinkedButton text="Sign Up"  to="/signup"/>
                             </Grid>
                             {/*
                                     <Grid item xs>
@@ -94,9 +91,7 @@ export default class MainPage extends Component {
                                     </Grid>
                                     */}
                             <Grid item xs>
-                                <Link to="/cardgallery">
-                                    <Button text="Card Gallery" />
-                                </Link>
+                                <LinkedButton  to="/cardgallery" text="Card Gallery" />
                             </Grid>
                         </Grid>
                     </Paper>

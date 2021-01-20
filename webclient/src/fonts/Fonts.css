@@ -22,3 +22,10 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Frijole';
+    src: url('Frijole-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+

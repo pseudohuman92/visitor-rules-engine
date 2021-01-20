@@ -30,7 +30,6 @@ public class Seagull extends Unit {
 				owner, Flying);
 		activatable
 				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Another target unit gains flying until end of turn.")
-						//TODO: another unit doesn't work because lambda binds this to activated ability card not the original one
 						.setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
 						targetId -> game.runIfInZone(controller, Game.Zone.Both_Play, targetId, ()->game.addTurnlyCombatAbility(targetId, Flying)))
 						.setDepleting());

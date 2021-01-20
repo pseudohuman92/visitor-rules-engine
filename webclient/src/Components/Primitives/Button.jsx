@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import TextOnImage from "./TextOnImage";
+import Center from "react-center";
 
 const mapStateToProps = state => {
   return {
@@ -9,26 +9,42 @@ const mapStateToProps = state => {
 };
 
 class Button extends Component {
+  state = {hovering: false};
+
+  toggleHover = () => {
+    this.setState({hovering: !this.state.hovering})
+  };
+
+  onClick = event => {
+    const { disabled, onClick } = this.props;
+    if (onClick && !disabled) {
+      onClick(event);
+    }
+  };
+
   render() {
-    const { text, disabled, onClick, variant, windowDimensions } = this.props;
-    const type = variant ? variant : "8";
+    const { text, disabled} = this.props;
+    const hovering = this.state.hovering;
     const opacity = disabled ? 0.5 : 1;
     return (
       <div
-        style={{ opacity: opacity }}
-        onClick={event => {
-          if (onClick && !disabled) {
-            onClick(event);
-          }
+        style={{ opacity: opacity, position:"relative",
+          width: "100%",
+          height: "100%",
+          fontFamily: "Frijole, serif",
+          color: hovering ? "black" : "white",
+          backgroundImage: hovering ? "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight.png)":"",
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat'
         }}
+        onClick={this.onClick}
+        onMouseEnter={this.toggleHover}
+        onMouseLeave={this.toggleHover}
       >
-        <TextOnImage
-          src={process.env.PUBLIC_URL + "/img/buttons/buttons" + type + ".png"}
-          min={10}
-          max={30}
-          text={text}
-          windowDimensions={windowDimensions}
-        />
+        <Center>
+          {text}
+        </Center>
       </div>
     );
   }

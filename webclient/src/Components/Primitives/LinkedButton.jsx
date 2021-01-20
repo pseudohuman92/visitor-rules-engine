@@ -6,7 +6,7 @@ export default class LinkedButton extends Component {
     render() {
         const {to, ...otherProps} = this.props;
         return (
-            <Link to={to}>
+            <Link style={{textDecoration: "none"}}  to={to}>
                 <Button {...otherProps}/>
             </Link>);
     }

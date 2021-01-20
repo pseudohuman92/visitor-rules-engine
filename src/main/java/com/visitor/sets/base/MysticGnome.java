@@ -31,7 +31,6 @@ public class MysticGnome extends Ally {
 
         addPlusLoyaltyAbility(1, "{1}, {Use}: +1 Loyalty", 1, null, null, null);
 
-        //TODO: check targeting to see if it works.
         addMinusLoyaltyAbility(0, "-2 Loyalty, {Use}: Delay 1 - Deal X damage to a target.\nX = Your max energy.", 2,1,
 		        new ActivatedAbility(game, this, 0, "Deal X damage to a target.\nX = Your max energy.")
 				        .setTargetingForDamageDuringResolve(target -> game.dealDamage(id, target, game.getMaxEnergy(controller))), null, null);

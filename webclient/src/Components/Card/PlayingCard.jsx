@@ -30,10 +30,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-function playablePhase(clientPhase) {
-    return clientPhase === ClientPhase.UPDATE_GAME || clientPhase === ClientPhase.ATTACK_PHASE || clientPhase === ClientPhase.BLOCK_PHASE;
-}
-
 function combatPhase(phase) {
     return phase === proto.Phase.ATTACK || phase === proto.Phase.BLOCK;
 }
@@ -80,7 +76,7 @@ class PlayingCard extends React.Component {
     // General Properties
     isActivatable = () => this.props.activatableCards.includes(this.props.cardData.id);
     isStudyable = () => this.props.studyableCards.includes(this.props.cardData.id);
-    isPlayable = () => this.props.playableCards.includes(this.props.cardData.id) && playablePhase(this.props.clientPhase);
+    isPlayable = () => this.props.playableCards.includes(this.props.cardData.id);
     isSelectable = () => this.props.selectionData.selectable.includes(this.props.cardData.id);
     isSelected = () => this.props.selectionData.selected.includes(this.props.cardData.id);
 
@@ -175,7 +171,7 @@ class PlayingCard extends React.Component {
                 this.props.attackers.includes(this.props.cardData.id));
 
     canAttack = () =>
-        !this.isAttacking &&
+        !this.isAttacking() &&
         !this.props.attackerAssignmentData.currentAttacker &&
         this.props.clientPhase === ClientPhase.SELECT_ATTACKERS &&
         this.props.attackerAssignmentData.possibleAttackers
@@ -279,7 +275,7 @@ class PlayingCard extends React.Component {
             this.props.blockers.includes(this.props.cardData.id));
 
     canBlock = () =>
-        !this.isBlocking &&
+        !this.isBlocking() &&
         !this.props.blockerAssignmentData.currentBlocker &&
         this.props.clientPhase === ClientPhase.SELECT_BLOCKERS &&
         this.props.blockerAssignmentData.possibleBlockers
@@ -540,11 +536,9 @@ class PlayingCard extends React.Component {
     render() {
         const {
             gamePhase,
-            clientPhase,
             DnDIndex,
             isDragDisabled,
             windowDimensions,
-            gameHandler,
             small,
             square,
             style,

@@ -39,14 +39,14 @@ class Profile extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{backgroundColor: "black", color:"white"}}>
                 <ProfileBar style={{maxHeight:"10%"}}/>
-                <div style={{display: "flex"}}>
-                    <LinkedButton to={"/profile/play"} text="Play"/>
-                    <LinkedButton to={"/profile/decks"} text="Decks"/>
-                    <LinkedButton to={"/profile/packs"} text="Packs"/>
-                    <LinkedButton to={"/profile/collection"} text="Collection"/>
-                    <LinkedButton to={"/profile/store"} text="Store"/>
+                <div style={{display: "flex", justifyContent: "space-around" }}>
+                    <LinkedButton style={{flexGrow: 1}} to={"/profile/play"} text="Play"/>
+                    <LinkedButton style={{flexGrow: 1}} to={"/profile/decks"} text="Decks"/>
+                    <LinkedButton style={{flexGrow: 1}} to={"/profile/packs"} text="Packs"/>
+                    <LinkedButton style={{flexGrow: 1}} to={"/profile/collection"} text="Collection"/>
+                    <LinkedButton style={{flexGrow: 1}} to={"/profile/store"} text="Store"/>
                 </div>
             </div>
         );

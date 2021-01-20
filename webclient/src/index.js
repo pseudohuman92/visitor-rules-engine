@@ -22,6 +22,7 @@ import GameScreen from "./Components/MainScreens/GameScreen";
 import AuthRequired from "./Components/Primitives/AuthRequired";
 import SwitchPage from "./Components/MainScreens/SwitchPage";
 import "./css/Normalize.css";
+import "./fonts/Fonts.css";
 
 
 class App extends React.Component {
