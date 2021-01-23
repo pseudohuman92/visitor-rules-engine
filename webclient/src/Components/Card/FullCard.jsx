@@ -9,6 +9,7 @@ import FittedText from "../Primitives/FittedText";
 import TextFit from "react-textfit";
 import Fonts from "../Primitives/Fonts";
 import { Text } from '@visx/text';
+import Center from "react-center";
 
 function stripAbilityFromTitle(name){
     return name.replaceAll("'s Ability", "");
@@ -61,7 +62,8 @@ class FullCard extends PureComponent {
         const cardWidth = width / scale_;
         const cardHeight = cardWidth / wtohRatio;
 
-        const backColor = borderColor ? borderColor : undefined; //"gainsboro";
+        const backColor = borderColor ? borderColor : undefined // "gainsboro";
+        const imageSrc = process.env.PUBLIC_URL + "/img/sets/" + set + "/" + stripAbilityFromTitle(name) + ".jpg";
         return (
             <div
                 style={{
@@ -71,7 +73,6 @@ class FullCard extends PureComponent {
                     opacity: opacity,
                     backgroundColor: backColor,
                     borderRadius: cardWidth / (2 * scale_) + "px",
-                    zIndex: 1,
                 }}
             >
                 {<Fonts />}
@@ -83,6 +84,12 @@ class FullCard extends PureComponent {
                         position: "relative",
                         fontSize: cardWidth / (2 * scale_) + "px",
                         borderRadius: cardWidth / ((square ? 3 : 2.5) * scale_) + "px",
+                        backgroundColor: "gainsboro",
+
+                        backgroundImage: "url(" + imageSrc +")",
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat'
                     }}
                 >
                     {!preview && combat && combat.deploying &&
@@ -113,6 +120,7 @@ class FullCard extends PureComponent {
                         alt=""
                     />
                     }
+                    {/*
                     <div
                         style={{
                             position: "absolute",
@@ -150,22 +158,22 @@ class FullCard extends PureComponent {
                             }}
                             alt=""
                         />
-                    </div>
+                    </div> */}
                     {cost !== "" && (
                         <div className="card-cost">
                             <img
-                                src={process.env.PUBLIC_URL + "/img/card-components/energy.png"}
+                                src={process.env.PUBLIC_URL + "/img/card-components/energy-black.png"}
                                 style={{
                                     maxWidth: "100%",
                                 }}
                                 alt=""
                             />
-                            <div
+                            <Center
                                 className="card-cost-text"
-                                style={{fontSize: cardWidth / 10 + "px"}}
+                                style={{fontSize: cardWidth / 15 + "px"}}
                             >
                                 {cost}
-                            </div>
+                            </Center>
                         </div>
                     )}
 
@@ -191,33 +199,43 @@ class FullCard extends PureComponent {
                                 />
                             </div>
                         ))}
-                    <div className="card-name" style={{height: square ? "9%" : "6%",
+                    <div className="card-name fill"
+                         style={{
+                             height: square ? "9%" : "6%",
+                             backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-red.png)",
                         }}>
                         {<div style={{
                             position: "static",
                             margin: 0,
                         }}>
+                            <TextFit forceSingleModeWidth={true}>
                             {name}
-                        </div>/*<FittedText
-                            text={name}
-                            font = {{fontFamily: "Texturina"}}
-                            max={12}
-                            pad={0}
-                            windowDimensions={windowDimensions}
-                        />*/}
+                            </TextFit>
+                        </div>}
                     </div>
 
-                    {!square && <div className="card-type">{types}{subtypes && subtypes.length > 0 ? " - " + subtypes.join(' ') : ""} </div>}
+                    {!square && <div className="card-type fill" style={{
+                        backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-red.png)",
+                    }}>{types}{subtypes && subtypes.length > 0 && subtypes[0] !== "" ? " - " + subtypes.join(' ') : ""} </div>}
 
                     {!square && (
                         <div
-                            className="card-description"
+                            className="card-description fill"
                             style={{
+
                                 textAlign: "left",
                                 whiteSpace: "pre-wrap",
+                                backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/grunge-background-black.png)",
+
                             }}
                         >
-                            <TextFit>{(combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "")
+                            <TextFit style={{
+                                position: "relative",
+                                top: "2%",
+                                left: "3%",
+                                maxWidth: "94%",
+                                maxHeight: "96%",
+                            }}>{(combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "")
                             + replaceSpecialCharacters(description, name)}</TextFit>
 
                             {/*toMultilineSVG((combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities.join(" ") + "\n" : "")
@@ -264,11 +282,12 @@ class FullCard extends PureComponent {
                             )}
                             {combat && combat.health !== "" && combat.health > -1 && (
                                 <TextOnImage
-                                    src={process.env.PUBLIC_URL + "/img/card-components/health.png"}
+                                    src={process.env.PUBLIC_URL + "/img/card-components/health-red.png"}
                                     text={combat.health}
                                     min={15}
                                     scale={5 * scale_}
-                                    font={{fontFamily: "Special Elite, cursive"}}
+                                    font={{fontFamily: "Frijole, cursive"}}
+                                    textStyle={{color:"white"}}
                                     windowDimensions={windowDimensions}
                                 />
                             )}
@@ -308,7 +327,7 @@ class FullCard extends PureComponent {
                         </div>
                     </div>
 
-                    { !square && <div className="illustrator" style={{textAlign : "right", fontSize: "10px"}}> Illustrator Name </div> }
+                    { !square && <div className="illustrator fill" style={{textAlign : "right", fontSize: "10px", backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-black.png)",}}> Illustrator Name </div> }
                 </div>
 
             </div>

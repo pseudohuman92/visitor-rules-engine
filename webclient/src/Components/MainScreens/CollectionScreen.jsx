@@ -117,7 +117,7 @@ class CollectionScreen extends React.Component {
         const {collection, dust, windowDimensions} = this.props;
         const displayCollection = craft ? fullCollection : toFullCards(collection);
         return collection ? (
-            <div
+                <div
                 style={{
                     display: "flex",
                     flexDirection: "column",

@@ -7,6 +7,44 @@
   background-color: lightslategray;
 }
 
+.background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-size: 103vw 104vh;
+  background-repeat: no-repeat;
+  background-color: #c80808; /* #7a0b0b; */
+  overflow: hidden;
+}
+
+.contain {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.cover {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.fill {
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.inner-area {
+  position: relative;
+  width: 98vw;
+  height: 96vh;
+  top: 2vh;
+  left: 2vh;
+  /* border: #61dafb 5px solid; */
+}
+
 .App-header {
   display: flex;
   flex-direction: column;

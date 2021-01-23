@@ -346,3 +346,10 @@ export const specialCharacters = {
     "{D}": "↷", //Depleted
     "{Loyalty}": "\uD83D\uDC64",
 };
+
+export const colorPalette =
+    {
+        "black": "#000000",
+        "white": "#ffffff",
+        "red"  : "#c80808",
+    }

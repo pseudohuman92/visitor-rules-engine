@@ -107,7 +107,7 @@ class GameScreen extends Component {
                         onDragStart={this.onDragStart}
                         onDragEnd={this.onDragEnd}
                     >
-                        <div className="App">
+                        <div>
                             { /*<img
               src={process.env.PUBLIC_URL + "/img/background.jpg"}
               style={{
@@ -120,7 +120,7 @@ class GameScreen extends Component {
               alt=""
             />*/}
 
-                            <div className="App-header">
+                            <div>
                                 <EscapeMenu open={this.state.menuOpen} close={this.closeMenu}/>
                                 {/*<EndGameDialog/>*/}
                                 <SelectXDialog/>
@@ -144,7 +144,8 @@ class GameScreen extends Component {
                                         >
                                             <div
                                                 className="level1-middle-1-1"
-                                                style={{width: width * 0.85, height: midHeight * 0.495}}
+                                                style={{width: width * 0.85, height: midHeight * 0.495,
+                                                }}
                                             >
                                                 <BoardSide isPlayer={false}/>
                                             </div>
@@ -155,7 +156,8 @@ class GameScreen extends Component {
                                             </div>
                                             <div
                                                 className="level1-middle-1-2"
-                                                style={{width: width * 0.85, height: midHeight * 0.495}}
+                                                style={{width: width * 0.85, height: midHeight * 0.495,
+                                                }}
                                             >
                                                 <BoardSide isPlayer={true}/>
                                             </div>

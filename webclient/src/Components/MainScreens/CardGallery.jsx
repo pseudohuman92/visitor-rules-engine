@@ -34,7 +34,6 @@ class CardGallery extends Component {
   render() {
     const { page, maxPage } = this.state;
     return (
-      <div style={{backgroundColor: "black", height: "98vh", width:"98vw"}}>
         <Grid container spacing={8}>
           <Grid item xs={4}>
             <Button onClick={this.prev} text="Prev" disabled={page===0}/>
@@ -52,7 +51,6 @@ class CardGallery extends Component {
               ))}
           </Grid>
         </Grid>
-      </div>
     );
   }
 }

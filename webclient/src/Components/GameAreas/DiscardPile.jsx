@@ -98,7 +98,7 @@ class DiscardPile extends React.Component {
         ) : (
           <TextOnImage
             text={hover ? (discardPile.length?discardPile.length:0) : ""}
-            src={process.env.PUBLIC_URL + "/img/DiscardPile.png"}
+            src={process.env.PUBLIC_URL + "/img/discard-pile-grunge-white.png"}
             imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
             scale={3}
             windowDimensions={windowDimensions}

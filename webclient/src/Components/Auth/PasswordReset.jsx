@@ -43,7 +43,7 @@ class PasswordReset extends Component {
     const isInvalid = email === "" || value !== 0;
 
     return (
-      <Center>
+      <Center >
         <Paper>
           <Typography component="h1" variant="h5">
             Reset Password

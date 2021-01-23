@@ -88,27 +88,28 @@ class ButtonDisplay extends Component {
     ) {
       buttonMenu = (
         <div style={{display: "flex", flexDirection: "column"}}>
-            <Button onClick={this.keep} disabled={!amIActive} text="Keep" />
-            <Button onClick={this.redraw} disabled={!amIActive} text="Redraw" />
+            <Button style={{margin:"2px"}} onClick={this.keep} disabled={!amIActive} text="Keep" />
+            <Button style={{margin:"2px"}} onClick={this.redraw} disabled={!amIActive} text="Redraw" />
         </div>
       );
     } else if (IsSelectCardPhase(clientPhase)) {
       buttonMenu = (
-        <Button disabled={!upTo} onClick={this.selectDone} text="Done" />
+        <Button style={{margin:"2px"}} disabled={!upTo} onClick={this.selectDone} text="Done" />
       );
     } else if (clientPhase === ClientPhase.SELECT_ATTACKERS) {
       buttonMenu = (turnPlayer === playerUserId ) ?
-        <Button onClick={this.selectAttackers} text="Attack" /> : <div/>
+        <Button style={{margin:"2px"}} onClick={this.selectAttackers} text="Attack" /> : <div/>
         ;
     } else if (clientPhase === ClientPhase.SELECT_BLOCKERS ) {
       buttonMenu = (turnPlayer !== playerUserId) ?
-        <Button onClick={this.selectBlockers} text="Block" /> : <div/>;
+        <Button style={{margin:"2px"}} onClick={this.selectBlockers} text="Block" /> : <div/>;
     } else if (clientPhase === ClientPhase.ASSIGN_DAMAGE) {
       buttonMenu = (turnPlayer === playerUserId) ?
-        <Button disabled={canAssignDamage} onClick={this.assignDamage} text="Assign" /> : <div/>;
+        <Button style={{margin:"2px"}} disabled={canAssignDamage} onClick={this.assignDamage} text="Assign" /> : <div/>;
     } else {
       buttonMenu = (
         <Button
+          style={{margin:"2px"}}
           disabled={!amIActive || autoPass || clientPhase === ClientPhase.WAITING}
           onClick={this.pass}
           text="Pass"

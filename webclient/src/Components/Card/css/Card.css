@@ -16,11 +16,10 @@
 
 .card-name {
   margin: 3.5% 3.5% 0 3.5%;
-  background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
   text-align: center;
   border-radius: 5px;
-  font-family: 'Oleo Script', cursive;
+  font-family: 'Frijole', cursive;
 }
 
 .card-image {
@@ -38,12 +37,10 @@
   bottom: 45%;
   width: 93%;
   margin: 1.5% 3.5% 0 3.5%;
-  background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
   text-align: center;
   height: 6%;
-  border-radius: 5px;
-  font-family: 'Oleo Script', cursive;
+  font-family: 'Frijole', cursive;
 }
 
 .illustrator {
@@ -62,7 +59,7 @@
   bottom: 10%;
   width: 91%;
   margin: 1.5% 3.5% 3.5% 3.5%;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
   overflow: scroll;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -109,13 +106,12 @@
 }
 
 .card-cost-text {
-  color: black;
+  color: white;
   position: absolute;
   top: 50%;
-  left: 45%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Oleo Script', cursive;
-  font-weight: bold;
+  font-family: 'Frijole', cursive;
 }
 
 .card-health-text {
@@ -124,7 +120,7 @@
   top: 57%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Oleo Script', cursive;
+  font-family: 'Frijole', cursive;
   font-weight: bold;
 }
 

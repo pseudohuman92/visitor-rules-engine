@@ -10,6 +10,7 @@ import {IsSelectCardPhase} from "../Helpers/Helpers";
 import {withHandlers} from "../MessageHandlers/HandlerContext";
 import "../../css/Utils.css";
 import {mapDispatchToProps} from "../Redux/Store";
+import {colorPalette} from "../Helpers/Constants";
 
 const mapStateToProps = state => {
     return {
@@ -18,16 +19,24 @@ const mapStateToProps = state => {
 };
 
 class PhaseDisplay extends PureComponent {
+    getColor = (phase) => {
+        return this.props.gamePhase === phase ? colorPalette.red : colorPalette.black;
+    }
     render() {
-        const {gamePhase} = this.props;
         return (
-            <div style={{display: "flex", justifyContent:"space-around", borderRadius: "10px", backgroundColor: "rgba(0,0,0,0.75)", color: "white", width: "90%"}}>
-                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.BEGIN ? "green" : ""}}>S</div>
-                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.MAIN_BEFORE ? "green" : ""}}>M1</div>
-                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.ATTACK ? "green" : ""}}>A</div>
-                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.BLOCK ? "green" : ""}}>B</div>
-                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.MAIN_AFTER ? "green" : ""}}>M2</div>
-                <div style={{borderRadius: "10px", backgroundColor: gamePhase === proto.Phase.END ? "green" : ""}}>E</div>
+            <div style={{display: "flex", justifyContent:"space-around",
+                backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-white.png)",
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                borderRadius: "10px", width: "85%",
+            fontFamily:"Frijole, cursive"}}>
+                <div style={{color: this.getColor(proto.Phase.BEGIN)}}>S</div>
+                <div style={{color: this.getColor(proto.Phase.MAIN_BEFORE )}}>M1</div>
+                <div style={{color: this.getColor(proto.Phase.ATTACK)}}>A</div>
+                <div style={{color: this.getColor(proto.Phase.BLOCK)}}>B</div>
+                <div style={{color: this.getColor(proto.Phase.MAIN_AFTER)}}>M2</div>
+                <div style={{color: this.getColor(proto.Phase.END)}}>E</div>
             </div>);
     }
 }

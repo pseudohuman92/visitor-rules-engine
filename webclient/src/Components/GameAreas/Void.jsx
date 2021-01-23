@@ -111,7 +111,7 @@ class Void extends Component {
             >
               <TextOnImage
                 text={hover ? (void_.length?void_.length:0) : ""}
-                src={process.env.PUBLIC_URL + "/img/void.png"}
+                src={process.env.PUBLIC_URL + "/img/void-grunge-red.png"}
                 imgStyle={{
                   transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)",
                   border: hasStudyable ? "3px green solid" : "none",

@@ -166,6 +166,14 @@ class PlayerDisplay extends React.Component {
       borderColor = "green";
     }
 
+    const borderStyle = activePlayer === id ?
+        {
+          backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/player-display-grunge-red.png)",
+          backgroundPosition: "center",
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+        } : {};
+
     return (
       <div
         style={{
@@ -173,8 +181,7 @@ class PlayerDisplay extends React.Component {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          border: (activePlayer === id ? "5px orangered solid" : ""),
-          borderRadius: "10px"
+          ...borderStyle,
         }}
       >
         <div

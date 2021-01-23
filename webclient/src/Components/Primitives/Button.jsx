@@ -32,8 +32,8 @@ class Button extends Component {
           width: "100%",
           height: "100%",
           fontFamily: "Frijole, serif",
-          color: hovering ? "black" : "white",
-          backgroundImage: hovering ? "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight.png)":"",
+          color: (!disabled && hovering) ? "black" : "white",
+          backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-" + (!disabled && hovering ? "white":"red") + ".png)",
           backgroundPosition: 'center',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat'

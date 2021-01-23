@@ -14,7 +14,6 @@ import LinkedButton from "../Primitives/LinkedButton";
 export default class MainPage extends Component {
     render() {
         return (
-            <div style={{backgroundImage: "url("+process.env.PUBLIC_URL + "/img/castle.jpg)", backgroundSize: "100%"}}>
                 <Center style={{width: "90%", margin: "auto"  }} className="pa-3" >
                     <Fonts/>
                     <Paper className="pa-4" style={{ backgroundColor: "#ffffff44"}}>
@@ -96,8 +95,6 @@ export default class MainPage extends Component {
                         </Grid>
                     </Paper>
                 </Center>
-
-            </div>
         )
             ;
     }

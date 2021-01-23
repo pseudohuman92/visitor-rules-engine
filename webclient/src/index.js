@@ -1,26 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {connect, Provider as ReduxProvider} from "react-redux";
-import MainPage from "./Components/MainScreens/MainPage";
 import Firebase, {FirebaseContext} from "./Components/Firebase";
 import store, {mapDispatchToProps} from "./Components/Redux/Store";
 import HandlerContext from "./Components/MessageHandlers/HandlerContext";
 import {CookiesProvider} from 'react-cookie';
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import SignIn from "./Components/Auth/SignIn";
-import SignUp from "./Components/Auth/SignUp";
-import CardGallery from "./Components/MainScreens/CardGallery";
-import ResetPassword from "./Components/Auth/PasswordReset";
-import Profile from "./Components/MainScreens/Profile";
-import Decks from "./Components/MainScreens/Decks";
-import CollectionScreen from "./Components/MainScreens/CollectionScreen";
-import DeckSelection from "./Components/MainScreens/DeckSelection";
-import GameStore from "./Components/MainScreens/GameStore";
-import OpenPacks from "./Components/MainScreens/OpenPacks";
-import DraftScreen from "./Components/MainScreens/DraftScreen";
-import GameScreen from "./Components/MainScreens/GameScreen";
-import AuthRequired from "./Components/Primitives/AuthRequired";
+import {BrowserRouter} from "react-router-dom";
 import SwitchPage from "./Components/MainScreens/SwitchPage";
+import {colorPalette} from "./Components/Helpers/Constants";
+
+import "./css/App.css";
 import "./css/Normalize.css";
 import "./fonts/Fonts.css";
 
@@ -76,7 +65,12 @@ ReactDOM.render(
     <CookiesProvider>
         <ReduxProvider store={store}>
             <FirebaseContext.Provider value={new Firebase()}>
-                <App/>
+                <div className="background"
+                     style={{ backgroundImage: "url("+process.env.PUBLIC_URL + "/img/grunge-background-black.png)" }}>
+                    <div className="inner-area">
+                        <App/>
+                    </div>
+                </div>
             </FirebaseContext.Provider>
         </ReduxProvider>
     </CookiesProvider>

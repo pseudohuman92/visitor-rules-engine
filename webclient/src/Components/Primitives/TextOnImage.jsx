@@ -1,6 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import Fonts from "./Fonts";
+import Center from "react-center";
 
 import "./TextOnImage.css";
 
@@ -16,28 +17,18 @@ class TextOnImage extends Component {
       ? font
       : { fontFamily: "Cinzel, serif", fontWeight: "700" };
     return (
-      <div className="container" style={style}>
-        <Fonts />
-        <img
-          className="image"
-          src={src}
-          alt=""
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            width: "auto",
-            height: "auto",
-            objectFit: "scale-down",
-            ...imgStyle
-          }}
-        />
+      <div className="container" style={{
+          ...style,
+          backgroundImage: "url(" + src +")",
+          backgroundPosition: 'center',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat'
+      }}>
         <div
-          className="centered"
+            className="centered"
           style={{
             ...font_,
             ...textStyle,
-            textShadow:
-              "-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000",
             fontSize: Math.min(Math.max(width / scale_, min_), max_) + "px"
           }}
         >
