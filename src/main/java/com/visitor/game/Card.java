@@ -15,6 +15,8 @@ import com.visitor.protocol.Types.KnowledgeGroup;
 
 import java.io.Serializable;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static com.visitor.game.Game.Zone.*;
@@ -39,14 +41,18 @@ public abstract class Card implements Serializable {
 	protected boolean depleted;
 	protected CounterMap<Counter> counters;
 	public Arraylist<UUID> targets;
+	public Arraylist<UUID> attachments;
+
 	protected Activatable activatable;
 	protected Triggering triggering;
 	protected Combat combat;
 	protected Playable playable;
 	protected Studiable studiable;
+	protected Attachable attachable;
 
 	protected Runnable enterPlayEffect = ()->{};
 	protected Runnable leavePlayEffect = ()->{};
+
 
 	/**
 	 * This is the default constructor for creating a card.
@@ -65,6 +71,8 @@ public abstract class Card implements Serializable {
 		types = new Arraylist<>(type);
 		subtypes = new Arraylist<>();
 		targets = new Arraylist<>();
+		attachments = new Arraylist<>();
+
 		this.name = name;
 		this.knowledge = knowledge;
 		this.text = text;
@@ -120,6 +128,9 @@ public abstract class Card implements Serializable {
 		if (triggering != null) {
 			triggering.register();
 		}
+		if (attachable != null) {
+			attachable.attach();
+		}
 		enterPlayEffect.run();
 		game.addEvent(Event.enterPlay(this), true);
 	}
@@ -128,6 +139,9 @@ public abstract class Card implements Serializable {
 		clear();
 		if (triggering != null) {
 			triggering.deregister();
+		}
+		if (attachable != null) {
+			attachable.removeFromAttached();
 		}
 		leavePlayEffect.run();
 	}
@@ -466,12 +480,20 @@ public abstract class Card implements Serializable {
 	/** Enter Play Effect setters
 	 *
 	 */
-	public void addEnterPlayEffect (CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
+	public void addEnterPlayEffectOnStack (CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
 		if (knowledge == null){
 			knowledge = new CounterMap<>();
 		}
 		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
 		enterPlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, ()->game.addToStack(new AbilityCard(game, this, text, effect)));
+	}
+
+	public void addEnterPlayEffect (CounterMap<Types.Knowledge> knowledge, Runnable effect){
+		if (knowledge == null){
+			knowledge = new CounterMap<>();
+		}
+		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
+		enterPlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, effect);
 	}
 
 	public boolean isPlayable () { return playable != null;
@@ -486,7 +508,22 @@ public abstract class Card implements Serializable {
 
 	public void setDonating()
 	{
-		addEnterPlayEffect(null, "Donate", ()-> game.donate(id, game.getOpponentId(controller), Game.Zone.Play));
+		addEnterPlayEffect(null, ()-> game.donate(id, game.getOpponentId(controller), Game.Zone.Play));
+	}
+
+	public void addAttachment (UUID attachmentId) {
+		attachments.add(attachmentId);
+	}
+
+	public void removeAttachment (UUID attachmentId) {
+		attachments.remove(attachmentId);
+	}
+
+	public void setAttachable (Predicate<Card> validTarget, Consumer<UUID> afterAttachEffect, Consumer<UUID> afterRemoveEffect) {
+		attachable = new Attachable(game, this, validTarget, afterAttachEffect, afterRemoveEffect);
+
+		playable.addCanPlayAdditional(() -> game.hasIn(controller, Game.Zone.Both_Play, validTarget, 1));
+		playable.setTargetSingleCard(Game.Zone.Both_Play, validTarget, "Choose a card to attach", attachable::setAttachTo, null);
 	}
 
 	public enum CardType {
@@ -500,7 +537,7 @@ public abstract class Card implements Serializable {
 
 		// Internal types
 		Ability,
-		Effect
+		Attachment, Effect
 	}
 
 	public enum CardSubtype {

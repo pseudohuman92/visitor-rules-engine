@@ -22,7 +22,8 @@ class Stack extends React.Component {
     return (
       <Droppable droppableId={"stack"} isDroppingDisabled>
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
+          <div className="stack-outer" style={this.props.style}
+               ref={provided.innerRef} {...provided.droppableProps}>
             {stack.reverse().map((card, i) => {
               debugPrint("Stack Card", card);
               return (

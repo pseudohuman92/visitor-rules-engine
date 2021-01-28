@@ -351,5 +351,25 @@ export const colorPalette =
     {
         "black": "#000000",
         "white": "#ffffff",
-        "red"  : "#c80808",
+
+        //reds
+        "light-red"  : "#c80808",
+        "red" : "#9f0004",
+        "dark-red" : "#6d0101",
+        "dark-red-2" : "#510208",
+
+        //blues
+        "light-blue" : "#6f92a6",
+        "blue"      : "#5e87a4",
+        "dark-blue" : "#2c485e",
+
+        //greens
+        "light-green" : "#00ba73",
+        "green" : "#0e5f4c",
+        "dark-green" : "#005301",
+
+        //yellows
+        "light-yellow" : "#e6ea00",
+        "yellow" : "#bd9a00",
     }
+

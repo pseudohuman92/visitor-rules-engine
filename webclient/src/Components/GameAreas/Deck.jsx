@@ -2,6 +2,7 @@ import React from "react";
 import { Component } from "react";
 import { connect } from "react-redux";
 import TextOnImage from "../Primitives/TextOnImage";
+import {cardBackURL} from "../Helpers/URLS";
 
 const mapStateToProps = state => {
   return {
@@ -40,7 +41,7 @@ class Deck extends Component {
       >
         <TextOnImage
           text={hover ? (deckSize?deckSize:0) : ""}
-          src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+          src={cardBackURL}
           imgStyle={{ transform: "rotate(" + (isPlayer ? 0 : 180) + "deg)" }}
           scale = {3}
           windowDimensions={windowDimensions}

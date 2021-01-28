@@ -31,7 +31,7 @@ public class GY03 extends Unit {
 				5, 5,
 				owner, Combat.CombatAbility.Trample);
 
-		addEnterPlayEffect(null, "When {~} enters the battlefield, create a 5/5 green Wurm with trample.",
+		addEnterPlayEffectOnStack(null, "When {~} enters the battlefield, create a 5/5 green Wurm with trample.",
 				() -> {
 					UnitToken.Wurm_5_5(game, controller).resolve();
 				});

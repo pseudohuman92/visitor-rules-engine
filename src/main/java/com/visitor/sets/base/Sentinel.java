@@ -30,7 +30,7 @@ public class Sentinel extends Unit {
 				"When {~} enters play, other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
 				5, 3,
 				owner, Trample);
-		addEnterPlayEffect(null, "Other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
+		addEnterPlayEffectOnStack(null, "Other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
 				()->{
 					game.forEachInZone(controller, Game.Zone.Play, and(Predicates::isUnit, c -> !c.id.equals(id)),
 							cardId -> {

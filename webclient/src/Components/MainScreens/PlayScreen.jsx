@@ -17,7 +17,7 @@ class PlayScreen extends Component {
 
     render() {
         return (
-            <div>
+            <div className="play-screen-outer">
                 {this.props.gameInitialized && <Redirect to={"/profile/play/game"}/>}
                 <ProfileBar style={{maxHeight:"10%"}}/>
                 <div style={{display: "flex"}}>

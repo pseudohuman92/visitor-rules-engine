@@ -28,7 +28,7 @@ public class EngorgedLamprey extends Unit {
 				2, 2,
 				owner, Deathtouch);
 
-		addEnterPlayEffect(
+		addEnterPlayEffectOnStack(
 				new CounterMap<>(PURPLE, 3),
 				"When {~} enters play, you may sacrifice a unit, if you do, draw X cards and gain X health where X is that unit's attack.",
 				() -> {

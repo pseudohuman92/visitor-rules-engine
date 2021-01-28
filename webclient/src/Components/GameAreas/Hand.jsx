@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import PlayingCard from "../Card/PlayingCard";
 import { Droppable } from "react-beautiful-dnd";
 import CardDisplay from "../Card/CardDisplay";
+import {cardBackURL} from "../Helpers/URLS";
 
 const mapStateToProps = state => {
   return {
@@ -27,13 +28,11 @@ class Hand extends PureComponent {
         return <img
         key ={i}
         className="image"
-        src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+        src={cardBackURL}
         alt=""
         style={{
           maxWidth: "100%",
           maxHeight: "100%",
-          width: "auto",
-          height: "auto",
           objectFit: "scale-down"
         }}
       />;
@@ -64,7 +63,7 @@ class Hand extends PureComponent {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              style={{overflow: "auto"}}
+              style={{overflow: "hidden", ...this.props.style }}
             >
               {handCards.map((card, i) => {
                   return (<div

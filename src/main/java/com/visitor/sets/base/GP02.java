@@ -30,7 +30,7 @@ public class GP02 extends Unit {
 				2, 3,
 				owner);
 
-		addEnterPlayEffect(null, "When {~} enters play, Create a 1/1 black and green Insect for each unit card in your discard pile.",
+		addEnterPlayEffectOnStack(null, "When {~} enters play, Create a 1/1 black and green Insect for each unit card in your discard pile.",
 				()-> {
 					int unitCount = game.countInZone(controller, Game.Zone.Discard_Pile, Predicates::isUnit);
 					for (int i = 0; i < unitCount; i++){

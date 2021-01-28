@@ -1322,6 +1322,14 @@ if(noAction)
 		return toGameState(getPlayerId(username), false);
 	}
 
+	public void addAttachmentTo (UUID attachedId, UUID attachmentId) {
+		getCard(attachedId).addAttachment(attachmentId);
+	}
+
+	public void removeAttachmentFrom (UUID attachedTo, UUID attachmentId) {
+		getCard(attachedTo).removeAttachment(attachmentId);
+	}
+
 	public enum Zone {
 		Deck, Hand, Opponent_Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Opponent_Discard_Pile, Stack
 	}

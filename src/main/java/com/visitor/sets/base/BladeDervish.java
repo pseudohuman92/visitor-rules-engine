@@ -28,7 +28,7 @@ public class BladeDervish extends Unit {
 				3, 3,
 				owner, Haste);
 
-		addEnterPlayEffect(null, "When {~} enters play, it deals 3 damage to target unit.",
+		addEnterPlayEffectOnStack(null, "When {~} enters play, it deals 3 damage to target unit.",
 				()-> {
 						UUID damageTarget = game.selectDamageTargetsConditional(controller, Predicates::isUnit, Predicates::none, 1, false, "Choose a unit to damage").get(1);
 						game.addToStack(new AbilityCard(game, this, "Deal 3 damage.",

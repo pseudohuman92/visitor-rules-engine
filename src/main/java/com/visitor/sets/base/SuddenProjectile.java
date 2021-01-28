@@ -29,7 +29,7 @@ public class SuddenProjectile extends Unit {
 							"{4}, Purge {~}: Purge another target unit.",
 				1, 2,
 				owner, Flying);
-		addEnterPlayEffect(null, "Play a 1/1 Spirit with flying.", ()-> UnitToken.Spirit_1_1(game, controller));
+		addEnterPlayEffectOnStack(null, "Play a 1/1 Spirit with flying.", ()-> UnitToken.Spirit_1_1(game, controller));
 		activatable.addActivatedAbility(new ActivatedAbility(game, this, 4, "{4}, Purge {~}: Purge another target unit.")
 				.setTargeting(Game.Zone.Both_Play, anotherUnit(id), 1, false,
 				targetId -> {

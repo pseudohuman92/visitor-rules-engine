@@ -1,0 +1,1 @@
+export const cardBackURL = process.env.PUBLIC_URL + "/img/card-backs/card-back-2.png";

@@ -30,7 +30,8 @@ class PhaseDisplay extends PureComponent {
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 borderRadius: "10px", width: "85%",
-            fontFamily:"Frijole, cursive"}}>
+            fontFamily:"Frijole, cursive",
+                }}>
                 <div style={{color: this.getColor(proto.Phase.BEGIN)}}>S</div>
                 <div style={{color: this.getColor(proto.Phase.MAIN_BEFORE )}}>M1</div>
                 <div style={{color: this.getColor(proto.Phase.ATTACK)}}>A</div>

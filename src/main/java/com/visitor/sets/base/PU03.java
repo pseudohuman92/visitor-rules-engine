@@ -32,7 +32,7 @@ public class PU03 extends Unit {
 				2, 2,
 				owner, Combat.CombatAbility.Flying);
 
-		addEnterPlayEffect(null, "When {~} enters play, return a blue or purple unit you control to its controller’s hand.",
+		addEnterPlayEffectOnStack(null, "When {~} enters play, return a blue or purple unit you control to its controller’s hand.",
 				() -> {
 					UUID returnedUnit = game.selectFromZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates.or(Predicates.isColor(BLUE), Predicates.isColor(PURPLE))), 1, false, "Select a blue or purple unit.").get(0);
 					game.returnToHand(returnedUnit);

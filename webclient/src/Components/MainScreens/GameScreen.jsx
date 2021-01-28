@@ -100,123 +100,118 @@ class GameScreen extends Component {
         const midHeight = height * 0.6;
 
         return (
-                <ErrorBoundary>
+                <div className="game-screen-outer" style={{
+                    position : "relative",
+                    width: "100%",
+                    height: "100%",
+                }}>
                     {(clientPhase === ClientPhase.WIN || clientPhase === ClientPhase.LOSE) && <Redirect to={"/profile"}/>}
                     {gameInitialized &&
                     <DragDropContext
+                        style={{
+                            position : "relative",
+                            width: "100%",
+                            height: "100%",
+                        }}
                         onDragStart={this.onDragStart}
                         onDragEnd={this.onDragEnd}
                     >
-                        <div>
-                            { /*<img
-              src={process.env.PUBLIC_URL + "/img/background.jpg"}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                objectFit: "cover",
-                zIndex: -1,
-              }}
-              alt=""
-            />*/}
-
-                            <div>
+                            <div style={{
+                                position : "relative",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "100%",
+                                height: "100%",
+                                border: "3px white solid"
+                            }}>
                                 <EscapeMenu open={this.state.menuOpen} close={this.closeMenu}/>
                                 {/*<EndGameDialog/>*/}
                                 <SelectXDialog/>
                                 <ChooseDialog/>
                                 <KnowledgeDialog/>
 
-                                <div className="level0">
+                                <div className="game-screen-left" style={{
+                                    position : "relative",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "space-between",
+                                    width: "90%",
+                                    height: "100%",
+                                    border: "3px green solid"
+                                }}>
                                     <PlayerArea
+                                        style={{
+                                            width: "100%",
+                                            height: "22%",
+                                            border: "3px yellow solid"
+                                        }}
                                         width={width}
                                         height={sideHeight}
                                         isPlayer={false}
                                     />
 
-                                    <div
-                                        className="level1-middle"
-                                        style={{width: width, height: midHeight}}
-                                    >
-                                        <div
-                                            className="level1-middle-1"
-                                            style={{width: width * 0.85, height: midHeight}}
-                                        >
-                                            <div
-                                                className="level1-middle-1-1"
-                                                style={{width: width * 0.85, height: midHeight * 0.495,
-                                                }}
-                                            >
-                                                <BoardSide isPlayer={false}/>
-                                            </div>
-                                            <div
-                                                className="level1-middle-1-1"
-                                                style={{width: width, height: midHeight * 0.01, backgroundColor:"black"}}
-                                            >
-                                            </div>
-                                            <div
-                                                className="level1-middle-1-2"
-                                                style={{width: width * 0.85, height: midHeight * 0.495,
-                                                }}
-                                            >
-                                                <BoardSide isPlayer={true}/>
-                                            </div>
-                                        </div>
+                                    <BoardSide style={{
+                                        width: "100%",
+                                        height: "25%",
+                                        border: "3px white dashed"
+                                    }} isPlayer={false}/>
 
-                                        <div
-                                            className="level1-middle"
-                                            style={{
-                                                width: width * 0.15,
-                                                height: midHeight,
-                                                flexDirection: "column",
-                                                justifyContent: "flex-end"
-                                            }}
-                                        >
-                                            <div
-                                                className="level1-middle-2"
-                                                style={{
-                                                    width: width * 0.15,
-                                                    height: midHeight * 0.8,
-                                                    flexGrow: 8,
-                                                }}
-                                            >
-                                                <Stack/>
-                                            </div>
-                                            <div
-                                                className="level1-middle-2"
-                                                style={{
-                                                    width: width * 0.15,
-                                                    height: midHeight * 0.05,
-                                                    flexGrow: 1,
-                                                }}
-                                            >
-                                                <PhaseDisplay/>
-                                            </div>
+                                    <SelectionMessage style={{
+                                        width: "100%",
+                                        height: "5%",
+                                        border: "3px red solid"
+                                    }}/>
 
-                                            <div
-                                                className="level1-middle-2"
-                                                style={{
-                                                    width: width * 0.1,
-                                                    height: midHeight * 0.15,
-                                                    flexGrow: 2,
-                                                }}
-                                            >
-                                                <ButtonDisplay/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <SelectionMessage/>
+                                    <BoardSide style={{
+                                        width: "100%",
+                                        height: "25%",
+                                        border: "3px white dashed"
+                                    }} isPlayer={true}/>
+
                                     <PlayerArea
+                                        style={{
+                                            width: "100%",
+                                            height: "22%",
+                                            border: "3px yellow solid"
+                                        }}
                                         width={width}
                                         height={sideHeight}
                                         isPlayer={true}
                                     />
+
                                 </div>
+
+                                <div className="game-screen-right"
+                                     style={{
+                                    position : "relative",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    width: "10%",
+                                    height: "100%",
+                                    border: "3px red solid"
+                                }}>
+                                    <Stack style={{
+                                        width: "100%",
+                                        height: "60%",
+                                        border: "3px yellow solid"
+                                    }} />
+                                    <PhaseDisplay style={{
+                                        width: "100%",
+                                        height: "10%",
+                                        border: "3px white solid"
+                                    }}/>
+                                    <ButtonDisplay style={{
+                                        width: "100%",
+                                        height: "30%",
+                                        border: "3px blue solid"
+                                    }}/>
+                                </div>
+
+
                             </div>
-                        </div>
                     </DragDropContext>}
                     {!gameInitialized && <div>LOADING</div>}
-                </ErrorBoundary>
+                </div>
 
         );
     }

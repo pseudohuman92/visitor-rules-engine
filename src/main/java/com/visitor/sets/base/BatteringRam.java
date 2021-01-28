@@ -29,7 +29,7 @@ public class BatteringRam extends Unit {
 				4, 3,
 				owner, Trample);
 
-				addEnterPlayEffect(null, "When {~} enters play, discard a random card. If you discard a unit card this way, {~} deals damage equal to that card’s attack to any target.",
+				addEnterPlayEffectOnStack(null, "When {~} enters play, discard a random card. If you discard a unit card this way, {~} deals damage equal to that card’s attack to any target.",
 				()-> {
 					Card discardedCard = game.discardAtRandom(controller);
 					if (discardedCard != null && isUnit(discardedCard)){

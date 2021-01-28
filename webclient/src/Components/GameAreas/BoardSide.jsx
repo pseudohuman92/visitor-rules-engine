@@ -41,9 +41,9 @@ class BoardSide extends Component {
             ref={provided.innerRef}
             {...provided.droppableProps}
             style={{
-              height: "100%",
               display: "flex",
-              flexDirection: isPlayer ? "column" : "column-reverse"
+              flexDirection: isPlayer ? "column" : "column-reverse",
+                  ...this.props.style
             }}
           >
             <div

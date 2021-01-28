@@ -27,7 +27,7 @@ public class GU04 extends Unit {
 				4, 4,
 				owner);
 
-		addEnterPlayEffect(null, "When {~} enters play, draw a card for each card you control with cost 3 or greater.",
+		addEnterPlayEffectOnStack(null, "When {~} enters play, draw a card for each card you control with cost 3 or greater.",
 				()-> game.draw(controller, game.countInZone(controller, Game.Zone.Play,
 						Predicates.and(Predicates::isUnit, c -> c.isPlayable() && (c.getCost() >= 3)))));
 	}

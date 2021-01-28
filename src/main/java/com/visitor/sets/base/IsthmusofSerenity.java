@@ -28,7 +28,7 @@ public class IsthmusofSerenity extends Unit {
 				4, 4,
 				owner, Flying, Lifelink);
 
-		addEnterPlayEffect(null,"When {~} enters play, put X 1/1 Bat with flying into play where X equal to your {P}",
+		addEnterPlayEffectOnStack(null,"When {~} enters play, put X 1/1 Bat with flying into play where X equal to your {P}",
 				()-> {
 					int x = game.getKnowledgeCount(controller, PURPLE);
 					for (int i = 0; i < x; i++) {

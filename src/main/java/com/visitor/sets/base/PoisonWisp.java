@@ -30,7 +30,7 @@ public class PoisonWisp extends Unit {
 				5, 5,
 				owner, Deathtouch);
 
-		addEnterPlayEffect(null, "When {~} enters play, you may destroy another target unit.",
+		addEnterPlayEffectOnStack(null, "When {~} enters play, you may destroy another target unit.",
 						() -> {
 							Arraylist<UUID> destroyedIds = game.selectFromZone(controller, Game.Zone.Both_Play, and(Predicates::isUnit, not(this::equals)), 1, true, "You may destroy another unit.");
 							if (destroyedIds.size() > 0) {

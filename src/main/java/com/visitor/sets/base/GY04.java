@@ -36,7 +36,7 @@ public class GY04 extends Unit {
 				3, 3,
 				owner, Combat.CombatAbility.Trample);
 
-		addEnterPlayEffect(null, "When {~} enters play, create a 3/3 green and white Wolf.",
+		addEnterPlayEffectOnStack(null, "When {~} enters play, create a 3/3 green and white Wolf.",
 				() -> {
 					UnitToken.Wolf_3_3(game, controller).resolve();
 				});
