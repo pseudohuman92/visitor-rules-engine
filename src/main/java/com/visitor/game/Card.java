@@ -96,10 +96,6 @@ public abstract class Card implements Serializable {
 		counters.decrease(name, count);
 	}
 
-	public int removeAllCounters (Counter name) {
-		return counters.remove(name);
-	}
-
 	public boolean hasCounters (Counter name, int i) {
 		return counters.getOrDefault(name, 0) >= i;
 	}
@@ -120,8 +116,11 @@ public abstract class Card implements Serializable {
 	public void clear () {
 		depleted = false;
 		targets.clear();
+		attachments.clear();
 		if (combat != null)
 			combat.clear();
+		if (attachable != null)
+			attachable.clear();
 	}
 
 	public void enterPlay(){
@@ -136,13 +135,14 @@ public abstract class Card implements Serializable {
 	}
 
 	public void leavePlay () {
-		clear();
 		if (triggering != null) {
 			triggering.deregister();
 		}
 		if (attachable != null) {
 			attachable.removeFromAttached();
 		}
+		attachments.forEach(game::destroy);
+		clear();
 		leavePlayEffect.run();
 	}
 
@@ -381,11 +381,8 @@ public abstract class Card implements Serializable {
 				.setLoyalty(-1)
 				.addAllTypes(types.transformToStringList())
 				.addAllSubtypes(subtypes.transformToStringList())
-				.addAllTargets(targets.transformToStringList());
-
-		if (combat != null) {
-			builder.setCombat(combat.toCombatMessage());
-		}
+				.addAllTargets(targets.transformToStringList())
+				.addAllAttachments(attachments.transformToStringList());
 
 		counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
 				.setCounter(k)
@@ -397,6 +394,10 @@ public abstract class Card implements Serializable {
 
 		if (playable != null)
 			builder.setCost(playable.getCost() + "");
+
+		if (combat != null) {
+			builder.setCombat(combat.toCombatMessage());
+		}
 
 		return builder;
 	}
@@ -496,11 +497,17 @@ public abstract class Card implements Serializable {
 		enterPlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, effect);
 	}
 
-	public boolean isPlayable () { return playable != null;
+	public void addLeavePlayEffect (CounterMap<Types.Knowledge> knowledge, Runnable effect){
+		if (knowledge == null){
+			knowledge = new CounterMap<>();
+		}
+		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
+		leavePlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, effect);
 	}
 
-	public int getCost () { return playable.getCost();
-	}
+	public boolean isPlayable () { return playable != null;	}
+
+	public int getCost () { return playable.getCost();	}
 
 	public void setPurging () {
 		runIfNotNull(playable, ()-> playable.setPurging());
@@ -521,9 +528,19 @@ public abstract class Card implements Serializable {
 
 	public void setAttachable (Predicate<Card> validTarget, Consumer<UUID> afterAttachEffect, Consumer<UUID> afterRemoveEffect) {
 		attachable = new Attachable(game, this, validTarget, afterAttachEffect, afterRemoveEffect);
-
-		playable.addCanPlayAdditional(() -> game.hasIn(controller, Game.Zone.Both_Play, validTarget, 1));
 		playable.setTargetSingleCard(Game.Zone.Both_Play, validTarget, "Choose a card to attach", attachable::setAttachTo, null);
+	}
+
+	public void loseAttack (int attack) {
+		runIfNotNull(combat, () -> combat.loseAttack(attack));
+	}
+
+	public void loseHealth (int health) {
+		runIfNotNull(combat, () -> {
+			combat.loseHealth(health);
+			if (combat.getHealth() == 0)
+				game.destroy(id);
+		});
 	}
 
 	public enum CardType {
@@ -534,10 +551,11 @@ public abstract class Card implements Serializable {
 		Spell,
 		Tome,
 		Unit,
+		Attachment,
 
 		// Internal types
 		Ability,
-		Attachment, Effect
+		Effect
 	}
 
 	public enum CardSubtype {
@@ -553,7 +571,7 @@ public abstract class Card implements Serializable {
 		Warrior,
 		Golem,
 		Elf,
-		Insect, Plant, Wurm, Wolf;
+		Insect, Plant, Wurm, Wolf
 	}
 
 }

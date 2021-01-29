@@ -6045,6 +6045,7 @@ $root.Card = (function() {
      * @property {number|null} [loyalty] Card loyalty
      * @property {ICombat|null} [combat] Card combat
      * @property {string|null} [set] Card set
+     * @property {Array.<string>|null} [attachments] Card attachments
      */
 
     /**
@@ -6061,6 +6062,7 @@ $root.Card = (function() {
         this.knowledgeCost = [];
         this.types = [];
         this.subtypes = [];
+        this.attachments = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -6188,6 +6190,14 @@ $root.Card = (function() {
     Card.prototype.set = "";
 
     /**
+     * Card attachments.
+     * @member {Array.<string>} attachments
+     * @memberof Card
+     * @instance
+     */
+    Card.prototype.attachments = $util.emptyArray;
+
+    /**
      * Creates a new Card instance using the specified properties.
      * @function create
      * @memberof Card
@@ -6246,6 +6256,9 @@ $root.Card = (function() {
             $root.Combat.encode(message.combat, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
         if (message.set != null && Object.hasOwnProperty.call(message, "set"))
             writer.uint32(/* id 17, wireType 2 =*/138).string(message.set);
+        if (message.attachments != null && message.attachments.length)
+            for (var i = 0; i < message.attachments.length; ++i)
+                writer.uint32(/* id 18, wireType 2 =*/146).string(message.attachments[i]);
         return writer;
     };
 
@@ -6334,6 +6347,11 @@ $root.Card = (function() {
                 break;
             case 17:
                 message.set = reader.string();
+                break;
+            case 18:
+                if (!(message.attachments && message.attachments.length))
+                    message.attachments = [];
+                message.attachments.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6441,6 +6459,13 @@ $root.Card = (function() {
         if (message.set != null && message.hasOwnProperty("set"))
             if (!$util.isString(message.set))
                 return "set: string expected";
+        if (message.attachments != null && message.hasOwnProperty("attachments")) {
+            if (!Array.isArray(message.attachments))
+                return "attachments: array expected";
+            for (var i = 0; i < message.attachments.length; ++i)
+                if (!$util.isString(message.attachments[i]))
+                    return "attachments: string[] expected";
+        }
         return null;
     };
 
@@ -6520,6 +6545,13 @@ $root.Card = (function() {
         }
         if (object.set != null)
             message.set = String(object.set);
+        if (object.attachments) {
+            if (!Array.isArray(object.attachments))
+                throw TypeError(".Card.attachments: array expected");
+            message.attachments = [];
+            for (var i = 0; i < object.attachments.length; ++i)
+                message.attachments[i] = String(object.attachments[i]);
+        }
         return message;
     };
 
@@ -6542,6 +6574,7 @@ $root.Card = (function() {
             object.knowledgeCost = [];
             object.types = [];
             object.subtypes = [];
+            object.attachments = [];
         }
         if (options.defaults) {
             object.id = "";
@@ -6600,6 +6633,11 @@ $root.Card = (function() {
             object.combat = $root.Combat.toObject(message.combat, options);
         if (message.set != null && message.hasOwnProperty("set"))
             object.set = message.set;
+        if (message.attachments && message.attachments.length) {
+            object.attachments = [];
+            for (var j = 0; j < message.attachments.length; ++j)
+                object.attachments[j] = message.attachments[j];
+        }
         return object;
     };
 

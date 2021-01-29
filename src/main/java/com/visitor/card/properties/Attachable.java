@@ -42,10 +42,6 @@ public class Attachable {
 		this.afterRemoved = afterRemoved;
 	}
 
-	public final boolean canAttach (Card candidate) {
-		return validTarget.test(candidate);
-	}
-
 	public final void setAttachTo (UUID attachedId){
 		attachedTo = attachedId;
 	}
@@ -61,20 +57,7 @@ public class Attachable {
 		attachedTo = null;
 	}
 
-	/*
-	public final void activate () {
-		Arraylist<ActivatedAbility> abilities = getActivatableAbilities();
-		if (abilities.size() == 1) {
-			abilities.get(0).activate();
-		} else if (abilities.size() > 1) {
-			Arraylist<Card> abilityCards = new Arraylist<>(abilities.transform(aa -> (Card)new AbilityCard(game, card, aa)));
-			UUID chosenAbility = game.selectFromList(card.controller,  abilityCards, Predicates::any, 1, false, "Choose an ability to activate.").get(0);
-			abilities.forEach(aa -> {
-				if(aa.id.equals(chosenAbility)){
-					aa.activate();
-				}
-			});
-		}
+	public void clear () {
+		attachedTo = null;
 	}
-	*/
 }

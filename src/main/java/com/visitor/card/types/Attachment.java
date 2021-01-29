@@ -27,7 +27,6 @@ public abstract class Attachment extends Card {
 		super(game, name, knowledge, CardType.Attachment, text, owner);
 
 		playable = new Playable(game, this, cost).setSlow().setPersistent();
-
 		studiable = new Studiable(game, this);
 		activatable = new Activatable(game, this);
 		triggering = new Triggering(game, this);

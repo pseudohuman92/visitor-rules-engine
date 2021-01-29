@@ -1330,6 +1330,11 @@ if(noAction)
 		getCard(attachedTo).removeAttachment(attachmentId);
 	}
 
+	public void removeAttackAndHealth (UUID cardId, int attack, int health) {
+		getCard(cardId).loseAttack(attack);
+		getCard(cardId).loseHealth(health);
+	}
+
 	public enum Zone {
 		Deck, Hand, Opponent_Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Opponent_Discard_Pile, Stack
 	}

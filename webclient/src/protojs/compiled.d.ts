@@ -2497,6 +2497,9 @@ export class Card implements ICard {
     /** Card set. */
     public set: string;
 
+    /** Card attachments. */
+    public attachments: string[];
+
     /**
      * Creates a new Card instance using the specified properties.
      * @param [properties] Properties to set

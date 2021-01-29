@@ -400,6 +400,10 @@ public class Combat {
 		damageEffects.forEach(effect -> effect.accept(targetId, damage));
 	}
 
+	public void loseAttack (int i) {
+		attack = Math.max(attack - i, 0);
+	}
+
 	public enum CombatAbility {
 		Deathtouch, //Done
 		Defender, //Done
