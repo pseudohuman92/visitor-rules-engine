@@ -574,8 +574,8 @@ class PlayingCard extends React.Component {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             style={{
-                                ...style,
                                 position: "relative",
+                                ...style,
                             }}
                         >
 
@@ -609,7 +609,7 @@ class PlayingCard extends React.Component {
                                     onMouseLeave={this.onMouseLeave}
                                 >
                                     <CardDisplay
-                                        opacity={depleted ? 0.5 : 1}
+                                        opacity={depleted ? 50 : 100}
                                         borderColor={this.getBorderColor()}
                                         onClick={this.getClickHandler()}
                                         small={small}
@@ -619,6 +619,7 @@ class PlayingCard extends React.Component {
                                         isDragging = {isDragging}
                                         popoverDisabled = {popoverDisabled}
                                         withKeywords
+                                        style={style}
                                     />
                                 </div>
                             </div>

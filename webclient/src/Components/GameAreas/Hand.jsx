@@ -25,17 +25,17 @@ class Hand extends PureComponent {
           return <PlayingCard  key={card.id} cardData={card} DnDIndex={i} play />;
         })
       : Array.apply(null, Array(opponentHandSize)).map((x, i) => {
-        return <img
+        return (<img
         key ={i}
         className="image"
         src={cardBackURL}
         alt=""
         style={{
           maxWidth: "100%",
-          maxHeight: "100%",
+          maxHeight: "10a0%",
           objectFit: "scale-down"
         }}
-      />;
+      />);
       });
       
     return (
@@ -63,24 +63,26 @@ class Hand extends PureComponent {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              style={{overflow: "hidden", ...this.props.style }}
+              style={{display: "relative", overflow: "hidden", ...this.props.style }}
             >
               {handCards.map((card, i) => {
                   return (<div
                       key={i}
                           style={{
-                              maxWidth: "100%",
-                              maxHeight: "100%",
+                              maxWidth: "20%",
+                              maxHeight: "20%",
                               position: "absolute",
                               left: "" + stepSize * i + "px",
                               top: 0,
                               zIndex: i,
                           }}
-                      > {card} </div>);})}
+                      > {card} </div>);
+              })}
               {provided.placeholder}
             </div>
           );
-        }}
+        }
+        }
       </Droppable>
     );
   }

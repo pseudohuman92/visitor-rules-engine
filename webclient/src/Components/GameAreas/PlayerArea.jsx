@@ -18,7 +18,7 @@ class PlayerArea extends Component {
           flexGrow: 2,
           display: "flex",
           justifyContent: "space-around",
-          top: isPlayer ? "-1%" : "1%",
+            top: isPlayer ? "-1%" : "1%",
           ...style
         }}
       >

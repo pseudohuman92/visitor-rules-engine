@@ -311,7 +311,7 @@ export const keywords = {
     Health: "An asset or players total resistance to fatal damage",
     Damage: "Reductions to Player health, shields or Card health",
     Trigger: "Activates on conditional interactions",
-    Activate: "Change a cards play state form Ready to Depleted",
+    Use: "Change a cards play state form Ready to Used",
     Discharge: "Remove specified number of charge counters.",
     Charge: "Add specified number of charge counters."
 };

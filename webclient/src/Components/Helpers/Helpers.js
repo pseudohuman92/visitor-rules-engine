@@ -308,3 +308,24 @@ export function replaceSpecialCharacters(inputString, name){
   }
   return replaceAll(inputString, "{~}", name);
 }
+
+export function organizeCards(cardList) {
+  let organizedCards = [];
+  for (let i = 0; i < cardList.length ; i++){
+    let curr = cardList[i];
+    console.log("Curr", curr);
+    if (!curr.types.includes("Attachment")){
+      let attachments = [];
+      for (let j = 0; j < cardList.length; j++){
+        let candidate = cardList[j];
+        if (curr.attachments.includes(candidate.id)){
+          attachments.push(candidate);
+        }
+      }
+      organizedCards.push({card : curr, attachments: attachments})
+      console.log("Organize Iter", organizedCards);
+    }
+  }
+  console.log("Organize Result", organizedCards);
+  return organizedCards;
+}

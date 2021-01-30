@@ -85,17 +85,12 @@ export class CardDisplay extends PureComponent {
         !isDragging ? !popoverDisabled  ? (
             <div
                 opacity={1}
-                style ={{placement: "center"}}
+                style ={{placement: "center", display: "flex"}}
             >
               <div
-                  style={{
-                  position: "relative",
-                    justify: "center",
-                    alignContent: "center",
-                    //border: "2px blue solid"
-                  }}
+                  style={{...style, border:"initial"}}
               >
-                <FullCard scale={1.5} {...rest} opacity={1} square={false} preview={true} />
+                <FullCard scale={1.5} {...rest} opacity={100} square={false} preview={true} />
               </div>
               {withKeywords &&
               <div
@@ -107,7 +102,7 @@ export class CardDisplay extends PureComponent {
               >
                 {this.props.cardData.description &&
                 Object.keys(keywords).map((keyword, i) => {
-                  if (this.props.cardData.description.indexOf(keyword) !== -1 ||
+                  if ((this.props.cardData.description.indexOf(keyword) !== -1) ||
                       (this.props.cardData.combat && this.props.cardData.combat.combatAbilities.indexOf(keyword) !== -1)) {
                     return (
                         <div

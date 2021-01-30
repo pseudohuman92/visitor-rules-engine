@@ -67,8 +67,8 @@ class InfoMessage extends Component {
         style={{
           height: "100%",
           width: "100%",
-          background: "white",
-          color: "black"
+          color: "white",
+            fontFamily: "Frijole, cursive",
         }}
       >
         <Textfit

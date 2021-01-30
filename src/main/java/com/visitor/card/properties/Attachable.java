@@ -46,16 +46,23 @@ public class Attachable {
 		attachedTo = attachedId;
 	}
 
+	/**
+	 * Gets automatically called from Card's enterPlay().
+	 */
 	public final void attach (){
 		game.addAttachmentTo(attachedTo, card.id);
 		afterAttached.accept(attachedTo);
 	}
 
+	/**
+	 * Gets automatically called from Card's leavePlay().
+	 */
 	public final void removeFromAttached (){
 		game.removeAttachmentFrom(attachedTo, card.id);
 		afterRemoved.accept(attachedTo);
 		attachedTo = null;
 	}
+
 
 	public void clear () {
 		attachedTo = null;

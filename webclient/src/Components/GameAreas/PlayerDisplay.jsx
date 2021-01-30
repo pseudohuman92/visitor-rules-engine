@@ -172,7 +172,12 @@ class PlayerDisplay extends React.Component {
           backgroundPosition: "center",
           backgroundSize: "100% 100%",
           backgroundRepeat: "no-repeat",
-        } : {};
+        } : {
+          backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/player-display-grunge-white.png)",
+          backgroundPosition: "center",
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+        };
 
     return (
       <div
@@ -202,7 +207,7 @@ class PlayerDisplay extends React.Component {
                   <img
                     src={
                       process.env.PUBLIC_URL +
-                      "/img/card-components/energy.png"
+                      "/img/card-components/energy-black.png"
                     }
                     style={{
                       maxWidth: "100%",
@@ -211,7 +216,7 @@ class PlayerDisplay extends React.Component {
                       position: "absolute",
                       right: 5 * i + "%",
                       zIndex: maxEnergy - i,
-                      opacity: energy ? (i >= energy ? 0.3 : 1) : 0.3
+                      opacity: energy ? (i >= energy ? 0.5 : 1) : 0.5
                     }}
                     alt=""
                   />
@@ -227,9 +232,10 @@ class PlayerDisplay extends React.Component {
             }}
           >
             <TextOnImage
+                style={{color: "white"}}
               src={
                 process.env.PUBLIC_URL +
-                "/img/card-components/health.png"
+                "/img/card-components/health-black.png"
               }
               text={health}
               min={1}

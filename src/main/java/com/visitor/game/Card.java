@@ -53,15 +53,6 @@ public abstract class Card implements Serializable {
 	protected Runnable enterPlayEffect = ()->{};
 	protected Runnable leavePlayEffect = ()->{};
 
-
-	/**
-	 * This is the default constructor for creating a card.
-	 *
-	 * @param name
-	 * @param knowledge
-	 * @param text
-	 * @param owner
-	 */
 	public Card (Game game, String name,
 	             CounterMap<Knowledge> knowledge,
 	             CardType type, String text, UUID owner) {
@@ -81,13 +72,6 @@ public abstract class Card implements Serializable {
 		this.depleted = false;
 	}
 
-
-	/**
-	 * Function that adds counters to the card.
-	 *
-	 * @param name
-	 * @param count
-	 */
 	public void addCounters (Counter name, int count) {
 		counters.add(name, count);
 	}
@@ -112,6 +96,7 @@ public abstract class Card implements Serializable {
 
 	/**
 	 * Function that clears status flags and supplementary data of the card.
+	 * Gets called from Card.leavePlay() and Game.cancel()
 	 */
 	public void clear () {
 		depleted = false;
@@ -123,6 +108,9 @@ public abstract class Card implements Serializable {
 			attachable.clear();
 	}
 
+	/**
+	 * Gets added to Playable.resolvePlaceCard if Playable.resolveZone is Play.
+	 */
 	public void enterPlay(){
 		if (triggering != null) {
 			triggering.register();
@@ -134,6 +122,9 @@ public abstract class Card implements Serializable {
 		game.addEvent(Event.enterPlay(this), true);
 	}
 
+	/**
+	 * Gets called by Card.moveToZone() if old Zone is play and new zone is not Play
+	 */
 	public void leavePlay () {
 		if (triggering != null) {
 			triggering.deregister();
@@ -145,6 +136,7 @@ public abstract class Card implements Serializable {
 		clear();
 		leavePlayEffect.run();
 	}
+
 
 	public void moveToZone(Game.Zone zone){
 		if (this.zone == Play && (zone != Play && zone != Opponent_Play)) {

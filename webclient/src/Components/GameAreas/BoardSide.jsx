@@ -5,23 +5,24 @@ import { Droppable } from "react-beautiful-dnd";
 import PlayingCard from "../Card/PlayingCard";
 
 import "../../css/Utils.css";
+import {organizeCards} from "../Helpers/Helpers";
+import CardStack from "../Card/CardStack";
 
 const mapStateToProps = state => {
   return {
-    windowDimensions: state.windowDimensions,
     playerCards: state.extendedGameState.game.player.play,
     opponentCards: state.extendedGameState.game.opponent.play
   };
 };
 
-function getCardsOfType(cards, type){
-  let units = [];
-  for (const card of cards){
-    if(card.types.indexOf(type) !== -1){
-      units.push(card)
+function getCardsOfType(cardGroups, type){
+  let chosen = [];
+  for (const cardGroup of cardGroups){
+    if(cardGroup.card.types.includes(type)){
+      chosen.push(cardGroup)
     }
   }
-  return units;
+  return chosen;
 }
 
 class BoardSide extends Component {
@@ -30,10 +31,9 @@ class BoardSide extends Component {
       isPlayer,
       playerCards,
       opponentCards,
-      windowDimensions
     } = this.props;
-    const { width } = windowDimensions;
-    const cards = isPlayer ? playerCards : opponentCards;
+    const cards = organizeCards(isPlayer ? playerCards : opponentCards);
+
 
     return <Droppable droppableId={isPlayer?"player-play-area":"opponent-play-area"}>
         {provided => (
@@ -55,16 +55,16 @@ class BoardSide extends Component {
                   alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
                 }}
             >
-            {getCardsOfType(cards,"Unit").map((card, i) => (
+            {getCardsOfType(cards,"Unit").map((cardGroup, i) => (
               <div
-                key={card.id}
+                key={cardGroup.card.id}
                 style={{
                   //width: Math.min(width / (cards.length * 2), width / 20),
                   margin: "0 1% 1% 1%",
                   maxHeight:"100%"
                 }}
               >
-                <PlayingCard square cardData={card} isDragDisabled DnDIndex={i}/>
+                <CardStack isPlayer={isPlayer} square cardGroup={cardGroup} isDragDisabled DnDIndex={i}/>
               </div>
             ))}
         </div>
@@ -77,16 +77,16 @@ class BoardSide extends Component {
                 alignItems: "center" //isPlayer ? "flex-end" : "flex-start"
               }}
           >
-            {getCardsOfType(cards,"Ally").map((card, i) => (
+            {getCardsOfType(cards,"Ally").map((cardGroup, i) => (
                 <div
-                    key={card.id}
+                    key={cardGroup.card.id}
                     style={{
                       //width: Math.min(width / (cards.length * 2), width / 20),
                       leftMargin: "1%",
                       rightMargin: "1%"
                     }}
                 >
-                  <PlayingCard square cardData={card} isDragDisabled DnDIndex={i}/>
+                  <CardStack isPlayer={isPlayer} square cardGroup={cardGroup} isDragDisabled DnDIndex={i}/>
                 </div>
             ))}
           </div>

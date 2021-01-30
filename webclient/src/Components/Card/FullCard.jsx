@@ -70,7 +70,7 @@ class FullCard extends PureComponent {
                     width: cardWidth,
                     height: cardHeight,
                     position: "relative",
-                    opacity: opacity,
+                    filter: "brightness("+opacity+"%)",
                     backgroundColor: backColor,
                     borderRadius: cardWidth / (2 * scale_) + "px",
                 }}
@@ -89,7 +89,9 @@ class FullCard extends PureComponent {
                         backgroundImage: "url(" + imageSrc +")",
                         backgroundPosition: 'center',
                         backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat'
+                        backgroundRepeat: 'no-repeat',
+
+                        border: "1px red solid",
                     }}
                 >
                     {!preview && combat && combat.deploying &&
