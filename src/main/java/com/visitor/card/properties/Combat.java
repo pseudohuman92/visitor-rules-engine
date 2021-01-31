@@ -324,15 +324,14 @@ public class Combat {
 
 	//Do not use to lose health (e.g. negative input)
 	//Also raises the max health
-	public final void addHealth (int health) {
+	public final void addAttackAndHealth (int attack, int health) {
+		if (attack > 0)
+			this.attack += attack;
+
 		if (health > 0) {
 			this.health += health;
 			this.maxHealth += health;
 		}
-	}
-
-	public final void gainTurnlyHealth (int health) {
-		turnlyHealth += health;
 	}
 
 	public boolean canDieFromBlock () {
@@ -365,17 +364,11 @@ public class Combat {
 		}
 	}
 
-	public void addTurnlyAttack (int attack) {
-		turnlyAttack += attack;
-	}
-
-	public void addTurnlyHealth (int health) {
-		turnlyHealth += health;
-	}
-
-	// Can use to remove attack
-	public void addAttack (int i) {
-		attack += i;
+	public void addTurnlyAttackAndHealth (int attack, int health) {
+		if (attack > 0)
+			turnlyAttack += attack;
+		if (health > 0)
+			turnlyHealth += health;
 	}
 
 	public void setAttack (int i) {

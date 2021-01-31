@@ -212,8 +212,8 @@ public class Player {
 	}
 
 
-	public void gainHealth (int health) {
-		combat.addHealth(health);
+	public void addHealth (int health) {
+		combat.addAttackAndHealth(0, health);
 	}
 
 	public void endTurn () {

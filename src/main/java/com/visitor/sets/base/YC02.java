@@ -17,9 +17,7 @@ public class YC02 extends Cantrip {
 
 		playable
 				.setTargetSingleUnit(null, null,
-						cardId -> {
-							game.getCard(cardId).addTurnlyAttack(2);
-							game.getCard(cardId).addTurnlyHealth(4);
-						}, null);
+						cardId ->
+							game.addTurnlyAttackAndHealth(cardId, 2, 4), null);
 	}
 }

@@ -17,8 +17,7 @@ public class GC05 extends Cantrip {
 
 		playable
 				.setTargetSingleUnit(null, null, cardId -> {
-					game.getCard(cardId).addAttack(3);
-					game.getCard(cardId).addHealth(3);
+					game.addAttackAndHealth(cardId, 3, 3);
 				}, null);
 	}
 }

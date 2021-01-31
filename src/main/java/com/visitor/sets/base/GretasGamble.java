@@ -16,7 +16,7 @@ public class GretasGamble extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(() ->
+				.addResolveEffect(() ->
 						game.draw(controller, 2)
 				);
 	}

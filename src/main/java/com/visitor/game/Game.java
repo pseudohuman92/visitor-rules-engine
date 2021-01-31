@@ -147,7 +147,7 @@ public class Game implements Serializable {
 		return null;
 	}
 
-	public Card getCardFromZone (UUID playerId, Zone zone, UUID cardId) {
+	private Card getCardFromZone (UUID playerId, Zone zone, UUID cardId) {
 		Arraylist<Card> card = new Arraylist<>();
 		getZone(playerId, zone).forEach(c -> {
 			if (c.id.equals(cardId))
@@ -166,7 +166,7 @@ public class Game implements Serializable {
 		return cards;
 	}
 
-	public Arraylist<Card> getAll (List<UUID> list) {
+	private Arraylist<Card> getAll (List<UUID> list) {
 		return new Arraylist<>(list.stream().map(this::getCard).collect(Collectors.toList()));
 	}
 
@@ -186,11 +186,11 @@ public class Game implements Serializable {
 		return null;
 	}
 
-	public Arraylist<Card> extractAll (List<UUID> list) {
+	private Arraylist<Card> extractAll (List<UUID> list) {
 		return new Arraylist<>(list.stream().map(this::extractCard).collect(Collectors.toList()));
 	}
 
-	public Arraylist<Card> extractAllCopiesFrom (UUID playerId, String cardName, Zone zone) {
+	private Arraylist<Card> extractAllCopiesFrom (UUID playerId, String cardName, Zone zone) {
 		Arraylist<Card> cards = new Arraylist<>(getZone(playerId, zone).parallelStream()
 				.filter(c -> c.name.equals(cardName)).collect(Collectors.toList()));
 		getZone(playerId, zone).removeAll(cards);
@@ -968,13 +968,6 @@ public class Game implements Serializable {
 		return players.values().stream().anyMatch(p -> p.id.equals(targetId));
 	}
 
-	public void gainHealth (UUID id, int health) {
-		if(isPlayer(id)){
-			getPlayer(id).gainHealth(health);
-		} else {
-			getCard(id).gainHealth(health);
-		}
-	}
 
 	public void dealDamageToAll (UUID playerId, UUID sourceId, Damage damage) {
 		players.values().forEach(p -> dealDamage(sourceId, p.id, damage));
@@ -1070,7 +1063,7 @@ public class Game implements Serializable {
 	}
 
 	public void returnAllCardsToHand () {
-		forEachInZone(UUID.randomUUID(), Both_Play, Card::returnToHand);
+		forEachInZone(UUID.randomUUID(), Both_Play, Predicates::any, this::returnToHand);
 	}
 
 	public void heal (UUID cardId, int healAmount) {
@@ -1131,10 +1124,6 @@ public class Game implements Serializable {
 		return getPlayer(playerId).extractFromTopOfDeck(count);
 	}
 
-	public void forEachInZone (UUID playerId, Zone zone, Consumer<Card> cardConsumer) {
-		getZone(playerId, zone).forEach(cardConsumer);
-	}
-
 	public void forEachInZone (UUID playerId, Zone zone, Predicate<Card> filter, Consumer<UUID> cardIdConsumer) {
 		getZone(playerId, zone).forEach(card -> {
 			if(filter.test(card)){
@@ -1159,10 +1148,6 @@ public class Game implements Serializable {
 
 	public Card extractTopmostMatchingFromDeck (UUID playerId, Predicate<Card> cardPredicate) {
 		return getPlayer(playerId).extractTopmostMatchingFromDeck(cardPredicate);
-	}
-
-	public void addAttack (UUID cardId, int i) {
-		getCard(cardId).addAttack(i);
 	}
 
 	public void gainControlFromZone (UUID newController, Zone oldZone, Zone newZone, UUID targetId) {
@@ -1190,13 +1175,11 @@ public class Game implements Serializable {
 	}
 
 	public void addTurnlyAttackAndHealth (UUID cardId, int attack, int health) {
-		getCard(cardId).addTurnlyAttack(attack);
-		getCard(cardId).addTurnlyHealth(health);
+		getCard(cardId).addTurnlyAttackAndHealth(attack, health);
 	}
 
 	public void addAttackAndHealth (UUID cardId, int attack, int health) {
-		getCard(cardId).addAttack(attack);
-		getCard(cardId).addHealth(health);
+		getCard(cardId).addAttackAndHealth(attack, health);
 	}
 
 	public int getKnowledgeCount (UUID playerId, Knowledge knowledge) {
@@ -1295,8 +1278,8 @@ public class Game implements Serializable {
 			b.addBlockers(blocker.toString());
 		}
 
-if(noAction)
-	return b;
+	if(noAction)
+		return b;
 
 		players.forEach((s, p) -> {
 			if (playerId.equals(s) && isPlayerActive(s)) {
@@ -1333,6 +1316,10 @@ if(noAction)
 	public void removeAttackAndHealth (UUID cardId, int attack, int health) {
 		getCard(cardId).loseAttack(attack);
 		getCard(cardId).loseHealth(health);
+	}
+
+	public void gainHealth (UUID playerId, int health) {
+		getPlayer(playerId).addHealth(health);
 	}
 
 	public enum Zone {

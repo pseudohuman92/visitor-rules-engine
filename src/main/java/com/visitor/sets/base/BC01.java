@@ -16,6 +16,6 @@ public class BC01 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetSingleUnit(null, null, cardId -> game.getCard(cardId).returnToHand(), null);
+				.setTargetSingleUnit(null, null, game::returnToHand, null);
 	}
 }

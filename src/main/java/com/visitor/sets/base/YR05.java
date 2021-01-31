@@ -17,6 +17,6 @@ public class YR05 extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(game::destroyAllUnits);
+				.addResolveEffect(game::destroyAllUnits);
 	}
 }

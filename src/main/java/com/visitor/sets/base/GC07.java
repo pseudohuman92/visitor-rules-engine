@@ -17,7 +17,7 @@ public class GC07 extends Cantrip {
 				owner);
 
 		playable
-				.setResolveEffect(() ->
+				.addResolveEffect(() ->
 						game.draw(controller, game.extractTopmostMatchingFromDeck(controller, Predicates::isUnit))
 				);
 	}

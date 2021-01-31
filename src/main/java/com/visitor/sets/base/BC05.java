@@ -16,6 +16,6 @@ public class BC05 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetSingleUnit(null, null, cardId -> game.getCard(targets.get(0)).addAttack(-2), null);
+				.setTargetSingleUnit(null, null, cardId -> game.removeAttackAndHealth(cardId, 2, 0), null);
 	}
 }

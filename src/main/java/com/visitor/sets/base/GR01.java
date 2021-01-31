@@ -29,7 +29,7 @@ public class GR01 extends Ritual {
 			targets.add(game.selectFromZone(playable.card.controller, Play, Predicates::isUnit, 1, false, "Select a unit you control.").get(0));
 			targets.add(game.selectFromZone(playable.card.controller, Opponent_Play, Predicates::isUnit, 1, false, "Select a unit you don't control").get(0));
 		});
-		playable.setResolveEffect(() -> {
+		playable.addResolveEffect(() -> {
 			UUID strikerId = targets.get(0);
 			UUID receiverId = targets.get(1);
 			if (game.isIn(controller, Play, strikerId) &&

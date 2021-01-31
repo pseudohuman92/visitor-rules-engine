@@ -16,6 +16,6 @@ public class TheGreatOdyssey extends Ritual {
 				owner);
 
 		playable
-				.setTargetMultipleUnits(null, 3, true, cardId -> game.getCard(cardId).returnToHand(), null);
+				.setTargetMultipleUnits(null, 3, true, game::returnToHand, null);
 	}
 }

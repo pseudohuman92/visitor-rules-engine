@@ -16,7 +16,7 @@ public class FromDawnTillDusk extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(() -> {
+				.addResolveEffect(() -> {
 					game.draw(playable.card.controller, 3);
 					game.discard(playable.card.controller, 1);
 				});

@@ -17,6 +17,6 @@ public class FirmResolution extends Ritual {
 				owner);
 
 		playable
-				.setTargetMultipleUnits(null, 2, true, cardId -> game.getCard(cardId).addTurnlyCombatAbility(Unblockable), null);
+				.setTargetMultipleUnits(null, 2, true, cardId -> game.addTurnlyCombatAbility(cardId, Unblockable), null);
 	}
 }

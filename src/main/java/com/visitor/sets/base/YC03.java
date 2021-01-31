@@ -3,6 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
@@ -19,12 +20,8 @@ public class YC03 extends Cantrip {
 				owner);
 
 		playable
-				.setResolveEffect(() ->
-						game.forEachInZone(controller, Game.Zone.Both_Play, card -> {
-							if (isUnit(card)) {
-								card.addAttack(1);
-								card.addHealth(2);
-							}
-						}));
+				.addResolveEffect(() ->
+						game.forEachInZone(controller, Game.Zone.Play, Predicates::isUnit,
+								cardId -> game.addAttackAndHealth(cardId, 1, 2)));
 	}
 }

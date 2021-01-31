@@ -23,6 +23,6 @@ public class ActivatedAbility1 extends Unit {
 				"0: Gain +0/+1",
 				0, 1,
 				owner);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain +0/+1", ()->game.gainHealth(id, 1)));
+		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain +0/+1", ()->game.addAttackAndHealth(id, 0, 1)));
 	}
 }

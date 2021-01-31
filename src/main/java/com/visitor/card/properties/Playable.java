@@ -1,13 +1,10 @@
 package com.visitor.card.properties;
 
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
-import com.visitor.protocol.Types;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -26,19 +23,19 @@ public class Playable {
 
 	private Arraylist<UUID> targets;
 
-	private int cost;
+	private int cost; //Energy cost
 
 	private Arraylist<Supplier<Boolean>> canPlayAdditional;
 	private Supplier<Boolean> canPlayTiming;
 	private Supplier<Boolean> canPlayResource;
 
-	private Arraylist<Runnable> beforePlay;
-	private Arraylist<Consumer<Boolean>> play;
-	private Arraylist<Runnable> afterPlay;
+	private Arraylist<Runnable> beforePlay;     //Runs before card is placed into stack. For choosing targets etc.
+	private Arraylist<Consumer<Boolean>> play;  //Pays the energy cost and places card into the stack.
+	private Arraylist<Runnable> afterPlay;      //Runs after card is placed into the stack.
 
-	private Runnable resolveEffect;
-	private Runnable resolvePlaceCard;
-	private Arraylist<Runnable> afterResolve;
+	private Arraylist<Runnable> resolveEffect;  //Runs before card is placed into its resolve zone
+	private Runnable resolvePlaceCard;          //Places card into its resolve zone
+	private Arraylist<Runnable> afterResolve;   //Runs after card is placed into its resolve zone
 
 
 	public Playable (Game game, Card card, int cost) {
@@ -51,11 +48,11 @@ public class Playable {
 		this.beforePlay = new Arraylist<>();
 		this.play = new Arraylist<>();
 		this.afterPlay = new Arraylist<>();
+		this.resolveEffect = new Arraylist<>();
 
 		// Default Implementations
 		setDefaultCanPlayResource();
 		setDefaultCanPlayTiming();
-		setDefaultResolveEffect();
 		setDefaultResolvePlaceCard();
 		setDefaultPlay();
 	}
@@ -67,7 +64,7 @@ public class Playable {
 
 	public Playable (Game game, Card card, int cost, Runnable resolveEffect) {
 		this(game, card, cost);
-		this.resolveEffect = resolveEffect;
+		this.resolveEffect.add(resolveEffect);
 	}
 
 
@@ -116,8 +113,6 @@ public class Playable {
 
 	/**
 	 * Called by client to check if you can play this card in current game state.
-	 *
-	 * @return
 	 */
 	public final boolean canPlay (boolean withResources) {
 		boolean result = !withResources || (canPlayResource.get() && canPlayTiming.get());
@@ -144,90 +139,14 @@ public class Playable {
 	 * This function contains the business logic of the card effect.
 	 */
 	public final void resolve () {
-		resolveEffect.run();
+		resolveEffect.forEachInOrder(Runnable::run);
 		resolvePlaceCard.run();
 		afterResolve.forEachInOrder(Runnable::run);
 	}
 
-	private void setDefaultPlay () {
-		play.add((withCost) -> {
-			if (withCost) {
-				game.spendEnergy(card.controller, cost);
-			}
-			game.addToStack(card);
-		});
-	}
 
-	private void setDefaultResolvePlaceCard () {
-		setEphemeral();
-	}
-
-	private void setDefaultResolveEffect () {
-		resolveEffect = () -> {
-		};
-	}
-
-	private void setDefaultCanPlayTiming () {
-		setFast();
-	}
-
-	public void setDefaultCanPlayResource () {
-		canPlayResource =
-				() -> game.hasEnergy(card.controller, cost) &&
-						game.hasKnowledge(card.controller, card.knowledge);
-	}
-
-	public final Playable addCanPlayAdditional (Supplier<Boolean>... canPlayAdditional) {
-		this.canPlayAdditional.addAll(Arrays.asList(canPlayAdditional));
-		return this;
-	}
-
-	public void setCanPlayTiming (Supplier<Boolean> canPlayTiming) {
-		this.canPlayTiming = canPlayTiming;
-	}
-
-	public void setCanPlayResource (Supplier<Boolean> canPlayResource) {
-		this.canPlayResource = canPlayResource;
-	}
-
-	public Playable addBeforePlay (Runnable ...beforePlay) {
-		this.beforePlay.addAll(Arrays.asList(beforePlay));
-		return this;
-	}
-
-	public final void addPlay (Consumer<Boolean>... play) {
-		this.play.addAll(Arrays.asList(play));
-	}
-
-	public void addAfterPlay (Runnable ...afterPlay) {
-		this.afterPlay.addAll(Arrays.asList(afterPlay));
-	}
-
-	public Playable setResolveEffect (Runnable resolveEffect) {
-		this.resolveEffect = resolveEffect;
-		return this;
-	}
-
-	public void setResolvePlaceCard (Runnable resolvePlaceCard) {
-		this.resolvePlaceCard = resolvePlaceCard;
-	}
-
-	public Playable addAfterResolve (Runnable ...afterResolve) {
-		this.afterResolve.addAll(Arrays.asList(afterResolve));
-		return this;
-	}
-
-	public int getCost () {
-		return cost;
-	}
-
-	// Setters
-	public void setCost (int cost) {
-		this.cost = cost;
-	}
 
 	/** Multiple Targets Setters
-	 *
 	 */
 	// For targeting MULTIPLE CARDS from a zone and/or PLAYERS.
 	public void setTargetMultipleCardsOrPlayers (Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate, Integer count,
@@ -258,7 +177,7 @@ public class Playable {
 			}
 			}
 		);
-		setResolveEffect(() -> {
+		addResolveEffect(() -> {
 			targets.forEach(targetId -> {
 				if ((withPlayers && game.isPlayer(targetId)) || game.isIn(card.controller, finalZone, targetId)) {
 					perTargetEffect.accept(targetId);
@@ -314,14 +233,94 @@ public class Playable {
 		setTargetSingleCard(zone, and(Predicates::isUnit, finalCardPredicate), "Select a unit.", perTargetEffect, afterTargetsEffect);
 	}
 
-	// For targeting a SINGLE PLAYER.
+	/**
+	 * For targeting a SINGLE PLAYER.
+ 	 */
 	public void setTargetSinglePlayer (Consumer<UUID> playerEffect) {
 		addBeforePlay(() ->
 				targets.addAll(game.selectPlayers(card.controller, Predicates::any, 1, false))
 		);
-		setResolveEffect(() -> playerEffect.accept(targets.get(0)));
+		addResolveEffect(() -> playerEffect.accept(targets.get(0)));
 	}
 
 
+
+	/**
+	 * Default values for class attributes.
+	 */
+	private void setDefaultPlay () {
+		play.add((withCost) -> {
+			if (withCost) {
+				game.spendEnergy(card.controller, cost);
+			}
+			game.addToStack(card);
+		});
+	}
+
+	private void setDefaultResolvePlaceCard () {
+		setEphemeral();
+	}
+
+	private void setDefaultCanPlayTiming () {
+		setFast();
+	}
+
+	public void setDefaultCanPlayResource () {
+		canPlayResource =
+				() -> game.hasEnergy(card.controller, cost) &&
+				      game.hasKnowledge(card.controller, card.knowledge);
+	}
+
+	/**
+	 * Adders and setters of attributes
+	 */
+	public final Playable addCanPlayAdditional (Supplier<Boolean>... canPlayAdditional) {
+		this.canPlayAdditional.addAll(Arrays.asList(canPlayAdditional));
+		return this;
+	}
+
+	public void setCanPlayTiming (Supplier<Boolean> canPlayTiming) {
+		this.canPlayTiming = canPlayTiming;
+	}
+
+	public void setCanPlayResource (Supplier<Boolean> canPlayResource) {
+		this.canPlayResource = canPlayResource;
+	}
+
+	public Playable addBeforePlay (Runnable ...beforePlay) {
+		this.beforePlay.addAll(Arrays.asList(beforePlay));
+		return this;
+	}
+
+	public final void addPlay (Consumer<Boolean>... play) {
+		this.play.addAll(Arrays.asList(play));
+	}
+
+	public void addAfterPlay (Runnable ...afterPlay) {
+		this.afterPlay.addAll(Arrays.asList(afterPlay));
+	}
+
+	public Playable addResolveEffect (Runnable resolveEffect) {
+		this.resolveEffect.add(resolveEffect);
+		return this;
+	}
+
+	public void setResolvePlaceCard (Runnable resolvePlaceCard) {
+		this.resolvePlaceCard = resolvePlaceCard;
+	}
+
+	public Playable addAfterResolve (Runnable ...afterResolve) {
+		this.afterResolve.addAll(Arrays.asList(afterResolve));
+		return this;
+	}
+
+	public void setCost (int cost) {
+		this.cost = cost;
+	}
+
+
+	public int getCost () {
+		return cost;
+	}
 
 }

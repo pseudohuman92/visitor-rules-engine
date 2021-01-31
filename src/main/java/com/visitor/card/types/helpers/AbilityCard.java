@@ -24,7 +24,7 @@ public class AbilityCard extends Card {
 		super(game, creator.name + "'s Ability", new CounterMap<>(), CardType.Ability, text, creator.controller);
 		this.targets = new Arraylist<>(creator.id).putAllIn(targets);
 
-		playable = new Playable(game, this).setResolveEffect(effect).setDisappearing();
+		playable = new Playable(game, this).addResolveEffect(effect).setDisappearing();
 
 	}
 

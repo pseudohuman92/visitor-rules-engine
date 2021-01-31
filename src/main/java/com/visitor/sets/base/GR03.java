@@ -3,6 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Ritual;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
@@ -20,13 +21,11 @@ public class GR03 extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(() ->
-						game.forEachInZone(controller, Play, card -> {
-							if (isUnit(card)) {
-								card.addTurnlyAttack(3);
-								card.addTurnlyHealth(3);
-								card.addTurnlyCombatAbility(Trample);
-							}
+				.addResolveEffect(() ->
+						game.forEachInZone(controller, Play, Predicates::isUnit,
+								cardId -> {
+								game.addTurnlyAttackAndHealth(cardId, 3, 3);
+								game.addTurnlyCombatAbility(cardId, Trample);
 						})
 				);
 	}

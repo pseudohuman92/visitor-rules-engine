@@ -21,7 +21,7 @@ public class PR03 extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(() -> {
+				.addResolveEffect(() -> {
 					boolean hasUnit = game.hasIn(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1);
 					Arraylist<UUID> discardedCard = game.selectFromZone(playable.card.controller, Opponent_Hand, Predicates::isUnit, 1, !hasUnit, "Select a unit card from opponent's hand.");
 					discardedCard.forEach(cardId -> game.discard(game.getOpponentId(playable.card.controller), cardId));

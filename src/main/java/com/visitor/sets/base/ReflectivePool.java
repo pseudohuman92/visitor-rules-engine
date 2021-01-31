@@ -16,6 +16,6 @@ public class ReflectivePool extends Ritual {
 				owner);
 
 		playable
-				.setResolveEffect(game::returnAllCardsToHand);
+				.addResolveEffect(game::returnAllCardsToHand);
 	}
 }

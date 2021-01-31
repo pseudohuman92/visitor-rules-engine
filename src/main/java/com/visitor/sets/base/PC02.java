@@ -17,7 +17,7 @@ public class PC02 extends Cantrip {
 				owner);
 
 		playable
-				.setTargetSingleUnit(null, null, cardId -> game.getCard(cardId).addTurnlyCombatAbility(Combat.CombatAbility.Deathtouch),
+				.setTargetSingleUnit(null, null, cardId -> game.addTurnlyCombatAbility(cardId, Combat.CombatAbility.Deathtouch),
 						() -> game.draw(controller, 1));
 	}
 }

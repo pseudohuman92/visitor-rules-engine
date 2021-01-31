@@ -3,6 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.Damage;
 
 import java.util.UUID;
@@ -17,8 +18,8 @@ public class RC03 extends Cantrip {
 				owner);
 
 		playable
-				.setResolveEffect(() ->
+				.addResolveEffect(() ->
 						game.forEachInZone(controller, Game.Zone.Both_Play,
-								card -> game.dealDamage(id, card.id, new Damage(2))));
+								Predicates::isUnit, cardId -> game.dealDamage(id, cardId, new Damage(2))));
 	}
 }

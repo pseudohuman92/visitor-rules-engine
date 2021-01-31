@@ -21,7 +21,7 @@ public class BC02 extends Cantrip {
 
 		// TODO: May generalize this.
 		playable
-				.setResolveEffect(() -> {
+				.addResolveEffect(() -> {
 					Arraylist<Card> topCards = game.extractFromTopOfDeck(controller, 3);
 					Arraylist<UUID> selected = game.selectFromList(controller, topCards, Predicates::any, 1, false, "");
 					Arraylist<Card> selectedCards = UUIDHelper.getInList(topCards, selected);

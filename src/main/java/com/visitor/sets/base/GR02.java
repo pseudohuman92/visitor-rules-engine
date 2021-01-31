@@ -20,6 +20,6 @@ public class GR02 extends Ritual {
 		playable
 				.setTargetSingleCard(Discard_Pile, null,
 						"Select a card from your discard pile.",
-						cardId -> game.getCard(cardId).returnToHand(), null);
+						game::returnToHand, null);
 	}
 }

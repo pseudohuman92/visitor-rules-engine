@@ -50,8 +50,8 @@ public abstract class Card implements Serializable {
 	protected Studiable studiable;
 	protected Attachable attachable;
 
-	protected Runnable enterPlayEffect = ()->{};
-	protected Runnable leavePlayEffect = ()->{};
+	protected Arraylist<Runnable> enterPlayEffects;
+	protected Arraylist<Runnable> leavePlayEffects;
 
 	public Card (Game game, String name,
 	             CounterMap<Knowledge> knowledge,
@@ -63,6 +63,8 @@ public abstract class Card implements Serializable {
 		subtypes = new Arraylist<>();
 		targets = new Arraylist<>();
 		attachments = new Arraylist<>();
+		enterPlayEffects = new Arraylist<>();
+		leavePlayEffects = new Arraylist<>();
 
 		this.name = name;
 		this.knowledge = knowledge;
@@ -118,7 +120,7 @@ public abstract class Card implements Serializable {
 		if (attachable != null) {
 			attachable.attach();
 		}
-		enterPlayEffect.run();
+		enterPlayEffects.forEachInOrder(Runnable::run);
 		game.addEvent(Event.enterPlay(this), true);
 	}
 
@@ -134,7 +136,7 @@ public abstract class Card implements Serializable {
 		}
 		attachments.forEach(game::destroy);
 		clear();
-		leavePlayEffect.run();
+		leavePlayEffects.forEachInOrder(Runnable::run);
 	}
 
 
@@ -216,8 +218,8 @@ public abstract class Card implements Serializable {
 		return runIfNotNull(combat, () -> combat.getAttack());
 	}
 
-	public void gainHealth (int health) {
-		runIfNotNull(combat, () -> combat.addHealth(health));
+	public void addAttackAndHealth (int attack, int health) {
+		runIfNotNull(combat, () -> combat.addAttackAndHealth(attack, health));
 	}
 
 	//TODO: Refactor these like above
@@ -234,87 +236,47 @@ public abstract class Card implements Serializable {
 	}
 
 	public final void dealAttackDamage (boolean firstStrike) {
-			runIfNotNull(combat, ()->
-					combat.dealAttackDamage(firstStrike));
+			runIfNotNull(combat, ()-> combat.dealAttackDamage(firstStrike));
 	}
 
 	public final void dealBlockDamage () {
-		runIfNotNull(combat, ()->
-				combat.dealBlockDamage());
+		runIfNotNull(combat, combat::dealBlockDamage);
 	}
 
 	public final void activate () {
-		if (activatable != null) {
-			activatable.activate();
-		} else {
-			System.out.println("Trying to activate a non-activatable card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(activatable, activatable::activate);
 	}
 
 	public final void unsetBlocking () {
-		if (combat != null) {
-			combat.unsetBlocking();
-		} else {
-			System.out.println("Trying to unset blocking of a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, combat::unsetBlocking);
 	}
 
 	public boolean canDieFromBlock () {
-		if (combat != null) {
-			return combat.canDieFromBlock();
-		} else {
-			System.out.println("Trying to check death of a non-combat card!");
-			System.out.println(toCardMessage().toString());
-			return false;
-		}
+		return runIfNotNull(combat, combat::canDieFromBlock);
 	}
 
 	public boolean canDieFromAttack () {
-		if (combat != null) {
-			return combat.canDieFromAttack();
-		} else {
-			System.out.println("Trying to check death of a non-combat card!");
-			System.out.println(toCardMessage().toString());
-			return false;
-		}
+		return runIfNotNull(combat, combat::canDieFromAttack);
 	}
 
 	public void maybeDieFromBlock () {
 		if (canDieFromBlock()) {
 			game.destroy(id);
-		} else {
-			System.out.println("Trying to kill a non-combat card!");
-			System.out.println(toCardMessage().toString());
 		}
 	}
 
 	public void maybeDieFromAttack () {
 		if (canDieFromAttack()) {
 			game.destroy(id);
-		} else {
-			System.out.println("Trying to kill a non-combat card!");
-			System.out.println(toCardMessage().toString());
 		}
 	}
 
 	public void addCombatAbility (Combat.CombatAbility ability) {
-		if (combat != null) {
-			combat.addCombatAbility(ability);
-		} else {
-			System.out.println("Trying to add combat ability to a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, () -> combat.addCombatAbility(ability));
 	}
 
 	public void removeCombatAbility (Combat.CombatAbility ability) {
-		if (combat != null) {
-			combat.removeCombatAbility(ability);
-		} else {
-			System.out.println("Trying to remove combat ability to a non-combat card!");
-			System.out.println(toCardMessage().toString());
-		}
+		runIfNotNull(combat, () -> combat.removeCombatAbility(ability));
 	}
 
 	public final boolean canAttack () {
@@ -361,41 +323,6 @@ public abstract class Card implements Serializable {
 		return subtypes.contains(type);
 	}
 
-	public Types.Card.Builder toCardMessage () {
-		String packageName = this.getClass().getPackageName();
-		String set = packageName.substring(packageName.lastIndexOf(".") + 1);
-		Types.Card.Builder builder = Types.Card.newBuilder()
-				.setId(id.toString())
-				.setSet(set)
-				.setName(name)
-				.setDepleted(depleted)
-				.setDescription(text)
-				.setLoyalty(-1)
-				.addAllTypes(types.transformToStringList())
-				.addAllSubtypes(subtypes.transformToStringList())
-				.addAllTargets(targets.transformToStringList())
-				.addAllAttachments(attachments.transformToStringList());
-
-		counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
-				.setCounter(k)
-				.setCount(i).build()));
-
-		knowledge.forEach((k, i) -> builder.addKnowledgeCost(KnowledgeGroup.newBuilder()
-				.setKnowledge(k)
-				.setCount(i).build()));
-
-		if (playable != null)
-			builder.setCost(playable.getCost() + "");
-
-		if (combat != null) {
-			builder.setCombat(combat.toCombatMessage());
-		}
-
-		return builder;
-	}
-
-
-
 	public void endTurn () {
 		runIfNotNull(combat, () -> combat.endTurn());
 		runIfNotNull(activatable, () -> activatable.endTurn());
@@ -405,12 +332,8 @@ public abstract class Card implements Serializable {
 		runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
 	}
 
-	public void addTurnlyAttack (int attack) {
-		runIfNotNull(combat, () -> combat.addTurnlyAttack(attack));
-	}
-
-	public void addTurnlyHealth (int health) {
-		runIfNotNull(combat, () -> combat.addTurnlyHealth(health));
+	public void addTurnlyAttackAndHealth (int attack, int health) {
+		runIfNotNull(combat, () -> combat.addTurnlyAttackAndHealth(attack, health));
 	}
 
 	public void addTurnlyActivatedAbility (ActivatedAbility ability) {
@@ -418,19 +341,9 @@ public abstract class Card implements Serializable {
 	}
 
 
-
-	public void addAttack (int i) {
-		runIfNotNull(combat, () -> combat.addAttack(i));
-	}
-
-	public void addHealth (int i) {
-		runIfNotNull(combat, () -> combat.addHealth(i));
-	}
-
 	public void addShield (int i) {
-		runIfNotNull(combat, ()->combat.addShield(i));
+		runIfNotNull(combat, ()-> combat.addShield(i));
 	}
-
 
 	public void setAttack (int i) {
 		runIfNotNull(combat, () -> combat.setAttack(i));
@@ -473,20 +386,18 @@ public abstract class Card implements Serializable {
 	/** Enter Play Effect setters
 	 *
 	 */
-	public void addEnterPlayEffectOnStack (CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
-		if (knowledge == null){
-			knowledge = new CounterMap<>();
-		}
-		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
-		enterPlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, ()->game.addToStack(new AbilityCard(game, this, text, effect)));
-	}
+
 
 	public void addEnterPlayEffect (CounterMap<Types.Knowledge> knowledge, Runnable effect){
 		if (knowledge == null){
 			knowledge = new CounterMap<>();
 		}
 		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
-		enterPlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, effect);
+		enterPlayEffects.add(() -> game.runIfHasKnowledge(controller, finalKnowledge, effect));
+	}
+
+	public void addEnterPlayEffectOnStack (CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
+		addEnterPlayEffect(knowledge,()->game.addToStack(new AbilityCard(game, this, text, effect)));
 	}
 
 	public void addLeavePlayEffect (CounterMap<Types.Knowledge> knowledge, Runnable effect){
@@ -494,7 +405,11 @@ public abstract class Card implements Serializable {
 			knowledge = new CounterMap<>();
 		}
 		CounterMap<Types.Knowledge> finalKnowledge = knowledge;
-		leavePlayEffect = () -> game.runIfHasKnowledge(controller, finalKnowledge, effect);
+		leavePlayEffects.add(() -> game.runIfHasKnowledge(controller, finalKnowledge, effect));
+	}
+
+	public void addLeavePlayEffectOnStack (CounterMap<Types.Knowledge> knowledge, String text, Runnable effect){
+		addLeavePlayEffect(knowledge,()->game.addToStack(new AbilityCard(game, this, text, effect)));
 	}
 
 	public boolean isPlayable () { return playable != null;	}
@@ -502,7 +417,7 @@ public abstract class Card implements Serializable {
 	public int getCost () { return playable.getCost();	}
 
 	public void setPurging () {
-		runIfNotNull(playable, ()-> playable.setPurging());
+		runIfNotNull(playable, playable::setPurging);
 	}
 
 	public void setDonating()
@@ -527,12 +442,46 @@ public abstract class Card implements Serializable {
 		runIfNotNull(combat, () -> combat.loseAttack(attack));
 	}
 
+	//Checks death after life loss
 	public void loseHealth (int health) {
 		runIfNotNull(combat, () -> {
 			combat.loseHealth(health);
 			if (combat.getHealth() == 0)
 				game.destroy(id);
 		});
+	}
+
+	public Types.Card.Builder toCardMessage () {
+		String packageName = this.getClass().getPackageName();
+		String set = packageName.substring(packageName.lastIndexOf(".") + 1);
+		Types.Card.Builder builder = Types.Card.newBuilder()
+				.setId(id.toString())
+				.setSet(set)
+				.setName(name)
+				.setDepleted(depleted)
+				.setDescription(text)
+				.setLoyalty(-1)
+				.addAllTypes(types.transformToStringList())
+				.addAllSubtypes(subtypes.transformToStringList())
+				.addAllTargets(targets.transformToStringList())
+				.addAllAttachments(attachments.transformToStringList());
+
+		counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
+				.setCounter(k)
+				.setCount(i).build()));
+
+		knowledge.forEach((k, i) -> builder.addKnowledgeCost(KnowledgeGroup.newBuilder()
+				.setKnowledge(k)
+				.setCount(i).build()));
+
+		if (playable != null)
+			builder.setCost(playable.getCost() + "");
+
+		if (combat != null) {
+			builder.setCombat(combat.toCombatMessage());
+		}
+
+		return builder;
 	}
 
 	public enum CardType {
