@@ -6,13 +6,7 @@
 
 Install Maven: https://maven.apache.org/
 
-Install Protobuf Compiler: https://developers.google.com/protocol-buffers/
-
----
-
-### Before Building
-
-Find absolute path of protobuf compiler (protoc), then edit <protocExecutable> tag in the pom.xml file with the correct path.
+Install Protobuf (protoc, protobuf-java, protobuf-js): https://github.com/protocolbuffers/protobuf/releases
 
 ---
 
