@@ -16,6 +16,7 @@
   background-repeat: no-repeat;
   background-color: #c80808; /* #7a0b0b; */
   overflow: hidden;
+  background-attachment: fixed;
 }
 
 .contain {
@@ -44,6 +45,17 @@
   left: 2vh;
   /* border: #61dafb 5px solid; */
 }
+
+.hidden-scrollable{
+  overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hidden-scrollable::-webkit-scrollbar { /* WebKit */
+  width: 0;
+  height: 0;
+}
+
 
 .App-header {
   display: flex;

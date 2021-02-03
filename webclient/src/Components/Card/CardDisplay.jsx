@@ -39,27 +39,6 @@ export class CardDisplay extends PureComponent {
               style["placement"] = "top-begin";
           }
       }
-    /*
-    style["width"] = width / 5;
-    style["height"] = (width / 5) * (88 / 63);
-    style["display"] = "flex";
-    style["textAlign"] = "left";
-    //style["border"] = "2px solid red";
-
-
-    if (rect.top < height / 2) {
-      style["top"] = rect.height;
-    } else {
-      style["bottom"] = rect.height;
-    }
-
-    if (rect.left < width / 2) {
-      style["left"] = rect.width;
-    } else {
-      style["right"] = rect.width;
-      style["flexDirection"] = "row-reverse";
-    }
-    */
     this.setState({
       popoverStyle: style,
     });
@@ -84,13 +63,12 @@ export class CardDisplay extends PureComponent {
 
         !isDragging ? !popoverDisabled  ? (
             <div
-                opacity={1}
                 style ={{placement: "center", display: "flex"}}
             >
               <div
                   style={{...style, border:"initial"}}
               >
-                <FullCard scale={1.5} {...rest} opacity={100} square={false} preview={true} />
+                <FullCard {...rest} brightness={100} square={false} preview={true} />
               </div>
               {withKeywords &&
               <div

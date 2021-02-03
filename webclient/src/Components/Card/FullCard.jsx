@@ -10,6 +10,7 @@ import TextFit from "react-textfit";
 import Fonts from "../Primitives/Fonts";
 import { Text } from '@visx/text';
 import Center from "react-center";
+import {colorPalette} from "../Helpers/Constants";
 
 function stripAbilityFromTitle(name){
     return name.replaceAll("'s Ability", "");
@@ -34,7 +35,7 @@ class FullCard extends PureComponent {
 
     render() {
         const {
-            opacity,
+            brightness,
             cardData,
             borderColor,
             square,
@@ -70,28 +71,23 @@ class FullCard extends PureComponent {
                     width: cardWidth,
                     height: cardHeight,
                     position: "relative",
-                    filter: "brightness("+opacity+"%)",
+                    filter: "brightness(" + brightness + "%)",
                     backgroundColor: backColor,
                     borderRadius: cardWidth / (2 * scale_) + "px",
                 }}
             >
                 {<Fonts />}
                 <div
-                    className="card-inner"
+                    className="card-inner cover"
                     style={{
                         top: square ? "3%" : "2%",
                         height: square ? "94%" : "96%",
                         position: "relative",
-                        fontSize: cardWidth / (2 * scale_) + "px",
+                        //fontSize: cardWidth / (2 * scale_) + "px",
                         borderRadius: cardWidth / ((square ? 3 : 2.5) * scale_) + "px",
                         backgroundColor: "gainsboro",
-
                         backgroundImage: "url(" + imageSrc +")",
-                        backgroundPosition: 'center',
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-
-                        border: "1px red solid",
+                        border: "1px " + colorPalette.red + " solid",
                     }}
                 >
                     {!preview && combat && combat.deploying &&
@@ -122,60 +118,9 @@ class FullCard extends PureComponent {
                         alt=""
                     />
                     }
-                    {/*
-                    <div
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                            zIndex: -1,
-                            backgroundColor: "gainsboro",
-                            display: "block",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                        }}
-                    >
-                        <img
-                            src={
-                                process.env.PUBLIC_URL +
-                                "/img/sets/" + set + "/"
-                                + stripAbilityFromTitle(name) + ".jpg"
-                            }
-                            style={{
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                transform: "translate(-50%, -50%)",
-                                ...(square
-                                    ? {
-                                        maxWidth: "100%",
-                                        objectFit: "scale-down",
-                                    }
-                                    : {
-                                        maxHeight: "100%",
-                                        objectFit: "scale-down",
-                                    })
-                            }}
-                            alt=""
-                        />
-                    </div> */}
                     {cost !== "" && (
-                        <div className="card-cost">
-                            <img
-                                src={process.env.PUBLIC_URL + "/img/card-components/energy-black.png"}
-                                style={{
-                                    maxWidth: "100%",
-                                }}
-                                alt=""
-                            />
-                            <Center
-                                className="card-cost-text"
-                                style={{fontSize: cardWidth / 15 + "px"}}
-                            >
+                        <div className="card-cost fill" style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/card-components/energy-black.png)"}}>
                                 {cost}
-                            </Center>
                         </div>
                     )}
 
@@ -206,14 +151,10 @@ class FullCard extends PureComponent {
                              height: square ? "9%" : "6%",
                              backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-red.png)",
                         }}>
-                        {<div style={{
-                            position: "static",
-                            margin: 0,
-                        }}>
-                            <TextFit forceSingleModeWidth={true}>
+                            <TextFit>
                             {name}
                             </TextFit>
-                        </div>}
+
                     </div>
 
                     {!square && <div className="card-type fill" style={{
@@ -222,7 +163,7 @@ class FullCard extends PureComponent {
 
                     {!square && (
                         <div
-                            className="card-description fill"
+                            className="card-description fill hidden-scrollable"
                             style={{
 
                                 textAlign: "left",

@@ -135,7 +135,7 @@ class GameScreen extends Component {
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "space-between",
-                                    width: "90%",
+                                    width: "85%",
                                     height: "100%",
                                     border: "3px green solid"
                                 }}>
@@ -186,7 +186,7 @@ class GameScreen extends Component {
                                     position : "relative",
                                     display: "flex",
                                     flexDirection: "column",
-                                    width: "10%",
+                                    width: "15%",
                                     height: "100%",
                                     border: "3px red solid"
                                 }}>

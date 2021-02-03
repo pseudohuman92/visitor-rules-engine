@@ -10,6 +10,7 @@ import {compareCardsByKnowledge, debugPrint, sleep, toFullCards} from "../Helper
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
+import LazyLoad from 'react-lazy-load';
 
 const mapStateToProps = state => {
     return {
@@ -119,9 +120,12 @@ class CollectionScreen extends React.Component {
         return collection ? (
                 <div
                 style={{
+                    maxWidth:"100%",
+                    maxHeight: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    maxHeight: "95vh"
+                    justifyContent: "center",
+                    color: "white"
                 }}
             >
                 <div style={{
@@ -159,20 +163,21 @@ class CollectionScreen extends React.Component {
                         > Craft Missing </Button>
                     )}
                 </div>
-                <div style={{display: "flex"}}>
-                    <div style={{display: "flex", flexWrap: "wrap"}}>
+                    <div className="hidden-scrollable"
+                         style={{display: "flex", flexWrap: "wrap", justifyContent: "center",
+                        maxHeight: "100%"}}>
                         {Object.values(displayCollection)
                             .sort(compareCardsByKnowledge)
                             .filter(card => {
                                 return card;
                             })
-                            .map((card, i) => (
+                            .map((card, i) =>  <LazyLoad>
                                 <div key={i} style={{textAlign: "center"}}>
                                     {collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
                                     {craft ? (
                                         <CraftableCard
                                             scale = {1.5}
-                                            opacity={collection[card.set + "." + card.name] ? 1 : 0.5}
+                                            brightness={collection[card.set + "." + card.name] ? 100 : 50}
                                             craft={craft}
                                             count={collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
                                             onCraft={this.onCraft(card.set + "." + card.name)}
@@ -185,15 +190,17 @@ class CollectionScreen extends React.Component {
                                     ) : (
                                         <CardDisplay
                                             scale = {1.5}
-                                            opacity={collection[card.set + "." + card.name] ? 1 : 0.5}
+                                            brightness={collection[card.set + "." + card.name] ? 100 : 50}
                                             cardData={card}
                                             windowDimensions={windowDimensions}
+                                            popoverDisabled
                                         />
                                     )}
-                                </div>)
+                                </div>
+                            </LazyLoad>
                             )}
                     </div>
-                </div>
+
             </div>
         ) : (
             <div>Loading Collection</div>
