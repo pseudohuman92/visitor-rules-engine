@@ -33,7 +33,7 @@ class DraftScreen extends Component {
         const {windowDimensions, dialog, draft} = this.props;
         const deck = toDeck(draft.decklist);
         return (
-            <div style={{display:"flex"}}>
+            <div style={{display:"flex", color: "white"}}>
             <div style={{flexGrow: 9}}>
                 {draft.completed && <Redirect to={"/profile/play/draft/deck_builder"}/>}
                 <div style={{

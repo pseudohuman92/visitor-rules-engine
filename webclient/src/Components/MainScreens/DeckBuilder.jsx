@@ -96,7 +96,7 @@ class DeckBuilder extends React.Component {
         const {forDraft, draft, collection_, windowDimensions} = this.props;
         const collection = forDraft ? toDeck(draft.decklist) : collection_;
         return (
-            <div style={{display: "flex", flexDirection: "column", maxHeight: "95vh"}}>
+            <div style={{display: "flex", flexDirection: "column", maxHeight: "95vh", color : "white"}}>
                 {forDraft && name === "SUBMITTED" && <Redirect to={"/profile/play/game"}/>}
                 {forDraft ? (<Button onClick={this.joinDraftGame} text="Submit"/>)
                     : (

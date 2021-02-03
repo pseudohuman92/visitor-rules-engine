@@ -71,7 +71,7 @@ class DeckSelection extends React.Component {
         {/*!isProduction && <Button onClick={this.loadGame} text="Load"/> */}
           {//If there is a joined game, go to there
             message === "JOINED" && <Redirect to={"/profile/play/game"}/>}
-            <Grid container spacing={8}>
+            <Grid container spacing={8} style={{color: "white"}}>
               {decks.map((deck, i) => (
                 <Grid
                   item
