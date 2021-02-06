@@ -88,8 +88,8 @@ class ButtonDisplay extends Component {
     ) {
       buttonMenu = (
         <div style={{display: "flex", flexDirection: "column"}}>
-            <Button style={{margin:"2px"}} onClick={this.keep} disabled={!amIActive} text="Keep" />
-            <Button style={{margin:"2px"}} onClick={this.redraw} disabled={!amIActive} text="Redraw" />
+            <Button style={{margin:"4px"}} onClick={this.keep} disabled={!amIActive} text="Keep" />
+            <Button style={{margin:"4px"}} onClick={this.redraw} disabled={!amIActive} text="Redraw" />
         </div>
       );
     } else if (IsSelectCardPhase(clientPhase)) {
@@ -117,7 +117,7 @@ class ButtonDisplay extends Component {
       );
     }
 
-    return (<div>{buttonMenu}</div>);
+    return (<div style={this.props.style}>{buttonMenu}</div>);
   }
 }
 

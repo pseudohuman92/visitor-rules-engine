@@ -11,6 +11,7 @@ import Fonts from "../Primitives/Fonts";
 import { Text } from '@visx/text';
 import Center from "react-center";
 import {colorPalette} from "../Helpers/Constants";
+import {knowledgeIconURLs} from "../Helpers/URLS";
 
 function stripAbilityFromTitle(name){
     return name.replaceAll("'s Ability", "");
@@ -64,7 +65,9 @@ class FullCard extends PureComponent {
         const cardHeight = cardWidth / wtohRatio;
 
         const backColor = borderColor ? borderColor : undefined // "gainsboro";
+        const defaultImageSrc = process.env.PUBLIC_URL + "/img/default.png";
         const imageSrc = process.env.PUBLIC_URL + "/img/sets/" + set + "/" + stripAbilityFromTitle(name) + ".jpg";
+        //const imageSrc = process.env.PUBLIC_URL + "/img/card-frames/card-frame-3.png";
         return (
             <div
                 style={{
@@ -76,16 +79,15 @@ class FullCard extends PureComponent {
                     borderRadius: cardWidth / (2 * scale_) + "px",
                 }}
             >
-                {<Fonts />}
                 <div
-                    className="card-inner cover"
+                    className="card-inner fill"
                     style={{
                         top: square ? "3%" : "2%",
                         height: square ? "94%" : "96%",
                         position: "relative",
-                        //fontSize: cardWidth / (2 * scale_) + "px",
+                        fontSize: cardWidth / (2 * scale_) + "px",
                         borderRadius: cardWidth / ((square ? 3 : 2.5) * scale_) + "px",
-                        backgroundColor: "gainsboro",
+                        backgroundColor: "darkgray",
                         backgroundImage: "url(" + imageSrc +")",
                         border: "1px " + colorPalette.red + " solid",
                     }}
@@ -100,7 +102,6 @@ class FullCard extends PureComponent {
                             square
                                 ? {
                                     maxWidth: "50%",
-                                    objectFit: "scale-down",
                                     position: "absolute",
                                     top: "25%",
                                     left: "25%",
@@ -108,7 +109,6 @@ class FullCard extends PureComponent {
                                 }
                                 : {
                                     maxHeight: "50%",
-                                    objectFit: "scale-down",
                                     position: "absolute",
                                     top: "25%",
                                     left: "25%",
@@ -119,42 +119,45 @@ class FullCard extends PureComponent {
                     />
                     }
                     {cost !== "" && (
-                        <div className="card-cost fill" style={{backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/card-components/energy-black.png)"}}>
+                        <div className="card-cost fill"
+                             style={{width: "90%",
+                                 textAlign: "center",
+                                 fontSize: "initial",
+                                 backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/card-components/energy-black.png)"}}>
                                 {cost}
                         </div>
                     )}
-
+                    {/*<div className="knowledge-bar fill"
+                         style={{
+                             position: "absolute",
+                             top: "10%",
+                             left: "0%",
+                             width: "15%",
+                             height: "" + ((toKnowledgeString(knowledgeCost).length > 0 ? 10 : 0)+(toKnowledgeString(knowledgeCost).length *  3)) + "%",
+                             zIndex: "0",
+                        backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/rectangle-vertical-black.png)"}}/>*/}
                     {toKnowledgeString(knowledgeCost)
                         .split("")
                         .map((c, i) => (
                             <div
                                 className="card-knowledge"
-                                style={{top: (square ? 17 : 11) + i * (square ? 4 : 3.5) + "%"}}
+                                style={{top: (square ? 17 : 13) + i * (square ? 4 : 3.5) + "%",
+                                left: "2.5%"}}
                                 key={i}
                             >
                                 <img
-                                    src={
-                                        process.env.PUBLIC_URL +
-                                        "/img/card-components/knowledge-" +
-                                        c +
-                                        ".png"
-                                    }
-                                    style={{
-                                        maxWidth: "100%",
-                                    }}
+                                    src={knowledgeIconURLs[c]}
                                     alt=""
                                 />
                             </div>
                         ))}
                     <div className="card-name fill"
                          style={{
+                             width: "95%",
                              height: square ? "9%" : "6%",
                              backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-red.png)",
                         }}>
-                            <TextFit>
                             {name}
-                            </TextFit>
-
                     </div>
 
                     {!square && <div className="card-type fill" style={{
@@ -165,11 +168,11 @@ class FullCard extends PureComponent {
                         <div
                             className="card-description fill hidden-scrollable"
                             style={{
-
                                 textAlign: "left",
                                 whiteSpace: "pre-wrap",
+                                fontSize: "initial",
                                 backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/grunge-background-black.png)",
-
+                                fontFamily: "Roboto, serif"
                             }}
                         >
                             <TextFit style={{
@@ -178,20 +181,9 @@ class FullCard extends PureComponent {
                                 left: "3%",
                                 maxWidth: "94%",
                                 maxHeight: "96%",
+                                fontFamily: "Roboto, serif"
                             }}>{(combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "")
                             + replaceSpecialCharacters(description, name)}</TextFit>
-
-                            {/*toMultilineSVG((combat && combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities.join(" ") + "\n" : "")
-                            + replaceSpecialCharacters(description, name), "white", 200 * scale)*/}
-                            {/*<FittedText
-                                text={(combat ? (combat.combatAbilities && combat.combatAbilities.length > 0 ? combat.combatAbilities + "\n" : "") : "")
-                                + replaceSpecialCharacters(description, name)}
-                                max={12}
-                                padding={0}
-                                font = {{fontFamily: "Archivo"}}
-                                windowDimensions={windowDimensions}
-                            />*/}
-                            {/*(combat ? (combat.combatAbilities ? combat.combatAbilities + "\n" : "") : "") + replaceSpecialCharacters(description, name)*/}
                         </div>
                     )}
 
@@ -214,12 +206,12 @@ class FullCard extends PureComponent {
                             {combat && combat.attack !== "" && combat.attack > -1 && (
                                 <TextOnImage
                                     src={
-                                        process.env.PUBLIC_URL + "/img/card-components/attack2.png"
+                                        process.env.PUBLIC_URL + "/img/card-components/attack-red.png"
                                     }
                                     text={combat.attack}
                                     min={15}
                                     scale={5 * scale_}
-                                    font={{fontFamily: "Special Elite, cursive"}}
+                                    font={{fontFamily: "Frijole, cursive", color: colorPalette.white}}
                                     windowDimensions={windowDimensions}
                                 />
                             )}
@@ -272,7 +264,6 @@ class FullCard extends PureComponent {
 
                     { !square && <div className="illustrator fill" style={{textAlign : "right", fontSize: "10px", backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-black.png)",}}> Illustrator Name </div> }
                 </div>
-
             </div>
         );
     }

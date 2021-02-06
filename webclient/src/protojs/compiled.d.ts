@@ -2818,6 +2818,9 @@ export class DraftState implements IDraftState {
     /** DraftState id. */
     public id: string;
 
+    /** DraftState playerId. */
+    public playerId: string;
+
     /** DraftState decklist. */
     public decklist: string[];
 

@@ -188,7 +188,8 @@ class GameScreen extends Component {
                                     flexDirection: "column",
                                     width: "15%",
                                     height: "100%",
-                                    border: "3px red solid"
+                                    border: "3px red solid",
+                                     alignItems: "center"
                                 }}>
                                     <Stack style={{
                                         width: "100%",
@@ -197,13 +198,10 @@ class GameScreen extends Component {
                                     }} />
                                     <PhaseDisplay style={{
                                         width: "100%",
-                                        height: "10%",
-                                        border: "3px white solid"
                                     }}/>
                                     <ButtonDisplay style={{
                                         width: "100%",
-                                        height: "30%",
-                                        border: "3px blue solid"
+                                        alignSelf: "flex-end"
                                     }}/>
                                 </div>
 

@@ -10,6 +10,7 @@ import CardDisplay from "../Card/CardDisplay";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { fullCollection } from "../Helpers/Constants";
+import {cardBackURL} from "../Helpers/URLS";
 
 const mapStateToProps = state => {
   return {
@@ -101,16 +102,16 @@ class OpenPacks extends Component {
               <Grid item xs key={key}>
                 <Center>
                   <img
-                    src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+                    src={cardBackURL}
                     style={{ width: "250px" }}
                     onClick={event => this.openPack(key)}
                     alt=""
                   />
                 </Center>
                 <Center>
-                  <span style={{ color: "black" }}>
+                  <div>
                     {"" + key + ": " + packs[key]}
-                  </span>
+                  </div>
                 </Center>
               </Grid>
             );

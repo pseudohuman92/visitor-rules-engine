@@ -51,7 +51,7 @@ export default class ServerMessageHandler {
                 break;
             case "NewDraft":
                 this.gameId = params.draft.id;
-                this.playerId = params.draft.player.id;
+                this.playerId = params.draft.playerId;
                 this.updateHandlers({
                     gameHandler: new ServerGameMessageHandler(
                         this.playerId,

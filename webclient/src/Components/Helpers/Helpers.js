@@ -90,7 +90,7 @@ export function getIconColor(knowledgeCost) {
   } else if (knowlString.startsWith("G")) {
     return "green";
   } else if (knowlString.startsWith("Y")) {
-    return "goldenrod";
+    return "yellow";
   } else {
     return "beige";
   }

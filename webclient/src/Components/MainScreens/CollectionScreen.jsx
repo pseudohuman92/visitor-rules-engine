@@ -6,11 +6,12 @@ import CardDisplay from "../Card/CardDisplay";
 import {craftCost, fullCollection, isProduction, salvageValue} from "../Helpers/Constants";
 import {mapDispatchToProps} from "../Redux/Store";
 import CraftableCard from "../Card/CraftableCard";
-import {compareCardsByKnowledge, debugPrint, sleep, toFullCards} from "../Helpers/Helpers";
+import {compareCardsByKnowledge, debugPrint, sleep, toFullCards, toKnowledgeString} from "../Helpers/Helpers";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
 import LazyLoad from 'react-lazy-load';
+import {knowledgeIconURLs} from "../Helpers/URLS";
 
 const mapStateToProps = state => {
     return {
@@ -23,12 +24,37 @@ const mapStateToProps = state => {
 
 class CollectionScreen extends React.Component {
     state = {
-        craft: false
+        craft: false,
+        filter: {
+            showGreen: true,
+            showRed: true,
+            showBlue: true,
+            showPurple: true,
+            showYellow: true,
+            showColorless: true,
+        },
     };
 
     componentWillMount() {
         const {firebase, updateState, userId} = this.props;
         firebase.setUserData(userId, updateState);
+    }
+
+    filter = card => {
+    let {showGreen, showRed, showBlue, showPurple, showYellow, showColorless} = this.state.filter;
+    return card &&
+        !((!showGreen && toKnowledgeString(card.knowledgeCost).indexOf("G") > -1) ||
+            (!showRed && toKnowledgeString(card.knowledgeCost).indexOf("R") > -1) ||
+            (!showBlue && toKnowledgeString(card.knowledgeCost).indexOf("U") > -1) ||
+            (!showPurple && toKnowledgeString(card.knowledgeCost).indexOf("P") > -1) ||
+            (!showYellow && toKnowledgeString(card.knowledgeCost).indexOf("Y") > -1) ||
+            (!showColorless && toKnowledgeString(card.knowledgeCost).length === 0) );
+    }
+
+    flipFilter = label => event => {
+        let filter = this.state.filter;
+        filter[label] = !this.state.filter[label];
+        this.setState({filter: filter})
     }
 
     craft = () => {
@@ -114,14 +140,12 @@ class CollectionScreen extends React.Component {
     };
 
     render() {
-        const {craft} = this.state;
+        const {craft, filter} = this.state;
         const {collection, dust, windowDimensions} = this.props;
         const displayCollection = craft ? fullCollection : toFullCards(collection);
         return collection ? (
                 <div
                 style={{
-                    maxWidth:"100%",
-                    maxHeight: "100%",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
@@ -144,7 +168,7 @@ class CollectionScreen extends React.Component {
                         }
                         label={craft ? "Craft" : "Display"}
                     />
-                    <div style={{fontFamily: "Cinzel, serif"}}>
+                    <div>
                         {"Dust: " + dust}
                     </div>
                     {craft && (
@@ -163,16 +187,28 @@ class CollectionScreen extends React.Component {
                         > Craft Missing </Button>
                     )}
                 </div>
+                    <div style={{display: "flex", alignSelf:"center", flexDirection:"row", justifyContent:"center"}}>
+                        <img src={knowledgeIconURLs.green} style={{maxWidth:"5%", opacity: filter.showGreen ? 1 : 0.5}}
+                             onClick={this.flipFilter("showGreen")}/>
+                        <img src={knowledgeIconURLs.red} style={{maxWidth:"5%", opacity: filter.showRed ? 1 : 0.5}}
+                             onClick={this.flipFilter("showRed")}/>
+                        <img src={knowledgeIconURLs.blue} style={{maxWidth:"5%", opacity: filter.showBlue ? 1 : 0.5}}
+                             onClick={this.flipFilter("showBlue")}/>
+                        <img src={knowledgeIconURLs.purple} style={{maxWidth:"5%", opacity: filter.showPurple ? 1 : 0.5}}
+                             onClick={this.flipFilter("showPurple")}/>
+                        <img src={knowledgeIconURLs.yellow} style={{maxWidth:"5%", opacity: filter.showYellow ? 1 : 0.5}}
+                             onClick={this.flipFilter("showYellow")}/>
+                        <img src={knowledgeIconURLs.colorless} style={{maxWidth:"5%", opacity: filter.showColorless ? 1 : 0.5}}
+                             onClick={this.flipFilter("showColorless")}/>
+                    </div>
                     <div className="hidden-scrollable"
-                         style={{display: "flex", flexWrap: "wrap", justifyContent: "center",
-                        maxHeight: "100%"}}>
+                         style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
                         {Object.values(displayCollection)
                             .sort(compareCardsByKnowledge)
-                            .filter(card => {
-                                return card;
-                            })
-                            .map((card, i) =>  <LazyLoad>
-                                <div key={i} style={{textAlign: "center"}}>
+                            .filter(this.filter)
+                            .map((card, i) =>
+                                    <LazyLoad key={i}>
+                                        <div style={{textAlign: "center"}}>
                                     {collection[card.set + "." + card.name] ? collection[card.set + "." + card.name] : 0}
                                     {craft ? (
                                         <CraftableCard

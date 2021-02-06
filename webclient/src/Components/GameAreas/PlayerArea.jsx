@@ -30,7 +30,6 @@ class PlayerArea extends Component {
             display: "flex",
             marginLeft: "1%",
             justifyContent: "center",
-            maxHeight: "100%"
           }}
         >
           <DiscardPile

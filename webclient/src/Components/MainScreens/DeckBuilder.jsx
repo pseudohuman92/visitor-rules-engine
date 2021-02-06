@@ -6,11 +6,20 @@ import LazyLoad from 'react-lazy-load';
 import {withFirebase} from "../Firebase";
 import CardDisplay from "../Card/CardDisplay";
 import {mapDispatchToProps} from "../Redux/Store";
-import {compareCardsByKnowledge, debugPrint, toDeck, toDecklist, toFullCards} from "../Helpers/Helpers";
+import {
+    compareCardsByKnowledge,
+    debugPrint,
+    getIconColor,
+    toDeck,
+    toDecklist,
+    toFullCards,
+    toKnowledgeString
+} from "../Helpers/Helpers";
 import TextField from "@material-ui/core/TextField";
 import * as proto from "../../protojs/compiled";
 import {Redirect} from "react-router-dom";
 import {withHandlers} from "../MessageHandlers/HandlerContext";
+import {knowledgeIconURLs} from "../Helpers/URLS";
 
 const mapStateToProps = state => {
     return {
@@ -30,7 +39,32 @@ class DeckBuilder extends React.Component {
             name: "",
             deck: {},
             changed: false,
+            filter: {
+                showGreen: true,
+                showRed: true,
+                showBlue: true,
+                showPurple: true,
+                showYellow: true,
+                showColorless: true,
+                },
+            }
         };
+
+    filter = card => {
+        let {showGreen, showRed, showBlue, showPurple, showYellow, showColorless} = this.state.filter;
+        return card &&
+            !((!showGreen && toKnowledgeString(card.knowledgeCost).indexOf("G") > -1) ||
+            (!showRed && toKnowledgeString(card.knowledgeCost).indexOf("R") > -1) ||
+            (!showBlue && toKnowledgeString(card.knowledgeCost).indexOf("U") > -1) ||
+            (!showPurple && toKnowledgeString(card.knowledgeCost).indexOf("P") > -1) ||
+            (!showYellow && toKnowledgeString(card.knowledgeCost).indexOf("Y") > -1) ||
+            (!showColorless && toKnowledgeString(card.knowledgeCost).length === 0) );
+    }
+
+    flipFilter = label => event => {
+        let filter = this.state.filter;
+        filter[label] = !this.state.filter[label];
+        this.setState({filter: filter})
     }
 
     setDeck = (name, deck) => {
@@ -92,11 +126,11 @@ class DeckBuilder extends React.Component {
     };
 
     render() {
-        const {name, deck, changed} = this.state;
-        const {forDraft, draft, collection_, windowDimensions} = this.props;
+        const {name, deck, changed, filter} = this.state;
+        const {forDraft, draft, collection_, windowDimensions, style} = this.props;
         const collection = forDraft ? toDeck(draft.decklist) : collection_;
         return (
-            <div style={{display: "flex", flexDirection: "column", maxHeight: "95vh", color : "white"}}>
+            <div className="hidden-scrollable" style={{...style, display: "flex", flexDirection: "column"}}>
                 {forDraft && name === "SUBMITTED" && <Redirect to={"/profile/play/game"}/>}
                 {forDraft ? (<Button onClick={this.joinDraftGame} text="Submit"/>)
                     : (
@@ -112,16 +146,33 @@ class DeckBuilder extends React.Component {
                             />
                         </div>)
                 }
-                <div style={{display: "flex"}}>
-                    <div style={{display: "flex", flexWrap: "wrap", flexGrow: 9}}>
+                <div style={{display: "flex", alignSelf:"center", flexDirection:"row", justifyContent:"center"}}>
+                    <img src={knowledgeIconURLs.green} style={{maxWidth:"5%", opacity: filter.showGreen ? 1 : 0.5}}
+                         onClick={this.flipFilter("showGreen")}/>
+                    <img src={knowledgeIconURLs.red} style={{maxWidth:"5%", opacity: filter.showRed ? 1 : 0.5}}
+                         onClick={this.flipFilter("showRed")}/>
+                    <img src={knowledgeIconURLs.blue} style={{maxWidth:"5%", opacity: filter.showBlue ? 1 : 0.5}}
+                         onClick={this.flipFilter("showBlue")}/>
+                    <img src={knowledgeIconURLs.purple} style={{maxWidth:"5%", opacity: filter.showPurple ? 1 : 0.5}}
+                         onClick={this.flipFilter("showPurple")}/>
+                    <img src={knowledgeIconURLs.yellow} style={{maxWidth:"5%", opacity: filter.showYellow ? 1 : 0.5}}
+                         onClick={this.flipFilter("showYellow")}/>
+                    <img src={knowledgeIconURLs.colorless} style={{maxWidth:"5%", opacity: filter.showColorless ? 1 : 0.5}}
+                         onClick={this.flipFilter("showColorless")}/>
+                </div>
+                <div style={{display: "flex", position: "relative"}}>
+                    <div className="hidden-scrollable" style={{
+                        position: "relative",
+                        justifyContent: "center",
+                        height: "80%", flexGrow: 8,
+                        display: "flex", flexWrap: "wrap"}}>
                         {Object.values(toFullCards(collection))
-                            .filter(card => {return card})
+                            .filter(this.filter)
                             .sort(compareCardsByKnowledge)
                             .map(
                                 (card, i) =>
-                                    card && (
-                                        <LazyLoad>
-                                            <div onClick={() => this.addToDeck(card.set + "." + card.name)} key={i}>
+                                        <LazyLoad key={i}>
+                                            <div onClick={() => this.addToDeck(card.set + "." + card.name)} >
                                                 <div style={{textAlign: "center"}}>
                                                     {" "}
                                                     {collection[card.set + "." + card.name] -
@@ -129,36 +180,42 @@ class DeckBuilder extends React.Component {
                                                 </div>
                                                 <CardDisplay
                                                     popoverDisabled
-                                                    scale={1.5}
+                                                    //scale={1.5}
                                                     opacity={
                                                         collection[card.set + "." + card.name] -
                                                         (deck[card.set + "." + card.name] ? deck[card.set + "." + card.name] : 0) >
                                                         0
-                                                            ? 1
-                                                            : 0.5
+                                                            ? 100
+                                                            : 50
                                                     }
                                                     cardData={card}
                                                     windowDimensions={windowDimensions}
                                                 />
                                             </div>
                                         </LazyLoad>
-                                    )
                             )}
                     </div>
                     <div
                         style={{
+                            flexGrow: 2,
                             display: "flex",
                             flexDirection: "column",
-                            backgroundColor: "#ffe6ff",
-                            flexGrow: 1
                         }}
                     >
                         <div style={{textAlign: "center"}}>{"Deck List"}</div>
+                        <div
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                border: "3px white solid",
+                            }}
+                        >
                         {Object.values(toFullCards(deck))
                             .filter(card => {return card})
                             .sort(compareCardsByKnowledge)
                             .map((card, i) => (
-                                <div style={{display: "flex", padding: "3px"}}
+                                <div style={{display: "flex"}}
                                      onClick={() => this.removeFromDeck(card.set + "." + card.name)} key={i}>
                                     <div style={{paddingRight: "3px"}}>{deck[card.set + "." + card.name]}</div>
                                     <CardDisplay
@@ -168,6 +225,7 @@ class DeckBuilder extends React.Component {
                                     />
                                 </div>
                             ))}
+                        </div>
                     </div>
                 </div>
             </div>

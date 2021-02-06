@@ -39,7 +39,7 @@ class Profile extends Component {
 
     render() {
         return (
-            <div style={{backgroundColor: "black", color:"white"}}>
+            <div>
                 <ProfileBar style={{maxHeight:"10%"}}/>
                 <div style={{display: "flex", justifyContent: "space-around" }}>
                     <LinkedButton style={{flexGrow: 1}} to={"/profile/play"} text="Play"/>

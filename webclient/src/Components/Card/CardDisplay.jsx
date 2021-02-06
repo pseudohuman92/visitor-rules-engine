@@ -61,7 +61,7 @@ export class CardDisplay extends PureComponent {
             style ={{...popoverStyle}}
             title={
 
-        !isDragging ? !popoverDisabled  ? (
+                (!isDragging && !popoverDisabled)  ? (
             <div
                 style ={{placement: "center", display: "flex"}}
             >
@@ -105,11 +105,11 @@ export class CardDisplay extends PureComponent {
               </div>
               }
             </div>
-        ) : <div/> : <div/>
+        ) : <div/>
             }
         >
         <div onMouseEnter={this.handlePopoverOpen} onMouseLeave={this.handlePopoverClose} onClick={onClick? onClick : ()=>{}}
-             style={style}>
+             style={{...style, placement: "center"}}>
           {small ? (
             <SmallCard {...rest} />
           ) : (

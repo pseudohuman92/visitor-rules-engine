@@ -30,11 +30,6 @@ class Hand extends PureComponent {
         className="image"
         src={cardBackURL}
         alt=""
-        style={{
-          maxWidth: "100%",
-          maxHeight: "10a0%",
-          objectFit: "scale-down"
-        }}
       />);
       });
       

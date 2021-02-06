@@ -21,7 +21,6 @@ class Decks extends React.Component {
     this.state = {
       value: 0,
       loadedDeck: "",
-      selectedDeckId: "",
       decks: []
     };
     this.back = () => {
@@ -37,14 +36,6 @@ class Decks extends React.Component {
     const Return = this.addDeck.bind(this);
     this.props.firebase.getAllDecks(this.props.userId, Return);
   }
-
-  selectDeck = deckId => {
-    if (deckId === this.state.selectedDeckId) {
-      this.setState({ selectedDeckId: "" });
-    } else {
-      this.setState({ selectedDeckId: deckId });
-    }
-  };
 
   loadDeck = deckId => {
     this.setState({ value: 1, loadedDeck: deckId });
@@ -70,9 +61,9 @@ class Decks extends React.Component {
   };
 
   render() {
-    const { value, decks, selectedDeckId, loadedDeck } = this.state;
+    const { value, decks, loadedDeck } = this.state;
     return (
-      <div style={{backgroundColor:"black", color:"white"}}>
+      <div>
         {value === 0 && (
           <div>
             <Grid container spacing={8}>
@@ -84,10 +75,6 @@ class Decks extends React.Component {
               <Center style={{position: "relative"}}>
                 <img
                     src={process.env.PUBLIC_URL + "/img/deck-selection/border.png"}
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                    }}
                     alt=""
                 />
                 <img
@@ -109,9 +96,7 @@ class Decks extends React.Component {
                   xs={2}
                 >
                   <Center style={{position:"relative"}}>
-                    <div style={{position:"absolute",
-                      fontFamily: "Frijole, serif",
-                      }}
+                    <div style={{position:"absolute"}}
                        onClick={() => this.setState({ value: 1, loadedDeck: deck.id })}>
                       {deck.name}
                     </div>
@@ -132,11 +117,6 @@ class Decks extends React.Component {
 
                     <img
                       src={process.env.PUBLIC_URL + "/img/deck-selection/border.png"}
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                        opacity: deck.id === selectedDeckId ? 0.5 : 1
-                      }}
                       alt=""
                       onClick={() => this.setState({ value: 1, loadedDeck: deck.id })}
                     />

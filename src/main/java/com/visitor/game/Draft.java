@@ -221,6 +221,7 @@ public class Draft {
 		Types.DraftState.Builder b =
 				Types.DraftState.newBuilder()
 						.setId(id.toString())
+						.setPlayerId(playerId.toString())
 						.addAllDecklist(players.get(playerId).deck.toDeckList())
 						.setCompleted(completed);
 		return b;

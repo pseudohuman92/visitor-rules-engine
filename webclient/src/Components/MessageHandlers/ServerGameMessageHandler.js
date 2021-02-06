@@ -206,6 +206,7 @@ export default class ServerGameMessageHandler {
                 break;
             case "GameEnd":
                 newExtendedState["clientPhase"] = params.win ? ClientPhase.WIN : ClientPhase.LOSE;
+                newExtendedState["gameInitialized"] = false;
                 break;
             case "OrderCards":
                 newExtendedState["dialogData"] = {

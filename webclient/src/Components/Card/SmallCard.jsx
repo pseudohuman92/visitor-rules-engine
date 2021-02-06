@@ -44,7 +44,6 @@ class SmallCard extends PureComponent {
                 zIndex: 1,
             }}
         >
-            {/*<Fonts />*/}
         <div
           style={{
             opacity: opacity,
@@ -54,19 +53,13 @@ class SmallCard extends PureComponent {
           }}
         >
           <div
-            className={"card-inner"}
+            className="card-inner"
             style={{ backgroundColor: getCardColor(knowledgeCost),
-              fontSize: 150/10+"px" }}
+              fontSize: "12px" }}
           >
             <div className="card-name" style={{textAlign: "left"}}>
                 <span style={{ fontWeight: "500" }}>{cost}</span>
-                <span
-                style={{
-                  color: getIconColor(knowledgeCost)
-                }}
-              >
-                {toKnowledgeString(knowledgeCost)}
-              </span>
+                <span> {toKnowledgeString(knowledgeCost)} </span>
                 {" | " + name}
             </div>
           </div>

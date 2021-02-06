@@ -371,5 +371,8 @@ export const colorPalette =
         //yellows
         "light-yellow" : "#e6ea00",
         "yellow" : "#bd9a00",
+
+        //purples
+        "purple" : "#321637",
     }
 

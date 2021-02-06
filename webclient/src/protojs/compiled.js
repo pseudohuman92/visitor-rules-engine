@@ -7807,6 +7807,7 @@ $root.DraftState = (function() {
      * @exports IDraftState
      * @interface IDraftState
      * @property {string|null} [id] DraftState id
+     * @property {string|null} [playerId] DraftState playerId
      * @property {Array.<string>|null} [decklist] DraftState decklist
      * @property {boolean|null} [completed] DraftState completed
      */
@@ -7834,6 +7835,14 @@ $root.DraftState = (function() {
      * @instance
      */
     DraftState.prototype.id = "";
+
+    /**
+     * DraftState playerId.
+     * @member {string} playerId
+     * @memberof DraftState
+     * @instance
+     */
+    DraftState.prototype.playerId = "";
 
     /**
      * DraftState decklist.
@@ -7882,6 +7891,8 @@ $root.DraftState = (function() {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.decklist[i]);
         if (message.completed != null && Object.hasOwnProperty.call(message, "completed"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.completed);
+        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.playerId);
         return writer;
     };
 
@@ -7918,6 +7929,9 @@ $root.DraftState = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.id = reader.string();
+                break;
+            case 4:
+                message.playerId = reader.string();
                 break;
             case 2:
                 if (!(message.decklist && message.decklist.length))
@@ -7965,6 +7979,9 @@ $root.DraftState = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             if (!$util.isString(message.id))
                 return "id: string expected";
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            if (!$util.isString(message.playerId))
+                return "playerId: string expected";
         if (message.decklist != null && message.hasOwnProperty("decklist")) {
             if (!Array.isArray(message.decklist))
                 return "decklist: array expected";
@@ -7992,6 +8009,8 @@ $root.DraftState = (function() {
         var message = new $root.DraftState();
         if (object.id != null)
             message.id = String(object.id);
+        if (object.playerId != null)
+            message.playerId = String(object.playerId);
         if (object.decklist) {
             if (!Array.isArray(object.decklist))
                 throw TypeError(".DraftState.decklist: array expected");
@@ -8022,6 +8041,7 @@ $root.DraftState = (function() {
         if (options.defaults) {
             object.id = "";
             object.completed = false;
+            object.playerId = "";
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -8032,6 +8052,8 @@ $root.DraftState = (function() {
         }
         if (message.completed != null && message.hasOwnProperty("completed"))
             object.completed = message.completed;
+        if (message.playerId != null && message.hasOwnProperty("playerId"))
+            object.playerId = message.playerId;
         return object;
     };
 

@@ -131,6 +131,13 @@ public class GameServer {
 				i--;
 			}
 		}
+		for (int i = 0; i < P2DraftQueue.size(); i++) {
+			QueuePlayer p = P2DraftQueue.get(i);
+			if (p.username.equals(username)) {
+				P2DraftQueue.remove(p);
+				i--;
+			}
+		}
 	}
 
 	synchronized void addGameConnection (UUID gameID, UUID playerId, GameEndpoint connection) {
@@ -239,36 +246,6 @@ public class GameServer {
 
 	public void removeGame (UUID gameID) {
 		games.remove(gameID);
-	}
-
-	public void saveGameState (UUID gameID, String filename) {
-		games.get(gameID).saveGameState(filename);
-	}
-
-	public void loadGame (UUID playerId, String filename) {
-
-		try {
-			FileInputStream fileIn = new FileInputStream(filename + ".gamestate");
-			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-
-			Object obj = objectIn.readObject();
-
-			System.out.println("Game state has been read from the file");
-			objectIn.close();
-
-			Game g = (Game) obj;
-			g.connections = new Hashmap<>();
-			g.response = new ArrayBlockingQueue<>(1);
-			games.putIn(g.getId(), g);
-			try {
-				playerConnections.get(playerId).send(ServerMessage.newBuilder().setLoginResponse(LoginResponse.newBuilder()
-						.setGameId(g.getId().toString())));
-			} catch (IOException | EncodeException ex) {
-				getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	synchronized public void addDraftConnection (UUID draftID, UUID playerId, DraftEndpoint connection) {

@@ -20,7 +20,7 @@ import PlayScreen from "./PlayScreen";
 export default class SwitchPage extends Component {
     render() {
         return (
-            <div className="switch-page-outer"
+            <div className="switch-page"
                  style={{
                 width: "100%",
                 height: "100%",

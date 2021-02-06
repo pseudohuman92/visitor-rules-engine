@@ -7,6 +7,7 @@ import {ClientPhase, knowledgeNameMap} from "../Helpers/Constants";
 
 import "../../css/ChooseDialog.css";
 import {toKnowledgeName} from "../Helpers/Helpers";
+import Button from "../Primitives/Button";
 
 const mapStateToProps = state => {
     return {
@@ -51,7 +52,6 @@ class KnowledgeDialog extends Component {
                 <div style={{
                     textAlign: "center",
                     fontSize: "20px",
-                    color: "white",
                     marginBottom: "10px"
                 }}> {dialog.title} </div>
                 <div style={{
@@ -61,18 +61,7 @@ class KnowledgeDialog extends Component {
                 }}
                 >
                     {dialog.cards.map((card, i) => (
-                        <div style={{margin: "3px"}} key={i}>
-                            <div style={{
-                                padding: "10px",
-                                textAlign: "center",
-                                color: "white",
-                                backgroundColor: "black",
-                                fontSize: "30px",
-                            }}
-                                 onClick={this.selectDone(card)}>
-                                {knowledgeNameMap[card]}
-                            </div>
-                        </div>
+                        <Button key={i} style={{margin:"3px"}} onClick={this.selectDone(card)} text={knowledgeNameMap[card]}/>
                     ))}
                 </div>
             </Dialog>

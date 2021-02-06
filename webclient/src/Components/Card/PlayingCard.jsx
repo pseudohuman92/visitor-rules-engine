@@ -574,8 +574,8 @@ class PlayingCard extends React.Component {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             style={{
-                                position: "relative",
                                 ...style,
+                                position: "relative",
                             }}
                         >
 
@@ -609,7 +609,7 @@ class PlayingCard extends React.Component {
                                     onMouseLeave={this.onMouseLeave}
                                 >
                                     <CardDisplay
-                                        opacity={depleted ? 50 : 100}
+                                        brightness={depleted ? 50 : 100}
                                         borderColor={this.getBorderColor()}
                                         onClick={this.getClickHandler()}
                                         small={small}

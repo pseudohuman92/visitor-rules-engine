@@ -24,14 +24,16 @@ class PhaseDisplay extends PureComponent {
     }
     render() {
         return (
-            <div style={{display: "flex", justifyContent:"space-around",
+            <div classname="phase-display"
+                 style={{
+                ...this.props.style,
+                display: "flex", justifyContent:"space-around",
                 backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-white.png)",
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
-                borderRadius: "10px", width: "85%",
-            fontFamily:"Frijole, cursive",
-                }}>
+                fontFamily:"Frijole, cursive",
+            }}>
                 <div style={{color: this.getColor(proto.Phase.BEGIN)}}>S</div>
                 <div style={{color: this.getColor(proto.Phase.MAIN_BEFORE )}}>M1</div>
                 <div style={{color: this.getColor(proto.Phase.ATTACK)}}>A</div>

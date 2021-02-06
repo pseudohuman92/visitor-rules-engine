@@ -36,14 +36,14 @@ public class DraftEndpoint {
 
 
 	@OnOpen
-	public void onOpen (Session session, @PathParam("playerId") UUID playerId, @PathParam("draftID") String gameID) throws IOException, EncodeException {
+	public void onOpen (Session session, @PathParam("playerId") String playerId, @PathParam("draftID") String gameID) throws IOException, EncodeException {
 		this.session = session;
-		this.playerId = playerId;
+		this.playerId = UUID.fromString(playerId);
 		this.draftID = UUID.fromString(gameID);
 		session.getBasicRemote().setBatchingAllowed(false);
 		session.getAsyncRemote().setBatchingAllowed(false);
 		session.setMaxIdleTimeout(0);
-		gameServer.addDraftConnection(this.draftID, playerId, this);
+		gameServer.addDraftConnection(this.draftID, this.playerId, this);
 		resendLastMessage();
 	}
 

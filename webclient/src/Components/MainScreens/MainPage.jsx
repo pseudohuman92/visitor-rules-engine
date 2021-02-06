@@ -73,22 +73,6 @@ export default class MainPage extends Component {
                             <Grid item xs>
                                 <LinkedButton text="Sign Up"  to="/signup"/>
                             </Grid>
-                            {/*
-                                    <Grid item xs>
-                                        <Link to="/designcard">
-                                            <Button
-                                                text="Design a Card"
-                                            />
-                                        </Link>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Link to="/customcards">
-                                            <Button
-                                                text="Custom Cards"
-                                            />
-                                        </Link>
-                                    </Grid>
-                                    */}
                             <Grid item xs>
                                 <LinkedButton  to="/cardgallery" text="Card Gallery" />
                             </Grid>

@@ -9,6 +9,7 @@ import { withFirebase } from "../Firebase/index";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import { packList, packCosts } from "../Helpers/Constants";
+import {cardBackURL} from "../Helpers/URLS";
 
 const mapStateToProps = state => {
   return {
@@ -69,7 +70,7 @@ class GameStore extends Component {
                 <Grid item xs={12}>
                 <Center>
                   <img
-                    src={process.env.PUBLIC_URL + "/img/CardBack.png"}
+                    src={cardBackURL}
                     style={{ width: "250px" }}
                     alt=""
                   />

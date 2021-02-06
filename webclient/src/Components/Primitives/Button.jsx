@@ -23,28 +23,25 @@ class Button extends Component {
   };
 
   render() {
-    const { text, disabled} = this.props;
+    const { text, disabled } = this.props;
     const hovering = this.state.hovering;
     const opacity = disabled ? 0.5 : 1;
     return (
-      <div
-        style={{ opacity: opacity, position:"relative",
+      <div className="button cover"
+        style={{ ...this.props.style,
+            opacity: opacity,
+            position:"relative",
           width: "100%",
           height: "100%",
-          fontFamily: "Frijole, serif",
           color: (!disabled && hovering) ? "black" : "white",
           backgroundImage: "url(" + process.env.PUBLIC_URL + "/img/buttons/grunge-highlight-" + (!disabled && hovering ? "white":"red") + ".png)",
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat'
+            textAlign: "center",
         }}
         onClick={this.onClick}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
       >
-        <Center>
           {text}
-        </Center>
       </div>
     );
   }

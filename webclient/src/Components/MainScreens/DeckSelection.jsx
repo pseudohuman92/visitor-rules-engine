@@ -83,10 +83,6 @@ class DeckSelection extends React.Component {
                   <Center>
                     <img
                       src={process.env.PUBLIC_URL + "/img/deckbox.png"}
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                      }}
                       alt=""
                     />
                   </Center>
