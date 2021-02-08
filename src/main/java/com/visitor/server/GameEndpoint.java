@@ -110,10 +110,12 @@ public class GameEndpoint {
 			gameServer.concede(gameID, playerId);
 			return;
 		}
+		/*
 		if (message.getPayloadCase() == SAVEGAMESTATE) {
 			gameServer.saveGameState(gameID, message.getSaveGameState().getFilename());
 			return;
 		}
+		*/
 		if (message.getPayloadCase() == responseType) {
 			switch (message.getPayloadCase()) {
 				case ORDERCARDSRESPONSE:
@@ -189,9 +191,11 @@ public class GameEndpoint {
 			case CONCEDE:
 				gameServer.concede(gameID, playerId);
 				break;
+			/*
 			case SAVEGAMESTATE:
 				gameServer.saveGameState(gameID, message.getSaveGameState().getFilename());
 				break;
+			*/
 			default:
 				out.println("Unexpected message from " + playerId + ": " + message);
 				break;
