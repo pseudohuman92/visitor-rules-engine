@@ -9,7 +9,6 @@ import {mapDispatchToProps} from "../Redux/Store";
 import {ClientPhase} from "../Helpers/Constants";
 import {Droppable} from "react-beautiful-dnd";
 
-import "../../css/ChooseDialog.css";
 
 const mapStateToProps = state => {
     return {

@@ -32,6 +32,7 @@ public class Player {
 	public Arraylist<Card> playArea;
 	public CounterMap<Knowledge> knowledgePool;
 	public Combat combat;
+	public Clock clock;
 
 	public Player (Game game, String username, String[] decklist) {
 		this.game = game;
@@ -47,6 +48,8 @@ public class Player {
 		playArea = new Arraylist<>();
 		knowledgePool = new CounterMap<>();
 		combat = new Combat(game, null, 30);
+		clock = new Clock(60 * 60, () -> game.gameEnd(id, false));
+		clock.start();
 	}
 
 	public void draw (int count) {
@@ -197,6 +200,7 @@ public class Player {
 				.setShield(combat.getShield())
 				.setHandSize(hand.size())
 				.setHealth(combat.getHealth())
+				.setTime(clock.getTimeLeftSeconds())
 				.addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
 				.addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()))
 				.addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));

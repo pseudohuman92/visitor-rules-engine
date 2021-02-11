@@ -97,6 +97,7 @@ public class Game implements Serializable {
 		p2.draw(5);
 		out.println("Updating players from Game addPlayers. AP: " + activePlayer);
 		updatePlayers();
+		startActiveClock();
 	}
 
 	/**
@@ -1320,6 +1321,14 @@ public class Game implements Serializable {
 
 	public void gainHealth (UUID playerId, int health) {
 		getPlayer(playerId).addHealth(health);
+	}
+
+	public void stopActiveClock () {
+		getPlayer(activePlayer).clock.pause();
+	}
+
+	public void startActiveClock () {
+		getPlayer(activePlayer).clock.activate();
 	}
 
 	public enum Zone {

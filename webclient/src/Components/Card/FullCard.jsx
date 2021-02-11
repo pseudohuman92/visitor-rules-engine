@@ -70,10 +70,11 @@ class FullCard extends PureComponent {
         //const imageSrc = process.env.PUBLIC_URL + "/img/card-frames/card-frame-3.png";
         return (
             <div
+                className = "full-card"
                 style={{
+                    position: "relative",
                     width: cardWidth,
                     height: cardHeight,
-                    position: "relative",
                     filter: "brightness(" + brightness + "%)",
                     backgroundColor: backColor,
                     borderRadius: cardWidth / (2 * scale_) + "px",

@@ -6674,6 +6674,7 @@ $root.Player = (function() {
      * @property {number|null} [shield] Player shield
      * @property {number|null} [handSize] Player handSize
      * @property {number|null} [health] Player health
+     * @property {number|null} [time] Player time
      */
 
     /**
@@ -6801,6 +6802,14 @@ $root.Player = (function() {
     Player.prototype.health = 0;
 
     /**
+     * Player time.
+     * @member {number} time
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.time = 0;
+
+    /**
      * Creates a new Player instance using the specified properties.
      * @function create
      * @memberof Player
@@ -6855,6 +6864,8 @@ $root.Player = (function() {
             writer.uint32(/* id 13, wireType 0 =*/104).int32(message.handSize);
         if (message.health != null && Object.hasOwnProperty.call(message, "health"))
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.health);
+        if (message.time != null && Object.hasOwnProperty.call(message, "time"))
+            writer.uint32(/* id 15, wireType 0 =*/120).int32(message.time);
         return writer;
     };
 
@@ -6937,6 +6948,9 @@ $root.Player = (function() {
                 break;
             case 14:
                 message.health = reader.int32();
+                break;
+            case 15:
+                message.time = reader.int32();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -7042,6 +7056,9 @@ $root.Player = (function() {
         if (message.health != null && message.hasOwnProperty("health"))
             if (!$util.isInteger(message.health))
                 return "health: integer expected";
+        if (message.time != null && message.hasOwnProperty("time"))
+            if (!$util.isInteger(message.time))
+                return "time: integer expected";
         return null;
     };
 
@@ -7123,6 +7140,8 @@ $root.Player = (function() {
             message.handSize = object.handSize | 0;
         if (object.health != null)
             message.health = object.health | 0;
+        if (object.time != null)
+            message.time = object.time | 0;
         return message;
     };
 
@@ -7155,6 +7174,7 @@ $root.Player = (function() {
             object.shield = 0;
             object.handSize = 0;
             object.health = 0;
+            object.time = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -7197,6 +7217,8 @@ $root.Player = (function() {
             object.handSize = message.handSize;
         if (message.health != null && message.hasOwnProperty("health"))
             object.health = message.health;
+        if (message.time != null && message.hasOwnProperty("time"))
+            object.time = message.time;
         return object;
     };
 

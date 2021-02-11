@@ -49,9 +49,11 @@ public class GameServer {
 
 	void activateCard (UUID gameID, UUID playerId, UUID cardID) {
 		System.out.println("Start Activate Card");
+		games.get(gameID).stopActiveClock();
 		games.get(gameID).activateCard(playerId, cardID);
 		out.println("Updating players from activateCard.");
 		games.get(gameID).updatePlayers();
+		games.get(gameID).startActiveClock();
 		System.out.println("End Activate Card");
 	}
 
@@ -61,41 +63,51 @@ public class GameServer {
 
 	void redraw (UUID gameID, UUID playerId) {
 		System.out.println("Start Redraw");
+		games.get(gameID).stopActiveClock();
 		games.get(gameID).redraw(playerId);
 		out.println("Updating players from redraw.");
 		games.get(gameID).updatePlayers();
+		games.get(gameID).startActiveClock();
 		System.out.println("End Redraw");
 	}
 
 	void keep (UUID gameID, UUID playerId) {
 		System.out.println("Start Keep");
+		games.get(gameID).stopActiveClock();
 		games.get(gameID).keep(playerId);
 		out.println("Updating players from keep.");
 		games.get(gameID).updatePlayers();
+		games.get(gameID).startActiveClock();
 		System.out.println("End Keep");
 	}
 
 	void pass (UUID gameID, UUID playerId) {
 		System.out.println("Start Pass");
+		games.get(gameID).stopActiveClock();
 		games.get(gameID).pass(playerId);
 		out.println("Updating players from pass.");
 		games.get(gameID).updatePlayers();
+		games.get(gameID).startActiveClock();
 		System.out.println("End Pass");
 	}
 
 	void studyCard (UUID gameID, UUID playerId, UUID cardID) {
 		System.out.println("Start Study Card");
+		games.get(gameID).stopActiveClock();
 		games.get(gameID).studyCard(playerId, cardID, true);
 		out.println("Updating players from studyCard.");
 		games.get(gameID).updatePlayers();
+		games.get(gameID).startActiveClock();
 		System.out.println("End Study Card");
 	}
 
 	void playCard (UUID gameID, UUID playerId, UUID cardID) {
 		System.out.println("Start Play Card");
+		games.get(gameID).stopActiveClock();
 		games.get(gameID).playCard(playerId, cardID);
 		out.println("Updating players from playCard.");
 		games.get(gameID).updatePlayers();
+		games.get(gameID).startActiveClock();
 		System.out.println("End Play Card");
 	}
 

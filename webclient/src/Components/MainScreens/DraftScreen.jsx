@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {withHandlers} from "../MessageHandlers/HandlerContext";
 import {mapDispatchToProps} from "../Redux/Store";
 
-import "../../css/ChooseDialog.css";
 import CardDisplay from "../Card/CardDisplay";
 import * as proto from "../../protojs/compiled";
 import {Redirect} from "react-router-dom";

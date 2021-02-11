@@ -1,3 +1,13 @@
+@media (aspect-ratio: 63 / 88) {
+  .full-card {
+  }
+}
+
+@media (aspect-ratio: 63 / 54) {
+  .full-card-square {
+  }
+}
+
 .card-inner {
   position: relative;
   margin: 2.5%;

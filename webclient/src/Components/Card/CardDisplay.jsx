@@ -53,6 +53,7 @@ export class CardDisplay extends PureComponent {
     const { onClick, small, style, popoverDisabled, isDragging, withKeywords, dragHandleProps, ...rest } = this.props;
     return (
       <div
+          className = "card-display"
         {...dragHandleProps}
         style={{ width: "100%", height: "100%" }}
 

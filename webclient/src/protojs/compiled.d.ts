@@ -2619,6 +2619,9 @@ export class Player implements IPlayer {
     /** Player health. */
     public health: number;
 
+    /** Player time. */
+    public time: number;
+
     /**
      * Creates a new Player instance using the specified properties.
      * @param [properties] Properties to set

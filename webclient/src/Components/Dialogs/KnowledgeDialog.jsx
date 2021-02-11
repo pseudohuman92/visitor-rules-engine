@@ -5,7 +5,6 @@ import {withHandlers} from "../MessageHandlers/HandlerContext";
 import {mapDispatchToProps} from "../Redux/Store";
 import {ClientPhase, knowledgeNameMap} from "../Helpers/Constants";
 
-import "../../css/ChooseDialog.css";
 import {toKnowledgeName} from "../Helpers/Helpers";
 import Button from "../Primitives/Button";
 

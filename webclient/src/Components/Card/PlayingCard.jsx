@@ -563,6 +563,7 @@ class PlayingCard extends React.Component {
 
         return (
             <Draggable
+                className = "playing-card"
                 draggableId={draggableId}
                 index={DnDIndex}
                 isDragDisabled={isDragDisabled || (!this.isPlayable() && !this.isStudyable())}

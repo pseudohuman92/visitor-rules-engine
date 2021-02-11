@@ -7,6 +7,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import TextOnImage from "../Primitives/TextOnImage";
+import Countdown from "react-countdown";
 
 const mapStateToProps = state => {
   return {
@@ -18,6 +19,7 @@ const mapStateToProps = state => {
     playerEnergy: state.extendedGameState.game.player.energy,
     playerMaxEnergy: state.extendedGameState.game.player.maxEnergy,
     playerKnowledgePool: state.extendedGameState.game.player.knowledgePool,
+    playerTimeRemaining: state.extendedGameState.game.player.time,
 
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.username,
@@ -26,6 +28,7 @@ const mapStateToProps = state => {
     opponentEnergy: state.extendedGameState.game.opponent.energy,
     opponentMaxEnergy: state.extendedGameState.game.opponent.maxEnergy,
     opponentKnowledgePool: state.extendedGameState.game.opponent.knowledgePool,
+    opponentTimeRemaining: state.extendedGameState.game.opponent.time,
 
     selected: state.extendedGameState.selectionData.selected,
     selectable: state.extendedGameState.selectionData.selectable,
@@ -122,6 +125,8 @@ class PlayerDisplay extends React.Component {
       opponentMaxEnergy,
       playerKnowledgePool,
       opponentKnowledgePool,
+        playerTimeRemaining,
+        opponentTimeRemaining,
       activePlayer,
       playerUserId,
       opponentUserId,
@@ -145,8 +150,12 @@ class PlayerDisplay extends React.Component {
       ? playerKnowledgePool
       : opponentKnowledgePool;
 
+    const timeRemaining = isPlayer ? playerTimeRemaining : opponentTimeRemaining;
+
     const selectable_ = selectable.includes(id);
     const selected_ = selected.includes(id);
+
+    const isActive = activePlayer === id;
 
     const canBeAttacked =
       clientPhase === ClientPhase.SELECT_ATTACKERS &&
@@ -243,6 +252,15 @@ class PlayerDisplay extends React.Component {
               scale={2}
               windowDimensions={windowDimensions}
             />
+          </div>
+          <div
+              className="timer"
+              style={{
+                height: heightRound,
+                color: "black"
+              }}
+          >
+            {isActive ? <Countdown date={Date.now() + (timeRemaining * 1000)} /> : ("" + Math.floor(timeRemaining / 60)+":"+(timeRemaining % 60)) }
           </div>
         <div
           style={{

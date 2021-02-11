@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import PlayingCard from "../Card/PlayingCard";
-import "../../css/Stack.css";
 import "../../css/Utils.css";
 import { Droppable } from "react-beautiful-dnd";
 import { debugPrint } from "../Helpers/Helpers";
