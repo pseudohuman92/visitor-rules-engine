@@ -7,7 +7,7 @@ import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import TextOnImage from "../Primitives/TextOnImage";
-import Countdown from "react-countdown";
+import Countdown, {zeroPad} from "react-countdown";
 
 const mapStateToProps = state => {
   return {
@@ -256,11 +256,16 @@ class PlayerDisplay extends React.Component {
           <div
               className="timer"
               style={{
-                height: heightRound,
-                color: "black"
+                color: "black",
+                textAlign: "center"
               }}
           >
-            {isActive ? <Countdown date={Date.now() + (timeRemaining * 1000)} /> : ("" + Math.floor(timeRemaining / 60)+":"+(timeRemaining % 60)) }
+            {isActive ? <Countdown date={Date.now() + (timeRemaining)}
+                                   onTick={delta =>
+                                       this.props.updateExtendedGameState({game: (isPlayer? {player: {time: delta.total}} :
+                                         {opponent: {time: delta.total}})})}
+                                   renderer={props => <div>{zeroPad(props.minutes) + ":" + zeroPad(props.seconds)}</div>} />
+            : ("" + zeroPad(Math.floor((timeRemaining / 1000) / 60))+":"+zeroPad((timeRemaining/1000) % 60)) }
           </div>
         <div
           style={{

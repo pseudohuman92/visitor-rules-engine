@@ -48,7 +48,7 @@ public class Player {
 		playArea = new Arraylist<>();
 		knowledgePool = new CounterMap<>();
 		combat = new Combat(game, null, 30);
-		clock = new Clock(60 * 60, () -> game.gameEnd(id, false));
+		clock = new Clock(20 * 60, () -> game.gameEnd(id, false));
 		clock.start();
 	}
 
@@ -200,7 +200,7 @@ public class Player {
 				.setShield(combat.getShield())
 				.setHandSize(hand.size())
 				.setHealth(combat.getHealth())
-				.setTime(clock.getTimeLeftSeconds())
+				.setTime(clock.getTimeLeft())
 				.addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
 				.addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()))
 				.addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));

@@ -50,7 +50,7 @@ public class Clock extends Thread {
 		return clockStatus == ClockStatus.ACTIVE;
 	}
 
-	public int getTimeLeftSeconds () {
-		return timeLeft / 1000;
+	public int getTimeLeft () {
+		return timeLeft;
 	}
 }
