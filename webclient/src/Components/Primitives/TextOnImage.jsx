@@ -7,7 +7,7 @@ import "./TextOnImage.css";
 
 class TextOnImage extends Component {
   render() {
-    const { text, min, max, scale, src, font, style, imgStyle, textStyle, windowDimensions } = this.props;
+    const { text, min, max, scale, src, font, style, textStyle, windowDimensions, ...rest } = this.props;
     const windowWidth  = windowDimensions.width;
     const width = windowWidth / 5;
     const min_ = min? min : 1;
@@ -17,13 +17,13 @@ class TextOnImage extends Component {
       ? font
       : { fontFamily: "Cinzel, serif", fontWeight: "700" };
     return (
-      <div className="container" style={{
+      <div {...rest} className="container" style={{
           ...style,
           backgroundImage: "url(" + src +")",
           backgroundPosition: 'center',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat'
-      }}>
+      }} >
         <div
             className="centered"
           style={{

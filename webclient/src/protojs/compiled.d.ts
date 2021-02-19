@@ -2622,6 +2622,9 @@ export class Player implements IPlayer {
     /** Player time. */
     public time: number;
 
+    /** Player deckColors. */
+    public deckColors: IKnowledgeGroup[];
+
     /**
      * Creates a new Player instance using the specified properties.
      * @param [properties] Properties to set

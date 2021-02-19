@@ -205,6 +205,10 @@ public class Player {
 				.addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()))
 				.addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));
 
+		deck.getDeckColors().forEach((k, i) -> builder.addDeckColors(KnowledgeGroup.newBuilder()
+				.setKnowledge(k)
+				.setCount(i).build()));
+
 		if (player) {
 			builder.addAllHand(hand.transform(c -> c.toCardMessage().build()));
 		}

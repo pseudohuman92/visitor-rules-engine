@@ -9,6 +9,7 @@ import { TextField, Grid, RadioGroup, FormControl, FormLabel, FormControlLabel, 
 import { ClientPhase } from "../Helpers/Constants";
 import { mapDispatchToProps } from "../Redux/Store";
 import { withFirebase } from "../Firebase";
+import {Redirect} from "react-router-dom";
 
 const mapStateToProps = state => {
   return {
@@ -21,6 +22,7 @@ const mapStateToProps = state => {
 
 class EndGameDialog extends Component {
   state = {
+    finished: false,
     verdict: "",
     bestAspects: "",
     worstAspects: "",
@@ -35,7 +37,8 @@ class EndGameDialog extends Component {
 
 
   back = () => {
-    const { updateExtendedGameState, back } = this.props;
+    const { updateExtendedGameState } = this.props;
+    this.setState({finished: true});
     updateExtendedGameState({
       gameInitialized: false,
       clientPhase: ClientPhase.NOT_STARTED
@@ -43,13 +46,14 @@ class EndGameDialog extends Component {
   };
 
   submit = event => {
-    const { firebase, gameId, userId } = this.props;
+    const { updateExtendedGameState, firebase, gameId, userId } = this.props;
     firebase.submitFeedback({
       userId: userId,
       gameId: gameId,
       ...this.state
     });
     this.setState({
+      finished: true,
       verdict: "",
       bestAspects: "",
       worstAspects: "",
@@ -57,14 +61,18 @@ class EndGameDialog extends Component {
       replay: "",
       other: ""
     });
+    updateExtendedGameState({
+      gameInitialized: false,
+      clientPhase: ClientPhase.NOT_STARTED
+    });
   };
 
 
   render = () => {
     const { clientPhase, win } = this.props;
-    const {verdict, bestAspects, worstAspects, potential, replay, } = this.state;
+    const {verdict, bestAspects, worstAspects, potential, replay, finished} = this.state;
 
-    const open = clientPhase === ClientPhase.GAME_END;
+    const open = clientPhase === ClientPhase.WIN || clientPhase === ClientPhase.LOSE;
 
     const submitDisabled = 
       verdict === "" ||
@@ -75,7 +83,11 @@ class EndGameDialog extends Component {
 
 
     return (
-      <Dialog open={open} scroll="body">
+       <div>
+      {finished && <Redirect to={"/profile"}/>}
+      <Dialog open={open} onEscapeKeyDown={this.back}
+              onBackdropClick={this.back}
+              scroll="body" PaperProps={{style: {backgroundColor: "gray", color: "black"}}}>
         <DialogTitle>{win ? "You Win!" : "You Lose..."}</DialogTitle>
         <DialogTitle>{"Please Provide Feedback"}</DialogTitle>
         <DialogContent>
@@ -179,9 +191,15 @@ class EndGameDialog extends Component {
                 Submit
               </Button>
             </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" onClick={this.back}>
+                back
+              </Button>
+            </Grid>
           </Grid>
         </DialogContent>
       </Dialog>
+       </div>
     );
   };
 }

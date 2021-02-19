@@ -8,6 +8,7 @@ import { withFirebase } from "../Firebase";
 import { withHandlers } from "../MessageHandlers/HandlerContext";
 import TextOnImage from "../Primitives/TextOnImage";
 import Countdown, {zeroPad} from "react-countdown";
+import {Tooltip} from "@material-ui/core";
 
 const mapStateToProps = state => {
   return {
@@ -20,6 +21,7 @@ const mapStateToProps = state => {
     playerMaxEnergy: state.extendedGameState.game.player.maxEnergy,
     playerKnowledgePool: state.extendedGameState.game.player.knowledgePool,
     playerTimeRemaining: state.extendedGameState.game.player.time,
+    playerDeckColors: state.extendedGameState.game.player.deckColors,
 
     opponentId: state.extendedGameState.game.opponent.id,
     opponentUserId: state.extendedGameState.game.opponent.username,
@@ -29,6 +31,7 @@ const mapStateToProps = state => {
     opponentMaxEnergy: state.extendedGameState.game.opponent.maxEnergy,
     opponentKnowledgePool: state.extendedGameState.game.opponent.knowledgePool,
     opponentTimeRemaining: state.extendedGameState.game.opponent.time,
+    opponentDeckColors: state.extendedGameState.game.opponent.deckColors,
 
     selected: state.extendedGameState.selectionData.selected,
     selectable: state.extendedGameState.selectionData.selectable,
@@ -125,8 +128,10 @@ class PlayerDisplay extends React.Component {
       opponentMaxEnergy,
       playerKnowledgePool,
       opponentKnowledgePool,
-        playerTimeRemaining,
-        opponentTimeRemaining,
+      playerTimeRemaining,
+      opponentTimeRemaining,
+      playerDeckColors,
+      opponentDeckColors,
       activePlayer,
       playerUserId,
       opponentUserId,
@@ -141,14 +146,16 @@ class PlayerDisplay extends React.Component {
     const heightRound = windowHeight/20;
 
     const id = isPlayer ? playerId : opponentId;
-    const userId = isPlayer ? playerUserId : opponentUserId;
-    const name = isPlayer ? playerName : opponentName;
+    // const userId = isPlayer ? playerUserId : opponentUserId;
+    // const name = isPlayer ? playerName : opponentName;
     const health = isPlayer ? playerHealth : opponentHealth;
     const energy = isPlayer ? playerEnergy : opponentEnergy;
     const maxEnergy = isPlayer ? playerMaxEnergy : opponentMaxEnergy;
     const knowledgePool = isPlayer
       ? playerKnowledgePool
       : opponentKnowledgePool;
+
+    const deckColors = isPlayer ? playerDeckColors : opponentDeckColors;
 
     const timeRemaining = isPlayer ? playerTimeRemaining : opponentTimeRemaining;
 
@@ -237,21 +244,49 @@ class PlayerDisplay extends React.Component {
             style={{
               flexGrow: 2,
               height: heightRound,
-              margin: "0 4% 0 4%"
+              margin: "0 4% 0 4%",
             }}
           >
-            <TextOnImage
-                style={{color: "white"}}
-              src={
-                process.env.PUBLIC_URL +
-                "/img/card-components/health-black.png"
-              }
-              text={health}
-              min={1}
-              max={25}
-              scale={2}
-              windowDimensions={windowDimensions}
-            />
+
+            <Tooltip placement={isPlayer? "top" : "bottom"}
+                title={
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center"
+                }}
+            >
+              {deckColors.map((k, i) => (
+                  <img
+                      key={i}
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/img/card-components/knowledge-" +
+                        knowledgeMap[k.knowledge] +
+                        ".png"
+                      }
+                      style={{
+                        maxWidth: "20%",
+                        maxHeight: "20%",
+                        objectFit: "scale-down",
+                      }}
+                      alt=""
+                  />
+              ))}
+            </div>} >
+                <TextOnImage
+                    style={{color: "white"}}
+                  src={
+                    process.env.PUBLIC_URL +
+                    "/img/card-components/health-black.png"
+                  }
+                  text={health}
+                  min={1}
+                  max={25}
+                  scale={2}
+                  windowDimensions={windowDimensions}
+                />
+          </Tooltip>
           </div>
           <div
               className="timer"

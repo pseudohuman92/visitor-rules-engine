@@ -6675,6 +6675,7 @@ $root.Player = (function() {
      * @property {number|null} [handSize] Player handSize
      * @property {number|null} [health] Player health
      * @property {number|null} [time] Player time
+     * @property {Array.<IKnowledgeGroup>|null} [deckColors] Player deckColors
      */
 
     /**
@@ -6691,6 +6692,7 @@ $root.Player = (function() {
         this.discardPile = [];
         this["void"] = [];
         this.knowledgePool = [];
+        this.deckColors = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -6810,6 +6812,14 @@ $root.Player = (function() {
     Player.prototype.time = 0;
 
     /**
+     * Player deckColors.
+     * @member {Array.<IKnowledgeGroup>} deckColors
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.deckColors = $util.emptyArray;
+
+    /**
      * Creates a new Player instance using the specified properties.
      * @function create
      * @memberof Player
@@ -6866,6 +6876,9 @@ $root.Player = (function() {
             writer.uint32(/* id 14, wireType 0 =*/112).int32(message.health);
         if (message.time != null && Object.hasOwnProperty.call(message, "time"))
             writer.uint32(/* id 15, wireType 0 =*/120).int32(message.time);
+        if (message.deckColors != null && message.deckColors.length)
+            for (var i = 0; i < message.deckColors.length; ++i)
+                $root.KnowledgeGroup.encode(message.deckColors[i], writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
         return writer;
     };
 
@@ -6951,6 +6964,11 @@ $root.Player = (function() {
                 break;
             case 15:
                 message.time = reader.int32();
+                break;
+            case 16:
+                if (!(message.deckColors && message.deckColors.length))
+                    message.deckColors = [];
+                message.deckColors.push($root.KnowledgeGroup.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -7059,6 +7077,15 @@ $root.Player = (function() {
         if (message.time != null && message.hasOwnProperty("time"))
             if (!$util.isInteger(message.time))
                 return "time: integer expected";
+        if (message.deckColors != null && message.hasOwnProperty("deckColors")) {
+            if (!Array.isArray(message.deckColors))
+                return "deckColors: array expected";
+            for (var i = 0; i < message.deckColors.length; ++i) {
+                var error = $root.KnowledgeGroup.verify(message.deckColors[i]);
+                if (error)
+                    return "deckColors." + error;
+            }
+        }
         return null;
     };
 
@@ -7142,6 +7169,16 @@ $root.Player = (function() {
             message.health = object.health | 0;
         if (object.time != null)
             message.time = object.time | 0;
+        if (object.deckColors) {
+            if (!Array.isArray(object.deckColors))
+                throw TypeError(".Player.deckColors: array expected");
+            message.deckColors = [];
+            for (var i = 0; i < object.deckColors.length; ++i) {
+                if (typeof object.deckColors[i] !== "object")
+                    throw TypeError(".Player.deckColors: object expected");
+                message.deckColors[i] = $root.KnowledgeGroup.fromObject(object.deckColors[i]);
+            }
+        }
         return message;
     };
 
@@ -7164,6 +7201,7 @@ $root.Player = (function() {
             object.discardPile = [];
             object["void"] = [];
             object.knowledgePool = [];
+            object.deckColors = [];
         }
         if (options.defaults) {
             object.id = "";
@@ -7219,6 +7257,11 @@ $root.Player = (function() {
             object.health = message.health;
         if (message.time != null && message.hasOwnProperty("time"))
             object.time = message.time;
+        if (message.deckColors && message.deckColors.length) {
+            object.deckColors = [];
+            for (var j = 0; j < message.deckColors.length; ++j)
+                object.deckColors[j] = $root.KnowledgeGroup.toObject(message.deckColors[j], options);
+        }
         return object;
     };
 

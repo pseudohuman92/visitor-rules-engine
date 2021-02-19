@@ -93,7 +93,7 @@ class GameScreen extends Component {
     };
 
     render() {
-        const {windowDimensions, gameInitialized, clientPhase} = this.props;
+        const {windowDimensions, gameInitialized} = this.props;
         const {width, height} = windowDimensions;
 
         const sideHeight = height * 0.2;
@@ -105,7 +105,6 @@ class GameScreen extends Component {
                     width: "100%",
                     height: "100%",
                 }}>
-                    {(clientPhase === ClientPhase.WIN || clientPhase === ClientPhase.LOSE) && <Redirect to={"/profile"}/>}
                     {gameInitialized &&
                     <DragDropContext
                         style={{
@@ -125,7 +124,7 @@ class GameScreen extends Component {
                                 border: "3px white solid"
                             }}>
                                 <EscapeMenu open={this.state.menuOpen} close={this.closeMenu}/>
-                                {/*<EndGameDialog/>*/}
+                                <EndGameDialog/>
                                 <SelectXDialog/>
                                 <ChooseDialog/>
                                 <KnowledgeDialog/>

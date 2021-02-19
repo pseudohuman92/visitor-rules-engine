@@ -1,7 +1,9 @@
 package com.visitor.game;
 
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
+import com.visitor.protocol.Types;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -119,5 +121,11 @@ public class Deck extends Arraylist<Card> {
 			decklist.add(count + ";base." + lastName);
 		}
 		return decklist;
+	}
+
+	public CounterMap<Types.Knowledge> getDeckColors(){
+		CounterMap<Types.Knowledge> colors = new CounterMap<>();
+		this.forEach(c -> colors.merge(c.knowledge));
+		return colors;
 	}
 }

@@ -24,7 +24,7 @@ class PhaseDisplay extends PureComponent {
     }
     render() {
         return (
-            <div classname="phase-display"
+            <div className="phase-display"
                  style={{
                 ...this.props.style,
                 display: "flex", justifyContent:"space-around",
