@@ -15,17 +15,3 @@ To build: mvn install
 To start: mvn jetty:run
 
 To stop: <CTRL+C> or mvn jetty:stop (if running in background)
-
-## To run the client
-
-### Required Software
-
-Install Yarn: https://yarnpkg.com/en/
-
-Install npm: https://www.npmjs.com/
-
----
-
-### To start the client
-
-sh ./webclient/run.sh
