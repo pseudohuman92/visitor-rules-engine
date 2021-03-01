@@ -58,6 +58,7 @@ public class GameEndpoint {
 		new Thread(() -> {
 			try {
 				ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
+				gameServer.appendToHistory(gameID, cgm);
 				//writeToLog(cgm);
 				//out.println("Received Message");
 				//out.println(cgm);
@@ -86,6 +87,7 @@ public class GameEndpoint {
 	public void send (ServerGameMessage.Builder builder) throws IOException, EncodeException {
 		ServerGameMessage message = builder.build();
 		//writeToLog(message);
+		gameServer.appendToHistory(gameID, message);
 		checkResponseType(message);
 		//out.println("Sent Message");
 		//out.println(message);
@@ -110,12 +112,6 @@ public class GameEndpoint {
 			gameServer.concede(gameID, playerId);
 			return;
 		}
-		/*
-		if (message.getPayloadCase() == SAVEGAMESTATE) {
-			gameServer.saveGameState(gameID, message.getSaveGameState().getFilename());
-			return;
-		}
-		*/
 		if (message.getPayloadCase() == responseType) {
 			switch (message.getPayloadCase()) {
 				case ORDERCARDSRESPONSE:

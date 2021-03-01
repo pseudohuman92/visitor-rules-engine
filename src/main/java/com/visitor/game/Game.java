@@ -46,6 +46,8 @@ import static java.util.logging.Logger.getLogger;
  */
 public class Game implements Serializable {
 
+	Arraylist<String> history;
+
 	public transient Hashmap<UUID, GameEndpoint> connections;
 	public UUID activePlayer;
 	public transient ArrayBlockingQueue<Object> response;
@@ -64,6 +66,7 @@ public class Game implements Serializable {
 	Arraylist<UUID> blockers;
 
 	public Game () {
+		history = new Arraylist<>();
 		id = randomUUID();
 		players = new Hashmap<>();
 		connections = new Hashmap<>();
@@ -122,6 +125,7 @@ public class Game implements Serializable {
 
 	public void addToResponseQueue (Object o) {
 		try {
+
 			response.put(o);
 		} catch (InterruptedException ex) {
 			getLogger(Game.class.getName()).log(SEVERE, null, ex);
@@ -468,6 +472,7 @@ public class Game implements Serializable {
 		try {
 			setLastMessage(playerId, builder.build());
 			GameEndpoint e = connections.get(playerId);
+
 			if (e != null) {
 				e.send(builder);
 			}
@@ -843,7 +848,7 @@ public class Game implements Serializable {
 						.setWin(!win)));
 		connections.forEach((s, c) -> c.close());
 		connections = new Hashmap<>();
-		gameServer.removeGame(id);
+		gameServer.removeGame(id, history);
 	}
 
 
@@ -1329,6 +1334,10 @@ public class Game implements Serializable {
 
 	public void startActiveClock () {
 		getPlayer(activePlayer).clock.activate();
+	}
+
+	public void addToHistory(Object message) {
+		history.add(message.toString());
 	}
 
 	public enum Zone {

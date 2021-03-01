@@ -1,5 +1,6 @@
 package com.visitor.server;
 
+import com.visitor.db.MetricsDb;
 import com.visitor.game.Draft;
 import com.visitor.game.Game;
 import com.visitor.game.Player;
@@ -16,6 +17,7 @@ import javax.websocket.EncodeException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -28,6 +30,7 @@ import static java.util.logging.Logger.getLogger;
  */
 public class GameServer {
 
+	static MetricsDb metricsDb = new MetricsDb();
 	public Hashmap<String, GeneralEndpoint> playerConnections;
 	public Hashmap<UUID, Game> games;
 	public Hashmap<UUID, Draft> drafts;
@@ -186,6 +189,9 @@ public class GameServer {
 			QueuePlayer waitingPlayer = P2DraftGameQueue.remove(draftId);
 			out.println("Starting a new draft game with " + username + " and " + waitingPlayer.username);
 			Game game = new Game();
+			game.addToHistory("Game Type: Draft");
+			game.addToHistory(waitingPlayer.username + ":\n" + Arrays.toString(waitingPlayer.decklist));
+			game.addToHistory(username + ":\n" + Arrays.toString(decklist));
 			game.addPlayers(new Player(game, waitingPlayer.username, waitingPlayer.decklist), new Player(game, username, decklist));
 			games.putIn(game.getId(), game);
 			try {
@@ -237,6 +243,9 @@ public class GameServer {
 			QueuePlayer waitingPlayer = Bo1ConstructedQueue.remove(0);
 			out.println("Starting a new constructed game with " + username + " and " + waitingPlayer.username);
 			Game game = new Game();
+			game.addToHistory("Game Type: Best-of-1");
+			game.addToHistory(waitingPlayer.username + ":\n" + Arrays.toString(waitingPlayer.decklist));
+			game.addToHistory(username + ":\n" + Arrays.toString(decklist));
 			game.addPlayers(new Player(game, waitingPlayer.username, waitingPlayer.decklist), new Player(game, username, decklist));
 			games.putIn(game.getId(), game);
 			try {
@@ -256,7 +265,8 @@ public class GameServer {
 		games.get(gameID).addToResponseQueue(o);
 	}
 
-	public void removeGame (UUID gameID) {
+	public void removeGame(UUID gameID, Arraylist<String> history) {
+		metricsDb.addMatchHistory(gameID, history);
 		games.remove(gameID);
 	}
 
@@ -276,5 +286,9 @@ public class GameServer {
 
 	public ServerGameMessage getDraftLastMessage (UUID draftID, UUID playerId) {
 		return drafts.get(draftID).getLastMessage(playerId);
+	}
+
+	public void appendToHistory(UUID gameID, Object message) {
+		games.get(gameID).addToHistory(message);
 	}
 }

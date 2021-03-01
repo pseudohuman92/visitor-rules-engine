@@ -42,7 +42,7 @@ public class GeneralEndpoint {
 	@OnMessage
 	public void onMessage (Session session, byte[] message) throws IOException {
 		ClientMessage cm = ClientMessage.parseFrom(message);
-		//out.println(playerId + " sent a message: " + cm);
+		out.println(playerName + " sent a message: " + cm);
 		handleMessage(cm);
 	}
 
@@ -60,13 +60,13 @@ public class GeneralEndpoint {
 	}
 
 	public void send (ServerMessage message) throws IOException, EncodeException {
-		//out.println("Server sending a message to " + playerId + ": " + message);
+		out.println("Server sending a message to " + playerName + ": " + message);
 		session.getBasicRemote().sendObject(message.toByteArray());
 	}
 
 	public void send (ServerMessage.Builder builder) throws IOException, EncodeException {
 		ServerMessage message = builder.build();
-		//out.println("Server sending a message to " + playerId + ": " + message);
+		out.println("Server sending a message to " + playerName + ": " + message);
 		session.getBasicRemote().sendObject(message.toByteArray());
 	}
 
