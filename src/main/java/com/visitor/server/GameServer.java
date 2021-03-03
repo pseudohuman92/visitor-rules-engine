@@ -14,14 +14,11 @@ import com.visitor.protocol.ServerMessages.ServerMessage;
 import com.visitor.protocol.Types;
 
 import javax.websocket.EncodeException;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
 
-import static java.lang.System.out;
+import static com.visitor.protocol.Types.GameType.AI_BO1_CONSTRUCTED;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
@@ -49,15 +46,16 @@ public class GameServer {
 		P2DraftGameQueue = new Hashmap<>();
 	}
 
-
-	void activateCard (UUID gameID, UUID playerId, UUID cardID) {
-		System.out.println("Start Activate Card");
+	private void takeGameAction (UUID gameID, Runnable r) {
 		games.get(gameID).stopActiveClock();
-		games.get(gameID).activateCard(playerId, cardID);
-		out.println("Updating players from activateCard.");
+		r.run();
 		games.get(gameID).updatePlayers();
 		games.get(gameID).startActiveClock();
-		System.out.println("End Activate Card");
+	}
+
+	void activateCard (UUID gameID, UUID playerId, UUID cardID) {
+		takeGameAction(gameID, () ->
+		games.get(gameID).activateCard(playerId, cardID));
 	}
 
 	void concede (UUID gameID, UUID playerId) {
@@ -65,53 +63,28 @@ public class GameServer {
 	}
 
 	void redraw (UUID gameID, UUID playerId) {
-		System.out.println("Start Redraw");
-		games.get(gameID).stopActiveClock();
-		games.get(gameID).redraw(playerId);
-		out.println("Updating players from redraw.");
-		games.get(gameID).updatePlayers();
-		games.get(gameID).startActiveClock();
-		System.out.println("End Redraw");
+		takeGameAction(gameID, () ->
+		games.get(gameID).redraw(playerId));
 	}
 
 	void keep (UUID gameID, UUID playerId) {
-		System.out.println("Start Keep");
-		games.get(gameID).stopActiveClock();
-		games.get(gameID).keep(playerId);
-		out.println("Updating players from keep.");
-		games.get(gameID).updatePlayers();
-		games.get(gameID).startActiveClock();
-		System.out.println("End Keep");
+		takeGameAction(gameID, () ->
+		games.get(gameID).keep(playerId));
 	}
 
 	void pass (UUID gameID, UUID playerId) {
-		System.out.println("Start Pass");
-		games.get(gameID).stopActiveClock();
-		games.get(gameID).pass(playerId);
-		out.println("Updating players from pass.");
-		games.get(gameID).updatePlayers();
-		games.get(gameID).startActiveClock();
-		System.out.println("End Pass");
+		takeGameAction(gameID, () ->
+		games.get(gameID).pass(playerId));
 	}
 
 	void studyCard (UUID gameID, UUID playerId, UUID cardID) {
-		System.out.println("Start Study Card");
-		games.get(gameID).stopActiveClock();
-		games.get(gameID).studyCard(playerId, cardID, true);
-		out.println("Updating players from studyCard.");
-		games.get(gameID).updatePlayers();
-		games.get(gameID).startActiveClock();
-		System.out.println("End Study Card");
+		takeGameAction(gameID, () ->
+		games.get(gameID).studyCard(playerId, cardID, true));
 	}
 
 	void playCard (UUID gameID, UUID playerId, UUID cardID) {
-		System.out.println("Start Play Card");
-		games.get(gameID).stopActiveClock();
-		games.get(gameID).playCard(playerId, cardID);
-		out.println("Updating players from playCard.");
-		games.get(gameID).updatePlayers();
-		games.get(gameID).startActiveClock();
-		System.out.println("End Play Card");
+		takeGameAction(gameID, () ->
+		games.get(gameID).playCard(playerId, cardID));
 	}
 
 	synchronized ServerGameMessage getLastMessage (UUID gameID, UUID playerId) {
@@ -165,6 +138,9 @@ public class GameServer {
 
 	synchronized void joinQueue (String username, Types.GameType gameType, String[] decklist, UUID draftId) {
 		switch(gameType){
+			case AI_BO1_CONSTRUCTED:
+				startAiGame(username, decklist);
+				break;
 			case BO1_CONSTRUCTED:
 				join1Bo1ConstructedQueue(username, decklist);
 				break;
@@ -180,14 +156,14 @@ public class GameServer {
 
 	private void joinP2DraftGameQueue (UUID draftId, String username, String[] decklist) {
 		if (!P2DraftGameQueue.containsKey(draftId)) {
-			out.println("Adding " + username + " to draft game queue!");
+			System.out.println("Adding " + username + " to draft game queue!");
 			P2DraftGameQueue.put(draftId, new QueuePlayer(username, decklist));
 		} else {
 			if (P2DraftGameQueue.get(draftId).username.equals(username)) {
 				return;
 			}
 			QueuePlayer waitingPlayer = P2DraftGameQueue.remove(draftId);
-			out.println("Starting a new draft game with " + username + " and " + waitingPlayer.username);
+			System.out.println("Starting a new draft game with " + username + " and " + waitingPlayer.username);
 			Game game = new Game();
 			game.addToHistory("Game Type: Draft");
 			game.addToHistory(waitingPlayer.username + ":\n" + Arrays.toString(waitingPlayer.decklist));
@@ -209,14 +185,14 @@ public class GameServer {
 
 	private void joinP2DraftQueue (String username) {
 		if (P2DraftQueue.isEmpty()) {
-			out.println("Adding " + username + " to draft queue!");
+			System.out.println("Adding " + username + " to draft queue!");
 			P2DraftQueue.add(new QueuePlayer(username, null));
 		} else {
 			if (P2DraftQueue.get(0).username.equals(username)) {
 				return;
 			}
 			QueuePlayer waitingPlayer = P2DraftQueue.remove(0);
-			out.println("Starting a new draft with " + username + " and " + waitingPlayer.username);
+			System.out.println("Starting a new draft with " + username + " and " + waitingPlayer.username);
 			Draft draft = new Draft(waitingPlayer.username, username);
 			drafts.putIn(draft.getId(), draft);
 			try {
@@ -234,14 +210,14 @@ public class GameServer {
 
 	private void join1Bo1ConstructedQueue (String username, String[] decklist) {
 		if (Bo1ConstructedQueue.isEmpty()) {
-			out.println("Adding " + username + " to constructed game queue!");
+			System.out.println("Adding " + username + " to constructed game queue!");
 			Bo1ConstructedQueue.add(new QueuePlayer(username, decklist));
 		} else {
 			if (Bo1ConstructedQueue.get(0).username.equals(username)) {
 				return;
 			}
 			QueuePlayer waitingPlayer = Bo1ConstructedQueue.remove(0);
-			out.println("Starting a new constructed game with " + username + " and " + waitingPlayer.username);
+			System.out.println("Starting a new constructed game with " + username + " and " + waitingPlayer.username);
 			Game game = new Game();
 			game.addToHistory("Game Type: Best-of-1");
 			game.addToHistory(waitingPlayer.username + ":\n" + Arrays.toString(waitingPlayer.decklist));
@@ -260,6 +236,25 @@ public class GameServer {
 			}
 		}
 	}
+
+	private void startAiGame (String username, String[] decklist) {
+			System.out.println("Starting a new AI constructed game with " + username);
+			Game game = new Game();
+			game.addToHistory("Game Type: AI Best-of-1");
+			game.addToHistory(username + ":\n" + Arrays.toString(decklist));
+			AiPlayer aiPlayer = new AiPlayer(game);
+			game.addPlayers(aiPlayer, new Player(game, username, decklist));
+			games.putIn(game.getId(), game);
+			try {
+				playerConnections.get(username).send(ServerMessage.newBuilder()
+						.setNewGame(NewGame.newBuilder()
+								.setGameType(AI_BO1_CONSTRUCTED)
+								.setAiId(aiPlayer.id.toString())
+						.setGame(game.toGameState(username))));
+			} catch (IOException | EncodeException ex) {
+				getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+			}
+		}
 
 	void addToResponseQueue (UUID gameID, Object o) {
 		games.get(gameID).addToResponseQueue(o);
