@@ -6,7 +6,7 @@ import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.ServerGameMessages.*;
 import com.visitor.protocol.Types.*;
-import com.visitor.server.GameEndpoint;
+import com.visitor.server.GameEndpointInterface;
 
 import javax.websocket.EncodeException;
 import java.io.FileOutputStream;
@@ -48,7 +48,7 @@ public class Game implements Serializable {
 
 	Arraylist<String> history;
 
-	public transient Hashmap<UUID, GameEndpoint> connections;
+	public transient Hashmap<UUID, GameEndpointInterface> connections;
 	public UUID activePlayer;
 	public transient ArrayBlockingQueue<Object> response;
 	Hashmap<UUID, Player> players;
@@ -69,7 +69,7 @@ public class Game implements Serializable {
 		history = new Arraylist<>();
 		id = randomUUID();
 		players = new Hashmap<>();
-		connections = new Hashmap<>();
+		connections = new Hashmap<UUID, GameEndpointInterface>();
 		stack = new Arraylist<>();
 		lastMessages = new Hashmap<>();
 		response = new ArrayBlockingQueue<>(1);
@@ -107,7 +107,7 @@ public class Game implements Serializable {
 	 * Connection Methods
 	 * To deal with client connections
 	 */
-	public void addConnection (UUID playerId, GameEndpoint connection) {
+	public void addConnection (UUID playerId, GameEndpointInterface connection) {
 		connections.putIn(playerId, connection);
 	}
 
@@ -471,10 +471,10 @@ public class Game implements Serializable {
 	private void send (UUID playerId, ServerGameMessage.Builder builder) {
 		try {
 			setLastMessage(playerId, builder.build());
-			GameEndpoint e = connections.get(playerId);
+			GameEndpointInterface e = connections.get(playerId);
 
 			if (e != null) {
-				e.send(builder);
+				e.send(builder, playerId);
 			}
 		} catch (IOException | EncodeException ex) {
 			getLogger(Game.class.getName()).log(SEVERE, null, ex);
@@ -847,7 +847,7 @@ public class Game implements Serializable {
 						.setGame(toGameState(getOpponentId(playerId), true))
 						.setWin(!win)));
 		connections.forEach((s, c) -> c.close());
-		connections = new Hashmap<>();
+		connections = new Hashmap<UUID, GameEndpointInterface>();
 		gameServer.removeGame(id, history);
 	}
 
@@ -1329,11 +1329,15 @@ public class Game implements Serializable {
 	}
 
 	public void stopActiveClock () {
-		getPlayer(activePlayer).clock.pause();
+		if (activePlayer != null){
+			getPlayer(activePlayer).clock.pause();
+		}
 	}
 
 	public void startActiveClock () {
-		getPlayer(activePlayer).clock.activate();
+		if (activePlayer != null){
+			getPlayer(activePlayer).clock.activate();
+		}
 	}
 
 	public void addToHistory(Object message) {

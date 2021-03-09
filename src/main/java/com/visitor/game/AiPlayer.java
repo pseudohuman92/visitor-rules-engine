@@ -1,4 +1,4 @@
-package com.visitor.server;
+package com.visitor.game;
 
 import com.visitor.game.Game;
 import com.visitor.game.Player;
@@ -9,18 +9,34 @@ import com.visitor.protocol.Types;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class AiPlayer extends Player {
 
-	final static String[] decklist = new String[0];
+	final static String[] decklist = {
+	"3;base.Eagle",
+	"3;base.Hawk",
+	"3;base.Leech",
+	"3;base.Owl",
+	"3;base.Ox",
+	"3;base.Pistol Shrimp",
+	"3;base.Porcupine",
+	"3;base.Seagull",
+	"3;base.Sparrow",
+	"3;base.Turtle",
+	"3;base.UR01",
+	"3;base.UR02",
+	"3;base.UR03",
+	"3;base.UR04",
+	"3;base.UR05"};
 
 	public AiPlayer (Game game) {
 		super(game, "AI Player", decklist);
 	}
 
-	public static ClientGameMessage getResponse (ServerGameMessage message) {
+	public static ClientGameMessage getResponse (ServerGameMessage message, UUID aiId) {
 		switch (message.getPayloadCase()){
 			case PICKCARD:
 				PickCard pickCard = message.getPickCard();
@@ -72,6 +88,7 @@ public class AiPlayer extends Player {
 				Arraylist<String> targets = new Arraylist<>(assignDamage.getPossibleTargetsList());
 
 				while (totalDamage > 0){
+					//TODO: Implement here.
 					break;
 				}
 
@@ -139,35 +156,41 @@ public class AiPlayer extends Player {
 			case UPDATEGAMESTATE:
 				ClientGameMessage.Builder builder = ClientGameMessage.newBuilder();
 				gameState = message.getUpdateGameState().getGame();
-
-				if(gameState.getCanStudyCount() > 0){
-					return builder.setStudyCard(
-							StudyCard.newBuilder()
-									.setCardID(gameState.getCanStudy(
-											getRandomInt(gameState.getCanStudyCount())))
-									.build()).build();
-				}
-
-				if(gameState.getCanPlayCount() > 0){
-					return builder.setPlayCard(
-							PlayCard.newBuilder()
-									.setCardID(gameState.getCanPlay(
-											getRandomInt(gameState.getCanPlayCount())))
-									.build()).build();
-				}
-
-				if(gameState.getCanActivateCount() > 0){
-					if(ThreadLocalRandom.current().nextBoolean()) {
-						return builder.setActivateCard(
-								ActivateCard.newBuilder()
-										.setCardID(gameState.getCanActivate(
-												getRandomInt(gameState.getCanActivateCount())))
-										.build()).build();
-					} else {
-						return builder.setPass(Pass.newBuilder()).build();
+				if (gameState.getActivePlayer().equals(aiId.toString())) {
+					if (gameState.getPhase() == Types.Phase.REDRAW) {
+						return builder.setKeep(Keep.newBuilder().build()).build();
 					}
+
+					if (gameState.getCanStudyCount() > 0) {
+						return builder.setStudyCard(
+								StudyCard.newBuilder()
+										.setCardID(gameState.getCanStudy(
+												getRandomInt(gameState.getCanStudyCount())))
+										.build()).build();
+					}
+
+					if (gameState.getCanPlayCount() > 0) {
+						return builder.setPlayCard(
+								PlayCard.newBuilder()
+										.setCardID(gameState.getCanPlay(
+												getRandomInt(gameState.getCanPlayCount())))
+										.build()).build();
+					}
+
+					if (gameState.getCanActivateCount() > 0) {
+						if (ThreadLocalRandom.current().nextBoolean()) {
+							return builder.setActivateCard(
+									ActivateCard.newBuilder()
+											.setCardID(gameState.getCanActivate(
+													getRandomInt(gameState.getCanActivateCount())))
+											.build()).build();
+						} else {
+							return builder.setPass(Pass.newBuilder()).build();
+						}
+					}
+					return builder.setPass(Pass.newBuilder()).build();
 				}
-				return builder.setPass(Pass.newBuilder()).build();
+				return null;
 
 			case GAMEEND:
 				return null;

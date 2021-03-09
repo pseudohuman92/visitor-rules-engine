@@ -30,7 +30,7 @@ import static java.util.logging.Logger.getLogger;
  * @author pseudo
  */
 @ServerEndpoint(value = "/games/{playerId}/{gameID}")
-public class GameEndpoint {
+public class GameEndpoint implements GameEndpointInterface{
 
 	Session session;
 	UUID playerId;
@@ -38,7 +38,6 @@ public class GameEndpoint {
 	boolean waitingResponse;
 	PayloadCase responseType;
 	SelectFromType selectFromType;
-	BufferedWriter writer;
 
 
 	@OnOpen
@@ -50,7 +49,7 @@ public class GameEndpoint {
 		session.getAsyncRemote().setBatchingAllowed(false);
 		session.setMaxIdleTimeout(0);
 		gameServer.addGameConnection(this.gameID, this.playerId, this);
-		resendLastMessage();
+		resendLastMessage(this.playerId);
 	}
 
 	@OnMessage
@@ -84,7 +83,7 @@ public class GameEndpoint {
 		throwable.printStackTrace();
 	}
 
-	public void send (ServerGameMessage.Builder builder) throws IOException, EncodeException {
+	public void send (ServerGameMessage.Builder builder, UUID targetId) throws IOException, EncodeException {
 		ServerGameMessage message = builder.build();
 		//writeToLog(message);
 		gameServer.appendToHistory(gameID, message);
@@ -98,7 +97,7 @@ public class GameEndpoint {
 		session = null;
 	}
 
-	public void resendLastMessage () throws IOException, EncodeException {
+	public void resendLastMessage (UUID targetId) throws IOException, EncodeException {
 		ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, playerId);
 		if (lastMessage != null) {
 			//out.println("Resending last message to "+playerId+" "+lastMessage);

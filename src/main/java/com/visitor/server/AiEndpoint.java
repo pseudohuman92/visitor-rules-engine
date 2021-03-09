@@ -1,13 +1,12 @@
 package com.visitor.server;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.visitor.game.AiPlayer;
 import com.visitor.protocol.ClientGameMessages.*;
-import com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.AttackerAssignment;
 import com.visitor.protocol.Types.BlockerAssignment;
-import com.visitor.protocol.Types.SelectFromType;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -26,8 +25,14 @@ import static java.util.logging.Logger.getLogger;
  * @author pseudo
  */
 @ServerEndpoint(value = "/ai/{playerId}/{gameID}/{aiId}")
-public class AiEndpoint extends GameEndpoint {
+public class AiEndpoint implements GameEndpointInterface {
 
+	Session session;
+	UUID playerId;
+	UUID gameID;
+	boolean waitingResponse;
+	ClientGameMessage.PayloadCase responseType;
+	Types.SelectFromType selectFromType;
 	UUID aiId;
 
 	@OnOpen
@@ -41,8 +46,10 @@ public class AiEndpoint extends GameEndpoint {
 		session.setMaxIdleTimeout(0);
 		gameServer.addGameConnection(this.gameID, this.playerId, this);
 		gameServer.addGameConnection(this.gameID, this.aiId, this);
-		resendLastMessage();
+		resendLastMessage(this.playerId);
+		resendLastMessage(this.aiId);
 	}
+
 
 	@OnMessage
 	public void onMessage (Session session, byte[] message) {
@@ -55,7 +62,6 @@ public class AiEndpoint extends GameEndpoint {
 			}
 		}).start();
 	}
-
 
 
 	@OnClose
@@ -71,28 +77,36 @@ public class AiEndpoint extends GameEndpoint {
 
 	public void send (ServerGameMessage.Builder builder, UUID targetId) throws IOException, EncodeException {
 		ServerGameMessage message = builder.build();
+		out.println("[Message to " + (playerId.equals(targetId)? "player" : "AI") + "]\n" + message);
 		gameServer.appendToHistory(gameID, message);
 		checkResponseType(message);
 
 		if (playerId.equals(targetId)) {
 			session.getBasicRemote().sendObject(message.toByteArray());
 		} else {
-			ClientGameMessage aiResponse = AiPlayer.getResponse(message);
+			ClientGameMessage aiResponse = AiPlayer.getResponse(message, aiId);
+			out.println("[AI Response] " + aiResponse);
 			if (aiResponse != null) {
 				processClientGameMessage(aiResponse, aiId);
 			}
 		}
 	}
 
+
 	public void close () {
 		session = null;
 	}
 
-	public void resendLastMessage () throws IOException, EncodeException {
-		ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, playerId);
-		if (lastMessage != null) {
-			checkResponseType(lastMessage);
+	public void resendLastMessage (UUID targetId) throws IOException, EncodeException {
+		ServerGameMessage lastMessage = gameServer.getLastMessage(gameID, targetId);
+		if (playerId.equals(targetId)) {
 			session.getBasicRemote().sendObject(lastMessage.toByteArray());
+		} else {
+			ClientGameMessage aiResponse = AiPlayer.getResponse(lastMessage, aiId);
+			out.println("[AI Response] " + aiResponse);
+			if (aiResponse != null) {
+				processClientGameMessage(aiResponse, aiId);
+			}
 		}
 	}
 

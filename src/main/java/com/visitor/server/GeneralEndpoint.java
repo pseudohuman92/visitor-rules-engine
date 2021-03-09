@@ -27,8 +27,11 @@ public class GeneralEndpoint {
 
 	@OnOpen
 	public void onOpen (Session session, @PathParam("playerId") String playerName) throws IOException {
+
+		out.println(playerName + " connected!");
 		this.session = session;
 		this.playerName = playerName;
+
 		session.getBasicRemote().setBatchingAllowed(false);
 		session.getAsyncRemote().setBatchingAllowed(false);
 		session.setMaxIdleTimeout(0);
@@ -78,11 +81,6 @@ public class GeneralEndpoint {
 				gameServer.joinQueue(playerName, jqm.getGameType(), jqm.getDecklistList().toArray(new String[jqm.getDecklistCount()]),
 						draftId.equals("") ? null : UUID.fromString(draftId));
 				break;
-			/*
-			case LOADGAME:
-				gameServer.loadGame(playerName, cm.getLoadGame().getFilename());
-				break;
-			*/
 		}
 	}
 }
