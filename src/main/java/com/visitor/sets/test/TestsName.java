@@ -14,11 +14,11 @@ import static com.visitor.protocol.Types.Knowledge.*;
  */
 public class TestsName extends Unit {
 
-	public TestsName (Game game, UUID owner) {
-		super(game, "Test's, Name", 2,
-				new CounterMap().add(GREEN, 2).add(PURPLE, 1).add(RED, 1).add(BLUE, 1).add(YELLOW, 3),
-				"this is card text",
-				2, 2,
-				owner, Flying, Deathtouch, Unblockable);
-	}
+    public TestsName(Game game, UUID owner) {
+        super(game, "Test's, Name", 2,
+                new CounterMap().add(GREEN, 2).add(PURPLE, 1).add(RED, 1).add(BLUE, 1).add(YELLOW, 3),
+                "this is card text",
+                2, 2,
+                owner, Flying, Deathtouch, Unblockable);
+    }
 }

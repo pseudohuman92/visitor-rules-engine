@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class Naturality extends Tome {
 
-    public Naturality (Game game, UUID owner) {
+    public Naturality(Game game, UUID owner) {
         super(game, "Naturality", "Study: Gain {G}{Y}", owner, new CounterMap<>(GREEN, 1).add(YELLOW, 1));
     }
 

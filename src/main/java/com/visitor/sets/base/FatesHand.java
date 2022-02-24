@@ -22,19 +22,19 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class FatesHand extends Unit {
 
-	public FatesHand (Game game, UUID owner) {
-		super(game, "Fate's Hand",
-				1, new CounterMap(PURPLE, 1),
-				"Sacrifice a unit: {~} gains +1/+1",
-				1, 1,
-				owner, Deathtouch, Lifelink);
+    public FatesHand(Game game, UUID owner) {
+        super(game, "Fate's Hand",
+                1, new CounterMap(PURPLE, 1),
+                "Sacrifice a unit: {~} gains +1/+1",
+                1, 1,
+                owner, Deathtouch, Lifelink);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 0, "{~} gains +1/+1",
-						() -> {
-							UUID sacrificedId = game.selectFromZone(controller, Game.Zone.Play, Predicates::isUnit, 1, false, "Sacrifice a unit.").get(0);
-							game.sacrifice(sacrificedId);
-						},
-						() -> game.addAttackAndHealth(id, 1, 1)));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 0, "{~} gains +1/+1",
+                        () -> {
+                            UUID sacrificedId = game.selectFromZone(controller, Game.Zone.Play, Predicates::isUnit, 1, false, "Sacrifice a unit.").get(0);
+                            game.sacrifice(sacrificedId);
+                        },
+                        () -> game.addAttackAndHealth(id, 1, 1)));
+    }
 }

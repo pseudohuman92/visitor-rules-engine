@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class BloodMoon extends Unit {
 
-	public BloodMoon (Game game, UUID owner) {
-		super(game, "Blood Moon",
-				3, new CounterMap(PURPLE, 2),
-				"",
-				3, 3,
-				owner, Deathtouch);
-	}
+    public BloodMoon(Game game, UUID owner) {
+        super(game, "Blood Moon",
+                3, new CounterMap(PURPLE, 2),
+                "",
+                3, 3,
+                owner, Deathtouch);
+    }
 }

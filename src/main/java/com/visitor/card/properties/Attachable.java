@@ -19,47 +19,47 @@ import java.util.function.Predicate;
  */
 public class Attachable {
 
-	private final Card card;
-	private final Game game;
+    private final Card card;
+    private final Game game;
 
-	private Predicate<Card> validTarget;
-	private UUID attachedTo;
-	private Consumer<UUID> afterAttached;
-	private Consumer<UUID> afterRemoved;
+    private Predicate<Card> validTarget;
+    private UUID attachedTo;
+    private Consumer<UUID> afterAttached;
+    private Consumer<UUID> afterRemoved;
 
-	// Constructors
-	public Attachable (Game game, Card card, Predicate<Card> validTarget,
-	                   Consumer<UUID> afterAttached, Consumer<UUID> afterRemoved) {
-		this.game = game;
-		this.card = card;
-		this.validTarget = validTarget;
-		this.afterAttached = afterAttached;
-		this.afterRemoved = afterRemoved;
-	}
+    // Constructors
+    public Attachable(Game game, Card card, Predicate<Card> validTarget,
+                      Consumer<UUID> afterAttached, Consumer<UUID> afterRemoved) {
+        this.game = game;
+        this.card = card;
+        this.validTarget = validTarget;
+        this.afterAttached = afterAttached;
+        this.afterRemoved = afterRemoved;
+    }
 
-	public final void setAttachTo (UUID attachedId){
-		attachedTo = attachedId;
-	}
+    public final void setAttachTo(UUID attachedId) {
+        attachedTo = attachedId;
+    }
 
-	/**
-	 * Gets automatically called from Card's enterPlay().
-	 */
-	public final void attach (){
-		game.addAttachmentTo(attachedTo, card.id);
-		afterAttached.accept(attachedTo);
-	}
+    /**
+     * Gets automatically called from Card's enterPlay().
+     */
+    public final void attach() {
+        game.addAttachmentTo(attachedTo, card.id);
+        afterAttached.accept(attachedTo);
+    }
 
-	/**
-	 * Gets automatically called from Card's leavePlay().
-	 */
-	public final void removeFromAttached (){
-		game.removeAttachmentFrom(attachedTo, card.id);
-		afterRemoved.accept(attachedTo);
-		attachedTo = null;
-	}
+    /**
+     * Gets automatically called from Card's leavePlay().
+     */
+    public final void removeFromAttached() {
+        game.removeAttachmentFrom(attachedTo, card.id);
+        afterRemoved.accept(attachedTo);
+        attachedTo = null;
+    }
 
 
-	public void clear () {
-		attachedTo = null;
-	}
+    public void clear() {
+        attachedTo = null;
+    }
 }

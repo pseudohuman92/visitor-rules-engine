@@ -21,19 +21,19 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class GP03 extends Unit {
 
-	public GP03 (Game game, UUID owner) {
-		super(game, "GP03",
-				2, new CounterMap(GREEN, 1).add(PURPLE, 1),
-				"Whenever {~} deals combat damage to a player, {~} gains +1/+1.",
-				1, 1,
-				owner, Combat.CombatAbility.Haste);
+    public GP03(Game game, UUID owner) {
+        super(game, "GP03",
+                2, new CounterMap(GREEN, 1).add(PURPLE, 1),
+                "Whenever {~} deals combat damage to a player, {~} gains +1/+1.",
+                1, 1,
+                owner, Combat.CombatAbility.Haste);
 
-		combat.addDamageEffect((targetId, damage) -> {
-			if (game.isPlayer(targetId) && damage.combat) {
-					game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, {~} gains +1/+1.",
-						() -> game.addAttackAndHealth(id, 1, 1)));
-			}
-		});
-	}
+        combat.addDamageEffect((targetId, damage) -> {
+            if (game.isPlayer(targetId) && damage.combat) {
+                game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, {~} gains +1/+1.",
+                        () -> game.addAttackAndHealth(id, 1, 1)));
+            }
+        });
+    }
 
 }

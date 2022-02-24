@@ -21,17 +21,17 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Seagull extends Unit {
 
-	public Seagull (Game game, UUID owner) {
-		super(game, "Seagull",
-				2, new CounterMap(BLUE, 1),
-				"{2}, {Use}: Another target unit gains flying until end of turn.",
-				2, 1,
-				owner, Flying);
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Another target unit gains flying until end of turn.")
-						.setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
-						targetId -> game.runIfInZone(controller, Game.Zone.Both_Play, targetId, ()->game.addTurnlyCombatAbility(targetId, Flying)))
-						.setDepleting());
+    public Seagull(Game game, UUID owner) {
+        super(game, "Seagull",
+                2, new CounterMap(BLUE, 1),
+                "{2}, {Use}: Another target unit gains flying until end of turn.",
+                2, 1,
+                owner, Flying);
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 2, "Another target unit gains flying until end of turn.")
+                        .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+                                targetId -> game.runIfInZone(controller, Game.Zone.Both_Play, targetId, () -> game.addTurnlyCombatAbility(targetId, Flying)))
+                        .setDepleting());
 
-	}
+    }
 }

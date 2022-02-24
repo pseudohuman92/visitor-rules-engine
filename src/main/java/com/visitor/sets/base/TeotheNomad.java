@@ -22,16 +22,16 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class TeotheNomad extends Unit {
 
-	public TeotheNomad (Game game, UUID owner) {
-		super(game, "Teo the Nomad",
-				5, new CounterMap<>(YELLOW, 2),
-				"{Y}{Y}{Y}{Y}{Y} - {7}: Resurrect target unit.",
-				3, 2,
-				owner, Flying, Vigilance);
-		activatable.addActivatedAbility(new ActivatedAbility(game,this, 7, "{Y}{Y}{Y}{Y}{Y} - {7}: Resurrect target unit.")
-				.setTargeting(Game.Zone.Discard_Pile, Predicates::isUnit, 1, false, targetId -> game.runIfInZone(controller, Game.Zone.Discard_Pile, targetId, ()-> game.resurrect(targetId)))
-		.setKnowledgeRequirement(new CounterMap<>(YELLOW, 5)));
-	}
+    public TeotheNomad(Game game, UUID owner) {
+        super(game, "Teo the Nomad",
+                5, new CounterMap<>(YELLOW, 2),
+                "{Y}{Y}{Y}{Y}{Y} - {7}: Resurrect target unit.",
+                3, 2,
+                owner, Flying, Vigilance);
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 7, "{Y}{Y}{Y}{Y}{Y} - {7}: Resurrect target unit.")
+                .setTargeting(Game.Zone.Discard_Pile, Predicates::isUnit, 1, false, targetId -> game.runIfInZone(controller, Game.Zone.Discard_Pile, targetId, () -> game.resurrect(targetId)))
+                .setKnowledgeRequirement(new CounterMap<>(YELLOW, 5)));
+    }
 
 
 }

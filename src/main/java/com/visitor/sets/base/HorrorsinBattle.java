@@ -19,7 +19,7 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 public class HorrorsinBattle extends Tome {
 
     public HorrorsinBattle(Game game, UUID owner) {
-        super(game,"Horrors in Battle", "Study: Gain {P}{R}", owner, new CounterMap<>(PURPLE, 1).add(RED, 1));
+        super(game, "Horrors in Battle", "Study: Gain {P}{R}", owner, new CounterMap<>(PURPLE, 1).add(RED, 1));
     }
 
 }

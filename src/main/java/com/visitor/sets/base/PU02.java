@@ -22,33 +22,33 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class PU02 extends Unit {
 
-	public PU02 (Game game, UUID owner) {
-		super(game, "PU02",
-				6, new CounterMap(BLUE, 2).add(PURPLE, 1),
-				"Whenever {~} deals combat damage to a player, you may play target \n" +
-				"spell from that player’s discard pile without paying its cost. \n" +
-				"Purge the spell after it resolves.",
-				5, 8,
-				owner);
+    public PU02(Game game, UUID owner) {
+        super(game, "PU02",
+                6, new CounterMap(BLUE, 2).add(PURPLE, 1),
+                "Whenever {~} deals combat damage to a player, you may play target \n" +
+                        "spell from that player’s discard pile without paying its cost. \n" +
+                        "Purge the spell after it resolves.",
+                5, 8,
+                owner);
 
-		combat.addDamageEffect(
-				(targetId, damage) -> {
-					if (game.isPlayer(targetId)) {
-						game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, you may play target \n" +
-						                                            "spell from that player’s discard pile without paying its cost. \n" +
-						                                            "Purge the spell after it resolves.",
-								() -> {
-									Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Discard_Pile, Predicates.and(Predicates::isSpell, c-> c.canPlay(false)), 1, true, "Select a spell to play.");
-									if (!maybePlay.isEmpty()){
-										game.getCard(maybePlay.get(0)).controller = controller;
-										game.getCard(maybePlay.get(0)).setPurging();
-										game.playCardWithoutCost(controller, maybePlay.get(0));
-									}
-								}));
+        combat.addDamageEffect(
+                (targetId, damage) -> {
+                    if (game.isPlayer(targetId)) {
+                        game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, you may play target \n" +
+                                "spell from that player’s discard pile without paying its cost. \n" +
+                                "Purge the spell after it resolves.",
+                                () -> {
+                                    Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Discard_Pile, Predicates.and(Predicates::isSpell, c -> c.canPlay(false)), 1, true, "Select a spell to play.");
+                                    if (!maybePlay.isEmpty()) {
+                                        game.getCard(maybePlay.get(0)).controller = controller;
+                                        game.getCard(maybePlay.get(0)).setPurging();
+                                        game.playCardWithoutCost(controller, maybePlay.get(0));
+                                    }
+                                }));
 
-					}
+                    }
 
-		}
-		);
-	}
+                }
+        );
+    }
 }

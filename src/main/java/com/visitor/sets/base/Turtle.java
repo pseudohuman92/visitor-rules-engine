@@ -22,22 +22,22 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Turtle extends Unit {
 
-	UUID target;
+    UUID target;
 
-	public Turtle (Game game, UUID owner) {
-		super(game, "Turtle",
-				1, new CounterMap(BLUE, 1),
-						"{U}{U}{U}{U}{U} - {Slow} | {5}, {Use}: Gain control of target depleted unit.",
-				0, 5,
-				owner, Defender);
+    public Turtle(Game game, UUID owner) {
+        super(game, "Turtle",
+                1, new CounterMap(BLUE, 1),
+                "{U}{U}{U}{U}{U} - {Slow} | {5}, {Use}: Gain control of target depleted unit.",
+                0, 5,
+                owner, Defender);
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 5, "Gain control of target depleted unit.",
-				()->game.hasIn(controller, Game.Zone.Opponent_Play, and(Predicates::isUnit, Predicates::isDepleted), 1),
-				()->target = game.selectFromZone(controller, Game.Zone.Opponent_Play, and(Predicates::isUnit, Predicates::isDepleted), 1, false,"Select a depleted unit opponent controls.").get(0),
-				()-> game.gainControlFromZone(controller, Game.Zone.Opponent_Play, Game.Zone.Play, target))
-				.setDepleting()
-				.setSlow()
-				.setKnowledgeRequirement(new CounterMap<>(BLUE, 5)));
-	}
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 5, "Gain control of target depleted unit.",
+                () -> game.hasIn(controller, Game.Zone.Opponent_Play, and(Predicates::isUnit, Predicates::isDepleted), 1),
+                () -> target = game.selectFromZone(controller, Game.Zone.Opponent_Play, and(Predicates::isUnit, Predicates::isDepleted), 1, false, "Select a depleted unit opponent controls.").get(0),
+                () -> game.gainControlFromZone(controller, Game.Zone.Opponent_Play, Game.Zone.Play, target))
+                .setDepleting()
+                .setSlow()
+                .setKnowledgeRequirement(new CounterMap<>(BLUE, 5)));
+    }
 
 }

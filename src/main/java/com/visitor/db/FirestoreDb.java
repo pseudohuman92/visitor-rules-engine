@@ -57,16 +57,16 @@ public class FirestoreDb {
      * @param docName document name
      */
     void createDocument(String collectionName, String docName, Hashmap<String, Object> data) throws Exception {
-                // [START fs_add_data_1]
-                // [START firestore_setup_dataset_pt1]
-                DocumentReference docRef = db.collection(collectionName).document(docName);
-                //asynchronously write data
-                ApiFuture<WriteResult> result = docRef.set(data);
-                // ...
-                // result.get() blocks on response
-                System.out.println("Update time : " + result.get().getUpdateTime());
-                // [END firestore_setup_dataset_pt1]
-                // [END fs_add_data_1]
+        // [START fs_add_data_1]
+        // [START firestore_setup_dataset_pt1]
+        DocumentReference docRef = db.collection(collectionName).document(docName);
+        //asynchronously write data
+        ApiFuture<WriteResult> result = docRef.set(data);
+        // ...
+        // result.get() blocks on response
+        System.out.println("Update time : " + result.get().getUpdateTime());
+        // [END firestore_setup_dataset_pt1]
+        // [END fs_add_data_1]
     }
 
     void retrieveAllDocuments(String collectionName) throws Exception {
@@ -91,7 +91,9 @@ public class FirestoreDb {
         // [END fs_get_all]
     }
 
-    /** Closes the gRPC channels associated with this instance and frees up their resources. */
+    /**
+     * Closes the gRPC channels associated with this instance and frees up their resources.
+     */
     void close() throws Exception {
         db.close();
     }

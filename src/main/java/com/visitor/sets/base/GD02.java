@@ -26,24 +26,24 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class GD02 extends Unit {
 
-	public GD02 (Game game, UUID owner) {
-		super(game, "GD02",
-				5, new CounterMap(GREEN, 2).add(RED, 1),
-				"Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
-				4, 4,
-				owner, Combat.CombatAbility.Trample);
+    public GD02(Game game, UUID owner) {
+        super(game, "GD02",
+                5, new CounterMap(GREEN, 2).add(RED, 1),
+                "Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
+                4, 4,
+                owner, Combat.CombatAbility.Trample);
 
-		triggering = new Triggering(game, this)
-				.addEventChecker(new EventChecker(game, this,
-				event -> {
-						((Arraylist<Card>) event.data.get(0)).forEach(card -> {
-							if (card.controller.equals(controller) && card.hasCombatAbility(Combat.CombatAbility.Trample)) {
-								game.addToStack(new AbilityCard(game, this, "Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
-										() -> game.addTurnlyAttackAndHealth(card.id, 2, 2)));
-							}
+        triggering = new Triggering(game, this)
+                .addEventChecker(new EventChecker(game, this,
+                        event -> {
+                            ((Arraylist<Card>) event.data.get(0)).forEach(card -> {
+                                if (card.controller.equals(controller) && card.hasCombatAbility(Combat.CombatAbility.Trample)) {
+                                    game.addToStack(new AbilityCard(game, this, "Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
+                                            () -> game.addTurnlyAttackAndHealth(card.id, 2, 2)));
+                                }
 
-						});
-					}
-				).addTypeChecker(Event.EventType.Attack));
-	}
+                            });
+                        }
+                ).addTypeChecker(Event.EventType.Attack));
+    }
 }

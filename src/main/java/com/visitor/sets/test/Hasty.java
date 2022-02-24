@@ -18,11 +18,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Haste;
  */
 public class Hasty extends Unit {
 
-	public Hasty (Game game, UUID owner) {
-		super(game, "Hasty",
-				0, new CounterMap(),
-				"",
-				1, 1,
-				owner, Haste);
-	}
+    public Hasty(Game game, UUID owner) {
+        super(game, "Hasty",
+                0, new CounterMap(),
+                "",
+                1, 1,
+                owner, Haste);
+    }
 }

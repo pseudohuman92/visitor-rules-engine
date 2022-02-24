@@ -21,24 +21,24 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Spider extends Unit {
 
-	UUID target;
+    UUID target;
 
-	public Spider (Game game, UUID owner) {
-		super(game, "Spider",
-				1, new CounterMap(GREEN, 1),
-				"{G}{G}{G}- {4}, {Use}: Target unit gains +X/+X until end of turn where X is the number of {G} you have.",
-				1, 1,
-				owner, Deathtouch);
+    public Spider(Game game, UUID owner) {
+        super(game, "Spider",
+                1, new CounterMap(GREEN, 1),
+                "{G}{G}{G}- {4}, {Use}: Target unit gains +X/+X until end of turn where X is the number of {G} you have.",
+                1, 1,
+                owner, Deathtouch);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 4, "Target unit gains +X/+X until end of turn where X is the number of {G} you have.",
-						() -> target = game.selectFromZone(controller, Game.Zone.Both_Play, Predicates::isUnit, 1, false, "Select a unit").get(0),
-						() -> game.runIfInZone(controller, Game.Zone.Both_Play, target,
-								() -> {
-									int x = game.getKnowledgeCount(controller, GREEN);
-									game.addTurnlyAttackAndHealth(target, x, x);
-								})).
-						setDepleting()
-						.setKnowledgeRequirement(new CounterMap<>(GREEN, 3)));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 4, "Target unit gains +X/+X until end of turn where X is the number of {G} you have.",
+                        () -> target = game.selectFromZone(controller, Game.Zone.Both_Play, Predicates::isUnit, 1, false, "Select a unit").get(0),
+                        () -> game.runIfInZone(controller, Game.Zone.Both_Play, target,
+                                () -> {
+                                    int x = game.getKnowledgeCount(controller, GREEN);
+                                    game.addTurnlyAttackAndHealth(target, x, x);
+                                })).
+                        setDepleting()
+                        .setKnowledgeRequirement(new CounterMap<>(GREEN, 3)));
+    }
 }

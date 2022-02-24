@@ -18,12 +18,12 @@ import java.util.UUID;
  */
 public abstract class Asset extends Card {
 
-	public Asset (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
-		super(game, name, knowledge, CardType.Asset, text, owner);
+    public Asset(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
+        super(game, name, knowledge, CardType.Asset, text, owner);
 
-		playable = new Playable(game, this, cost).setSlow().setPersistent();
-		studiable = new Studiable(game, this);
-		activatable = new Activatable(game, this);
-		triggering = new Triggering(game, this);
-	}
+        playable = new Playable(game, this, cost).setSlow().setPersistent();
+        studiable = new Studiable(game, this);
+        activatable = new Activatable(game, this);
+        triggering = new Triggering(game, this);
+    }
 }

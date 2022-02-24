@@ -14,10 +14,10 @@ import java.util.UUID;
  */
 public abstract class Cantrip extends Spell {
 
-	public Cantrip (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
-		super(game, name, cost, knowledge, text, owner);
+    public Cantrip(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
+        super(game, name, cost, knowledge, text, owner);
 
-		subtypes.add(CardSubtype.Cantrip);
-		playable.setFast().setEphemeral();
-	}
+        subtypes.add(CardSubtype.Cantrip);
+        playable.setFast().setEphemeral();
+    }
 }

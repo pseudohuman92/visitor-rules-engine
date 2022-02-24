@@ -18,11 +18,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Lifelink;
  */
 public class Lifelinky extends Unit {
 
-	public Lifelinky (Game game, UUID owner) {
-		super(game, "Lifelinky",
-				0, new CounterMap(),
-				"",
-				3, 3,
-				owner, Lifelink);
-	}
+    public Lifelinky(Game game, UUID owner) {
+        super(game, "Lifelinky",
+                0, new CounterMap(),
+                "",
+                3, 3,
+                owner, Lifelink);
+    }
 }

@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class PolarVortex extends Unit {
 
-	public PolarVortex (Game game, UUID owner) {
-		super(game, "Polar Vortex",
-				1, new CounterMap(YELLOW, 1),
-				"",
-				2, 3,
-				owner, Defender);
-	}
+    public PolarVortex(Game game, UUID owner) {
+        super(game, "Polar Vortex",
+                1, new CounterMap(YELLOW, 1),
+                "",
+                2, 3,
+                owner, Defender);
+    }
 }

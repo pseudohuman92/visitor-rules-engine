@@ -20,23 +20,23 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Eagle extends Unit {
 
-	int x;
+    int x;
 
-	public Eagle (Game game, UUID owner) {
-		super(game, "Eagle",
-				5, new CounterMap(BLUE, 3),
-				"{X}, {Use}: {~} becomes X/X",
-				4, 4,
-				owner, Flying);
+    public Eagle(Game game, UUID owner) {
+        super(game, "Eagle",
+                5, new CounterMap(BLUE, 3),
+                "{X}, {Use}: {~} becomes X/X",
+                4, 4,
+                owner, Flying);
 
-		ActivatedAbility ability = new ActivatedAbility(game, this, 0, "{~} becomes" + x + "/" + x)
-				.setActivate(() -> game.runIfInZone(controller, Game.Zone.Both_Play, id,
-						() -> game.setAttackAndHealth(id, x, x)))
-				.setDepleting();
-		ability.addBeforeActivate(() -> {
-			x = game.selectX(controller, game.getPlayerEnergy(controller));
-			ability.setCost(x);
-		});
-		activatable.addActivatedAbility(ability);
-	}
+        ActivatedAbility ability = new ActivatedAbility(game, this, 0, "{~} becomes" + x + "/" + x)
+                .setActivate(() -> game.runIfInZone(controller, Game.Zone.Both_Play, id,
+                        () -> game.setAttackAndHealth(id, x, x)))
+                .setDepleting();
+        ability.addBeforeActivate(() -> {
+            x = game.selectX(controller, game.getPlayerEnergy(controller));
+            ability.setCost(x);
+        });
+        activatable.addActivatedAbility(ability);
+    }
 }

@@ -22,22 +22,22 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class GD03 extends Unit {
 
-	public GD03 (Game game, UUID owner) {
-		super(game, "GD03",
-				4, new CounterMap(GREEN, 1).add(RED, 1),
-						"Whenever {~} deals combat damage to a player, create that many 1/1 green Insect",
-				2, 2,
-				owner, Combat.CombatAbility.Trample);
+    public GD03(Game game, UUID owner) {
+        super(game, "GD03",
+                4, new CounterMap(GREEN, 1).add(RED, 1),
+                "Whenever {~} deals combat damage to a player, create that many 1/1 green Insect",
+                2, 2,
+                owner, Combat.CombatAbility.Trample);
 
-		combat.addDamageEffect((targetId, damage) -> {
-			game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, create that many 1/1 green Insect",
-					() -> {
-						if (game.isPlayer(targetId) && damage.combat && damage.amount > 0) {
-							for (int i = 0; i < damage.amount; i++) {
-								UnitToken.Insect_1_1(game, controller).resolve();
-							}
-						}
-					}));
-		});
-	}
+        combat.addDamageEffect((targetId, damage) -> {
+            game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, create that many 1/1 green Insect",
+                    () -> {
+                        if (game.isPlayer(targetId) && damage.combat && damage.amount > 0) {
+                            for (int i = 0; i < damage.amount; i++) {
+                                UnitToken.Insect_1_1(game, controller).resolve();
+                            }
+                        }
+                    }));
+        });
+    }
 }

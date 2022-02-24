@@ -23,70 +23,70 @@ import static java.util.logging.Logger.getLogger;
 @ServerEndpoint(value = "/drafts/{playerId}/{draftID}")
 public class DraftEndpoint {
 
-	Session session;
-	UUID playerId;
-	UUID draftID;
+    Session session;
+    UUID playerId;
+    UUID draftID;
 
 
-	@OnOpen
-	public void onOpen (Session session, @PathParam("playerId") String playerId, @PathParam("draftID") String gameID) throws IOException, EncodeException {
-		this.session = session;
-		this.playerId = UUID.fromString(playerId);
-		this.draftID = UUID.fromString(gameID);
-		session.getBasicRemote().setBatchingAllowed(false);
-		session.getAsyncRemote().setBatchingAllowed(false);
-		session.setMaxIdleTimeout(0);
-		gameServer.addDraftConnection(this.draftID, this.playerId, this);
-		resendLastMessage();
-	}
+    @OnOpen
+    public void onOpen(Session session, @PathParam("playerId") String playerId, @PathParam("draftID") String gameID) throws IOException, EncodeException {
+        this.session = session;
+        this.playerId = UUID.fromString(playerId);
+        this.draftID = UUID.fromString(gameID);
+        session.getBasicRemote().setBatchingAllowed(false);
+        session.getAsyncRemote().setBatchingAllowed(false);
+        session.setMaxIdleTimeout(0);
+        gameServer.addDraftConnection(this.draftID, this.playerId, this);
+        resendLastMessage();
+    }
 
-	@OnMessage
-	public void onMessage (Session session, byte[] message) {
-		new Thread(() -> {
-			try {
-				ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
-				//out.println("Received from " + playerId + "\n" + message);
-				processMessage(cgm);
-			} catch (InvalidProtocolBufferException ex) {
-				getLogger(DraftEndpoint.class.getName()).log(SEVERE, null, ex);
-			}
-		}).start();
-	}
+    @OnMessage
+    public void onMessage(Session session, byte[] message) {
+        new Thread(() -> {
+            try {
+                ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
+                //out.println("Received from " + playerId + "\n" + message);
+                processMessage(cgm);
+            } catch (InvalidProtocolBufferException ex) {
+                getLogger(DraftEndpoint.class.getName()).log(SEVERE, null, ex);
+            }
+        }).start();
+    }
 
-	@OnClose
-	public void onClose (Session session) {
-		gameServer.removeDraftConnection(draftID, playerId);
-	}
+    @OnClose
+    public void onClose(Session session) {
+        gameServer.removeDraftConnection(draftID, playerId);
+    }
 
-	@OnError
-	public void onError (Session session, Throwable throwable) {
-		out.println("[ERROR: " + playerId + "] " + throwable.getMessage());
-		throwable.printStackTrace();
-	}
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        out.println("[ERROR: " + playerId + "] " + throwable.getMessage());
+        throwable.printStackTrace();
+    }
 
-	public void send (ServerGameMessage.Builder builder) throws IOException, EncodeException {
-		ServerGameMessage message = builder.build();
-		//out.println("Sending: " + message);
-		session.getBasicRemote().sendObject(message.toByteArray());
-	}
+    public void send(ServerGameMessage.Builder builder) throws IOException, EncodeException {
+        ServerGameMessage message = builder.build();
+        //out.println("Sending: " + message);
+        session.getBasicRemote().sendObject(message.toByteArray());
+    }
 
-	public void close () {
-		session = null;
-	}
+    public void close() {
+        session = null;
+    }
 
-	public void resendLastMessage () throws IOException, EncodeException {
-		ServerGameMessage lastMessage = gameServer.getDraftLastMessage(draftID, playerId);
-		if (lastMessage != null) {
-			session.getBasicRemote().sendObject(lastMessage.toByteArray());
-		}
-	}
+    public void resendLastMessage() throws IOException, EncodeException {
+        ServerGameMessage lastMessage = gameServer.getDraftLastMessage(draftID, playerId);
+        if (lastMessage != null) {
+            session.getBasicRemote().sendObject(lastMessage.toByteArray());
+        }
+    }
 
 
-	private void processMessage (ClientGameMessage message) {
-			if (message.getPayloadCase() == PICKCARDRESPONSE) {
-				gameServer.draftPick(draftID, playerId, fromString(message.getPickCardResponse().getPickedCard()));
-			} else {
-				out.println("Unexpected message from " + playerId + ": " + message);
-			}
-	}
+    private void processMessage(ClientGameMessage message) {
+        if (message.getPayloadCase() == PICKCARDRESPONSE) {
+            gameServer.draftPick(draftID, playerId, fromString(message.getPickCardResponse().getPickedCard()));
+        } else {
+            out.println("Unexpected message from " + playerId + ": " + message);
+        }
+    }
 }

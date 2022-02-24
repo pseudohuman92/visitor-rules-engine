@@ -21,16 +21,16 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Owl extends Unit {
 
-	public Owl (Game game, UUID owner) {
-		super(game, "Owl",
-				3, new CounterMap(BLUE, 2),
-				"{1}, {Use}: Draw a card.",
-				2, 2,
-				owner, Flying, Lifelink);
+    public Owl(Game game, UUID owner) {
+        super(game, "Owl",
+                3, new CounterMap(BLUE, 2),
+                "{1}, {Use}: Draw a card.",
+                2, 2,
+                owner, Flying, Lifelink);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 1, "Draw a card",
-						()-> game.draw(controller, 1))
-						.setDepleting());
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 1, "Draw a card",
+                        () -> game.draw(controller, 1))
+                        .setDepleting());
+    }
 }

@@ -19,11 +19,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Flying;
  */
 public class Slingshot extends Unit {
 
-	public Slingshot (Game game, UUID owner) {
-		super(game, "Slingshot",
-				4, new CounterMap(),
-				"",
-				2, 1,
-				owner, Flying, FirstStrike);
-	}
+    public Slingshot(Game game, UUID owner) {
+        super(game, "Slingshot",
+                4, new CounterMap(),
+                "",
+                2, 1,
+                owner, Flying, FirstStrike);
+    }
 }

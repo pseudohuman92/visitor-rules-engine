@@ -24,23 +24,23 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class Sentinel extends Unit {
 
-	public Sentinel (Game game, UUID owner) {
-		super(game, "Sentinel",
-				5, new CounterMap(RED, 3),
-				"When {~} enters play, other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
-				5, 3,
-				owner, Trample);
-		addEnterPlayEffectOnStack(null, "Other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
-				()->{
-					game.forEachInZone(controller, Game.Zone.Play, and(Predicates::isUnit, c -> !c.id.equals(id)),
-							cardId -> {
-										Card card = game.getCard(cardId);
-										game.addTurnlyActivatedAbility(cardId,
-												new ActivatedAbility(game, card, 0, "{Use}: This unit deals 2 damage to any target")
-												.setTargetingForDamage(targetId-> game.dealDamage(card.id, targetId, new Damage(2)))
-												.setDepleting()
-										);
-							});
-				});
-	}
+    public Sentinel(Game game, UUID owner) {
+        super(game, "Sentinel",
+                5, new CounterMap(RED, 3),
+                "When {~} enters play, other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
+                5, 3,
+                owner, Trample);
+        addEnterPlayEffectOnStack(null, "Other units you control gain “{Use}: This unit deals 2 damage to any target” until end of turn.",
+                () -> {
+                    game.forEachInZone(controller, Game.Zone.Play, and(Predicates::isUnit, c -> !c.id.equals(id)),
+                            cardId -> {
+                                Card card = game.getCard(cardId);
+                                game.addTurnlyActivatedAbility(cardId,
+                                        new ActivatedAbility(game, card, 0, "{Use}: This unit deals 2 damage to any target")
+                                                .setTargetingForDamage(targetId -> game.dealDamage(card.id, targetId, new Damage(2)))
+                                                .setDepleting()
+                                );
+                            });
+                });
+    }
 }

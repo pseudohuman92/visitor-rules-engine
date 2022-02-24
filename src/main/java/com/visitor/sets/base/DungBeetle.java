@@ -20,15 +20,15 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class DungBeetle extends Unit {
 
-	public DungBeetle (Game game, UUID owner) {
-		super(game, "Dung Beetle",
-				1, new CounterMap(GREEN, 1),
-				"{2}: Gain +1/+1 until end of turn.",
-				1, 1,
-				owner, Trample);
+    public DungBeetle(Game game, UUID owner) {
+        super(game, "Dung Beetle",
+                1, new CounterMap(GREEN, 1),
+                "{2}: Gain +1/+1 until end of turn.",
+                1, 1,
+                owner, Trample);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Gain +1/+1 until end of turn.")
-						.setActivate(()-> game.runIfInZone(controller, Game.Zone.Both_Play, id, ()->game.addTurnlyAttackAndHealth(id, 1,1))));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 2, "Gain +1/+1 until end of turn.")
+                        .setActivate(() -> game.runIfInZone(controller, Game.Zone.Both_Play, id, () -> game.addTurnlyAttackAndHealth(id, 1, 1))));
+    }
 }

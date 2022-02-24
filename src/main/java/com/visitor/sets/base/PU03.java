@@ -23,37 +23,37 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class PU03 extends Unit {
 
-	public PU03 (Game game, UUID owner) {
-		super(game, "PU03",
-				4, new CounterMap(BLUE, 1).add(PURPLE, 1),
-				"When {~} enters play, return a blue or purple unit you control to its controller’s hand.\n" +
-				"Whenever {~} deals combat damage to a player, look at that player’s hand and \n" +
-				"choose a card from it. The player discards that card.",
-				2, 2,
-				owner, Combat.CombatAbility.Flying);
+    public PU03(Game game, UUID owner) {
+        super(game, "PU03",
+                4, new CounterMap(BLUE, 1).add(PURPLE, 1),
+                "When {~} enters play, return a blue or purple unit you control to its controller’s hand.\n" +
+                        "Whenever {~} deals combat damage to a player, look at that player’s hand and \n" +
+                        "choose a card from it. The player discards that card.",
+                2, 2,
+                owner, Combat.CombatAbility.Flying);
 
-		addEnterPlayEffectOnStack(null, "When {~} enters play, return a blue or purple unit you control to its controller’s hand.",
-				() -> {
-					UUID returnedUnit = game.selectFromZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates.or(Predicates.isColor(BLUE), Predicates.isColor(PURPLE))), 1, false, "Select a blue or purple unit.").get(0);
-					game.returnToHand(returnedUnit);
-				});
+        addEnterPlayEffectOnStack(null, "When {~} enters play, return a blue or purple unit you control to its controller’s hand.",
+                () -> {
+                    UUID returnedUnit = game.selectFromZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates.or(Predicates.isColor(BLUE), Predicates.isColor(PURPLE))), 1, false, "Select a blue or purple unit.").get(0);
+                    game.returnToHand(returnedUnit);
+                });
 
-		combat.addDamageEffect(
-				(targetId, damage) -> {
-					if (game.isPlayer(targetId)) {
-						game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, you may play target \n" +
-						                                            "spell from that player’s discard pile without paying its cost. \n" +
-						                                            "Purge the spell after it resolves.",
-								() -> {
-									Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Hand, card -> card.canPlay(false), 1, !game.hasIn(controller, Game.Zone.Opponent_Hand, Predicates::any, 1), "Select a card to to discard.");
-									if (!maybePlay.isEmpty()){
-										game.discard(game.getOpponentId(controller), maybePlay.get(0));
-									}
-								}));
+        combat.addDamageEffect(
+                (targetId, damage) -> {
+                    if (game.isPlayer(targetId)) {
+                        game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, you may play target \n" +
+                                "spell from that player’s discard pile without paying its cost. \n" +
+                                "Purge the spell after it resolves.",
+                                () -> {
+                                    Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Hand, card -> card.canPlay(false), 1, !game.hasIn(controller, Game.Zone.Opponent_Hand, Predicates::any, 1), "Select a card to to discard.");
+                                    if (!maybePlay.isEmpty()) {
+                                        game.discard(game.getOpponentId(controller), maybePlay.get(0));
+                                    }
+                                }));
 
-					}
+                    }
 
-		}
-		);
-	}
+                }
+        );
+    }
 }

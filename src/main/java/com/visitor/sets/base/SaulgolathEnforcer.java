@@ -28,12 +28,12 @@ public class SaulgolathEnforcer extends Ally {
                 owner);
 
         addPlusLoyaltyAbility(0, "Pay 2 life, Activate: +2 Loyalty", 2, null,
-		        () -> game.hasHealth(controller, 2),
-		        () -> game.payHealth(controller, 2));
+                () -> game.hasHealth(controller, 2),
+                () -> game.payHealth(controller, 2));
 
         addMinusLoyaltyAbilityWithX(0, "-{X} Loyalty, {Use}: Delay 1 - Deal 2X damage to opponent.", 0, 1,
-		        x -> new ActivatedAbility(game, this, 0, "Deal 2X damage to opponent.", ()-> game.dealDamage(id, game.getOpponentId(controller), 2 * x)),
-				    null, x -> loyalty -= x, loyalty);
+                x -> new ActivatedAbility(game, this, 0, "Deal 2X damage to opponent.", () -> game.dealDamage(id, game.getOpponentId(controller), 2 * x)),
+                null, x -> loyalty -= x, loyalty);
     }
 
 }

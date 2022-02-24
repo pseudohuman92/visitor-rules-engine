@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class BindingsofHanomine extends Unit {
 
-	public BindingsofHanomine (Game game, UUID owner) {
-		super(game, "Bindings of Hanomine",
-				4, new CounterMap(YELLOW, 2),
-				"",
-				3, 5,
-				owner, Vigilance);
-	}
+    public BindingsofHanomine(Game game, UUID owner) {
+        super(game, "Bindings of Hanomine",
+                4, new CounterMap(YELLOW, 2),
+                "",
+                3, 5,
+                owner, Vigilance);
+    }
 }

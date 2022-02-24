@@ -11,15 +11,15 @@ import static com.visitor.protocol.Types.Knowledge.RED;
 
 public class RR04 extends Ritual {
 
-	public RR04 (Game game, UUID owner) {
-		super(game, "RR04", 2,
-				new CounterMap<>(RED, 1),
-				"Deal 3 damage to a target.",
-				owner);
+    public RR04(Game game, UUID owner) {
+        super(game, "RR04", 2,
+                new CounterMap<>(RED, 1),
+                "Deal 3 damage to a target.",
+                owner);
 
-		playable
-				.setTargetSingleUnitOrPlayer(null, targetId ->
-						game.dealDamage(id, targetId, new Damage(3)), null
-				);
-	}
+        playable
+                .setTargetSingleUnitOrPlayer(null, targetId ->
+                        game.dealDamage(id, targetId, new Damage(3)), null
+                );
+    }
 }

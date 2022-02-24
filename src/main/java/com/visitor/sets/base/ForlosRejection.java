@@ -20,15 +20,15 @@ import static com.visitor.helpers.Predicates.and;
  */
 public class ForlosRejection extends Unit {
 
-	public ForlosRejection (Game game, UUID owner) {
-		super(game, "Forlo's Rejection",
-				2, new CounterMap(),
-				"{Use}: Each colorless unit you control gains +1/+1",
-				2, 1,
-				owner);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Each colorless unit you control gains +1/+1",
-				()-> game.forEachInZone(controller, Game.Zone.Play, and(Predicates::isUnit, Predicates::isColorless),
-						cardId -> game.addAttackAndHealth(cardId, 1, 1)))
-				.setDepleting());
-	}
+    public ForlosRejection(Game game, UUID owner) {
+        super(game, "Forlo's Rejection",
+                2, new CounterMap(),
+                "{Use}: Each colorless unit you control gains +1/+1",
+                2, 1,
+                owner);
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Each colorless unit you control gains +1/+1",
+                () -> game.forEachInZone(controller, Game.Zone.Play, and(Predicates::isUnit, Predicates::isColorless),
+                        cardId -> game.addAttackAndHealth(cardId, 1, 1)))
+                .setDepleting());
+    }
 }

@@ -21,19 +21,19 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class BladeDervish extends Unit {
 
-	public BladeDervish (Game game, UUID owner) {
-		super(game, "Blade Dervish",
-				4, new CounterMap(RED, 1),
-				"When {~} enters play, it deals 3 damage to target unit.",
-				3, 3,
-				owner, Haste);
+    public BladeDervish(Game game, UUID owner) {
+        super(game, "Blade Dervish",
+                4, new CounterMap(RED, 1),
+                "When {~} enters play, it deals 3 damage to target unit.",
+                3, 3,
+                owner, Haste);
 
-		addEnterPlayEffectOnStack(null, "When {~} enters play, it deals 3 damage to target unit.",
-				()-> {
-						UUID damageTarget = game.selectDamageTargetsConditional(controller, Predicates::isUnit, Predicates::none, 1, false, "Choose a unit to damage").get(1);
-						game.addToStack(new AbilityCard(game, this, "Deal 3 damage.",
-								()-> game.dealDamage(id, damageTarget, 3), damageTarget));
-					}
-				);
-	}
+        addEnterPlayEffectOnStack(null, "When {~} enters play, it deals 3 damage to target unit.",
+                () -> {
+                    UUID damageTarget = game.selectDamageTargetsConditional(controller, Predicates::isUnit, Predicates::none, 1, false, "Choose a unit to damage").get(1);
+                    game.addToStack(new AbilityCard(game, this, "Deal 3 damage.",
+                            () -> game.dealDamage(id, damageTarget, 3), damageTarget));
+                }
+        );
+    }
 }

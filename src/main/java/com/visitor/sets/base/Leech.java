@@ -21,21 +21,21 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Leech extends Unit {
 
-	UUID target;
+    UUID target;
 
-	public Leech (Game game, UUID owner) {
-		super(game, "Leech",
-				1, new CounterMap(BLUE, 1),
-				"{U}{U} - {2}, Sacrifice {~}: Cancel target unit card.",
-				1, 1,
-				owner, Lifelink);
+    public Leech(Game game, UUID owner) {
+        super(game, "Leech",
+                1, new CounterMap(BLUE, 1),
+                "{U}{U} - {2}, Sacrifice {~}: Cancel target unit card.",
+                1, 1,
+                owner, Lifelink);
 
-		activatable
-		.addActivatedAbility(new ActivatedAbility(game, this, 2, "Cancel target unit card.",
-				()-> game.hasIn(controller, Game.Zone.Stack, Predicates::isUnit, 1),
-				()-> target = game.selectFromZone(controller, Game.Zone.Stack, Predicates::isUnit, 1, false,"Select a unit from stack.").get(0),
-				()-> game.runIfInZone(controller, Game.Zone.Stack, target, ()->game.cancel(target)))
-				.setSelfSacrificing()
-				.setKnowledgeRequirement(new CounterMap<>(BLUE, 2)));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 2, "Cancel target unit card.",
+                        () -> game.hasIn(controller, Game.Zone.Stack, Predicates::isUnit, 1),
+                        () -> target = game.selectFromZone(controller, Game.Zone.Stack, Predicates::isUnit, 1, false, "Select a unit from stack.").get(0),
+                        () -> game.runIfInZone(controller, Game.Zone.Stack, target, () -> game.cancel(target)))
+                        .setSelfSacrificing()
+                        .setKnowledgeRequirement(new CounterMap<>(BLUE, 2)));
+    }
 }

@@ -8,28 +8,28 @@ import java.util.UUID;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
-public class GameConnectionPart extends GameBasePart {
+public class Connections extends HigherOrder {
     /**
      * Connection Methods
      * To deal with client connections
      */
-    public void addConnection (UUID playerId, GameEndpointInterface connection) {
+    public void addConnection(UUID playerId, GameEndpointInterface connection) {
         connections.putIn(playerId, connection);
     }
 
-    public void removeConnection (UUID playerId) {
+    public void removeConnection(UUID playerId) {
         connections.removeFrom(playerId);
     }
 
-    public void setLastMessage (UUID playerId, ServerGameMessage lastMessage) {
+    public void setLastMessage(UUID playerId, ServerGameMessage lastMessage) {
         lastMessages.put(playerId, lastMessage);
     }
 
-    public ServerGameMessage getLastMessage (UUID playerId) {
+    public ServerGameMessage getLastMessage(UUID playerId) {
         return lastMessages.get(playerId);
     }
 
-    public void addToResponseQueue (Object o) {
+    public void addToResponseQueue(Object o) {
         try {
 
             response.put(o);
@@ -37,7 +37,6 @@ public class GameConnectionPart extends GameBasePart {
             getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
     }
-
 
 
 }

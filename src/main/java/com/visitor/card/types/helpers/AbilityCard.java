@@ -20,27 +20,27 @@ import java.util.UUID;
  */
 public class AbilityCard extends Card {
 
-	public AbilityCard (Game game, Card creator, String text, Runnable effect, Arraylist<UUID> targets) {
-		super(game, creator.name + "'s Ability", new CounterMap<>(), CardType.Ability, text, creator.controller);
-		this.targets = new Arraylist<>(creator.id).putAllIn(targets);
+    public AbilityCard(Game game, Card creator, String text, Runnable effect, Arraylist<UUID> targets) {
+        super(game, creator.name + "'s Ability", new CounterMap<>(), CardType.Ability, text, creator.controller);
+        this.targets = new Arraylist<>(creator.id).putAllIn(targets);
 
-		playable = new Playable(game, this).addResolveEffect(effect).setDisappearing();
+        playable = new Playable(game, this).addResolveEffect(effect).setDisappearing();
 
-	}
+    }
 
-	public AbilityCard (Game game, Card creator, String text, Runnable effect, UUID... targets) {
-		this(game, creator, text, effect, new Arraylist<>(targets));
-	}
+    public AbilityCard(Game game, Card creator, String text, Runnable effect, UUID... targets) {
+        this(game, creator, text, effect, new Arraylist<>(targets));
+    }
 
-	public AbilityCard (Game game, Card creator, ActivatedAbility activatedAbility) {
-		this(game, creator, activatedAbility.getText(), activatedAbility.getActivate(), activatedAbility.getTargets());
-		this.id = activatedAbility.id;
-	}
+    public AbilityCard(Game game, Card creator, ActivatedAbility activatedAbility) {
+        this(game, creator, activatedAbility.getText(), activatedAbility.getActivate(), activatedAbility.getTargets());
+        this.id = activatedAbility.id;
+    }
 
-	@Override
-	public Types.Card.Builder toCardMessage () {
-		return super.toCardMessage()
-				.setCost("");
-	}
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setCost("");
+    }
 
 }

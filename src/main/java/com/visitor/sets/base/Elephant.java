@@ -20,15 +20,15 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Elephant extends Unit {
 
-	public Elephant (Game game, UUID owner) {
-		super(game, "Elephant",
-				4, new CounterMap(GREEN, 3),
-				"{Use}: Gain 3 energy.",
-				6, 6,
-				owner, Trample);
+    public Elephant(Game game, UUID owner) {
+        super(game, "Elephant",
+                4, new CounterMap(GREEN, 3),
+                "{Use}: Gain 3 energy.",
+                6, 6,
+                owner, Trample);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain 3 energy.",
-						() -> game.addEnergy(controller, 3)).setDepleting());
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain 3 energy.",
+                        () -> game.addEnergy(controller, 3)).setDepleting());
+    }
 }

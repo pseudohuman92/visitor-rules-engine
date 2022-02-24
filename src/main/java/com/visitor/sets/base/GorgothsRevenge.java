@@ -21,19 +21,19 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class GorgothsRevenge extends Unit {
 
-	public GorgothsRevenge (Game game, UUID owner) {
-		super(game, "Gorgoth's Revenge",
-				2, new CounterMap(YELLOW, 1),
-				"{R} - {4}: {~} gains +2/+0 and Trample.",
-				3, 1,
-				owner);
+    public GorgothsRevenge(Game game, UUID owner) {
+        super(game, "Gorgoth's Revenge",
+                2, new CounterMap(YELLOW, 1),
+                "{R} - {4}: {~} gains +2/+0 and Trample.",
+                3, 1,
+                owner);
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 4, "{R} - {4}: {~} gains +2/+0 and trample until end of turn.",
-				()-> game.runIfInPlay(id,
-						()-> {
-							game.addAttackAndHealth(id, 2, 0);
-							game.addCombatAbility(id, Trample);
-						}))
-				.setKnowledgeRequirement(new CounterMap<>(RED, 1)));
-	}
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 4, "{R} - {4}: {~} gains +2/+0 and trample until end of turn.",
+                () -> game.runIfInPlay(id,
+                        () -> {
+                            game.addAttackAndHealth(id, 2, 0);
+                            game.addCombatAbility(id, Trample);
+                        }))
+                .setKnowledgeRequirement(new CounterMap<>(RED, 1)));
+    }
 }

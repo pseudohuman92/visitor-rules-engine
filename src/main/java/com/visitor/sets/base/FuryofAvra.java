@@ -20,18 +20,18 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class FuryofAvra extends Unit {
 
-	public FuryofAvra (Game game, UUID owner) {
-		super(game, "Fury of Avra",
-				4, new CounterMap(PURPLE, 1),
-				"{P}{P} - {2}, Pay 2 health: Draw a card.",
-				3, 1,
-				owner, Flying);
+    public FuryofAvra(Game game, UUID owner) {
+        super(game, "Fury of Avra",
+                4, new CounterMap(PURPLE, 1),
+                "{P}{P} - {2}, Pay 2 health: Draw a card.",
+                3, 1,
+                owner, Flying);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Draw a card",
-						() -> game.hasHealth(controller, 2),
-						() -> game.payHealth(controller, 2),
-						() -> game.draw(controller, 1))
-						.setKnowledgeRequirement(new CounterMap<>(PURPLE, 2)));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 2, "Draw a card",
+                        () -> game.hasHealth(controller, 2),
+                        () -> game.payHealth(controller, 2),
+                        () -> game.draw(controller, 1))
+                        .setKnowledgeRequirement(new CounterMap<>(PURPLE, 2)));
+    }
 }

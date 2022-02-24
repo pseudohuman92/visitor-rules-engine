@@ -5,13 +5,13 @@ import java.util.UUID;
 import static com.visitor.protocol.Types.Phase.*;
 import static java.lang.System.out;
 
-public class GameTurnStructurePart extends GameActionsPart {
+public class Turns extends Actions {
     /**
      * Turn Structure Methods
      * These are the methods that handle turn / phase transitions.
      */
     @SuppressWarnings("DuplicateBranchesInSwitch")
-    public void changePhase () {
+    public void changePhase() {
         out.println("Changing Phase from " + phase);
         passCount = 0;
         activePlayer = turnPlayer;
@@ -55,7 +55,7 @@ public class GameTurnStructurePart extends GameActionsPart {
         }
     }
 
-    private void endTurn () {
+    private void endTurn() {
         processEndEvents();
         players.values().forEach(com.visitor.game.Player::endTurn);
         if (getPlayer(turnPlayer).getHandSize() > 7) {
@@ -65,7 +65,7 @@ public class GameTurnStructurePart extends GameActionsPart {
         changePhase();
     }
 
-    private void newTurn () {
+    private void newTurn() {
         if (turnCount > 0) {
             turnPlayer = this.getOpponentId(turnPlayer);
             getPlayer(turnPlayer).draw(1);

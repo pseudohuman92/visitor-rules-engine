@@ -20,11 +20,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Rattlesnake extends Unit {
 
-	public Rattlesnake (Game game, UUID owner) {
-		super(game, "Rattlesnake",
-				2, new CounterMap(GREEN, 2),
-				"",
-				1, 3,
-				owner, Deathtouch, Reach);
-	}
+    public Rattlesnake(Game game, UUID owner) {
+        super(game, "Rattlesnake",
+                2, new CounterMap(GREEN, 2),
+                "",
+                1, 3,
+                owner, Deathtouch, Reach);
+    }
 }

@@ -6,18 +6,18 @@ import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;
 
-import static com.visitor.game.parts.GameBasePart.Zone.Discard_Pile;
+import static com.visitor.game.parts.Base.Zone.Discard_Pile;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class PR08 extends Ritual {
 
-	public PR08 (Game game, UUID owner) {
-		super(game, "PR08", 5,
-				new CounterMap<>(PURPLE, 1),
-				"Resurrect a unit from your discard pile.",
-				owner);
+    public PR08(Game game, UUID owner) {
+        super(game, "PR08", 5,
+                new CounterMap<>(PURPLE, 1),
+                "Resurrect a unit from your discard pile.",
+                owner);
 
-		playable
-				.setTargetSingleUnit(Discard_Pile, null, game::resurrect, null);
-	}
+        playable
+                .setTargetSingleUnit(Discard_Pile, null, game::resurrect, null);
+    }
 }

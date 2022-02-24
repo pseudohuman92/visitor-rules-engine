@@ -23,17 +23,17 @@ public class MaliciousGift extends Asset {
     public MaliciousGift(Game game, UUID owner) {
         super(game, "Malicious Gift", 2, new CounterMap<>(PURPLE, 1),
                 "Donate\n" +
-                "Trigger - End of your turn\n" +
-                "    {~} deals 3 damage to you or target damageable you control, then sacrifice {~}.", owner);
+                        "Trigger - End of your turn\n" +
+                        "    {~} deals 3 damage to you or target damageable you control, then sacrifice {~}.", owner);
 
         setDonating();
 
         triggering.addEventChecker(new EventChecker(game, this,
-		        event -> {
-        	  UUID target = game.selectDamageTargetsConditional(controller, Predicates.and(Predicates.controlledBy(controller), Predicates::isDamageable), p -> p.id.equals(controller), 1, false, "").get(0);
-		        game.dealDamage(id, target, 3);
-		        game.sacrifice(id);
-        }).addEndOfControllerTurnChecker()
-		        .createAbility("{~} deals 3 damage to you or target damageable you control, then sacrifice {~}."));
+                event -> {
+                    UUID target = game.selectDamageTargetsConditional(controller, Predicates.and(Predicates.controlledBy(controller), Predicates::isDamageable), p -> p.id.equals(controller), 1, false, "").get(0);
+                    game.dealDamage(id, target, 3);
+                    game.sacrifice(id);
+                }).addEndOfControllerTurnChecker()
+                .createAbility("{~} deals 3 damage to you or target damageable you control, then sacrifice {~}."));
     }
 }

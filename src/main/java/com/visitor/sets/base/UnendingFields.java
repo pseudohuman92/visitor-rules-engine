@@ -20,16 +20,16 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class UnendingFields extends Unit {
 
-	public UnendingFields (Game game, UUID owner) {
-		super(game, "Unending Fields",
-				5, new CounterMap(YELLOW, 2),
-				"When {~} enters play, destroy up to one target unit. Its controller plays a 3/3 Golem.",
-				4, 6,
-				owner, Vigilance);
-		playable.setTargetSingleUnit(null, null, targetId -> {
-			UUID targetedCardController = game.getCard(targetId).controller;
-			game.destroy(id, targetId);
-			UnitToken.Golem_3_3(game, targetedCardController).resolve();
-		}, null);
-	}
+    public UnendingFields(Game game, UUID owner) {
+        super(game, "Unending Fields",
+                5, new CounterMap(YELLOW, 2),
+                "When {~} enters play, destroy up to one target unit. Its controller plays a 3/3 Golem.",
+                4, 6,
+                owner, Vigilance);
+        playable.setTargetSingleUnit(null, null, targetId -> {
+            UUID targetedCardController = game.getCard(targetId).controller;
+            game.destroy(id, targetId);
+            UnitToken.Golem_3_3(game, targetedCardController).resolve();
+        }, null);
+    }
 }

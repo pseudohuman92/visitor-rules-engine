@@ -20,19 +20,19 @@ import static com.visitor.card.properties.Combat.CombatAbility.Defender;
  */
 public class ThistleandSpire extends Unit {
 
-	public ThistleandSpire (Game game, UUID owner) {
-		super(game, "Thistle and Spire",
-				1, new CounterMap(),
-				"{1}, {Use}: {~} deals 1 damage to another unit and 1 damage to itself.",
-				0, 4,
-				owner, Defender);
+    public ThistleandSpire(Game game, UUID owner) {
+        super(game, "Thistle and Spire",
+                1, new CounterMap(),
+                "{1}, {Use}: {~} deals 1 damage to another unit and 1 damage to itself.",
+                0, 4,
+                owner, Defender);
 
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1}, {Use}: {~} deals 1 damage to another unit and 1 damage to itself.")
-				.setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
-				targetId -> {
-					game.dealDamage(id, targetId, 1);
-					game.dealDamage(id, id, 1);
-				})
-		.setDepleting());
-	}
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1}, {Use}: {~} deals 1 damage to another unit and 1 damage to itself.")
+                .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+                        targetId -> {
+                            game.dealDamage(id, targetId, 1);
+                            game.dealDamage(id, id, 1);
+                        })
+                .setDepleting());
+    }
 }

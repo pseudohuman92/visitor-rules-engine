@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class EternalLaw extends Tome {
 
-    public EternalLaw (Game game, UUID owner) {
+    public EternalLaw(Game game, UUID owner) {
         super(game, "Eternal Law", "Study: Gain {P}{Y}", owner, new CounterMap<>(PURPLE, 1).add(YELLOW, 1));
     }
 

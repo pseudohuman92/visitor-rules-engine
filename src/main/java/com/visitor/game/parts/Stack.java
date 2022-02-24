@@ -4,11 +4,11 @@ import java.util.UUID;
 
 import static java.lang.System.out;
 
-public class GameStackPart extends GameEventsPart {
+public class Stack extends Events {
     /**
      * Stack Methods
      */
-    public void addToStack (com.visitor.game.Card c) {
+    public void addToStack(com.visitor.game.Card c) {
         passCount = 0;
         stack.add(0, c);
         processEvents();
@@ -33,4 +33,17 @@ public class GameStackPart extends GameEventsPart {
             }
         }
     }
+    /*
+    // This is stop after each resolution version.
+    private void resolveStack() {
+        if (passCount == 2) {
+            activePlayer = " ";
+            updatePlayers();
+            Card c = stack.remove(0);
+            c.resolve(this);
+            passCount = 0;
+            activePlayer = turnPlayer;
+        }
+    }
+    */
 }

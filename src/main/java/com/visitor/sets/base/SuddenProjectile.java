@@ -22,20 +22,20 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class SuddenProjectile extends Unit {
 
-	public SuddenProjectile (Game game, UUID owner) {
-		super(game, "Sudden Projectile",
-				3, new CounterMap(YELLOW, 1),
-				"When {~} enters the battlefield, play a 1/1 Spirit with flying.\n" +
-							"{4}, Purge {~}: Purge another target unit.",
-				1, 2,
-				owner, Flying);
-		addEnterPlayEffectOnStack(null, "Play a 1/1 Spirit with flying.", ()-> UnitToken.Spirit_1_1(game, controller));
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 4, "{4}, Purge {~}: Purge another target unit.")
-				.setTargeting(Game.Zone.Both_Play, anotherUnit(id), 1, false,
-				targetId -> {
-					game.purge(targetId);
-					game.purge(id);
-				})
-		.setPurging());
-	}
+    public SuddenProjectile(Game game, UUID owner) {
+        super(game, "Sudden Projectile",
+                3, new CounterMap(YELLOW, 1),
+                "When {~} enters the battlefield, play a 1/1 Spirit with flying.\n" +
+                        "{4}, Purge {~}: Purge another target unit.",
+                1, 2,
+                owner, Flying);
+        addEnterPlayEffectOnStack(null, "Play a 1/1 Spirit with flying.", () -> UnitToken.Spirit_1_1(game, controller));
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 4, "{4}, Purge {~}: Purge another target unit.")
+                .setTargeting(Game.Zone.Both_Play, anotherUnit(id), 1, false,
+                        targetId -> {
+                            game.purge(targetId);
+                            game.purge(id);
+                        })
+                .setPurging());
+    }
 }

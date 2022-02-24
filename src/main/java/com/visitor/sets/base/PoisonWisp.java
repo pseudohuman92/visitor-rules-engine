@@ -23,20 +23,20 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class PoisonWisp extends Unit {
 
-	public PoisonWisp (Game game, UUID owner) {
-		super(game, "Poison Wisp",
-				6, new CounterMap(PURPLE, 1),
-				"When {~} enters play, you may destroy another target unit.",
-				5, 5,
-				owner, Deathtouch);
+    public PoisonWisp(Game game, UUID owner) {
+        super(game, "Poison Wisp",
+                6, new CounterMap(PURPLE, 1),
+                "When {~} enters play, you may destroy another target unit.",
+                5, 5,
+                owner, Deathtouch);
 
-		addEnterPlayEffectOnStack(null, "When {~} enters play, you may destroy another target unit.",
-						() -> {
-							Arraylist<UUID> destroyedIds = game.selectFromZone(controller, Game.Zone.Both_Play, and(Predicates::isUnit, not(this::equals)), 1, true, "You may destroy another unit.");
-							if (destroyedIds.size() > 0) {
-								UUID destroyedId = destroyedIds.get(0);
-								game.destroy(id, destroyedId);
-							}
-						});
-	}
+        addEnterPlayEffectOnStack(null, "When {~} enters play, you may destroy another target unit.",
+                () -> {
+                    Arraylist<UUID> destroyedIds = game.selectFromZone(controller, Game.Zone.Both_Play, and(Predicates::isUnit, not(this::equals)), 1, true, "You may destroy another unit.");
+                    if (destroyedIds.size() > 0) {
+                        UUID destroyedId = destroyedIds.get(0);
+                        game.destroy(id, destroyedId);
+                    }
+                });
+    }
 }

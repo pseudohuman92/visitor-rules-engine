@@ -22,19 +22,19 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class KomodoDragon extends Unit {
 
-	public KomodoDragon (Game game, UUID owner) {
-		super(game, "Komodo Dragon",
-				3, new CounterMap(GREEN, 3),
-				"{5}: Units you control gains +3/+3 and Trample until end of turn",
-				3, 2,
-				owner, Deathtouch, Trample);
+    public KomodoDragon(Game game, UUID owner) {
+        super(game, "Komodo Dragon",
+                3, new CounterMap(GREEN, 3),
+                "{5}: Units you control gains +3/+3 and Trample until end of turn",
+                3, 2,
+                owner, Deathtouch, Trample);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 5, "Units you control gains +3/+3 and Trample until end of turn",
-						() -> game.forEachInZone(controller, Game.Zone.Play, Predicates::isUnit,
-								(cardId) -> {
-									game.addTurnlyAttackAndHealth(cardId, 3, 3);
-									game.addTurnlyCombatAbility(cardId, Trample);
-								})));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 5, "Units you control gains +3/+3 and Trample until end of turn",
+                        () -> game.forEachInZone(controller, Game.Zone.Play, Predicates::isUnit,
+                                (cardId) -> {
+                                    game.addTurnlyAttackAndHealth(cardId, 3, 3);
+                                    game.addTurnlyCombatAbility(cardId, Trample);
+                                })));
+    }
 }

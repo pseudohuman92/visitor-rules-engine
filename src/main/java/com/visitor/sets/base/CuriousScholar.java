@@ -17,7 +17,7 @@ import com.visitor.helpers.containers.ActivatedAbility;
 import java.util.UUID;
 
 import static com.visitor.game.Event.EventType.Study;
-import static com.visitor.game.parts.GameBasePart.Zone.Deck;
+import static com.visitor.game.parts.Base.Zone.Deck;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 /**
@@ -35,18 +35,18 @@ public class CuriousScholar extends Ally {
                 owner);
 
         triggering.addEventChecker(new EventChecker(game, this, event -> loyalty++).addTypeChecker(Study).addPlayerChecker(c -> c.equals(controller))
-		        .createAbility("+1 Loyalty"));
+                .createAbility("+1 Loyalty"));
 
         addMinusLoyaltyAbility(0, "-2 Loyalty, {Use}: Delay 1 - Search your deck for a green card and draw it", 2, 1,
-		        new ActivatedAbility(game, this, 0, "Search your deck for a green card and draw it",
-				        () -> {
-		        	    Arraylist<UUID> maybeSelected = game.selectFromZone(controller, Deck, Predicates::isGreen, 1, !game.hasIn(controller,
-					            Deck, Predicates::isGreen,
-					            1), "Select a green card");
-		        	    if(!maybeSelected.isEmpty()){
-		        	    	game.draw(controller, maybeSelected.get(0));
-			            }
-				        }), null, null);
+                new ActivatedAbility(game, this, 0, "Search your deck for a green card and draw it",
+                        () -> {
+                            Arraylist<UUID> maybeSelected = game.selectFromZone(controller, Deck, Predicates::isGreen, 1, !game.hasIn(controller,
+                                    Deck, Predicates::isGreen,
+                                    1), "Select a green card");
+                            if (!maybeSelected.isEmpty()) {
+                                game.draw(controller, maybeSelected.get(0));
+                            }
+                        }), null, null);
     }
 
 }

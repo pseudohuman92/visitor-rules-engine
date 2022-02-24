@@ -17,12 +17,12 @@ import java.util.UUID;
  */
 public class Attacher extends Attachment {
 
-	public Attacher (Game game, UUID owner) {
-		super(game, "Attacher",
-				0, new CounterMap(),
-				"Attach to Unit\n+1/+1",
-				owner, Predicates::isUnit,
-				attachedId -> game.addAttackAndHealth(attachedId, 1, 1),
-				attachedId -> game.removeAttackAndHealth(attachedId, 1, 1));
-	}
+    public Attacher(Game game, UUID owner) {
+        super(game, "Attacher",
+                0, new CounterMap(),
+                "Attach to Unit\n+1/+1",
+                owner, Predicates::isUnit,
+                attachedId -> game.addAttackAndHealth(attachedId, 1, 1),
+                attachedId -> game.removeAttackAndHealth(attachedId, 1, 1));
+    }
 }

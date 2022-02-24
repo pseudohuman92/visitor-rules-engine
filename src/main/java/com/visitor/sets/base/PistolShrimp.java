@@ -20,11 +20,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class PistolShrimp extends Unit {
 
-	public PistolShrimp (Game game, UUID owner) {
-		super(game, "Pistol Shrimp",
-				2, new CounterMap(BLUE, 2),
-				"",
-				2, 2,
-				owner, Lifelink, Haste);
-	}
+    public PistolShrimp(Game game, UUID owner) {
+        super(game, "Pistol Shrimp",
+                2, new CounterMap(BLUE, 2),
+                "",
+                2, 2,
+                owner, Lifelink, Haste);
+    }
 }

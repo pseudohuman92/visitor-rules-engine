@@ -9,13 +9,13 @@ import java.util.UUID;
 import static com.visitor.protocol.Types.Knowledge.BLUE;
 
 public class ReflectivePool extends Ritual {
-	public ReflectivePool (Game game, UUID owner) {
-		super(game, "Reflective Pool", 6,
-				new CounterMap<>(BLUE, 3),
-				"Return all cards to their controller's hands.",
-				owner);
+    public ReflectivePool(Game game, UUID owner) {
+        super(game, "Reflective Pool", 6,
+                new CounterMap<>(BLUE, 3),
+                "Return all cards to their controller's hands.",
+                owner);
 
-		playable
-				.addResolveEffect(game::returnAllCardsToHand);
-	}
+        playable
+                .addResolveEffect(game::returnAllCardsToHand);
+    }
 }

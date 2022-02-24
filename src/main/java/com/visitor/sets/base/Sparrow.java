@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.BLUE;
  */
 public class Sparrow extends Unit {
 
-	public Sparrow (Game game, UUID owner) {
-		super(game, "Sparrow",
-				1, new CounterMap(BLUE, 1),
-				"",
-				1, 1,
-				owner, Flying);
-	}
+    public Sparrow(Game game, UUID owner) {
+        super(game, "Sparrow",
+                1, new CounterMap(BLUE, 1),
+                "",
+                1, 1,
+                owner, Flying);
+    }
 }

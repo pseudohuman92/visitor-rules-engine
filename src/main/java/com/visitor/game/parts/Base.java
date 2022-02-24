@@ -14,7 +14,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import static java.util.UUID.randomUUID;
 
-public class GameBasePart {
+public class Base {
     Arraylist<String> history;
 
     public transient Hashmap<UUID, GameEndpointInterface> connections;
@@ -34,7 +34,7 @@ public class GameBasePart {
     Arraylist<UUID> attackers;
     Arraylist<UUID> blockers;
 
-    public GameBasePart() {
+    public Base() {
         history = new Arraylist<>();
         id = randomUUID();
         players = new Hashmap<>();

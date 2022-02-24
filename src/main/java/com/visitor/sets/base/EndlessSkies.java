@@ -18,7 +18,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class EndlessSkies extends Tome {
 
-    public EndlessSkies (Game game, UUID owner) {
+    public EndlessSkies(Game game, UUID owner) {
         super(game, "Endless Skies", "Study: Gain {U}{Y}", owner, new CounterMap<>(BLUE, 1).add(YELLOW, 1));
     }
 

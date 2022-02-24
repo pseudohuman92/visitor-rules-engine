@@ -35,20 +35,19 @@ public class TickingBomb extends Asset {
         setDonating();
 
         activatable.addActivatedAbility(
-        		new ActivatedAbility(game, this, 1, "1, {Use}: Charge 1",
-		        () -> addCounters(Counter.CHARGE, 1)).setDepleting());
+                new ActivatedAbility(game, this, 1, "1, {Use}: Charge 1",
+                        () -> addCounters(Counter.CHARGE, 1)).setDepleting());
 
-        activatable.addActivatedAbility(new ActivatedAbility(game, this, 3, "3: Sacrifice {~}", ()-> game.sacrifice(id)));
-
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 3, "3: Sacrifice {~}", () -> game.sacrifice(id)));
 
 
         triggering.addEventChecker(new EventChecker(game, this,
-		        event -> {
-        	    removeCounters(Counter.CHARGE, 1);
-        	    if (!hasCounters(Counter.CHARGE, 1)){
-        	    	game.sacrifice(id);
-        	    	game.payHealth(controller, 5);
-	            }
-		        }).addStartOfControllerTurnChecker().createAbility("Dischage 1. If {~} has no counters on it, sacrifice it and lose 5 health."));
+                event -> {
+                    removeCounters(Counter.CHARGE, 1);
+                    if (!hasCounters(Counter.CHARGE, 1)) {
+                        game.sacrifice(id);
+                        game.payHealth(controller, 5);
+                    }
+                }).addStartOfControllerTurnChecker().createAbility("Dischage 1. If {~} has no counters on it, sacrifice it and lose 5 health."));
     }
 }

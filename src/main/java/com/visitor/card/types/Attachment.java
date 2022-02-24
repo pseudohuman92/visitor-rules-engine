@@ -20,19 +20,19 @@ import java.util.function.Predicate;
  */
 public abstract class Attachment extends Card {
 
-	public Attachment (Game game, String name, int cost, CounterMap<Knowledge> knowledge,
-	                   String text, UUID owner,
-	                   Predicate<Card> validTarget, Consumer<UUID> afterAttachEffect,
-	                   Consumer<UUID> afterRemoveEffect) {
-		super(game, name, knowledge, CardType.Attachment, text, owner);
+    public Attachment(Game game, String name, int cost, CounterMap<Knowledge> knowledge,
+                      String text, UUID owner,
+                      Predicate<Card> validTarget, Consumer<UUID> afterAttachEffect,
+                      Consumer<UUID> afterRemoveEffect) {
+        super(game, name, knowledge, CardType.Attachment, text, owner);
 
-		playable = new Playable(game, this, cost).setSlow().setPersistent();
-		studiable = new Studiable(game, this);
-		activatable = new Activatable(game, this);
-		triggering = new Triggering(game, this);
+        playable = new Playable(game, this, cost).setSlow().setPersistent();
+        studiable = new Studiable(game, this);
+        activatable = new Activatable(game, this);
+        triggering = new Triggering(game, this);
 
-		setAttachable(validTarget, afterAttachEffect, afterRemoveEffect);
-	}
+        setAttachable(validTarget, afterAttachEffect, afterRemoveEffect);
+    }
 
 
 }

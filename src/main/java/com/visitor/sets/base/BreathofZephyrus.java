@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class BreathofZephyrus extends Unit {
 
-	public BreathofZephyrus (Game game, UUID owner) {
-		super(game, "Breath of Zephyrus",
-				3, new CounterMap(PURPLE, 1),
-				"",
-				2, 1,
-				owner, Flying);
-	}
+    public BreathofZephyrus(Game game, UUID owner) {
+        super(game, "Breath of Zephyrus",
+                3, new CounterMap(PURPLE, 1),
+                "",
+                2, 1,
+                owner, Flying);
+    }
 }

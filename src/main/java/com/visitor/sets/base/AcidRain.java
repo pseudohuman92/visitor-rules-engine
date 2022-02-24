@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class AcidRain extends Unit {
 
-	public AcidRain (Game game, UUID owner) {
-		super(game, "Acid Rain",
-				6, new CounterMap(YELLOW, 3),
-				"",
-				5, 5,
-				owner, Flying);
-	}
+    public AcidRain(Game game, UUID owner) {
+        super(game, "Acid Rain",
+                6, new CounterMap(YELLOW, 3),
+                "",
+                5, 5,
+                owner, Flying);
+    }
 }

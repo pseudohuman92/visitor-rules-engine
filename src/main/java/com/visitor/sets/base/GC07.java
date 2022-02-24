@@ -10,15 +10,15 @@ import java.util.UUID;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
 public class GC07 extends Cantrip {
-	public GC07 (Game game, UUID owner) {
-		super(game, "GC07", 1,
-				new CounterMap<>(GREEN, 2),
-				"Draw the top unit from your deck.",
-				owner);
+    public GC07(Game game, UUID owner) {
+        super(game, "GC07", 1,
+                new CounterMap<>(GREEN, 2),
+                "Draw the top unit from your deck.",
+                owner);
 
-		playable
-				.addResolveEffect(() ->
-						game.draw(controller, game.extractTopmostMatchingFromDeck(controller, Predicates::isUnit))
-				);
-	}
+        playable
+                .addResolveEffect(() ->
+                        game.draw(controller, game.extractTopmostMatchingFromDeck(controller, Predicates::isUnit))
+                );
+    }
 }

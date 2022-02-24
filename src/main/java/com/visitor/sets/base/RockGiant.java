@@ -20,14 +20,14 @@ import static com.visitor.card.properties.Combat.CombatAbility.Defender;
  */
 public class RockGiant extends Unit {
 
-	public RockGiant (Game game, UUID owner) {
-		super(game, "Rock Giant",
-				3, new CounterMap(),
-				"{2}: {~} fights another target unit.",
-				3, 3,
-				owner, Defender);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}: {~} fights another target unit.")
-				.setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
-				targetId -> game.fight(id, targetId)));
-	}
+    public RockGiant(Game game, UUID owner) {
+        super(game, "Rock Giant",
+                3, new CounterMap(),
+                "{2}: {~} fights another target unit.",
+                3, 3,
+                owner, Defender);
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}: {~} fights another target unit.")
+                .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+                        targetId -> game.fight(id, targetId)));
+    }
 }

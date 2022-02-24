@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Mantis extends Unit {
 
-	public Mantis (Game game, UUID owner) {
-		super(game, "Mantis",
-				1, new CounterMap(GREEN, 1),
-				"",
-				2, 1,
-				owner, Lifelink);
-	}
+    public Mantis(Game game, UUID owner) {
+        super(game, "Mantis",
+                1, new CounterMap(GREEN, 1),
+                "",
+                2, 1,
+                owner, Lifelink);
+    }
 }

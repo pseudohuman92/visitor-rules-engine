@@ -16,8 +16,8 @@ import java.util.UUID;
  */
 public class Junk extends Card {
 
-	public Junk (Game game, UUID owner) {
-		super(game, "Junk", new CounterMap<>(), CardType.Junk, "Junk can't be played or studied.", owner);
-	}
+    public Junk(Game game, UUID owner) {
+        super(game, "Junk", new CounterMap<>(), CardType.Junk, "Junk can't be played or studied.", owner);
+    }
 
 }

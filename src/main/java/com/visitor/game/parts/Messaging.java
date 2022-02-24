@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.visitor.game.parts.GameBasePart.Zone.Both_Play;
+import static com.visitor.game.parts.Base.Zone.Both_Play;
 import static com.visitor.helpers.UUIDHelper.toUUIDList;
 import static com.visitor.protocol.Types.SelectFromType.LIST;
 import static com.visitor.server.GeneralEndpoint.gameServer;
@@ -25,13 +25,13 @@ import static java.lang.System.out;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
-public class GameMessagingPart extends GameAccessorPart {
+public class Messaging extends Connections {
     /**
      * Client Prompt Methods
      * When you need client to do something.
      */
     //// Helpers
-    private void send (UUID playerId, ServerGameMessages.ServerGameMessage.Builder builder) {
+    private void send(UUID playerId, ServerGameMessages.ServerGameMessage.Builder builder) {
         try {
             setLastMessage(playerId, builder.build());
             GameEndpointInterface e = connections.get(playerId);
@@ -44,7 +44,7 @@ public class GameMessagingPart extends GameAccessorPart {
         }
     }
 
-    private Arraylist<UUID> selectFrom (UUID playerId, Types.SelectFromType type, Arraylist<com.visitor.game.Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo, String message) {
+    private Arraylist<UUID> selectFrom(UUID playerId, Types.SelectFromType type, Arraylist<com.visitor.game.Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo, String message) {
         ServerGameMessages.SelectFrom.Builder b = ServerGameMessages.SelectFrom.newBuilder()
                 .addAllSelectable(canSelect.transformToStringList())
                 .addAllSelectable(canSelectPlayers.transformToStringList())
@@ -160,13 +160,13 @@ public class GameMessagingPart extends GameAccessorPart {
     }
 
     //// Prompters
-    public Arraylist<UUID> selectFromZone (UUID playerId, Game.Zone zone, Predicate<Card> validTarget, int count, boolean upTo, String message) {
+    public Arraylist<UUID> selectFromZone(UUID playerId, Game.Zone zone, Predicate<Card> validTarget, int count, boolean upTo, String message) {
         Arraylist<UUID> canSelect = new Arraylist<>(getZone(playerId, zone).parallelStream()
                 .filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
         return selectFrom(playerId, getZoneLabel(zone), getZone(playerId, zone), canSelect, new Arraylist<>(), count, upTo, message);
     }
 
-    public Arraylist<UUID> selectFromZoneWithPlayers (UUID playerId, Game.Zone zone, Predicate<com.visitor.game.Card> validTarget, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo, String message) {
+    public Arraylist<UUID> selectFromZoneWithPlayers(UUID playerId, Game.Zone zone, Predicate<com.visitor.game.Card> validTarget, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo, String message) {
         Arraylist<UUID> canSelect = new Arraylist<>(getZone(playerId, zone).parallelStream()
                 .filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
         Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
@@ -174,31 +174,31 @@ public class GameMessagingPart extends GameAccessorPart {
         return selectFrom(playerId, getZoneLabel(zone), getZone(playerId, zone), canSelect, canSelectPlayers, count, upTo, message);
     }
 
-    public Arraylist<UUID> selectFromList (UUID playerId, Arraylist<com.visitor.game.Card> candidates, Predicate<com.visitor.game.Card> validTarget, int count, boolean upTo, String message) {
-        if (message == null || message.equals("")){
-            message = "Select " + (upTo? "up to " : "") + count;
+    public Arraylist<UUID> selectFromList(UUID playerId, Arraylist<com.visitor.game.Card> candidates, Predicate<com.visitor.game.Card> validTarget, int count, boolean upTo, String message) {
+        if (message == null || message.equals("")) {
+            message = "Select " + (upTo ? "up to " : "") + count;
         }
         Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
                 .filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
         return selectFrom(playerId, LIST, candidates, canSelect, new Arraylist<>(), count, upTo, message);
     }
 
-    public Arraylist<UUID> selectPlayers (UUID playerId, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo) {
+    public Arraylist<UUID> selectPlayers(UUID playerId, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo) {
         Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
                 .filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
         String message = "Select " + (upTo ? " up to " : "") + count + " player" + (count > 1 ? "s." : ".");
         return selectFrom(playerId, getZoneLabel(Game.Zone.Play), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo, message);
     }
 
-    public Arraylist<UUID> selectDamageTargetsConditional (UUID playerId, Predicate<com.visitor.game.Card> validTarget, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo, String message) {
+    public Arraylist<UUID> selectDamageTargetsConditional(UUID playerId, Predicate<com.visitor.game.Card> validTarget, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo, String message) {
         return selectFromZoneWithPlayers(playerId, Both_Play, validTarget, validPlayer, count, upTo, message);
     }
 
-    public Arraylist<UUID> selectDamageTargets (UUID playerId, int count, boolean upTo, String message) {
+    public Arraylist<UUID> selectDamageTargets(UUID playerId, int count, boolean upTo, String message) {
         return selectFromZoneWithPlayers(playerId, Both_Play, Predicates::isDamageable, Predicates::any, count, upTo, message);
     }
 
-    public int selectX (UUID playerId, int maxX) {
+    public int selectX(UUID playerId, int maxX) {
         if (maxX == 0) {
             return maxX;
         }
@@ -215,7 +215,7 @@ public class GameMessagingPart extends GameAccessorPart {
         return 0;
     }
 
-    public CounterMap<Types.Knowledge> selectKnowledge (UUID playerId, Set<Types.Knowledge> knowledgeSet) {
+    public CounterMap<Types.Knowledge> selectKnowledge(UUID playerId, Set<Types.Knowledge> knowledgeSet) {
         ServerGameMessages.SelectKnowledge.Builder b = ServerGameMessages.SelectKnowledge.newBuilder()
                 .addAllKnowledgeList(knowledgeSet)
                 .setGame(toGameState(playerId, true));
@@ -229,7 +229,7 @@ public class GameMessagingPart extends GameAccessorPart {
         return new CounterMap<>();
     }
 
-    public void gameEnd (UUID playerId, boolean win) {
+    public void gameEnd(UUID playerId, boolean win) {
         send(playerId, ServerGameMessages.ServerGameMessage.newBuilder()
                 .setGameEnd(ServerGameMessages.GameEnd.newBuilder()
                         .setGame(toGameState(playerId, true))
@@ -243,13 +243,13 @@ public class GameMessagingPart extends GameAccessorPart {
         gameServer.removeGame(id, history);
     }
 
-    public final void updatePlayers () {
+    public final void updatePlayers() {
         players.forEach((name, player) -> send(name, ServerGameMessages.ServerGameMessage.newBuilder()
                 .setUpdateGameState(ServerGameMessages.UpdateGameState.newBuilder()
                         .setGame(toGameState(name, false)))));
     }
 
-    public Types.GameState.Builder toGameState (UUID playerId, boolean noAction) {
+    public Types.GameState.Builder toGameState(UUID playerId, boolean noAction) {
         Types.GameState.Builder b =
                 Types.GameState.newBuilder()
                         .setId(id.toString())
@@ -270,7 +270,7 @@ public class GameMessagingPart extends GameAccessorPart {
             b.addBlockers(blocker.toString());
         }
 
-        if(noAction)
+        if (noAction)
             return b;
 
         players.forEach((s, p) -> {
@@ -293,7 +293,7 @@ public class GameMessagingPart extends GameAccessorPart {
         return b;
     }
 
-    public Types.GameState.Builder toGameState (String username) {
+    public Types.GameState.Builder toGameState(String username) {
         return toGameState(getPlayerId(username), false);
     }
 }

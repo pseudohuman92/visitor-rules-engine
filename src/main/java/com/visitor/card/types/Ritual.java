@@ -14,10 +14,10 @@ import java.util.UUID;
  */
 public abstract class Ritual extends Spell {
 
-	public Ritual (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
-		super(game, name, cost, knowledge, text, owner);
+    public Ritual(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
+        super(game, name, cost, knowledge, text, owner);
 
-		subtypes.add(CardSubtype.Ritual);
-		playable.setSlow().setEphemeral();
-	}
+        subtypes.add(CardSubtype.Ritual);
+        playable.setSlow().setEphemeral();
+    }
 }

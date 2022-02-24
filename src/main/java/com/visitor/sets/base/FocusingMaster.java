@@ -32,8 +32,8 @@ public class FocusingMaster extends Ally {
         addPlusLoyaltyAbility(0, "", 2, null, () -> game.hasMaxEnergy(controller, 1), () -> game.removeMaxEnergy(controller, 1));
 
         addMinusLoyaltyAbility(0, "", 1, 1,
-		        new ActivatedAbility(game, this, 0, "")
-		        .setTargetingForDamage(targetID -> game.dealDamage(id, targetID, game.getPlayerEnergy(controller))), null, null);
+                new ActivatedAbility(game, this, 0, "")
+                        .setTargetingForDamage(targetID -> game.dealDamage(id, targetID, game.getPlayerEnergy(controller))), null, null);
     }
 }
 

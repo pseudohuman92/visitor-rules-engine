@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.PURPLE;
  */
 public class BorealRoots extends Unit {
 
-	public BorealRoots (Game game, UUID owner) {
-		super(game, "Boreal Roots",
-				2, new CounterMap(PURPLE, 1),
-				"",
-				2, 1,
-				owner, Lifelink);
-	}
+    public BorealRoots(Game game, UUID owner) {
+        super(game, "Boreal Roots",
+                2, new CounterMap(PURPLE, 1),
+                "",
+                2, 1,
+                owner, Lifelink);
+    }
 }

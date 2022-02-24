@@ -18,11 +18,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.Reach;
  */
 public class Reachy extends Unit {
 
-	public Reachy (Game game, UUID owner) {
-		super(game, "Reachy",
-				0, new CounterMap(),
-				"",
-				2, 3,
-				owner, Reach);
-	}
+    public Reachy(Game game, UUID owner) {
+        super(game, "Reachy",
+                0, new CounterMap(),
+                "",
+                2, 3,
+                owner, Reach);
+    }
 }

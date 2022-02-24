@@ -9,23 +9,23 @@ import static com.visitor.game.Event.turnEnd;
 import static com.visitor.game.Event.turnStart;
 import static java.lang.System.out;
 
-public class GameEventsPart extends GameMessagingPart {
+public class Events extends Messaging {
     /**
      * Event Related Methods
      * These are the methods that implements event mechanism.
      * Events are used to implement triggered abilities.
      */
-    public void addEvent (Event e, boolean process) {
+    public void addEvent(Event e, boolean process) {
         eventQueue.add(e);
         if (process)
             processEvents();
     }
 
-    public void addEvent (Event e) {
+    public void addEvent(Event e) {
         addEvent(e, false);
     }
 
-    public void processEvents () {
+    public void processEvents() {
         if (!eventQueue.isEmpty()) {
             Arraylist<Event> tempQueue = eventQueue;
             eventQueue = new Arraylist<>();
@@ -50,11 +50,11 @@ public class GameEventsPart extends GameMessagingPart {
         //out.println("Ending End Triggers");
     }
 
-    public void addTriggeringCard (UUID playerId, com.visitor.game.Card t) {
+    public void addTriggeringCard(UUID playerId, com.visitor.game.Card t) {
         triggeringCards.get(playerId).add(t);
     }
 
-    public void removeTriggeringCard (com.visitor.game.Card card) {
+    public void removeTriggeringCard(com.visitor.game.Card card) {
         triggeringCards.values().forEach(l -> l.remove(card));
     }
 }

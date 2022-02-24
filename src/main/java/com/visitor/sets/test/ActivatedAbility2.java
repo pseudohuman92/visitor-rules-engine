@@ -17,13 +17,13 @@ import java.util.UUID;
  */
 public class ActivatedAbility2 extends Unit {
 
-	public ActivatedAbility2 (Game game, UUID owner) {
-		super(game, "Activated Ability 2",
-				0, new CounterMap(),
-				"0: Gain +0/+1\n1: Gain +1/+0",
-				0, 1,
-				owner);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain +0/+1", ()->game.addAttackAndHealth(id, 0, 1)));
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "Gain +1/+0", ()->game.addAttackAndHealth(id, 1, 0)));
-	}
+    public ActivatedAbility2(Game game, UUID owner) {
+        super(game, "Activated Ability 2",
+                0, new CounterMap(),
+                "0: Gain +0/+1\n1: Gain +1/+0",
+                0, 1,
+                owner);
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain +0/+1", () -> game.addAttackAndHealth(id, 0, 1)));
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "Gain +1/+0", () -> game.addAttackAndHealth(id, 1, 0)));
+    }
 }

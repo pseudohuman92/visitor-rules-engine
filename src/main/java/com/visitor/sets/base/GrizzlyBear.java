@@ -20,15 +20,15 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class GrizzlyBear extends Unit {
 
-	public GrizzlyBear (Game game, UUID owner) {
-		super(game, "Grizzly Bear",
-				2, new CounterMap(GREEN, 2),
-				"{Use}: Gain 1 energy.",
-				3, 3,
-				owner, Trample);
+    public GrizzlyBear(Game game, UUID owner) {
+        super(game, "Grizzly Bear",
+                2, new CounterMap(GREEN, 2),
+                "{Use}: Gain 1 energy.",
+                3, 3,
+                owner, Trample);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain 1 energy.",
-						() -> game.addEnergy(controller, 1)).setDepleting());
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 0, "Gain 1 energy.",
+                        () -> game.addEnergy(controller, 1)).setDepleting());
+    }
 }

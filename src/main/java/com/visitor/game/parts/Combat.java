@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
-import static com.visitor.game.parts.GameBasePart.Zone.Both_Play;
+import static com.visitor.game.parts.Base.Zone.Both_Play;
 import static java.lang.System.out;
 import static java.util.UUID.fromString;
 
-public class GameCombatPart extends GameStackPart {
+public class Combat extends Stack {
     // Does nothing if called with non-positive amount of damage
-    public void dealDamage (UUID sourceId, UUID targetId, Damage damage) {
+    public void dealDamage(UUID sourceId, UUID targetId, Damage damage) {
         if (damage.amount > 0) {
             com.visitor.game.Card source = getCard(sourceId);
             if (isPlayer(targetId)) {
@@ -32,11 +32,11 @@ public class GameCombatPart extends GameStackPart {
         }
     }
 
-    public void dealDamage (UUID sourceId, UUID targetId, int damage) {
+    public void dealDamage(UUID sourceId, UUID targetId, int damage) {
         dealDamage(sourceId, targetId, new Damage(damage));
     }
 
-    public void dealDamageToAll (UUID playerId, UUID sourceId, Damage damage) {
+    public void dealDamageToAll(UUID playerId, UUID sourceId, Damage damage) {
         players.values().forEach(p -> dealDamage(sourceId, p.id, damage));
         getZone(playerId, Both_Play).forEach(c -> dealDamage(sourceId, c.id, damage));
     }
@@ -108,7 +108,7 @@ public class GameCombatPart extends GameStackPart {
     }
 
 
-    public void assignDamage (UUID id, Arraylist<UUID> possibleTargets, Damage damage, boolean trample) {
+    public void assignDamage(UUID id, Arraylist<UUID> possibleTargets, Damage damage, boolean trample) {
         out.println("Updating players from assignDamage. AP: " + activePlayer);
         updatePlayers();
         Arraylist<Types.DamageAssignment> assignedDamages = assignDamage(turnPlayer, id, possibleTargets, damage.amount, trample);

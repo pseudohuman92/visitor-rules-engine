@@ -17,10 +17,10 @@ import java.util.UUID;
  */
 public abstract class Spell extends Card {
 
-	public Spell (Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
-		super(game, name, knowledge, CardType.Spell, text, owner);
+    public Spell(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, UUID owner) {
+        super(game, name, knowledge, CardType.Spell, text, owner);
 
-		playable = new Playable(game, this, cost);
-		studiable = new Studiable(game, this);
-	}
+        playable = new Playable(game, this, cost);
+        studiable = new Studiable(game, this);
+    }
 }

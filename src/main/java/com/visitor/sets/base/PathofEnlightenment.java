@@ -17,7 +17,7 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class PathofEnlightenment extends Tome {
 
-    public PathofEnlightenment (Game game, UUID owner) {
+    public PathofEnlightenment(Game game, UUID owner) {
         super(game, "Path of Enlightenment", "Study: Gain {Y}{Y}", owner, new CounterMap<>(YELLOW, 2));
     }
 

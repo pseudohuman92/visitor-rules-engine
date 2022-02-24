@@ -20,10 +20,10 @@ public class MetricsDb {
         }
     }
 
-    public void addMatchHistory(UUID gameId, Arraylist<String> matchHistory){
+    public void addMatchHistory(UUID gameId, Arraylist<String> matchHistory) {
         Hashmap<String, Object> data = new Hashmap<>();
         data.putIn("time", java.time.Clock.systemUTC().instant())
-            .putIn("history", matchHistory);
+                .putIn("history", matchHistory);
         try {
             db.createDocument(COLLECTION_NAME, gameId.toString(), data);
         } catch (Exception e) {

@@ -21,14 +21,14 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class WingedMessenger extends Unit {
 
-	public WingedMessenger (Game game, UUID owner) {
-		super(game, "Winged Messenger",
-				2, new CounterMap(YELLOW, 1),
-				"{1} {Use}: Create 1/1 Warrior.",
-				1, 3,
-				owner, Flying);
-		activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1} {Use}: Create 1/1 Warrior.",
-				() -> UnitToken.Warrior_1_1(game, controller).resolve())
-				.setDepleting());
-	}
+    public WingedMessenger(Game game, UUID owner) {
+        super(game, "Winged Messenger",
+                2, new CounterMap(YELLOW, 1),
+                "{1} {Use}: Create 1/1 Warrior.",
+                1, 3,
+                owner, Flying);
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1} {Use}: Create 1/1 Warrior.",
+                () -> UnitToken.Warrior_1_1(game, controller).resolve())
+                .setDepleting());
+    }
 }

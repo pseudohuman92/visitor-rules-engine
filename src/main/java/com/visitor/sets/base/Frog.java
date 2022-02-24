@@ -24,21 +24,21 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Frog extends Unit {
 
-	UUID target;
+    UUID target;
 
-	public Frog (Game game, UUID owner) {
-		super(game, "Frog",
-				1, new CounterMap(GREEN, 1),
-				"{Use}: Deal 1 damage to target unit with flying.",
-				1, 2,
-				owner, Reach);
+    public Frog(Game game, UUID owner) {
+        super(game, "Frog",
+                1, new CounterMap(GREEN, 1),
+                "{Use}: Deal 1 damage to target unit with flying.",
+                1, 2,
+                owner, Reach);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 0, "Deal 1 damage to target unit with flying.",
-						()->game.hasIn(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c->c.hasCombatAbility(Flying)), 1),
-						()-> target = game.selectFromZone(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c->c.hasCombatAbility(Flying)), 1, false,"Select a flying unit.").get(0),
-						()-> game.runIfInZone(controller, Game.Zone.Both_Play, target, ()->game.dealDamage(id, target, new Damage(1))))
-						.setDepleting());
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 0, "Deal 1 damage to target unit with flying.",
+                        () -> game.hasIn(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c -> c.hasCombatAbility(Flying)), 1),
+                        () -> target = game.selectFromZone(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c -> c.hasCombatAbility(Flying)), 1, false, "Select a flying unit.").get(0),
+                        () -> game.runIfInZone(controller, Game.Zone.Both_Play, target, () -> game.dealDamage(id, target, new Damage(1))))
+                        .setDepleting());
 
-	}
+    }
 }

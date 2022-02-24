@@ -17,28 +17,28 @@ import java.util.function.Supplier;
  */
 public abstract class Tome extends Card {
 
-	public Tome (Game game, String name, String text, UUID owner) {
-		super(game, name, new CounterMap<>(), CardType.Tome, text, owner);
+    public Tome(Game game, String name, String text, UUID owner) {
+        super(game, name, new CounterMap<>(), CardType.Tome, text, owner);
 
-		studiable = new Studiable(game, this);
-	}
+        studiable = new Studiable(game, this);
+    }
 
-	public Tome (Game game, String name, String text, UUID owner, Supplier<CounterMap<Knowledge>> getKnowledgeType) {
-		this(game, name, text, owner);
+    public Tome(Game game, String name, String text, UUID owner, Supplier<CounterMap<Knowledge>> getKnowledgeType) {
+        this(game, name, text, owner);
 
-		studiable.setGetKnowledgeType(getKnowledgeType);
-	}
+        studiable.setGetKnowledgeType(getKnowledgeType);
+    }
 
-	public Tome (Game game, String name, String text, UUID owner, CounterMap<Knowledge> studyKnowledgeType) {
-		this(game, name, text, owner);
+    public Tome(Game game, String name, String text, UUID owner, CounterMap<Knowledge> studyKnowledgeType) {
+        this(game, name, text, owner);
 
-		studiable.setGetKnowledgeType(() -> studyKnowledgeType);
-	}
+        studiable.setGetKnowledgeType(() -> studyKnowledgeType);
+    }
 
 
-	@Override
-	public Types.Card.Builder toCardMessage () {
-		return super.toCardMessage()
-				.setCost("");
-	}
+    @Override
+    public Types.Card.Builder toCardMessage() {
+        return super.toCardMessage()
+                .setCost("");
+    }
 }

@@ -19,11 +19,11 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class EndlessHorizon extends Unit {
 
-	public EndlessHorizon (Game game, UUID owner) {
-		super(game, "Endless Horizon",
-				3, new CounterMap(RED, 2),
-				"",
-				2, 4,
-				owner, Haste);
-	}
+    public EndlessHorizon(Game game, UUID owner) {
+        super(game, "Endless Horizon",
+                3, new CounterMap(RED, 2),
+                "",
+                2, 4,
+                owner, Haste);
+    }
 }

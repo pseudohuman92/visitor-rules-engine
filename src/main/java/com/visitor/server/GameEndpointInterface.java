@@ -8,10 +8,10 @@ import java.util.UUID;
 
 public interface GameEndpointInterface {
 
-	void send (ServerGameMessages.ServerGameMessage.Builder builder, UUID targetId) throws IOException, EncodeException;
+    void send(ServerGameMessages.ServerGameMessage.Builder builder, UUID targetId) throws IOException, EncodeException;
 
-	void close ();
+    void close();
 
-	void resendLastMessage (UUID targetId) throws IOException, EncodeException;
+    void resendLastMessage(UUID targetId) throws IOException, EncodeException;
 
 }

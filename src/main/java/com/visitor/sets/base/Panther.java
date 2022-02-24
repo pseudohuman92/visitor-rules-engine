@@ -20,11 +20,11 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class Panther extends Unit {
 
-	public Panther (Game game, UUID owner) {
-		super(game, "Panther",
-				2, new CounterMap(GREEN, 2),
-				"",
-				3, 2,
-				owner, Lifelink, Trample);
-	}
+    public Panther(Game game, UUID owner) {
+        super(game, "Panther",
+                2, new CounterMap(GREEN, 2),
+                "",
+                3, 2,
+                owner, Lifelink, Trample);
+    }
 }

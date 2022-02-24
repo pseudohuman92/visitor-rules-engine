@@ -19,16 +19,16 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class BlackBear extends Unit {
 
-	public BlackBear (Game game, UUID owner) {
-		super(game, "Black Bear",
-				2, new CounterMap(GREEN, 1),
-				"{2}, Return {~} to your hand: Draw a card.",
-				3, 3,
-				owner);
+    public BlackBear(Game game, UUID owner) {
+        super(game, "Black Bear",
+                2, new CounterMap(GREEN, 1),
+                "{2}, Return {~} to your hand: Draw a card.",
+                3, 3,
+                owner);
 
-		activatable
-				.addActivatedAbility(new ActivatedAbility(game, this, 2, "Draw a card.",
-						() -> game.returnToHand(id),
-						() -> game.draw(controller, 1)));
-	}
+        activatable
+                .addActivatedAbility(new ActivatedAbility(game, this, 2, "Draw a card.",
+                        () -> game.returnToHand(id),
+                        () -> game.draw(controller, 1)));
+    }
 }

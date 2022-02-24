@@ -20,18 +20,18 @@ import static com.visitor.protocol.Types.Knowledge.GREEN;
  */
 public class GU03 extends Unit {
 
-	public GU03 (Game game, UUID owner) {
-		super(game, "GU03",
-				2, new CounterMap(BLUE, 1).add(GREEN, 1),
-				"Whenever {~} deals damage to an opponent, draw a card.",
-				1, 1,
-				owner);
+    public GU03(Game game, UUID owner) {
+        super(game, "GU03",
+                2, new CounterMap(BLUE, 1).add(GREEN, 1),
+                "Whenever {~} deals damage to an opponent, draw a card.",
+                1, 1,
+                owner);
 
-		combat.addDamageEffect((targetId, damage) -> {
-				if (game.isPlayer(targetId) && !controller.equals(targetId)){
-					game.addToStack(new AbilityCard(game, this, "Whenever {~} deals damage to an opponent, draw a card.",
-							() -> game.draw(controller, 1)));
-				}
-		});
-	}
+        combat.addDamageEffect((targetId, damage) -> {
+            if (game.isPlayer(targetId) && !controller.equals(targetId)) {
+                game.addToStack(new AbilityCard(game, this, "Whenever {~} deals damage to an opponent, draw a card.",
+                        () -> game.draw(controller, 1)));
+            }
+        });
+    }
 }

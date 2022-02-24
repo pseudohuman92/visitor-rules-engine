@@ -23,17 +23,17 @@ import static com.visitor.protocol.Types.Knowledge.RED;
  */
 public class GD04 extends Unit {
 
-	public GD04 (Game game, UUID owner) {
-		super(game, "GD04",
-				4, new CounterMap(GREEN, 2).add(RED, 1),
-						"Whenever {~} attacks, {~} gains +X/+X where X is the number of attacking units you control.",
-				1, 1,
-				owner);
+    public GD04(Game game, UUID owner) {
+        super(game, "GD04",
+                4, new CounterMap(GREEN, 2).add(RED, 1),
+                "Whenever {~} attacks, {~} gains +X/+X where X is the number of attacking units you control.",
+                1, 1,
+                owner);
 
-		triggering.addEventChecker(new EventChecker(game, this,
-				event -> game.addAttackAndHealth(id, ((Arraylist<Card>)event.data.get(0)).size(), ((Arraylist<Card>)event.data.get(0)).size()))
-				.addTypeChecker(Event.EventType.Attack)
-				.addCardListChecker(cardlist -> cardlist.contains(this))
-				.createAbility("Whenever {~} attacks, {~} gains +X/+X where X is the number of attacking units you control."));
-	}
+        triggering.addEventChecker(new EventChecker(game, this,
+                event -> game.addAttackAndHealth(id, ((Arraylist<Card>) event.data.get(0)).size(), ((Arraylist<Card>) event.data.get(0)).size()))
+                .addTypeChecker(Event.EventType.Attack)
+                .addCardListChecker(cardlist -> cardlist.contains(this))
+                .createAbility("Whenever {~} attacks, {~} gains +X/+X where X is the number of attacking units you control."));
+    }
 }

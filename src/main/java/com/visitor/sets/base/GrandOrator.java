@@ -14,7 +14,7 @@ import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.game.parts.GameBasePart.Zone.Play;
+import static com.visitor.game.parts.Base.Zone.Play;
 import static com.visitor.helpers.Predicates.and;
 import static com.visitor.protocol.Types.Knowledge.GREEN;
 
@@ -33,9 +33,9 @@ public class GrandOrator extends Ally {
         addPlusLoyaltyAbility(2, "2, {Use}: +1 Loyalty.", 1, null, null, null);
 
         addMinusLoyaltyAbility(0, "1 Loyalty, {Use}: Delay 1 - All other allies you control gain 1 Loyalty", 1, 1,
-		        new ActivatedAbility(game, this, 0, "All other allies you control gain 1 Loyalty",
-				        () -> game.forEachInZone(controller, Play, and(Predicates::isAlly, Predicates.anotherCard(id)),
-	          cardId -> ((Ally)game.getCard(cardId)).loyalty++)), null, null);
+                new ActivatedAbility(game, this, 0, "All other allies you control gain 1 Loyalty",
+                        () -> game.forEachInZone(controller, Play, and(Predicates::isAlly, Predicates.anotherCard(id)),
+                                cardId -> ((Ally) game.getCard(cardId)).loyalty++)), null, null);
     }
 }
 

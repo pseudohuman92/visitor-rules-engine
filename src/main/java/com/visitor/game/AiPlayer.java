@@ -12,193 +12,193 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class AiPlayer extends Player {
 
-	final static String[] decklist = {
-	"3;base.Eagle",
-	"3;base.Hawk",
-	"3;base.Leech",
-	"3;base.Owl",
-	"3;base.Ox",
-	"3;base.Pistol Shrimp",
-	"3;base.Porcupine",
-	"3;base.Seagull",
-	"3;base.Sparrow",
-	"3;base.Turtle",
-	"3;base.UR01",
-	"3;base.UR02",
-	"3;base.UR03",
-	"3;base.UR04",
-	"3;base.UR05"};
+    final static String[] decklist = {
+            "3;base.Eagle",
+            "3;base.Hawk",
+            "3;base.Leech",
+            "3;base.Owl",
+            "3;base.Ox",
+            "3;base.Pistol Shrimp",
+            "3;base.Porcupine",
+            "3;base.Seagull",
+            "3;base.Sparrow",
+            "3;base.Turtle",
+            "3;base.UR01",
+            "3;base.UR02",
+            "3;base.UR03",
+            "3;base.UR04",
+            "3;base.UR05"};
 
-	public AiPlayer (Game game) {
-		super(game, "AI Player", decklist);
-	}
+    public AiPlayer(Game game) {
+        super(game, "AI Player", decklist);
+    }
 
-	public static ClientGameMessage getResponse (ServerGameMessage message, UUID aiId) {
-		switch (message.getPayloadCase()){
-			case PICKCARD:
-				PickCard pickCard = message.getPickCard();
-				//Draft option
-				return null;
+    public static ClientGameMessage getResponse(ServerGameMessage message, UUID aiId) {
+        switch (message.getPayloadCase()) {
+            case PICKCARD:
+                PickCard pickCard = message.getPickCard();
+                //Draft option
+                return null;
 
-			case ORDERCARDS:
-				OrderCards orderCards = message.getOrderCards();
-				Arraylist<Types.Card> orderedCards = new Arraylist<>(orderCards.getCardsToOrderList());
-				Arraylist<String> orderedIds = new Arraylist<>();
+            case ORDERCARDS:
+                OrderCards orderCards = message.getOrderCards();
+                Arraylist<Types.Card> orderedCards = new Arraylist<>(orderCards.getCardsToOrderList());
+                Arraylist<String> orderedIds = new Arraylist<>();
 
-				while(!orderedCards.isEmpty()) {
-					orderedIds.add(orderedCards.remove(getRandomInt(orderedCards.size())).getId());
-				}
+                while (!orderedCards.isEmpty()) {
+                    orderedIds.add(orderedCards.remove(getRandomInt(orderedCards.size())).getId());
+                }
 
-				return ClientGameMessage.newBuilder().setOrderCardsResponse(
-						OrderCardsResponse.newBuilder()
-								.addAllOrderedCards(orderedIds)
-								.build()).build();
+                return ClientGameMessage.newBuilder().setOrderCardsResponse(
+                        OrderCardsResponse.newBuilder()
+                                .addAllOrderedCards(orderedIds)
+                                .build()).build();
 
-			case SELECTFROM:
-				SelectFrom selectFrom = message.getSelectFrom();
+            case SELECTFROM:
+                SelectFrom selectFrom = message.getSelectFrom();
 
-				int selectCount =
-						selectFrom.getUpTo() ?
-							getRandomInt(selectFrom.getSelectionCount() + 1) :
-							selectFrom.getSelectionCount();
+                int selectCount =
+                        selectFrom.getUpTo() ?
+                                getRandomInt(selectFrom.getSelectionCount() + 1) :
+                                selectFrom.getSelectionCount();
 
-				Arraylist<String> selectedIds = new Arraylist<>();
-				Arraylist<String> selectables = new Arraylist<>(selectFrom.getSelectableList());
+                Arraylist<String> selectedIds = new Arraylist<>();
+                Arraylist<String> selectables = new Arraylist<>(selectFrom.getSelectableList());
 
-				for (int i = 0; i < selectCount; i++) {
-					int index = getRandomInt(selectables.size());
-					selectedIds.add(selectables.remove(index));
-				}
+                for (int i = 0; i < selectCount; i++) {
+                    int index = getRandomInt(selectables.size());
+                    selectedIds.add(selectables.remove(index));
+                }
 
-				return ClientGameMessage.newBuilder().setSelectFromResponse(
-						SelectFromResponse.newBuilder()
-						.setMessageType(selectFrom.getMessageType())
-						.addAllSelected(selectedIds)
-						.build()).build();
+                return ClientGameMessage.newBuilder().setSelectFromResponse(
+                        SelectFromResponse.newBuilder()
+                                .setMessageType(selectFrom.getMessageType())
+                                .addAllSelected(selectedIds)
+                                .build()).build();
 
-			case ASSIGNDAMAGE:
-				AssignDamage assignDamage = message.getAssignDamage();
-				Types.GameState gameState = assignDamage.getGame();
+            case ASSIGNDAMAGE:
+                AssignDamage assignDamage = message.getAssignDamage();
+                Types.GameState gameState = assignDamage.getGame();
 
-				Arraylist<Types.DamageAssignment> damageAssignments = new Arraylist<>();
-				int totalDamage = assignDamage.getTotalDamage();
-				Arraylist<String> targets = new Arraylist<>(assignDamage.getPossibleTargetsList());
+                Arraylist<Types.DamageAssignment> damageAssignments = new Arraylist<>();
+                int totalDamage = assignDamage.getTotalDamage();
+                Arraylist<String> targets = new Arraylist<>(assignDamage.getPossibleTargetsList());
 
-				while (totalDamage > 0){
-					//TODO: Implement here.
-					break;
-				}
+                while (totalDamage > 0) {
+                    //TODO: Implement here.
+                    break;
+                }
 
-				return null;
+                return null;
 
-			case SELECTXVALUE:
-				SelectXValue selectXValue = message.getSelectXValue();
-				return ClientGameMessage.newBuilder().setSelectXValueResponse(
-						SelectXValueResponse.newBuilder()
-								.setSelectedXValue(
-										getRandomInt(selectXValue.getMaxXValue() + 1))
-								.build()).build();
+            case SELECTXVALUE:
+                SelectXValue selectXValue = message.getSelectXValue();
+                return ClientGameMessage.newBuilder().setSelectXValueResponse(
+                        SelectXValueResponse.newBuilder()
+                                .setSelectedXValue(
+                                        getRandomInt(selectXValue.getMaxXValue() + 1))
+                                .build()).build();
 
-			case SELECTBLOCKERS:
-				SelectBlockers selectBlockers = message.getSelectBlockers();
-				Arraylist<Types.Blocker> blockers = new Arraylist<>(selectBlockers.getPossibleBlockersList());
-				Arraylist<Types.BlockerAssignment> blockerAssignments = new Arraylist<>();
+            case SELECTBLOCKERS:
+                SelectBlockers selectBlockers = message.getSelectBlockers();
+                Arraylist<Types.Blocker> blockers = new Arraylist<>(selectBlockers.getPossibleBlockersList());
+                Arraylist<Types.BlockerAssignment> blockerAssignments = new Arraylist<>();
 
-				for (Types.Blocker b : blockers){
-					if(ThreadLocalRandom.current().nextBoolean()){ //choose if blocks
-						blockerAssignments.add(
-								Types.BlockerAssignment.newBuilder()
-								.setBlockerId(b.getBlockerId())
-								.setBlockedBy(b.getPossibleBlockTargets(
-										getRandomInt(b.getPossibleBlockTargetsCount())))
-								.build());
-					}
-				}
+                for (Types.Blocker b : blockers) {
+                    if (ThreadLocalRandom.current().nextBoolean()) { //choose if blocks
+                        blockerAssignments.add(
+                                Types.BlockerAssignment.newBuilder()
+                                        .setBlockerId(b.getBlockerId())
+                                        .setBlockedBy(b.getPossibleBlockTargets(
+                                                getRandomInt(b.getPossibleBlockTargetsCount())))
+                                        .build());
+                    }
+                }
 
-				return ClientGameMessage.newBuilder().setSelectBlockersResponse(
-						SelectBlockersResponse.newBuilder()
-								.addAllBlockers(blockerAssignments)
-								.build()).build();
+                return ClientGameMessage.newBuilder().setSelectBlockersResponse(
+                        SelectBlockersResponse.newBuilder()
+                                .addAllBlockers(blockerAssignments)
+                                .build()).build();
 
-			case SELECTATTACKERS:
-				SelectAttackers selectAttackers = message.getSelectAttackers();
-				Arraylist<Types.Attacker> attackers = new Arraylist<>(selectAttackers.getPossibleAttackersList());
-				Arraylist<Types.AttackerAssignment> attackerAssignments = new Arraylist<>();
+            case SELECTATTACKERS:
+                SelectAttackers selectAttackers = message.getSelectAttackers();
+                Arraylist<Types.Attacker> attackers = new Arraylist<>(selectAttackers.getPossibleAttackersList());
+                Arraylist<Types.AttackerAssignment> attackerAssignments = new Arraylist<>();
 
-				for (Types.Attacker a : attackers){
-					if(ThreadLocalRandom.current().nextBoolean()){ //choose if attacks
-						attackerAssignments.add(
-								Types.AttackerAssignment.newBuilder()
-										.setAttackerId(a.getAttackerId())
-										.setAttacksTo(a.getPossibleAttackTargets(
-												getRandomInt(a.getPossibleAttackTargetsCount())))
-										.build());
-					}
-				}
+                for (Types.Attacker a : attackers) {
+                    if (ThreadLocalRandom.current().nextBoolean()) { //choose if attacks
+                        attackerAssignments.add(
+                                Types.AttackerAssignment.newBuilder()
+                                        .setAttackerId(a.getAttackerId())
+                                        .setAttacksTo(a.getPossibleAttackTargets(
+                                                getRandomInt(a.getPossibleAttackTargetsCount())))
+                                        .build());
+                    }
+                }
 
-				return ClientGameMessage.newBuilder().setSelectAttackersResponse(
-						SelectAttackersResponse.newBuilder()
-								.addAllAttackers(attackerAssignments)
-								.build()).build();
+                return ClientGameMessage.newBuilder().setSelectAttackersResponse(
+                        SelectAttackersResponse.newBuilder()
+                                .addAllAttackers(attackerAssignments)
+                                .build()).build();
 
-			case SELECTKNOWLEDGE:
-				SelectKnowledge selectKnowledge = message.getSelectKnowledge();
+            case SELECTKNOWLEDGE:
+                SelectKnowledge selectKnowledge = message.getSelectKnowledge();
 
-				return ClientGameMessage.newBuilder().setSelectKnowledgeResponse(
-						SelectKnowledgeResponse.newBuilder()
-								.setSelectedKnowledge(selectKnowledge.getKnowledgeList(
-										getRandomInt(selectKnowledge.getKnowledgeListCount())))
-								.build()).build();
+                return ClientGameMessage.newBuilder().setSelectKnowledgeResponse(
+                        SelectKnowledgeResponse.newBuilder()
+                                .setSelectedKnowledge(selectKnowledge.getKnowledgeList(
+                                        getRandomInt(selectKnowledge.getKnowledgeListCount())))
+                                .build()).build();
 
-			case UPDATEGAMESTATE:
-				ClientGameMessage.Builder builder = ClientGameMessage.newBuilder();
-				gameState = message.getUpdateGameState().getGame();
-				if (gameState.getActivePlayer().equals(aiId.toString())) {
-					if (gameState.getPhase() == Types.Phase.REDRAW) {
-						return builder.setKeep(Keep.newBuilder().build()).build();
-					}
+            case UPDATEGAMESTATE:
+                ClientGameMessage.Builder builder = ClientGameMessage.newBuilder();
+                gameState = message.getUpdateGameState().getGame();
+                if (gameState.getActivePlayer().equals(aiId.toString())) {
+                    if (gameState.getPhase() == Types.Phase.REDRAW) {
+                        return builder.setKeep(Keep.newBuilder().build()).build();
+                    }
 
-					if (gameState.getCanStudyCount() > 0) {
-						return builder.setStudyCard(
-								StudyCard.newBuilder()
-										.setCardID(gameState.getCanStudy(
-												getRandomInt(gameState.getCanStudyCount())))
-										.build()).build();
-					}
+                    if (gameState.getCanStudyCount() > 0) {
+                        return builder.setStudyCard(
+                                StudyCard.newBuilder()
+                                        .setCardID(gameState.getCanStudy(
+                                                getRandomInt(gameState.getCanStudyCount())))
+                                        .build()).build();
+                    }
 
-					if (gameState.getCanPlayCount() > 0) {
-						return builder.setPlayCard(
-								PlayCard.newBuilder()
-										.setCardID(gameState.getCanPlay(
-												getRandomInt(gameState.getCanPlayCount())))
-										.build()).build();
-					}
+                    if (gameState.getCanPlayCount() > 0) {
+                        return builder.setPlayCard(
+                                PlayCard.newBuilder()
+                                        .setCardID(gameState.getCanPlay(
+                                                getRandomInt(gameState.getCanPlayCount())))
+                                        .build()).build();
+                    }
 
-					if (gameState.getCanActivateCount() > 0) {
-						if (ThreadLocalRandom.current().nextBoolean()) {
-							return builder.setActivateCard(
-									ActivateCard.newBuilder()
-											.setCardID(gameState.getCanActivate(
-													getRandomInt(gameState.getCanActivateCount())))
-											.build()).build();
-						} else {
-							return builder.setPass(Pass.newBuilder()).build();
-						}
-					}
-					return builder.setPass(Pass.newBuilder()).build();
-				}
-				return null;
+                    if (gameState.getCanActivateCount() > 0) {
+                        if (ThreadLocalRandom.current().nextBoolean()) {
+                            return builder.setActivateCard(
+                                    ActivateCard.newBuilder()
+                                            .setCardID(gameState.getCanActivate(
+                                                    getRandomInt(gameState.getCanActivateCount())))
+                                            .build()).build();
+                        } else {
+                            return builder.setPass(Pass.newBuilder()).build();
+                        }
+                    }
+                    return builder.setPass(Pass.newBuilder()).build();
+                }
+                return null;
 
-			case GAMEEND:
-				return null;
+            case GAMEEND:
+                return null;
 
-			default:
-				System.out.println("Unhandled message type in AI:\n" + message);
-				return null;
-		}
-	}
+            default:
+                System.out.println("Unhandled message type in AI:\n" + message);
+                return null;
+        }
+    }
 
-	public static int getRandomInt (int maxExclusive) {
-		return ThreadLocalRandom.current().nextInt(0, maxExclusive);
-	}
+    public static int getRandomInt(int maxExclusive) {
+        return ThreadLocalRandom.current().nextInt(0, maxExclusive);
+    }
 }

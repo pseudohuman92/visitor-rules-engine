@@ -24,24 +24,24 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class GY03 extends Unit {
 
-	public GY03 (Game game, UUID owner) {
-		super(game, "GY03",
-				6, new CounterMap(YELLOW, 2).add(GREEN, 2),
-				"When {~} enters the battlefield, create a 5/5 green Wurm with trample.",
-				5, 5,
-				owner, Combat.CombatAbility.Trample);
+    public GY03(Game game, UUID owner) {
+        super(game, "GY03",
+                6, new CounterMap(YELLOW, 2).add(GREEN, 2),
+                "When {~} enters the battlefield, create a 5/5 green Wurm with trample.",
+                5, 5,
+                owner, Combat.CombatAbility.Trample);
 
-		addEnterPlayEffectOnStack(null, "When {~} enters the battlefield, create a 5/5 green Wurm with trample.",
-				() -> {
-					UnitToken.Wurm_5_5(game, controller).resolve();
-				});
-		triggering.addEventChecker(new EventChecker(game, this,
-				event ->
-								game.addTurnlyAttackAndHealth(id,
-										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)),
-										game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady))))
-				.addTypeChecker(Event.EventType.Attack)
-				.addCardListChecker(cardlist -> cardlist.contains(this))
-				.createAbility("Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control."));
-	}
+        addEnterPlayEffectOnStack(null, "When {~} enters the battlefield, create a 5/5 green Wurm with trample.",
+                () -> {
+                    UnitToken.Wurm_5_5(game, controller).resolve();
+                });
+        triggering.addEventChecker(new EventChecker(game, this,
+                event ->
+                        game.addTurnlyAttackAndHealth(id,
+                                game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady)),
+                                game.countInZone(controller, Game.Zone.Play, Predicates.and(Predicates::isUnit, Predicates::isReady))))
+                .addTypeChecker(Event.EventType.Attack)
+                .addCardListChecker(cardlist -> cardlist.contains(this))
+                .createAbility("Whenever {~} attacks, it gets +1/+1 until end of turn for each ready unit you control."));
+    }
 }

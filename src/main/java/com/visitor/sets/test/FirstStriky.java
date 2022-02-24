@@ -18,11 +18,11 @@ import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
  */
 public class FirstStriky extends Unit {
 
-	public FirstStriky (Game game, UUID owner) {
-		super(game, "First Striky",
-				0, new CounterMap(),
-				"",
-				3, 1,
-				owner, FirstStrike);
-	}
+    public FirstStriky(Game game, UUID owner) {
+        super(game, "First Striky",
+                0, new CounterMap(),
+                "",
+                3, 1,
+                owner, FirstStrike);
+    }
 }
