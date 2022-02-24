@@ -1,11 +1,9 @@
 package com.visitor.helpers;
 
 import com.visitor.game.Card;
-import com.visitor.game.Deck;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
@@ -16,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
 
 import static java.lang.Class.forName;
 import static java.util.logging.Level.SEVERE;

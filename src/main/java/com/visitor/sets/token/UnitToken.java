@@ -2,7 +2,7 @@ package com.visitor.sets.token;
 
 import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
 

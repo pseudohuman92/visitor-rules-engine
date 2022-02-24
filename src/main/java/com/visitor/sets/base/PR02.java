@@ -1,12 +1,12 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Ritual;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;
 
-import static com.visitor.game.Game.Zone.Discard_Pile;
+import static com.visitor.game.parts.GameBasePart.Zone.Discard_Pile;
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 public class PR02 extends Ritual {

@@ -2,7 +2,7 @@ package com.visitor.helpers.containers;
 
 import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;

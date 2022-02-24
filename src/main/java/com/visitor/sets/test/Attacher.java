@@ -6,14 +6,11 @@
 package com.visitor.sets.test;
 
 import com.visitor.card.types.Attachment;
-import com.visitor.card.types.Unit;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
-
-import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 
 /**
  * @author pseudo

@@ -3,7 +3,6 @@ package com.visitor.db;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class MetricsDb {

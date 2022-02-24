@@ -1,22 +1,18 @@
 package com.visitor.game;
 
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
 import com.visitor.protocol.Types;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import static java.lang.Class.forName;
 import static java.lang.Integer.parseInt;
-import static java.util.logging.Level.SEVERE;
-import static java.util.logging.Logger.getLogger;
 
 /**
  * @author pseudo

@@ -1,13 +1,12 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Cantrip;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.helpers.Predicates.isUnit;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 public class YC03 extends Cantrip {

@@ -1,6 +1,7 @@
 package com.visitor.server;
 
 import com.visitor.protocol.ServerGameMessages;
+
 import javax.websocket.EncodeException;
 import java.io.IOException;
 import java.util.UUID;

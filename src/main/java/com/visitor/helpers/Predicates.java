@@ -8,7 +8,6 @@ package com.visitor.helpers;
 import com.visitor.game.Card;
 import com.visitor.game.Player;
 import com.visitor.protocol.Types;
-import com.visitor.sets.base.GrandOrator;
 
 import java.util.UUID;
 import java.util.function.Predicate;

@@ -5,14 +5,9 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.Card;
-import com.visitor.game.Game;
-import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.game.parts.Game;
 
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;

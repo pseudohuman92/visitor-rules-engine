@@ -5,7 +5,7 @@ package com.visitor.sets.base;/*
  */
 
 import com.visitor.card.types.Tome;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;

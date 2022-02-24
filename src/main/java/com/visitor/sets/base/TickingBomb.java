@@ -8,7 +8,7 @@ package com.visitor.sets.base;
 
 import com.visitor.card.types.Asset;
 import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types.Counter;

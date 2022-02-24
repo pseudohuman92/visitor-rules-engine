@@ -6,13 +6,12 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Asset;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
 
 import java.util.UUID;
+
 import static com.visitor.protocol.Types.Knowledge.PURPLE;
 
 /**

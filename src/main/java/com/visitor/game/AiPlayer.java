@@ -1,14 +1,11 @@
 package com.visitor.game;
 
-import com.visitor.game.Game;
-import com.visitor.game.Player;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.protocol.ClientGameMessages.*;
 import com.visitor.protocol.ServerGameMessages.*;
 import com.visitor.protocol.Types;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 

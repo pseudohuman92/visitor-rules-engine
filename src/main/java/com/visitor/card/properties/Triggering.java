@@ -8,10 +8,8 @@ package com.visitor.card.properties;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
-
-import java.util.function.Consumer;
 
 /**
  * Interface for cards that has a triggering effect.

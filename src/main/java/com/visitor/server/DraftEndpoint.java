@@ -1,23 +1,16 @@
 package com.visitor.server;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.visitor.protocol.ClientGameMessages.*;
-import com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase;
+import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
-import com.visitor.protocol.Types;
-import com.visitor.protocol.Types.AttackerAssignment;
-import com.visitor.protocol.Types.BlockerAssignment;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
+import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.PICKCARDRESPONSE;
 import static com.visitor.server.GeneralEndpoint.gameServer;
 import static java.lang.System.out;
 import static java.util.UUID.fromString;

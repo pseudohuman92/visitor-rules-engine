@@ -1,6 +1,6 @@
 package com.visitor.card.types;
 
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types.Knowledge;
 

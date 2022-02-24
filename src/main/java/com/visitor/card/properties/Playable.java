@@ -1,8 +1,8 @@
 package com.visitor.card.properties;
 
 import com.visitor.game.Card;
-import com.visitor.game.Game;
 import com.visitor.game.Player;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Predicates;
 
@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.visitor.game.Game.Zone.Void;
-import static com.visitor.game.Game.Zone.*;
+import static com.visitor.game.parts.GameBasePart.Zone.Void;
+import static com.visitor.game.parts.GameBasePart.Zone.*;
 import static com.visitor.helpers.Predicates.and;
 
 public class Playable {

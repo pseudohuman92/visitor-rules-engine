@@ -2,6 +2,7 @@ package com.visitor.game;
 
 import com.visitor.card.properties.*;
 import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.visitor.game.Game.Zone.*;
+import static com.visitor.game.parts.GameBasePart.Zone.*;
 import static java.util.UUID.randomUUID;
 
 /**
@@ -45,7 +46,7 @@ public abstract class Card implements Serializable {
 
 	protected Activatable activatable;
 	protected Triggering triggering;
-	protected Combat combat;
+	public Combat combat;
 	protected Playable playable;
 	protected Studiable studiable;
 	protected Attachable attachable;
@@ -422,7 +423,7 @@ public abstract class Card implements Serializable {
 
 	public void setDonating()
 	{
-		addEnterPlayEffect(null, ()-> game.donate(id, game.getOpponentId(controller), Game.Zone.Play));
+		addEnterPlayEffect(null, ()-> game.donate(id, game.getOpponentId(controller), Play));
 	}
 
 	public void addAttachment (UUID attachmentId) {

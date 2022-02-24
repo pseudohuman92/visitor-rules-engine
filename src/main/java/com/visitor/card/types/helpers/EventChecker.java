@@ -2,7 +2,7 @@ package com.visitor.card.types.helpers;
 
 import com.visitor.game.Card;
 import com.visitor.game.Event;
-import com.visitor.game.Game;
+import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 
 import java.util.function.Consumer;
