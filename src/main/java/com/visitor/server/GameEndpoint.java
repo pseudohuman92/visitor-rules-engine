@@ -14,6 +14,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
@@ -87,7 +88,7 @@ public class GameEndpoint implements GameEndpointInterface {
         checkResponseType(message);
         //out.println("Sent Message");
         //out.println(message);
-        session.getBasicRemote().sendObject(message.toByteArray());
+        session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
     }
 
     public void close() {
@@ -99,7 +100,7 @@ public class GameEndpoint implements GameEndpointInterface {
         if (lastMessage != null) {
             //out.println("Resending last message to "+playerId+" "+lastMessage);
             checkResponseType(lastMessage);
-            session.getBasicRemote().sendObject(lastMessage.toByteArray());
+            session.getBasicRemote().sendBinary(ByteBuffer.wrap(lastMessage.toByteArray()));
         }
     }
 

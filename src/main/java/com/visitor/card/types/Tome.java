@@ -26,18 +26,18 @@ public abstract class Tome extends Card {
     public Tome(Game game, String name, String text, UUID owner, Supplier<CounterMap<Knowledge>> getKnowledgeType) {
         this(game, name, text, owner);
 
-        studiable.setGetKnowledgeType(getKnowledgeType);
+        studiable.setGetKnowledgeTypes(getKnowledgeType);
     }
 
     public Tome(Game game, String name, String text, UUID owner, CounterMap<Knowledge> studyKnowledgeType) {
         this(game, name, text, owner);
 
-        studiable.setGetKnowledgeType(() -> studyKnowledgeType);
+        studiable.setGetKnowledgeTypes(() -> studyKnowledgeType);
     }
 
 
     @Override
-    public Types.Card.Builder toCardMessage() {
+    public Types.CardP.Builder toCardMessage() {
         return super.toCardMessage()
                 .setCost("");
     }

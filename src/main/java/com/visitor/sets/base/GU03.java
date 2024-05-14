@@ -6,7 +6,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
@@ -29,7 +29,7 @@ public class GU03 extends Unit {
 
         combat.addDamageEffect((targetId, damage) -> {
             if (game.isPlayer(targetId) && !controller.equals(targetId)) {
-                game.addToStack(new AbilityCard(game, this, "Whenever {~} deals damage to an opponent, draw a card.",
+                game.addToStack(new Ability(game, this, "Whenever {~} deals damage to an opponent, draw a card.",
                         () -> game.draw(controller, 1)));
             }
         });

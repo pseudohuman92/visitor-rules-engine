@@ -21,7 +21,7 @@ public class Triggering {
     private final Card card;
     private final Game game;
 
-    private Arraylist<EventChecker> eventCheckerList;
+    private final Arraylist<EventChecker> eventCheckerList;
 
 
     public Triggering(Game game, Card card) {

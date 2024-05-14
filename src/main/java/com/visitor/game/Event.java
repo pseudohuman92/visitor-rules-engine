@@ -16,7 +16,6 @@ import static com.visitor.game.Event.EventType.*;
  */
 public class Event {
 
-
     public EventType type;
     public Arraylist<Object> data;
 

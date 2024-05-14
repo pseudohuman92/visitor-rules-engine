@@ -20,7 +20,7 @@ public class PR07 extends Ritual {
                 owner);
 
         playable
-                .addCanPlayAdditional(() ->
+                .addPlayAdditionalConditions(() ->
                         game.hasIn(controller, Play, Predicates::isUnit, 1)
                 )
                 .addBeforePlay(() -> {

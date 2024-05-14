@@ -5,12 +5,13 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.protocol.Types;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -25,8 +26,8 @@ public class Activatable {
     private final Card card;
     private final Game game;
 
-    private Arraylist<ActivatedAbility> abilityList;
-    private Arraylist<ActivatedAbility> turnlyAbilityList;
+    private final Arraylist<ActivatedAbility> abilityList;
+    private final Arraylist<ActivatedAbility> turnlyAbilityList;
 
 
     // Constructors
@@ -68,7 +69,7 @@ public class Activatable {
         if (abilities.size() == 1) {
             abilities.get(0).activate();
         } else if (abilities.size() > 1) {
-            Arraylist<Card> abilityCards = new Arraylist<>(abilities.transform(aa -> (Card) new AbilityCard(game, card, aa)));
+            Arraylist<Card> abilityCards = new Arraylist<>(abilities.transform(aa -> (Card) new Ability(game, card, aa)));
             UUID chosenAbility = game.selectFromList(card.controller, abilityCards, Predicates::any, 1, false, "Choose an ability to activate.").get(0);
             abilities.forEach(aa -> {
                 if (aa.id.equals(chosenAbility)) {
@@ -90,5 +91,20 @@ public class Activatable {
 
     public void endTurn() {
         turnlyAbilityList.clear();
+    }
+
+    public Arraylist<Types.Targeting> getAbilityBuilders() {
+        Arraylist<Types.Targeting> builders = new Arraylist<>();
+        abilityList.forEach(a -> {
+            if (a.needsTargeting()) {
+                builders.add(a.getTargetingBuilder().build());
+            }
+        });
+        turnlyAbilityList.forEach(a -> {
+            if (a.needsTargeting()) {
+                builders.add(a.getTargetingBuilder().build());
+            }
+        });
+        return builders;
     }
 }

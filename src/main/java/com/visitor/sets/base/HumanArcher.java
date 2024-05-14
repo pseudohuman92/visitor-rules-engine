@@ -38,7 +38,7 @@ public class HumanArcher extends Unit {
         activatable.addActivatedAbility(
                 new ActivatedAbility(game, this, 3, "{3}, {Use}, Sacrifice {~}, {~} deals 4 damage to target unit.")
                         .addCanActivateAdditional(() -> game.hasIn(controller, Game.Zone.Both_Play, and(Predicates::isUnit, c -> !c.id.equals(id)), 1))
-                        .setTargeting(Game.Zone.Both_Play, and(Predicates::isUnit, c -> !c.id.equals(id)), 1, false,
+                        .setTargeting(Game.Zone.Both_Play, and(Predicates::isUnit, c -> !c.id.equals(id)), 1, 1,
                                 targetId -> game.dealDamage(id, targetId, 4))
                         .setDepleting()
                         .setSelfSacrificing()

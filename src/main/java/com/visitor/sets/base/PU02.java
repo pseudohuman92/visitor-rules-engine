@@ -6,7 +6,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -34,7 +34,7 @@ public class PU02 extends Unit {
         combat.addDamageEffect(
                 (targetId, damage) -> {
                     if (game.isPlayer(targetId)) {
-                        game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, you may play target \n" +
+                        game.addToStack(new Ability(game, this, "Whenever {~} deals combat damage to a player, you may play target \n" +
                                 "spell from that player’s discard pile without paying its cost. \n" +
                                 "Purge the spell after it resolves.",
                                 () -> {

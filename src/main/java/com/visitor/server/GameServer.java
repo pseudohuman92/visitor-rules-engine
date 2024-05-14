@@ -18,6 +18,7 @@ import javax.websocket.EncodeException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static com.visitor.protocol.Types.GameType.AI_BO1_CONSTRUCTED;
 import static java.util.logging.Level.SEVERE;
@@ -47,16 +48,16 @@ public class GameServer {
         P2DraftGameQueue = new Hashmap<>();
     }
 
-    private void takeGameAction(UUID gameID, Runnable r) {
-        games.get(gameID).stopActiveClock();
-        r.run();
-        games.get(gameID).updatePlayers();
-        games.get(gameID).startActiveClock();
+    private void takeGameAction(UUID gameID, Consumer<Game> r) {
+        Game game = games.get(gameID);
+        game.stopActiveClock();
+        r.accept(game);
+        game.updatePlayers();
+        game.startActiveClock();
     }
 
     void activateCard(UUID gameID, UUID playerId, UUID cardID) {
-        takeGameAction(gameID, () ->
-                games.get(gameID).activateCard(playerId, cardID));
+        takeGameAction(gameID, game -> game.activateCard(playerId, cardID));
     }
 
     void concede(UUID gameID, UUID playerId) {
@@ -64,28 +65,23 @@ public class GameServer {
     }
 
     void redraw(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, () ->
-                games.get(gameID).redraw(playerId));
+        takeGameAction(gameID, game -> game.redraw(playerId));
     }
 
     void keep(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, () ->
-                games.get(gameID).keep(playerId));
+        takeGameAction(gameID, game -> game.keep(playerId));
     }
 
     void pass(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, () ->
-                games.get(gameID).pass(playerId));
+        takeGameAction(gameID, game -> game.pass(playerId));
     }
 
     void studyCard(UUID gameID, UUID playerId, UUID cardID) {
-        takeGameAction(gameID, () ->
-                games.get(gameID).studyCard(playerId, cardID, true));
+        takeGameAction(gameID, game -> game.studyCard(playerId, cardID, true));
     }
 
     void playCard(UUID gameID, UUID playerId, UUID cardID) {
-        takeGameAction(gameID, () ->
-                games.get(gameID).playCard(playerId, cardID));
+        takeGameAction(gameID, game -> game.playCard(playerId, cardID));
     }
 
     synchronized ServerGameMessage getLastMessage(UUID gameID, UUID playerId) {

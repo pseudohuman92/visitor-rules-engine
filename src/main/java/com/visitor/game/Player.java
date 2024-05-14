@@ -122,8 +122,7 @@ public class Player {
         for (Card card : list) {
             if (card == null) {
                 System.out.println("Card is NULL!");
-            }
-            if (card.id.equals(cardID)) {
+            } else if (card.id.equals(cardID)) {
                 list.remove(card);
                 return card;
             }

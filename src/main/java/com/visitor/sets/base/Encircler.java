@@ -28,7 +28,7 @@ public class Encircler extends Unit {
                 2, 3,
                 owner, Reach);
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Destroy target unit. That unit's controller gains control of {~}.")
-                .setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
+                .setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, 1,
                         (targetId) -> {
                             UUID newController = game.getCard(targetId).controller;
                             game.destroy(id, targetId);

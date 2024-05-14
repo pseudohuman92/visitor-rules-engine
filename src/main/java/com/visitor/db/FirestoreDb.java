@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class FirestoreDb {
 
-    private Firestore db;
+    private final Firestore db;
 
     public FirestoreDb(String serviceAccountPath, String projectId) throws Exception {
         InputStream serviceAccount = new FileInputStream(serviceAccountPath);

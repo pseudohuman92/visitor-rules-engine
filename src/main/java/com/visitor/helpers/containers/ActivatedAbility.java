@@ -1,10 +1,14 @@
 package com.visitor.helpers.containers;
 
-import com.visitor.card.types.helpers.AbilityCard;
+import com.google.protobuf.GeneratedMessage;
+import com.visitor.card.properties.Targeting;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Card;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 
 import java.util.Arrays;
@@ -15,21 +19,23 @@ import java.util.function.Supplier;
 
 public class ActivatedAbility {
 
-    private Game game;
+    private final Game game;
     public final UUID id;
-    private Card card;
+    private final Card card;
     private int cost;
     private boolean depleting;
     private boolean slow;
     private boolean selfSacrificing;
     private boolean purging;
-    private String text;
+    private final String text;
     private CounterMap<Types.Knowledge> knowledgeRequirement;
-    private Arraylist<Supplier<Boolean>> canActivateAdditional;
-    private Arraylist<Runnable> beforeActivate;
+    private final Arraylist<Supplier<Boolean>> canActivateAdditional;
+    private final Arraylist<Runnable> beforeActivate;
     private Runnable activate;
 
     private Arraylist<UUID> targets;
+
+    private Targeting targeting;
 
 
     public ActivatedAbility(Game game, Card card, int cost, String text) {
@@ -48,6 +54,7 @@ public class ActivatedAbility {
         this.activate = () -> {
         };
         this.targets = new Arraylist<>();
+        this.targeting = null;
     }
 
     public ActivatedAbility(Game game, Card card, int cost, String text, Supplier<Boolean> canActivateAdditional, Runnable beforeActivate, Runnable activate) {
@@ -99,7 +106,7 @@ public class ActivatedAbility {
         if (purging) {
             game.purge(card.id);
         }
-        game.addToStack(new AbilityCard(game, card, this));
+        game.addToStack(new Ability(game, card, this));
     }
 
     public ActivatedAbility setSlow() {
@@ -141,26 +148,28 @@ public class ActivatedAbility {
 
     // TODO: Refactor cards to use this.
     // Overrides targets
-    public ActivatedAbility setTargeting(Game.Zone zone, Predicate<Card> validCards, int count, boolean upTo, Consumer<UUID> targetIdConsumer) {
-        if (!upTo) {
-            addCanActivateAdditional(() -> game.hasIn(card.controller, zone, validCards, count));
+    public ActivatedAbility setTargeting(Game.Zone zone, Predicate<Card> validCards, int minCount, int maxCount, Consumer<UUID> targetIdConsumer) {
+        if (minCount >= maxCount) {
+            addCanActivateAdditional(() -> game.hasIn(card.controller, zone, validCards, maxCount));
         }
-        addBeforeActivate(() -> targets = game.selectFromZone(card.controller, zone, validCards, count, upTo, ""));
+        addBeforeActivate(() -> targets = game.selectFromZone(card.controller, zone, validCards, maxCount, minCount < maxCount, ""));
         setActivate(() -> targets.forEach(targetIdConsumer::accept));
+        targeting = new Targeting(game, minCount, maxCount, validCards, null, null);
         return this;
     }
 
     // Overrides targets
-    public ActivatedAbility setTargetingForDamage(int count, boolean upTo, Consumer<UUID> targetIdConsumer) {
-        addBeforeActivate(() -> targets = game.selectDamageTargets(card.controller, count, upTo, ""));
+    public ActivatedAbility setTargetingForDamage(int minCount, int maxCount, Consumer<UUID> targetIdConsumer) {
+        addBeforeActivate(() -> targets = game.selectDamageTargets(card.controller, maxCount, minCount < maxCount, ""));
         setActivate(() -> targets.forEach(targetIdConsumer::accept));
+        targeting = new Targeting(game, minCount, maxCount, Predicates.and((c -> game.isIn(null, Base.Zone.Both_Play, c.id)), Predicates::isDamageable), Predicates::any, "");
         return this;
     }
 
     // Overrides targets
-    public ActivatedAbility setTargetingForDamageDuringResolve(int count, boolean upTo, Consumer<UUID> targetIdConsumer) {
+    public ActivatedAbility setTargetingForDamageDuringResolve(int minCount, int maxCount, Consumer<UUID> targetIdConsumer) {
         setActivate(() -> {
-            targets = game.selectDamageTargets(card.controller, count, upTo, "");
+            targets = game.selectDamageTargets(card.controller, maxCount, minCount < maxCount, "");
             targets.forEach(targetIdConsumer::accept);
         });
         return this;
@@ -169,24 +178,25 @@ public class ActivatedAbility {
 
     // Overrides targets
     public ActivatedAbility setTargetingForDamage(Consumer<UUID> targetIdConsumer) {
-        return setTargetingForDamage(1, false, targetIdConsumer);
+        return setTargetingForDamage(1, 1, targetIdConsumer);
     }
 
     // Overrides targets
     public ActivatedAbility setTargetingForDamageDuringResolve(Consumer<UUID> targetIdConsumer) {
-        return setTargetingForDamageDuringResolve(1, false, targetIdConsumer);
+        return setTargetingForDamageDuringResolve(1, 1, targetIdConsumer);
     }
 
     // Overrides targets
-    public ActivatedAbility setTargetingForSacrifice(Game.Zone zone, Predicate<Card> validCards, int count, boolean upTo, Consumer<UUID> targetIdConsumer) {
-        if (!upTo) {
-            addCanActivateAdditional(() -> game.hasIn(card.controller, zone, validCards, count));
+    public ActivatedAbility setTargetingForSacrifice(Game.Zone zone, Predicate<Card> validCards, int minCount, int maxCount, Consumer<UUID> targetIdConsumer) {
+        if (minCount >= maxCount) {
+            addCanActivateAdditional(() -> game.hasIn(card.controller, zone, validCards, maxCount));
         }
         addBeforeActivate(() -> {
-            targets = game.selectFromZone(card.controller, zone, validCards, count, upTo, "Choose cards to sacrifice.");
+            targets = game.selectFromZone(card.controller, zone, validCards, maxCount, minCount < maxCount, "Choose cards to sacrifice.");
             targets.forEach(targetId -> game.sacrifice(targetId));
         });
         setActivate(() -> targets.forEach(targetIdConsumer::accept));
+        targeting = new Targeting(game, minCount, maxCount, validCards, null, "Choose cards to sacrifice.");
         return this;
     }
 
@@ -208,5 +218,9 @@ public class ActivatedAbility {
     public ActivatedAbility setPurging() {
         this.purging = true;
         return this;
+    }
+
+    public boolean needsTargeting(){return targeting != null; }
+    public Types.Targeting.Builder getTargetingBuilder(){ return targeting.toTargetingBuilder();
     }
 }

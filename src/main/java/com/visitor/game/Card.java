@@ -1,7 +1,7 @@
 package com.visitor.game;
 
 import com.visitor.card.properties.*;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -398,7 +398,7 @@ public abstract class Card implements Serializable {
     }
 
     public void addEnterPlayEffectOnStack(CounterMap<Types.Knowledge> knowledge, String text, Runnable effect) {
-        addEnterPlayEffect(knowledge, () -> game.addToStack(new AbilityCard(game, this, text, effect)));
+        addEnterPlayEffect(knowledge, () -> game.addToStack(new Ability(game, this, text, effect)));
     }
 
     public void addLeavePlayEffect(CounterMap<Types.Knowledge> knowledge, Runnable effect) {
@@ -410,7 +410,7 @@ public abstract class Card implements Serializable {
     }
 
     public void addLeavePlayEffectOnStack(CounterMap<Types.Knowledge> knowledge, String text, Runnable effect) {
-        addLeavePlayEffect(knowledge, () -> game.addToStack(new AbilityCard(game, this, text, effect)));
+        addLeavePlayEffect(knowledge, () -> game.addToStack(new Ability(game, this, text, effect)));
     }
 
     public boolean isPlayable() {
@@ -455,16 +455,21 @@ public abstract class Card implements Serializable {
         });
     }
 
-    public Types.Card.Builder toCardMessage() {
+    public Types.CardP.Builder toCardMessage() {
         String packageName = this.getClass().getPackageName();
         String set = packageName.substring(packageName.lastIndexOf(".") + 1);
-        Types.Card.Builder builder = Types.Card.newBuilder()
+        Types.CardP.Builder builder = Types.CardP.newBuilder()
                 .setId(id.toString())
                 .setSet(set)
                 .setName(name)
                 .setDepleted(depleted)
                 .setDescription(text)
                 .setLoyalty(-1)
+                .setCanPlay(canPlay(true))
+                .setCanStudy(canStudy())
+                .setCanActivate(canActivate())
+                .setCanAttack(canAttack())
+                .setCanBlock(canBlock())
                 .addAllTypes(types.transformToStringList())
                 .addAllSubtypes(subtypes.transformToStringList())
                 .addAllTargets(targets.transformToStringList())
@@ -478,8 +483,16 @@ public abstract class Card implements Serializable {
                 .setKnowledge(k)
                 .setCount(i).build()));
 
-        if (playable != null)
+        if (playable != null) {
             builder.setCost(playable.getCost() + "");
+            if (playable.needsTargets()){
+                builder.setPlayTargets(playable.getTargetingBuilder());
+            }
+
+        }
+        if (activatable != null){
+            builder.addAllActivateTargets(activatable.getAbilityBuilders());
+        }
 
         if (combat != null) {
             builder.setCombat(combat.toCombatMessage());

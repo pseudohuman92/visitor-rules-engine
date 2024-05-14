@@ -11,7 +11,6 @@ public class Putters extends Extractors {
         getPlayer(card.controller).putToBottomOfDeck(card);
     }
 
-
     public void putToTopOfDeck(UUID cardId) {
         com.visitor.game.Card card = extractCard(cardId);
         getPlayer(card.controller).putToBottomOfDeck(card);

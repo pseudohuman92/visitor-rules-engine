@@ -110,7 +110,8 @@ public class Getters extends Base {
             if (c.id.equals(cardId))
                 card.add(c);
         });
-        return card.size() > 0 ? card.get(0) : null;
+        assert (card.size() < 2);
+        return card.getOrDefault(0, null);
     }
 
     public Arraylist<Card> getAllFrom(UUID playerId, Game.Zone zone, Predicate<Card> pred) {
@@ -121,6 +122,50 @@ public class Getters extends Base {
             }
         });
         return cards;
+    }
+
+    public Arraylist<Card> getAllFrom(Game.Zone zone, Predicate<Card> pred) {
+        return getAllFrom(turnPlayer, zone, pred).putAllIn(getAllFrom(getOpponentId(turnPlayer), zone, pred));
+    }
+
+    Arraylist<Card> getAllZones(UUID playerId) {
+            Arraylist<Card> cards = new Arraylist<>();
+            return cards.putAllIn(
+                getPlayer(playerId).deck).putAllIn(
+                getPlayer(playerId).hand).putAllIn(
+                getPlayer(playerId).playArea).putAllIn(
+                getPlayer(playerId).discardPile).putAllIn(
+                getPlayer(playerId).voidPile);
+    }
+
+    public Arraylist<Card> getAll(Predicate<Card> pred) {
+        Arraylist<Card> cards = new Arraylist<>();
+        getAllZones(turnPlayer).forEach(c -> {
+            if (pred.test(c)) {
+                cards.add(c);
+            }
+        });
+        getAllZones(getOpponentId(turnPlayer)).forEach(c -> {
+            if (pred.test(c)) {
+                cards.add(c);
+            }
+        });
+        return cards;
+    }
+
+    public Arraylist<UUID> getAllIds(Predicate<Card> pred) {
+        return new Arraylist<>(getAll(pred).transform(c -> c.id));
+    }
+
+    public Arraylist<UUID> getAllIdsPlayers(Predicate<Player> pred) {
+        Arraylist<UUID> players = new Arraylist<>();
+        if (pred.test(getPlayer(turnPlayer))) {
+            players.add(getPlayer(turnPlayer).id);
+        }
+        if (pred.test(getPlayer(getOpponentId(turnPlayer)))) {
+            players.add(getPlayer(getOpponentId(turnPlayer)).id);
+        }
+        return players;
     }
 
     Arraylist<Card> getAll(List<UUID> list) {

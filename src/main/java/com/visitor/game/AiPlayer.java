@@ -22,12 +22,7 @@ public class AiPlayer extends Player {
             "3;base.Porcupine",
             "3;base.Seagull",
             "3;base.Sparrow",
-            "3;base.Turtle",
-            "3;base.UR01",
-            "3;base.UR02",
-            "3;base.UR03",
-            "3;base.UR04",
-            "3;base.UR05"};
+            "3;base.Turtle"};
 
     public AiPlayer(Game game) {
         super(game, "AI Player", decklist);
@@ -42,7 +37,7 @@ public class AiPlayer extends Player {
 
             case ORDERCARDS:
                 OrderCards orderCards = message.getOrderCards();
-                Arraylist<Types.Card> orderedCards = new Arraylist<>(orderCards.getCardsToOrderList());
+                Arraylist<Types.CardP> orderedCards = new Arraylist<>(orderCards.getCardsToOrderList());
                 Arraylist<String> orderedIds = new Arraylist<>();
 
                 while (!orderedCards.isEmpty()) {
@@ -78,7 +73,7 @@ public class AiPlayer extends Player {
 
             case ASSIGNDAMAGE:
                 AssignDamage assignDamage = message.getAssignDamage();
-                Types.GameState gameState = assignDamage.getGame();
+                Types.GameStateP gameState = assignDamage.getGame();
 
                 Arraylist<Types.DamageAssignment> damageAssignments = new Arraylist<>();
                 int totalDamage = assignDamage.getTotalDamage();
@@ -150,9 +145,9 @@ public class AiPlayer extends Player {
                                         getRandomInt(selectKnowledge.getKnowledgeListCount())))
                                 .build()).build();
 
-            case UPDATEGAMESTATE:
+            case UPDATEGAMESTATEP:
                 ClientGameMessage.Builder builder = ClientGameMessage.newBuilder();
-                gameState = message.getUpdateGameState().getGame();
+                gameState = message.getUpdateGameStateP().getGame();
                 if (gameState.getActivePlayer().equals(aiId.toString())) {
                     if (gameState.getPhase() == Types.Phase.REDRAW) {
                         return builder.setKeep(Keep.newBuilder().build()).build();

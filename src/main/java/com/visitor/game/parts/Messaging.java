@@ -1,5 +1,6 @@
 package com.visitor.game.parts;
 
+import com.google.protobuf.ByteString;
 import com.visitor.game.Card;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -52,7 +53,7 @@ public class Messaging extends Connections {
                 .setMessageType(type)
                 .setSelectionCount(count)
                 .setUpTo(upTo)
-                .setMessage(message)
+                .setMessageP(message)
                 .setGame(toGameState(playerId, true));
         try {
             send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectFrom(b));
@@ -245,13 +246,13 @@ public class Messaging extends Connections {
 
     public final void updatePlayers() {
         players.forEach((name, player) -> send(name, ServerGameMessages.ServerGameMessage.newBuilder()
-                .setUpdateGameState(ServerGameMessages.UpdateGameState.newBuilder()
+                .setUpdateGameStateP(ServerGameMessages.UpdateGameStateP.newBuilder()
                         .setGame(toGameState(name, false)))));
     }
 
-    public Types.GameState.Builder toGameState(UUID playerId, boolean noAction) {
-        Types.GameState.Builder b =
-                Types.GameState.newBuilder()
+    public Types.GameStateP.Builder toGameState(UUID playerId, boolean noAction) {
+        Types.GameStateP.Builder b =
+                Types.GameStateP.newBuilder()
                         .setId(id.toString())
                         .setPlayer(getPlayer(playerId).toPlayerMessage(true))
                         .setOpponent(getPlayer(this.getOpponentId(playerId)).toPlayerMessage(false))
@@ -261,6 +262,7 @@ public class Messaging extends Connections {
         for (Card card : stack) {
             b.addStack(card.toCardMessage());
         }
+
 
         for (UUID attacker : attackers) {
             b.addAttackers(attacker.toString());
@@ -272,6 +274,7 @@ public class Messaging extends Connections {
 
         if (noAction)
             return b;
+
 
         players.forEach((s, p) -> {
             if (playerId.equals(s) && isPlayerActive(s)) {
@@ -290,10 +293,12 @@ public class Messaging extends Connections {
                 });
             }
         });
+
+
         return b;
     }
 
-    public Types.GameState.Builder toGameState(String username) {
+    public Types.GameStateP.Builder toGameState(String username) {
         return toGameState(getPlayerId(username), false);
     }
 }

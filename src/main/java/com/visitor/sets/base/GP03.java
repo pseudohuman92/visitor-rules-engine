@@ -7,7 +7,7 @@ package com.visitor.sets.base;
 
 import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
@@ -30,7 +30,7 @@ public class GP03 extends Unit {
 
         combat.addDamageEffect((targetId, damage) -> {
             if (game.isPlayer(targetId) && damage.combat) {
-                game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player, {~} gains +1/+1.",
+                game.addToStack(new Ability(game, this, "Whenever {~} deals combat damage to a player, {~} gains +1/+1.",
                         () -> game.addAttackAndHealth(id, 1, 1)));
             }
         });

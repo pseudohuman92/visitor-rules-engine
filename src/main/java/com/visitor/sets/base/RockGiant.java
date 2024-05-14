@@ -27,7 +27,7 @@ public class RockGiant extends Unit {
                 3, 3,
                 owner, Defender);
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}: {~} fights another target unit.")
-                .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+                .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, 1,
                         targetId -> game.fight(id, targetId)));
     }
 }

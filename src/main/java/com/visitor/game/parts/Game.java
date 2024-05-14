@@ -9,6 +9,7 @@ import static java.lang.System.out;
 
 /**
  * @author pseudo
+ * Inheritence Hierarchy. Class was too big, so I split it into different classes.
  * Base -> Getters -> Extractors -> Putters -> Checkers -> HigherOrder
  * Connections -> Messaging -> Events ->
  * Stack ->  Combat ->  CardDelegators -> PlayerDelegators

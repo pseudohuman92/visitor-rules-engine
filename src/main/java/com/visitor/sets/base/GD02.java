@@ -8,7 +8,7 @@ package com.visitor.sets.base;
 import com.visitor.card.properties.Combat;
 import com.visitor.card.properties.Triggering;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
@@ -38,7 +38,7 @@ public class GD02 extends Unit {
                         event -> {
                             ((Arraylist<Card>) event.data.get(0)).forEach(card -> {
                                 if (card.controller.equals(controller) && card.hasCombatAbility(Combat.CombatAbility.Trample)) {
-                                    game.addToStack(new AbilityCard(game, this, "Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
+                                    game.addToStack(new Ability(game, this, "Whenever a unit you control with trample attacks, it gets +2/+2 until end of turn.",
                                             () -> game.addTurnlyAttackAndHealth(card.id, 2, 2)));
                                 }
 

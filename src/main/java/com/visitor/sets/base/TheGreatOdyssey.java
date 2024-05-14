@@ -15,7 +15,6 @@ public class TheGreatOdyssey extends Ritual {
                 "Return up to 3 target units to their controller's hands.",
                 owner);
 
-        playable
-                .setTargetMultipleUnits(null, 3, true, game::returnToHand, null);
+        playable.setTargetMultipleUnits(null, 0, 3, game::returnToHand, null);
     }
 }

@@ -12,6 +12,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static com.visitor.protocol.ClientGameMessages.ClientGameMessage.PayloadCase.*;
@@ -82,7 +83,7 @@ public class AiEndpoint implements GameEndpointInterface {
         checkResponseType(message);
 
         if (playerId.equals(targetId)) {
-            session.getBasicRemote().sendObject(message.toByteArray());
+            session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
         } else {
             ClientGameMessage aiResponse = AiPlayer.getResponse(message, aiId);
             out.println("[AI Response] " + aiResponse);

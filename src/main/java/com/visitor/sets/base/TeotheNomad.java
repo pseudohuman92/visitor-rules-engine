@@ -29,7 +29,7 @@ public class TeotheNomad extends Unit {
                 3, 2,
                 owner, Flying, Vigilance);
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 7, "{Y}{Y}{Y}{Y}{Y} - {7}: Resurrect target unit.")
-                .setTargeting(Game.Zone.Discard_Pile, Predicates::isUnit, 1, false, targetId -> game.runIfInZone(controller, Game.Zone.Discard_Pile, targetId, () -> game.resurrect(targetId)))
+                .setTargeting(Game.Zone.Discard_Pile, Predicates::isUnit, 1, 1, targetId -> game.runIfInZone(controller, Game.Zone.Discard_Pile, targetId, () -> game.resurrect(targetId)))
                 .setKnowledgeRequirement(new CounterMap<>(YELLOW, 5)));
     }
 

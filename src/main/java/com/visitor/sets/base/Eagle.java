@@ -25,11 +25,11 @@ public class Eagle extends Unit {
     public Eagle(Game game, UUID owner) {
         super(game, "Eagle",
                 5, new CounterMap(BLUE, 3),
-                "{X}, {Use}: {~} becomes X/X",
+                "{X}, {Use}: {-} becomes X/X",
                 4, 4,
                 owner, Flying);
 
-        ActivatedAbility ability = new ActivatedAbility(game, this, 0, "{~} becomes" + x + "/" + x)
+        ActivatedAbility ability = new ActivatedAbility(game, this, 0, "{-} becomes" + x + "/" + x)
                 .setActivate(() -> game.runIfInZone(controller, Game.Zone.Both_Play, id,
                         () -> game.setAttackAndHealth(id, x, x)))
                 .setDepleting();

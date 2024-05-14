@@ -7,8 +7,7 @@ import com.visitor.protocol.Types;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import static com.visitor.protocol.Types.Phase.MAIN_AFTER;
-import static com.visitor.protocol.Types.Phase.MAIN_BEFORE;
+import static com.visitor.protocol.Types.Phase.*;
 
 public class Checkers extends Putters {
 
@@ -35,12 +34,31 @@ public class Checkers extends Putters {
                 && (phase == MAIN_BEFORE || phase == MAIN_AFTER);
     }
 
+    public boolean canPlayFast(UUID playerId) {
+        return activePlayer.equals(playerId)
+                && (phase == MAIN_BEFORE ||
+                phase == ATTACK_PLAY ||
+                phase == BLOCK_PLAY ||
+                phase == MAIN_AFTER);
+    }
+
 
     public boolean canStudy(UUID playerId) {
         return canPlaySlow(playerId)
                 && getPlayer(playerId).numOfStudiesLeft > 0;
     }
 
+    public boolean canAttack(UUID playerId) {
+        return turnPlayer.equals(playerId)
+                && activePlayer.equals(playerId)
+                && (phase == ATTACK);
+    }
+
+    public boolean canBlock(UUID playerId) {
+        return !turnPlayer.equals(playerId)
+                && activePlayer.equals(playerId)
+                && (phase == BLOCK);
+    }
 
     public boolean isPlayerActive(UUID playerId) {
         return activePlayer.equals(playerId);

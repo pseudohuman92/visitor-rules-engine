@@ -6,7 +6,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -31,7 +31,7 @@ public class BladeDervish extends Unit {
         addEnterPlayEffectOnStack(null, "When {~} enters play, it deals 3 damage to target unit.",
                 () -> {
                     UUID damageTarget = game.selectDamageTargetsConditional(controller, Predicates::isUnit, Predicates::none, 1, false, "Choose a unit to damage").get(1);
-                    game.addToStack(new AbilityCard(game, this, "Deal 3 damage.",
+                    game.addToStack(new Ability(game, this, "Deal 3 damage.",
                             () -> game.dealDamage(id, damageTarget, 3), damageTarget));
                 }
         );

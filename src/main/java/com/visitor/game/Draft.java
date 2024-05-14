@@ -32,7 +32,7 @@ public class Draft {
     int roundsCompleted;
     boolean started;
 
-    private Game game = new Game(); //Dummy game
+    private final Game game = new Game(); //Dummy game
 
     private final int TOTAL_ROUNDS = 3;
 
@@ -77,7 +77,7 @@ public class Draft {
         Arraylist<Integer> indexes = new Arraylist<>();
         System.out.println("Class Count " + cardClasses.size());
         while (indexes.size() < count) {
-            int rand = -1;
+            int rand;
             do {
                 rand = (int) (cardClasses.size() * Math.random());
             } while (indexes.contains(rand));
@@ -158,13 +158,13 @@ public class Draft {
     private void pick(UUID playerId, Arraylist<Card> cards) {
         ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
                 .addAllCandidates(cards.transform(c -> c.toCardMessage().build()))
-                .setMessage("Pick a card to draft.").setDraft(toDraftState(playerId, false));
+                .setMessageP("Pick a card to draft.").setDraft(toDraftState(playerId, false));
         send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
     }
 
     private void sendCompleted(UUID playerId) {
         ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
-                .setMessage("Draft Completed.").setDraft(toDraftState(playerId, true));
+                .setMessageP("Draft Completed.").setDraft(toDraftState(playerId, true));
         send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setPickCard(builder));
     }
 

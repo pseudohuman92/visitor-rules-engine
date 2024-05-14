@@ -32,7 +32,7 @@
          <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.16.1</version>
+            <version>4.26.1</version>
           </dependency>
 
         <dependency>
@@ -64,7 +64,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}</protocArtifact>
+                    <protocArtifact>com.google.protobuf:protoc:windows-x86_64:exe:${os.detected.classifier}</protocArtifact>
+                    <protocExecutable>resources/protoc-26.1-win64/bin/protoc.exe</protocExecutable>
                 </configuration>
             </plugin>
             <plugin>

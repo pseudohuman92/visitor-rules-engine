@@ -5,6 +5,7 @@ import com.visitor.game.Player;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Predicates;
+import com.visitor.protocol.Types;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -19,40 +20,42 @@ import static com.visitor.helpers.Predicates.and;
 public class Playable {
 
     public Card card;
-    private Game game;
+    private final Game game;
 
-    private Arraylist<UUID> targets;
+    private final Arraylist<UUID> targets;
 
     private int cost; //Energy cost
 
-    private Arraylist<Supplier<Boolean>> canPlayAdditional;
-    private Supplier<Boolean> canPlayTiming;
-    private Supplier<Boolean> canPlayResource;
+    private final Arraylist<Supplier<Boolean>> playAdditionalConditions;
+    private Supplier<Boolean> playTimingCondition;
+    private Supplier<Boolean> playResourceCondition;
 
-    private Arraylist<Runnable> beforePlay;     //Runs before card is placed into stack. For choosing targets etc.
-    private Arraylist<Consumer<Boolean>> play;  //Pays the energy cost and places card into the stack.
-    private Arraylist<Runnable> afterPlay;      //Runs after card is placed into the stack.
+    private final Arraylist<Runnable> beforePlay;     //Runs before card is placed into stack. For choosing targets etc.
+    private final Arraylist<Consumer<Boolean>> play;  //Pays the energy cost and places card into the stack.
+    private final Arraylist<Runnable> afterPlay;      //Runs after card is placed into the stack.
 
-    private Arraylist<Runnable> resolveEffect;  //Runs before card is placed into its resolve zone
+    private final Arraylist<Runnable> resolveEffect;  //Runs before card is placed into its resolve zone
     private Runnable resolvePlaceCard;          //Places card into its resolve zone
-    private Arraylist<Runnable> afterResolve;   //Runs after card is placed into its resolve zone
+    private final Arraylist<Runnable> afterResolve;   //Runs after card is placed into its resolve zone
 
-
+    private Targeting targeting;
     public Playable(Game game, Card card, int cost) {
         this.card = card;
         this.game = game;
         this.cost = cost;
         this.targets = new Arraylist<>();
         this.afterResolve = new Arraylist<>();
-        this.canPlayAdditional = new Arraylist<>();
+        this.playAdditionalConditions = new Arraylist<>();
         this.beforePlay = new Arraylist<>();
         this.play = new Arraylist<>();
         this.afterPlay = new Arraylist<>();
         this.resolveEffect = new Arraylist<>();
+        this.targeting = null;
+
 
         // Default Implementations
-        setDefaultCanPlayResource();
-        setDefaultCanPlayTiming();
+        setDefaultPlayResourceCondition();
+        setDefaultPlayTimingResource();
         setDefaultResolvePlaceCard();
         setDefaultPlay();
     }
@@ -69,17 +72,17 @@ public class Playable {
 
 
     public Playable setNotPlayable() {
-        canPlayAdditional.add(() -> false);
+        playAdditionalConditions.add(() -> false);
         return this;
     }
 
     public Playable setSlow() {
-        canPlayTiming = () -> game.canPlaySlow(card.controller);
+        playTimingCondition = () -> game.canPlaySlow(card.controller);
         return this;
     }
 
     public Playable setFast() {
-        canPlayTiming = () -> true;
+        playTimingCondition = () -> game.canPlayFast(card.controller);
         return this;
     }
 
@@ -117,8 +120,8 @@ public class Playable {
      * Called by client to check if you can play this card in current game state.
      */
     public final boolean canPlay(boolean withResources) {
-        boolean result = !withResources || (canPlayResource.get() && canPlayTiming.get());
-        for (Supplier<Boolean> additionalCondition : canPlayAdditional) {
+        boolean result = !withResources || (playResourceCondition.get() && playTimingCondition.get());
+        for (Supplier<Boolean> additionalCondition : playAdditionalConditions) {
             result = result && additionalCondition.get();
         }
         return result;
@@ -151,31 +154,28 @@ public class Playable {
      * Multiple Targets Setters
      */
     // For targeting MULTIPLE CARDS from a zone and/or PLAYERS.
-    public void setTargetMultipleCardsOrPlayers(Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate, Integer count,
-                                                Boolean upTo, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
+    public void setTargetMultipleCardsOrPlayers(Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate,
+                                                int minCount, int maxCount, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
 
         Game.Zone finalZone = zone != null ? zone : Both_Play;
-        Predicate<Card> finalCardPredicate = cardPredicate != null ? cardPredicate : Predicates::any;
-        Predicate<Player> finalPlayerPredicate = playerPredicate != null ? playerPredicate : Predicates::any;
-        boolean finalUpTo = upTo != null ? upTo : false;
-        int finalCount = count != null ? count : 1;
-        String finalMessage = message != null ? message : "Select " + (finalUpTo ? "up to " : "") +
-                (finalCount == 1 ? "a card " : finalCount + " cards ") + (withPlayers ? " or a player." : ".");
+        targeting = new Targeting(game, minCount, maxCount,
+                cardPredicate != null ? cardPredicate : Predicates::any,
+                playerPredicate != null ? playerPredicate : Predicates::any,
+                message != null ? message : "Select " + (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " cards" + (withPlayers ? " or players." : "."));
         Runnable finalAfterTargetsEffect = afterTargetsEffect != null ? afterTargetsEffect : () -> {
         };
 
-
         if (!withPlayers) {
-            addCanPlayAdditional(() ->
-                    game.hasIn(card.controller, finalZone, finalCardPredicate, finalUpTo ? 1 : finalCount)
+            addPlayAdditionalConditions(() ->
+                    game.hasIn(card.controller, finalZone, targeting.getCardPredicate(), minCount)
             );
         }
 
         addBeforePlay(() -> {
                     if (withPlayers) {
-                        targets.addAll(game.selectFromZoneWithPlayers(card.controller, finalZone, finalCardPredicate, finalPlayerPredicate, finalCount, finalUpTo, finalMessage));
+                        targets.addAll(game.selectFromZoneWithPlayers(card.controller, finalZone, targeting.getCardPredicate(), targeting.getPlayerPredicate(), maxCount, minCount < maxCount, targeting.getTargetingMessage()));
                     } else {
-                        targets.addAll(game.selectFromZone(card.controller, finalZone, finalCardPredicate, finalCount, finalUpTo, finalMessage));
+                        targets.addAll(game.selectFromZone(card.controller, finalZone, targeting.getCardPredicate(), maxCount, minCount < maxCount, targeting.getTargetingMessage()));
                     }
                 }
         );
@@ -191,14 +191,14 @@ public class Playable {
 
     // For targeting MULTIPLE CARDS from a zone.
     public void setTargetMultipleCards(Game.Zone zone, Predicate<Card> cardPredicate,
-                                       int count, boolean upTo, String message,
+                                       int minCount, int maxCount, String message,
                                        Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-        setTargetMultipleCardsOrPlayers(zone, cardPredicate, null, count, upTo, message, perTargetEffect, afterTargetsEffect, false);
+        setTargetMultipleCardsOrPlayers(zone, cardPredicate, null, minCount, maxCount, message, perTargetEffect, afterTargetsEffect, false);
     }
 
     // For targeting MULTIPLE UNITS from a zone.
-    public void setTargetMultipleUnits(Game.Zone zone, int count, boolean upTo, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-        setTargetMultipleCards(zone, Predicates::isUnit, count, upTo, "Select " + (upTo ? " up to " : "") + (count > 1 ? count + " units." : "a unit."), perTargetEffect, afterTargetsEffect);
+    public void setTargetMultipleUnits(Game.Zone zone, int minCount, int maxCount, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+        setTargetMultipleCards(zone, Predicates::isUnit, minCount, maxCount, "Select " +  (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " units.", perTargetEffect, afterTargetsEffect);
     }
 
     /**
@@ -208,7 +208,7 @@ public class Playable {
     public void setTargetSingleCardOrPlayer(Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate,
                                             String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
         String finalMessage = message != null ? message : "Select a card" + (withPlayers ? " or a player." : ".");
-        setTargetMultipleCardsOrPlayers(zone, cardPredicate, playerPredicate, null, null, finalMessage, perTargetEffect, afterTargetsEffect, withPlayers);
+        setTargetMultipleCardsOrPlayers(zone, cardPredicate, playerPredicate, 1, 1, finalMessage, perTargetEffect, afterTargetsEffect, withPlayers);
     }
 
     // For targeting a SINGLE CARD with RESTRICTIONS from a zone.
@@ -263,12 +263,12 @@ public class Playable {
         setEphemeral();
     }
 
-    private void setDefaultCanPlayTiming() {
+    private void setDefaultPlayTimingResource() {
         setFast();
     }
 
-    public void setDefaultCanPlayResource() {
-        canPlayResource =
+    public void setDefaultPlayResourceCondition() {
+        playResourceCondition =
                 () -> game.hasEnergy(card.controller, cost) &&
                         game.hasKnowledge(card.controller, card.knowledge);
     }
@@ -276,17 +276,17 @@ public class Playable {
     /**
      * Adders and setters of attributes
      */
-    public final Playable addCanPlayAdditional(Supplier<Boolean>... canPlayAdditional) {
-        this.canPlayAdditional.addAll(Arrays.asList(canPlayAdditional));
+    public final Playable addPlayAdditionalConditions(Supplier<Boolean>... canPlayAdditional) {
+        this.playAdditionalConditions.addAll(Arrays.asList(canPlayAdditional));
         return this;
     }
 
-    public void setCanPlayTiming(Supplier<Boolean> canPlayTiming) {
-        this.canPlayTiming = canPlayTiming;
+    public void setPlayTimingCondition(Supplier<Boolean> playTimingCondition) {
+        this.playTimingCondition = playTimingCondition;
     }
 
-    public void setCanPlayResource(Supplier<Boolean> canPlayResource) {
-        this.canPlayResource = canPlayResource;
+    public void setPlayResourceCondition(Supplier<Boolean> playResourceCondition) {
+        this.playResourceCondition = playResourceCondition;
     }
 
     public Playable addBeforePlay(Runnable... beforePlay) {
@@ -325,4 +325,7 @@ public class Playable {
         return cost;
     }
 
+    public boolean needsTargets() {return targeting != null; }
+
+    public Types.Targeting.Builder getTargetingBuilder() {return targeting.toTargetingBuilder();}
 }

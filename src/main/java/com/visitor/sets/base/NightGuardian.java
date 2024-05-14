@@ -28,7 +28,7 @@ public class NightGuardian extends Unit {
                 4, 6,
                 owner, Vigilance);
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 3, "{3}, {Use}: Target unit gains shield 2.")
-                .setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
+                .setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, 1,
                         targetId -> game.runIfInPlay(targetId, () -> game.addShield(targetId, 2)))
                 .setDepleting());
     }

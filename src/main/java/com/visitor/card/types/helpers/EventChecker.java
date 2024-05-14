@@ -10,9 +10,9 @@ import java.util.function.Predicate;
 
 public class EventChecker implements Consumer<Event> {
     private Predicate<Event> condition;
-    private Consumer<Event> checker;
-    private Card card;
-    private Game game;
+    private final Consumer<Event> checker;
+    private final Card card;
+    private final Game game;
     private boolean createAbility;
     private String abilityText;
 
@@ -68,7 +68,7 @@ public class EventChecker implements Consumer<Event> {
     public final void accept(Event event) {
         if (condition.test(event)) {
             if (createAbility) {
-                game.addToStack(new AbilityCard(game, card, abilityText, () -> checker.accept(event)));
+                game.addToStack(new Ability(game, card, abilityText, () -> checker.accept(event)));
             } else {
                 checker.accept(event);
             }

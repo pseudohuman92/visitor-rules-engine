@@ -6,7 +6,7 @@
 package com.visitor.card.types;
 
 import com.visitor.card.properties.*;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.parts.Game;
@@ -28,7 +28,7 @@ public abstract class Ally extends Card {
 
 
     public int delayCounter;
-    public AbilityCard delayedAbility;
+    public Ability delayedAbility;
     public int loyalty;
 
     public Ally(Game game, String name, int cost,
@@ -106,7 +106,7 @@ public abstract class Ally extends Card {
         activatable.addActivatedAbility(new ActivatedAbility(game, this, cost, text,
                 () -> {
                     delayCounter = delay;
-                    delayedAbility = new AbilityCard(game, this, ability);
+                    delayedAbility = new Ability(game, this, ability);
                 })
                 .addBeforeActivate(() -> {
                     loyalty -= minusLoyalty;
@@ -127,7 +127,7 @@ public abstract class Ally extends Card {
         activatable.addActivatedAbility(new ActivatedAbility(game, this, cost, text,
                 () -> {
                     delayCounter = delay;
-                    delayedAbility = new AbilityCard(game, this, ability.apply(x[0]));
+                    delayedAbility = new Ability(game, this, ability.apply(x[0]));
                 })
                 .addBeforeActivate(() -> {
                     x[0] = game.selectX(controller, maxX);
@@ -140,7 +140,7 @@ public abstract class Ally extends Card {
     }
 
     @Override
-    public Types.Card.Builder toCardMessage() {
+    public Types.CardP.Builder toCardMessage() {
         return super.toCardMessage()
                 .setDelay(delayCounter)
                 .setLoyalty(loyalty);

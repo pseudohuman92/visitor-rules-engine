@@ -11,24 +11,24 @@ import java.util.function.Supplier;
 
 public class Studiable {
 
-    private Card card;
-    private Game game;
+    private final Card card;
+    private final Game game;
 
-    private Supplier<Boolean> canStudy;
+    private Supplier<Boolean> studyCondition;
     private BiConsumer<Player, Boolean> study;
-    private Supplier<CounterMap<Types.Knowledge>> getKnowledgeType;
+    private Supplier<CounterMap<Types.Knowledge>> getKnowledgeTypes;
 
     public Studiable(Game game, Card card) {
         this.card = card;
         this.game = game;
 
-        setDefaultCanStudy();
-        setDefaultGetKnowledgeType();
+        setDefaultStudyCondition();
+        setDefaultGetKnowledgeTypes();
         setDefaultStudy();
     }
 
     public final boolean canStudy() {
-        return canStudy.get();
+        return studyCondition.get();
     }
 
     /**
@@ -39,13 +39,13 @@ public class Studiable {
         study.accept(player, regular);
     }
 
-    public final CounterMap<Types.Knowledge> getKnowledgeType() {
-        return getKnowledgeType.get();
+    public final CounterMap<Types.Knowledge> getKnowledgeTypes() {
+        return getKnowledgeTypes.get();
     }
 
     //Default Setters
-    public void setDefaultCanStudy() {
-        canStudy = () -> game.canStudy(card.controller);
+    public void setDefaultStudyCondition() {
+        studyCondition = () -> game.canStudy(card.controller);
     }
 
     public void setDefaultStudy() {
@@ -54,15 +54,15 @@ public class Studiable {
             player.voidPile.add(card);
             player.energy++;
             player.maxEnergy++;
-            player.addKnowledge(getKnowledgeType());
+            player.addKnowledge(getKnowledgeTypes());
             if (regular) {
                 player.numOfStudiesLeft--;
             }
         };
     }
 
-    public void setDefaultGetKnowledgeType() {
-        getKnowledgeType = () -> {
+    public void setDefaultGetKnowledgeTypes() {
+        getKnowledgeTypes = () -> {
             if (card.knowledge.keySet().size() < 2) {
                 CounterMap<Types.Knowledge> knowledgeType = new CounterMap<>();
                 card.knowledge.forEach((k, i) -> knowledgeType.add(k));
@@ -74,8 +74,8 @@ public class Studiable {
     }
 
     //Setters
-    public Studiable setGetKnowledgeType(Supplier<CounterMap<Types.Knowledge>> getKnowledgeType) {
-        this.getKnowledgeType = getKnowledgeType;
+    public Studiable setGetKnowledgeTypes(Supplier<CounterMap<Types.Knowledge>> getKnowledgeTypes) {
+        this.getKnowledgeTypes = getKnowledgeTypes;
         return this;
     }
 }

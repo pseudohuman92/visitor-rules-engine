@@ -1,5 +1,6 @@
 package com.visitor.card.properties;
 
+import com.google.protobuf.ByteString;
 import com.visitor.game.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
@@ -28,28 +29,28 @@ public class Combat {
     private UUID blockedAttacker;
     private UUID blockedBy;
     private UUID attackTarget;
-    private CounterMap<CombatAbility> combatAbilityList;
+    private final CounterMap<CombatAbility> combatAbilityList;
 
     private int turnlyAttack;
     private int turnlyHealth;
     private int turnlyShield;
-    private CounterMap<CombatAbility> turnlyCombatAbilityList;
+    private final CounterMap<CombatAbility> turnlyCombatAbilityList;
 
-    private Supplier<Boolean> canAttackAdditional;
+    private final Supplier<Boolean> canAttackAdditional;
     private Supplier<Boolean> canAttack;
-    private Predicate<Card> canBlockAdditional;
-    private Predicate<Card> canBlock;
+    private final Predicate<Card> canBlockAdditional;
+    private final Predicate<Card> canBlock;
     private Supplier<Boolean> canBlockGeneral;
-    private Consumer<UUID> setAttacking;
-    private Runnable unsetAttacking;
-    private Consumer<UUID> setBlocking;
-    private Runnable unsetBlocking;
-    private Consumer<UUID> setBlocker;
-    private Runnable newTurn;
-    private Consumer<Boolean> dealAttackDamage;
-    private Runnable dealBlockDamage;
-    private BiConsumer<Damage, Card> receiveDamage;
-    private Arraylist<BiConsumer<UUID, Damage>> damageEffects;
+    private final Consumer<UUID> setAttacking;
+    private final Runnable unsetAttacking;
+    private final Consumer<UUID> setBlocking;
+    private final Runnable unsetBlocking;
+    private final Consumer<UUID> setBlocker;
+    private final Runnable newTurn;
+    private final Consumer<Boolean> dealAttackDamage;
+    private final Runnable dealBlockDamage;
+    private final BiConsumer<Damage, Card> receiveDamage;
+    private final Arraylist<BiConsumer<UUID, Damage>> damageEffects;
 
     public Combat(Game game, Card card, int attack, int health) {
         this.card = card;
@@ -187,11 +188,11 @@ public class Combat {
 
 
     public final boolean canAttack() {
-        return canAttack.get();
+        return game.canAttack(card.controller) && canAttack.get();
     }
 
     public final boolean canBlock() {
-        return canBlockGeneral.get();
+        return game.canBlock(card.controller) && canBlockGeneral.get();
     }
 
     public final boolean canBlock(Card unit) {
@@ -330,7 +331,7 @@ public class Combat {
     }
 
     public boolean canDieFromBlock() {
-        return getHealth() == 0 || game.getCard(blockedBy).hasCombatAbility(Deathtouch);
+        return getHealth() == 0 || (blockedBy != null && game.getCard(blockedBy).hasCombatAbility(Deathtouch));
     }
 
     public boolean canDieFromAttack() {

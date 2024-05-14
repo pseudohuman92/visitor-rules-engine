@@ -28,7 +28,7 @@ public class Storyteller extends Unit {
                 owner);
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: {~} deals 1 damage to any target.")
-                .setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, false,
+                .setTargeting(Game.Zone.Both_Play, Predicates::isUnit, 1, 1,
                         targetId -> game.dealDamage(id, targetId, 1))
                 .setDepleting());
 

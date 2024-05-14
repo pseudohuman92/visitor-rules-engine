@@ -30,7 +30,7 @@ public class ChainsofYore extends Unit {
                 owner, Lifelink);
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, {Use}: Deplete another target unit.")
-                .setTargeting(Game.Zone.Both_Play, and(not(Predicates::isDepleted), anotherUnit(id)), 1, false, game::deplete)
+                .setTargeting(Game.Zone.Both_Play, and(not(Predicates::isDepleted), anotherUnit(id)), 1, 1, game::deplete)
                 .setDepleting());
     }
 }

@@ -18,7 +18,7 @@ public class GC06 extends Cantrip {
                 owner);
 
         playable
-                .setTargetMultipleCards(Deck, Predicates::isUnit, 2, true,
+                .setTargetMultipleCards(Deck, Predicates::isUnit, 0, 2,
                         "Select up to 2 units from your deck.", cardId -> game.draw(controller, cardId), () -> game.shuffleDeck(controller));
     }
 }

@@ -17,10 +17,11 @@ import java.util.UUID;
 
 /**
  * @author pseudo
+ * Abilities are represenbted as "cards" that do their effect on resolution then disappear.
  */
-public class AbilityCard extends Card {
+public class Ability extends Card {
 
-    public AbilityCard(Game game, Card creator, String text, Runnable effect, Arraylist<UUID> targets) {
+    public Ability(Game game, Card creator, String text, Runnable effect, Arraylist<UUID> targets) {
         super(game, creator.name + "'s Ability", new CounterMap<>(), CardType.Ability, text, creator.controller);
         this.targets = new Arraylist<>(creator.id).putAllIn(targets);
 
@@ -28,17 +29,17 @@ public class AbilityCard extends Card {
 
     }
 
-    public AbilityCard(Game game, Card creator, String text, Runnable effect, UUID... targets) {
+    public Ability(Game game, Card creator, String text, Runnable effect, UUID... targets) {
         this(game, creator, text, effect, new Arraylist<>(targets));
     }
 
-    public AbilityCard(Game game, Card creator, ActivatedAbility activatedAbility) {
+    public Ability(Game game, Card creator, ActivatedAbility activatedAbility) {
         this(game, creator, activatedAbility.getText(), activatedAbility.getActivate(), activatedAbility.getTargets());
         this.id = activatedAbility.id;
     }
 
     @Override
-    public Types.Card.Builder toCardMessage() {
+    public Types.CardP.Builder toCardMessage() {
         return super.toCardMessage()
                 .setCost("");
     }

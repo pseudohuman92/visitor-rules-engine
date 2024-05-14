@@ -5,9 +5,12 @@
  */
 package com.visitor.helpers;
 
+import com.google.protobuf.ByteString;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -88,6 +91,10 @@ public class Arraylist<T> extends ArrayList<T> {
     }
 
     public List<String> transformToStringList() {
-        return parallelStream().map(Object::toString).collect(Collectors.toList());
+        return parallelStream().map(Objects::toString).collect(Collectors.toList());
+    }
+
+    public T getOrDefault(int index, T defaultValue) {
+        return (index > -1 && index < size())? get(index):defaultValue;
     }
 }

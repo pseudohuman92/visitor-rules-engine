@@ -22,10 +22,10 @@ public class Attachable {
     private final Card card;
     private final Game game;
 
-    private Predicate<Card> validTarget;
+    private final Predicate<Card> validTarget;
     private UUID attachedTo;
-    private Consumer<UUID> afterAttached;
-    private Consumer<UUID> afterRemoved;
+    private final Consumer<UUID> afterAttached;
+    private final Consumer<UUID> afterRemoved;
 
     // Constructors
     public Attachable(Game game, Card card, Predicate<Card> validTarget,

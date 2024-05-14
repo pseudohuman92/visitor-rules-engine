@@ -21,7 +21,7 @@ public class PR01 extends Ritual {
                 owner);
 
         playable
-                .addCanPlayAdditional(() ->
+                .addPlayAdditionalConditions(() ->
                         game.hasIn(playable.card.controller, Play, Predicates::isUnit, 1)
                 )
                 .addBeforePlay(() -> {

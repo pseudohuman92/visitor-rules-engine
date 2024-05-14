@@ -14,6 +14,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static java.lang.System.out;
@@ -64,13 +65,13 @@ public class GeneralEndpoint {
 
     public void send(ServerMessage message) throws IOException, EncodeException {
         out.println("Server sending a message to " + playerName + ": " + message);
-        session.getBasicRemote().sendObject(message.toByteArray());
+        session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
     }
 
     public void send(ServerMessage.Builder builder) throws IOException, EncodeException {
         ServerMessage message = builder.build();
         out.println("Server sending a message to " + playerName + ": " + message);
-        session.getBasicRemote().sendObject(message.toByteArray());
+        session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
     }
 
     private void handleMessage(ClientMessage cm) {

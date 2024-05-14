@@ -28,7 +28,7 @@ public class ThistleandSpire extends Unit {
                 owner, Defender);
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1}, {Use}: {~} deals 1 damage to another unit and 1 damage to itself.")
-                .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+                .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, 1,
                         targetId -> {
                             game.dealDamage(id, targetId, 1);
                             game.dealDamage(id, id, 1);

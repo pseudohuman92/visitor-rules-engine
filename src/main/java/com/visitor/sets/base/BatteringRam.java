@@ -6,7 +6,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -35,7 +35,7 @@ public class BatteringRam extends Unit {
                     if (discardedCard != null && isUnit(discardedCard)) {
                         int attack = discardedCard.getAttack();
                         UUID damageTarget = game.selectDamageTargets(controller, 1, false, "").get(0);
-                        game.addToStack(new AbilityCard(game, this, "Deal " + attack + " damage.",
+                        game.addToStack(new Ability(game, this, "Deal " + attack + " damage.",
                                 () -> game.dealDamage(id, damageTarget, attack), damageTarget));
                     }
                 });

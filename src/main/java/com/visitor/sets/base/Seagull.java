@@ -29,7 +29,7 @@ public class Seagull extends Unit {
                 owner, Flying);
         activatable
                 .addActivatedAbility(new ActivatedAbility(game, this, 2, "Another target unit gains flying until end of turn.")
-                        .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, false,
+                        .setTargeting(Game.Zone.Both_Play, Predicates.anotherUnit(id), 1, 1,
                                 targetId -> game.runIfInZone(controller, Game.Zone.Both_Play, targetId, () -> game.addTurnlyCombatAbility(targetId, Flying)))
                         .setDepleting());
 

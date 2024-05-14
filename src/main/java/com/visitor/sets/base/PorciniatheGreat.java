@@ -29,7 +29,7 @@ public class PorciniatheGreat extends Unit {
                 owner, Trample);
 
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Target opponent gains control of target unit you control.")
-                .setTargeting(Game.Zone.Play, Predicates::isUnit, 1, false,
+                .setTargeting(Game.Zone.Play, Predicates::isUnit, 1, 1,
                         targetId -> game.gainControlFromZone(game.getOpponentId(controller), Game.Zone.Opponent_Play, Game.Zone.Play, targetId))
                 .setDepleting());
     }

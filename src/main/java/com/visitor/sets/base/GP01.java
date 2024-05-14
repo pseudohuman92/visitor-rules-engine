@@ -6,7 +6,7 @@
 package com.visitor.sets.base;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.Card;
 import com.visitor.game.Event;
@@ -41,7 +41,7 @@ public class GP01 extends Unit {
         triggering.addEventChecker(new EventChecker(game, this,
                 event -> {
                     ((Arraylist<Card>) event.data.get(1)).forEach(card ->
-                            game.addToStack(new AbilityCard(game, this, "Whenever an opponent discards a card, you create a 1/1 green Elf.",
+                            game.addToStack(new Ability(game, this, "Whenever an opponent discards a card, you create a 1/1 green Elf.",
                                     () -> UnitToken.Elf_1_1(game, controller).resolve())));
 
                 })

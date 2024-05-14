@@ -7,7 +7,7 @@ package com.visitor.sets.base;
 
 import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -34,7 +34,7 @@ public class PU01 extends Unit {
         combat.addDamageEffect(
                 (targetId, damage) -> {
                     if (game.isPlayer(targetId)) {
-                        game.addToStack(new AbilityCard(game, this, "Whenever {~} deals combat damage to a player,\n" +
+                        game.addToStack(new Ability(game, this, "Whenever {~} deals combat damage to a player,\n" +
                                 "you may play a card from that player's hand without paying its cost.",
                                 () -> {
                                     Arraylist<UUID> maybePlay = game.selectFromZone(controller, Game.Zone.Opponent_Hand, Predicates::any, 1, true, "Select a card to play.");

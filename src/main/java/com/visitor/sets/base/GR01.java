@@ -21,7 +21,7 @@ public class GR01 extends Ritual {
                 "Target unit you control strikes target unit you don't control.",
                 owner);
 
-        playable.addCanPlayAdditional(() ->
+        playable.addPlayAdditionalConditions(() ->
                 game.hasIn(controller, Play, Predicates::isUnit, 1) &&
                         game.hasIn(controller, Opponent_Play, Predicates::isUnit, 1)
         );

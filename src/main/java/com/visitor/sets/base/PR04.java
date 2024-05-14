@@ -19,7 +19,7 @@ public class PR04 extends Ritual {
                 owner);
 
         playable
-                .setTargetMultipleUnits(Discard_Pile, 2, true,
+                .setTargetMultipleUnits(Discard_Pile, 0, 2,
                         cardId -> game.restore(cardId).returnToHand(),
                         () -> game.discard(controller, 1)
                 );

@@ -104,7 +104,7 @@ public class Deck extends Arraylist<Card> {
         int count = 0;
         for (Card c : this) {
             if (!lastName.equals(c.name)) {
-                if (!lastName.equals("")) {
+                if (!lastName.isEmpty()) {
                     decklist.add(count + ";base." + lastName);
                 }
                 lastName = c.name;
@@ -113,7 +113,7 @@ public class Deck extends Arraylist<Card> {
                 count++;
             }
         }
-        if (!lastName.equals("")) {
+        if (!lastName.isEmpty()) {
             decklist.add(count + ";base." + lastName);
         }
         return decklist;
