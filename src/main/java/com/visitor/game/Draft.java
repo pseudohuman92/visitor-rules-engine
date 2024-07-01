@@ -51,10 +51,10 @@ public class Draft {
 
         Player player1 = new Player(null, playerName1, new String[0]);
         Player player2 = new Player(null, playerName2, new String[0]);
-        players.put(player1.id, player1);
-        players.put(player2.id, player2);
-        responses.put(player1.id, new ArrayBlockingQueue<>(1));
-        responses.put(player2.id, new ArrayBlockingQueue<>(1));
+        players.put(player1.getId(), player1);
+        players.put(player2.getId(), player2);
+        responses.put(player1.getId(), new ArrayBlockingQueue<>(1));
+        responses.put(player2.getId(), new ArrayBlockingQueue<>(1));
     }
 
     public void startDraft() {
@@ -235,7 +235,7 @@ public class Draft {
     private UUID getPlayerId(String playerName) {
         for (Player p : players.values()) {
             if (p.username.equals(playerName)) {
-                return p.id;
+                return p.getId();
             }
         }
         return null;

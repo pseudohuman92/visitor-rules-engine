@@ -1,12 +1,15 @@
 package com.visitor.game;
 
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
+import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
@@ -43,7 +46,7 @@ public class Deck extends Arraylist<Card> {
     public Arraylist<Card> extractFromTop(int count) {
         Arraylist<Card> cards = new Arraylist<>();
         for (int i = 0; i < count && !isEmpty(); i++) {
-            cards.add(remove(0));
+            cards.add(extractTopmost(Predicates::any));
         }
         return cards;
     }
@@ -51,7 +54,9 @@ public class Deck extends Arraylist<Card> {
     public Card extractTopmost(Predicate<Card> pred) {
         for (int i = 0; i < size(); i++) {
             if (pred.test(get(i))) {
-                return remove(i);
+                Card c = remove(i);
+                c.zone = null;
+                return c;
             }
         }
         return null;
@@ -79,6 +84,7 @@ public class Deck extends Arraylist<Card> {
     }
 
     public void putToIndex(int index, Card... cards) {
+        new Arraylist<>(cards).forEach(c-> c.zone = Base.Zone.Deck);
         addAll(index, cards);
     }
 
@@ -93,6 +99,7 @@ public class Deck extends Arraylist<Card> {
     public void shuffleInto(Card... cards) {
         SecureRandom rand = new SecureRandom();
         for (Card card : cards) {
+            card.zone = Base.Zone.Deck;
             add(rand.nextInt(size()), card);
         }
     }

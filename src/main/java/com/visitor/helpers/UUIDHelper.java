@@ -2,6 +2,7 @@ package com.visitor.helpers;
 
 import com.visitor.game.Card;
 
+import java.util.List;
 import java.util.UUID;
 
 import static java.util.UUID.fromString;
@@ -20,12 +21,20 @@ public abstract class UUIDHelper {
         Arraylist<UUID> uuids = new Arraylist<>();
         while (!cards.isEmpty()) {
             Card c = cards.remove(0);
-            uuids.add(c.id);
+            uuids.add(c.getId());
         }
         return uuids;
     }
 
     public static Arraylist<UUID> toUUIDList(String[] cards) {
+        Arraylist<UUID> uuids = new Arraylist<>();
+        for (String card : cards) {
+            uuids.add(fromString(card));
+        }
+        return uuids;
+    }
+
+    public static Arraylist<UUID> toUUIDList(List<String> cards) {
         Arraylist<UUID> uuids = new Arraylist<>();
         for (String card : cards) {
             uuids.add(fromString(card));
@@ -47,7 +56,7 @@ public abstract class UUIDHelper {
         while (!uuids.isEmpty()) {
             UUID u = uuids.remove(0);
             for (Card c : cards) {
-                if (c.id.equals(u)) {
+                if (c.getId().equals(u)) {
                     sorted.add(c);
                     break;
                 }
@@ -60,7 +69,7 @@ public abstract class UUIDHelper {
     public static Arraylist<Card> getInList(Arraylist<Card> cards, Arraylist<UUID> uuids) {
         Arraylist<Card> selected = new Arraylist<>();
         for (Card card : cards) {
-            if (uuids.contains(card.id)) {
+            if (uuids.contains(card.getId())) {
                 selected.add(card);
             }
         }
@@ -70,7 +79,7 @@ public abstract class UUIDHelper {
     public static Arraylist<Card> getNotInList(Arraylist<Card> cards, Arraylist<UUID> uuids) {
         Arraylist<Card> selected = new Arraylist<>();
         for (Card card : cards) {
-            if (!uuids.contains(card.id)) {
+            if (!uuids.contains(card.getId())) {
                 selected.add(card);
             }
         }

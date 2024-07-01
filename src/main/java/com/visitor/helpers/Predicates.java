@@ -5,6 +5,7 @@
  */
 package com.visitor.helpers;
 
+import com.visitor.card.properties.Targetable;
 import com.visitor.game.Card;
 import com.visitor.game.Player;
 import com.visitor.protocol.Types;
@@ -46,20 +47,12 @@ public abstract class Predicates {
         return card.hasType(Junk);
     }
 
-    public static boolean isUnit(Card card) {
-        return card.hasType(Unit);
-    }
-
-    public static boolean isDamageable(Card c) {
-        return c.isDamagable();
+    public static boolean isUnit(Targetable card) {
+        return isCard(card) && ((Card)card).hasType(Unit);
     }
 
     public static boolean isStudiable(Card c) {
         return c.isStudiable();
-    }
-
-    public static boolean isDamageable(Object o) {
-        return o instanceof Player || (o instanceof Card && ((Card) o).isDamagable());
     }
 
     public static boolean isGreen(Card c) {
@@ -75,6 +68,7 @@ public abstract class Predicates {
     }
 
 
+    @SafeVarargs
     public static <T> Predicate<T> and(Predicate<T>... predicates) {
         return (t -> {
             for (Predicate<T> predicate : predicates) {
@@ -85,6 +79,7 @@ public abstract class Predicates {
         });
     }
 
+    @SafeVarargs
     public static <T> Predicate<T> or(Predicate<T>... predicates) {
         return (t -> {
             for (Predicate<T> predicate : predicates) {
@@ -112,7 +107,7 @@ public abstract class Predicates {
     }
 
     public static Predicate<Card> anotherUnit(UUID id) {
-        return c -> isUnit(c) && !c.id.equals(id);
+        return c -> isUnit(c) && !c.getId().equals(id);
     }
 
     public static boolean isColorless(Card card) {
@@ -127,11 +122,23 @@ public abstract class Predicates {
         return c -> c.hasColor(color);
     }
 
-    public static Predicate<Card> controlledBy(UUID controller) {
-        return c -> c.controller.equals(controller);
+    public static Predicate<Targetable> controlledBy(UUID controller) {
+        return c -> isCard(c) && ((Card) c).controller.equals(controller);
     }
 
-    public static Predicate<Card> anotherCard(UUID id) {
-        return c -> !c.id.equals(id);
+    public static Predicate<Targetable> anotherCard(UUID id) {
+        return c -> isCard(c) && !c.getId().equals(id);
+    }
+
+    public static boolean isCard(Targetable o) {
+        return (o instanceof Card);
+    }
+
+    public static boolean isPlayer(Targetable o) {
+        return (o instanceof Player);
+    }
+
+    public static Predicate<Targetable> isDamagable(){
+        return or(Predicates::isPlayer, Predicates::isUnit);
     }
 }

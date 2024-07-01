@@ -19,6 +19,6 @@ public class TestsName extends Unit {
                 new CounterMap().add(GREEN, 2).add(PURPLE, 1).add(RED, 1).add(BLUE, 1).add(YELLOW, 3),
                 "this is card text",
                 2, 2,
-                owner, Flying, Deathtouch, Unblockable);
+                owner, Evasive, Deadly, Unblockable);
     }
 }

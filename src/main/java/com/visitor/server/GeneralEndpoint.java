@@ -6,8 +6,12 @@ package com.visitor.server;
  * and open the template in the editor.
  */
 
+import com.visitor.game.Card;
+import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.HelperFunctions;
 import com.visitor.protocol.ClientMessages.ClientMessage;
 import com.visitor.protocol.ClientMessages.JoinQueue;
+import com.visitor.protocol.ServerMessages;
 import com.visitor.protocol.ServerMessages.ServerMessage;
 
 import javax.websocket.*;
@@ -28,7 +32,6 @@ public class GeneralEndpoint {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("playerId") String playerName) throws IOException {
-
         out.println(playerName + " connected!");
         this.session = session;
         this.playerName = playerName;
@@ -36,6 +39,7 @@ public class GeneralEndpoint {
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
         session.setMaxIdleTimeout(0);
+        session.setMaxBinaryMessageBufferSize(65536 * 16);
         if (gameServer == null) {
             gameServer = new GameServer();
         }
@@ -46,7 +50,7 @@ public class GeneralEndpoint {
     @OnMessage
     public void onMessage(Session session, byte[] message) throws IOException {
         ClientMessage cm = ClientMessage.parseFrom(message);
-        out.println(playerName + " sent a message: " + cm);
+        out.println(playerName + " sent a message: " + cm + "with buffersize" + session.getMaxBinaryMessageBufferSize());
         handleMessage(cm);
     }
 
@@ -64,13 +68,13 @@ public class GeneralEndpoint {
     }
 
     public void send(ServerMessage message) throws IOException, EncodeException {
-        out.println("Server sending a message to " + playerName + ": " + message);
+        out.println("Server sending a message to " + playerName + ": " + message + "with buffer size " + session.getMaxBinaryMessageBufferSize());
         session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
     }
 
     public void send(ServerMessage.Builder builder) throws IOException, EncodeException {
         ServerMessage message = builder.build();
-        out.println("Server sending a message to " + playerName + ": " + message);
+        out.println("Server sending a message to " + playerName + ": " + message + "with buffer size " + session.getMaxBinaryMessageBufferSize());
         session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
     }
 
@@ -82,6 +86,20 @@ public class GeneralEndpoint {
                 gameServer.joinQueue(playerName, jqm.getGameType(), jqm.getDecklistList().toArray(new String[jqm.getDecklistCount()]),
                         draftId.equals("") ? null : UUID.fromString(draftId));
                 break;
+            case GETCOLLECTION:
+                out.println("Gotcollection");
+                ServerMessages.GetCollectionResponse.Builder c = ServerMessages.GetCollectionResponse.newBuilder();
+                c.addAllCards(HelperFunctions.getCollection().transform(x -> x.toCardMessage().build()));
+                ServerMessage.Builder b = ServerMessage.newBuilder();
+                b.setGetCollectionResponse(c);
+                try {
+                    send(b);
+                } catch (IOException | EncodeException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            default:
+                out.println("Some other" + cm.toString());
         }
     }
 }

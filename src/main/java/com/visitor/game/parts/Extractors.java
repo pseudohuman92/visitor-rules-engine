@@ -14,12 +14,14 @@ public class Extractors extends Getters {
         for (Player player : players.values()) {
             Card c = player.extractCard(targetID);
             if (c != null) {
+                c.zone = null;
                 return c;
             }
         }
         for (Card c : stack) {
-            if (c.id.equals(targetID)) {
+            if (c.getId().equals(targetID)) {
                 stack.remove(c);
+                c.zone = null;
                 return c;
             }
         }
@@ -31,9 +33,10 @@ public class Extractors extends Getters {
     }
 
     private Arraylist<Card> extractAllCopiesFrom(UUID playerId, String cardName, Game.Zone zone) {
-        Arraylist<Card> cards = new Arraylist<>(getZone(playerId, zone).parallelStream()
+        Arraylist<Card> cards = new Arraylist<>(((Arraylist<Card>) getZone(playerId, zone)).parallelStream()
                 .filter(c -> c.name.equals(cardName)).collect(Collectors.toList()));
         getZone(playerId, zone).removeAll(cards);
+        cards.forEach(c -> c.zone = null);
         return cards;
     }
 

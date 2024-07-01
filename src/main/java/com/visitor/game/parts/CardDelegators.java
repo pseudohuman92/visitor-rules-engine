@@ -1,5 +1,6 @@
 package com.visitor.game.parts;
 
+import com.visitor.game.Card;
 import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
@@ -8,32 +9,29 @@ public class CardDelegators extends Combat {
     /**
      * Adders
      */
-    public void addTurnlyAttackAndHealth(UUID cardId, int attack, int health) {
-        getCard(cardId).addTurnlyAttackAndHealth(attack, health);
-    }
-
-    public void addAttackAndHealth(UUID cardId, int attack, int health) {
-        getCard(cardId).addAttackAndHealth(attack, health);
-    }
-
-    public void addTurnlyCombatAbility(UUID targetId, com.visitor.card.properties.Combat.CombatAbility combatAbility) {
-        getCard(targetId).addTurnlyCombatAbility(combatAbility);
-    }
-
-    public void addTurnlyActivatedAbility(UUID cardId, ActivatedAbility ability) {
-        getCard(cardId).addTurnlyActivatedAbility(ability);
+    public void addAttackAndHealth(UUID cardId, int attack, int health, boolean turnly) {
+        getCard(cardId).addAttackAndHealth(attack, health, turnly);
     }
 
     public void addAttachmentTo(UUID attachedId, UUID attachmentId) {
         getCard(attachedId).addAttachment(attachmentId);
     }
 
-    public void addCombatAbility(UUID cardId, com.visitor.card.properties.Combat.CombatAbility combatAbility) {
-        getCard(cardId).addCombatAbility(combatAbility);
+    public void addCombatAbility(UUID cardId, com.visitor.card.properties.Combat.CombatAbility combatAbility, boolean turnly) {
+        if (turnly) {
+            getCard(cardId).addTurnlyCombatAbility(combatAbility);
+        } else {
+            getCard(cardId).addCombatAbility(combatAbility);
+        }
     }
 
-    public void addShield(UUID cardId, int i) {
-        getCard(cardId).addShield(i);
+    public void addShield(UUID id, int i, boolean turnly) {
+        Card c = getCard(id);
+        if (c != null)
+            c.addShield(i, turnly);
+        else {
+            getPlayer(id).combat.addShield(i, turnly);
+        }
     }
 
     /**

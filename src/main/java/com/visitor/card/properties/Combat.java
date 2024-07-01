@@ -1,13 +1,15 @@
 package com.visitor.card.properties;
 
-import com.google.protobuf.ByteString;
 import com.visitor.game.Card;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.Types;
 
+import javax.validation.constraints.Max;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -66,8 +68,9 @@ public class Combat {
 
         canAttack = () ->
                 !card.isDepleted() &&
-                        (!deploying || hasCombatAbility(Haste)) &&
+                        (!deploying || hasCombatAbility(CombatAbility.Blitz)) &&
                         !hasCombatAbility(Defender) &&
+                        card.zone == Base.Zone.Play &&
                         canAttackAdditional.get();
 
         canBlockAdditional = (unit) -> true;
@@ -75,7 +78,7 @@ public class Combat {
         canBlock = (unit) ->
                 !card.isDepleted() &&
                         !unit.hasCombatAbility(Unblockable) &&
-                        (!unit.hasCombatAbility(Flying) || hasCombatAbility(Flying) || hasCombatAbility(Reach)) &&
+                        (!unit.hasCombatAbility(Evasive) || hasCombatAbility(Evasive) || hasCombatAbility(Reach)) &&
                         canBlockAdditional.test(unit);
 
         canBlockGeneral = () -> !card.isDepleted();
@@ -99,13 +102,18 @@ public class Combat {
 
         newTurn = () -> {
             if (hasCombatAbility(Regenerate)) {
-                game.heal(card.id, combatAbilityList.get(Regenerate));
+                game.heal(card.getId(), combatAbilityList.get(Regenerate));
+            }
+            if (hasCombatAbility(Decay)) {
+                loseMaxHealth(1);
+                loseHealth(1);
+                loseAttack(1);
             }
             deploying = false;
         };
 
         dealAttackDamage = (firstStrike) -> {
-            UUID id = card.id;
+            UUID id = card.getId();
             if (blockedBy == null) {
                 game.dealDamage(id, attackTarget, new Damage(getAttack(), firstStrike, true));
             } else {
@@ -114,43 +122,30 @@ public class Combat {
         };
 
         dealBlockDamage = () -> {
-            UUID id = card.id;
+            UUID id = card.getId();
             if (blockedAttacker != null)
                 game.dealDamage(id, blockedAttacker, new Damage(getAttack(), false, true));
         };
 
         receiveDamage = (damage, source) -> {
-            int damageAmount = damage.amount;
+            int damageAmount = damage.amount - (shield + turnlyShield);
 
             //Apply shields
-            if (turnlyShield >= damageAmount) {
-                turnlyShield -= damageAmount;
+            if (damageAmount <= 0) {
                 return;
             }
-            damageAmount -= turnlyShield;
-            turnlyShield = 0;
-
-            if (shield >= damageAmount) {
-                shield -= damageAmount;
-                return;
-            }
-            damageAmount -= shield;
-            shield = 0;
 
             int dealtDamageAmount = damageAmount;
 
-            //Trample Damage
-            // TODO: Figure out assigning more than health to make trample go through
-            // while there are other blockers to assign damage
             if (source.isAttacking() &&
-                    source.hasCombatAbility(Trample) &&
-                    damageAmount > getHealth()) {
+                source.hasCombatAbility(Trample) &&
+                damageAmount > getHealth()) {
 
                 int leftoverDamage = damageAmount - getHealth();
                 this.turnlyHealth = 0;
                 this.health = 0;
                 try {
-                    game.dealDamage(source.id, card.controller, new Damage(leftoverDamage));
+                    game.dealDamage(source.getId(), card.controller, new Damage(leftoverDamage));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     e.printStackTrace();
@@ -166,17 +161,21 @@ public class Combat {
                 }
             }
 
-            if (card != null && damage.mayKill && (getHealth() == 0 || source.hasCombatAbility(Deathtouch))) {
-                game.destroy(source.id, card.id);
+            if (card != null && damage.mayKill && (getHealth() == 0 || source.hasCombatAbility(Deadly))) {
+                game.destroy(source.getId(), card.getId());
             }
 
             if (source.hasCombatAbility(Lifelink)) {
                 game.gainHealth(source.controller, dealtDamageAmount);
             }
             if (source.hasCombatAbility(Drain)) {
-                game.heal(source.id, dealtDamageAmount);
+                game.heal(source.getId(), dealtDamageAmount);
             }
         };
+    }
+
+    public void loseMaxHealth(int i) {
+        maxHealth = Math.max(maxHealth - i, 0);
     }
 
 
@@ -260,11 +259,12 @@ public class Combat {
                 .setAttack(getAttack())
                 .setAttackTarget(attackTarget != null ? attackTarget.toString() : "")
                 .setBlockedAttacker(blockedAttacker != null ? blockedAttacker.toString() : "")
-                .setDeploying(!hasCombatAbility(Haste) && deploying)
+                .setDeploying(!hasCombatAbility(CombatAbility.Blitz) && deploying)
                 .setHealth(getHealth())
                 .setShield(getShield())
                 .addAllCombatAbilities(combatAbilityList.transformToStringList())
-                .addAllCombatAbilities(turnlyCombatAbilityList.transformToStringList());
+                .addAllCombatAbilities(turnlyCombatAbilityList.transformToStringList())
+                .addAllPossibleBlockTargets(new Arraylist<String>((List<String>) game.getPossibleBlockTargets(canBlock).transform(c -> c.getId().toString())));
     }
 
     public void addCombatAbility(CombatAbility combatAbility, int i) {
@@ -320,22 +320,31 @@ public class Combat {
 
     //Do not use to lose health (e.g. negative input)
     //Also raises the max health
-    public final void addAttackAndHealth(int attack, int health) {
-        if (attack > 0)
-            this.attack += attack;
+    public final void addAttackAndHealth(int attack, int health, boolean turnly) {
+        if (turnly) {
+            if (attack > 0)
+                this.turnlyAttack += attack;
 
-        if (health > 0) {
-            this.health += health;
-            this.maxHealth += health;
+            if (health > 0) {
+                this.turnlyHealth += health;
+            }
+        } else {
+            if (attack > 0)
+                this.attack += attack;
+
+            if (health > 0) {
+                this.health += health;
+                this.maxHealth += health;
+            }
         }
     }
 
     public boolean canDieFromBlock() {
-        return getHealth() == 0 || (blockedBy != null && game.getCard(blockedBy).hasCombatAbility(Deathtouch));
+        return getHealth() == 0 || (blockedBy != null && game.getCard(blockedBy).hasCombatAbility(Deadly));
     }
 
     public boolean canDieFromAttack() {
-        return getHealth() == 0 || game.getCard(blockedAttacker).hasCombatAbility(Deathtouch);
+        return getHealth() == 0 || game.getCard(blockedAttacker).hasCombatAbility(Deadly);
     }
 
     public boolean isAttacking() {
@@ -357,14 +366,10 @@ public class Combat {
             amount -= turnlyHealth;
             turnlyHealth = 0;
             this.health -= Math.min(amount, this.health);
+            if (health <= 0) {
+                game.destroy(card.getId());
+            }
         }
-    }
-
-    public void addTurnlyAttackAndHealth(int attack, int health) {
-        if (attack > 0)
-            turnlyAttack += attack;
-        if (health > 0)
-            turnlyHealth += health;
     }
 
     public void setAttack(int i) {
@@ -381,8 +386,12 @@ public class Combat {
         return deploying;
     }
 
-    public void addShield(int i) {
-        shield += i;
+    public void addShield(int i, boolean turnly) {
+        if (turnly) {
+            turnlyShield += i;
+        } else {
+            shield += i;
+        }
     }
 
     public void triggerDamageEffects(UUID targetId, Damage damage) {
@@ -393,18 +402,58 @@ public class Combat {
         attack = Math.max(attack - i, 0);
     }
 
+    public int drain(int amount) {
+        int drained = 0;
+        if (turnlyHealth <= amount){
+            drained += turnlyHealth;
+            turnlyHealth = 0;
+            amount -= turnlyHealth;
+            drained += Math.min(health, amount);
+            health = Math.max(0, health - amount);
+            if (health <= 0) {
+                game.destroy(card.getId());
+            }
+        } else {
+            drained += amount;
+            turnlyHealth -= amount;
+        }
+        return drained;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void removeShield(int shieldAmount) {
+        if (turnlyShield >= shieldAmount){
+            turnlyShield -= shieldAmount;
+        } else {
+            shieldAmount -= turnlyShield;
+            turnlyShield = 0;
+            shield = Math.max(shield - shieldAmount, 0);
+        }
+    }
+
+    public CounterMap<CombatAbility> getCombatAbilities() {
+        CounterMap<CombatAbility> a = new CounterMap<>();
+        a.merge(turnlyCombatAbilityList);
+        a.merge(combatAbilityList);
+        return a;
+    }
+
     public enum CombatAbility {
-        Deathtouch, //Done
+        Deadly, //Done
         Defender, //Done
         FirstStrike, //Done
         Trample, //Done
-        Flying, //Done
-        Haste, //Done
+        Evasive, //Done
         Vigilance, //Done
         Lifelink, //Done
         Reach, //Done
         Drain, //Done
         Unblockable, //Done
+        Blitz,
+        Decay,
 
         //Numbered abilities
         Regenerate //Done

@@ -1,5 +1,6 @@
 package com.visitor.game.parts;
 
+import com.visitor.card.properties.Targetable;
 import com.visitor.game.Card;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -12,15 +13,15 @@ import java.util.function.Predicate;
 import static com.visitor.game.parts.Base.Zone.Both_Play;
 
 public class HigherOrder extends Checkers {
-    public void forEachInZone(UUID playerId, Zone zone, Predicate<Card> filter, Consumer<UUID> cardIdConsumer) {
+    public void forEachInZone(UUID playerId, Zone zone, Predicate<Targetable> filter, Consumer<UUID> cardIdConsumer) {
         getZone(playerId, zone).forEach(card -> {
             if (filter.test(card)) {
-                cardIdConsumer.accept(card.id);
+                cardIdConsumer.accept(card.getId());
             }
         });
     }
 
-    public int countInZone(UUID playerId, Zone zone, Predicate<com.visitor.game.Card> cardConsumer) {
+    public int countInZone(UUID playerId, Zone zone, Predicate<Targetable> cardConsumer) {
         Arraylist<Integer> count = new Arraylist<>();
         getZone(playerId, zone).forEach(card -> {
             if (cardConsumer.test(card)) {

@@ -5,11 +5,11 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.card.types.helpers.Ability;
 import com.visitor.game.Card;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Predicates;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types;
 
@@ -26,85 +26,111 @@ public class Activatable {
     private final Card card;
     private final Game game;
 
-    private final Arraylist<ActivatedAbility> abilityList;
-    private final Arraylist<ActivatedAbility> turnlyAbilityList;
+    private final Hashmap<UUID, ActivatedAbility> abilityList;
+    private final Hashmap<UUID, ActivatedAbility> turnlyAbilityList;
 
 
     // Constructors
     public Activatable(Game game, Card card) {
         this.game = game;
         this.card = card;
-        abilityList = new Arraylist<>();
-        turnlyAbilityList = new Arraylist<>();
+        abilityList = new Hashmap<>();
+        turnlyAbilityList = new Hashmap<>();
     }
 
     public final boolean canActivate() {
-        for (ActivatedAbility activatedAbility : abilityList) {
+        for (ActivatedAbility activatedAbility : abilityList.values()) {
             if (activatedAbility.canActivate())
-                return true;
+                return card.zone == Base.Zone.Play;
         }
-        for (ActivatedAbility activatedAbility : turnlyAbilityList) {
+        for (ActivatedAbility activatedAbility : turnlyAbilityList.values()) {
             if (activatedAbility.canActivate())
-                return true;
+                return card.zone == Base.Zone.Play;
         }
         return false;
     }
 
     public final Arraylist<ActivatedAbility> getActivatableAbilities() {
         Arraylist<ActivatedAbility> abilities = new Arraylist<>();
-        for (ActivatedAbility activatedAbility : abilityList) {
+        for (ActivatedAbility activatedAbility : abilityList.values()) {
             if (activatedAbility.canActivate())
                 abilities.add(activatedAbility);
         }
-        for (ActivatedAbility activatedAbility : turnlyAbilityList) {
+        for (ActivatedAbility activatedAbility : turnlyAbilityList.values()) {
             if (activatedAbility.canActivate())
                 abilities.add(activatedAbility);
         }
         return abilities;
     }
 
+    public final ActivatedAbility getActivatableAbility(UUID abilityId) {
+       return abilityList.get(abilityId) != null ? abilityList.get(abilityId) : turnlyAbilityList.get(abilityId);
+    }
 
-    public final void activate() {
-        Arraylist<ActivatedAbility> abilities = getActivatableAbilities();
-        if (abilities.size() == 1) {
-            abilities.get(0).activate();
-        } else if (abilities.size() > 1) {
-            Arraylist<Card> abilityCards = new Arraylist<>(abilities.transform(aa -> (Card) new Ability(game, card, aa)));
-            UUID chosenAbility = game.selectFromList(card.controller, abilityCards, Predicates::any, 1, false, "Choose an ability to activate.").get(0);
-            abilities.forEach(aa -> {
-                if (aa.id.equals(chosenAbility)) {
-                    aa.activate();
-                }
-            });
-        }
+
+    public final void activate(UUID abilityId) {
+        getActivatableAbility(abilityId).activate();
     }
 
     // Adders
     public Activatable addActivatedAbility(ActivatedAbility... abilities) {
-        abilityList.addAll(Arrays.asList(abilities));
+        Arrays.asList(abilities).forEach(a -> abilityList.putIn(a.id, a));
         return this;
     }
 
-    public void addTurnlyActivatedAbility(ActivatedAbility... abilities) {
-        turnlyAbilityList.addAll(Arrays.asList(abilities));
+    public Activatable addTurnlyActivatedAbility(ActivatedAbility... abilities) {
+        Arrays.asList(abilities).forEach(a -> turnlyAbilityList.putIn(a.id, a));
+        return this;
     }
 
     public void endTurn() {
         turnlyAbilityList.clear();
     }
 
-    public Arraylist<Types.Targeting> getAbilityBuilders() {
-        Arraylist<Types.Targeting> builders = new Arraylist<>();
-        abilityList.forEach(a -> {
-            if (a.needsTargeting()) {
-                builders.add(a.getTargetingBuilder().build());
+    public Arraylist<Types.TargetingAbility> getAbilityBuilders() {
+        Arraylist<Types.TargetingAbility> builders = new Arraylist<>();
+        abilityList.values().forEach(a -> {
+            if (a.canActivate()) {
+                builders.add(a.getTargetingAbility());
             }
         });
-        turnlyAbilityList.forEach(a -> {
-            if (a.needsTargeting()) {
-                builders.add(a.getTargetingBuilder().build());
+        turnlyAbilityList.values().forEach(a -> {
+            if (a.canActivate()) {
+                builders.add(a.getTargetingAbility());
             }
         });
         return builders;
+    }
+
+    public void clear() {
+        for (ActivatedAbility a : abilityList.values()){
+            a.clear();
+        }
+        for (ActivatedAbility a : turnlyAbilityList.values()){
+            a.clear();
+        }
+    }
+
+    public void setAbilityTargets(UUID abilityId, Arraylist<Types.TargetSelection> targets) {
+        ActivatedAbility a = abilityList.get(abilityId);
+        if (a != null){
+            a.setTargets(targets);
+        } else {
+            a = turnlyAbilityList.get(abilityId);
+            if (a != null){
+                a.setTargets(targets);
+            }
+        }
+    }
+
+    public Arraylist<UUID> getAllTargets() {
+        Arraylist<UUID> targets = new Arraylist<>();
+        for (ActivatedAbility t : abilityList.values()){
+            targets.addAll(t.getAllTargets());
+        }
+        for (ActivatedAbility t : turnlyAbilityList.values()){
+            targets.addAll(t.getAllTargets());
+        }
+        return targets;
     }
 }

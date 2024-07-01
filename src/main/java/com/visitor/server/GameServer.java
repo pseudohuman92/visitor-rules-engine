@@ -6,6 +6,7 @@ import com.visitor.game.Draft;
 import com.visitor.game.Player;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.ServerMessages;
@@ -29,7 +30,7 @@ import static java.util.logging.Logger.getLogger;
  */
 public class GameServer {
 
-    static MetricsDb metricsDb = new MetricsDb();
+    //static MetricsDb metricsDb = new MetricsDb();
     public Hashmap<String, GeneralEndpoint> playerConnections;
     public Hashmap<UUID, Game> games;
     public Hashmap<UUID, Draft> drafts;
@@ -56,8 +57,8 @@ public class GameServer {
         game.startActiveClock();
     }
 
-    void activateCard(UUID gameID, UUID playerId, UUID cardID) {
-        takeGameAction(gameID, game -> game.activateCard(playerId, cardID));
+    void activateCard(UUID gameID, UUID playerId, UUID cardID, UUID abilityId, Arraylist<Types.TargetSelection> targets) {
+        takeGameAction(gameID, game -> game.activateCard(playerId, cardID, abilityId, targets));
     }
 
     void concede(UUID gameID, UUID playerId) {
@@ -76,12 +77,20 @@ public class GameServer {
         takeGameAction(gameID, game -> game.pass(playerId));
     }
 
-    void studyCard(UUID gameID, UUID playerId, UUID cardID) {
-        takeGameAction(gameID, game -> game.studyCard(playerId, cardID, true));
+    void studyCard(UUID gameID, UUID playerId, UUID cardID, CounterMap<Types.Knowledge> knowledge) {
+        takeGameAction(gameID, game -> game.studyCard(playerId, cardID, true, knowledge));
     }
 
-    void playCard(UUID gameID, UUID playerId, UUID cardID) {
-        takeGameAction(gameID, game -> game.playCard(playerId, cardID));
+    void playCard(UUID gameID, UUID playerId, UUID cardID, Arraylist<Types.TargetSelection> targets) {
+        takeGameAction(gameID, game -> game.playCard(playerId, cardID, targets));
+    }
+
+    void selectAttackers(UUID gameID, Types.AttackerAssignment[] attackers) {
+        takeGameAction(gameID, game -> game.selectAttackers(attackers));
+    }
+
+    void selectBlockers(UUID gameID, Types.BlockerAssignment[] blockers) {
+        takeGameAction(gameID, game -> game.selectBlockers(blockers));
     }
 
     synchronized ServerGameMessage getLastMessage(UUID gameID, UUID playerId) {
@@ -246,7 +255,7 @@ public class GameServer {
             playerConnections.get(username).send(ServerMessage.newBuilder()
                     .setNewGame(NewGame.newBuilder()
                             .setGameType(AI_BO1_CONSTRUCTED)
-                            .setAiId(aiPlayer.id.toString())
+                            .setAiId(aiPlayer.getId().toString())
                             .setGame(game.toGameState(username))));
         } catch (IOException | EncodeException ex) {
             getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
@@ -258,7 +267,7 @@ public class GameServer {
     }
 
     public void removeGame(UUID gameID, Arraylist<String> history) {
-        metricsDb.addMatchHistory(gameID, history);
+        //metricsDb.addMatchHistory(gameID, history);
         games.remove(gameID);
     }
 

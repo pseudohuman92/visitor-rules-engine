@@ -1,7 +1,8 @@
 package com.visitor.game;
 
 import com.visitor.card.properties.*;
-import com.visitor.card.types.helpers.Ability;
+import com.visitor.card.types.helpers.AbilityCard;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -14,7 +15,7 @@ import com.visitor.protocol.Types.CounterGroup;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
 
-import java.io.Serializable;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -26,22 +27,20 @@ import static java.util.UUID.randomUUID;
 /**
  * @author pseudo
  */
-public abstract class Card implements Serializable {
+public abstract class Card implements Targetable {
 
     protected final Game game;
-    public UUID id;
+    private UUID id;
     public String name;
     public String text;
     public Arraylist<CardType> types;
     public Arraylist<CardSubtype> subtypes;
     public CounterMap<Knowledge> knowledge;
 
-    public UUID owner;
     public UUID controller;
     public Game.Zone zone;
     protected boolean depleted;
     protected CounterMap<Counter> counters;
-    public Arraylist<UUID> targets;
     public Arraylist<UUID> attachments;
 
     protected Activatable activatable;
@@ -56,22 +55,23 @@ public abstract class Card implements Serializable {
 
     public Card(Game game, String name,
                 CounterMap<Knowledge> knowledge,
-                CardType type, String text, UUID owner) {
+                CardType type, String text, UUID controller) {
         this.game = game;
         id = randomUUID();
         counters = new CounterMap<>();
         types = new Arraylist<>(type);
         subtypes = new Arraylist<>();
-        targets = new Arraylist<>();
         attachments = new Arraylist<>();
         enterPlayEffects = new Arraylist<>();
         leavePlayEffects = new Arraylist<>();
 
         this.name = name;
-        this.knowledge = knowledge;
+        if (knowledge != null)
+            this.knowledge = knowledge;
+        else
+            this.knowledge = new CounterMap<>();
         this.text = text;
-        this.owner = owner;
-        this.controller = owner;
+        this.controller = controller;
         this.depleted = false;
     }
 
@@ -103,7 +103,8 @@ public abstract class Card implements Serializable {
      */
     public void clear() {
         depleted = false;
-        targets.clear();
+        playable.clear();
+        activatable.clear();
         attachments.clear();
         if (combat != null)
             combat.clear();
@@ -142,11 +143,10 @@ public abstract class Card implements Serializable {
 
 
     public void moveToZone(Game.Zone zone) {
-        if (this.zone == Play && (zone != Play && zone != Opponent_Play)) {
+        if (this.zone == Play && zone != Play) {
             leavePlay();
         }
         game.extractCard(id);
-        this.zone = zone;
         game.putTo(controller, this, zone);
     }
 
@@ -162,9 +162,6 @@ public abstract class Card implements Serializable {
         moveToZone(Hand);
     }
 
-    public void purge() {
-        moveToZone(Game.Zone.Void);
-    }
 
 	/*
 	public void copyPropertiesFrom (Card c) {
@@ -195,8 +192,8 @@ public abstract class Card implements Serializable {
         runIfNotNull(playable, () -> playable.play(withCost));
     }
 
-    public final void study(Player player, boolean normal) {
-        runIfNotNull(studiable, () -> studiable.study(player, normal));
+    public final void study(Player player, boolean regular, CounterMap<Types.Knowledge> knowledge) {
+        runIfNotNull(studiable, () -> studiable.study(player, regular, knowledge));
     }
 
     public final void checkEvent(Event e) {
@@ -219,8 +216,8 @@ public abstract class Card implements Serializable {
         return runIfNotNull(combat, () -> combat.getAttack());
     }
 
-    public void addAttackAndHealth(int attack, int health) {
-        runIfNotNull(combat, () -> combat.addAttackAndHealth(attack, health));
+    public void addAttackAndHealth(int attack, int health, boolean turnly) {
+        runIfNotNull(combat, () -> combat.addAttackAndHealth(attack, health, turnly));
     }
 
     //TODO: Refactor these like above
@@ -244,8 +241,8 @@ public abstract class Card implements Serializable {
         runIfNotNull(combat, combat::dealBlockDamage);
     }
 
-    public final void activate() {
-        runIfNotNull(activatable, activatable::activate);
+    public final void activate(UUID abilityId) {
+        runIfNotNull(activatable, () -> activatable.activate(abilityId));
     }
 
     public final void unsetBlocking() {
@@ -274,6 +271,10 @@ public abstract class Card implements Serializable {
 
     public void addCombatAbility(Combat.CombatAbility ability) {
         runIfNotNull(combat, () -> combat.addCombatAbility(ability));
+    }
+
+    public void addCombatAbility(Combat.CombatAbility ability, int count) {
+        runIfNotNull(combat, () -> combat.addCombatAbility(ability, count));
     }
 
     public void removeCombatAbility(Combat.CombatAbility ability) {
@@ -333,17 +334,13 @@ public abstract class Card implements Serializable {
         runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
     }
 
-    public void addTurnlyAttackAndHealth(int attack, int health) {
-        runIfNotNull(combat, () -> combat.addTurnlyAttackAndHealth(attack, health));
-    }
-
     public void addTurnlyActivatedAbility(ActivatedAbility ability) {
         runIfNotNull(activatable, () -> activatable.addTurnlyActivatedAbility(ability));
     }
 
 
-    public void addShield(int i) {
-        runIfNotNull(combat, () -> combat.addShield(i));
+    public void addShield(int i, boolean turnly) {
+        runIfNotNull(combat, () -> combat.addShield(i, turnly));
     }
 
     public void setAttack(int i) {
@@ -385,7 +382,7 @@ public abstract class Card implements Serializable {
     }
 
     /**
-     * Enter Play Effect setters
+     * Enter Play TargetingEffect setters
      */
 
 
@@ -398,7 +395,7 @@ public abstract class Card implements Serializable {
     }
 
     public void addEnterPlayEffectOnStack(CounterMap<Types.Knowledge> knowledge, String text, Runnable effect) {
-        addEnterPlayEffect(knowledge, () -> game.addToStack(new Ability(game, this, text, effect)));
+        addEnterPlayEffect(knowledge, () -> game.addToStack(new AbilityCard(game, this, text, effect)));
     }
 
     public void addLeavePlayEffect(CounterMap<Types.Knowledge> knowledge, Runnable effect) {
@@ -410,7 +407,7 @@ public abstract class Card implements Serializable {
     }
 
     public void addLeavePlayEffectOnStack(CounterMap<Types.Knowledge> knowledge, String text, Runnable effect) {
-        addLeavePlayEffect(knowledge, () -> game.addToStack(new Ability(game, this, text, effect)));
+        addLeavePlayEffect(knowledge, () -> game.addToStack(new AbilityCard(game, this, text, effect)));
     }
 
     public boolean isPlayable() {
@@ -421,9 +418,6 @@ public abstract class Card implements Serializable {
         return playable.getCost();
     }
 
-    public void setPurging() {
-        runIfNotNull(playable, playable::setPurging);
-    }
 
     public void setDonating() {
         addEnterPlayEffect(null, () -> game.donate(id, game.getOpponentId(controller), Play));
@@ -437,9 +431,9 @@ public abstract class Card implements Serializable {
         attachments.remove(attachmentId);
     }
 
-    public void setAttachable(Predicate<Card> validTarget, Consumer<UUID> afterAttachEffect, Consumer<UUID> afterRemoveEffect) {
+    public void setAttachable(Predicate<Targetable> validTarget, Consumer<UUID> afterAttachEffect, Consumer<UUID> afterRemoveEffect) {
         attachable = new Attachable(game, this, validTarget, afterAttachEffect, afterRemoveEffect);
-        playable.setTargetSingleCard(Game.Zone.Both_Play, validTarget, "Choose a card to attach", attachable::setAttachTo, null);
+        playable.addTargetSingleCard(Game.Zone.Both_Play, validTarget, "Choose a target to attach", attachable::setAttachTo, false);
     }
 
     public void loseAttack(int attack) {
@@ -472,8 +466,8 @@ public abstract class Card implements Serializable {
                 .setCanBlock(canBlock())
                 .addAllTypes(types.transformToStringList())
                 .addAllSubtypes(subtypes.transformToStringList())
-                .addAllTargets(targets.transformToStringList())
-                .addAllAttachments(attachments.transformToStringList());
+                .addAllAttachments(attachments.transformToStringList())
+                .addAllTargets(getAllTargets().transformToStringList());
 
         counters.forEach((k, i) -> builder.addCounters(CounterGroup.newBuilder()
                 .setCounter(k)
@@ -486,7 +480,7 @@ public abstract class Card implements Serializable {
         if (playable != null) {
             builder.setCost(playable.getCost() + "");
             if (playable.needsTargets()){
-                builder.setPlayTargets(playable.getTargetingBuilder());
+                builder.addAllPlayTargets(playable.getTargetingBuilder());
             }
 
         }
@@ -499,6 +493,71 @@ public abstract class Card implements Serializable {
         }
 
         return builder;
+    }
+
+    public void setDisappearing() {
+        playable.setDisappearing();
+    }
+
+    public int drain(int amount) {
+        return combat.drain(amount);
+    }
+
+    public int getMaxHealth() {
+        return combat.getMaxHealth();
+    }
+
+    public void setPlayableTargets(Arraylist<Types.TargetSelection> targets) {
+        playable.setTargets(targets);
+    }
+
+    public void setActivatableTargets(UUID abilityId, Arraylist<Types.TargetSelection> targets) {
+        activatable.setAbilityTargets(abilityId, targets);
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+
+    protected void setId(UUID id) {
+        this.id = id;
+    }
+
+    @Override
+    public Game.Zone getZone() {
+        return zone;
+    }
+
+    public Arraylist<UUID> getAllTargets(){
+        Arraylist<UUID> a = new Arraylist<>();
+        if (playable != null && playable.needsTargets()) {
+            a.addAll(playable.getAllTargets());
+        }
+        if (activatable != null){
+            a.addAll(activatable.getAllTargets());
+        }
+        return a;
+    };
+
+    public int getShields() {
+        if (combat != null){
+            return combat.getShield();
+        } else {
+            return 0;
+        }
+    }
+
+    public void removeShields(int shieldAmount) {
+        runIfNotNull(combat, () -> combat.removeShield(shieldAmount));
+    }
+
+    public CounterMap<Combat.CombatAbility> getCombatAbilities() {
+        if (combat != null){
+            return combat.getCombatAbilities();
+        } else {
+            return new CounterMap<>();
+        }
     }
 
     public enum CardType {
@@ -529,7 +588,7 @@ public abstract class Card implements Serializable {
         Warrior,
         Golem,
         Elf,
-        Insect, Plant, Wurm, Wolf
+        Insect, Plant, Wurm, Wolf, Drone;
     }
 
 }

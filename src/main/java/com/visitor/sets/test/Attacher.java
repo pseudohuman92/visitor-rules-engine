@@ -22,7 +22,7 @@ public class Attacher extends Attachment {
                 0, new CounterMap(),
                 "Attach to Unit\n+1/+1",
                 owner, Predicates::isUnit,
-                attachedId -> game.addAttackAndHealth(attachedId, 1, 1),
+                attachedId -> game.addAttackAndHealth(attachedId, 1, 1, false),
                 attachedId -> game.removeAttackAndHealth(attachedId, 1, 1));
     }
 }

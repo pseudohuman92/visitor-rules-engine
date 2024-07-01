@@ -24,23 +24,19 @@ public class Turns extends Actions {
                 phase = MAIN_BEFORE;
                 break;
             case MAIN_BEFORE:
-                activePlayer = UUID.randomUUID();
+                activePlayer = turnPlayer;
                 phase = ATTACK;
-                chooseAttackers();
+                break;
+            case ATTACK:
+                phase = ATTACK_PLAY;
                 activePlayer = turnPlayer;
                 if (attackers.isEmpty()) {
                     phase = MAIN_AFTER;
                 }
                 break;
-            case ATTACK:
-                phase = ATTACK_PLAY;
-                activePlayer = turnPlayer;
-                break;
             case ATTACK_PLAY:
                 activePlayer = this.getOpponentId(turnPlayer);
                 phase = BLOCK;
-                chooseBlockers();
-                activePlayer = this.getOpponentId(turnPlayer);
                 break;
             case BLOCK:
                 activePlayer = turnPlayer;

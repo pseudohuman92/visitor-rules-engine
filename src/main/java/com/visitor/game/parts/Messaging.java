@@ -1,7 +1,9 @@
 package com.visitor.game.parts;
 
 import com.google.protobuf.ByteString;
+import com.visitor.card.properties.Targetable;
 import com.visitor.game.Card;
+import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Hashmap;
@@ -45,97 +47,23 @@ public class Messaging extends Connections {
         }
     }
 
-    private Arraylist<UUID> selectFrom(UUID playerId, Types.SelectFromType type, Arraylist<com.visitor.game.Card> candidates, Arraylist<UUID> canSelect, Arraylist<UUID> canSelectPlayers, int count, boolean upTo, String message) {
+    private Arraylist<UUID> selectFrom(UUID playerId, Types.SelectFromType type, Arraylist<Targetable> candidates, Arraylist<UUID> canSelect,
+                                       Arraylist<UUID> canSelectPlayers, int minCount, int maxCount, String message) {
+        Types.Targeting.Builder t = Types.Targeting.newBuilder()
+                .addAllPossibleTargets(canSelect.transformToStringList())
+                .addAllPossibleTargets(canSelectPlayers.transformToStringList())
+                .setMinTargets(minCount)
+                .setMaxTargets(maxCount)
+                .setTargetMessage(message);
+
         ServerGameMessages.SelectFrom.Builder b = ServerGameMessages.SelectFrom.newBuilder()
-                .addAllSelectable(canSelect.transformToStringList())
-                .addAllSelectable(canSelectPlayers.transformToStringList())
-                .addAllCandidates(candidates.transform(c -> c.toCardMessage().build()))
+                .setTargets(t)
                 .setMessageType(type)
-                .setSelectionCount(count)
-                .setUpTo(upTo)
-                .setMessageP(message)
                 .setGame(toGameState(playerId, true));
         try {
             send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectFrom(b));
             String[] l = (String[]) response.take();
             return toUUIDList(l);
-        } catch (InterruptedException ex) {
-            getLogger(Game.class.getName()).log(SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    Arraylist<Types.AttackerAssignment> selectAttackers(UUID playerId) {
-
-        List<String> attackers = getZone(playerId, Game.Zone.Play).parallelStream()
-                .filter(com.visitor.game.Card::canAttack)
-                .map(u -> u.id.toString()).collect(Collectors.toList());
-
-        if (attackers.isEmpty()) {
-            return (new Arraylist<>());
-        }
-        Arraylist<String> targets = new Arraylist<>(getOpponentId(playerId).toString());
-        List<String> allies = getZone(this.getOpponentId(playerId), Game.Zone.Play).parallelStream()
-                .filter(Predicates::isAlly)
-                .map(u -> u.id.toString()).collect(Collectors.toList());
-        targets.addAll(allies);
-        List<Types.Attacker> attackerList = attackers.parallelStream()
-                .map(a -> Types.Attacker.newBuilder()
-                        .setAttackerId(a)
-                        .addAllPossibleAttackTargets(targets).build())
-                .collect(Collectors.toList());
-        out.println("Sending Select Attackers Message to " + playerId);
-        ServerGameMessages.SelectAttackers.Builder b = ServerGameMessages.SelectAttackers.newBuilder()
-                .addAllPossibleAttackers(attackerList)
-                .setGame(toGameState(playerId, true));
-        try {
-            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectAttackers(b));
-            Types.AttackerAssignment[] l = (Types.AttackerAssignment[]) response.take();
-            return new Arraylist<>(l);
-        } catch (InterruptedException ex) {
-            getLogger(Game.class.getName()).log(SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    Arraylist<Types.BlockerAssignment> selectBlockers(UUID playerId) {
-
-        List<com.visitor.game.Card> potentialBlockers =
-                getZone(playerId, Game.Zone.Play)
-                        .parallelStream()
-                        .filter(com.visitor.game.Card::canBlock)
-                        .collect(Collectors.toList());
-
-        if (potentialBlockers.isEmpty()) {
-            return (new Arraylist<>());
-        }
-
-        Arraylist<Types.Blocker> blockers = new Arraylist<>();
-        potentialBlockers.forEach(pb -> {
-            List<String> targets = attackers.parallelStream()
-                    .filter(a -> pb.canBlock(getCard(a)))
-                    .map(u -> getCard(u).id.toString())
-                    .collect(Collectors.toList());
-            if (!targets.isEmpty()) {
-                blockers.add(Types.Blocker.newBuilder()
-                        .setBlockerId(pb.id.toString())
-                        .addAllPossibleBlockTargets(targets)
-                        .build());
-            }
-        });
-
-        if (blockers.isEmpty()) {
-            return (new Arraylist<>());
-        }
-
-        out.println("Sending Select Blockers Message to " + playerId);
-        ServerGameMessages.SelectBlockers.Builder b = ServerGameMessages.SelectBlockers.newBuilder()
-                .addAllPossibleBlockers(blockers)
-                .setGame(toGameState(playerId, true));
-        try {
-            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectBlockers(b));
-            Types.BlockerAssignment[] l = (Types.BlockerAssignment[]) response.take();
-            return new Arraylist<>(l);
         } catch (InterruptedException ex) {
             getLogger(Game.class.getName()).log(SEVERE, null, ex);
         }
@@ -161,43 +89,48 @@ public class Messaging extends Connections {
     }
 
     //// Prompters
-    public Arraylist<UUID> selectFromZone(UUID playerId, Game.Zone zone, Predicate<Card> validTarget, int count, boolean upTo, String message) {
+    public Arraylist<UUID> selectFromZone(UUID playerId, Game.Zone zone, Predicate<Targetable> validTarget,
+                                          int minCount, int maxCount, String message) {
         Arraylist<UUID> canSelect = new Arraylist<>(getZone(playerId, zone).parallelStream()
-                .filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
-        return selectFrom(playerId, getZoneLabel(zone), getZone(playerId, zone), canSelect, new Arraylist<>(), count, upTo, message);
+                .filter(validTarget).map(Targetable::getId).collect(Collectors.toList()));
+        return selectFrom(playerId, getZoneLabel(zone), ((Arraylist<Targetable>)getZone(playerId, zone)), canSelect, new Arraylist<>(), minCount, maxCount, message);
     }
 
-    public Arraylist<UUID> selectFromZoneWithPlayers(UUID playerId, Game.Zone zone, Predicate<com.visitor.game.Card> validTarget, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo, String message) {
+    public Arraylist<UUID> selectFromZoneWithPlayers(UUID playerId, Game.Zone zone, Predicate<Targetable> validTarget,
+                 Predicate<com.visitor.game.Player> validPlayer, int minCount, int maxCount, String message) {
         Arraylist<UUID> canSelect = new Arraylist<>(getZone(playerId, zone).parallelStream()
-                .filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
+                .filter(validTarget).map(Targetable::getId).collect(Collectors.toList()));
         Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
-                .filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
-        return selectFrom(playerId, getZoneLabel(zone), getZone(playerId, zone), canSelect, canSelectPlayers, count, upTo, message);
+                .filter(validPlayer).map(Player::getId).collect(Collectors.toList()));
+        return selectFrom(playerId, getZoneLabel(zone), ((Arraylist<Targetable>)getZone(playerId, zone)), canSelect, canSelectPlayers, minCount, maxCount, message);
     }
 
-    public Arraylist<UUID> selectFromList(UUID playerId, Arraylist<com.visitor.game.Card> candidates, Predicate<com.visitor.game.Card> validTarget, int count, boolean upTo, String message) {
-        if (message == null || message.equals("")) {
-            message = "Select " + (upTo ? "up to " : "") + count;
+    public Arraylist<UUID> selectFromList(UUID playerId, Arraylist<Targetable> candidates, Predicate<Targetable> validTarget, int minCount, int maxCount, String message) {
+        if (message == null || message.isEmpty()) {
+            message = "Select between " + minCount + " and " + maxCount;
         }
         Arraylist<UUID> canSelect = new Arraylist<>(candidates.parallelStream()
-                .filter(validTarget).map(c -> c.id).collect(Collectors.toList()));
-        return selectFrom(playerId, LIST, candidates, canSelect, new Arraylist<>(), count, upTo, message);
+                .filter(validTarget).map(Targetable::getId).collect(Collectors.toList()));
+        return selectFrom(playerId, LIST, candidates, canSelect, new Arraylist<>(), minCount, maxCount, message);
     }
 
-    public Arraylist<UUID> selectPlayers(UUID playerId, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo) {
+    public Arraylist<UUID> selectPlayers(UUID playerId, Predicate<com.visitor.game.Player> validPlayer, int minCount, int maxCount) {
         Arraylist<UUID> canSelectPlayers = new Arraylist<>(players.values().parallelStream()
-                .filter(validPlayer).map(c -> c.id).collect(Collectors.toList()));
-        String message = "Select " + (upTo ? " up to " : "") + count + " player" + (count > 1 ? "s." : ".");
-        return selectFrom(playerId, getZoneLabel(Game.Zone.Play), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, count, upTo, message);
+                .filter(validPlayer).map(Player::getId).collect(Collectors.toList()));
+        String message = "Select between " + minCount + " and " + maxCount + " players.";
+        return selectFrom(playerId, getZoneLabel(Game.Zone.Play), new Arraylist<>(), new Arraylist<>(), canSelectPlayers, minCount, maxCount, message);
     }
 
-    public Arraylist<UUID> selectDamageTargetsConditional(UUID playerId, Predicate<com.visitor.game.Card> validTarget, Predicate<com.visitor.game.Player> validPlayer, int count, boolean upTo, String message) {
-        return selectFromZoneWithPlayers(playerId, Both_Play, validTarget, validPlayer, count, upTo, message);
+    public Arraylist<UUID> selectDamageTargetsConditional(UUID playerId, Predicate<Targetable> validTarget,
+                              Predicate<com.visitor.game.Player> validPlayer, int minCount, int maxCount, String message) {
+        return selectFromZoneWithPlayers(playerId, Both_Play, validTarget, validPlayer, minCount, maxCount, message);
     }
 
-    public Arraylist<UUID> selectDamageTargets(UUID playerId, int count, boolean upTo, String message) {
-        return selectFromZoneWithPlayers(playerId, Both_Play, Predicates::isDamageable, Predicates::any, count, upTo, message);
+    /*
+    public Arraylist<UUID> selectDamageTargets(UUID playerId, int minCount, int maxCount, String message) {
+        return selectFromZoneWithPlayers(playerId, Both_Play, Predicates::isDamageable, Predicates::any, minCount, maxCount, message);
     }
+    */
 
     public int selectX(UUID playerId, int maxX) {
         if (maxX == 0) {
@@ -271,29 +204,6 @@ public class Messaging extends Connections {
         for (UUID blocker : blockers) {
             b.addBlockers(blocker.toString());
         }
-
-        if (noAction)
-            return b;
-
-
-        players.forEach((s, p) -> {
-            if (playerId.equals(s) && isPlayerActive(s)) {
-                p.hand.forEach(c -> {
-                    if (c.canPlay(true)) {
-                        b.addCanPlay(c.id.toString());
-                    }
-                    if (c.canStudy()) {
-                        b.addCanStudy(c.id.toString());
-                    }
-                });
-                p.playArea.forEach(c -> {
-                    if (c.canActivate()) {
-                        b.addCanActivate(c.id.toString());
-                    }
-                });
-            }
-        });
-
 
         return b;
     }

@@ -4,60 +4,54 @@ import com.visitor.game.Card;
 import com.visitor.game.Player;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
+import com.visitor.helpers.UUIDHelper;
 import com.visitor.protocol.Types;
 
+import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.visitor.game.parts.Base.Zone.Void;
 import static com.visitor.game.parts.Base.Zone.*;
-import static com.visitor.helpers.Predicates.and;
+import static com.visitor.helpers.Predicates.*;
 
 public class Playable {
 
     public Card card;
     private final Game game;
-
-    private final Arraylist<UUID> targets;
-
     private int cost; //Energy cost
 
     private final Arraylist<Supplier<Boolean>> playAdditionalConditions;
     private Supplier<Boolean> playTimingCondition;
     private Supplier<Boolean> playResourceCondition;
 
-    private final Arraylist<Runnable> beforePlay;     //Runs before card is placed into stack. For choosing targets etc.
+    private final Hashmap<UUID, TargetingEffect> costTargeting; //For paying additional costs
     private final Arraylist<Consumer<Boolean>> play;  //Pays the energy cost and places card into the stack.
-    private final Arraylist<Runnable> afterPlay;      //Runs after card is placed into the stack.
 
-    private final Arraylist<Runnable> resolveEffect;  //Runs before card is placed into its resolve zone
-    private Runnable resolvePlaceCard;          //Places card into its resolve zone
+    private Runnable resolvePlaceCard; //Places card into its resolve zone
     private final Arraylist<Runnable> afterResolve;   //Runs after card is placed into its resolve zone
 
-    private Targeting targeting;
+    private final Hashmap<UUID, TargetingEffect> effectTargeting;
     public Playable(Game game, Card card, int cost) {
         this.card = card;
         this.game = game;
         this.cost = cost;
-        this.targets = new Arraylist<>();
         this.afterResolve = new Arraylist<>();
         this.playAdditionalConditions = new Arraylist<>();
-        this.beforePlay = new Arraylist<>();
         this.play = new Arraylist<>();
-        this.afterPlay = new Arraylist<>();
-        this.resolveEffect = new Arraylist<>();
-        this.targeting = null;
-
-
+        this.costTargeting = new Hashmap<>();
+        this.effectTargeting = new Hashmap<>();
+        
         // Default Implementations
         setDefaultPlayResourceCondition();
         setDefaultPlayTimingResource();
         setDefaultResolvePlaceCard();
         setDefaultPlay();
+        setDefaultPlayAdditionalConditions();
     }
 
     public Playable(Game game, Card card) {
@@ -67,7 +61,7 @@ public class Playable {
 
     public Playable(Game game, Card card, int cost, Runnable resolveEffect) {
         this(game, card, cost);
-        this.resolveEffect.add(resolveEffect);
+        addResolveEffect(resolveEffect);
     }
 
 
@@ -105,10 +99,6 @@ public class Playable {
         return setResolveZone(Discard_Pile);
     }
 
-    public Playable setPurging() {
-        return setResolveZone(Void);
-    }
-
     public Playable setDisappearing() {
         resolvePlaceCard = () -> {
             card.zone = null;
@@ -120,7 +110,8 @@ public class Playable {
      * Called by client to check if you can play this card in current game state.
      */
     public final boolean canPlay(boolean withResources) {
-        boolean result = !withResources || (playResourceCondition.get() && playTimingCondition.get());
+        boolean result = (!withResources || (playResourceCondition.get() && playTimingCondition.get())) &&
+                card.zone == Hand;
         for (Supplier<Boolean> additionalCondition : playAdditionalConditions) {
             result = result && additionalCondition.get();
         }
@@ -134,9 +125,7 @@ public class Playable {
      * removes it from player's hand and then puts on the stack.
      */
     public final void play(boolean withCost) {
-        beforePlay.forEachInOrder(Runnable::run);
         play.forEachInOrder(p -> p.accept(withCost));
-        afterPlay.forEachInOrder(Runnable::run);
     }
 
     /**
@@ -144,7 +133,7 @@ public class Playable {
      * This function contains the business logic of the card effect.
      */
     public final void resolve() {
-        resolveEffect.forEachInOrder(Runnable::run);
+        effectTargeting.values().forEach(TargetingEffect::runEffect);
         resolvePlaceCard.run();
         afterResolve.forEachInOrder(Runnable::run);
     }
@@ -153,97 +142,63 @@ public class Playable {
     /**
      * Multiple Targets Setters
      */
-    // For targeting MULTIPLE CARDS from a zone and/or PLAYERS.
-    public void setTargetMultipleCardsOrPlayers(Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate,
-                                                int minCount, int maxCount, String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
+    public void addTargetMultipleCardsOrPlayers(Game.Zone zone, Predicate<Targetable> predicate,
+                                                int minCount, int maxCount, String message, Consumer<UUID> perTargetEffect, boolean withPlayers, boolean forCost) {
 
-        Game.Zone finalZone = zone != null ? zone : Both_Play;
-        targeting = new Targeting(game, minCount, maxCount,
-                cardPredicate != null ? cardPredicate : Predicates::any,
-                playerPredicate != null ? playerPredicate : Predicates::any,
-                message != null ? message : "Select " + (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " cards" + (withPlayers ? " or players." : "."));
-        Runnable finalAfterTargetsEffect = afterTargetsEffect != null ? afterTargetsEffect : () -> {
-        };
-
-        if (!withPlayers) {
-            addPlayAdditionalConditions(() ->
-                    game.hasIn(card.controller, finalZone, targeting.getCardPredicate(), minCount)
-            );
+        String targetingMessage = message != null ? message : "Select " + (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " cards" + (withPlayers ? " or players." : ".");
+        Predicate<Targetable> pred = predicate != null ? and(predicate, c -> isPlayer(c) || c.getZone() == zone) : (c -> isPlayer(c) || c.getZone() == zone);
+        TargetingEffect t = new TargetingEffect(game, card, zone, minCount, maxCount, pred, targetingMessage, perTargetEffect);
+        if (forCost) {
+            costTargeting.put(t.getId(), t);
+        } else {
+            effectTargeting.put(t.getId(), t);
         }
-
-        addBeforePlay(() -> {
-                    if (withPlayers) {
-                        targets.addAll(game.selectFromZoneWithPlayers(card.controller, finalZone, targeting.getCardPredicate(), targeting.getPlayerPredicate(), maxCount, minCount < maxCount, targeting.getTargetingMessage()));
-                    } else {
-                        targets.addAll(game.selectFromZone(card.controller, finalZone, targeting.getCardPredicate(), maxCount, minCount < maxCount, targeting.getTargetingMessage()));
-                    }
-                }
-        );
-        addResolveEffect(() -> {
-            targets.forEach(targetId -> {
-                if ((withPlayers && game.isPlayer(targetId)) || game.isIn(card.controller, finalZone, targetId)) {
-                    perTargetEffect.accept(targetId);
-                }
-            });
-            finalAfterTargetsEffect.run();
-        });
     }
 
     // For targeting MULTIPLE CARDS from a zone.
-    public void setTargetMultipleCards(Game.Zone zone, Predicate<Card> cardPredicate,
+    public void addTargetMultipleCards(Game.Zone zone, Predicate<Targetable> cardPredicate,
                                        int minCount, int maxCount, String message,
-                                       Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-        setTargetMultipleCardsOrPlayers(zone, cardPredicate, null, minCount, maxCount, message, perTargetEffect, afterTargetsEffect, false);
+                                       Consumer<UUID> perTargetEffect, boolean forCost) {
+        addTargetMultipleCardsOrPlayers(zone, and(Predicates::isCard, cardPredicate), minCount, maxCount, message, perTargetEffect, false, forCost);
     }
 
     // For targeting MULTIPLE UNITS from a zone.
-    public void setTargetMultipleUnits(Game.Zone zone, int minCount, int maxCount, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-        setTargetMultipleCards(zone, Predicates::isUnit, minCount, maxCount, "Select " +  (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " units.", perTargetEffect, afterTargetsEffect);
+    public void addTargetMultipleUnits(Game.Zone zone, int minCount, int maxCount, Consumer<UUID> perTargetEffect, boolean forCost) {
+        addTargetMultipleCards(zone, Predicates::isUnit, minCount, maxCount, "Select " +  (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " units.", perTargetEffect, forCost);
     }
 
     /**
      * Single Target Setters
      */
     // For targeting a SINGLE CARD with RESTRICTIONS from a zone or a PLAYER.
-    public void setTargetSingleCardOrPlayer(Game.Zone zone, Predicate<Card> cardPredicate, Predicate<Player> playerPredicate,
-                                            String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect, boolean withPlayers) {
+    public void addTargetSingleCardOrPlayer(Game.Zone zone, Predicate<Targetable> predicate,
+                                            String message, Consumer<UUID> perTargetEffect, boolean withPlayers, boolean forCost) {
         String finalMessage = message != null ? message : "Select a card" + (withPlayers ? " or a player." : ".");
-        setTargetMultipleCardsOrPlayers(zone, cardPredicate, playerPredicate, 1, 1, finalMessage, perTargetEffect, afterTargetsEffect, withPlayers);
+        addTargetMultipleCardsOrPlayers(zone, predicate, 1, 1, finalMessage, perTargetEffect, withPlayers, forCost);
     }
 
     // For targeting a SINGLE CARD with RESTRICTIONS from a zone.
-    public void setTargetSingleCard(Game.Zone zone, Predicate<Card> cardPredicate,
-                                    String message, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
+    public void addTargetSingleCard(Game.Zone zone, Predicate<Targetable> predicate,
+                                    String message, Consumer<UUID> perTargetEffect, boolean forCost) {
 
-        setTargetSingleCardOrPlayer(zone, cardPredicate, null, message, perTargetEffect, afterTargetsEffect, false);
+        addTargetSingleCardOrPlayer(zone, Predicates.and(Predicates::isCard, predicate), message, perTargetEffect, false, forCost);
     }
 
     // For targeting a SINGLE UNIT from a zone or a PLAYER.
-    public void setTargetSingleUnitOrPlayer(Game.Zone zone, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-        setTargetSingleCardOrPlayer(zone, Predicates::isUnit, null, null, perTargetEffect, afterTargetsEffect, true);
+    public void addTargetSingleUnitOrPlayer(Game.Zone zone, Consumer<UUID> perTargetEffect, boolean forCost) {
+        addTargetSingleCardOrPlayer(zone, or(Predicates::isPlayer, Predicates::isUnit), null, perTargetEffect, true, forCost);
     }
 
     /**
      * For targeting a SINGLE UNIT with RESTRICTIONS from a zone.
      *
      * @param zone               = Both_Play
-     * @param cardPredicate      = any
      * @param perTargetEffect
-     * @param afterTargetsEffect = ()->{}
      */
-    public void setTargetSingleUnit(Game.Zone zone, Predicate<Card> cardPredicate, Consumer<UUID> perTargetEffect, Runnable afterTargetsEffect) {
-        Predicate<Card> finalCardPredicate = cardPredicate != null ? cardPredicate : Predicates::any;
-        setTargetSingleCard(zone, and(Predicates::isUnit, finalCardPredicate), "Select a unit.", perTargetEffect, afterTargetsEffect);
-    }
-
-    /**
-     * For targeting a SINGLE PLAYER.
-     */
-    public void setTargetSinglePlayer(Consumer<UUID> playerEffect) {
-        addBeforePlay(() ->
-                targets.addAll(game.selectPlayers(card.controller, Predicates::any, 1, false))
-        );
-        addResolveEffect(() -> playerEffect.accept(targets.get(0)));
+    public void addTargetSingleUnit(Game.Zone zone, Predicate<Targetable> predicate, Consumer<UUID> perTargetEffect, String message, boolean forCost) {
+        Predicate<Targetable> finalCardPredicate = predicate != null ? predicate : Predicates::any;
+        message = message != null ? message : "Select a unit.";
+        addTargetSingleCard(zone, and(Predicates::isUnit, finalCardPredicate), message, perTargetEffect, forCost);
     }
 
 
@@ -253,7 +208,10 @@ public class Playable {
     private void setDefaultPlay() {
         play.add((withCost) -> {
             if (withCost) {
-                game.spendEnergy(card.controller, cost);
+                game.removeEnergy(card.controller, cost);
+            }
+            for (TargetingEffect e :costTargeting.values()){
+                e.runEffect();
             }
             game.addToStack(card);
         });
@@ -273,6 +231,19 @@ public class Playable {
                         game.hasKnowledge(card.controller, card.knowledge);
     }
 
+    public void setDefaultPlayAdditionalConditions() {
+        playAdditionalConditions.add(() -> {
+            boolean canPlay = true;
+            for (TargetingEffect value : costTargeting.values()) {
+                canPlay = canPlay && value.hasEnoughTargets();
+            }
+            for (TargetingEffect value : effectTargeting.values()) {
+                canPlay = canPlay && value.hasEnoughTargets();
+            }
+            return canPlay;
+        });
+    }
+
     /**
      * Adders and setters of attributes
      */
@@ -289,21 +260,13 @@ public class Playable {
         this.playResourceCondition = playResourceCondition;
     }
 
-    public Playable addBeforePlay(Runnable... beforePlay) {
-        this.beforePlay.addAll(Arrays.asList(beforePlay));
-        return this;
-    }
-
     public final void addPlay(Consumer<Boolean>... play) {
         this.play.addAll(Arrays.asList(play));
     }
 
-    public void addAfterPlay(Runnable... afterPlay) {
-        this.afterPlay.addAll(Arrays.asList(afterPlay));
-    }
-
     public Playable addResolveEffect(Runnable resolveEffect) {
-        this.resolveEffect.add(resolveEffect);
+        TargetingEffect t = new TargetingEffect(game, card, resolveEffect);
+        this.effectTargeting.put(t.getId(), t);
         return this;
     }
 
@@ -325,7 +288,48 @@ public class Playable {
         return cost;
     }
 
-    public boolean needsTargets() {return targeting != null; }
+    public boolean needsTargets() {return !effectTargeting.isEmpty(); }
 
-    public Types.Targeting.Builder getTargetingBuilder() {return targeting.toTargetingBuilder();}
+    public Arraylist<Types.Targeting> getTargetingBuilder() {
+        Arraylist<Types.Targeting> builders = new Arraylist<>();
+        for (TargetingEffect t : costTargeting.values())
+            builders.add(t.toTargetingBuilder().build());
+        for (TargetingEffect t : effectTargeting.values())
+            builders.add(t.toTargetingBuilder().build());
+        return builders;
+    }
+
+    public void clear() {
+        for (TargetingEffect t : costTargeting.values()){
+            t.clear();
+        }
+        for (TargetingEffect t : effectTargeting.values()){
+            t.clear();
+        }
+    }
+
+    public void setTargets(Arraylist<Types.TargetSelection> targets) {
+        for (Types.TargetSelection t : targets) {
+            TargetingEffect tr = costTargeting.get(UUID.fromString(t.getId()));
+            if (tr != null){
+                tr.setTargets(UUIDHelper.toUUIDList(t.getTargetsList()));
+            } else {
+                tr = effectTargeting.get(UUID.fromString(t.getId()));
+                if (tr != null){
+                    tr.setTargets(UUIDHelper.toUUIDList(t.getTargetsList()));
+                }
+            }
+        }
+    }
+
+    public Arraylist<UUID> getAllTargets() {
+        Arraylist<UUID> targets = new Arraylist<>();
+        for (TargetingEffect t : costTargeting.values()){
+            targets.addAll(t.getTargets());
+        }
+        for (TargetingEffect t : effectTargeting.values()){
+            targets.addAll(t.getTargets());
+        }
+        return targets;
+    }
 }

@@ -54,6 +54,6 @@ public class Base {
     }
 
     public enum Zone {
-        Deck, Hand, Opponent_Hand, Play, Opponent_Play, Both_Play, Discard_Pile, Void, Opponent_Discard_Pile, Stack
+        Deck, Hand, Play, Both_Play, Discard_Pile, None, Players, Play_With_Player, Both_Play_With_Players, Stack
     }
 }

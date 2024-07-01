@@ -11,7 +11,7 @@ import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
+import static com.visitor.card.properties.Combat.CombatAbility.Evasive;
 
 /**
  * @author pseudo
@@ -23,6 +23,6 @@ public class Flyingy extends Unit {
                 0, new CounterMap(),
                 "",
                 2, 2,
-                owner, Flying);
+                owner, Evasive);
     }
 }

@@ -73,8 +73,10 @@ public class Event {
 
     public static Event destroy(Card destroyingCard, Card destroyedCard) {
         Event e = new Event(Destroy);
-        e.data.add(destroyingCard);
-        e.data.add(destroyedCard);
+        Arraylist<Card> cards = new Arraylist<>();
+        cards.add(destroyingCard);
+        cards.add(destroyedCard);
+        e.data.add(cards);
         return e;
     }
 
@@ -84,11 +86,19 @@ public class Event {
         return e;
     }
 
+    public static Event death(Card diedCard) {
+        Event e = new Event(Death);
+        e.data.add(diedCard);
+        return e;
+    }
+
     public static Event transform(Card transformingCard, Card transformedFrom, Card transformedTo) {
         Event e = new Event(Transform);
-        e.data.add(transformingCard);
-        e.data.add(transformedFrom);
-        e.data.add(transformedTo);
+        Arraylist<Card> cards = new Arraylist<>();
+        cards.add(transformingCard);
+        cards.add(transformedFrom);
+        cards.add(transformedTo);
+        e.data.add(cards);
         return e;
     }
 
@@ -101,6 +111,14 @@ public class Event {
     public static Event enterPlay(Card card) {
         Event e = new Event(Enter_Play);
         e.data.add(card);
+        return e;
+    }
+
+    public static Event damage(Card card, UUID targetId, com.visitor.helpers.containers.Damage damage) {
+        Event e = new Event(Damage);
+        e.data.add(card);
+        e.data.add(targetId);
+        e.data.add(damage);
         return e;
     }
 
@@ -117,7 +135,7 @@ public class Event {
         Turn_Start, Turn_End,
         Draw, Discard, Study,
         Destroy, Transform,
-        Play_Card, Sacrifice, Enter_Play, Attack
+        Play_Card, Sacrifice, Enter_Play, Damage, Death, Attack
     }
 
 }

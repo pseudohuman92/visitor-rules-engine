@@ -1,6 +1,8 @@
 package com.visitor.game;
 
 import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Targetable;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -17,23 +19,24 @@ import static java.util.UUID.randomUUID;
 /**
  * @author pseudo
  */
-public class Player {
+public class Player implements Targetable {
 
     public final Game game;
 
     public String username;
-    public UUID id;
-    public int energy;
-    public int maxEnergy;
-    public int numOfStudiesLeft;
+    private final UUID id;
+    private int energy;
+    private int turnlyEnergy;
+    private int maxEnergy;
+    private int numOfStudiesLeft;
     public Deck deck;
     public Arraylist<Card> hand;
     public Arraylist<Card> discardPile;
-    public Arraylist<Card> voidPile;
     public Arraylist<Card> playArea;
     public CounterMap<Knowledge> knowledgePool;
     public Combat combat;
     public Clock clock;
+
 
     public Player(Game game, String username, String[] decklist) {
         this.game = game;
@@ -41,11 +44,11 @@ public class Player {
         id = randomUUID();
         this.deck = new Deck(game, id, decklist);
         energy = 0;
+        turnlyEnergy = 0;
         maxEnergy = 0;
         numOfStudiesLeft = 1;
         hand = new Arraylist<>();
         discardPile = new Arraylist<>();
-        voidPile = new Arraylist<>();
         playArea = new Arraylist<>();
         knowledgePool = new CounterMap<>();
         combat = new Combat(game, null, 30);
@@ -53,8 +56,11 @@ public class Player {
         clock.start();
     }
 
-    public void draw(int count) {
-        hand.addAll(deck.extractFromTop(count));
+    public Arraylist<UUID> draw(int count) {
+        Arraylist<Card> cards = deck.extractFromTop(count);
+        cards.forEach(c -> c.zone = Base.Zone.Hand);
+        hand.addAll(cards);
+        return new Arraylist<>(cards.transform(Card::getId));
     }
 
     public void receiveDamage(int damageAmount, Card source) {
@@ -73,6 +79,7 @@ public class Player {
 
     public Card discard(UUID cardId) {
         Card c = extractCardFromList(cardId, hand);
+        c.zone = Base.Zone.Discard_Pile;
         discardPile.add(c);
         return c;
     }
@@ -82,6 +89,7 @@ public class Player {
         cardIds.stream().map((cardID) -> extractCardFromList(cardID, hand))
                 .forEachOrdered((card) -> {
                     discarded.add(card);
+                    card.zone = Base.Zone.Discard_Pile;
                     discardPile.add(card);
                 });
         return discarded;
@@ -122,7 +130,7 @@ public class Player {
         for (Card card : list) {
             if (card == null) {
                 System.out.println("Card is NULL!");
-            } else if (card.id.equals(cardID)) {
+            } else if (card.getId().equals(cardID)) {
                 list.remove(card);
                 return card;
             }
@@ -136,11 +144,11 @@ public class Player {
         lists.add(hand);
         lists.add(playArea);
         lists.add(discardPile);
-        lists.add(voidPile);
         lists.add(deck);
         for (Arraylist<Card> list : lists) {
             c = extractCardFromList(cardID, list);
             if (c != null) {
+                c.zone = null;
                 return c;
             }
         }
@@ -149,7 +157,7 @@ public class Player {
 
     public Card getCardFromList(UUID cardID, Arraylist<Card> list) {
         for (Card card : list) {
-            if (card.id.equals(cardID)) {
+            if (card.getId().equals(cardID)) {
                 return card;
             }
         }
@@ -162,7 +170,6 @@ public class Player {
         lists.add(hand);
         lists.add(playArea);
         lists.add(discardPile);
-        lists.add(voidPile);
         lists.add(deck);
         for (Arraylist<Card> list : lists) {
             c = getCardFromList(cardID, list);
@@ -178,7 +185,6 @@ public class Player {
         lists.add(hand);
         lists.add(playArea);
         lists.add(discardPile);
-        lists.add(voidPile);
         lists.add(deck);
         for (Arraylist<Card> list : lists) {
             for (int i = 0; i < list.size(); i++) {
@@ -195,15 +201,14 @@ public class Player {
                 .setId(id.toString())
                 .setUsername(username)
                 .setDeckSize(deck.size())
-                .setEnergy(energy)
+                .setEnergy(energy + turnlyEnergy)
                 .setMaxEnergy(maxEnergy)
                 .setShield(combat.getShield())
                 .setHandSize(hand.size())
                 .setHealth(combat.getHealth())
                 .setTime(clock.getTimeLeft())
                 .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
-                .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()))
-                .addAllVoid(voidPile.transform(c -> c.toCardMessage().build()));
+                .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()));
 
         deck.getDeckColors().forEach((k, i) -> builder.addDeckColors(KnowledgeGroup.newBuilder()
                 .setKnowledge(k)
@@ -221,12 +226,14 @@ public class Player {
 
 
     public void addHealth(int health) {
-        combat.addAttackAndHealth(0, health);
+        combat.addAttackAndHealth(0, health, false);
     }
 
     public void endTurn() {
+
         playArea.forEach(Card::endTurn);
         combat.endTurn();
+        turnlyEnergy = 0;
     }
 
     public void putToBottomOfDeck(Card card) {
@@ -262,15 +269,80 @@ public class Player {
     }
 
     public void purgeFromDeck(int i) {
-        Arraylist<Card> topCards = extractFromTopOfDeck(i);
-        voidPile.addAll(topCards);
+        extractFromTopOfDeck(i);
     }
 
-    public Card discardAtRandom() {
-        return hand.remove((int) (Math.random() * getHandSize()));
+    public Card extractAtRandom(Arraylist<Card> list) {
+        Card c = list.remove((int) (Math.random() * list.size()));
+        c.zone = null;
+        return c;
     }
 
     public Arraylist<Card> getFromTopOfDeck(int i) {
         return deck.getFromTop(i);
+    }
+
+    public void purge(UUID cardId) {
+        Card c = extractCard(cardId);
+        c.zone = null;
+    }
+
+    public void addEnergy(int i, boolean turnly) {
+        if (turnly)
+            turnlyEnergy += i;
+        else
+            energy += i;
+    }
+
+    public void removeEnergy(int i) {
+        if (turnlyEnergy >= i) {
+            turnlyEnergy -= i;
+        } else {
+            i -= turnlyEnergy;
+            turnlyEnergy = 0;
+            energy -= i;
+        }
+    }
+
+    public int getEnergy() {
+        return energy + turnlyEnergy;
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    public void removeMaxEnergy(int count) {
+        maxEnergy -= count;
+    }
+
+    public void addStudyCount(int count) {
+        numOfStudiesLeft += count;
+    }
+
+    public boolean hasStudy(int i) {
+        return numOfStudiesLeft >= i;
+    }
+
+    public void addMaxEnergy(int i) {
+        maxEnergy += 1;
+    }
+
+    public void removeStudy(int i) {
+        numOfStudiesLeft -= i;
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+    
+    public Base.Zone getZone() {
+        return Base.Zone.Players;
+    }
+
+    @Override
+    public boolean isDamagable() {
+        return true;
     }
 }

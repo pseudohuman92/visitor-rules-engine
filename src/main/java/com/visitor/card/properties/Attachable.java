@@ -22,13 +22,13 @@ public class Attachable {
     private final Card card;
     private final Game game;
 
-    private final Predicate<Card> validTarget;
+    private final Predicate<Targetable> validTarget;
     private UUID attachedTo;
     private final Consumer<UUID> afterAttached;
     private final Consumer<UUID> afterRemoved;
 
     // Constructors
-    public Attachable(Game game, Card card, Predicate<Card> validTarget,
+    public Attachable(Game game, Card card, Predicate<Targetable> validTarget,
                       Consumer<UUID> afterAttached, Consumer<UUID> afterRemoved) {
         this.game = game;
         this.card = card;
@@ -45,7 +45,7 @@ public class Attachable {
      * Gets automatically called from Card's enterPlay().
      */
     public final void attach() {
-        game.addAttachmentTo(attachedTo, card.id);
+        game.addAttachmentTo(attachedTo, card.getId());
         afterAttached.accept(attachedTo);
     }
 
@@ -53,7 +53,7 @@ public class Attachable {
      * Gets automatically called from Card's leavePlay().
      */
     public final void removeFromAttached() {
-        game.removeAttachmentFrom(attachedTo, card.id);
+        game.removeAttachmentFrom(attachedTo, card.getId());
         afterRemoved.accept(attachedTo);
         attachedTo = null;
     }

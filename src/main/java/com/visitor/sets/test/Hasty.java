@@ -11,7 +11,7 @@ import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Haste;
+import static com.visitor.card.properties.Combat.CombatAbility.Blitz;
 
 /**
  * @author pseudo
@@ -23,6 +23,6 @@ public class Hasty extends Unit {
                 0, new CounterMap(),
                 "",
                 1, 1,
-                owner, Haste);
+                owner, Blitz);
     }
 }

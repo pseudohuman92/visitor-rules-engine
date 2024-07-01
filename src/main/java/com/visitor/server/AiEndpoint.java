@@ -2,6 +2,8 @@ package com.visitor.server;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.visitor.game.AiPlayer;
+import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.ClientGameMessages.*;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.Types;
@@ -83,7 +85,7 @@ public class AiEndpoint implements GameEndpointInterface {
         checkResponseType(message);
 
         if (playerId.equals(targetId)) {
-            session.getBasicRemote().sendBinary(ByteBuffer.wrap(message.toByteArray()));
+            session.getBasicRemote().sendObject(message.toByteArray());
         } else {
             ClientGameMessage aiResponse = AiPlayer.getResponse(message, aiId);
             out.println("[AI Response] " + aiResponse);
@@ -121,15 +123,23 @@ public class AiEndpoint implements GameEndpointInterface {
     }
 
     private void processMessage(ClientGameMessage message, UUID senderId) {
+        Arraylist<Types.TargetSelection> targets = null;
         switch (message.getPayloadCase()) {
             case PLAYCARD:
-                gameServer.playCard(gameID, senderId, fromString(message.getPlayCard().getCardID()));
+                targets = new Arraylist<>(message.getPlayCard().getTargetsList().toArray(new Types.TargetSelection[message.getPlayCard().getTargetsCount()]));
+                gameServer.playCard(gameID, playerId, fromString(message.getPlayCard().getCardId()), targets);
                 break;
             case ACTIVATECARD:
-                gameServer.activateCard(gameID, senderId, fromString(message.getActivateCard().getCardID()));
+                targets = new Arraylist<>(message.getActivateCard().getTargetsList().toArray(new Types.TargetSelection[message.getActivateCard().getTargetsCount()]));
+                gameServer.activateCard(gameID, playerId, fromString(message.getActivateCard().getCardId()), fromString(message.getActivateCard().getAbilityId()), targets);
                 break;
             case STUDYCARD:
-                gameServer.studyCard(gameID, senderId, fromString(message.getStudyCard().getCardID()));
+                Types.Knowledge k = message.getStudyCard().getSelectedKnowledge();
+                CounterMap<Types.Knowledge> km = new CounterMap<>(k, 1);
+                if (k == Types.Knowledge.NONE) {
+                    km = null;
+                }
+                gameServer.studyCard(gameID, senderId, fromString(message.getStudyCard().getCardId()), km);
                 break;
             case PASS:
                 gameServer.pass(gameID, senderId);
@@ -142,6 +152,14 @@ public class AiEndpoint implements GameEndpointInterface {
                 break;
             case CONCEDE:
                 gameServer.concede(gameID, senderId);
+                break;
+            case SELECTATTACKERS:
+                SelectAttackers sar = message.getSelectAttackers();
+                gameServer.selectAttackers(gameID, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
+                break;
+            case SELECTBLOCKERS:
+                SelectBlockers sbr = message.getSelectBlockers();
+                gameServer.selectBlockers(gameID, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
                 break;
             default:
                 out.println("Unexpected message from " + senderId + ": " + message);
@@ -174,16 +192,6 @@ public class AiEndpoint implements GameEndpointInterface {
                 case SELECTXVALUERESPONSE:
                     waitingResponse = false;
                     gameServer.addToResponseQueue(gameID, message.getSelectXValueResponse().getSelectedXValue());
-                    break;
-                case SELECTATTACKERSRESPONSE:
-                    SelectAttackersResponse sar = message.getSelectAttackersResponse();
-                    waitingResponse = false;
-                    gameServer.addToResponseQueue(gameID, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
-                    break;
-                case SELECTBLOCKERSRESPONSE:
-                    SelectBlockersResponse sbr = message.getSelectBlockersResponse();
-                    waitingResponse = false;
-                    gameServer.addToResponseQueue(gameID, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
                     break;
                 case ASSIGNDAMAGERESPONSE:
                     AssignDamageResponse ddr = message.getAssignDamageResponse();
@@ -219,12 +227,6 @@ public class AiEndpoint implements GameEndpointInterface {
                 break;
             case SELECTXVALUE:
                 responseType = SELECTXVALUERESPONSE;
-                break;
-            case SELECTATTACKERS:
-                responseType = SELECTATTACKERSRESPONSE;
-                break;
-            case SELECTBLOCKERS:
-                responseType = SELECTBLOCKERSRESPONSE;
                 break;
             case ASSIGNDAMAGE:
                 responseType = ASSIGNDAMAGERESPONSE;

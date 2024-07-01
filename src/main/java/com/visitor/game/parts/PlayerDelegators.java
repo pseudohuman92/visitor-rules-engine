@@ -10,15 +10,15 @@ public class PlayerDelegators extends CardDelegators {
     }
 
     public int getPlayerEnergy(UUID playerId) {
-        return getPlayer(playerId).energy;
+        return getPlayer(playerId).getEnergy();
     }
 
     public int getMaxEnergy(UUID playerId) {
-        return getPlayer(playerId).maxEnergy;
+        return getPlayer(playerId).getMaxEnergy();
     }
 
     public boolean hasMaxEnergy(UUID playerId, int count) {
-        return getPlayer(playerId).maxEnergy >= count;
+        return getPlayer(playerId).getMaxEnergy() >= count;
     }
 
 
@@ -39,24 +39,24 @@ public class PlayerDelegators extends CardDelegators {
         return getPlayer(playerId).deck.size();
     }
 
-    public void addEnergy(UUID playerId, int i) {
-        getPlayer(playerId).energy += i;
+    public void addEnergy(UUID playerId, int i, boolean turnly) {
+            getPlayer(playerId).addEnergy(i, turnly);
     }
 
-    public void spendEnergy(UUID playerId, int i) {
-        getPlayer(playerId).energy -= i;
+    public void removeEnergy(UUID playerId, int i) {
+        getPlayer(playerId).removeEnergy(i);
     }
 
     public void removeMaxEnergy(UUID playerId, int count) {
-        getPlayer(playerId).maxEnergy -= count;
+        getPlayer(playerId).removeMaxEnergy(count);
     }
 
-    public void payHealth(UUID playerId, int count) {
+    public void loseHealth(UUID playerId, int count) {
         getPlayer(playerId).payHealth(count);
     }
 
     public void addStudyCount(UUID playerId, int count) {
-        getPlayer(playerId).numOfStudiesLeft += count;
+        getPlayer(playerId).addStudyCount(count);
     }
 
     public void gainHealth(UUID playerId, int health) {

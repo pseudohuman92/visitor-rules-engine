@@ -14,6 +14,6 @@ import static com.visitor.protocol.Types.Knowledge.*;
 public class TestTome extends Tome {
 
     public TestTome(Game game, UUID owner) {
-        super(game, "Test Tome", "{~} card text", owner, new CounterMap().add(GREEN, 2).add(PURPLE, 1).add(RED, 1).add(BLUE, 1).add(YELLOW, 3));
+        super(game, "Test Tome", "Study: Gain {U}{G}{P}{R}{Y}", owner, new CounterMap().add(GREEN, 9).add(PURPLE, 9).add(RED, 9).add(BLUE, 9).add(YELLOW, 9));
     }
 }

@@ -1,6 +1,7 @@
 package com.visitor.helpers;
 
 import com.visitor.game.Card;
+import com.visitor.game.Player;
 import com.visitor.game.parts.Game;
 
 import java.io.File;
@@ -16,11 +17,29 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import static java.lang.Class.forName;
+import static java.lang.System.out;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
 public class HelperFunctions {
 
+    public static Runnable runIf(boolean b, Runnable runnable, Runnable elseRun) {
+        return () -> {
+            if (b) {
+                runnable.run();
+            } else {
+                elseRun.run();
+            }
+        };
+    }
+
+    public static Runnable runIf(boolean b, Runnable runnable) {
+        return runIf(b, runnable, () -> {});
+    }
+
+    public static Runnable runIfEquals(Object object1, Object object2, Runnable runnable) {
+        return runIf(object1.equals(object2), runnable);
+    }
     public static void runIfNotNull(Object object, Runnable runnable, Runnable elseRun) {
         if (object != null) {
             runnable.run();
@@ -83,6 +102,16 @@ public class HelperFunctions {
             getLogger(HelperFunctions.class.getName()).log(SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static Arraylist<Card> getCollection() {
+        Arraylist<Card> cards = new Arraylist<>();
+        Game g = new Game();
+        Player p1 = new Player(g, "asd", new String[0]);
+        Player p2 = new Player(g, "asd", new String[0]);
+        g.addPlayers(p1, p2);
+        getClassesInPackage("com.visitor.sets.base2").forEach(s -> cards.add(createCard(g, p1.getId(), "base2."+s)));
+        return cards;
     }
 
 }

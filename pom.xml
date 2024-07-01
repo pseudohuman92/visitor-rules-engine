@@ -15,7 +15,6 @@
     </properties>
     
     <dependencies>
-
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
@@ -40,6 +39,12 @@
             <artifactId>annotations</artifactId>
             <version>20.1.0</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
         </dependency>
     </dependencies>
 

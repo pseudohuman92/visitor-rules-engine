@@ -53,12 +53,11 @@ public class AiPlayer extends Player {
                 SelectFrom selectFrom = message.getSelectFrom();
 
                 int selectCount =
-                        selectFrom.getUpTo() ?
-                                getRandomInt(selectFrom.getSelectionCount() + 1) :
-                                selectFrom.getSelectionCount();
+                        selectFrom.getTargets().getMinTargets() +
+                                getRandomInt(selectFrom.getTargets().getMaxTargets() - selectFrom.getTargets().getMinTargets()  + 1);
 
                 Arraylist<String> selectedIds = new Arraylist<>();
-                Arraylist<String> selectables = new Arraylist<>(selectFrom.getSelectableList());
+                Arraylist<String> selectables = new Arraylist<>(selectFrom.getTargets().getPossibleTargetsList());
 
                 for (int i = 0; i < selectCount; i++) {
                     int index = getRandomInt(selectables.size());
@@ -93,7 +92,7 @@ public class AiPlayer extends Player {
                                 .setSelectedXValue(
                                         getRandomInt(selectXValue.getMaxXValue() + 1))
                                 .build()).build();
-
+                /*
             case SELECTBLOCKERS:
                 SelectBlockers selectBlockers = message.getSelectBlockers();
                 Arraylist<Types.Blocker> blockers = new Arraylist<>(selectBlockers.getPossibleBlockersList());
@@ -135,7 +134,7 @@ public class AiPlayer extends Player {
                         SelectAttackersResponse.newBuilder()
                                 .addAllAttackers(attackerAssignments)
                                 .build()).build();
-
+               */
             case SELECTKNOWLEDGE:
                 SelectKnowledge selectKnowledge = message.getSelectKnowledge();
 
@@ -151,8 +150,13 @@ public class AiPlayer extends Player {
                 if (gameState.getActivePlayer().equals(aiId.toString())) {
                     if (gameState.getPhase() == Types.Phase.REDRAW) {
                         return builder.setKeep(Keep.newBuilder().build()).build();
-                    }
+                    } else if (gameState.getPhase() == Types.Phase.ATTACK) {
+                        return builder.setSelectAttackers(SelectAttackers.newBuilder().build()).build();
+                    } else if (gameState.getPhase() == Types.Phase.BLOCK) {
+                        return builder.setSelectBlockers(SelectBlockers.newBuilder().build()).build();
+                    } else
 
+                    /*
                     if (gameState.getCanStudyCount() > 0) {
                         return builder.setStudyCard(
                                 StudyCard.newBuilder()
@@ -180,6 +184,8 @@ public class AiPlayer extends Player {
                             return builder.setPass(Pass.newBuilder()).build();
                         }
                     }
+
+                     */
                     return builder.setPass(Pass.newBuilder()).build();
                 }
                 return null;

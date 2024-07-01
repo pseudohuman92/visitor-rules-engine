@@ -1,10 +1,12 @@
 package com.visitor.game.parts;
 
+import com.visitor.card.properties.Targetable;
 import com.visitor.game.Card;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.protocol.Types;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -17,7 +19,8 @@ public class Getters extends Base {
      * Card Accessor Methods
      * Getting Card objects from various places
      */
-    Arraylist<Card> getZone(UUID playerId, Game.Zone zone) {
+    Arraylist<? extends Targetable> getZone(UUID playerId, Game.Zone zone) {
+        Arraylist<Targetable> a = new Arraylist<>();
         switch (zone) {
             case Deck:
                 return getPlayer(playerId).deck;
@@ -25,25 +28,48 @@ public class Getters extends Base {
                 return getPlayer(playerId).hand;
             case Play:
                 return getPlayer(playerId).playArea;
+            case Play_With_Player:
+                a.add(getPlayer(playerId));
+                a.addAll(getPlayer(playerId).playArea);
+                return a;
             case Discard_Pile:
                 return getPlayer(playerId).discardPile;
-            case Void:
-                return getPlayer(playerId).voidPile;
             case Stack:
                 return stack;
-            case Opponent_Play:
-                return getPlayer(getOpponentId(playerId)).playArea;
-            case Opponent_Hand:
-                return getPlayer(getOpponentId(playerId)).hand;
-            case Opponent_Discard_Pile:
-                return getPlayer(getOpponentId(playerId)).discardPile;
             case Both_Play:
-                Arraylist<Card> total = new Arraylist<>();
-                players.values().forEach(player -> total.addAll(player.playArea));
-                return total;
+                players.values().forEach(player -> a.addAll(player.playArea));
+                return a;
+            case Both_Play_With_Players:
+                players.values().forEach(player -> a.addAll(player.playArea));
+                a.addAll(players.values());
+                return a;
+            case Players:
+                a.addAll(players.values());
+                return a;
             default:
-                return null;
+                return a;
         }
+
+    }
+
+    // Returns duplicate
+    Arraylist<Card> getBothZones(Game.Zone zone) {
+        Arraylist<Card> total = new Arraylist<>();
+        switch (zone) {
+            case Deck:
+                players.values().forEach(player -> total.addAll(player.deck));
+            case Hand:
+                players.values().forEach(player -> total.addAll(player.hand));
+            case Play:
+                players.values().forEach(player -> total.addAll(player.playArea));
+            case Discard_Pile:
+                players.values().forEach(player -> total.addAll(player.discardPile));
+            case Both_Play:
+                players.values().forEach(player -> total.addAll(player.playArea));
+            case Stack:
+                total.addAll(stack);
+        }
+        return total;
     }
 
     Types.SelectFromType getZoneLabel(Game.Zone zone) {
@@ -52,17 +78,15 @@ public class Getters extends Base {
                 return Types.SelectFromType.HAND;
             case Play:
             case Both_Play:
-            case Opponent_Play:
+            case Players:
+            case Both_Play_With_Players:
+            case Play_With_Player:
                 return Types.SelectFromType.PLAY;
             case Discard_Pile:
-            case Opponent_Discard_Pile:
                 return Types.SelectFromType.DISCARD_PILE;
-            case Void:
-                return Types.SelectFromType.VOID;
             case Stack:
                 return Types.SelectFromType.STACK;
             case Deck:
-            case Opponent_Hand:
                 return Types.SelectFromType.LIST;
             default:
                 return NOTYPE;
@@ -75,7 +99,7 @@ public class Getters extends Base {
 
     public UUID getPlayerId(String username) {
         for (Player p : players.values()) {
-            if (p.username.equals(username)) return p.id;
+            if (p.username.equals(username)) return p.getId();
         }
         return null;
     }
@@ -97,7 +121,7 @@ public class Getters extends Base {
             }
         }
         for (Card c : stack) {
-            if (c.id.equals(targetID)) {
+            if (c.getId().equals(targetID)) {
                 return c;
             }
         }
@@ -107,15 +131,15 @@ public class Getters extends Base {
     private Card getCardFromZone(UUID playerId, Game.Zone zone, UUID cardId) {
         Arraylist<Card> card = new Arraylist<>();
         getZone(playerId, zone).forEach(c -> {
-            if (c.id.equals(cardId))
-                card.add(c);
+            if (c.getId().equals(cardId))
+                card.add((Card)c);
         });
         assert (card.size() < 2);
         return card.getOrDefault(0, null);
     }
 
-    public Arraylist<Card> getAllFrom(UUID playerId, Game.Zone zone, Predicate<Card> pred) {
-        Arraylist<Card> cards = new Arraylist<>();
+    public Arraylist<Targetable> getAllFrom(UUID playerId, Zone zone, Predicate<Targetable> pred) {
+        Arraylist<Targetable> cards = new Arraylist<>();
         getZone(playerId, zone).forEach(c -> {
             if (pred.test(c)) {
                 cards.add(c);
@@ -124,7 +148,7 @@ public class Getters extends Base {
         return cards;
     }
 
-    public Arraylist<Card> getAllFrom(Game.Zone zone, Predicate<Card> pred) {
+    public Arraylist<Targetable> getAllFrom(Game.Zone zone, Predicate<Targetable> pred) {
         return getAllFrom(turnPlayer, zone, pred).putAllIn(getAllFrom(getOpponentId(turnPlayer), zone, pred));
     }
 
@@ -134,11 +158,10 @@ public class Getters extends Base {
                 getPlayer(playerId).deck).putAllIn(
                 getPlayer(playerId).hand).putAllIn(
                 getPlayer(playerId).playArea).putAllIn(
-                getPlayer(playerId).discardPile).putAllIn(
-                getPlayer(playerId).voidPile);
+                getPlayer(playerId).discardPile);
     }
 
-    public Arraylist<Card> getAll(Predicate<Card> pred) {
+    public Arraylist<Card> getAllCards(Predicate<Targetable> pred) {
         Arraylist<Card> cards = new Arraylist<>();
         getAllZones(turnPlayer).forEach(c -> {
             if (pred.test(c)) {
@@ -153,22 +176,42 @@ public class Getters extends Base {
         return cards;
     }
 
-    public Arraylist<UUID> getAllIds(Predicate<Card> pred) {
-        return new Arraylist<>(getAll(pred).transform(c -> c.id));
+    public Arraylist<UUID> getAllIds(Predicate<Targetable> pred) {
+        Arraylist<UUID> a = new Arraylist<>(getAllCards(pred).transform(Targetable::getId));
+        a.addAll(getAllPlayerIds(pred));
+        return a;
     }
 
-    public Arraylist<UUID> getAllIdsPlayers(Predicate<Player> pred) {
-        Arraylist<UUID> players = new Arraylist<>();
-        if (pred.test(getPlayer(turnPlayer))) {
-            players.add(getPlayer(turnPlayer).id);
-        }
-        if (pred.test(getPlayer(getOpponentId(turnPlayer)))) {
-            players.add(getPlayer(getOpponentId(turnPlayer)).id);
-        }
-        return players;
+    protected Collection<Player> getAllPlayers(Predicate<Targetable> pred) {
+        Arraylist<Player> ids = new Arraylist<>();
+        players.values().forEach(i -> {
+           if (pred.test(i)){
+               ids.add(i);
+           }
+        });
+        return ids;
     }
 
-    Arraylist<Card> getAll(List<UUID> list) {
+    protected Collection<UUID> getAllPlayerIds(Predicate<Targetable> pred) {
+        Arraylist<UUID> ids = new Arraylist<>();
+        players.values().forEach(i -> {
+            if (pred.test(i)){
+                ids.add(i.getId());
+            }
+        });
+        return ids;
+    }
+
+    public Collection<UUID> getAllPlayerIds() {
+        Arraylist<UUID> ids = new Arraylist<>();
+        players.values().forEach(i -> {
+                ids.add(i.getId());
+        });
+        return ids;
+    }
+
+
+    Arraylist<Card> getAllCardsById(List<UUID> list) {
         return new Arraylist<>(list.stream().map(this::getCard).collect(Collectors.toList()));
     }
 

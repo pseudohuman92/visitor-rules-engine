@@ -8,8 +8,7 @@ import com.visitor.protocol.Types;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Flying;
-import static com.visitor.card.properties.Combat.CombatAbility.Trample;
+import static com.visitor.card.properties.Combat.CombatAbility.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 public class UnitToken extends Unit {
@@ -19,15 +18,19 @@ public class UnitToken extends Unit {
     }
 
     public static UnitToken Zombie_2_2(Game game, UUID owner) {
-        return new UnitToken(game, "Zombie", CardSubtype.Zombie, 2, new CounterMap<>(PURPLE, 1), "", 2, 2, owner);
+        return new UnitToken(game, "Zombie", CardSubtype.Zombie, 2, new CounterMap<>(PURPLE, 1), "", 2, 2, owner, Decay);
     }
 
     public static UnitToken Bat_1_1(Game game, UUID owner) {
-        return new UnitToken(game, "Bat", CardSubtype.Bat, 1, new CounterMap<>(PURPLE, 1), "", 1, 1, owner, Flying);
+        return new UnitToken(game, "Bat", CardSubtype.Bat, 1, new CounterMap<>(PURPLE, 1), "", 1, 1, owner, Evasive);
     }
 
     public static UnitToken Spirit_1_1(Game game, UUID owner) {
-        return new UnitToken(game, "Spirit", CardSubtype.Spirit, 1, new CounterMap<>(YELLOW, 1), "", 1, 1, owner, Flying);
+        return new UnitToken(game, "Spirit", CardSubtype.Spirit, 1, new CounterMap<>(YELLOW, 1), "", 1, 1, owner, Evasive);
+    }
+
+    public static UnitToken Drone_1_1(Game game, UUID owner) {
+        return new UnitToken(game, "Drone", CardSubtype.Drone, 1, new CounterMap<>(YELLOW, 1), "", 1, 1, owner, Evasive);
     }
 
     public static UnitToken Warrior_1_1(Game game, UUID owner) {
@@ -43,7 +46,7 @@ public class UnitToken extends Unit {
     }
 
     public static UnitToken Insect_1_1(Game game, UUID owner) {
-        return new UnitToken(game, "Insect", CardSubtype.Insect, 1, new CounterMap<>(GREEN, 1).add(PURPLE, 1), "", 1, 1, owner);
+        return new UnitToken(game, "Insect", CardSubtype.Insect, 1, new CounterMap<>(GREEN, 1).add(PURPLE, 1), "", 1, 1, owner, Deadly);
     }
 
     public static UnitToken Plant_1_1(Game game, UUID owner) {
