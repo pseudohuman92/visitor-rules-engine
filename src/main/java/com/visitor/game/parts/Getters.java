@@ -49,7 +49,6 @@ public class Getters extends Base {
             default:
                 return a;
         }
-
     }
 
     // Returns duplicate

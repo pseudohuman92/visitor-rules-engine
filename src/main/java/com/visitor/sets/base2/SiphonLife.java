@@ -1,6 +1,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Cantrip;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -16,7 +17,7 @@ public class SiphonLife extends Cantrip {
                 "Drain 2 from target unit.\n{P}{P}{P} - Drain 3 instead.",
                 owner);
 
-        playable.addTargetSingleUnit(null, Predicates::any, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any, t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(PURPLE, 3))){
                 game.drain(getId(), t, 3);
             } else {

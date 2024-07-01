@@ -2,6 +2,7 @@ package com.visitor.card.properties;
 
 import com.visitor.game.Card;
 import com.visitor.game.Player;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
@@ -139,6 +140,13 @@ public class Playable {
     }
 
 
+    private boolean compareZones(Base.Zone z1, Base.Zone z2){
+        if (z1 == Both_Play || z1 == Both_Play_With_Players || z1 == Play_With_Player)
+            z1 = Play;
+        if (z2 == Both_Play || z2 == Both_Play_With_Players || z2 == Play_With_Player)
+            z2 = Play;
+        return z1 == z2;
+    }
     /**
      * Multiple Targets Setters
      */
@@ -146,7 +154,8 @@ public class Playable {
                                                 int minCount, int maxCount, String message, Consumer<UUID> perTargetEffect, boolean withPlayers, boolean forCost) {
 
         String targetingMessage = message != null ? message : "Select " + (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " cards" + (withPlayers ? " or players." : ".");
-        Predicate<Targetable> pred = predicate != null ? and(predicate, c -> isPlayer(c) || c.getZone() == zone) : (c -> isPlayer(c) || c.getZone() == zone);
+        Predicate<Targetable> pred = predicate != null ? and(predicate, c -> isPlayer(c) || compareZones(c.getZone(), zone)) : (c -> isPlayer(c) || compareZones(c.getZone(), zone));
+
         TargetingEffect t = new TargetingEffect(game, card, zone, minCount, maxCount, pred, targetingMessage, perTargetEffect);
         if (forCost) {
             costTargeting.put(t.getId(), t);
