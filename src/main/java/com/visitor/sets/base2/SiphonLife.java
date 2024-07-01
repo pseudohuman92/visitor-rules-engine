@@ -19,9 +19,9 @@ public class SiphonLife extends Cantrip {
 
         playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any, t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(PURPLE, 3))){
-                game.drain(getId(), t, 3);
+                game.drain(controller, t, 3);
             } else {
-                game.drain(getId(), t, 2);
+                game.drain(controller, t, 2);
             }
         }, "", false);
     }

@@ -200,7 +200,7 @@ public class Actions extends PlayerDelegators {
     public void drain(UUID sourceId, UUID targetId, int amount) {
         if (getCard(targetId).zone == Play) {
             int drained = getCard(targetId).drain(amount);
-            getPlayer(getCard(sourceId).controller).addHealth(drained);
+            getPlayer(sourceId).addHealth(drained);
         }
     }
 }

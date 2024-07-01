@@ -32,7 +32,7 @@ public class Baiter extends Unit {
                 owner);
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1}, Purge a unit from your discard pile: Create an insect.", () -> UnitToken.Insect_1_1(game, controller).resolve())
                 .addTargeting(Base.Zone.Discard_Pile, Predicates::isUnit, 1, 1, "Select a unit to purge.", game::purge, true));
-        activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{2}, Sacrifice a unit: Draw a card.", () -> game.draw(controller, 1))
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, Sacrifice a unit: Draw a card.", () -> game.draw(controller, 1))
                 .addTargeting(Base.Zone.Play, Predicates::isUnit, 1, 1, "Select a unit to sacrifice.", game::sacrifice, true));
     }
 }
