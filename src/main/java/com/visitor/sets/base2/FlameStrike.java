@@ -15,6 +15,6 @@ public class FlameStrike extends Ritual {
                 "Deal X damage to any target, where X is equal to {R} you have.",
                 owner);
 
-        playable.addTargetSingleUnitOrPlayer(Base.Zone.Play, t -> game.dealDamage(getId(), t, game.getKnowledgeCount(controller, Types.Knowledge.RED)), false);
+        playable.addTargetSingleUnitOrPlayer(t -> game.dealDamage(getId(), t, game.getKnowledgeCount(controller, Types.Knowledge.RED)), false);
     }
 }

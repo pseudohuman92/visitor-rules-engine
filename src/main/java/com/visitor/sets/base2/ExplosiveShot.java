@@ -1,6 +1,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Cantrip;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
@@ -15,7 +16,7 @@ public class ExplosiveShot extends Cantrip {
                 "Deal 2 damage to any target.\n{R}{R}{R} - Deal 3 damage instead.",
                 owner);
 
-        playable.addTargetSingleUnitOrPlayer(null, t -> {
+        playable.addTargetSingleUnitOrPlayer(Base.Zone.Both_Play_With_Players, t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(RED, 3))){
                 game.dealDamage(getId(), t, 3);
             } else {

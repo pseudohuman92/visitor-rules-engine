@@ -20,7 +20,7 @@ public class FlameSweep extends Ritual {
                 owner);
 
         playable.addResolveEffect(()->{
-            game.forEachInZone(null, Base.Zone.Both_Play, Predicates::isUnit, i -> game.dealDamage(getId(), i, 3));
+            game.forEachInZone(controller, Base.Zone.Both_Play, Predicates::isUnit, i -> game.dealDamage(getId(), i, 3));
         });
     }
 }

@@ -198,6 +198,10 @@ public class Playable {
         addTargetSingleCardOrPlayer(zone, or(Predicates::isPlayer, Predicates::isUnit), null, perTargetEffect, true, forCost);
     }
 
+    public void addTargetSingleUnitOrPlayer(Consumer<UUID> perTargetEffect, boolean forCost) {
+        addTargetSingleCardOrPlayer(Both_Play_With_Players, or(Predicates::isPlayer, Predicates::isUnit), null, perTargetEffect, true, forCost);
+    }
+
     /**
      * For targeting a SINGLE UNIT with RESTRICTIONS from a zone.
      *
@@ -208,6 +212,12 @@ public class Playable {
         Predicate<Targetable> finalCardPredicate = predicate != null ? predicate : Predicates::any;
         message = message != null ? message : "Select a unit.";
         addTargetSingleCard(zone, and(Predicates::isUnit, finalCardPredicate), message, perTargetEffect, forCost);
+    }
+
+    public void addTargetSingleUnit(Predicate<Targetable> predicate, Consumer<UUID> perTargetEffect, String message, boolean forCost) {
+        Predicate<Targetable> finalCardPredicate = predicate != null ? predicate : Predicates::any;
+        message = message != null ? message : "Select a unit.";
+        addTargetSingleCard(Both_Play, and(Predicates::isUnit, finalCardPredicate), message, perTargetEffect, forCost);
     }
 
 
