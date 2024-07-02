@@ -74,7 +74,8 @@ public class GameEndpoint implements GameEndpointInterface {
 
     @OnClose
     public void onClose(Session session) {
-        gameServer.removeGameConnection(gameID, playerId);
+        if (gameServer != null)
+            gameServer.removeGameConnection(gameID, playerId);
     }
 
     @OnError

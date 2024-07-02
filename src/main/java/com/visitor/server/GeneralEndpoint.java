@@ -57,7 +57,8 @@ public class GeneralEndpoint {
     @OnClose
     public void onClose(Session session) {
         out.println(playerName + " disconnected!");
-        gameServer.removeConnection(playerName);
+        if (gameServer != null)
+            gameServer.removeConnection(playerName);
         this.session = null;
     }
 

@@ -55,7 +55,8 @@ public class DraftEndpoint {
 
     @OnClose
     public void onClose(Session session) {
-        gameServer.removeDraftConnection(draftID, playerId);
+        if (gameServer != null)
+            gameServer.removeDraftConnection(draftID, playerId);
     }
 
     @OnError
