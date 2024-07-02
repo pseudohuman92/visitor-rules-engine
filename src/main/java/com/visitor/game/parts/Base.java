@@ -32,6 +32,8 @@ public class Base {
     Hashmap<UUID, Arraylist<Card>> triggeringCards;
     Arraylist<Event> eventQueue;
 
+    Arraylist<Card> toDeregister;
+
     Arraylist<UUID> attackers;
     Arraylist<UUID> blockers;
 
@@ -44,6 +46,7 @@ public class Base {
         lastMessages = new Hashmap<>();
         response = new ArrayBlockingQueue<>(1);
         triggeringCards = new Hashmap<>();
+        toDeregister = new Arraylist<>();
 
         eventQueue = new Arraylist<>();
         attackers = new Arraylist<>();

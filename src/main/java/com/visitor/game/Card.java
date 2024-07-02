@@ -129,9 +129,16 @@ public abstract class Card implements Targetable {
     /**
      * Gets called by Card.moveToZone() if old Zone is play and new zone is not Play
      */
-    public void leavePlay() {
+
+    public void deregister(){
         if (triggering != null) {
             triggering.deregister();
+        }
+    }
+
+    public void leavePlay() {
+        if (triggering != null) {
+            game.addToDeregister(this);
         }
         if (attachable != null) {
             attachable.removeFromAttached();

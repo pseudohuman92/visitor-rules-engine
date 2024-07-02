@@ -137,12 +137,12 @@ public class Combat {
                 return;
             }
 
-            int dealtDamageAmount = damageAmount;
+            int dealtDamageAmount = Math.min(damageAmount, getHealth());
 
             if (source != null && source.isAttacking() &&
                 source.hasCombatAbility(Trample) &&
                 damageAmount > getHealth()) {
-                dealtDamageAmount = getHealth();
+
                 int leftoverDamage = damageAmount - getHealth();
                 this.turnlyHealth = 0;
                 this.health = 0;
@@ -169,7 +169,7 @@ public class Combat {
                 game.heal(source.getId(), dealtDamageAmount);
             }
 
-            game.addEvent(Event.damage(source, playerId != null ? playerId : card.getId(), damage));
+            game.addEvent(Event.damage(source, playerId != null ? playerId : card.getId(), new Damage(dealtDamageAmount, damage.mayKill, damage.combat)));
 
             if (card != null && damage.mayKill && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
                 game.destroy(source.getId(), card.getId());

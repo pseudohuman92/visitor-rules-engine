@@ -1,5 +1,6 @@
 package com.visitor.game.parts;
 
+import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.helpers.Arraylist;
 
@@ -36,6 +37,7 @@ public class Events extends Messaging {
                 triggeringCards.get(this.getOpponentId(turnPlayer)).forEachInOrder(c -> c.checkEvent(e));
             }
         }
+        toDeregister.forEach(Card::deregister);
     }
 
     void processBeginEvents() {
@@ -56,5 +58,9 @@ public class Events extends Messaging {
 
     public void removeTriggeringCard(com.visitor.game.Card card) {
         triggeringCards.values().forEach(l -> l.remove(card));
+    }
+
+    public void addToDeregister(Card card) {
+        toDeregister.add(card);
     }
 }
