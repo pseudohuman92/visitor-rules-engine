@@ -20,16 +20,22 @@ public class Stack extends Events {
         out.println("Updating players from resolveStack beginning. AP: " + activePlayer);
         updatePlayers();
         while (!stack.isEmpty() && passCount == 2) {
-            com.visitor.game.Card c = stack.remove(0);
-            int prevSize = stack.size();
+            com.visitor.game.Card c = stack.get(0);
+            int prevSize = stack.size() - 1;
             c.resolve();
             processEvents();
+            stack.remove(0);
             if (stack.isEmpty() || prevSize != stack.size()) {
                 passCount = 0;
                 activePlayer = turnPlayer;
             } else {
                 out.println("Updating players from resolveStack loop. AP: " + activePlayer);
                 updatePlayers();
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
