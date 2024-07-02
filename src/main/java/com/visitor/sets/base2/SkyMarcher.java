@@ -29,6 +29,6 @@ public class SkyMarcher extends Unit {
                 "Whenever {~} deals attack damage to a player, you gain that much energy this turn.",
                 3, 5,
                 owner, Combat.CombatAbility.Evasive);
-        combat.addDamageEffect((tid, d) ->  runIf(game.isPlayer(tid), () -> game.addEnergy(controller, d.amount, true)));
+        triggering.addEventChecker(EventChecker.dealCombatDamageChecker(game, this, (c, tid, d) -> game.isPlayer(tid), (c, tid, d) ->  game.addEnergy(controller, d.amount, true)));
     }
 }

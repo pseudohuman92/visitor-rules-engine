@@ -73,14 +73,16 @@ public class Activatable {
     }
 
     // Adders
-    public Activatable addActivatedAbility(ActivatedAbility... abilities) {
-        Arrays.asList(abilities).forEach(a -> abilityList.putIn(a.id, a));
+    public Activatable addActivatedAbility(ActivatedAbility ability, boolean turnly) {
+        if (turnly)
+            turnlyAbilityList.putIn(ability.id, ability);
+        else
+            abilityList.putIn(ability.id, ability);
         return this;
     }
 
-    public Activatable addTurnlyActivatedAbility(ActivatedAbility... abilities) {
-        Arrays.asList(abilities).forEach(a -> turnlyAbilityList.putIn(a.id, a));
-        return this;
+    public Activatable addActivatedAbility(ActivatedAbility ability) {
+        return addActivatedAbility(ability, false);
     }
 
     public void endTurn() {

@@ -28,10 +28,8 @@ public class Vampireling extends Unit {
                 "When {~} dies, create a Bat.",
                 2, 2,
                 owner, Combat.CombatAbility.Drain, Combat.CombatAbility.Evasive);
-        triggering.addEventChecker(EventChecker.deathChecker(game, this, c -> {
-            if (c.getId().equals(getId())){
+        triggering.addEventChecker(EventChecker.selfDeathChecker(game, this, () -> {
                 UnitToken.Bat_1_1(game, controller).resolve();
-            }
         }));
     }
 }

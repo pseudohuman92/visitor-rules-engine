@@ -10,6 +10,10 @@ import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.containers.Damage;
+
+import java.util.UUID;
+import java.util.function.BiConsumer;
 
 /**
  * Interface for cards that has a triggering effect.
@@ -22,7 +26,6 @@ public class Triggering {
     private final Game game;
 
     private final Arraylist<EventChecker> eventCheckerList;
-
 
     public Triggering(Game game, Card card) {
         this.card = card;
@@ -38,6 +41,8 @@ public class Triggering {
     public final void checkEvent(Event event) {
         eventCheckerList.forEachInOrder(ec -> ec.accept(event));
     }
+
+
 
     public final Triggering register() {
         game.addTriggeringCard(card.controller, card);

@@ -269,12 +269,12 @@ public abstract class Card implements Targetable {
         }
     }
 
-    public void addCombatAbility(Combat.CombatAbility ability) {
-        runIfNotNull(combat, () -> combat.addCombatAbility(ability));
+    public void addCombatAbility(Combat.CombatAbility ability, int count, boolean turnly) {
+        runIfNotNull(combat, () -> combat.addCombatAbility(ability, count, turnly));
     }
 
-    public void addCombatAbility(Combat.CombatAbility ability, int count) {
-        runIfNotNull(combat, () -> combat.addCombatAbility(ability, count));
+    public void addCombatAbility(Combat.CombatAbility ability, boolean turnly) {
+        addCombatAbility(ability, 1, turnly);
     }
 
     public void removeCombatAbility(Combat.CombatAbility ability) {
@@ -328,14 +328,6 @@ public abstract class Card implements Targetable {
     public void endTurn() {
         runIfNotNull(combat, () -> combat.endTurn());
         runIfNotNull(activatable, () -> activatable.endTurn());
-    }
-
-    public void addTurnlyCombatAbility(Combat.CombatAbility combatAbility) {
-        runIfNotNull(combat, () -> combat.addTurnlyCombatAbility(combatAbility));
-    }
-
-    public void addTurnlyActivatedAbility(ActivatedAbility ability) {
-        runIfNotNull(activatable, () -> activatable.addTurnlyActivatedAbility(ability));
     }
 
 
@@ -558,6 +550,10 @@ public abstract class Card implements Targetable {
         } else {
             return new CounterMap<>();
         }
+    }
+
+    public void triggerDamageEffects(UUID targetId, Damage damage){
+        runIfNotNull(triggering, () -> triggerDamageEffects(targetId, damage));
     }
 
     public enum CardType {

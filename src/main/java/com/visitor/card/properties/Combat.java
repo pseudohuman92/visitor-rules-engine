@@ -52,7 +52,6 @@ public class Combat {
     private final Consumer<Boolean> dealAttackDamage;
     private final Runnable dealBlockDamage;
     private final BiConsumer<Damage, Card> receiveDamage;
-    private final Arraylist<BiConsumer<UUID, Damage>> damageEffects;
 
     public Combat(Game game, Card card, int attack, int health) {
         this.card = card;
@@ -62,7 +61,6 @@ public class Combat {
         this.maxHealth = health;
         combatAbilityList = new CounterMap<>();
         turnlyCombatAbilityList = new CounterMap<>();
-        damageEffects = new Arraylist<>();
         //Default implementations
         canAttackAdditional = () -> true;
 
@@ -267,32 +265,24 @@ public class Combat {
                 .addAllPossibleBlockTargets(new Arraylist<String>((List<String>) game.getPossibleBlockTargets(canBlock).transform(c -> c.getId().toString())));
     }
 
-    public void addCombatAbility(CombatAbility combatAbility, int i) {
-        combatAbilityList.add(combatAbility, i);
+    public void addCombatAbility(CombatAbility combatAbility, int i, boolean turnly) {
+        if (turnly)
+            turnlyCombatAbilityList.add(combatAbility, i);
+        else
+            combatAbilityList.add(combatAbility, i);
     }
 
-    public final void addCombatAbility(CombatAbility combatAbility) {
-        addCombatAbility(combatAbility, 1);
-    }
-
-    public void addTurnlyCombatAbility(CombatAbility combatAbility, int i) {
-        turnlyCombatAbilityList.add(combatAbility, i);
-    }
-
-    public final void addTurnlyCombatAbility(CombatAbility combatAbility) {
-        addTurnlyCombatAbility(combatAbility, 1);
+    public final void addCombatAbility(CombatAbility combatAbility, boolean turnly) {
+        addCombatAbility(combatAbility, 1, turnly);
     }
 
     public void removeCombatAbility(CombatAbility combatAbility, int i) {
+        turnlyCombatAbilityList.decrease(combatAbility, i);
         combatAbilityList.decrease(combatAbility, i);
     }
 
     public void removeCombatAbility(CombatAbility combatAbility) {
         removeCombatAbility(combatAbility, 1);
-    }
-
-    public void addDamageEffect(BiConsumer<UUID, Damage> effect) {
-        damageEffects.add(effect);
     }
 
     public final boolean hasCombatAbility(CombatAbility combatAbility) {
@@ -394,9 +384,7 @@ public class Combat {
         }
     }
 
-    public void triggerDamageEffects(UUID targetId, Damage damage) {
-        damageEffects.forEach(effect -> effect.accept(targetId, damage));
-    }
+
 
     public void loseAttack(int i) {
         attack = Math.max(attack - i, 0);

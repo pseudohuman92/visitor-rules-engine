@@ -6,6 +6,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Unit;
+import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.HelperFunctions;
@@ -27,6 +28,6 @@ public class BlitzRobbers extends Unit {
                 1, 1,
                 owner, Blitz);
         playable.setFast();
-        combat.addDamageEffect((targetId, damage) -> HelperFunctions.runIf(game.isPlayer(targetId)&&damage.amount > 0, () -> game.draw(controller, 1)));
+        triggering.addEventChecker(EventChecker.dealCombatDamageChecker(game, this, (c, tid, d) -> game.isPlayer(tid), (c, tid, d) ->  game.draw(controller, 1)));
     }
 }

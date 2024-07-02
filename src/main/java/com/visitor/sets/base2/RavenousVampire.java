@@ -27,12 +27,9 @@ public class RavenousVampire extends Unit {
                 "When {~} deals damage to a player, create that many Bats",
                 6, 6,
                 owner, Combat.CombatAbility.Drain, Combat.CombatAbility.Evasive);
-        combat.addDamageEffect(
-                (target, damage) -> {
-                if (game.isPlayer(target)){
-                    for (int i = 0; i < damage.amount; i++)
-                        UnitToken.Bat_1_1(game, controller).resolve();
-                }
-        });
+        triggering.addEventChecker(EventChecker.dealDamageChecker(game, this, (c, tid, d) -> game.isPlayer(tid), (c, tid, d) ->  {
+            for (int i = 0; i < d.amount; i++)
+                UnitToken.Bat_1_1(game, controller).resolve();
+        }));
     }
 }

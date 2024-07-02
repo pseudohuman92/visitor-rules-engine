@@ -55,8 +55,8 @@ public class Reassembler extends Asset {
                     Card c = game.getCard(id);
                     c.addAttackAndHealth(totalAttack, totalHealth, false);
                     c.addShield(totalShield, false);
-                    totalCombatAbilities.forEach(c::addCombatAbility);
-                }, false));
+                    totalCombatAbilities.forEach((a, count) -> c.addCombatAbility(a, count, false));
+                }, false), false);
     }
 
     public void clear(){

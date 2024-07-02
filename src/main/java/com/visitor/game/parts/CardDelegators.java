@@ -18,11 +18,7 @@ public class CardDelegators extends Combat {
     }
 
     public void addCombatAbility(UUID cardId, com.visitor.card.properties.Combat.CombatAbility combatAbility, boolean turnly) {
-        if (turnly) {
-            getCard(cardId).addTurnlyCombatAbility(combatAbility);
-        } else {
-            getCard(cardId).addCombatAbility(combatAbility);
-        }
+        getCard(cardId).addCombatAbility(combatAbility, turnly);
     }
 
     public void addShield(UUID id, int i, boolean turnly) {

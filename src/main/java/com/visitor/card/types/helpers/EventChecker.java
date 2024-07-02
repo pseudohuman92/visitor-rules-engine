@@ -4,7 +4,11 @@ import com.visitor.game.Card;
 import com.visitor.game.Event;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.containers.Damage;
+import org.apache.commons.lang3.function.TriConsumer;
+import org.apache.commons.lang3.function.TriFunction;
 
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -52,9 +56,6 @@ public class EventChecker implements Consumer<Event> {
         return ec.setEffect(effect);
     }
 
-    public static EventChecker destroyChecker(Game game, Card card, BiConsumer<Card, Card> effect){
-        return new EventChecker(game, card).addTypeCondition(Event.EventType.Destroy).setCardListEffect(l -> effect.accept(l.get(0), l.get(1)));
-    }
 
     public static EventChecker deathChecker(Game game, Card card, Consumer<Card> effect){
         return new EventChecker(game, card).addTypeCondition(Event.EventType.Death).setCardEffect(effect);
@@ -65,6 +66,23 @@ public class EventChecker implements Consumer<Event> {
             if (c.getId().equals(card.getId())){
                 effect.run();
              }});
+    }
+
+    public static EventChecker damageChecker(Game game, Card card, TriFunction<Card, UUID, Damage, Boolean>  predicate, TriConsumer<Card, UUID, Damage> effect){
+        return new EventChecker(game, card).addTypeCondition(Event.EventType.Damage)
+                .addDamageCondition(predicate).setDamageEffect(effect);
+    }
+
+    public static EventChecker dealDamageChecker(Game game, Card card, TriFunction<Card, UUID, Damage, Boolean>  predicate, TriConsumer<Card, UUID, Damage> effect){
+        return damageChecker(game, card, (c, i, d) -> {
+            return c.getId().equals(card.getId()) && predicate.apply(c, i, d);
+        }, effect);
+    }
+
+    public static EventChecker dealCombatDamageChecker(Game game, Card card, TriFunction<Card, UUID, Damage, Boolean>  predicate, TriConsumer<Card, UUID, Damage> effect){
+        return dealDamageChecker(game, card, (c, i, d) -> {
+            return d.combat && predicate.apply(c, i, d);
+        }, effect);
     }
 
     public static EventChecker sacrificeChecker(Game game, Card card, Consumer<Card> effect){
@@ -78,6 +96,11 @@ public class EventChecker implements Consumer<Event> {
 
     private EventChecker setCardEffect(Consumer<Card> effect) {
         this.effect = event -> effect.accept((Card) event.data.get(0));
+        return this;
+    }
+
+    private EventChecker setDamageEffect(TriConsumer<Card, UUID, Damage> effect) {
+        this.effect = event -> effect.accept((Card) event.data.get(0), (UUID) event.data.get(1), (Damage) event.data.get(2));
         return this;
     }
 
@@ -110,6 +133,10 @@ public class EventChecker implements Consumer<Event> {
     //Make sure that card list is the first argument of event.data before using.
     private EventChecker addCardListCondition(Predicate<Arraylist<Card>> predicate) {
         return and(event -> predicate.test((Arraylist<Card>) event.data.get(0)));
+    }
+
+    private EventChecker addDamageCondition(TriFunction<Card, UUID, Damage, Boolean> predicate) {
+        return and(event -> predicate.apply((Card) event.data.get(0), (UUID) event.data.get(1), (Damage) event.data.get(2)));
     }
 
     //Make sure that card is the first argument of event.data before using.

@@ -24,13 +24,13 @@ public abstract class Unit extends Card {
         triggering = new Triggering(game, this);
         combat = new Combat(game, this, attack, health);
         for (Combat.CombatAbility combatAbility : combatAbilities) {
-            combat.addCombatAbility(combatAbility);
+            combat.addCombatAbility(combatAbility, false);
         }
     }
 
     public Unit(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, int attack, int health, UUID owner, Arraylist<Combat.CombatAbility> combatAbilities) {
         this(game, name, cost, knowledge, text, attack, health, owner);
-        combatAbilities.forEach(combatAbility -> combat.addCombatAbility(combatAbility));
+        combatAbilities.forEach(combatAbility -> combat.addCombatAbility(combatAbility, false));
     }
 
 

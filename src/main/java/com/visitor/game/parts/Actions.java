@@ -50,8 +50,8 @@ public class Actions extends PlayerDelegators {
             } else {
                 addEvent(Event.destroy(null, c));
             }
-            c.destroy();
             addEvent(Event.death(c));
+            c.destroy();
 
         }
     }
@@ -92,9 +92,9 @@ public class Actions extends PlayerDelegators {
     public void sacrifice(UUID cardId) {
         com.visitor.game.Card c = getCard(cardId);
         if (c.zone == Play) {
-            c.sacrifice();
             addEvent(Event.sacrifice(c));
             addEvent(Event.death(c));
+            c.sacrifice();
         }
     }
 
