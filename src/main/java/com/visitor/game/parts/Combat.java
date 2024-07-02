@@ -29,7 +29,6 @@ public class Combat extends Stack {
                     c.receiveDamage(damage, source);
                 }
             }
-            addEvent(Event.damage(source, targetId, damage));
         }
     }
 

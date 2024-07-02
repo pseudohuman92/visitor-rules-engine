@@ -1,6 +1,7 @@
 package com.visitor.card.properties;
 
 import com.visitor.game.Card;
+import com.visitor.game.Event;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
@@ -22,6 +23,8 @@ public class Combat {
 
     private final Card card;
     private final Game game;
+
+    private UUID playerId;
 
     private int attack;
     private int health;
@@ -59,6 +62,7 @@ public class Combat {
         this.attack = attack;
         this.health = health;
         this.maxHealth = health;
+        this.playerId = null;
         combatAbilityList = new CounterMap<>();
         turnlyCombatAbilityList = new CounterMap<>();
         //Default implementations
@@ -138,7 +142,7 @@ public class Combat {
             if (source != null && source.isAttacking() &&
                 source.hasCombatAbility(Trample) &&
                 damageAmount > getHealth()) {
-
+                dealtDamageAmount = getHealth();
                 int leftoverDamage = damageAmount - getHealth();
                 this.turnlyHealth = 0;
                 this.health = 0;
@@ -158,16 +162,17 @@ public class Combat {
                 }
             }
 
-
-            if (card != null && damage.mayKill && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
-                game.destroy(source.getId(), card.getId());
-            }
-
             if (source != null && source.hasCombatAbility(Lifelink)) {
                 game.gainHealth(source.controller, dealtDamageAmount);
             }
             if (source != null && source.hasCombatAbility(Drain)) {
                 game.heal(source.getId(), dealtDamageAmount);
+            }
+
+            game.addEvent(Event.damage(source, playerId != null ? playerId : card.getId(), damage));
+
+            if (card != null && damage.mayKill && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
+                game.destroy(source.getId(), card.getId());
             }
         };
     }
@@ -427,6 +432,10 @@ public class Combat {
         a.merge(turnlyCombatAbilityList);
         a.merge(combatAbilityList);
         return a;
+    }
+
+    public void setPlayerId(UUID id) {
+        playerId = id;
     }
 
     public enum CombatAbility {
