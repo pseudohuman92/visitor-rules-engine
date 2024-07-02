@@ -5,6 +5,7 @@ import com.visitor.game.Player;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.HelperFunctions;
 import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 
@@ -75,7 +76,8 @@ public class TargetingEffect {
                 .setMinTargets(minTargets)
                 .setMaxTargets(maxTargets)
                 .setTargetMessage(targetingMessage)
-                .addAllPossibleTargets(getAllPossibleTargets().transformToStringList());
+                .addAllPossibleTargets(getAllPossibleTargets().transformToStringList())
+                .setTargetingZone(HelperFunctions.zoneToSelectFromType(zone));
     }
 
     public Arraylist<UUID> getTargets() {

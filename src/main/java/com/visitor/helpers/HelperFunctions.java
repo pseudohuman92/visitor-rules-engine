@@ -2,7 +2,9 @@ package com.visitor.helpers;
 
 import com.visitor.game.Card;
 import com.visitor.game.Player;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
+import com.visitor.protocol.Types;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -112,6 +114,27 @@ public class HelperFunctions {
         g.addPlayers(p1, p2);
         getClassesInPackage("com.visitor.sets.base2").forEach(s -> cards.add(createCard(g, p1.getId(), "base2."+s)));
         return cards;
+    }
+
+    public static Types.SelectFromType zoneToSelectFromType (Base.Zone zone){
+        switch (zone) {
+            case Deck:
+                return Types.SelectFromType.LIST;
+            case Hand:
+                return Types.SelectFromType.HAND;
+            case Play:
+            case Play_With_Player:
+            case Both_Play:
+            case Both_Play_With_Players:
+            case Players:
+                return Types.SelectFromType.PLAY;
+            case Discard_Pile:
+                return Types.SelectFromType.DISCARD_PILE;
+            case Stack:
+                return Types.SelectFromType.STACK;
+            default:
+                return Types.SelectFromType.NOTYPE;
+        }
     }
 
 }
