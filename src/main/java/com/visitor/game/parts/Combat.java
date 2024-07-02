@@ -29,7 +29,8 @@ public class Combat extends Stack {
 
                 }
             }
-            source.combat.triggerDamageEffects(targetId, damage);
+            if (damage.combat)
+                source.combat.triggerDamageEffects(targetId, damage);
         }
     }
 
