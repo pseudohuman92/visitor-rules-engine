@@ -552,10 +552,6 @@ public abstract class Card implements Targetable {
         }
     }
 
-    public void triggerDamageEffects(UUID targetId, Damage damage){
-        runIfNotNull(triggering, () -> triggerDamageEffects(targetId, damage));
-    }
-
     public enum CardType {
         Ally,
         Asset,

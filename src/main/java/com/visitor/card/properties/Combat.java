@@ -148,7 +148,6 @@ public class Combat {
                     System.out.println(e.getMessage());
                     e.printStackTrace();
                 }
-
             } else { //Normal damage
                 if (turnlyHealth >= damageAmount) {
                     turnlyHealth -= damageAmount;
@@ -158,6 +157,7 @@ public class Combat {
                     this.health -= Math.min(damageAmount, this.health);
                 }
             }
+
 
             if (card != null && damage.mayKill && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
                 game.destroy(source.getId(), card.getId());

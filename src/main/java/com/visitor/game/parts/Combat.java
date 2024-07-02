@@ -1,6 +1,7 @@
 package com.visitor.game.parts;
 
 import com.visitor.game.Card;
+import com.visitor.game.Event;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.containers.Damage;
 import com.visitor.protocol.Types;
@@ -26,10 +27,9 @@ public class Combat extends Stack {
                 com.visitor.game.Card c = getCard(targetId);
                 if (c != null) {
                     c.receiveDamage(damage, source);
-
                 }
             }
-            source.triggerDamageEffects(targetId, damage);
+            addEvent(Event.damage(source, targetId, damage));
         }
     }
 
