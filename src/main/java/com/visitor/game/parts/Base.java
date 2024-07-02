@@ -24,6 +24,7 @@ public class Base {
     Hashmap<UUID, ServerGameMessage> lastMessages;
     UUID turnPlayer;
     Arraylist<Card> stack;
+    Card currentlyResolving;
     Phase phase;
     int turnCount;
     int passCount;

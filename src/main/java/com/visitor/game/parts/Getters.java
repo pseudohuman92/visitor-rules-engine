@@ -124,6 +124,8 @@ public class Getters extends Base {
                 return c;
             }
         }
+        if (currentlyResolving != null && currentlyResolving.getId().equals(targetID))
+            return currentlyResolving;
         return null;
     }
 
@@ -172,6 +174,8 @@ public class Getters extends Base {
                 cards.add(c);
             }
         });
+        if(currentlyResolving != null && pred.test(currentlyResolving))
+            cards.add(currentlyResolving);
         return cards;
     }
 
