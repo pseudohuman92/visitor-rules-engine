@@ -137,7 +137,7 @@ public class Combat {
 
             int dealtDamageAmount = damageAmount;
 
-            if (source.isAttacking() &&
+            if (source != null && source.isAttacking() &&
                 source.hasCombatAbility(Trample) &&
                 damageAmount > getHealth()) {
 
@@ -161,14 +161,14 @@ public class Combat {
                 }
             }
 
-            if (card != null && damage.mayKill && (getHealth() == 0 || source.hasCombatAbility(Deadly))) {
+            if (card != null && damage.mayKill && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
                 game.destroy(source.getId(), card.getId());
             }
 
-            if (source.hasCombatAbility(Lifelink)) {
+            if (source != null && source.hasCombatAbility(Lifelink)) {
                 game.gainHealth(source.controller, dealtDamageAmount);
             }
-            if (source.hasCombatAbility(Drain)) {
+            if (source != null && source.hasCombatAbility(Drain)) {
                 game.heal(source.getId(), dealtDamageAmount);
             }
         };

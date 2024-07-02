@@ -48,6 +48,9 @@ public class GameEndpoint implements GameEndpointInterface {
         session.getBasicRemote().setBatchingAllowed(false);
         session.getAsyncRemote().setBatchingAllowed(false);
         session.setMaxIdleTimeout(0);
+        if (gameServer == null) {
+            gameServer = new GameServer();
+        }
         gameServer.addGameConnection(this.gameID, this.playerId, this);
         resendLastMessage(this.playerId);
     }
