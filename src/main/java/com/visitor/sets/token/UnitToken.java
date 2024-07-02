@@ -1,6 +1,6 @@
 package com.visitor.sets.token;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -8,11 +8,11 @@ import com.visitor.protocol.Types;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Damagable.CombatAbility.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 public class UnitToken extends Unit {
-    public UnitToken(Game game, String name, CardSubtype subtype, int cost, CounterMap<Types.Knowledge> knowledge, String text, int attack, int health, UUID owner, Combat.CombatAbility... combatAbilities) {
+    public UnitToken(Game game, String name, CardSubtype subtype, int cost, CounterMap<Types.Knowledge> knowledge, String text, int attack, int health, UUID owner, Damagable.CombatAbility... combatAbilities) {
         super(game, name, cost, knowledge, text, attack, health, owner, combatAbilities);
         subtypes.add(subtype);
     }

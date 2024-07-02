@@ -6,15 +6,12 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Asset;
-import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Blitz;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**

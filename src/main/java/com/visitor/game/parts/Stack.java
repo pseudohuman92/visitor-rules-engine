@@ -1,5 +1,7 @@
 package com.visitor.game.parts;
 
+import com.visitor.card.Card;
+
 import java.util.UUID;
 
 import static java.lang.System.out;
@@ -8,7 +10,7 @@ public class Stack extends Events {
     /**
      * Stack Methods
      */
-    public void addToStack(com.visitor.game.Card c) {
+    public void addToStack(Card c) {
         passCount = 0;
         stack.add(0, c);
         processEvents();

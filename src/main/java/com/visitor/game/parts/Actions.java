@@ -1,19 +1,19 @@
 package com.visitor.game.parts;
 
 import com.visitor.card.properties.Targetable;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Event;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.HelperFunctions;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.UUIDHelper;
-import com.visitor.helpers.containers.Damage;
+import com.visitor.card.containers.Damage;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Deadly;
+import static com.visitor.card.properties.Damagable.CombatAbility.Deadly;
 import static com.visitor.game.parts.Base.Zone.*;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
@@ -30,30 +30,22 @@ public class Actions extends PlayerDelegators {
     }
 
     public void draw(UUID playerId, UUID cardID) {
-        if (getCard(cardID).zone == Deck)
-            getPlayer(playerId).hand.add(extractCard(cardID));
+        if (getCard(cardID).zone == Deck) {
+            Card c = extractCard(cardID);
+            c.zone = Hand;
+            getPlayer(playerId).hand.add(c);
+        }
     }
 
-    public void draw(UUID playerId, com.visitor.game.Card card) {
+    public void draw(UUID playerId, Card card) {
+        card.zone = Hand;
         getPlayer(playerId).hand.add(card);
     }
 
     public void destroy(UUID targetId) {
-        destroy(null, targetId);
-    }
-
-    public void destroy(UUID sourceId, UUID targetId) {
-        com.visitor.game.Card c = getCard(targetId);
-        if (c.zone == Play) {
-            if (sourceId != null) {
-                addEvent(Event.destroy(getCard(sourceId), c));
-            } else {
-                addEvent(Event.destroy(null, c));
-            }
-            addEvent(Event.death(c));
-            c.destroy();
-
-        }
+        Card c = getCard(targetId);
+        addEvent(Event.death(c));
+        c.destroy();
     }
 
     public void loot(UUID playerId, int x) {
@@ -76,7 +68,7 @@ public class Actions extends PlayerDelegators {
         }
     }
 
-    public void discardAll(UUID playerId, Arraylist<com.visitor.game.Card> cards) {
+    public void discardAll(UUID playerId, Arraylist<Card> cards) {
         getPlayer(playerId).discardAll(UUIDHelper.toUUIDList(cards));
         addEvent(Event.discard(playerId, cards));
     }
@@ -89,17 +81,8 @@ public class Actions extends PlayerDelegators {
         getCard(id).newTurn();
     }
 
-    public void sacrifice(UUID cardId) {
-        com.visitor.game.Card c = getCard(cardId);
-        if (c.zone == Play) {
-            addEvent(Event.sacrifice(c));
-            addEvent(Event.death(c));
-            c.sacrifice();
-        }
-    }
-
     public void donate(UUID donatedCardId, UUID newController, Zone newZone) {
-        com.visitor.game.Card c = extractCard(donatedCardId);
+        Card c = extractCard(donatedCardId);
         UUID oldController = c.controller;
         c.controller = newController;
         c.zone = newZone;
@@ -110,19 +93,19 @@ public class Actions extends PlayerDelegators {
         forEachInZone(UUID.randomUUID(), Both_Play, Predicates::any, this::returnToHand);
     }
 
-    private com.visitor.game.Card createFreshCopy(com.visitor.game.Card c) {
+    private Card createFreshCopy(Card c) {
         try {
             Class<?> cardClass = c.getClass();
             Constructor<?> cardConstructor = cardClass.getConstructor(Game.class, String.class);
             Object card = cardConstructor.newInstance(this, c.controller);
-            return ((com.visitor.game.Card) card);
+            return ((Card) card);
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             getLogger(com.visitor.game.Deck.class.getName()).log(SEVERE, null, ex);
         }
         return null;
     }
 
-    public com.visitor.game.Card restore(UUID cardId) {
+    public Card restore(UUID cardId) {
         return createFreshCopy(extractCard(cardId));
     }
 
@@ -139,7 +122,7 @@ public class Actions extends PlayerDelegators {
     }
 
     public void cancel(UUID cardId) {
-        com.visitor.game.Card card = extractCard(cardId);
+        Card card = extractCard(cardId);
         card.clear();
         putTo(card.controller, card, Discard_Pile);
     }
@@ -149,7 +132,7 @@ public class Actions extends PlayerDelegators {
     }
 
 
-    public com.visitor.game.Card extractAtRandom(UUID playerId, Arraylist<Card> list) {
+    public Card extractAtRandom(UUID playerId, Arraylist<Card> list) {
         return getPlayer(playerId).extractAtRandom(list);
     }
 
@@ -162,22 +145,22 @@ public class Actions extends PlayerDelegators {
     public void gainControlFromZone(UUID newController, Zone oldZone, Zone newZone, UUID targetId) {
         runIfInZone(newController, oldZone, targetId,
                 () -> {
-                    com.visitor.game.Card c = extractCard(targetId);
+                    Card c = extractCard(targetId);
                     c.controller = newController;
                     putTo(newController, c, newZone);
                 });
     }
 
     public void possessTo(UUID newController, UUID cardID, Zone zone) {
-        com.visitor.game.Card c = extractCard(cardID);
+        Card c = extractCard(cardID);
         UUID oldController = c.controller;
         c.controller = newController;
         ((Arraylist<Targetable>)getZone(newController, zone)).add(c);
     }
 
     public void fight(UUID cardId, UUID targetId) {
-        com.visitor.game.Card c1 = getCard(cardId);
-        com.visitor.game.Card c2 = getCard(targetId);
+        Card c1 = getCard(cardId);
+        Card c2 = getCard(targetId);
 
         if (c1.zone == Play && c2.zone == Play) {
             dealDamage(c1.getId(), c2.getId(), new Damage(c1.getAttack(), false, false));

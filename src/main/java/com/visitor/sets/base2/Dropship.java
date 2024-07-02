@@ -8,11 +8,11 @@ package com.visitor.sets.base2;
 import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Evasive;
+import static com.visitor.card.properties.Damagable.CombatAbility.Evasive;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**

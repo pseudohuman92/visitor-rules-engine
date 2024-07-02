@@ -1,11 +1,12 @@
 package com.visitor.game.parts;
 
+import com.visitor.card.Card;
 import com.visitor.protocol.Types;
 
 import java.util.UUID;
 
 public class PlayerDelegators extends CardDelegators {
-    public void shuffleIntoDeck(UUID playerId, com.visitor.game.Card... cards) {
+    public void shuffleIntoDeck(UUID playerId, Card... cards) {
         getPlayer(playerId).shuffleIntoDeck(cards);
     }
 

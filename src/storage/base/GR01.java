@@ -5,7 +5,7 @@ import com.visitor.game.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.Damage;
+import com.visitor.card.containers.Damage;
 
 import java.util.UUID;
 

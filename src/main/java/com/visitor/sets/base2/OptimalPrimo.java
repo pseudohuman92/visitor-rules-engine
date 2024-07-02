@@ -8,13 +8,10 @@ package com.visitor.sets.base2;
 import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
-import static com.visitor.game.parts.Base.Zone.Both_Play;
+import static com.visitor.card.properties.Damagable.CombatAbility.*;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**

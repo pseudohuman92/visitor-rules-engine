@@ -10,12 +10,9 @@ import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.containers.ActivatedAbility;
 
 import java.util.UUID;
-
-import static com.visitor.helpers.Predicates.or;
 
 /**
  * @author pseudo

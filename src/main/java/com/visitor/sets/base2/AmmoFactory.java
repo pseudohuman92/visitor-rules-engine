@@ -6,7 +6,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Asset;
-import com.visitor.card.types.helpers.EventChecker;
+import com.visitor.card.containers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 

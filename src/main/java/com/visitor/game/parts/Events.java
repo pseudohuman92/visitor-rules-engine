@@ -1,6 +1,6 @@
 package com.visitor.game.parts;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Event;
 import com.visitor.helpers.Arraylist;
 
@@ -38,6 +38,7 @@ public class Events extends Messaging {
             }
         }
         toDeregister.forEach(Card::deregister);
+        toDeregister.clear();
     }
 
     void processBeginEvents() {
@@ -52,11 +53,11 @@ public class Events extends Messaging {
         //out.println("Ending End Triggers");
     }
 
-    public void addTriggeringCard(UUID playerId, com.visitor.game.Card t) {
+    public void addTriggeringCard(UUID playerId, Card t) {
         triggeringCards.get(playerId).add(t);
     }
 
-    public void removeTriggeringCard(com.visitor.game.Card card) {
+    public void removeTriggeringCard(Card card) {
         triggeringCards.values().forEach(l -> l.remove(card));
     }
 

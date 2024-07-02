@@ -1,6 +1,6 @@
 package com.visitor.game.parts;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Event;
 import com.visitor.helpers.Arraylist;
 

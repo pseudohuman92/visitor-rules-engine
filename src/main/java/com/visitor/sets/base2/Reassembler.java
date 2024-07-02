@@ -5,19 +5,17 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Asset;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
@@ -29,7 +27,7 @@ public class Reassembler extends Asset {
     private int totalHealth;
     private int totalShield;
 
-    private final CounterMap<Combat.CombatAbility> totalCombatAbilities;
+    private final CounterMap<Damagable.CombatAbility> totalCombatAbilities;
 
     public Reassembler(Game game, UUID owner) {
         super(game, "Reassembler",

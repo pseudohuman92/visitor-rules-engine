@@ -6,7 +6,6 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -14,7 +13,7 @@ import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Blitz;
+import static com.visitor.card.properties.Damagable.CombatAbility.Blitz;
 import static com.visitor.protocol.Types.Knowledge.RED;
 
 /**
@@ -27,7 +26,7 @@ public class TacticalGenius extends Unit {
                 "When {~} enters play, each unit you control gains +1/+0 and Blitz until end of turn.",
                 1, 1,
                 owner);
-        addEnterPlayEffectOnStack(null, "Each unit you control gains +1/+0 and Blitz until end of turn.",
+        playable.addAfterResolveEffect(
             () -> game.getAllFrom(controller, Base.Zone.Play, Predicates::isUnit).forEach(c -> {
                 game.addAttackAndHealth(c.getId(),1, 0, true);
                 game.addCombatAbility(c.getId(), Blitz, true);

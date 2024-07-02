@@ -1,10 +1,7 @@
-package com.visitor.helpers.containers;
+package com.visitor.card.containers;
 
 import com.visitor.card.properties.Targetable;
-import com.visitor.card.properties.TargetingEffect;
-import com.visitor.card.types.helpers.AbilityCard;
-import com.visitor.game.Card;
-import com.visitor.game.parts.Base;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.*;
 import com.visitor.protocol.Types;
@@ -14,7 +11,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.visitor.game.parts.Base.Zone.*;
 
@@ -26,12 +22,12 @@ public class ActivatedAbility {
     private int cost;
     private boolean depleting;
     private boolean slow;
-    private boolean selfSacrificing;
+    private boolean selfDestroying;
     private final String text;
     private CounterMap<Types.Knowledge> knowledgeRequirement;
     private final Arraylist<Supplier<Boolean>> canActivateAdditional;
-    private final Hashmap<UUID, TargetingEffect> costEffects;
-    private final Hashmap<UUID, TargetingEffect> effects;
+    private final Hashmap<UUID, Effect> costEffects;
+    private final Hashmap<UUID, Effect> effects;
 
 
     public ActivatedAbility(Game game, Card card, int cost, String text) {
@@ -42,7 +38,7 @@ public class ActivatedAbility {
         this.text = text;
         this.depleting = false;
         this.slow = false;
-        this.selfSacrificing = false;
+        this.selfDestroying = false;
         this.knowledgeRequirement = new CounterMap<>();
         this.canActivateAdditional = new Arraylist<>();
         this.costEffects = new Hashmap<>();
@@ -57,7 +53,7 @@ public class ActivatedAbility {
         this.text = text;
         this.depleting = false;
         this.slow = false;
-        this.selfSacrificing = false;
+        this.selfDestroying = false;
         this.knowledgeRequirement = new CounterMap<>();
         this.canActivateAdditional = new Arraylist<>();
         this.costEffects = new Hashmap<>();
@@ -74,25 +70,25 @@ public class ActivatedAbility {
         for (Supplier<Boolean> caa : canActivateAdditional) {
             canActivate = canActivate && caa.get();
         }
-        for (TargetingEffect t : costEffects.values()){
+        for (Effect t : costEffects.values()){
             canActivate = canActivate && t.hasEnoughTargets();
         }
-        for (TargetingEffect t : effects.values()){
+        for (Effect t : effects.values()){
             canActivate = canActivate && t.hasEnoughTargets();
         }
         return canActivate;
     }
 
     public final void activate() {
-        for (TargetingEffect e : costEffects.values()) {
+        for (Effect e : costEffects.values()) {
             e.runEffect();
         }
         game.removeEnergy(card.controller, cost);
         if (depleting) {
             game.deplete(card.getId());
         }
-        if (selfSacrificing) {
-            game.sacrifice(card.getId());
+        if (selfDestroying) {
+            game.destroy(card.getId());
         }
         game.addToStack(new AbilityCard(game, card, this));
     }
@@ -108,12 +104,12 @@ public class ActivatedAbility {
     }
 
     public ActivatedAbility setSelfSacrificing() {
-        this.selfSacrificing = true;
+        this.selfDestroying = true;
         return this;
     }
 
     public final void runEffects() {
-        for (TargetingEffect t : effects.values()){
+        for (Effect t : effects.values()){
             t.runEffect();
         }
     }
@@ -135,7 +131,7 @@ public class ActivatedAbility {
     // Overrides targets
     public ActivatedAbility addTargeting(Game.Zone zone, Predicate<Targetable> predicate,
              int minCount, int maxCount, String text, Consumer<UUID> perTargetEffect, boolean forCost) {
-        TargetingEffect targeting = new TargetingEffect(game, card, zone, minCount, maxCount, predicate, text, perTargetEffect);
+        Effect targeting = new Effect(game, card, zone, minCount, maxCount, predicate, text, perTargetEffect);
         if (forCost){
             costEffects.put(targeting.getId(), targeting);
         } else {
@@ -145,7 +141,7 @@ public class ActivatedAbility {
     }
 
     public ActivatedAbility addAbility(String text, Runnable effect, boolean forCost) {
-        TargetingEffect targeting = new TargetingEffect(game, card, None, 0, 0, Predicates::none, text, t->{
+        Effect targeting = new Effect(game, card, None, 0, 0, Predicates::none, text, t->{
             effect.run();
         });
         if (forCost){
@@ -164,27 +160,27 @@ public class ActivatedAbility {
 
     public Types.TargetingAbility getTargetingAbility(){
         Arraylist<Types.Targeting> a = new Arraylist<>();
-        for (TargetingEffect t: costEffects.values()) {
+        for (Effect t: costEffects.values()) {
             a.add(t.toTargetingBuilder().build());
         }
-        for (TargetingEffect t: effects.values()) {
+        for (Effect t: effects.values()) {
             a.add(t.toTargetingBuilder().build());
         }
         return Types.TargetingAbility.newBuilder().setId(id.toString()).addAllTargets(a).setText(text).build();
     }
 
     public void clear() {
-        for (TargetingEffect t : costEffects.values()){
+        for (Effect t : costEffects.values()){
             t.clear();
         }
-        for (TargetingEffect t : effects.values()){
+        for (Effect t : effects.values()){
             t.clear();
         }
     }
 
     public void setTargets(Arraylist<Types.TargetSelection> targets) {
         for (Types.TargetSelection t : targets) {
-            TargetingEffect tr = costEffects.get(UUID.fromString(t.getId()));
+            Effect tr = costEffects.get(UUID.fromString(t.getId()));
             if (tr != null){
                 tr.setTargets(UUIDHelper.toUUIDList(t.getTargetsList()));
             } else {
@@ -198,10 +194,10 @@ public class ActivatedAbility {
 
     public Arraylist<UUID> getAllTargets() {
         Arraylist<UUID> targets = new Arraylist<>();
-        for (TargetingEffect t : costEffects.values()){
+        for (Effect t : costEffects.values()){
             targets.addAll(t.getTargets());
         }
-        for (TargetingEffect t : effects.values()){
+        for (Effect t : effects.values()){
             targets.addAll(t.getTargets());
         }
         return targets;

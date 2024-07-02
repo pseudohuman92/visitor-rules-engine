@@ -1,7 +1,7 @@
 package com.visitor.game.parts;
 
 import com.visitor.card.properties.Targetable;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.protocol.Types;
@@ -218,11 +218,19 @@ public class Getters extends Base {
         return new Arraylist<>(list.stream().map(this::getCard).collect(Collectors.toList()));
     }
 
+    public Targetable getTargetable(UUID targetId){
+        Targetable t = getPlayer(targetId);
+        if (t == null)
+            return getCard(targetId);
+        else
+            return t;
+    }
+
     public UUID getId() {
         return id;
     }
 
-    public Arraylist<com.visitor.game.Card> getTopCardsFromDeck(UUID playerId, int i) {
+    public Arraylist<Card> getTopCardsFromDeck(UUID playerId, int i) {
         return getPlayer(playerId).getFromTopOfDeck(i);
     }
 }

@@ -1,4 +1,4 @@
-package com.visitor.helpers.containers;
+package com.visitor.card.containers;
 
 public class Damage {
     public int amount;

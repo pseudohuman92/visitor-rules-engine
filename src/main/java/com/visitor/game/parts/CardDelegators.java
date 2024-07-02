@@ -1,7 +1,7 @@
 package com.visitor.game.parts;
 
-import com.visitor.game.Card;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.properties.Damagable;
+import com.visitor.card.Card;
 
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ public class CardDelegators extends Combat {
         getCard(attachedId).addAttachment(attachmentId);
     }
 
-    public void addCombatAbility(UUID cardId, com.visitor.card.properties.Combat.CombatAbility combatAbility, boolean turnly) {
+    public void addCombatAbility(UUID cardId, Damagable.CombatAbility combatAbility, boolean turnly) {
         getCard(cardId).addCombatAbility(combatAbility, turnly);
     }
 

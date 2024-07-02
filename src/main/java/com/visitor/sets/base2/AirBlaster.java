@@ -13,7 +13,7 @@ import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
+import static com.visitor.card.properties.Damagable.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
@@ -28,10 +28,10 @@ public class AirBlaster extends Unit {
                 2, 2,
                 owner, Vigilance);
         addShield(2, false);
-        addEnterPlayEffectOnStack(null, "Return up to one target unit to its controller's hand.",
+        playable.addAfterResolveEffect(
                 () ->{
             game.selectFromZone(controller, Base.Zone.Both_Play, Predicates::isUnit, 0, 1, "Return up to one target unit to its controller's hand.")
                     .forEach(game::returnToHand);
-                });
+        });
     }
 }

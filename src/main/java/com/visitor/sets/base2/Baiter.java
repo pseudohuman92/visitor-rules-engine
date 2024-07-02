@@ -5,13 +5,12 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
 import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.containers.ActivatedAbility;
 import com.visitor.sets.token.UnitToken;
 
 import java.util.UUID;
@@ -33,6 +32,6 @@ public class Baiter extends Unit {
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 1, "{1}, Purge a unit from your discard pile: Create an insect.", () -> UnitToken.Insect_1_1(game, controller).resolve())
                 .addTargeting(Base.Zone.Discard_Pile, Predicates::isUnit, 1, 1, "Select a unit to purge.", game::purge, true));
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 2, "{2}, Sacrifice a unit: Draw a card.", () -> game.draw(controller, 1))
-                .addTargeting(Base.Zone.Play, Predicates::isUnit, 1, 1, "Select a unit to sacrifice.", game::sacrifice, true));
+                .addTargeting(Base.Zone.Play, Predicates::isUnit, 1, 1, "Select a unit to sacrifice.", game::destroy, true));
     }
 }

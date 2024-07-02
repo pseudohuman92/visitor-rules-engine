@@ -1,7 +1,6 @@
 package com.visitor.game.parts;
 
 import com.visitor.card.properties.Targetable;
-import com.visitor.game.Card;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;

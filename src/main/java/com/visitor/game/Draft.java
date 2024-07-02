@@ -1,5 +1,6 @@
 package com.visitor.game;
 
+import com.visitor.card.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;

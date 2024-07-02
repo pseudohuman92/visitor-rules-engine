@@ -1,7 +1,7 @@
 package com.visitor.game.parts;
 
 import com.visitor.card.properties.Targetable;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types;
@@ -86,7 +86,7 @@ public class Checkers extends Putters {
     }
 
     public boolean controlledByOpponent(UUID targetID) {
-        com.visitor.game.Card c = getCard(targetID);
+        Card c = getCard(targetID);
         return c.controller.equals(this.getOpponentId(c.controller));
     }
 

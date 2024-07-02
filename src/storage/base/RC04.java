@@ -3,7 +3,7 @@ package com.visitor.sets.base;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.Damage;
+import com.visitor.card.containers.Damage;
 
 import java.util.UUID;
 

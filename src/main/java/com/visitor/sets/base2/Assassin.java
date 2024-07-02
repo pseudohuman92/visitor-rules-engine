@@ -5,7 +5,7 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -24,6 +24,6 @@ public class Assassin extends Unit {
                 1, new CounterMap(PURPLE, 1),
                 "",
                 1, 1,
-                owner, Combat.CombatAbility.Deadly);
+                owner, Damagable.CombatAbility.Deadly);
     }
 }

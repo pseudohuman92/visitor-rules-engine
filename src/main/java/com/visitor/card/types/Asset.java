@@ -4,7 +4,7 @@ import com.visitor.card.properties.Activatable;
 import com.visitor.card.properties.Playable;
 import com.visitor.card.properties.Studiable;
 import com.visitor.card.properties.Triggering;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.protocol.Types.Knowledge;

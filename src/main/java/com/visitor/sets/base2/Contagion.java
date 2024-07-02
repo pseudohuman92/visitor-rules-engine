@@ -1,7 +1,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Ritual;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -19,7 +19,7 @@ public class Contagion extends Ritual {
                 owner);
         playable.addResolveEffect(() -> game.getAllFrom(Base.Zone.Both_Play, Predicates::isUnit)
             .forEach(c -> {
-                game.destroy(getId(), c.getId());
+                game.destroy(c.getId());
                 if (!((Card) c).controller.equals(game.getOpponentId(controller))) {
                     game.loseHealth(controller, 1);
                 }

@@ -5,6 +5,7 @@
  */
 package com.visitor.game;
 
+import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
 
 import java.util.UUID;
@@ -71,21 +72,6 @@ public class Event {
         return e;
     }
 
-    public static Event destroy(Card destroyingCard, Card destroyedCard) {
-        Event e = new Event(Destroy);
-        Arraylist<Card> cards = new Arraylist<>();
-        cards.add(destroyingCard);
-        cards.add(destroyedCard);
-        e.data.add(cards);
-        return e;
-    }
-
-    public static Event sacrifice(Card sacrificedCard) {
-        Event e = new Event(Sacrifice);
-        e.data.add(sacrificedCard);
-        return e;
-    }
-
     public static Event death(Card diedCard) {
         Event e = new Event(Death);
         e.data.add(diedCard);
@@ -114,7 +100,7 @@ public class Event {
         return e;
     }
 
-    public static Event damage(Card card, UUID targetId, com.visitor.helpers.containers.Damage damage) {
+    public static Event damage(Card card, UUID targetId, com.visitor.card.containers.Damage damage) {
         Event e = new Event(Damage);
         e.data.add(card);
         e.data.add(targetId);
@@ -134,8 +120,8 @@ public class Event {
     public enum EventType {
         Turn_Start, Turn_End,
         Draw, Discard, Study,
-        Destroy, Transform,
-        Play_Card, Sacrifice, Enter_Play, Damage, Death, Attack
+        Transform,
+        Play_Card, Enter_Play, Damage, Death, Attack
     }
 
 }

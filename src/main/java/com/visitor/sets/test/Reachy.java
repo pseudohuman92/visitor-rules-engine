@@ -11,7 +11,7 @@ import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Reach;
+import static com.visitor.card.properties.Damagable.CombatAbility.Reach;
 
 /**
  * @author pseudo

@@ -5,10 +5,9 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Triggering;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
+import com.visitor.card.containers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.sets.token.UnitToken;
@@ -27,7 +26,7 @@ public class Vampireling extends Unit {
                 2, new CounterMap(PURPLE, 1),
                 "When {~} dies, create a Bat.",
                 2, 2,
-                owner, Combat.CombatAbility.Drain, Combat.CombatAbility.Evasive);
+                owner, Damagable.CombatAbility.Drain, Damagable.CombatAbility.Evasive);
         triggering.addEventChecker(EventChecker.selfDeathChecker(game, this, () -> {
                 UnitToken.Bat_1_1(game, controller).resolve();
         }));

@@ -5,9 +5,9 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
+import com.visitor.card.containers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.sets.token.UnitToken;
@@ -26,7 +26,7 @@ public class RavenousVampire extends Unit {
                 6, new CounterMap(PURPLE, 3),
                 "When {~} deals damage to a player, create that many Bats",
                 6, 6,
-                owner, Combat.CombatAbility.Drain, Combat.CombatAbility.Evasive);
+                owner, Damagable.CombatAbility.Drain, Damagable.CombatAbility.Evasive);
         triggering.addEventChecker(EventChecker.dealDamageChecker(game, this, (c, tid, d) -> game.isPlayer(tid), (c, tid, d) ->  {
             for (int i = 0; i < d.amount; i++)
                 UnitToken.Bat_1_1(game, controller).resolve();

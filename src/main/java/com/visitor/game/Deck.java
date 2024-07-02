@@ -1,5 +1,6 @@
 package com.visitor.game;
 
+import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
@@ -9,7 +10,6 @@ import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;

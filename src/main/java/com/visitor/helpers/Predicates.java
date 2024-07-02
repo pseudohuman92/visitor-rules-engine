@@ -6,16 +6,16 @@
 package com.visitor.helpers;
 
 import com.visitor.card.properties.Targetable;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Player;
 import com.visitor.protocol.Types;
 
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import static com.visitor.game.Card.CardSubtype.Cantrip;
-import static com.visitor.game.Card.CardSubtype.Ritual;
-import static com.visitor.game.Card.CardType.*;
+import static com.visitor.card.Card.CardSubtype.Cantrip;
+import static com.visitor.card.Card.CardSubtype.Ritual;
+import static com.visitor.card.Card.CardType.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 /**

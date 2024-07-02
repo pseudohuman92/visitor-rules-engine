@@ -6,8 +6,6 @@ package com.visitor.server;
  * and open the template in the editor.
  */
 
-import com.visitor.game.Card;
-import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.HelperFunctions;
 import com.visitor.protocol.ClientMessages.ClientMessage;
 import com.visitor.protocol.ClientMessages.JoinQueue;

@@ -5,10 +5,9 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
-import com.visitor.card.properties.Triggering;
+import com.visitor.card.containers.EventChecker;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.sets.token.UnitToken;
@@ -27,11 +26,11 @@ public class ZombieAmalgam extends Unit {
                 3, new CounterMap(PURPLE, 2),
                 "When {~} dies, create 2 Zombies with Decay.",
                 5, 5,
-                owner, Combat.CombatAbility.Trample, Combat.CombatAbility.Decay);
-        addLeavePlayEffect(null, ()->
+                owner, Damagable.CombatAbility.Trample, Damagable.CombatAbility.Decay);
+        triggering.addEventChecker(EventChecker.selfDeathChecker(game, this, ()->
         {
             UnitToken.Zombie_2_2(game, controller).resolve();
             UnitToken.Zombie_2_2(game, controller).resolve();
-        });
+        }));
     }
 }

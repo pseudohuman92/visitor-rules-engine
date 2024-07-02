@@ -18,9 +18,9 @@ public class ASoulforASoul extends Ritual {
                 owner);
 
         playable.addTargetSingleUnit(Base.Zone.Play, Predicates.controlledBy(controller),
-                game::sacrifice, "Select unit to sacrifice", true);
+                game::destroy, "Select unit to sacrifice", true);
 
         playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any,
-                c -> game.destroy(getId(), c), "Select unit to destroy", false);
+                game::destroy, "Select unit to destroy", false);
     }
 }

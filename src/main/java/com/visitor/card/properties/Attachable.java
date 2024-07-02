@@ -5,7 +5,7 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Game;
 
 import java.util.UUID;

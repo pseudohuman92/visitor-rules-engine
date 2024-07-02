@@ -6,7 +6,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Cantrip;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -25,6 +25,6 @@ public class OutofCommision extends Cantrip {
                 2, new CounterMap(PURPLE, 2),
                 "Destroy target unit with cost 4 or less.",
                 owner);
-        playable.addTargetSingleUnit(Base.Zone.Both_Play, c->{ return ((Card) c).getCost() <= 4; }, i -> {game.destroy(getId(), i);}, "Choose a unit to sacrifice.", false);
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, c->{ return ((Card) c).getCost() <= 4; }, game::destroy, "Choose a unit to destroy.", false);
     }
 }

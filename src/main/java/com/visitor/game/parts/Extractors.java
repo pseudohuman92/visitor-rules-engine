@@ -1,6 +1,6 @@
 package com.visitor.game.parts;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 
@@ -40,11 +40,11 @@ public class Extractors extends Getters {
         return cards;
     }
 
-    public Arraylist<com.visitor.game.Card> extractFromTopOfDeck(UUID playerId, int count) {
+    public Arraylist<Card> extractFromTopOfDeck(UUID playerId, int count) {
         return getPlayer(playerId).extractFromTopOfDeck(count);
     }
 
-    public com.visitor.game.Card extractTopmostMatchingFromDeck(UUID playerId, Predicate<Card> cardPredicate) {
+    public Card extractTopmostMatchingFromDeck(UUID playerId, Predicate<Card> cardPredicate) {
         return getPlayer(playerId).extractTopmostMatchingFromDeck(cardPredicate);
     }
 

@@ -6,7 +6,7 @@ import com.visitor.helpers.CounterMap;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Damagable.CombatAbility.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 /**

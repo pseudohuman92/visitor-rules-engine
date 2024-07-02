@@ -1,6 +1,6 @@
 package com.visitor.game.parts;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
 
 import java.util.UUID;
@@ -15,7 +15,7 @@ import static java.lang.System.out;
  * Inheritence Hierarchy. Class was too big, so I split it into different classes.
  * Base -> Getters -> Extractors -> Putters -> Checkers -> HigherOrder
  * Connections -> Messaging -> Events ->
- * Stack ->  Combat ->  CardDelegators -> PlayerDelegators
+ * Stack ->  Damagable ->  CardDelegators -> PlayerDelegators
  * Actions -> Turns -> ClientActions -> Game
  */
 public class Game extends ClientActions {

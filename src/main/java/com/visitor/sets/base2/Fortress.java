@@ -6,17 +6,14 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Unit;
-import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
-import com.visitor.helpers.containers.ActivatedAbility;
-import com.visitor.sets.token.UnitToken;
+import com.visitor.card.containers.ActivatedAbility;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Defender;
-import static com.visitor.card.properties.Combat.CombatAbility.Evasive;
+import static com.visitor.card.properties.Damagable.CombatAbility.Defender;
 import static com.visitor.game.parts.Base.Zone.Both_Play;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 

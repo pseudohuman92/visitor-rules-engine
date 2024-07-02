@@ -5,11 +5,9 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Card;
-import com.visitor.game.Event;
+import com.visitor.card.containers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
@@ -28,7 +26,7 @@ public class SkyMarcher extends Unit {
                 4, new CounterMap(RED, 3),
                 "Whenever {~} deals attack damage to a player, you gain that much energy this turn.",
                 3, 5,
-                owner, Combat.CombatAbility.Evasive);
+                owner, Damagable.CombatAbility.Evasive);
         triggering.addEventChecker(EventChecker.dealCombatDamageChecker(game, this, (c, tid, d) -> game.isPlayer(tid), (c, tid, d) ->  game.addEnergy(controller, d.amount, true)));
     }
 }

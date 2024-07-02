@@ -6,10 +6,9 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
+import com.visitor.card.containers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 

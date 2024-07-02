@@ -1,7 +1,6 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Ritual;
-import com.visitor.game.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;

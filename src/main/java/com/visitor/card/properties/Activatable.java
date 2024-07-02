@@ -5,15 +5,14 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.Hashmap;
-import com.visitor.helpers.containers.ActivatedAbility;
+import com.visitor.card.containers.ActivatedAbility;
 import com.visitor.protocol.Types;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -134,5 +133,9 @@ public class Activatable {
             targets.addAll(t.getAllTargets());
         }
         return targets;
+    }
+
+    public void newTurn() {
+        turnlyAbilityList.clear();
     }
 }

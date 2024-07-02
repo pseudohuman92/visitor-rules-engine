@@ -1,20 +1,17 @@
 package com.visitor.game.parts;
 
-import com.google.protobuf.ByteString;
 import com.visitor.card.properties.Targetable;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Player;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Hashmap;
-import com.visitor.helpers.Predicates;
 import com.visitor.protocol.ServerGameMessages;
 import com.visitor.protocol.Types;
 import com.visitor.server.GameEndpointInterface;
 
 import javax.websocket.EncodeException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;

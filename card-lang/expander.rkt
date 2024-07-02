@@ -42,7 +42,7 @@ print (string-replace
 
 (define template "package com.visitor.sets.<set>;
 import com.visitor.*;
-import com.visitor.card.properties.Combat.CombatAbility.*;
+import com.visitor.card.properties.Damagable.CombatAbility.*;
 import com.visitor.protocol.Types.Knowledge.*
 
 /**

@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.visitor.card.types.helpers;
+package com.visitor.card.containers;
 
 import com.visitor.card.properties.Playable;
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.ActivatedAbility;
 import com.visitor.protocol.Types;
 
 import java.util.UUID;

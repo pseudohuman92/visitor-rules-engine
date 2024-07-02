@@ -6,8 +6,6 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Cantrip;
-import com.visitor.card.types.Ritual;
-import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -15,7 +13,6 @@ import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
-import static com.visitor.card.properties.Combat.CombatAbility.Vigilance;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**

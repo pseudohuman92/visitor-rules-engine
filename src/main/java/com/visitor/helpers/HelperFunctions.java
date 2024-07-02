@@ -1,6 +1,6 @@
 package com.visitor.helpers;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Player;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import static java.lang.Class.forName;
-import static java.lang.System.out;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 

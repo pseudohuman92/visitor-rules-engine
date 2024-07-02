@@ -1,18 +1,16 @@
 package com.visitor.game;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.Card;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.properties.Targetable;
-import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.AbilityCard;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.Damage;
+import com.visitor.card.containers.Damage;
 import com.visitor.protocol.Types;
 import com.visitor.protocol.Types.Knowledge;
 import com.visitor.protocol.Types.KnowledgeGroup;
-import com.visitor.sets.base2.Sentry;
 
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -37,7 +35,7 @@ public class Player implements Targetable {
     public Arraylist<Card> discardPile;
     public Arraylist<Card> playArea;
     public CounterMap<Knowledge> knowledgePool;
-    public Combat combat;
+    public Damagable combat;
     public Clock clock;
 
 
@@ -54,7 +52,7 @@ public class Player implements Targetable {
         discardPile = new Arraylist<>();
         playArea = new Arraylist<>();
         knowledgePool = new CounterMap<>();
-        combat = new Combat(game, null, 30);
+        combat = new Damagable(game, null, 30);
         combat.setPlayerId(id);
         clock = new Clock(20 * 60, () -> game.gameEnd(id, false));
         clock.start();

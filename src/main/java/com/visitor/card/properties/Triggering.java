@@ -5,15 +5,11 @@
  */
 package com.visitor.card.properties;
 
-import com.visitor.card.types.helpers.EventChecker;
-import com.visitor.game.Card;
+import com.visitor.card.containers.EventChecker;
+import com.visitor.card.Card;
 import com.visitor.game.Event;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.containers.Damage;
-
-import java.util.UUID;
-import java.util.function.BiConsumer;
 
 /**
  * Interface for cards that has a triggering effect.

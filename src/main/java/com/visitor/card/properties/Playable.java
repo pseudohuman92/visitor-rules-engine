@@ -1,7 +1,7 @@
 package com.visitor.card.properties;
 
-import com.visitor.game.Card;
-import com.visitor.game.Player;
+import com.visitor.card.containers.Effect;
+import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
@@ -10,7 +10,6 @@ import com.visitor.helpers.Predicates;
 import com.visitor.helpers.UUIDHelper;
 import com.visitor.protocol.Types;
 
-import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -30,22 +29,22 @@ public class Playable {
     private Supplier<Boolean> playTimingCondition;
     private Supplier<Boolean> playResourceCondition;
 
-    private final Hashmap<UUID, TargetingEffect> costTargeting; //For paying additional costs
+    private final Hashmap<UUID, Effect> costEffects; //For paying additional costs
     private final Arraylist<Consumer<Boolean>> play;  //Pays the energy cost and places card into the stack.
 
     private Runnable resolvePlaceCard; //Places card into its resolve zone
-    private final Arraylist<Runnable> afterResolve;   //Runs after card is placed into its resolve zone
+    private final Hashmap<UUID, Effect> afterResolveEffects;   //Runs after card is placed into its resolve zone
 
-    private final Hashmap<UUID, TargetingEffect> effectTargeting;
+    private final Hashmap<UUID, Effect> resolveEffects;
     public Playable(Game game, Card card, int cost) {
         this.card = card;
         this.game = game;
         this.cost = cost;
-        this.afterResolve = new Arraylist<>();
+        this.afterResolveEffects = new Hashmap<>();
         this.playAdditionalConditions = new Arraylist<>();
         this.play = new Arraylist<>();
-        this.costTargeting = new Hashmap<>();
-        this.effectTargeting = new Hashmap<>();
+        this.costEffects = new Hashmap<>();
+        this.resolveEffects = new Hashmap<>();
         
         // Default Implementations
         setDefaultPlayResourceCondition();
@@ -134,9 +133,9 @@ public class Playable {
      * This function contains the business logic of the card effect.
      */
     public final void resolve() {
-        effectTargeting.values().forEach(TargetingEffect::runEffect);
+        resolveEffects.values().forEach(Effect::runEffect);
         resolvePlaceCard.run();
-        afterResolve.forEachInOrder(Runnable::run);
+        afterResolveEffects.values().forEach(Effect::runEffect);
     }
 
 
@@ -156,11 +155,11 @@ public class Playable {
         String targetingMessage = message != null ? message : "Select " + (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " cards" + (withPlayers ? " or players." : ".");
         Predicate<Targetable> pred = predicate != null ? and(predicate, c -> isPlayer(c) || compareZones(c.getZone(), zone)) : (c -> isPlayer(c) || compareZones(c.getZone(), zone));
 
-        TargetingEffect t = new TargetingEffect(game, card, zone, minCount, maxCount, pred, targetingMessage, perTargetEffect);
+        Effect t = new Effect(game, card, zone, minCount, maxCount, pred, targetingMessage, perTargetEffect);
         if (forCost) {
-            costTargeting.put(t.getId(), t);
+            costEffects.put(t.getId(), t);
         } else {
-            effectTargeting.put(t.getId(), t);
+            resolveEffects.put(t.getId(), t);
         }
     }
 
@@ -229,7 +228,7 @@ public class Playable {
             if (withCost) {
                 game.removeEnergy(card.controller, cost);
             }
-            for (TargetingEffect e :costTargeting.values()){
+            for (Effect e : costEffects.values()){
                 e.runEffect();
             }
             game.addToStack(card);
@@ -253,10 +252,10 @@ public class Playable {
     public void setDefaultPlayAdditionalConditions() {
         playAdditionalConditions.add(() -> {
             boolean canPlay = true;
-            for (TargetingEffect value : costTargeting.values()) {
+            for (Effect value : costEffects.values()) {
                 canPlay = canPlay && value.hasEnoughTargets();
             }
-            for (TargetingEffect value : effectTargeting.values()) {
+            for (Effect value : resolveEffects.values()) {
                 canPlay = canPlay && value.hasEnoughTargets();
             }
             return canPlay;
@@ -284,8 +283,8 @@ public class Playable {
     }
 
     public Playable addResolveEffect(Runnable resolveEffect) {
-        TargetingEffect t = new TargetingEffect(game, card, resolveEffect);
-        this.effectTargeting.put(t.getId(), t);
+        Effect t = new Effect(game, card, resolveEffect);
+        this.resolveEffects.put(t.getId(), t);
         return this;
     }
 
@@ -293,8 +292,9 @@ public class Playable {
         this.resolvePlaceCard = resolvePlaceCard;
     }
 
-    public Playable addAfterResolve(Runnable... afterResolve) {
-        this.afterResolve.addAll(Arrays.asList(afterResolve));
+    public Playable addAfterResolveEffect(Runnable afterResolveEffect) {
+        Effect t = new Effect(game, card, afterResolveEffect);
+        this.afterResolveEffects.put(t.getId(), t);
         return this;
     }
 
@@ -307,35 +307,40 @@ public class Playable {
         return cost;
     }
 
-    public boolean needsTargets() {return !effectTargeting.isEmpty(); }
+    public boolean needsTargets() {return !resolveEffects.isEmpty(); }
 
     public Arraylist<Types.Targeting> getTargetingBuilder() {
         Arraylist<Types.Targeting> builders = new Arraylist<>();
-        for (TargetingEffect t : costTargeting.values())
+        for (Effect t : costEffects.values())
             builders.add(t.toTargetingBuilder().build());
-        for (TargetingEffect t : effectTargeting.values())
+        for (Effect t : resolveEffects.values())
             builders.add(t.toTargetingBuilder().build());
         return builders;
     }
 
     public void clear() {
-        for (TargetingEffect t : costTargeting.values()){
+        for (Effect t : costEffects.values()){
             t.clear();
         }
-        for (TargetingEffect t : effectTargeting.values()){
+        for (Effect t : resolveEffects.values()){
             t.clear();
         }
     }
 
     public void setTargets(Arraylist<Types.TargetSelection> targets) {
         for (Types.TargetSelection t : targets) {
-            TargetingEffect tr = costTargeting.get(UUID.fromString(t.getId()));
+            Effect tr = costEffects.get(UUID.fromString(t.getId()));
             if (tr != null){
                 tr.setTargets(UUIDHelper.toUUIDList(t.getTargetsList()));
             } else {
-                tr = effectTargeting.get(UUID.fromString(t.getId()));
+                tr = resolveEffects.get(UUID.fromString(t.getId()));
                 if (tr != null){
                     tr.setTargets(UUIDHelper.toUUIDList(t.getTargetsList()));
+                } else {
+                    tr = afterResolveEffects.get(UUID.fromString(t.getId()));
+                    if (tr != null){
+                        tr.setTargets(UUIDHelper.toUUIDList(t.getTargetsList()));
+                    }
                 }
             }
         }
@@ -343,10 +348,13 @@ public class Playable {
 
     public Arraylist<UUID> getAllTargets() {
         Arraylist<UUID> targets = new Arraylist<>();
-        for (TargetingEffect t : costTargeting.values()){
+        for (Effect t : costEffects.values()){
             targets.addAll(t.getTargets());
         }
-        for (TargetingEffect t : effectTargeting.values()){
+        for (Effect t : resolveEffects.values()){
+            targets.addAll(t.getTargets());
+        }
+        for (Effect t : afterResolveEffects.values()){
             targets.addAll(t.getTargets());
         }
         return targets;

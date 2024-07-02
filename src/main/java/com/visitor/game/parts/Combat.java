@@ -1,16 +1,15 @@
 package com.visitor.game.parts;
 
-import com.visitor.game.Card;
-import com.visitor.game.Event;
+import com.visitor.card.Card;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.containers.Damage;
+import com.visitor.card.containers.Damage;
 import com.visitor.protocol.Types;
 
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import static com.visitor.card.properties.Combat.CombatAbility.FirstStrike;
+import static com.visitor.card.properties.Damagable.CombatAbility.FirstStrike;
 import static com.visitor.game.parts.Base.Zone.Play;
 import static java.lang.System.out;
 import static java.util.UUID.fromString;
@@ -20,11 +19,11 @@ public class Combat extends Stack {
     // Does nothing if called with non-positive amount of damage
     public void dealDamage(UUID sourceId, UUID targetId, Damage damage) {
         if (damage.amount > 0) {
-            com.visitor.game.Card source = getCard(sourceId);
+            Card source = getCard(sourceId);
             if (isPlayer(targetId)) {
                 getPlayer(targetId).receiveDamage(damage.amount, source);
             } else {
-                com.visitor.game.Card c = getCard(targetId);
+                Card c = getCard(targetId);
                 if (c != null) {
                     c.receiveDamage(damage, source);
                 }
@@ -42,7 +41,7 @@ public class Combat extends Stack {
     }
 
     /**
-     * Combat Helper Methods
+     * Damagable Helper Methods
     */
 
 
@@ -54,16 +53,16 @@ public class Combat extends Stack {
 
         processEvents();
 
-        ArrayList<com.visitor.game.Card> normalAttackers = new Arraylist<>(getAllCardsById(attackers));
+        ArrayList<Card> normalAttackers = new Arraylist<>(getAllCardsById(attackers));
         normalAttackers.removeIf(a -> a.hasCombatAbility(FirstStrike));
-        ArrayList<com.visitor.game.Card> normalBlockers = new Arraylist<>(getAllCardsById(blockers));
+        ArrayList<Card> normalBlockers = new Arraylist<>(getAllCardsById(blockers));
 
         normalAttackers.forEach(a -> a.dealAttackDamage(false));
-        normalBlockers.forEach(com.visitor.game.Card::dealBlockDamage);
+        normalBlockers.forEach(Card::dealBlockDamage);
 
         //TODO: these kill if they blocked by a deathtouch unit even if it is not damaged by it.
-        normalAttackers.forEach(com.visitor.game.Card::maybeDieFromBlock);
-        normalBlockers.forEach(com.visitor.game.Card::maybeDieFromAttack);
+        normalAttackers.forEach(Card::maybeDieFromBlock);
+        normalBlockers.forEach(Card::maybeDieFromAttack);
 
         processEvents();
     }

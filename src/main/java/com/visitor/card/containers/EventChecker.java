@@ -1,15 +1,13 @@
-package com.visitor.card.types.helpers;
+package com.visitor.card.containers;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Event;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.containers.Damage;
 import org.apache.commons.lang3.function.TriConsumer;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -50,10 +48,7 @@ public class EventChecker implements Consumer<Event> {
     }
 
     public static EventChecker startOfTurnChecker(Game game, Card card, Runnable effect){
-        EventChecker ec = new EventChecker(game, card);
-            ec.addStartOfControllerTurnCondition();
-            ec.addStartOfOpponentTurnCondition();
-        return ec.setEffect(effect);
+        return new EventChecker(game, card).addTypeCondition(Event.EventType.Turn_Start).setEffect(effect);
     }
 
 
@@ -83,10 +78,6 @@ public class EventChecker implements Consumer<Event> {
         return dealDamageChecker(game, card, (c, i, d) -> {
             return d.combat && predicate.apply(c, i, d);
         }, effect);
-    }
-
-    public static EventChecker sacrificeChecker(Game game, Card card, Consumer<Card> effect){
-        return new EventChecker(game, card).addTypeCondition(Event.EventType.Sacrifice).setCardEffect(effect);
     }
 
     private EventChecker setCardListEffect(Consumer<Arraylist<Card>> effect) {

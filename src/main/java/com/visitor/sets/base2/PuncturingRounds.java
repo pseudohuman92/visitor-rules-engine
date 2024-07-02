@@ -1,6 +1,6 @@
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Cantrip;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
@@ -19,7 +19,7 @@ public class PuncturingRounds extends Cantrip {
 
         playable.addTargetSingleUnit(Base.Zone.Play, null, t -> {
            game.addAttackAndHealth(t, 3, 0, true);
-           game.addCombatAbility(t, Combat.CombatAbility.Trample, true);
+           game.addCombatAbility(t, Damagable.CombatAbility.Trample, true);
         }, null, false);
     }
 }

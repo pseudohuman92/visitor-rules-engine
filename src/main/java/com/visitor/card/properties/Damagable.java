@@ -1,25 +1,22 @@
 package com.visitor.card.properties;
 
-import com.visitor.game.Card;
+import com.visitor.card.Card;
 import com.visitor.game.Event;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.containers.Damage;
+import com.visitor.card.containers.Damage;
 import com.visitor.protocol.Types;
 
-import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.visitor.card.properties.Combat.CombatAbility.*;
+import static com.visitor.card.properties.Damagable.CombatAbility.*;
 
-public class Combat {
+public class Damagable {
 
     private final Card card;
     private final Game game;
@@ -27,210 +24,168 @@ public class Combat {
     private UUID playerId;
 
     private int attack;
+    private int turnlyAttack;
     private int health;
+    private int turnlyHealth;
     private int maxHealth;
     private int shield;
+    private int turnlyShield;
+
     private boolean deploying;
     private UUID blockedAttacker;
     private UUID blockedBy;
     private UUID attackTarget;
     private final CounterMap<CombatAbility> combatAbilityList;
-
-    private int turnlyAttack;
-    private int turnlyHealth;
-    private int turnlyShield;
     private final CounterMap<CombatAbility> turnlyCombatAbilityList;
 
-    private final Supplier<Boolean> canAttackAdditional;
-    private Supplier<Boolean> canAttack;
-    private final Predicate<Card> canBlockAdditional;
-    private final Predicate<Card> canBlock;
-    private Supplier<Boolean> canBlockGeneral;
-    private final Consumer<UUID> setAttacking;
-    private final Runnable unsetAttacking;
-    private final Consumer<UUID> setBlocking;
-    private final Runnable unsetBlocking;
-    private final Consumer<UUID> setBlocker;
-    private final Runnable newTurn;
-    private final Consumer<Boolean> dealAttackDamage;
-    private final Runnable dealBlockDamage;
-    private final BiConsumer<Damage, Card> receiveDamage;
+    private final Arraylist<Supplier<Boolean>> canAttackAdditional;
+    private final Arraylist<Predicate<Card>> canBlockAdditional;
+;
 
-    public Combat(Game game, Card card, int attack, int health) {
+    public Damagable(Game game, Card card, int attack, int health, int shield) {
         this.card = card;
         this.game = game;
         this.attack = attack;
         this.health = health;
+        this.shield = shield;
         this.maxHealth = health;
         this.playerId = null;
         combatAbilityList = new CounterMap<>();
         turnlyCombatAbilityList = new CounterMap<>();
-        //Default implementations
-        canAttackAdditional = () -> true;
-
-        canAttack = () ->
-                !card.isDepleted() &&
-                        (!deploying || hasCombatAbility(CombatAbility.Blitz)) &&
-                        !hasCombatAbility(Defender) &&
-                        card.zone == Base.Zone.Play &&
-                        canAttackAdditional.get();
-
-        canBlockAdditional = (unit) -> true;
-
-        canBlock = (unit) ->
-                !card.isDepleted() &&
-                        !unit.hasCombatAbility(Unblockable) &&
-                        (!unit.hasCombatAbility(Evasive) || hasCombatAbility(Evasive) || hasCombatAbility(Reach)) &&
-                        canBlockAdditional.test(unit);
-
-        canBlockGeneral = () -> !card.isDepleted();
-
-        setAttacking = (target) -> {
-            if (!hasCombatAbility(Vigilance))
-                card.deplete();
-            attackTarget = target;
-        };
-
-        unsetAttacking = () -> {
-            attackTarget = null;
-            blockedBy = null;
-        };
-
-        setBlocking = (unit) -> blockedAttacker = unit;
-
-        unsetBlocking = () -> blockedAttacker = null;
-
-        setBlocker = (blocker) -> blockedBy = blocker;
-
-        newTurn = () -> {
-            if (hasCombatAbility(Regenerate)) {
-                game.heal(card.getId(), combatAbilityList.get(Regenerate));
-            }
-            if (hasCombatAbility(Decay)) {
-                loseMaxHealth(1);
-                loseHealth(1);
-                loseAttack(1);
-            }
-            deploying = false;
-        };
-
-        dealAttackDamage = (firstStrike) -> {
-            UUID id = card.getId();
-            if (blockedBy == null) {
-                game.dealDamage(id, attackTarget, new Damage(getAttack(), firstStrike, true));
-            } else {
-                game.dealDamage(id, blockedBy, new Damage(getAttack(), firstStrike, true));
-            }
-        };
-
-        dealBlockDamage = () -> {
-            UUID id = card.getId();
-            if (blockedAttacker != null)
-                game.dealDamage(id, blockedAttacker, new Damage(getAttack(), false, true));
-        };
-
-        receiveDamage = (damage, source) -> {
-            int damageAmount = damage.amount - (shield + turnlyShield);
-
-            //Apply shields
-            if (damageAmount <= 0) {
-                return;
-            }
-
-            int dealtDamageAmount = Math.min(damageAmount, getHealth());
-
-            if (source != null && source.isAttacking() &&
-                source.hasCombatAbility(Trample) &&
-                damageAmount > getHealth()) {
-
-                int leftoverDamage = damageAmount - getHealth();
-                this.turnlyHealth = 0;
-                this.health = 0;
-                try {
-                    game.dealDamage(source.getId(), card.controller, new Damage(leftoverDamage));
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
-                }
-            } else { //Normal damage
-                if (turnlyHealth >= damageAmount) {
-                    turnlyHealth -= damageAmount;
-                } else {
-                    damageAmount -= turnlyHealth;
-                    turnlyHealth = 0;
-                    this.health -= Math.min(damageAmount, this.health);
-                }
-            }
-
-            if (source != null && source.hasCombatAbility(Lifelink)) {
-                game.gainHealth(source.controller, dealtDamageAmount);
-            }
-            if (source != null && source.hasCombatAbility(Drain)) {
-                game.heal(source.getId(), dealtDamageAmount);
-            }
-
-            game.addEvent(Event.damage(source, playerId != null ? playerId : card.getId(), new Damage(dealtDamageAmount, damage.mayKill, damage.combat)));
-
-            if (card != null && damage.mayKill && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
-                game.destroy(source.getId(), card.getId());
-            }
-        };
+        canAttackAdditional = new Arraylist<>();
+        canBlockAdditional = new Arraylist<>();
     }
+
 
     public void loseMaxHealth(int i) {
         maxHealth = Math.max(maxHealth - i, 0);
     }
 
 
-    public Combat(Game game, Card card, int health) {
-        this(game, card, -1, health);
-        canAttack = () -> false;
-        canBlockGeneral = () -> false;
+    public Damagable(Game game, Card card, int health) {
+        this(game, card, -1, health, 0);
+        canAttackAdditional.add(() -> false);
+        canBlockAdditional.add(u -> false);
     }
 
 
     public final boolean canAttack() {
-        return game.canAttack(card.controller) && canAttack.get();
+        boolean b =  game.canAttack(card.controller) &&
+                !card.isDepleted() &&
+                (!deploying || hasCombatAbility(CombatAbility.Blitz)) &&
+                !hasCombatAbility(Defender) &&
+                card.zone == Base.Zone.Play;
+        for (Supplier<Boolean> s : canAttackAdditional){
+            b = b && s.get();
+        }
+        return b;
     }
 
     public final boolean canBlock() {
-        return game.canBlock(card.controller) && canBlockGeneral.get();
+        return game.canBlock(card.controller) && !card.isDepleted();
     }
 
     public final boolean canBlock(Card unit) {
-        return canBlock.test(unit);
+        boolean b = !card.isDepleted() &&
+                !unit.hasCombatAbility(Unblockable) &&
+                (!unit.hasCombatAbility(Evasive) || hasCombatAbility(Evasive) || hasCombatAbility(Reach));
+        for (Predicate<Card> p : canBlockAdditional){
+            b = b && p.test(unit);
+        }
+        return b;
     }
 
     public final void unsetAttacking() {
-        unsetAttacking.run();
+        attackTarget = null;
+        blockedBy = null;
     }
 
     public final void setBlocking(UUID unit) {
-        setBlocking.accept(unit);
+        blockedAttacker = unit;
     }
 
     public final void unsetBlocking() {
-        unsetBlocking.run();
+        blockedAttacker = null;
     }
 
     public final void addBlocker(UUID blocker) {
-        setBlocker.accept(blocker);
+        blockedBy = blocker;
     }
 
     public final void newTurn() {
-        newTurn.run();
+        if (hasCombatAbility(Regenerate)) {
+            game.heal(card.getId(), combatAbilityList.get(Regenerate));
+        }
+        if (hasCombatAbility(Decay)) {
+            loseMaxHealth(1);
+            loseHealth(1);
+            loseAttack(1);
+        }
+        deploying = false;
     }
 
     public final void dealAttackDamage(boolean firstStrike) {
-        dealAttackDamage.accept(firstStrike);
+        UUID id = card.getId();
+        if (blockedBy == null) {
+            game.dealDamage(id, attackTarget, new Damage(getAttack(), firstStrike, true));
+        } else {
+            game.dealDamage(id, blockedBy, new Damage(getAttack(), firstStrike, true));
+        }
     }
 
     public final void dealBlockDamage() {
-        dealBlockDamage.run();
+        UUID id = card.getId();
+        if (blockedAttacker != null)
+            game.dealDamage(id, blockedAttacker, new Damage(getAttack(), false, true));
     }
 
     public final void receiveDamage(Damage damage, Card source) {
-        receiveDamage.accept(damage, source);
+        int damageAmount = damage.amount - (shield + turnlyShield);
+
+        //Apply shields
+        if (damageAmount <= 0) {
+            return;
+        }
+
+        int dealtDamageAmount = Math.min(damageAmount, getHealth());
+
+        if (source != null && source.isAttacking() &&
+                source.hasCombatAbility(Trample) &&
+                damageAmount > getHealth()) {
+
+            int leftoverDamage = damageAmount - getHealth();
+            this.turnlyHealth = 0;
+            this.health = 0;
+            try {
+                game.dealDamage(source.getId(), card.controller, new Damage(leftoverDamage));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+        } else { //Normal damage
+            if (turnlyHealth >= damageAmount) {
+                turnlyHealth -= damageAmount;
+            } else {
+                damageAmount -= turnlyHealth;
+                turnlyHealth = 0;
+                this.health -= Math.min(damageAmount, this.health);
+            }
+        }
+
+        if (source.hasCombatAbility(Lifelink)) {
+            game.gainHealth(source.controller, dealtDamageAmount);
+        }
+        if (source.hasCombatAbility(Drain)) {
+            game.heal(source.getId(), dealtDamageAmount);
+        }
+
+
+
+        if (card != null && damage.mayKill && (getHealth() == 0 || (source.hasCombatAbility(Deadly)))) {
+            game.destroy(card.getId());
+        }
+
+        game.addEvent(Event.damage(source, playerId != null ? playerId : card.getId(), new Damage(dealtDamageAmount, damage.mayKill, damage.combat)));
     }
 
     public final void clearTurnly() {
@@ -267,7 +222,7 @@ public class Combat {
                 .setShield(getShield())
                 .addAllCombatAbilities(combatAbilityList.transformToStringList())
                 .addAllCombatAbilities(turnlyCombatAbilityList.transformToStringList())
-                .addAllPossibleBlockTargets(new Arraylist<String>((List<String>) game.getPossibleBlockTargets(canBlock).transform(c -> c.getId().toString())));
+                .addAllPossibleBlockTargets(new Arraylist<String>((List<String>) game.getPossibleBlockTargets(this::canBlock).transform(c -> c.getId().toString())));
     }
 
     public void addCombatAbility(CombatAbility combatAbility, int i, boolean turnly) {
@@ -347,7 +302,9 @@ public class Combat {
     }
 
     public final void setAttacking(UUID target) {
-        setAttacking.accept(target);
+        if (!hasCombatAbility(Vigilance))
+            card.deplete();
+        attackTarget = target;
     }
 
     public void setDeploying() {

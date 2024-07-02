@@ -5,9 +5,9 @@
  */
 package com.visitor.sets.base2;
 
-import com.visitor.card.properties.Combat;
+import com.visitor.card.properties.Damagable;
 import com.visitor.card.types.Unit;
-import com.visitor.card.types.helpers.EventChecker;
+import com.visitor.card.containers.EventChecker;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 
@@ -25,7 +25,7 @@ public class EternalSpawn extends Unit {
                 2, new CounterMap(PURPLE, 2),
                 "When {~} dies, create a {~}",
                 2, 2,
-                owner, Combat.CombatAbility.Decay);
+                owner, Damagable.CombatAbility.Decay);
         triggering.addEventChecker(EventChecker.selfDeathChecker(game, this, () ->
                 new EternalSpawn(game, controller).resolve()));
     }

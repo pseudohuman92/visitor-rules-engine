@@ -23,7 +23,7 @@ public class InfuseLife extends Cantrip {
         playable.addTargetSingleUnit(Base.Zone.Play, Predicates.controlledBy(controller),
                 c -> {
                     x = game.getCard(c).getHealth();
-                    game.sacrifice(c);
+                    game.destroy(c);
                 }, "Select unit to sacrifice", true);
 
         playable.addResolveEffect(() -> game.forEachInZone(controller, Base.Zone.Play, Predicates::isUnit, c -> game.addAttackAndHealth(c, x, x, false)));
