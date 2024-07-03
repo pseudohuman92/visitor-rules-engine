@@ -43,7 +43,7 @@ public abstract class Card implements Targetable {
 
     protected Activatable activatable;
     protected Triggering triggering;
-    public Damagable combat;
+    public Damagable damagable;
     protected Playable playable;
     protected Studiable studiable;
     protected Attachable attachable;
@@ -86,8 +86,8 @@ public abstract class Card implements Targetable {
 
     public void newTurn() {
         depleted = false;
-        if (combat != null)
-            combat.newTurn();
+        if (damagable != null)
+            damagable.newTurn();
         if (activatable != null)
             activatable.newTurn();
     }
@@ -101,8 +101,8 @@ public abstract class Card implements Targetable {
         playable.clear();
         activatable.clear();
         attachments.clear();
-        if (combat != null)
-            combat.clear();
+        if (damagable != null)
+            damagable.clear();
         if (attachable != null)
             attachable.clear();
     }
@@ -201,40 +201,40 @@ public abstract class Card implements Targetable {
     }
 
     public final void receiveDamage(Damage damage, Card source) {
-        runIfNotNull(combat, () -> combat.receiveDamage(damage, source));
+        runIfNotNull(damagable, () -> damagable.receiveDamage(damage, source));
     }
 
     public void heal(int healAmount) {
-        runIfNotNull(combat, () -> combat.heal(healAmount));
+        runIfNotNull(damagable, () -> damagable.heal(healAmount));
     }
 
     public final int getAttack() {
-        return runIfNotNull(combat, () -> combat.getAttack());
+        return runIfNotNull(damagable, () -> damagable.getAttack());
     }
 
     public void addAttackAndHealth(int attack, int health, boolean turnly) {
-        runIfNotNull(combat, () -> combat.addAttackAndHealth(attack, health, turnly));
+        runIfNotNull(damagable, () -> damagable.addAttackAndHealth(attack, health, turnly));
     }
 
     //TODO: Refactor these like above
     public final void unsetAttacking() {
-        runIfNotNull(combat, combat::unsetAttacking);
+        runIfNotNull(damagable, damagable::unsetAttacking);
     }
 
     public final void addBlocker(UUID blockerId) {
-        runIfNotNull(combat, () -> combat.addBlocker(blockerId));
+        runIfNotNull(damagable, () -> damagable.addBlocker(blockerId));
     }
 
     public final void setBlocking(UUID blockedBy) {
-        runIfNotNull(combat, () -> combat.setBlocking(blockedBy));
+        runIfNotNull(damagable, () -> damagable.setBlocking(blockedBy));
     }
 
     public final void dealAttackDamage(boolean firstStrike) {
-        runIfNotNull(combat, () -> combat.dealAttackDamage(firstStrike));
+        runIfNotNull(damagable, () -> damagable.dealAttackDamage(firstStrike));
     }
 
     public final void dealBlockDamage() {
-        runIfNotNull(combat, combat::dealBlockDamage);
+        runIfNotNull(damagable, damagable::dealBlockDamage);
     }
 
     public final void activate(UUID abilityId) {
@@ -242,15 +242,15 @@ public abstract class Card implements Targetable {
     }
 
     public final void unsetBlocking() {
-        runIfNotNull(combat, combat::unsetBlocking);
+        runIfNotNull(damagable, damagable::unsetBlocking);
     }
 
     public boolean canDieFromBlock() {
-        return runIfNotNull(combat, combat::canDieFromBlock);
+        return runIfNotNull(damagable, damagable::canDieFromBlock);
     }
 
     public boolean canDieFromAttack() {
-        return runIfNotNull(combat, combat::canDieFromAttack);
+        return runIfNotNull(damagable, damagable::canDieFromAttack);
     }
 
     public void maybeDieFromBlock() {
@@ -266,7 +266,7 @@ public abstract class Card implements Targetable {
     }
 
     public void addCombatAbility(Damagable.CombatAbility ability, int count, boolean turnly) {
-        runIfNotNull(combat, () -> combat.addCombatAbility(ability, count, turnly));
+        runIfNotNull(damagable, () -> damagable.addCombatAbility(ability, count, turnly));
     }
 
     public void addCombatAbility(Damagable.CombatAbility ability, boolean turnly) {
@@ -274,19 +274,19 @@ public abstract class Card implements Targetable {
     }
 
     public void removeCombatAbility(Damagable.CombatAbility ability) {
-        runIfNotNull(combat, () -> combat.removeCombatAbility(ability));
+        runIfNotNull(damagable, () -> damagable.removeCombatAbility(ability));
     }
 
     public final boolean canAttack() {
-        return combat != null && combat.canAttack();
+        return damagable != null && damagable.canAttack();
     }
 
     public final boolean canBlock() {
-        return combat != null && combat.canBlock();
+        return damagable != null && damagable.canBlock();
     }
 
     public final boolean canBlock(Card c) {
-        return combat != null && combat.canBlock(c);
+        return damagable != null && damagable.canBlock(c);
     }
 
     public final boolean canPlay(boolean withCost) {
@@ -302,15 +302,15 @@ public abstract class Card implements Targetable {
     }
 
     public final boolean isAttacking() {
-        return combat != null && combat.isAttacking();
+        return damagable != null && damagable.isAttacking();
     }
 
     public final void setAttacking(UUID attacker) {
-        runIfNotNull(combat, () -> combat.setAttacking(attacker));
+        runIfNotNull(damagable, () -> damagable.setAttacking(attacker));
     }
 
     public final boolean hasCombatAbility(Damagable.CombatAbility combatAbility) {
-        return combat != null && combat.hasCombatAbility(combatAbility);
+        return damagable != null && damagable.hasCombatAbility(combatAbility);
     }
 
     public boolean hasType(CardType type) {
@@ -322,26 +322,26 @@ public abstract class Card implements Targetable {
     }
 
     public void endTurn() {
-        runIfNotNull(combat, () -> combat.endTurn());
+        runIfNotNull(damagable, () -> damagable.endTurn());
         runIfNotNull(activatable, () -> activatable.endTurn());
     }
 
 
     public void addShield(int i, boolean turnly) {
-        runIfNotNull(combat, () -> combat.addShield(i, turnly));
+        runIfNotNull(damagable, () -> damagable.addShield(i, turnly));
     }
 
     public void setAttack(int i) {
-        runIfNotNull(combat, () -> combat.setAttack(i));
+        runIfNotNull(damagable, () -> damagable.setAttack(i));
     }
 
     public void setHealth(int i) {
-        runIfNotNull(combat, () -> combat.setHealth(i));
+        runIfNotNull(damagable, () -> damagable.setHealth(i));
     }
 
 
     public boolean isDamagable() {
-        return combat != null;
+        return damagable != null;
     }
 
     public boolean isStudiable() {
@@ -353,7 +353,7 @@ public abstract class Card implements Targetable {
     }
 
     public boolean isDeploying() {
-        return combat != null && combat.isDeploying();
+        return damagable != null && damagable.isDeploying();
     }
 
     public boolean isDepleted() {
@@ -362,7 +362,7 @@ public abstract class Card implements Targetable {
 
 
     public int getHealth() {
-        return runIfNotNull(combat, () -> combat.getHealth());
+        return runIfNotNull(damagable, () -> damagable.getHealth());
     }
 
     public boolean isColorless() {
@@ -395,14 +395,14 @@ public abstract class Card implements Targetable {
     }
 
     public void loseAttack(int attack) {
-        runIfNotNull(combat, () -> combat.loseAttack(attack));
+        runIfNotNull(damagable, () -> damagable.loseAttack(attack));
     }
 
     //Checks death after life loss
     public void loseHealth(int health) {
-        runIfNotNull(combat, () -> {
-            combat.loseHealth(health);
-            if (combat.getHealth() == 0)
+        runIfNotNull(damagable, () -> {
+            damagable.loseHealth(health);
+            if (damagable.getHealth() == 0)
                 game.destroy(id);
         });
     }
@@ -446,8 +446,8 @@ public abstract class Card implements Targetable {
             builder.addAllActivateTargets(activatable.getAbilityBuilders());
         }
 
-        if (combat != null) {
-            builder.setCombat(combat.toCombatMessage());
+        if (damagable != null) {
+            builder.setCombat(damagable.toCombatMessage());
         }
 
         return builder;
@@ -458,11 +458,11 @@ public abstract class Card implements Targetable {
     }
 
     public int drain(int amount) {
-        return combat.drain(amount);
+        return damagable.drain(amount);
     }
 
     public int getMaxHealth() {
-        return combat.getMaxHealth();
+        return damagable.getMaxHealth();
     }
 
     public void setPlayableTargets(Arraylist<Types.TargetSelection> targets) {
@@ -499,20 +499,20 @@ public abstract class Card implements Targetable {
     };
 
     public int getShields() {
-        if (combat != null){
-            return combat.getShield();
+        if (damagable != null){
+            return damagable.getShield();
         } else {
             return 0;
         }
     }
 
     public void removeShields(int shieldAmount) {
-        runIfNotNull(combat, () -> combat.removeShield(shieldAmount));
+        runIfNotNull(damagable, () -> damagable.removeShield(shieldAmount));
     }
 
     public CounterMap<Damagable.CombatAbility> getCombatAbilities() {
-        if (combat != null){
-            return combat.getCombatAbilities();
+        if (damagable != null){
+            return damagable.getCombatAbilities();
         } else {
             return new CounterMap<>();
         }

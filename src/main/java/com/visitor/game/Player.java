@@ -35,7 +35,7 @@ public class Player implements Targetable {
     public Arraylist<Card> discardPile;
     public Arraylist<Card> playArea;
     public CounterMap<Knowledge> knowledgePool;
-    public Damagable combat;
+    public Damagable damagable;
     public Clock clock;
 
 
@@ -52,8 +52,8 @@ public class Player implements Targetable {
         discardPile = new Arraylist<>();
         playArea = new Arraylist<>();
         knowledgePool = new CounterMap<>();
-        combat = new Damagable(game, null, 30);
-        combat.setPlayerId(id);
+        damagable = new Damagable(game, null, 30);
+        damagable.setPlayerId(id);
         clock = new Clock(20 * 60, () -> game.gameEnd(id, false));
         clock.start();
     }
@@ -65,16 +65,16 @@ public class Player implements Targetable {
         return new Arraylist<>(cards.transform(Card::getId));
     }
 
-    public void receiveDamage(int damageAmount, Card source) {
-        combat.receiveDamage(new Damage(damageAmount, false, false), source);
-        if (combat.getHealth() <= 0) {
+    public void receiveDamage(Damage damage, Card source) {
+        damagable.receiveDamage(new Damage(damage.amount, false, damage.combat), source);
+        if (damagable.getHealth() <= 0) {
             game.gameEnd(id, false);
         }
     }
 
     public void payHealth(int amount) {
-        combat.loseHealth(amount);
-        if (combat.getHealth() <= 0) {
+        damagable.loseHealth(amount);
+        if (damagable.getHealth() <= 0) {
             game.gameEnd(id, false);
         }
     }
@@ -205,9 +205,9 @@ public class Player implements Targetable {
                 .setDeckSize(deck.size())
                 .setEnergy(energy + turnlyEnergy)
                 .setMaxEnergy(maxEnergy)
-                .setShield(combat.getShield())
+                .setShield(damagable.getShield())
                 .setHandSize(hand.size())
-                .setHealth(combat.getHealth())
+                .setHealth(damagable.getHealth())
                 .setTime(clock.getTimeLeft())
                 .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
                 .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()));
@@ -228,13 +228,13 @@ public class Player implements Targetable {
 
 
     public void addHealth(int health) {
-        combat.addAttackAndHealth(0, health, false);
+        damagable.addAttackAndHealth(0, health, false);
     }
 
     public void endTurn() {
 
         playArea.forEach(Card::endTurn);
-        combat.endTurn();
+        damagable.endTurn();
         turnlyEnergy = 0;
     }
 
@@ -267,7 +267,7 @@ public class Player implements Targetable {
     }
 
     public boolean hasHealth(int i) {
-        return combat.getHealth() >= i;
+        return damagable.getHealth() >= i;
     }
 
     public void purgeFromDeck(int i) {

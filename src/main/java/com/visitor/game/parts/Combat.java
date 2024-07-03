@@ -21,7 +21,7 @@ public class Combat extends Stack {
         if (damage.amount > 0) {
             Card source = getCard(sourceId);
             if (isPlayer(targetId)) {
-                getPlayer(targetId).receiveDamage(damage.amount, source);
+                getPlayer(targetId).receiveDamage(damage, source);
             } else {
                 Card c = getCard(targetId);
                 if (c != null) {

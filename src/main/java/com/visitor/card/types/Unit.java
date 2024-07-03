@@ -17,13 +17,13 @@ public abstract class Unit extends Card {
 
     public Unit(Game game, String name, int cost, CounterMap<Knowledge> knowledge, String text, int attack, int health, int shield, UUID owner, Damagable.CombatAbility... combatAbilities) {
         super(game, name, knowledge, CardType.Unit, text, owner);
-        playable = new Playable(game, this, cost, () -> combat.setDeploying()).setSlow().setPersistent();
+        playable = new Playable(game, this, cost, () -> damagable.setDeploying()).setSlow().setPersistent();
         studiable = new Studiable(game, this);
         activatable = new Activatable(game, this);
         triggering = new Triggering(game, this);
-        combat = new Damagable(game, this, attack, health, shield);
+        damagable = new Damagable(game, this, attack, health, shield);
         for (Damagable.CombatAbility combatAbility : combatAbilities) {
-            combat.addCombatAbility(combatAbility, false);
+            damagable.addCombatAbility(combatAbility, false);
         }
     }
 

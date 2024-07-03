@@ -26,7 +26,7 @@ public class CardDelegators extends Combat {
         if (c != null)
             c.addShield(i, turnly);
         else {
-            getPlayer(id).combat.addShield(i, turnly);
+            getPlayer(id).damagable.addShield(i, turnly);
         }
     }
 
