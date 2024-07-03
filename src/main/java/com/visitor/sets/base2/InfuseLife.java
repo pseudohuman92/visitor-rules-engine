@@ -20,7 +20,7 @@ public class InfuseLife extends Cantrip {
                 "Additional Cost - Sacrifice a unit.\nUnits you control gains +X/+X where X is sacrificed unit's health.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Play, Predicates.controlledBy(controller),
+        playable.addTargetSingleUnit(Base.Zone.Play, Predicates::any,
                 c -> {
                     x = game.getCard(c).getHealth();
                     game.destroy(c);

@@ -153,9 +153,8 @@ public class Playable {
                                                 int minCount, int maxCount, String message, Consumer<UUID> perTargetEffect, boolean withPlayers, boolean forCost) {
 
         String targetingMessage = message != null ? message : "Select " + (minCount < maxCount ? "between " + minCount + " and " + maxCount : minCount) + " cards" + (withPlayers ? " or players." : ".");
-        Predicate<Targetable> pred = predicate != null ? and(predicate, c -> isPlayer(c) || compareZones(c.getZone(), zone)) : (c -> isPlayer(c) || compareZones(c.getZone(), zone));
 
-        Effect t = new Effect(game, card, zone, minCount, maxCount, pred, targetingMessage, perTargetEffect);
+        Effect t = new Effect(game, card, zone, minCount, maxCount, predicate, targetingMessage, perTargetEffect);
         if (forCost) {
             costEffects.put(t.getId(), t);
         } else {
@@ -208,15 +207,8 @@ public class Playable {
      * @param perTargetEffect
      */
     public void addTargetSingleUnit(Game.Zone zone, Predicate<Targetable> predicate, Consumer<UUID> perTargetEffect, String message, boolean forCost) {
-        Predicate<Targetable> finalCardPredicate = predicate != null ? predicate : Predicates::any;
         message = message != null ? message : "Select a unit.";
-        addTargetSingleCard(zone, and(Predicates::isUnit, finalCardPredicate), message, perTargetEffect, forCost);
-    }
-
-    public void addTargetSingleUnit(Predicate<Targetable> predicate, Consumer<UUID> perTargetEffect, String message, boolean forCost) {
-        Predicate<Targetable> finalCardPredicate = predicate != null ? predicate : Predicates::any;
-        message = message != null ? message : "Select a unit.";
-        addTargetSingleCard(Both_Play, and(Predicates::isUnit, finalCardPredicate), message, perTargetEffect, forCost);
+        addTargetSingleCard(zone, and(Predicates::isUnit, predicate), message, perTargetEffect, forCost);
     }
 
 
