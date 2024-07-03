@@ -414,6 +414,8 @@ public abstract class Card implements Targetable {
                 .setId(id.toString())
                 .setSet(set)
                 .setName(name)
+                .setZone(zone.toString())
+                .setController(controller.toString())
                 .setDepleted(depleted)
                 .setDescription(text)
                 .setLoyalty(-1)
