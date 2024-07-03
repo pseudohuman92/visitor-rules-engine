@@ -60,7 +60,8 @@ public class Arraylist<T> extends ArrayList<T> {
     }
 
     public void forEachInOrder(Consumer<? super T> c) {
-        for (T t : this) {
+        for (int i = 0; i < this.size(); i++) {
+            T t = this.get(i);
             c.accept(t);
         }
     }

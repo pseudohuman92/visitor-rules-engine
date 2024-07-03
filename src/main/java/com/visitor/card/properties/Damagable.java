@@ -82,7 +82,7 @@ public class Damagable {
     }
 
     public final boolean canBlock() {
-        return game.canBlock(card.controller) && !card.isDepleted();
+        return game.canBlock(card.controller) && !card.isDepleted() && card.getZone() == Base.Zone.Play;
     }
 
     public final boolean canBlock(Card unit) {
