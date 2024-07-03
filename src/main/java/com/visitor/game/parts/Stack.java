@@ -12,6 +12,7 @@ public class Stack extends Events {
      */
     public void addToStack(Card c) {
         passCount = 0;
+        c.zone = Zone.Stack;
         stack.add(0, c);
         processEvents();
     }

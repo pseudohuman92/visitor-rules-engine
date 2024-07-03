@@ -55,7 +55,7 @@ public class Deck extends Arraylist<Card> {
         for (int i = 0; i < size(); i++) {
             if (pred.test(get(i))) {
                 Card c = remove(i);
-                c.zone = null;
+                c.zone = Base.Zone.None;
                 return c;
             }
         }
