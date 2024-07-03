@@ -14,14 +14,14 @@ public class Extractors extends Getters {
         for (Player player : players.values()) {
             Card c = player.extractCard(targetID);
             if (c != null) {
-                c.zone = null;
+                c.zone = Zone.None;
                 return c;
             }
         }
         for (Card c : stack) {
             if (c.getId().equals(targetID)) {
                 stack.remove(c);
-                c.zone = null;
+                c.zone = Zone.None;
                 return c;
             }
         }
