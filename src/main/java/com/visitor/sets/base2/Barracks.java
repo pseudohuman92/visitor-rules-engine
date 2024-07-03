@@ -24,6 +24,8 @@ public class Barracks extends Asset {
                 3, new CounterMap(RED, 1),
                 "{Use}: Create a Stormtrooper",
                 owner);
-        activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Create a Stormtrooper").setDepleting());
+        activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Create a Stormtrooper",
+                () -> new Stormtrooper(game, owner).resolve()
+        ).setDepleting());
     }
 }

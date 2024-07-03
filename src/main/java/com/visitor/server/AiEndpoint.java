@@ -138,7 +138,7 @@ public class AiEndpoint implements GameEndpointInterface {
                 Types.Knowledge k = message.getStudyCard().getSelectedKnowledge();
                 CounterMap<Types.Knowledge> km = new CounterMap<>(k, 1);
                 if (k == Types.Knowledge.NONE) {
-                    km = null;
+                    km.clear();
                 }
                 gameServer.studyCard(gameID, senderId, fromString(message.getStudyCard().getCardId()), km);
                 break;
