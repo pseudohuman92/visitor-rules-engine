@@ -33,8 +33,8 @@ public class Events extends Messaging {
             while (!tempQueue.isEmpty()) {
                 Event e = tempQueue.remove(0);
                 out.println("Processing Event: " + e.type);
-                triggeringCards.get(turnPlayer).forEachInOrder(c -> c.checkEvent(e));
-                triggeringCards.get(this.getOpponentId(turnPlayer)).forEachInOrder(c -> c.checkEvent(e));
+                triggeringCards.get(turnPlayer).forEach(c -> c.checkEvent(e));
+                triggeringCards.get(this.getOpponentId(turnPlayer)).forEach(c -> c.checkEvent(e));
             }
         }
         toDeregister.forEach(Card::deregister);

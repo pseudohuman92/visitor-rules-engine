@@ -59,7 +59,9 @@ public class Arraylist<T> extends ArrayList<T> {
         return this;
     }
 
-    public void forEachInOrder(Consumer<? super T> c) {
+
+    @Override
+    public void forEach(Consumer<? super T> c) {
         for (int i = 0; i < this.size(); i++) {
             T t = this.get(i);
             c.accept(t);

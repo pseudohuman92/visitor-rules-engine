@@ -35,7 +35,7 @@ public class Triggering {
     }
 
     public final void checkEvent(Event event) {
-        eventCheckerList.forEachInOrder(ec -> ec.accept(event));
+        eventCheckerList.forEach(ec -> ec.accept(event));
     }
 
 

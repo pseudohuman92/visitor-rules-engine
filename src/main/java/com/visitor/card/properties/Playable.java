@@ -125,7 +125,7 @@ public class Playable {
      * removes it from player's hand and then puts on the stack.
      */
     public final void play(boolean withCost) {
-        play.forEachInOrder(p -> p.accept(withCost));
+        play.forEach(p -> p.accept(withCost));
     }
 
     /**
