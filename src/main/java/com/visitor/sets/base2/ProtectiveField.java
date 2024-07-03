@@ -1,6 +1,7 @@
 package com.visitor.sets.base2;
 
 import com.visitor.card.types.Cantrip;
+import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
 import com.visitor.helpers.Predicates;
@@ -16,12 +17,12 @@ public class ProtectiveField extends Cantrip {
                 "Target unit gains shield 1 until end of turn.\n{Y}{Y} - Gains shield 1 instead.",
                 owner);
 
-        playable.addTargetSingleUnit(null, Predicates::any, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any, t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(YELLOW, 2))){
                 game.addShield(t, 1, true);
             } else {
                 game.addShield(t, 1, false);
             }
-        }, null, false);
+        }, "", false);
     }
 }

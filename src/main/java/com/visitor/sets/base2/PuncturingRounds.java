@@ -5,6 +5,7 @@ import com.visitor.card.types.Cantrip;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
+import com.visitor.helpers.Predicates;
 
 import java.util.UUID;
 
@@ -17,9 +18,9 @@ public class PuncturingRounds extends Cantrip {
                 "Target unit you control gains +3/+0 and Trample until end of turn.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Play, null, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Play, Predicates::any, t -> {
            game.addAttackAndHealth(t, 3, 0, true);
            game.addCombatAbility(t, Damagable.CombatAbility.Trample, true);
-        }, null, false);
+        }, "", false);
     }
 }
