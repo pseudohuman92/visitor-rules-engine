@@ -57,6 +57,7 @@ public abstract class Card implements Targetable {
         types = new Arraylist<>(type);
         subtypes = new Arraylist<>();
         attachments = new Arraylist<>();
+        zone = None;
 
         this.name = name;
         if (knowledge != null)
