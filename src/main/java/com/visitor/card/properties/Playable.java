@@ -101,7 +101,7 @@ public class Playable {
 
     public Playable setDisappearing() {
         resolvePlaceCard = () -> {
-            card.zone = null;
+            card.zone = None;
         };
         return this;
     }
