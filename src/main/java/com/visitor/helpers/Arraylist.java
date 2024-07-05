@@ -5,8 +5,6 @@
  */
 package com.visitor.helpers;
 
-import com.google.protobuf.ByteString;
-
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
