@@ -24,10 +24,10 @@ public class Reanimator extends Asset {
     public Reanimator(Game game, UUID owner) {
         super(game, "Reanimator",
                 2, new CounterMap(PURPLE, 2),
-                "Whenever a unit you control dies, create a Bat and lose 1 life.",
+                "Whenever an ally unit dies, create a Bat and lose 1 life.",
                 owner);
         triggering.addEventChecker(EventChecker.deathChecker(game, this, c -> {
-            if (Predicates.isUnit(c) && c.controller.equals(controller)){
+            if (Predicates.isAllyUnit(controller).test(c)){
                 UnitToken.Bat_1_1(game, controller).resolve();
                 game.loseHealth(controller, 1);
             }

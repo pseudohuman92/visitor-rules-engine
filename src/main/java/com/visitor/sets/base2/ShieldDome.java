@@ -15,11 +15,11 @@ public class ShieldDome extends Cantrip {
     public ShieldDome(Game game, UUID owner) {
         super(game, "Shield Dome", 3,
                 new CounterMap<>(YELLOW, 2),
-                "You and each unit you control gains 2 shield until end of turn.",
+                "Each ally gains 2 shield until end of turn.",
                 owner);
 
         playable.addResolveEffect(() -> {
-            game.forEachInZone(controller, Base.Zone.Play, Predicates::isUnit, c -> game.addShield(c, 2, true));
+            game.forEachInZone(controller, Base.Zone.Play, Predicates.isAllyUnit(controller), c -> game.addShield(c, 2, true));
             game.addShield(controller, 2, true);
         });
     }

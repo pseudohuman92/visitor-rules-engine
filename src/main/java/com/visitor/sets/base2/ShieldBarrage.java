@@ -20,15 +20,17 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class ShieldBarrage extends Cantrip {
 
+    int shield_amount = 0;
     public ShieldBarrage(Game game, UUID owner) {
         super(game, "Shield Barrage",
                 1, new CounterMap(YELLOW, 1),
-                "Remove all shields from target unit you control and deal damage to any target equal to the removed amount.",
+                "Remove all shields from target ally unit and deal damage to any enemy equal to the removed amount.",
                 owner);
-        playable.addTargetSingleUnit(Base.Zone.Play, Predicates::isUnit, t -> {
-            int shield_amount = game.getCard(t).getShields();
+        playable.addTargetSingleUnit(Base.Zone.Play, Predicates.isAllyUnit(controller), t -> {
+            shield_amount = game.getCard(t).getShields();
             game.getCard(t).removeShields(shield_amount);
-            game.dealDamage(getId(), t, shield_amount);
-        }, "Remove all shields from target unit you control.", false);
+        }, "Remove all shields from ally unit.", false);
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates.isEnemy(controller), t -> game.dealDamage(getId(), t, shield_amount),
+    "Choose an enemy target.", false );
     }
 }

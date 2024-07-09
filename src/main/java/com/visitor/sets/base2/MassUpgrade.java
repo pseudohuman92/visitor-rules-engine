@@ -15,11 +15,11 @@ public class MassUpgrade extends Ritual {
     public MassUpgrade(Game game, UUID owner) {
         super(game, "Mass Upgrade", 2,
                 new CounterMap<>(YELLOW, 1),
-                "Each unit you control gains +1/+1",
+                "Each ally unit gains +1/+1",
                 owner);
 
         playable.addResolveEffect(() -> {
-            game.forEachInZone(controller, Base.Zone.Play, Predicates::isUnit, c -> game.addAttackAndHealth(c, 1, 1, false));
+            game.forEachInZone(controller, Base.Zone.Play, Predicates.isAllyUnit(controller), c -> game.addAttackAndHealth(c, 1, 1, false));
         });
     }
 }

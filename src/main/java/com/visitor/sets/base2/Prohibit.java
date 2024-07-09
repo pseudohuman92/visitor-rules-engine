@@ -14,9 +14,9 @@ public class Prohibit extends Cantrip {
     public Prohibit(Game game, UUID owner) {
         super(game, "Prohibit", 2,
                 new CounterMap<>(YELLOW, 3),
-                "Cancel target card.",
+                "Cancel target enemy card.",
                 owner);
 
-        playable.addTargetSingleCard(Base.Zone.Stack, Predicates::any, "Select a card to cancel", game::cancel, false);
+        playable.addTargetSingleCard(Base.Zone.Stack, Predicates.isEnemy(controller), "Select a card to cancel", game::cancel, false);
     }
 }

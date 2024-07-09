@@ -23,11 +23,11 @@ public class TacticalGenius extends Unit {
     public TacticalGenius(Game game, UUID owner) {
         super(game, "Tactical Genius",
                 2, new CounterMap(RED, 1),
-                "When {~} enters play, each unit you control gains +1/+0 and Blitz until end of turn.",
+                "When {~} enters play, each ally unit gains +1/+0 and Blitz until end of turn.",
                 1, 1,
                 owner);
         playable.addAfterResolveEffect(
-            () -> game.getAllFrom(controller, Base.Zone.Play, Predicates::isUnit).forEach(c -> {
+            () -> game.getAllFrom(controller, Base.Zone.Play, Predicates.isAllyUnit(controller)).forEach(c -> {
                 game.addAttackAndHealth(c.getId(),1, 0, true);
                 game.addCombatAbility(c.getId(), Blitz, true);
         }));

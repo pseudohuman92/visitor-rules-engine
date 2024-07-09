@@ -15,10 +15,10 @@ public class PuncturingRounds extends Cantrip {
     public PuncturingRounds(Game game, UUID owner) {
         super(game, "Puncturing Rounds", 1,
                 new CounterMap<>(RED, 1),
-                "Target unit you control gains +3/+0 and Trample until end of turn.",
+                "Target ally unit you control gains +3/+0 and Trample until end of turn.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Play, Predicates::any, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Play, Predicates.isAlly(controller), t -> {
            game.addAttackAndHealth(t, 3, 0, true);
            game.addCombatAbility(t, Damagable.CombatAbility.Trample, true);
         }, "", false);

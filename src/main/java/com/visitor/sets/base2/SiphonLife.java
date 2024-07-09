@@ -14,10 +14,10 @@ public class SiphonLife extends Cantrip {
     public SiphonLife(Game game, UUID owner) {
         super(game, "Siphon Life", 1,
                 new CounterMap<>(PURPLE, 1),
-                "Drain 2 from target unit.\n{P}{P}{P} - Drain 3 instead.",
+                "Drain 2 from target enemy unit.\n{P}{P}{P} - Drain 3 instead.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates.isEnemy(controller), t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(PURPLE, 3))){
                 game.drain(controller, t, 3);
             } else {

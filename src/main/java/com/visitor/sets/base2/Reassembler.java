@@ -32,7 +32,7 @@ public class Reassembler extends Asset {
     public Reassembler(Game game, UUID owner) {
         super(game, "Reassembler",
                 3, new CounterMap(YELLOW, 1),
-                "{Use}: Purge one or more units from your discard pile: Target unit you control gains their total attack, health, shield and combat abilities.",
+                "{Use}: Purge one or more units from your discard pile: Target ally unit gains their total attack, health, shield and combat abilities.",
                 owner);
 
         totalAttack = 0;
@@ -49,7 +49,7 @@ public class Reassembler extends Asset {
                     game.purge(t);
                     }, true
                 )
-                .addTargeting(Base.Zone.Play, Predicates::isUnit, 1, 1, "Target unit you control gains their total attack, health, shield and combat abilities.", id -> {
+                .addTargeting(Base.Zone.Play, Predicates.isAllyUnit(controller), 1, 1, "Target unit you control gains their total attack, health, shield and combat abilities.", id -> {
                     Card c = game.getCard(id);
                     c.addAttackAndHealth(totalAttack, totalHealth, false);
                     c.addShield(totalShield, false);

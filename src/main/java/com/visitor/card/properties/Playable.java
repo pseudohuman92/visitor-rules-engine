@@ -192,6 +192,10 @@ public class Playable {
     }
 
     // For targeting a SINGLE UNIT from a zone or a PLAYER.
+    public void addTargetSingleUnitOrPlayer(Game.Zone zone, Predicate<Targetable> predicate, Consumer<UUID> perTargetEffect, boolean forCost) {
+        addTargetSingleCardOrPlayer(zone, and (predicate, or(Predicates::isPlayer, Predicates::isUnit)), null, perTargetEffect, true, forCost);
+    }
+
     public void addTargetSingleUnitOrPlayer(Game.Zone zone, Consumer<UUID> perTargetEffect, boolean forCost) {
         addTargetSingleCardOrPlayer(zone, or(Predicates::isPlayer, Predicates::isUnit), null, perTargetEffect, true, forCost);
     }

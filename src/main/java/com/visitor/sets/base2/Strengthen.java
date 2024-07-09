@@ -14,10 +14,10 @@ public class Strengthen extends Cantrip {
     public Strengthen(Game game, UUID owner) {
         super(game, "Strengthen", 1,
                 new CounterMap<>(GREEN, 1),
-                "Target unit gains +1/+1.\n{G}{G}{G} - Gains +2/+2 instead.",
+                "Target ally unit gains +1/+1.\n{G}{G}{G} - Gains +2/+2 instead.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates.isAlly(controller), t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(GREEN, 3))){
                 game.addAttackAndHealth(t, 2,2, false);
             } else {

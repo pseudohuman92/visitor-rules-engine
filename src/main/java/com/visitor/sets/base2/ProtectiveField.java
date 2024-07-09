@@ -14,10 +14,10 @@ public class ProtectiveField extends Cantrip {
     public ProtectiveField(Game game, UUID owner) {
         super(game, "Protective Field", 1,
                 new CounterMap<>(YELLOW, 1),
-                "Target unit gains shield 1 until end of turn.\n{Y}{Y} - Gains shield 1 instead.",
+                "Target ally unit gains shield 1 until end of turn.\n{Y}{Y} - Gains shield 1 instead.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any, t -> {
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates.isAlly(controller), t -> {
             if (game.hasKnowledge(controller, new CounterMap<>(YELLOW, 2))){
                 game.addShield(t, 1, true);
             } else {

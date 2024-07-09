@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import static com.visitor.card.properties.Damagable.CombatAbility.Defender;
 import static com.visitor.game.parts.Base.Zone.Both_Play;
+import static com.visitor.helpers.Predicates.and;
 import static com.visitor.protocol.Types.Knowledge.YELLOW;
 
 /**
@@ -25,12 +26,12 @@ public class Fortress extends Unit {
     public Fortress(Game game, UUID owner) {
         super(game, "Fortress",
                 5, new CounterMap(YELLOW, 3),
-                "{Use}: Target unit gains Shield 2",
+                "{Use}: Target ally unit gains Shield 2",
                 0, 5,
                 owner, Defender);
         addShield(5, false);
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Target unit gains Shield 2").setDepleting()
-                .addTargeting(Both_Play, Predicates::isUnit, 1, 1, "Choose a unit to add Shield 2", t -> {
+                .addTargeting(Both_Play, Predicates.isAllyUnit(controller), 1, 1, "Choose a unit to add Shield 2", t -> {
                     game.addShield(t, 2, false);
                 }, false));
     }

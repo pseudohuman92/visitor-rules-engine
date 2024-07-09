@@ -15,12 +15,12 @@ public class Contagion extends Ritual {
     public Contagion(Game game, UUID owner) {
         super(game, "Contagion", 4,
                 new CounterMap<>(PURPLE, 2),
-                "Destroy all units. Lose 1 health for each destroyed unit your opponent controls.",
+                "Destroy all units. Lose 1 health for each enemy destroyed unit.",
                 owner);
         playable.addResolveEffect(() -> game.getAllFrom(Base.Zone.Both_Play, Predicates::isUnit)
             .forEach(c -> {
                 game.destroy(c.getId());
-                if (!((Card) c).controller.equals(game.getOpponentId(controller))) {
+                if (Predicates.isEnemy(controller).test(c)) {
                     game.loseHealth(controller, 1);
                 }
             }));

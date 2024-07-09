@@ -14,13 +14,13 @@ public class ASoulforASoul extends Ritual {
     public ASoulforASoul(Game game, UUID owner) {
         super(game, "A Soul for A Soul", 1,
                 new CounterMap<>(PURPLE, 1),
-                "Additional Cost - Sacrifice a unit.\nDestroy target unit.",
+                "Additional Cost - Destroy target ally unit.\nDestroy target enemy unit.",
                 owner);
 
-        playable.addTargetSingleUnit(Base.Zone.Play, Predicates.controlledBy(controller),
-                game::destroy, "Select unit to sacrifice", true);
+        playable.addTargetSingleUnit(Base.Zone.Play, Predicates.isAllyUnit(controller),
+                game::destroy, "Select an ally unit to destroy.", true);
 
-        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates::any,
-                game::destroy, "Select unit to destroy", false);
+        playable.addTargetSingleUnit(Base.Zone.Both_Play, Predicates.isEnemyUnit(controller),
+                game::destroy, "Select an enemy unit to destroy.", false);
     }
 }

@@ -39,10 +39,6 @@ public abstract class Predicates {
         return card.hasSubtype(Ritual);
     }
 
-    public static boolean isAlly(Card card) {
-        return card.hasType(Ally);
-    }
-
     public static boolean isJunk(Card card) {
         return card.hasType(Junk);
     }
@@ -124,6 +120,26 @@ public abstract class Predicates {
 
     public static Predicate<Targetable> controlledBy(UUID controller) {
         return c -> isCard(c) && ((Card) c).controller.equals(controller);
+    }
+
+    public static Predicate<Targetable> isAlly(UUID controller) {
+        return c -> (isCard(c) && ((Card) c).controller.equals(controller)) || (isPlayer(c) && c.getId().equals(controller));
+    }
+
+    public static Predicate<Targetable> isEnemy(UUID controller) {
+        return not(isAlly(controller));
+    }
+
+    public static Predicate<Targetable> isAllyUnit(UUID controller) {
+        return and(Predicates::isUnit, isAlly(controller));
+    }
+
+    public static Predicate<Targetable> isEnemyUnit(UUID controller) {
+        return and(Predicates::isUnit, not(isAlly(controller)));
+    }
+
+    public static Predicate<Targetable> isEnemyDamagable(UUID controller) {
+        return c -> (isCard(c) && !((Card) c).controller.equals(controller) && ((Card) c).isDamagable()) || (isPlayer(c) && !c.getId().equals(controller));
     }
 
     public static Predicate<Targetable> anotherCard(UUID id) {
