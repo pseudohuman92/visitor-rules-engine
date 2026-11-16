@@ -69,7 +69,7 @@ public class GameEndpoint implements GameEndpointInterface {
                 } else {
                     processMessage(cgm);
                 }
-            } catch (InvalidProtocolBufferException ex) {
+            } catch (InvalidProtocolBufferException | IllegalArgumentException ex) {
                 getLogger(GameEndpoint.class.getName()).log(SEVERE, null, ex);
             }
         }).start();
@@ -190,11 +190,11 @@ public class GameEndpoint implements GameEndpointInterface {
                 break;
             case SELECTATTACKERS:
                 SelectAttackers sar = message.getSelectAttackers();
-                gameServer.selectAttackers(gameID, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
+                gameServer.selectAttackers(gameID, playerId, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
                 break;
             case SELECTBLOCKERS:
                 SelectBlockers sbr = message.getSelectBlockers();
-                gameServer.selectBlockers(gameID, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
+                gameServer.selectBlockers(gameID, playerId, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
                 break;
 			/*
 			case SAVEGAMESTATE:

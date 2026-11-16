@@ -57,16 +57,20 @@ public class Getters extends Base {
         switch (zone) {
             case Deck:
                 players.values().forEach(player -> total.addAll(player.deck));
+                break;
             case Hand:
                 players.values().forEach(player -> total.addAll(player.hand));
+                break;
             case Play:
-                players.values().forEach(player -> total.addAll(player.playArea));
-            case Discard_Pile:
-                players.values().forEach(player -> total.addAll(player.discardPile));
             case Both_Play:
                 players.values().forEach(player -> total.addAll(player.playArea));
+                break;
+            case Discard_Pile:
+                players.values().forEach(player -> total.addAll(player.discardPile));
+                break;
             case Stack:
                 total.addAll(stack);
+                break;
         }
         return total;
     }

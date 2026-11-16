@@ -179,6 +179,7 @@ public class ActivatedAbility {
     }
 
     public void setTargets(Arraylist<Types.TargetSelection> targets) {
+        clear();
         for (Types.TargetSelection t : targets) {
             Effect tr = costEffects.get(UUID.fromString(t.getId()));
             if (tr != null){
@@ -190,6 +191,10 @@ public class ActivatedAbility {
                 }
             }
         }
+    }
+
+    public void validateTargets(Arraylist<Types.TargetSelection> targets) {
+        TargetSelections.validate(targets, costEffects.values(), effects.values());
     }
 
     public Arraylist<UUID> getAllTargets() {

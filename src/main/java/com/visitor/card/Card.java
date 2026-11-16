@@ -298,6 +298,18 @@ public abstract class Card implements Targetable {
         return activatable != null && activatable.canActivate();
     }
 
+    public final boolean canActivate(UUID abilityId) {
+        return activatable != null && activatable.canActivate(abilityId);
+    }
+
+    public void validatePlayableTargets(Arraylist<Types.TargetSelection> targets) {
+        playable.validateTargets(targets);
+    }
+
+    public void validateActivatableTargets(UUID abilityId, Arraylist<Types.TargetSelection> targets) {
+        activatable.validateTargets(abilityId, targets);
+    }
+
     public final boolean canStudy() {
         return studiable != null && studiable.canStudy();
     }

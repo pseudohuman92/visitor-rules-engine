@@ -49,6 +49,15 @@ public class Activatable {
         return false;
     }
 
+    public boolean canActivate(UUID abilityId) {
+        ActivatedAbility ability = getActivatableAbility(abilityId);
+        return card.zone == Base.Zone.Play && ability != null && ability.canActivate();
+    }
+
+    public void validateTargets(UUID abilityId, Arraylist<Types.TargetSelection> targets) {
+        getActivatableAbility(abilityId).validateTargets(targets);
+    }
+
     public final Arraylist<ActivatedAbility> getActivatableAbilities() {
         Arraylist<ActivatedAbility> abilities = new Arraylist<>();
         for (ActivatedAbility activatedAbility : abilityList.values()) {

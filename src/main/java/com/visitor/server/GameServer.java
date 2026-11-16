@@ -3,6 +3,7 @@ package com.visitor.server;
 import com.visitor.game.AiPlayer;
 import com.visitor.game.Draft;
 import com.visitor.game.Player;
+import com.visitor.game.IllegalGameActionException;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
@@ -48,48 +49,71 @@ public class GameServer {
         P2DraftGameQueue = new Hashmap<>();
     }
 
-    private void takeGameAction(UUID gameID, Consumer<Game> r) {
+    private void takeGameAction(UUID gameID, UUID playerId, Consumer<Game> action) {
         Game game = games.get(gameID);
-        game.stopActiveClock();
-        r.accept(game);
-        game.updatePlayers();
-        game.startActiveClock();
+        if (game == null) {
+            return;
+        }
+        // Validate and mutate under the same match lock. Prompt responses bypass
+        // this wrapper so a decision can still unblock a running card effect.
+        synchronized (game) {
+            if (games.get(gameID) != game) {
+                return;
+            }
+            game.stopActiveClock();
+            try {
+                action.accept(game);
+                if (games.get(gameID) == game) {
+                    game.updatePlayers();
+                }
+            } catch (IllegalGameActionException e) {
+                getLogger(GameServer.class.getName()).warning("Rejected game action: " + e.getMessage());
+                game.updatePlayer(playerId);
+            } finally {
+                if (games.get(gameID) == game) {
+                    game.startActiveClock();
+                }
+            }
+        }
     }
 
     void activateCard(UUID gameID, UUID playerId, UUID cardID, UUID abilityId, Arraylist<Types.TargetSelection> targets) {
-        takeGameAction(gameID, game -> game.activateCard(playerId, cardID, abilityId, targets));
+        takeGameAction(gameID, playerId, game -> game.activateCard(playerId, cardID, abilityId, targets));
     }
 
     void concede(UUID gameID, UUID playerId) {
-        games.get(gameID).gameEnd(playerId, false);
+        Game game = games.get(gameID);
+        if (game != null && game.isPlayer(playerId)) {
+            game.gameEnd(playerId, false);
+        }
     }
 
     void redraw(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, game -> game.redraw(playerId));
+        takeGameAction(gameID, playerId, game -> game.redraw(playerId));
     }
 
     void keep(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, game -> game.keep(playerId));
+        takeGameAction(gameID, playerId, game -> game.keep(playerId));
     }
 
     void pass(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, game -> game.pass(playerId));
+        takeGameAction(gameID, playerId, game -> game.pass(playerId));
     }
 
     void studyCard(UUID gameID, UUID playerId, UUID cardID, CounterMap<Types.Knowledge> knowledge) {
-        takeGameAction(gameID, game -> game.studyCard(playerId, cardID, true, knowledge));
+        takeGameAction(gameID, playerId, game -> game.studyCard(playerId, cardID, true, knowledge));
     }
 
     void playCard(UUID gameID, UUID playerId, UUID cardID, Arraylist<Types.TargetSelection> targets) {
-        takeGameAction(gameID, game -> game.playCard(playerId, cardID, targets));
+        takeGameAction(gameID, playerId, game -> game.playCard(playerId, cardID, targets));
     }
 
-    void selectAttackers(UUID gameID, Types.AttackerAssignment[] attackers) {
-        takeGameAction(gameID, game -> game.selectAttackers(attackers));
+    void selectAttackers(UUID gameID, UUID playerId, Types.AttackerAssignment[] attackers) {
+        takeGameAction(gameID, playerId, game -> game.selectAttackers(playerId, attackers));
     }
 
-    void selectBlockers(UUID gameID, Types.BlockerAssignment[] blockers) {
-        takeGameAction(gameID, game -> game.selectBlockers(blockers));
+    void selectBlockers(UUID gameID, UUID playerId, Types.BlockerAssignment[] blockers) {
+        takeGameAction(gameID, playerId, game -> game.selectBlockers(playerId, blockers));
     }
 
     synchronized ServerGameMessage getLastMessage(UUID gameID, UUID playerId) {

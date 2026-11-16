@@ -242,6 +242,10 @@ public class Player implements Targetable {
         deck.putToBottom(card);
     }
 
+    public void putToTopOfDeck(Card card) {
+        deck.putToTop(card);
+    }
+
     public void shuffleIntoDeck(Card[] cards) {
         deck.shuffleInto(cards);
     }

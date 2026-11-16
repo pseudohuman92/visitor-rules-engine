@@ -175,9 +175,16 @@ public class Messaging extends Connections {
     }
 
     public final void updatePlayers() {
-        players.forEach((name, player) -> send(name, ServerGameMessages.ServerGameMessage.newBuilder()
+        players.keySet().forEach(this::updatePlayer);
+    }
+
+    public final void updatePlayer(UUID playerId) {
+        if (!players.containsKey(playerId)) {
+            return;
+        }
+        send(playerId, ServerGameMessages.ServerGameMessage.newBuilder()
                 .setUpdateGameStateP(ServerGameMessages.UpdateGameStateP.newBuilder()
-                        .setGame(toGameState(name, false)))));
+                        .setGame(toGameState(playerId, false))));
     }
 
     public Types.GameStateP.Builder toGameState(UUID playerId, boolean noAction) {

@@ -12,8 +12,14 @@ import com.visitor.protocol.Types;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static com.visitor.game.IllegalGameActionException.parseId;
+import static com.visitor.game.IllegalGameActionException.require;
 
 public class Effect {
 
@@ -90,7 +96,19 @@ public class Effect {
 
     public void setTargets(Arraylist<UUID> targets) {
         this.targets = targets;
+        targetZones.clear();
         targets.forEach(i -> targetZones.put(i, game.getTargetable(i).getZone()));
+    }
+
+    public void validateTargets(List<String> selected) {
+        require(selected.size() >= minTargets && selected.size() <= maxTargets,
+                "Wrong number of targets");
+        Set<UUID> possible = new HashSet<>(getAllPossibleTargets());
+        Set<UUID> unique = new HashSet<>();
+        for (String value : selected) {
+            UUID target = parseId(value);
+            require(unique.add(target) && possible.contains(target), "Illegal or repeated target");
+        }
     }
 
     public UUID getId() {
@@ -120,6 +138,6 @@ public class Effect {
     }
 
     public boolean hasEnoughTargets(){
-        return game.hasInWithPlayers(card.controller, zone, predicate, minTargets);
+        return getAllPossibleTargets().size() >= minTargets;
     }
 }

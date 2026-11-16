@@ -21,7 +21,7 @@ import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
 public class Draft {
-    public static final List<String> cardClasses = HelperFunctions.getClassesInPackage("com.visitor.sets.base");
+    public static final List<String> cardClasses = HelperFunctions.getClassesInPackage("com.visitor.sets." + HelperFunctions.COLLECTION_SET);
     public transient Hashmap<UUID, DraftEndpoint> connections;
     public transient Hashmap<UUID, ArrayBlockingQueue<Object>> responses;
     Hashmap<UUID, Player> players;
@@ -50,12 +50,15 @@ public class Draft {
         roundsCompleted = 0;
 
 
-        Player player1 = new Player(null, playerName1, new String[0]);
-        Player player2 = new Player(null, playerName2, new String[0]);
+        Player player1 = new Player(game, playerName1, new String[0]);
+        Player player2 = new Player(game, playerName2, new String[0]);
         players.put(player1.getId(), player1);
         players.put(player2.getId(), player2);
         responses.put(player1.getId(), new ArrayBlockingQueue<>(1));
         responses.put(player2.getId(), new ArrayBlockingQueue<>(1));
+        // Candidate serialization evaluates legality flags against this game.
+        game.addPlayers(player1, player2);
+        game.stopActiveClock();
     }
 
     public void startDraft() {
@@ -90,7 +93,7 @@ public class Draft {
 
         for (int i : indexes) {
             System.out.println("Card Name: " + cardClasses.get(i));
-            cards.add(HelperFunctions.createCard(game, playerId, "base." + cardClasses.get(i)));
+            cards.add(HelperFunctions.createCard(game, playerId, HelperFunctions.COLLECTION_SET + "." + cardClasses.get(i)));
         }
 
         System.out.println("CARDS");

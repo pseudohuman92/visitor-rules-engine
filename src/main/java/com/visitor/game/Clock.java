@@ -24,7 +24,8 @@ public class Clock extends Thread {
             try {
                 Thread.sleep(Math.min(timeLeft, 1000));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
+                return;
             }
 
             if (isActive()) {

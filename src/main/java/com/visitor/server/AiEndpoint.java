@@ -60,7 +60,7 @@ public class AiEndpoint implements GameEndpointInterface {
             try {
                 ClientGameMessage cgm = ClientGameMessage.parseFrom(message);
                 processClientGameMessage(cgm, playerId);
-            } catch (InvalidProtocolBufferException ex) {
+            } catch (InvalidProtocolBufferException | IllegalArgumentException ex) {
                 getLogger(AiEndpoint.class.getName()).log(SEVERE, null, ex);
             }
         }).start();
@@ -128,11 +128,11 @@ public class AiEndpoint implements GameEndpointInterface {
         switch (message.getPayloadCase()) {
             case PLAYCARD:
                 targets = new Arraylist<>(message.getPlayCard().getTargetsList().toArray(new Types.TargetSelection[message.getPlayCard().getTargetsCount()]));
-                gameServer.playCard(gameID, playerId, fromString(message.getPlayCard().getCardId()), targets);
+                gameServer.playCard(gameID, senderId, fromString(message.getPlayCard().getCardId()), targets);
                 break;
             case ACTIVATECARD:
                 targets = new Arraylist<>(message.getActivateCard().getTargetsList().toArray(new Types.TargetSelection[message.getActivateCard().getTargetsCount()]));
-                gameServer.activateCard(gameID, playerId, fromString(message.getActivateCard().getCardId()), fromString(message.getActivateCard().getAbilityId()), targets);
+                gameServer.activateCard(gameID, senderId, fromString(message.getActivateCard().getCardId()), fromString(message.getActivateCard().getAbilityId()), targets);
                 break;
             case STUDYCARD:
                 Types.Knowledge k = message.getStudyCard().getSelectedKnowledge();
@@ -156,11 +156,11 @@ public class AiEndpoint implements GameEndpointInterface {
                 break;
             case SELECTATTACKERS:
                 SelectAttackers sar = message.getSelectAttackers();
-                gameServer.selectAttackers(gameID, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
+                gameServer.selectAttackers(gameID, senderId, sar.getAttackersList().toArray(new AttackerAssignment[sar.getAttackersCount()]));
                 break;
             case SELECTBLOCKERS:
                 SelectBlockers sbr = message.getSelectBlockers();
-                gameServer.selectBlockers(gameID, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
+                gameServer.selectBlockers(gameID, senderId, sbr.getBlockersList().toArray(new BlockerAssignment[sbr.getBlockersCount()]));
                 break;
             default:
                 out.println("Unexpected message from " + senderId + ": " + message);

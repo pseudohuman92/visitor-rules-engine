@@ -13,16 +13,22 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AiPlayer extends Player {
 
     final static String[] decklist = {
-            "3;base.Eagle",
-            "3;base.Hawk",
-            "3;base.Leech",
-            "3;base.Owl",
-            "3;base.Ox",
-            "3;base.Pistol Shrimp",
-            "3;base.Porcupine",
-            "3;base.Seagull",
-            "3;base.Sparrow",
-            "3;base.Turtle"};
+            "3;base2.TacticalBriefing",
+            "3;base2.BlitzRobbers",
+            "3;base2.ExplosiveShot",
+            "3;base2.PuncturingRounds",
+            "3;base2.Stormtrooper",
+            "3;base2.FireAtWill",
+            "3;base2.FlameStrike",
+            "3;base2.HitTeam",
+            "3;base2.Prefire",
+            "3;base2.TacticalGenius",
+            "3;base2.Barracks",
+            "3;base2.DeploymentTruck",
+            "3;base2.FlameSweep",
+            "3;base2.SkyMarcher",
+            "3;base2.AmmoFactory",
+            "3;base2.NuclearBlast"};
 
     public AiPlayer(Game game) {
         super(game, "AI Player", decklist);

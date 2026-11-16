@@ -1,6 +1,7 @@
 package com.visitor.card.properties;
 
 import com.visitor.card.containers.Effect;
+import com.visitor.card.containers.TargetSelections;
 import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
@@ -303,7 +304,7 @@ public class Playable {
         return cost;
     }
 
-    public boolean needsTargets() {return !resolveEffects.isEmpty(); }
+    public boolean needsTargets() {return !costEffects.isEmpty() || !resolveEffects.isEmpty(); }
 
     public Arraylist<Types.Targeting> getTargetingBuilder() {
         Arraylist<Types.Targeting> builders = new Arraylist<>();
@@ -324,6 +325,7 @@ public class Playable {
     }
 
     public void setTargets(Arraylist<Types.TargetSelection> targets) {
+        clear();
         for (Types.TargetSelection t : targets) {
             Effect tr = costEffects.get(UUID.fromString(t.getId()));
             if (tr != null){
@@ -340,6 +342,10 @@ public class Playable {
                 }
             }
         }
+    }
+
+    public void validateTargets(Arraylist<Types.TargetSelection> targets) {
+        TargetSelections.validate(targets, costEffects.values(), resolveEffects.values());
     }
 
     public Arraylist<UUID> getAllTargets() {

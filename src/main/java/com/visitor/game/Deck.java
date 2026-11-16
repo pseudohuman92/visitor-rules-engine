@@ -11,8 +11,9 @@ import com.visitor.protocol.Types;
 
 import java.security.SecureRandom;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.UUID;
+import java.util.TreeMap;
+import java.util.Random;
 import java.util.function.Predicate;
 
 import static java.lang.Integer.parseInt;
@@ -84,12 +85,15 @@ public class Deck extends Arraylist<Card> {
     }
 
     public void putToIndex(int index, Card... cards) {
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("Invalid deck insertion index: " + index);
+        }
         new Arraylist<>(cards).forEach(c-> c.zone = Base.Zone.Deck);
         addAll(index, cards);
     }
 
     public void putToBottom(Card... cards) {
-        putToIndex(size() - 1, cards);
+        putToIndex(size(), cards);
     }
 
     public void putToTop(Card... cards) {
@@ -97,32 +101,24 @@ public class Deck extends Arraylist<Card> {
     }
 
     public void shuffleInto(Card... cards) {
-        SecureRandom rand = new SecureRandom();
+        shuffleInto(new SecureRandom(), cards);
+    }
+
+    void shuffleInto(Random rand, Card... cards) {
         for (Card card : cards) {
             card.zone = Base.Zone.Deck;
-            add(rand.nextInt(size()), card);
+            add(rand.nextInt(size() + 1), card);
         }
     }
 
     public Arraylist<String> toDeckList() {
         Arraylist<String> decklist = new Arraylist<>();
-        sort(Comparator.comparing(card -> card.name));
-        String lastName = "";
-        int count = 0;
+        TreeMap<String, Integer> counts = new TreeMap<>();
         for (Card c : this) {
-            if (!lastName.equals(c.name)) {
-                if (!lastName.isEmpty()) {
-                    decklist.add(count + ";base." + lastName);
-                }
-                lastName = c.name;
-                count = 1;
-            } else {
-                count++;
-            }
+            String identifier = c.getClass().getName().substring("com.visitor.sets.".length());
+            counts.merge(identifier, 1, Integer::sum);
         }
-        if (!lastName.isEmpty()) {
-            decklist.add(count + ";base." + lastName);
-        }
+        counts.forEach((identifier, count) -> decklist.add(count + ";" + identifier));
         return decklist;
     }
 
