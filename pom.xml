@@ -150,4 +150,31 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jetty-wss</id>
+            <activation>
+                <property>
+                    <name>jetty.wss</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>9.4.36.v20210114</version>
+                        <configuration>
+                            <jettyXml>${project.basedir}/src/main/jetty/jetty-wss.xml</jettyXml>
+                            <httpConnector>
+                                <port>0</port>
+                            </httpConnector>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
