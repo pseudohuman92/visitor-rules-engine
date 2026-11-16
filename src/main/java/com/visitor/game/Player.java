@@ -76,7 +76,7 @@ public class Player implements Targetable {
 
     public void payHealth(int amount) {
         damagable.loseHealth(amount);
-        if (damagable.getHealth() <= 0) {
+        if (damagable.getHealth() <= 0 && !game.isEnded()) {
             game.gameEnd(id, false);
         }
     }
@@ -333,7 +333,7 @@ public class Player implements Targetable {
     }
 
     public void addMaxEnergy(int i) {
-        maxEnergy += 1;
+        maxEnergy += i;
     }
 
     public void removeStudy(int i) {

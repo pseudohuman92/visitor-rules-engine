@@ -32,6 +32,7 @@ public class Damagable {
     private int turnlyShield;
 
     private boolean deploying;
+    private boolean receivedDeadlyCombatDamage;
     private UUID blockedAttacker;
     private UUID blockedBy;
     private UUID attackTarget;
@@ -98,6 +99,7 @@ public class Damagable {
     public final void unsetAttacking() {
         attackTarget = null;
         blockedBy = null;
+        receivedDeadlyCombatDamage = false;
     }
 
     public final void setBlocking(UUID unit) {
@@ -106,6 +108,7 @@ public class Damagable {
 
     public final void unsetBlocking() {
         blockedAttacker = null;
+        receivedDeadlyCombatDamage = false;
     }
 
     public final void addBlocker(UUID blocker) {
@@ -124,18 +127,24 @@ public class Damagable {
         deploying = false;
     }
 
-    public final void dealAttackDamage(boolean firstStrike) {
+    public final void dealAttackDamage() {
         UUID id = card.getId();
         if (blockedBy == null) {
-            game.dealDamage(id, attackTarget, new Damage(getAttack(), firstStrike, true));
+            game.dealDamage(id, attackTarget, new Damage(getAttack(), false, true));
         } else {
-            game.dealDamage(id, blockedBy, new Damage(getAttack(), firstStrike, true));
+            Card blocker = game.getCard(blockedBy);
+            if (blocker != null && blocker.zone == Base.Zone.Play) {
+                game.dealDamage(id, blockedBy, new Damage(getAttack(), false, true));
+            } else if (hasCombatAbility(Trample)) {
+                game.dealDamage(id, attackTarget, new Damage(getAttack(), false, true));
+            }
         }
     }
 
     public final void dealBlockDamage() {
         UUID id = card.getId();
-        if (blockedAttacker != null)
+        Card attacker = game.getCard(blockedAttacker);
+        if (blockedAttacker != null && attacker != null && attacker.zone == Base.Zone.Play)
             game.dealDamage(id, blockedAttacker, new Damage(getAttack(), false, true));
     }
 
@@ -172,16 +181,20 @@ public class Damagable {
             }
         }
 
-        if (source.hasCombatAbility(Lifelink)) {
+        if (source != null && source.hasCombatAbility(Lifelink)) {
             game.gainHealth(source.controller, dealtDamageAmount);
         }
-        if (source.hasCombatAbility(Drain)) {
+        if (source != null && source.hasCombatAbility(Drain)) {
             game.heal(source.getId(), dealtDamageAmount);
         }
 
 
 
-        if (card != null && damage.mayKill && (getHealth() == 0 || (source.hasCombatAbility(Deadly)))) {
+        if (damage.combat && source != null && source.hasCombatAbility(Deadly) && dealtDamageAmount > 0) {
+            receivedDeadlyCombatDamage = true;
+        }
+        if (card != null && damage.mayKill && dealtDamageAmount > 0
+                && (getHealth() == 0 || (source != null && source.hasCombatAbility(Deadly)))) {
             game.destroy(card.getId());
         }
 
@@ -199,6 +212,7 @@ public class Damagable {
         attackTarget = null;
         blockedAttacker = null;
         blockedBy = null;
+        receivedDeadlyCombatDamage = false;
     }
 
     public final void clear() {
@@ -290,11 +304,11 @@ public class Damagable {
     }
 
     public boolean canDieFromBlock() {
-        return getHealth() == 0 || (blockedBy != null && game.getCard(blockedBy).hasCombatAbility(Deadly));
+        return getHealth() == 0 || receivedDeadlyCombatDamage;
     }
 
     public boolean canDieFromAttack() {
-        return getHealth() == 0 || game.getCard(blockedAttacker).hasCombatAbility(Deadly);
+        return getHealth() == 0 || receivedDeadlyCombatDamage;
     }
 
     public boolean isAttacking() {
@@ -318,7 +332,7 @@ public class Damagable {
             amount -= turnlyHealth;
             turnlyHealth = 0;
             this.health -= Math.min(amount, this.health);
-            if (health <= 0) {
+            if (health <= 0 && card != null) {
                 game.destroy(card.getId());
             }
         }
@@ -353,19 +367,17 @@ public class Damagable {
     }
 
     public int drain(int amount) {
-        int drained = 0;
-        if (turnlyHealth <= amount){
-            drained += turnlyHealth;
-            turnlyHealth = 0;
-            amount -= turnlyHealth;
-            drained += Math.min(health, amount);
-            health = Math.max(0, health - amount);
-            if (health <= 0) {
+        if (amount <= 0) return 0;
+        int drained = Math.min(turnlyHealth, amount);
+        turnlyHealth -= drained;
+        int remaining = amount - drained;
+        if (remaining > 0) {
+            int fromHealth = Math.min(health, remaining);
+            drained += fromHealth;
+            health -= fromHealth;
+            if (health <= 0 && card != null) {
                 game.destroy(card.getId());
             }
-        } else {
-            drained += amount;
-            turnlyHealth -= amount;
         }
         return drained;
     }

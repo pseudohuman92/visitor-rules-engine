@@ -4,6 +4,8 @@ import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
 import com.visitor.protocol.ServerGameMessages.ServerGameMessage;
 import com.visitor.protocol.Types;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,8 +26,16 @@ public final class PendingDecision {
         }
         switch (request.getPayloadCase()) {
             case SELECTFROM:
-                if (message.hasSelectFromResponse() && message.getSelectFromResponse().getMessageType() == request.getSelectFrom().getMessageType()) {
-                    return answer.complete(message.getSelectFromResponse().getSelectedList().toArray(new String[0]));
+                if (message.hasSelectFromResponse()
+                        && message.getSelectFromResponse().getMessageType() == request.getSelectFrom().getMessageType()) {
+                    Set<String> possible = new HashSet<>(request.getSelectFrom().getTargets().getPossibleTargetsList());
+                    Set<String> selected = new HashSet<>(message.getSelectFromResponse().getSelectedList());
+                    int count = message.getSelectFromResponse().getSelectedCount();
+                    if (count >= request.getSelectFrom().getTargets().getMinTargets()
+                            && count <= request.getSelectFrom().getTargets().getMaxTargets()
+                            && selected.size() == count && possible.containsAll(selected)) {
+                        return answer.complete(message.getSelectFromResponse().getSelectedList().toArray(new String[0]));
+                    }
                 }
                 break;
             case SELECTXVALUE:
@@ -43,12 +53,30 @@ public final class PendingDecision {
                 break;
             case ASSIGNDAMAGE:
                 if (message.hasAssignDamageResponse()) {
-                    return answer.complete(message.getAssignDamageResponse().getDamageAssignmentsList().toArray(new Types.DamageAssignment[0]));
+                    Set<String> possible = new HashSet<>(request.getAssignDamage().getPossibleTargetsList());
+                    Set<String> assigned = new HashSet<>();
+                    long total = 0;
+                    for (Types.DamageAssignment assignment : message.getAssignDamageResponse().getDamageAssignmentsList()) {
+                        if (assignment.getDamage() < 0 || !possible.contains(assignment.getTargetId())
+                                || !assigned.add(assignment.getTargetId())) {
+                            return false;
+                        }
+                        total += assignment.getDamage();
+                    }
+                    if (total == request.getAssignDamage().getTotalDamage()) {
+                        return answer.complete(message.getAssignDamageResponse().getDamageAssignmentsList().toArray(new Types.DamageAssignment[0]));
+                    }
                 }
                 break;
             case ORDERCARDS:
                 if (message.hasOrderCardsResponse()) {
-                    return answer.complete(message.getOrderCardsResponse().getOrderedCardsList().toArray(new String[0]));
+                    Set<String> requested = new HashSet<>();
+                    request.getOrderCards().getCardsToOrderList().forEach(card -> requested.add(card.getId()));
+                    Set<String> ordered = new HashSet<>(message.getOrderCardsResponse().getOrderedCardsList());
+                    if (ordered.size() == message.getOrderCardsResponse().getOrderedCardsCount()
+                            && ordered.equals(requested)) {
+                        return answer.complete(message.getOrderCardsResponse().getOrderedCardsList().toArray(new String[0]));
+                    }
                 }
                 break;
             default:

@@ -23,45 +23,39 @@ import static com.visitor.protocol.Types.Knowledge.YELLOW;
  */
 public class Reassembler extends Asset {
 
-    private int totalAttack;
-    private int totalHealth;
-    private int totalShield;
-
-    private final CounterMap<Damagable.CombatAbility> totalCombatAbilities;
-
     public Reassembler(Game game, UUID owner) {
         super(game, "Reassembler",
                 3, new CounterMap(YELLOW, 1),
                 "{Use}: Purge one or more units from your discard pile: Target ally unit gains their total attack, health, shield and combat abilities.",
                 owner);
 
-        totalAttack = 0;
-        totalHealth = 0;
-        totalShield = 0;
-        totalCombatAbilities = new CounterMap<>();
-
         activatable.addActivatedAbility(new ActivatedAbility(game, this, 0, "{Use}: Purge one or more units from your discard pile: Target unit you control gains their total attack, health, shield and combat abilities.")
-                .addTargeting(Base.Zone.Discard_Pile, Predicates::isUnit, 1, 999, "Purge any number of units.", t -> {
-                    totalAttack += game.getCard(t).getAttack();
-                    totalHealth += game.getCard(t).getHealth();
-                    totalShield += game.getCard(t).getShields();
-                    totalCombatAbilities.merge(game.getCard(t).getCombatAbilities());
-                    game.purge(t);
-                    }, true
-                )
-                .addTargeting(Base.Zone.Play, Predicates.isAllyUnit(controller), 1, 1, "Target unit you control gains their total attack, health, shield and combat abilities.", id -> {
-                    Card c = game.getCard(id);
-                    c.addAttackAndHealth(totalAttack, totalHealth, false);
-                    c.addShield(totalShield, false);
-                    totalCombatAbilities.forEach((a, count) -> c.addCombatAbility(a, count, false));
-                }, false), false);
-    }
-
-    public void clear(){
-        super.clear();
-        totalAttack = 0;
-        totalHealth = 0;
-        totalShield = 0;
-        totalCombatAbilities.clear();
+                .addTargeting(Base.Zone.Discard_Pile, Predicates::isUnit, 1, 999, "Purge any number of units.", game::purge, true)
+                .addTargeting(Base.Zone.Play, Predicates.isAllyUnit(controller), 1, 1, "Target unit you control gains their total attack, health, shield and combat abilities.", id -> {}, false)
+                .setStackEffectFactory(selections -> {
+                    int totalAttack = 0;
+                    int totalHealth = 0;
+                    int totalShield = 0;
+                    CounterMap<Damagable.CombatAbility> totalCombatAbilities = new CounterMap<>();
+                    for (UUID id : selections.get(0)) {
+                        Card card = game.getCard(id);
+                        totalAttack += card.getAttack();
+                        totalHealth += card.getHealth();
+                        totalShield += card.getShields();
+                        totalCombatAbilities.merge(card.getCombatAbilities());
+                    }
+                    UUID targetId = selections.get(1).get(0);
+                    int attack = totalAttack;
+                    int health = totalHealth;
+                    int shield = totalShield;
+                    return () -> {
+                        Card target = game.getCard(targetId);
+                        if (target != null && target.zone == Base.Zone.Play && Predicates.isAllyUnit(controller).test(target)) {
+                            target.addAttackAndHealth(attack, health, false);
+                            target.addShield(shield, false);
+                            totalCombatAbilities.forEach((ability, count) -> target.addCombatAbility(ability, count, false));
+                        }
+                    };
+                }), false);
     }
 }

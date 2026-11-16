@@ -72,11 +72,13 @@ public class Turns extends Actions {
     private void newTurn() {
         if (turnCount > 0) {
             turnPlayer = this.getOpponentId(turnPlayer);
-            getPlayer(turnPlayer).draw(1);
+            draw(turnPlayer, 1);
+            if (ended) return;
         }
         activePlayer = turnPlayer;
         passCount = 0;
-        getPlayer(turnPlayer).draw(1);
+        draw(turnPlayer, 1);
+        if (ended) return;
         getPlayer(turnPlayer).newTurn();
         turnCount++;
         processBeginEvents();

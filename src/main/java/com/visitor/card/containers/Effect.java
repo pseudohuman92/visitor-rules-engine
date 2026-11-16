@@ -11,9 +11,11 @@ import com.visitor.helpers.Predicates;
 import com.visitor.protocol.Types;
 
 import java.util.Objects;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.List;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -121,16 +123,28 @@ public class Effect {
     }
 
     public void runEffect(){
+        runEffect(targets, targetZones);
+        clear();
+    }
+
+    /** Captures this activation's selections for an independently resolving stack entry. */
+    public Runnable snapshot() {
+        Arraylist<UUID> selectedTargets = new Arraylist<>(targets);
+        Map<UUID, Base.Zone> selectedZones = new HashMap<>(targetZones);
+        return () -> runEffect(selectedTargets, selectedZones);
+    }
+
+    private void runEffect(Arraylist<UUID> selectedTargets, Map<UUID, Base.Zone> selectedZones) {
         if (maxTargets < 1) {
             targetsEffect.accept(UUID.randomUUID());
         } else {
-            for (int i = 0; i < targets.size(); i++) {
-                UUID t = targets.get(i);
-                if (game.getTargetable(t).getZone() == targetZones.get(t))
+            for (int i = 0; i < selectedTargets.size(); i++) {
+                UUID t = selectedTargets.get(i);
+                Targetable target = game.getTargetable(t);
+                if (target != null && target.getZone() == selectedZones.get(t))
                     targetsEffect.accept(t);
             }
         }
-        targets.clear();
     }
 
     public Base.Zone getZone() {

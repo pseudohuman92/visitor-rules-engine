@@ -7,10 +7,13 @@ import com.visitor.helpers.*;
 import com.visitor.protocol.Types;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -31,6 +34,7 @@ public class ActivatedAbility {
     // Additional costs and resolution effects each retain their registration order.
     private final Map<UUID, Effect> costEffects;
     private final Map<UUID, Effect> effects;
+    private Function<List<Arraylist<UUID>>, Runnable> stackEffectFactory;
 
 
     public ActivatedAbility(Game game, Card card, int cost, String text) {
@@ -83,6 +87,8 @@ public class ActivatedAbility {
     }
 
     public final void activate() {
+        Runnable resolution = snapshotResolutionEffect();
+        Arraylist<UUID> resolutionTargets = getResolutionTargets();
         for (Effect e : costEffects.values()) {
             e.runEffect();
         }
@@ -93,7 +99,25 @@ public class ActivatedAbility {
         if (selfDestroying) {
             game.destroy(card.getId());
         }
-        game.addToStack(new AbilityCard(game, card, this));
+        clear();
+        game.addToStack(new AbilityCard(game, card, text, resolution, resolutionTargets));
+    }
+
+    public final Runnable snapshotResolutionEffect() {
+        List<Arraylist<UUID>> selectedTargets = new ArrayList<>();
+        costEffects.values().forEach(effect -> selectedTargets.add(new Arraylist<>(effect.getTargets())));
+        effects.values().forEach(effect -> selectedTargets.add(new Arraylist<>(effect.getTargets())));
+        Arraylist<Runnable> resolutionEffects = new Arraylist<>();
+        effects.values().forEach(effect -> resolutionEffects.add(effect.snapshot()));
+        return stackEffectFactory == null
+                ? () -> resolutionEffects.forEach(Runnable::run)
+                : stackEffectFactory.apply(selectedTargets);
+    }
+
+    public final Arraylist<UUID> getResolutionTargets() {
+        Arraylist<UUID> resolutionTargets = new Arraylist<>();
+        effects.values().forEach(effect -> resolutionTargets.addAll(effect.getTargets()));
+        return resolutionTargets;
     }
 
     public ActivatedAbility setSlow() {
@@ -198,6 +222,11 @@ public class ActivatedAbility {
 
     public void validateTargets(Arraylist<Types.TargetSelection> targets) {
         TargetSelections.validate(targets, costEffects.values(), effects.values());
+    }
+
+    public ActivatedAbility setStackEffectFactory(Function<List<Arraylist<UUID>>, Runnable> factory) {
+        stackEffectFactory = factory;
+        return this;
     }
 
     public Arraylist<UUID> getAllTargets() {

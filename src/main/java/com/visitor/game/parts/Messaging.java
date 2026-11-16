@@ -48,10 +48,13 @@ public class Messaging extends Connections {
         if (pendingDecision != null) throw new IllegalStateException("Another decision is already pending");
         PendingDecision decision = new PendingDecision(playerId, builder.build());
         pendingDecision = decision;
+        Player choosingPlayer = getPlayer(playerId);
+        choosingPlayer.clock.activate();
         try {
             send(playerId, builder);
             return awaitDecision(decision);
         } finally {
+            choosingPlayer.clock.pause();
             pendingDecision = null;
         }
     }

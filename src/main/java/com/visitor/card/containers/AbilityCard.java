@@ -25,15 +25,20 @@ public class AbilityCard extends Card {
     Arraylist<UUID> targets;
 
     public AbilityCard(Game game, Card creator, String text, Runnable effect) {
+        this(game, creator, text, effect, creator.getAllTargets());
+    }
+
+    public AbilityCard(Game game, Card creator, String text, Runnable effect, Arraylist<UUID> resolutionTargets) {
         super(game, creator.name, new CounterMap<>(), CardType.Ability, text, creator.controller);
         playable = new Playable(game, this).addResolveEffect(effect).setDisappearing();
         targets = new Arraylist<>(creator.getId());
-        targets.addAll(creator.getAllTargets());
+        targets.addAll(resolutionTargets);
 
     }
 
     public AbilityCard(Game game, Card creator, ActivatedAbility activatedAbility) {
-        this(game, creator, activatedAbility.getText(), activatedAbility::runEffects);
+        this(game, creator, activatedAbility.getText(), activatedAbility.snapshotResolutionEffect(),
+                activatedAbility.getResolutionTargets());
         //setId(activatedAbility.id);
     }
 

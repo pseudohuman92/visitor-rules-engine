@@ -47,22 +47,28 @@ public class Combat extends Stack {
 
 
     void dealCombatDamage() {
-        ArrayList<Card> firstStrikeAttackers = new Arraylist<>(getAllCardsById(attackers));
+        ArrayList<Card> allAttackers = new Arraylist<>(getAllCardsById(attackers));
+        ArrayList<Card> allBlockers = new Arraylist<>(getAllCardsById(blockers));
+        ArrayList<Card> firstStrikeAttackers = new Arraylist<>(allAttackers);
         firstStrikeAttackers.removeIf(a -> !a.hasCombatAbility(FirstStrike));
-        firstStrikeAttackers.forEach(a -> a.dealAttackDamage(true));
+        ArrayList<Card> firstStrikeBlockers = new Arraylist<>(allBlockers);
+        firstStrikeBlockers.removeIf(c -> !c.hasCombatAbility(FirstStrike));
+        firstStrikeAttackers.forEach(Card::dealAttackDamage);
+        firstStrikeBlockers.forEach(Card::dealBlockDamage);
+        allAttackers.forEach(Card::maybeDieFromBlock);
+        allBlockers.forEach(Card::maybeDieFromAttack);
 
         processEvents();
 
         ArrayList<Card> normalAttackers = new Arraylist<>(getAllCardsById(attackers));
         normalAttackers.removeIf(a -> a.hasCombatAbility(FirstStrike));
         ArrayList<Card> normalBlockers = new Arraylist<>(getAllCardsById(blockers));
+        normalBlockers.removeIf(c -> c.hasCombatAbility(FirstStrike));
 
-        normalAttackers.forEach(a -> a.dealAttackDamage(false));
+        normalAttackers.forEach(Card::dealAttackDamage);
         normalBlockers.forEach(Card::dealBlockDamage);
-
-        //TODO: these kill if they blocked by a deathtouch unit even if it is not damaged by it.
-        normalAttackers.forEach(Card::maybeDieFromBlock);
-        normalBlockers.forEach(Card::maybeDieFromAttack);
+        allAttackers.forEach(Card::maybeDieFromBlock);
+        allBlockers.forEach(Card::maybeDieFromAttack);
 
         processEvents();
     }

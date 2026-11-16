@@ -230,8 +230,8 @@ public abstract class Card implements Targetable {
         runIfNotNull(damagable, () -> damagable.setBlocking(blockedBy));
     }
 
-    public final void dealAttackDamage(boolean firstStrike) {
-        runIfNotNull(damagable, () -> damagable.dealAttackDamage(firstStrike));
+    public final void dealAttackDamage() {
+        runIfNotNull(damagable, damagable::dealAttackDamage);
     }
 
     public final void dealBlockDamage() {
@@ -255,13 +255,13 @@ public abstract class Card implements Targetable {
     }
 
     public void maybeDieFromBlock() {
-        if (canDieFromBlock()) {
+        if (zone == Play && canDieFromBlock()) {
             game.destroy(id);
         }
     }
 
     public void maybeDieFromAttack() {
-        if (canDieFromAttack()) {
+        if (zone == Play && canDieFromAttack()) {
             game.destroy(id);
         }
     }
@@ -413,11 +413,7 @@ public abstract class Card implements Targetable {
 
     //Checks death after life loss
     public void loseHealth(int health) {
-        runIfNotNull(damagable, () -> {
-            damagable.loseHealth(health);
-            if (damagable.getHealth() == 0)
-                game.destroy(id);
-        });
+        runIfNotNull(damagable, () -> damagable.loseHealth(health));
     }
 
     public Types.CardP.Builder toCardMessage() {
