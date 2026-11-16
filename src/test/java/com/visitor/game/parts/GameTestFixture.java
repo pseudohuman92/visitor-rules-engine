@@ -8,11 +8,18 @@ import java.util.UUID;
 
 /** Real engine objects with fixed initiative and clocks stopped between actions. */
 public final class GameTestFixture implements AutoCloseable {
-    public final Game game = new Game();
-    public final Player player = new Player(game, "player", new String[]{"20;base2.Stormtrooper"});
-    public final Player opponent = new Player(game, "opponent", new String[]{"20;base2.Stormtrooper"});
+    public final Game game;
+    public final Player player;
+    public final Player opponent;
 
     public GameTestFixture() {
+        this(new Game());
+    }
+
+    public GameTestFixture(Game game) {
+        this.game = game;
+        player = new Player(game, "player", new String[]{"20;base2.Stormtrooper"});
+        opponent = new Player(game, "opponent", new String[]{"20;base2.Stormtrooper"});
         game.addPlayers(player, opponent);
         player.clock.pause();
         opponent.clock.pause();
@@ -53,6 +60,7 @@ public final class GameTestFixture implements AutoCloseable {
 
     @Override
     public void close() throws InterruptedException {
+        game.close();
         player.clock.interrupt();
         opponent.clock.interrupt();
         player.clock.join(1000);

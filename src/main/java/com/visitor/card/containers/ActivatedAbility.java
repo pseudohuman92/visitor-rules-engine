@@ -8,6 +8,8 @@ import com.visitor.protocol.Types;
 
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -26,8 +28,9 @@ public class ActivatedAbility {
     private final String text;
     private CounterMap<Types.Knowledge> knowledgeRequirement;
     private final Arraylist<Supplier<Boolean>> canActivateAdditional;
-    private final Hashmap<UUID, Effect> costEffects;
-    private final Hashmap<UUID, Effect> effects;
+    // Additional costs and resolution effects each retain their registration order.
+    private final Map<UUID, Effect> costEffects;
+    private final Map<UUID, Effect> effects;
 
 
     public ActivatedAbility(Game game, Card card, int cost, String text) {
@@ -41,8 +44,8 @@ public class ActivatedAbility {
         this.selfDestroying = false;
         this.knowledgeRequirement = new CounterMap<>();
         this.canActivateAdditional = new Arraylist<>();
-        this.costEffects = new Hashmap<>();
-        this.effects = new Hashmap<>();
+        this.costEffects = new LinkedHashMap<>();
+        this.effects = new LinkedHashMap<>();
     }
 
     public ActivatedAbility(Game game, Card card, int cost, String text, Runnable effect) {
@@ -56,8 +59,8 @@ public class ActivatedAbility {
         this.selfDestroying = false;
         this.knowledgeRequirement = new CounterMap<>();
         this.canActivateAdditional = new Arraylist<>();
-        this.costEffects = new Hashmap<>();
-        this.effects = new Hashmap<>();
+        this.costEffects = new LinkedHashMap<>();
+        this.effects = new LinkedHashMap<>();
         addTargeting(Play, Predicates::none, 0, 0, text, i -> effect.run(), false);
     }
 

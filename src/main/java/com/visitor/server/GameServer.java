@@ -14,12 +14,20 @@ import com.visitor.protocol.ServerMessages.LoginResponse;
 import com.visitor.protocol.ServerMessages.NewGame;
 import com.visitor.protocol.ServerMessages.ServerMessage;
 import com.visitor.protocol.Types;
+import com.visitor.protocol.ClientGameMessages.ClientGameMessage;
 
 import javax.websocket.EncodeException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.RejectedExecutionException;
+
+import static com.visitor.game.IllegalGameActionException.parseId;
 
 import static com.visitor.protocol.Types.GameType.AI_BO1_CONSTRUCTED;
 import static java.util.logging.Level.SEVERE;
@@ -31,98 +39,152 @@ import static java.util.logging.Logger.getLogger;
 public class GameServer {
 
     //static MetricsDb metricsDb = new MetricsDb();
-    public Hashmap<String, GeneralEndpoint> playerConnections;
-    public Hashmap<UUID, Game> games;
-    public Hashmap<UUID, Draft> drafts;
+    public ConcurrentMap<String, GeneralEndpoint> playerConnections;
+    public ConcurrentMap<UUID, Game> games;
+    public ConcurrentMap<UUID, Draft> drafts;
     public Arraylist<String> chatLog;
     public Arraylist<QueuePlayer> Bo1ConstructedQueue;
     public Arraylist<QueuePlayer> P2DraftQueue;
     public Hashmap<UUID, QueuePlayer> P2DraftGameQueue;
 
     public GameServer() {
-        playerConnections = new Hashmap<>();
+        playerConnections = new ConcurrentHashMap<>();
         chatLog = new Arraylist<>();
-        games = new Hashmap<>();
-        drafts = new Hashmap<>();
+        games = new ConcurrentHashMap<>();
+        drafts = new ConcurrentHashMap<>();
         Bo1ConstructedQueue = new Arraylist<>();
         P2DraftQueue = new Arraylist<>();
         P2DraftGameQueue = new Hashmap<>();
     }
 
-    private void takeGameAction(UUID gameID, UUID playerId, Consumer<Game> action) {
-        Game game = games.get(gameID);
-        if (game == null) {
-            return;
-        }
-        // Validate and mutate under the same match lock. Prompt responses bypass
-        // this wrapper so a decision can still unblock a running card effect.
-        synchronized (game) {
-            if (games.get(gameID) != game) {
-                return;
+    private CompletableFuture<Void> observe(CompletableFuture<Void> future) {
+        return future.whenComplete((ignored, failure) -> {
+            if (failure != null && !(failure instanceof CancellationException)
+                    && !(failure instanceof RejectedExecutionException)) {
+                getLogger(GameServer.class.getName()).log(SEVERE, "Match task failed", failure);
             }
+        });
+    }
+
+    private CompletableFuture<Void> takeGameAction(UUID gameID, UUID playerId, Consumer<Game> action) {
+        Game game = games.get(gameID);
+        if (game == null) return CompletableFuture.completedFuture(null);
+        return observe(game.executeAction(() -> {
+            if (games.get(gameID) != game) return;
             game.stopActiveClock();
             try {
                 action.accept(game);
-                if (games.get(gameID) == game) {
-                    game.updatePlayers();
-                }
+                if (!game.isEnded()) game.updatePlayers();
             } catch (IllegalGameActionException e) {
                 getLogger(GameServer.class.getName()).warning("Rejected game action: " + e.getMessage());
                 game.updatePlayer(playerId);
+            } catch (CancellationException e) {
+                if (!game.isEnded()) throw e;
             } finally {
-                if (games.get(gameID) == game) {
-                    game.startActiveClock();
-                }
+                if (!game.isEnded() && games.get(gameID) == game) game.startActiveClock();
             }
-        }
+        }));
     }
 
-    void activateCard(UUID gameID, UUID playerId, UUID cardID, UUID abilityId, Arraylist<Types.TargetSelection> targets) {
-        takeGameAction(gameID, playerId, game -> game.activateCard(playerId, cardID, abilityId, targets));
-    }
-
-    void concede(UUID gameID, UUID playerId) {
+    /** Socket callbacks only decode messages; the match worker owns dispatch and state. */
+    CompletableFuture<Void> handleGameMessage(UUID gameID, UUID sender, ClientGameMessage message) {
         Game game = games.get(gameID);
-        if (game != null && game.isPlayer(playerId)) {
-            game.gameEnd(playerId, false);
+        if (game == null) return CompletableFuture.completedFuture(null);
+        switch (message.getPayloadCase()) {
+            case CONCEDE:
+            case ORDERCARDSRESPONSE:
+            case SELECTFROMRESPONSE:
+            case SELECTXVALUERESPONSE:
+            case ASSIGNDAMAGERESPONSE:
+            case SELECTKNOWLEDGERESPONSE:
+                return observe(game.executeControl(() -> {
+                    if (game.isEnded()) return;
+                    game.addToHistory(message);
+                    if (message.hasConcede()) {
+                        if (game.isPlayer(sender)) game.gameEnd(sender, false);
+                    } else {
+                        game.acceptResponse(sender, message);
+                    }
+                }));
+            default:
+                return takeGameAction(gameID, sender, current -> {
+                    current.addToHistory(message);
+                    switch (message.getPayloadCase()) {
+                        case PLAYCARD:
+                            current.playCard(sender, parseId(message.getPlayCard().getCardId()),
+                                    new Arraylist<>(message.getPlayCard().getTargetsList()));
+                            break;
+                        case ACTIVATECARD:
+                            current.activateCard(sender, parseId(message.getActivateCard().getCardId()),
+                                    parseId(message.getActivateCard().getAbilityId()),
+                                    new Arraylist<>(message.getActivateCard().getTargetsList()));
+                            break;
+                        case STUDYCARD:
+                            Types.Knowledge knowledge = message.getStudyCard().getSelectedKnowledge();
+                            CounterMap<Types.Knowledge> gain = new CounterMap<>();
+                            if (knowledge != Types.Knowledge.NONE) gain.add(knowledge, 1);
+                            current.studyCard(sender, parseId(message.getStudyCard().getCardId()), true, gain);
+                            break;
+                        case PASS: current.pass(sender); break;
+                        case KEEP: current.keep(sender); break;
+                        case REDRAW: current.redraw(sender); break;
+                        case SELECTATTACKERS:
+                            current.selectAttackers(sender, message.getSelectAttackers().getAttackersList().toArray(new Types.AttackerAssignment[0]));
+                            break;
+                        case SELECTBLOCKERS:
+                            current.selectBlockers(sender, message.getSelectBlockers().getBlockersList().toArray(new Types.BlockerAssignment[0]));
+                            break;
+                        default: throw new IllegalGameActionException("Unexpected game command");
+                    }
+                });
         }
     }
 
-    void redraw(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, playerId, game -> game.redraw(playerId));
+    CompletableFuture<Void> activateCard(UUID gameID, UUID playerId, UUID cardID, UUID abilityId, Arraylist<Types.TargetSelection> targets) {
+        return takeGameAction(gameID, playerId, game -> game.activateCard(playerId, cardID, abilityId, targets));
     }
 
-    void keep(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, playerId, game -> game.keep(playerId));
+    CompletableFuture<Void> concede(UUID gameID, UUID playerId) {
+        return handleGameMessage(gameID, playerId, ClientGameMessage.newBuilder()
+                .setConcede(com.visitor.protocol.ClientGameMessages.Concede.newBuilder()).build());
     }
 
-    void pass(UUID gameID, UUID playerId) {
-        takeGameAction(gameID, playerId, game -> game.pass(playerId));
+    CompletableFuture<Void> redraw(UUID gameID, UUID playerId) {
+        return takeGameAction(gameID, playerId, game -> game.redraw(playerId));
     }
 
-    void studyCard(UUID gameID, UUID playerId, UUID cardID, CounterMap<Types.Knowledge> knowledge) {
-        takeGameAction(gameID, playerId, game -> game.studyCard(playerId, cardID, true, knowledge));
+    CompletableFuture<Void> keep(UUID gameID, UUID playerId) {
+        return takeGameAction(gameID, playerId, game -> game.keep(playerId));
     }
 
-    void playCard(UUID gameID, UUID playerId, UUID cardID, Arraylist<Types.TargetSelection> targets) {
-        takeGameAction(gameID, playerId, game -> game.playCard(playerId, cardID, targets));
+    CompletableFuture<Void> pass(UUID gameID, UUID playerId) {
+        return takeGameAction(gameID, playerId, game -> game.pass(playerId));
     }
 
-    void selectAttackers(UUID gameID, UUID playerId, Types.AttackerAssignment[] attackers) {
-        takeGameAction(gameID, playerId, game -> game.selectAttackers(playerId, attackers));
+    CompletableFuture<Void> studyCard(UUID gameID, UUID playerId, UUID cardID, CounterMap<Types.Knowledge> knowledge) {
+        return takeGameAction(gameID, playerId, game -> game.studyCard(playerId, cardID, true, knowledge));
     }
 
-    void selectBlockers(UUID gameID, UUID playerId, Types.BlockerAssignment[] blockers) {
-        takeGameAction(gameID, playerId, game -> game.selectBlockers(playerId, blockers));
+    CompletableFuture<Void> playCard(UUID gameID, UUID playerId, UUID cardID, Arraylist<Types.TargetSelection> targets) {
+        return takeGameAction(gameID, playerId, game -> game.playCard(playerId, cardID, targets));
     }
 
-    synchronized ServerGameMessage getLastMessage(UUID gameID, UUID playerId) {
-        return games.get(gameID).getLastMessage(playerId);
+    CompletableFuture<Void> selectAttackers(UUID gameID, UUID playerId, Types.AttackerAssignment[] attackers) {
+        return takeGameAction(gameID, playerId, game -> game.selectAttackers(playerId, attackers));
+    }
+
+    CompletableFuture<Void> selectBlockers(UUID gameID, UUID playerId, Types.BlockerAssignment[] blockers) {
+        return takeGameAction(gameID, playerId, game -> game.selectBlockers(playerId, blockers));
+    }
+
+    ServerGameMessage getLastMessage(UUID gameID, UUID playerId) {
+        Game game = games.get(gameID);
+        return game == null ? null : game.getLastMessage(playerId);
     }
 
     synchronized void addConnection(String username, GeneralEndpoint connection) {
         try {
-            playerConnections.putIn(username, connection);
+            playerConnections.put(username, connection);
             final UUID[] playerGame = {null};
             final UUID[] playerId = {null};
             games.forEach((id, game) -> {
@@ -140,7 +202,7 @@ public class GameServer {
     }
 
     synchronized void removeConnection(String username) {
-        playerConnections.removeFrom(username);
+        playerConnections.remove(username);
         for (int i = 0; i < Bo1ConstructedQueue.size(); i++) {
             QueuePlayer p = Bo1ConstructedQueue.get(i);
             if (p.username.equals(username)) {
@@ -157,12 +219,41 @@ public class GameServer {
         }
     }
 
-    synchronized void addGameConnection(UUID gameID, UUID playerId, GameEndpointInterface connection) {
-        games.get(gameID).addConnection(playerId, connection);
+    CompletableFuture<Void> addGameConnection(UUID gameID, UUID playerId, GameEndpointInterface connection) {
+        return addGameConnections(gameID, connection, playerId);
     }
 
-    synchronized void removeGameConnection(UUID gameID, UUID playerId) {
-        games.get(gameID).removeConnection(playerId);
+    CompletableFuture<Void> addGameConnections(UUID gameID, GameEndpointInterface connection, UUID... players) {
+        Game game = games.get(gameID);
+        if (game == null) {
+            connection.close();
+            return CompletableFuture.completedFuture(null);
+        }
+        return observe(game.executeControl(() -> {
+            if (game.isEnded()) { connection.close(); return; }
+            for (UUID player : players) {
+                if (!game.isPlayer(player)) { connection.close(); return; }
+            }
+            for (UUID player : players) game.addConnection(player, connection);
+            for (UUID player : players) {
+                try {
+                    connection.resendLastMessage(player);
+                } catch (IOException | EncodeException e) {
+                    getLogger(GameServer.class.getName()).log(SEVERE, "Could not resume connection", e);
+                }
+            }
+        }));
+    }
+
+    CompletableFuture<Void> removeGameConnection(UUID gameID, UUID playerId, GameEndpointInterface expected) {
+        Game game = games.get(gameID);
+        if (game == null) return CompletableFuture.completedFuture(null);
+        return observe(game.executeControl(() -> game.removeConnection(playerId, expected)));
+    }
+
+    private void registerGame(Game game, Runnable notifyPlayers) {
+        games.put(game.getId(), game);
+        observe(game.executeControl(() -> { if (!game.isEnded()) notifyPlayers.run(); }));
     }
 
     synchronized void joinQueue(String username, Types.GameType gameType, String[] decklist, UUID draftId) {
@@ -198,17 +289,18 @@ public class GameServer {
             game.addToHistory(waitingPlayer.username + ":\n" + Arrays.toString(waitingPlayer.decklist));
             game.addToHistory(username + ":\n" + Arrays.toString(decklist));
             game.addPlayers(new Player(game, waitingPlayer.username, waitingPlayer.decklist), new Player(game, username, decklist));
-            games.putIn(game.getId(), game);
-            try {
-                playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
-                        .setNewGame(NewGame.newBuilder()
-                                .setGame(game.toGameState(waitingPlayer.username))));
-                playerConnections.get(username).send(ServerMessage.newBuilder()
-                        .setNewGame(NewGame.newBuilder()
-                                .setGame(game.toGameState(username))));
-            } catch (IOException | EncodeException ex) {
-                getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
-            }
+            registerGame(game, () -> {
+                try {
+                    playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
+                            .setNewGame(NewGame.newBuilder()
+                                    .setGame(game.toGameState(waitingPlayer.username))));
+                    playerConnections.get(username).send(ServerMessage.newBuilder()
+                            .setNewGame(NewGame.newBuilder()
+                                    .setGame(game.toGameState(username))));
+                } catch (IOException | EncodeException ex) {
+                    getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+                }
+            });
         }
     }
 
@@ -223,7 +315,7 @@ public class GameServer {
             QueuePlayer waitingPlayer = P2DraftQueue.remove(0);
             System.out.println("Starting a new draft with " + username + " and " + waitingPlayer.username);
             Draft draft = new Draft(waitingPlayer.username, username);
-            drafts.putIn(draft.getId(), draft);
+            drafts.put(draft.getId(), draft);
             try {
                 playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
                         .setNewDraft(ServerMessages.NewDraft.newBuilder()
@@ -252,17 +344,18 @@ public class GameServer {
             game.addToHistory(waitingPlayer.username + ":\n" + Arrays.toString(waitingPlayer.decklist));
             game.addToHistory(username + ":\n" + Arrays.toString(decklist));
             game.addPlayers(new Player(game, waitingPlayer.username, waitingPlayer.decklist), new Player(game, username, decklist));
-            games.putIn(game.getId(), game);
-            try {
-                playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
-                        .setNewGame(NewGame.newBuilder()
-                                .setGame(game.toGameState(waitingPlayer.username))));
-                playerConnections.get(username).send(ServerMessage.newBuilder()
-                        .setNewGame(NewGame.newBuilder()
-                                .setGame(game.toGameState(username))));
-            } catch (IOException | EncodeException ex) {
-                getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
-            }
+            registerGame(game, () -> {
+                try {
+                    playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
+                            .setNewGame(NewGame.newBuilder()
+                                    .setGame(game.toGameState(waitingPlayer.username))));
+                    playerConnections.get(username).send(ServerMessage.newBuilder()
+                            .setNewGame(NewGame.newBuilder()
+                                    .setGame(game.toGameState(username))));
+                } catch (IOException | EncodeException ex) {
+                    getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+                }
+            });
         }
     }
 
@@ -273,25 +366,27 @@ public class GameServer {
         game.addToHistory(username + ":\n" + Arrays.toString(decklist));
         AiPlayer aiPlayer = new AiPlayer(game);
         game.addPlayers(aiPlayer, new Player(game, username, decklist));
-        games.putIn(game.getId(), game);
-        try {
-            playerConnections.get(username).send(ServerMessage.newBuilder()
-                    .setNewGame(NewGame.newBuilder()
-                            .setGameType(AI_BO1_CONSTRUCTED)
-                            .setAiId(aiPlayer.getId().toString())
-                            .setGame(game.toGameState(username))));
-        } catch (IOException | EncodeException ex) {
-            getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
-        }
-    }
-
-    void addToResponseQueue(UUID gameID, Object o) {
-        games.get(gameID).addToResponseQueue(o);
+        registerGame(game, () -> {
+            try {
+                playerConnections.get(username).send(ServerMessage.newBuilder()
+                        .setNewGame(NewGame.newBuilder()
+                                .setGameType(AI_BO1_CONSTRUCTED)
+                                .setAiId(aiPlayer.getId().toString())
+                                .setGame(game.toGameState(username))));
+            } catch (IOException | EncodeException ex) {
+                getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+            }
+        });
     }
 
     public void removeGame(UUID gameID, Arraylist<String> history) {
-        //metricsDb.addMatchHistory(gameID, history);
-        games.remove(gameID);
+        Game game = games.get(gameID);
+        if (game != null) {
+            observe(game.executeControl(() -> {
+                games.remove(gameID, game);
+                game.close();
+            }));
+        }
     }
 
     synchronized public void addDraftConnection(UUID draftID, UUID playerId, DraftEndpoint connection) {
@@ -312,7 +407,9 @@ public class GameServer {
         return drafts.get(draftID).getLastMessage(playerId);
     }
 
-    public void appendToHistory(UUID gameID, Object message) {
-        games.get(gameID).addToHistory(message);
+    public CompletableFuture<Void> appendToHistory(UUID gameID, Object message) {
+        Game game = games.get(gameID);
+        if (game == null) return CompletableFuture.completedFuture(null);
+        return observe(game.executeControl(() -> game.addToHistory(message)));
     }
 }

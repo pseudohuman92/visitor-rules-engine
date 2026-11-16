@@ -6,13 +6,14 @@ import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Hashmap;
 import com.visitor.helpers.Predicates;
 import com.visitor.helpers.UUIDHelper;
 import com.visitor.protocol.Types;
 
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -30,22 +31,23 @@ public class Playable {
     private Supplier<Boolean> playTimingCondition;
     private Supplier<Boolean> playResourceCondition;
 
-    private final Hashmap<UUID, Effect> costEffects; //For paying additional costs
+    // Each stage runs in registration order; UUIDs identify effects, not their ordering.
+    private final Map<UUID, Effect> costEffects; //For paying additional costs
     private final Arraylist<Consumer<Boolean>> play;  //Pays the energy cost and places card into the stack.
 
     private Runnable resolvePlaceCard; //Places card into its resolve zone
-    private final Hashmap<UUID, Effect> afterResolveEffects;   //Runs after card is placed into its resolve zone
+    private final Map<UUID, Effect> afterResolveEffects;   //Runs after card is placed into its resolve zone
 
-    private final Hashmap<UUID, Effect> resolveEffects;
+    private final Map<UUID, Effect> resolveEffects;
     public Playable(Game game, Card card, int cost) {
         this.card = card;
         this.game = game;
         this.cost = cost;
-        this.afterResolveEffects = new Hashmap<>();
+        this.afterResolveEffects = new LinkedHashMap<>();
         this.playAdditionalConditions = new Arraylist<>();
         this.play = new Arraylist<>();
-        this.costEffects = new Hashmap<>();
-        this.resolveEffects = new Hashmap<>();
+        this.costEffects = new LinkedHashMap<>();
+        this.resolveEffects = new LinkedHashMap<>();
         
         // Default Implementations
         setDefaultPlayResourceCondition();
@@ -131,7 +133,7 @@ public class Playable {
 
     /**
      * This is the function that describes what is the effect of the card when it is resolved.
-     * This function contains the business logic of the card effect.
+     * Run registered resolution effects, place the card, then run after-resolution effects.
      */
     public final void resolve() {
         resolveEffects.values().forEach(Effect::runEffect);

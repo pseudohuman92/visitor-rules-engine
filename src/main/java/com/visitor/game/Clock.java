@@ -1,5 +1,7 @@
 package com.visitor.game;
 
+import java.util.function.Consumer;
+
 public class Clock extends Thread {
 
     enum ClockStatus {
@@ -7,15 +9,21 @@ public class Clock extends Thread {
     }
 
 
-    ClockStatus clockStatus;
-    int timeLeft;
-    Runnable callback;
+    volatile ClockStatus clockStatus;
+    volatile int timeLeft;
+    final Runnable callback;
+    private final Consumer<Runnable> dispatch;
 
 
     public Clock(int setTimeSeconds, Runnable callback) {
+        this(setTimeSeconds, callback, Runnable::run);
+    }
+
+    public Clock(int setTimeSeconds, Runnable callback, Consumer<Runnable> dispatch) {
         clockStatus = ClockStatus.PAUSED;
         timeLeft = setTimeSeconds * 1000;
         this.callback = callback;
+        this.dispatch = dispatch;
     }
 
     @Override
@@ -28,14 +36,16 @@ public class Clock extends Thread {
                 return;
             }
 
-            if (isActive()) {
-                timeLeft -= 1000;
-            }
+            dispatch.accept(this::tick);
+        }
+    }
 
-            if (timeLeft <= 0) {
-                pause();
-                callback.run();
-            }
+    private void tick() {
+        if (timeLeft <= 0) return;
+        if (isActive()) timeLeft = Math.max(0, timeLeft - 1000);
+        if (timeLeft == 0) {
+            pause();
+            callback.run();
         }
     }
 

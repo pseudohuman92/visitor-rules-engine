@@ -9,11 +9,12 @@ import com.visitor.card.Card;
 import com.visitor.game.parts.Base;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.Arraylist;
-import com.visitor.helpers.Hashmap;
 import com.visitor.card.containers.ActivatedAbility;
 import com.visitor.protocol.Types;
 
 import java.util.UUID;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Interface for cards that has an activating ability.
@@ -25,16 +26,17 @@ public class Activatable {
     private final Card card;
     private final Game game;
 
-    private final Hashmap<UUID, ActivatedAbility> abilityList;
-    private final Hashmap<UUID, ActivatedAbility> turnlyAbilityList;
+    // Permanent abilities precede temporary abilities; each group keeps registration order.
+    private final Map<UUID, ActivatedAbility> abilityList;
+    private final Map<UUID, ActivatedAbility> turnlyAbilityList;
 
 
     // Constructors
     public Activatable(Game game, Card card) {
         this.game = game;
         this.card = card;
-        abilityList = new Hashmap<>();
-        turnlyAbilityList = new Hashmap<>();
+        abilityList = new LinkedHashMap<>();
+        turnlyAbilityList = new LinkedHashMap<>();
     }
 
     public final boolean canActivate() {
@@ -83,9 +85,9 @@ public class Activatable {
     // Adders
     public Activatable addActivatedAbility(ActivatedAbility ability, boolean turnly) {
         if (turnly)
-            turnlyAbilityList.putIn(ability.id, ability);
+            turnlyAbilityList.put(ability.id, ability);
         else
-            abilityList.putIn(ability.id, ability);
+            abilityList.put(ability.id, ability);
         return this;
     }
 

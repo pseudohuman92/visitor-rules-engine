@@ -26,6 +26,10 @@ public class Events extends Messaging {
         addEvent(e, false);
     }
 
+    /**
+     * Current batch: FIFO events, turn player's cards before opponent's cards,
+     * then card/checker registration order. Explicit nested processing runs inline.
+     */
     public void processEvents() {
         if (!eventQueue.isEmpty()) {
             Arraylist<Event> tempQueue = eventQueue;

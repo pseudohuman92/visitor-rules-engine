@@ -59,6 +59,8 @@ public class Draft {
         // Candidate serialization evaluates legality flags against this game.
         game.addPlayers(player1, player2);
         game.stopActiveClock();
+        player1.clock.interrupt();
+        player2.clock.interrupt();
     }
 
     public void startDraft() {

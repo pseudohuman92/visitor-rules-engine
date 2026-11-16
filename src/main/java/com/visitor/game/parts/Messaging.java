@@ -3,9 +3,9 @@ package com.visitor.game.parts;
 import com.visitor.card.properties.Targetable;
 import com.visitor.card.Card;
 import com.visitor.game.Player;
+import com.visitor.game.PendingDecision;
 import com.visitor.helpers.Arraylist;
 import com.visitor.helpers.CounterMap;
-import com.visitor.helpers.Hashmap;
 import com.visitor.protocol.ServerGameMessages;
 import com.visitor.protocol.Types;
 import com.visitor.server.GameEndpointInterface;
@@ -44,6 +44,18 @@ public class Messaging extends Connections {
         }
     }
 
+    private Object ask(UUID playerId, ServerGameMessages.ServerGameMessage.Builder builder) {
+        if (pendingDecision != null) throw new IllegalStateException("Another decision is already pending");
+        PendingDecision decision = new PendingDecision(playerId, builder.build());
+        pendingDecision = decision;
+        try {
+            send(playerId, builder);
+            return awaitDecision(decision);
+        } finally {
+            pendingDecision = null;
+        }
+    }
+
     private Arraylist<UUID> selectFrom(UUID playerId, Types.SelectFromType type, Arraylist<Targetable> candidates, Arraylist<UUID> canSelect,
                                        Arraylist<UUID> canSelectPlayers, int minCount, int maxCount, String message) {
         Types.Targeting.Builder t = Types.Targeting.newBuilder()
@@ -57,14 +69,8 @@ public class Messaging extends Connections {
                 .setTargets(t)
                 .setMessageType(type)
                 .setGame(toGameState(playerId, true));
-        try {
-            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectFrom(b));
-            String[] l = (String[]) response.take();
-            return toUUIDList(l);
-        } catch (InterruptedException ex) {
-            getLogger(Game.class.getName()).log(SEVERE, null, ex);
-        }
-        return null;
+        String[] selected = (String[]) ask(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectFrom(b));
+        return toUUIDList(selected);
     }
 
     Arraylist<Types.DamageAssignment> assignDamage(UUID playerId, UUID id, Arraylist<UUID> possibleTargets, int damage, boolean trample) {
@@ -75,14 +81,9 @@ public class Messaging extends Connections {
                 .setTotalDamage(damage)
                 .setTrample(trample)
                 .setGame(toGameState(playerId, true));
-        try {
-            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setAssignDamage(b));
-            Types.DamageAssignment[] l = (Types.DamageAssignment[]) response.take();
-            return new Arraylist<>(l);
-        } catch (InterruptedException ex) {
-            getLogger(Game.class.getName()).log(SEVERE, null, ex);
-        }
-        return null;
+        Types.DamageAssignment[] selected = (Types.DamageAssignment[]) ask(playerId,
+                ServerGameMessages.ServerGameMessage.newBuilder().setAssignDamage(b));
+        return new Arraylist<>(selected);
     }
 
     //// Prompters
@@ -136,14 +137,7 @@ public class Messaging extends Connections {
         ServerGameMessages.SelectXValue.Builder b = ServerGameMessages.SelectXValue.newBuilder()
                 .setMaxXValue(maxX)
                 .setGame(toGameState(playerId, true));
-        try {
-            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectXValue(b));
-
-            return (int) response.take();
-        } catch (InterruptedException ex) {
-            getLogger(Game.class.getName()).log(SEVERE, null, ex);
-        }
-        return 0;
+        return (int) ask(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectXValue(b));
     }
 
     public CounterMap<Types.Knowledge> selectKnowledge(UUID playerId, Set<Types.Knowledge> knowledgeSet) {
@@ -151,27 +145,34 @@ public class Messaging extends Connections {
                 .addAllKnowledgeList(knowledgeSet)
                 .setGame(toGameState(playerId, true));
         out.println(b.build());
-        try {
-            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder().setSelectKnowledge(b));
-            return new CounterMap<>((Types.Knowledge) response.take(), 1);
-        } catch (InterruptedException ex) {
-            getLogger(Game.class.getName()).log(SEVERE, null, ex);
-        }
-        return new CounterMap<>();
+        return new CounterMap<>((Types.Knowledge) ask(playerId,
+                ServerGameMessages.ServerGameMessage.newBuilder().setSelectKnowledge(b)), 1);
     }
 
     public void gameEnd(UUID playerId, boolean win) {
-        send(playerId, ServerGameMessages.ServerGameMessage.newBuilder()
-                .setGameEnd(ServerGameMessages.GameEnd.newBuilder()
-                        .setGame(toGameState(playerId, true))
-                        .setWin(win)));
-        send(getOpponentId(playerId), ServerGameMessages.ServerGameMessage.newBuilder()
-                .setGameEnd(ServerGameMessages.GameEnd.newBuilder()
-                        .setGame(toGameState(getOpponentId(playerId), true))
-                        .setWin(!win)));
-        connections.forEach((s, c) -> c.close());
-        connections = new Hashmap<UUID, GameEndpointInterface>();
-        gameServer.removeGame(id, history);
+        if (ended) return;
+        if (!isMatchThread()) {
+            executeControl(() -> gameEnd(playerId, win));
+            return;
+        }
+        if (ended) return;
+        ended = true;
+        try {
+            send(playerId, ServerGameMessages.ServerGameMessage.newBuilder()
+                    .setGameEnd(ServerGameMessages.GameEnd.newBuilder()
+                            .setGame(toGameState(playerId, true)).setWin(win)));
+            send(getOpponentId(playerId), ServerGameMessages.ServerGameMessage.newBuilder()
+                    .setGameEnd(ServerGameMessages.GameEnd.newBuilder()
+                            .setGame(toGameState(getOpponentId(playerId), true)).setWin(!win)));
+        } finally {
+            try {
+                connections.values().stream().distinct().forEach(GameEndpointInterface::close);
+            } finally {
+                connections.clear();
+                if (gameServer != null) gameServer.removeGame(id, history);
+                close();
+            }
+        }
     }
 
     public final void updatePlayers() {
@@ -179,7 +180,7 @@ public class Messaging extends Connections {
     }
 
     public final void updatePlayer(UUID playerId) {
-        if (!players.containsKey(playerId)) {
+        if (ended || !players.containsKey(playerId)) {
             return;
         }
         send(playerId, ServerGameMessages.ServerGameMessage.newBuilder()

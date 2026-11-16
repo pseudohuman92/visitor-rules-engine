@@ -54,7 +54,9 @@ public class Player implements Targetable {
         knowledgePool = new CounterMap<>();
         damagable = new Damagable(game, null, 30);
         damagable.setPlayerId(id);
-        clock = new Clock(20 * 60, () -> game.gameEnd(id, false));
+        clock = new Clock(20 * 60, () -> game.gameEnd(id, false), tick -> game.executeControl(() -> {
+            if (!game.isEnded()) tick.run();
+        }));
         clock.start();
     }
 

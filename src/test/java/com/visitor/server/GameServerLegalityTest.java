@@ -57,16 +57,16 @@ public class GameServerLegalityTest {
     }
     @Test public void rejectedPlayRefreshesOnlySenderAndRestartsClock() {
         Card card=f.player.hand.get(0); String before=f.snapshot();
-        server.playCard(f.game.getId(),f.player.getId(),card.getId(),new Arraylist<>());
+        server.playCard(f.game.getId(),f.player.getId(),card.getId(),new Arraylist<>()).join();
         assertEquals(before,f.snapshot()); assertTrue(f.player.clock.isActive());
         assertEquals(1,a.messages.size()); assertTrue(b.messages.isEmpty());
         assertFalse(a.messages.get(0).getUpdateGameStateP().getGame().getPlayer().getHand(0).getCanPlay());
     }
     @Test public void legalActionsContinueAfterARejectedCommand() {
-        server.playCard(f.game.getId(),f.player.getId(),f.player.hand.get(0).getId(),new Arraylist<>());
-        server.studyCard(f.game.getId(),f.player.getId(),f.player.hand.get(0).getId(),new CounterMap<>(RED,1));
+        server.playCard(f.game.getId(),f.player.getId(),f.player.hand.get(0).getId(),new Arraylist<>()).join();
+        server.studyCard(f.game.getId(),f.player.getId(),f.player.hand.get(0).getId(),new CounterMap<>(RED,1)).join();
         Card played=f.player.hand.get(0);
-        server.playCard(f.game.getId(),f.player.getId(),played.getId(),new Arraylist<>());
+        server.playCard(f.game.getId(),f.player.getId(),played.getId(),new Arraylist<>()).join();
         assertEquals(0,f.player.getEnergy());
         assertTrue(f.game.toGameState(f.player.getId(),false).getStackList().stream().anyMatch(c -> c.getId().equals(played.getId().toString())));
         assertEquals(2,b.messages.size());
@@ -76,7 +76,7 @@ public class GameServerLegalityTest {
         Card card=f.player.hand.get(0); CountDownLatch start=new CountDownLatch(1);
         Runnable action=() -> {
             try { start.await(); } catch(InterruptedException e) { throw new RuntimeException(e); }
-            server.playCard(f.game.getId(),f.player.getId(),card.getId(),new Arraylist<>());
+            server.playCard(f.game.getId(),f.player.getId(),card.getId(),new Arraylist<>()).join();
         };
         Future<?> first=workers.submit(action),second=workers.submit(action); start.countDown();
         first.get(3,TimeUnit.SECONDS); second.get(3,TimeUnit.SECONDS);
@@ -96,17 +96,19 @@ public class GameServerLegalityTest {
                 .build();
         endpoint.onMessage(null,message.toByteArray());
         assertTrue(b.update.await(3,TimeUnit.SECONDS));
-        synchronized(f.game) { assertEquals(before,f.snapshot()); }
+        f.game.executeAction(() -> {}).get(3,TimeUnit.SECONDS);
+        assertEquals(before,f.snapshot());
         assertFalse(unit.isDepleted()); assertTrue(a.messages.isEmpty());
     }
-    @Test public void promptResponsesCanUnblockAnActionHoldingTheMatchLock() throws Exception {
+    @Test public void promptResponsesCanUnblockAnActionOnTheMatchWorker() throws Exception {
         AtomicInteger selected=new AtomicInteger(-1);
         Card spell=f.hand(new PromptSpell(f.game,f.player.getId(),selected),f.player);
-        server.playCard(f.game.getId(),f.player.getId(),spell.getId(),new Arraylist<>());
-        server.pass(f.game.getId(),f.opponent.getId());
-        Future<?> resolve=workers.submit(() -> server.pass(f.game.getId(),f.player.getId()));
+        server.playCard(f.game.getId(),f.player.getId(),spell.getId(),new Arraylist<>()).join();
+        server.pass(f.game.getId(),f.opponent.getId()).join();
+        java.util.concurrent.CompletableFuture<Void> resolve=server.pass(f.game.getId(),f.player.getId());
         assertTrue(a.prompt.await(3,TimeUnit.SECONDS));
-        server.addToResponseQueue(f.game.getId(),2);
+        server.handleGameMessage(f.game.getId(),f.player.getId(),ClientGameMessages.ClientGameMessage.newBuilder()
+                .setSelectXValueResponse(ClientGameMessages.SelectXValueResponse.newBuilder().setSelectedXValue(2)).build()).get(3,TimeUnit.SECONDS);
         resolve.get(3,TimeUnit.SECONDS);
         assertEquals(2,selected.get());
         assertEquals(0,f.game.toGameState(f.player.getId(),false).getStackCount());

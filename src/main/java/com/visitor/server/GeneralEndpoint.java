@@ -24,7 +24,12 @@ import static java.lang.System.out;
 @ServerEndpoint(value = "/profiles/{playerId}")
 public class GeneralEndpoint {
 
-    public static GameServer gameServer = null;
+    public static volatile GameServer gameServer = null;
+
+    public static synchronized GameServer getGameServer() {
+        if (gameServer == null) gameServer = new GameServer();
+        return gameServer;
+    }
     private Session session;
     private String playerName;
 
@@ -38,9 +43,7 @@ public class GeneralEndpoint {
         session.getAsyncRemote().setBatchingAllowed(false);
         session.setMaxIdleTimeout(0);
         session.setMaxBinaryMessageBufferSize(65536 * 16);
-        if (gameServer == null) {
-            gameServer = new GameServer();
-        }
+        getGameServer();
         out.println(playerName + " connected!");
         gameServer.addConnection(playerName, this);
     }

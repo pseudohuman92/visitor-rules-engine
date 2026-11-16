@@ -4,7 +4,7 @@ This repository implements Visitor’s two-player card-game server in Java. A ma
 
 Analysis baseline: engine commit `dcdd267c3cb7bf4107819b5afecd1dd2c6f50284`, with protobuf submodule `c4fbf72360949d9b6b743fdb94c35fb59db124da`. This guide describes executable code at those revisions. It distinguishes observed behavior from inferred intent and proposed improvements.
 
-> **Follow-up fixes:** The workspace now enforces client-action legality before mutation, fixes deck insertion/routing, uses current `base2` cards in AI and draft flows, and prevents combined-zone switch fallthrough. The added server suite contains 49 passing tests, including a complete draft and command-rejection/concurrency checks. The detailed analysis below records the original commit named above; findings about those four issues describe the baseline before these fixes.
+> **Follow-up fixes:** The workspace now enforces client-action legality before mutation, fixes deck insertion/routing, uses current `base2` cards in AI and draft flows, and prevents combined-zone switch fallthrough. Live matches now serialize mutations on a match worker, and effect/ability registration order is deterministic. The server suite contains 65 passing tests. See [match execution and effect ordering](MATCH_EXECUTION.md) for the current contract. The detailed analysis below records the original commit named above; findings about these issues describe the baseline before the fixes.
 
 ## 1. Repository map and runtime
 

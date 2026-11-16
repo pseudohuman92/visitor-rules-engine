@@ -109,13 +109,14 @@ public class HelperFunctions {
 
     public static Arraylist<Card> getCollection() {
         Arraylist<Card> cards = new Arraylist<>();
-        Game g = new Game();
-        Player p1 = new Player(g, "asd", new String[0]);
-        Player p2 = new Player(g, "asd", new String[0]);
-        g.addPlayers(p1, p2);
-        getClassesInPackage("com.visitor.sets." + COLLECTION_SET)
-                .forEach(s -> cards.add(createCard(g, p1.getId(), COLLECTION_SET + "." + s)));
-        return cards;
+        try (Game g = new Game()) {
+            Player p1 = new Player(g, "asd", new String[0]);
+            Player p2 = new Player(g, "asd", new String[0]);
+            g.addPlayers(p1, p2);
+            getClassesInPackage("com.visitor.sets." + COLLECTION_SET)
+                    .forEach(s -> cards.add(createCard(g, p1.getId(), COLLECTION_SET + "." + s)));
+            return cards;
+        }
     }
 
     public static Types.SelectFromType zoneToSelectFromType (Base.Zone zone){
