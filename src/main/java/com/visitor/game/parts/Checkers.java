@@ -47,6 +47,7 @@ public class Checkers extends Putters {
         return activePlayer.equals(playerId)
                 && (phase == MAIN_BEFORE ||
                 phase == ATTACK_PLAY ||
+                phase == BLOCK ||
                 phase == BLOCK_PLAY ||
                 phase == MAIN_AFTER);
     }

@@ -30,6 +30,7 @@ import java.util.concurrent.RejectedExecutionException;
 import static com.visitor.game.IllegalGameActionException.parseId;
 
 import static com.visitor.protocol.Types.GameType.AI_BO1_CONSTRUCTED;
+import static com.visitor.protocol.Types.GameType.AI_VS_AI;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 
@@ -261,6 +262,9 @@ public class GameServer {
             case AI_BO1_CONSTRUCTED:
                 startAiGame(username, decklist);
                 break;
+            case AI_VS_AI:
+                startAiVsAiGame(username, decklist);
+                break;
             case BO1_CONSTRUCTED:
                 join1Bo1ConstructedQueue(username, decklist);
                 break;
@@ -375,6 +379,36 @@ public class GameServer {
                                 .setGame(game.toGameState(username))));
             } catch (IOException | EncodeException ex) {
                 getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
+            }
+        });
+    }
+
+    private void startAiVsAiGame(String username, String[] decklist) {
+        String[] mirrorDeck = decklist == null || decklist.length == 0
+                ? AiPlayer.defaultDecklist() : Arrays.copyOf(decklist, decklist.length);
+        Game game = new Game();
+        AiPlayer first = new AiPlayer(game, "Mirror AI Alpha", mirrorDeck);
+        AiPlayer second = new AiPlayer(game, "Mirror AI Omega", mirrorDeck);
+        game.addToHistory("Game Type: AI vs AI mirror match");
+        game.addToHistory(Arrays.toString(mirrorDeck));
+        game.addPlayers(first, second);
+        registerGame(game, () -> {
+            try {
+                GeneralEndpoint connection = playerConnections.get(username);
+                if (connection == null) {
+                    games.remove(game.getId(), game);
+                    game.close();
+                    return;
+                }
+                connection.send(ServerMessage.newBuilder()
+                        .setNewGame(NewGame.newBuilder()
+                                .setGameType(AI_VS_AI)
+                                .setAiId(second.getId().toString())
+                                .setGame(game.toGameState(first.getId(), false))));
+            } catch (IOException | EncodeException ex) {
+                getLogger(GameServer.class.getName()).log(SEVERE, "Could not start AI mirror match", ex);
+                games.remove(game.getId(), game);
+                game.close();
             }
         });
     }
