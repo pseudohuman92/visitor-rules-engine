@@ -91,6 +91,8 @@ public abstract class Card implements Targetable {
             damagable.newTurn();
         if (activatable != null)
             activatable.newTurn();
+        if (studiable != null)
+            studiable.clear();
     }
 
     /**
@@ -106,6 +108,8 @@ public abstract class Card implements Targetable {
             damagable.clear();
         if (attachable != null)
             attachable.clear();
+        if (studiable != null)
+            studiable.clear();
     }
 
     /**
@@ -291,7 +295,7 @@ public abstract class Card implements Targetable {
     }
 
     public final boolean canPlay(boolean withCost) {
-        return playable != null && playable.canPlay(withCost);
+        return playable != null && (studiable == null || !studiable.isStudied()) && playable.canPlay(withCost);
     }
 
     public final boolean canActivate() {

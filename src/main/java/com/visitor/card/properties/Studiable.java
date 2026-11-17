@@ -17,6 +17,7 @@ public class Studiable {
     private final Game game;
 
     private final boolean purging;
+    private boolean studied;
 
     private final Arraylist<Supplier<Boolean>> studyConditions;
     private final Arraylist<TriConsumer<Player, Boolean, CounterMap<Types.Knowledge>>> studyEffects;
@@ -26,13 +27,14 @@ public class Studiable {
         this.card = card;
         this.game = game;
         this.purging = purging;
+        this.studied = false;
         studyEffects = new Arraylist<>(additionalStudy);
         studyConditions = new Arraylist<>(() -> this.game.canStudy(this.card.controller) && this.card.zone == Base.Zone.Hand);
 
         studyEffects.add((player, regular, knowledge) -> {
-            this.card.zone = null;
-            if (!this.purging)
-                player.deck.shuffleInto(this.card);
+            if (this.purging)
+                this.card.zone = null;
+            studied = true;
             player.addEnergy(1, false);
             player.addMaxEnergy(1);
             player.addKnowledge(knowledge);
@@ -51,7 +53,7 @@ public class Studiable {
     }
 
     public final boolean canStudy() {
-        boolean b = true;
+        boolean b = !studied;
         for (Supplier<Boolean> s : studyConditions)
             b = b && s.get();
         return b;
@@ -62,13 +64,22 @@ public class Studiable {
      * It increases player's maximum energy and adds knowledgePool.
      */
     public final void study(Player player, boolean regular, CounterMap<Types.Knowledge> knowledge) {
+        studied = true;
         for (TriConsumer<Player, Boolean, CounterMap<Types.Knowledge>>  s : studyEffects)
             s.accept(player, regular, knowledge);
+    }
+
+    public final void clear(){
+        studied = false;
     }
 
 
     public Studiable addStudyEffect(TriConsumer<Player, Boolean, CounterMap<Types.Knowledge>> additionalStudyEffect) {
         studyEffects.add(additionalStudyEffect);
         return this;
+    }
+
+    public boolean isStudied() {
+        return studied;
     }
 }
