@@ -32,8 +32,10 @@ public class Studiable {
         studyConditions = new Arraylist<>(() -> this.game.canStudy(this.card.controller) && this.card.zone == Base.Zone.Hand);
 
         studyEffects.add((player, regular, knowledge) -> {
-            if (this.purging)
+            if (this.purging) {
                 this.card.zone = null;
+                game.extractCard(card.getId());
+            }
             studied = true;
             player.addEnergy(1, false);
             player.addMaxEnergy(1);
@@ -81,5 +83,9 @@ public class Studiable {
 
     public boolean isStudied() {
         return studied;
+    }
+
+    public void endTurn() {
+        studied = false;
     }
 }

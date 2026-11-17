@@ -341,6 +341,7 @@ public abstract class Card implements Targetable {
     public void endTurn() {
         runIfNotNull(damagable, () -> damagable.endTurn());
         runIfNotNull(activatable, () -> activatable.endTurn());
+        runIfNotNull(studiable, () -> studiable.endTurn());
     }
 
 

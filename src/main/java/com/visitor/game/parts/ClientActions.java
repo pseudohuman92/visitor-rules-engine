@@ -89,7 +89,7 @@ public class ClientActions extends Turns {
                         && Integer.valueOf(1).equals(knowledge.get(selected)), "Invalid study knowledge");
             }
         }
-        extractCard(cardId);
+        //extractCard(cardId);
         card.study(getPlayer(playerId), regular, knowledge);
         addEvent(Event.study(playerId, card), regular);
     }
