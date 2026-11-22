@@ -235,6 +235,9 @@ public class Player implements Targetable {
 
     public void endTurn() {
 
+        deck.forEach(Card::endTurn);
+        hand.forEach(Card::endTurn);
+        discardPile.forEach(Card::endTurn);
         playArea.forEach(Card::endTurn);
         damagable.endTurn();
         turnlyEnergy = 0;

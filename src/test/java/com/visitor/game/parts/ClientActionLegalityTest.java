@@ -191,16 +191,46 @@ public class ClientActionLegalityTest {
         reject(() -> g.studyCard(a.getId(),card.getId(),true,new CounterMap<>(RED,1).add(BLUE,1)));
         reject(() -> g.studyCard(a.getId(),card.getId(),true,null));
     }
-    @Test public void legalStudyMovesCardAndGrantsResourcesOnlyOnce() {
+    @Test public void legalStudyKeepsCardInHandAndBlocksPlayUntilTurnEnd() {
         Card card=a.hand.get(0); int deckSize=a.deck.size(), handSize=a.hand.size();
         g.studyCard(a.getId(),card.getId(),true,new CounterMap<>(RED,1));
-        assertEquals(deckSize+1,a.deck.size()); assertEquals(handSize-1,a.hand.size());
-        assertEquals(Deck,card.zone); assertEquals(1,a.getEnergy()); assertEquals(1,a.getMaxEnergy());
+        assertEquals(deckSize,a.deck.size()); assertEquals(handSize,a.hand.size());
+        assertTrue(a.hand.contains(card)); assertEquals(Hand,card.zone);
+        assertEquals(1,a.getEnergy()); assertEquals(1,a.getMaxEnergy());
         assertEquals(1,a.getKnowledgeCount(RED)); assertFalse(a.hasStudy(1));
-        reject(() -> g.studyCard(a.getId(),a.hand.get(0).getId(),true,new CounterMap<>(RED,1)));
+        assertFalse(card.canPlay(true)); assertFalse(card.canPlay(false));
+        assertFalse(card.toCardMessage().getCanPlay());
+        reject(() -> g.playCard(a.getId(),card.getId(),none()));
+        a.addStudyCount(1);
+        assertFalse(card.canStudy());
+        reject(() -> g.studyCard(a.getId(),card.getId(),true,new CounterMap<>(RED,1)));
+        f.setPhase(MAIN_AFTER,a.getId(),a.getId());
+        g.changePhase();
+        f.setPhase(MAIN_BEFORE,a.getId(),a.getId());
+        assertTrue(card.canPlay(true)); assertTrue(card.canStudy());
+    }
+    @Test public void clearResetsStudiedFlagOnCardsWithoutActivation() {
+        Card card=f.hand(new Cantrip(g,"Study test",0,new CounterMap<>(RED,1),"",a.getId()) {},a);
+        a.addKnowledge(new CounterMap<>(RED,1));
+        assertTrue(card.canPlay(true));
+        g.studyCard(a.getId(),card.getId(),true,new CounterMap<>(RED,1));
+        assertFalse(card.canPlay(true));
+        a.addStudyCount(1);
+        card.clear();
+        assertTrue(card.canPlay(true)); assertTrue(card.canStudy());
+    }
+    @Test public void endTurnClearsStudiedFlagAfterCardLeavesHand() {
+        Card card=a.hand.get(0);
+        g.studyCard(a.getId(),card.getId(),true,new CounterMap<>(RED,1));
+        a.discard(card.getId());
+        a.endTurn();
+        card.returnToHand();
+        assertTrue(card.canPlay(true));
     }
     @Test public void tomeRejectsForgedChoiceButKeepsItsBuiltInKnowledgeEffect() {
         Card tome=f.hand(new TacticalBriefing(g,a.getId()),a);
+        tome.clear();
+        assertTrue(tome.canStudy());
         reject(() -> g.studyCard(a.getId(),tome.getId(),true,new CounterMap<>(RED,1)));
         int deckSize=a.deck.size();
         g.studyCard(a.getId(),tome.getId(),true,new CounterMap<>());
@@ -211,6 +241,7 @@ public class ClientActionLegalityTest {
         Card card=a.hand.get(0); a.removeStudy(1); f.setPhase(ATTACK,b.getId(),b.getId());
         g.studyCard(a.getId(),card.getId(),false,new CounterMap<>(RED,1));
         assertEquals(1,a.getMaxEnergy()); assertFalse(a.hasStudy(1));
+        assertTrue(a.hand.contains(card)); assertFalse(card.canPlay(false));
     }
     @Test public void activationChecksTheSelectedAbilityNotJustAnyAvailableAbility() {
         Card unit=f.play(new MultiActivatedAbilities(g,a.getId()),a);

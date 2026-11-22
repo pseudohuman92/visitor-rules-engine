@@ -64,8 +64,11 @@ public class GameServerLegalityTest {
     }
     @Test public void legalActionsContinueAfterARejectedCommand() {
         server.playCard(f.game.getId(),f.player.getId(),f.player.hand.get(0).getId(),new Arraylist<>()).join();
-        server.studyCard(f.game.getId(),f.player.getId(),f.player.hand.get(0).getId(),new CounterMap<>(RED,1)).join();
-        Card played=f.player.hand.get(0);
+        Card studied=f.player.hand.get(0);
+        server.studyCard(f.game.getId(),f.player.getId(),studied.getId(),new CounterMap<>(RED,1)).join();
+        assertTrue(f.player.hand.contains(studied));
+        assertFalse(studied.canPlay(true));
+        Card played=f.player.hand.get(1);
         server.playCard(f.game.getId(),f.player.getId(),played.getId(),new Arraylist<>()).join();
         assertEquals(0,f.player.getEnergy());
         assertTrue(f.game.toGameState(f.player.getId(),false).getStackList().stream().anyMatch(c -> c.getId().equals(played.getId().toString())));

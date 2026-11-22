@@ -101,8 +101,10 @@ public abstract class Card implements Targetable {
      */
     public void clear() {
         depleted = false;
-        playable.clear();
-        activatable.clear();
+        if (playable != null)
+            playable.clear();
+        if (activatable != null)
+            activatable.clear();
         attachments.clear();
         if (damagable != null)
             damagable.clear();
@@ -339,9 +341,12 @@ public abstract class Card implements Targetable {
     }
 
     public void endTurn() {
-        runIfNotNull(damagable, () -> damagable.endTurn());
-        runIfNotNull(activatable, () -> activatable.endTurn());
-        runIfNotNull(studiable, () -> studiable.endTurn());
+        if (damagable != null)
+            damagable.endTurn();
+        if (activatable != null)
+            activatable.endTurn();
+        if (studiable != null)
+            studiable.endTurn();
     }
 
 

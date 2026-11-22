@@ -121,17 +121,17 @@ Knowledge is a persistent threshold requirement. For example, requiring two red 
 
 ### Studying
 
-[`Studiable`](../src/main/java/com/visitor/card/properties/Studiable.java#L24) defines the basic study action. A normal study:
+[`Studiable`](../src/main/java/com/visitor/card/properties/Studiable.java) defines the basic study action. A normal study:
 
-1. operates on a card removed from its old container by `ClientActions.studyCard`;
-2. returns that card to the deck by inserting it at a random position;
+1. leaves the card in hand and marks it studied;
+2. makes that card unplayable and prevents another regular study of it until the mark is cleared;
 3. adds one current energy and one maximum energy;
 4. merges the supplied knowledge gain into the pool;
 5. consumes a regular study allowance when `regular` is true.
 
-The normal legality predicate requires the card to be in hand, the player to be able to take a slow action, and a study allowance. Execution and legality checking are separate, which matters for validation later in this guide.
+The normal legality predicate requires the card to be in hand, the player to be able to take a slow action, and a study allowance. The studied mark clears at the end of the turn or when `Card.clear()` runs. Execution and legality checking are separate, which matters for validation later in this guide.
 
-A `Tome` uses a purging study capability: it is removed instead of shuffled back, and may add special study effects. Different tome constructors add those effects at different positions in the study-effect list, so extension authors should inspect ordering rather than assuming all tome callbacks run at the same stage.
+A `Tome` is the exception: its purging study capability removes it from the hand, and it may add special study effects.
 
 ### Zones and movement
 
@@ -179,7 +179,7 @@ Each player starts with five cards. Keeping twice advances out of `REDRAW`. Redr
 
 This behavior was reproduced in an isolated runtime probe. Whether two-card turns are intended is a rules-design question; they are the current implementation.
 
-At the start of a turn, energy refreshes, study allowance resets to one, and the owner’s cards run `newTurn`. At the end, both players’ cards clear turn-limited effects, temporary energy is cleared, and the turn player discards down to seven if necessary.
+At the start of a turn, energy refreshes, study allowance resets to one, and the owner’s cards in play run `newTurn`. At the end, both players’ cards in deck, hand, discard, and play clear turn-limited effects and studied marks. Temporary energy is cleared, and the turn player discards down to seven if necessary.
 
 ## 6. Card composition and implementing new cards
 
