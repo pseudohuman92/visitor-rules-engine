@@ -47,6 +47,10 @@ public abstract class Card implements Targetable {
     protected Playable playable;
     protected Studiable studiable;
     protected Attachable attachable;
+    private int researchRequirement;
+    private int researchProgress;
+    private int actualResearchStudies;
+    private boolean attackedThisTurn;
 
     public Card(Game game, String name,
                 CounterMap<Knowledge> knowledge,
@@ -138,6 +142,7 @@ public abstract class Card implements Targetable {
     }
 
     public void leavePlay() {
+        attackedThisTurn = false;
         if (triggering != null) {
             game.addToDeregister(this);
         }
@@ -341,6 +346,7 @@ public abstract class Card implements Targetable {
     }
 
     public void endTurn() {
+        attackedThisTurn = false;
         if (damagable != null)
             damagable.endTurn();
         if (activatable != null)
@@ -392,6 +398,36 @@ public abstract class Card implements Targetable {
         return knowledge.isEmpty();
     }
 
+    public void setResearchRequirement(int count) {
+        if (count < 1 || studiable == null || playable == null)
+            throw new IllegalArgumentException("Research requires a studiable, playable card");
+        researchRequirement = count;
+        studiable.setResearchMode();
+        playable.addPlayAdditionalConditions(() -> researchProgress >= researchRequirement);
+    }
+
+    public int getResearchRequirement() { return researchRequirement; }
+    public int getResearchProgress() { return researchProgress; }
+    public int getActualResearchStudies() { return actualResearchStudies; }
+
+    public void addResearchProgress(int amount, boolean fromStudy) {
+        if (amount < 0) throw new IllegalArgumentException("Research progress cannot decrease here");
+        researchProgress += amount;
+        if (fromStudy) actualResearchStudies += amount;
+    }
+
+    public void markAttackedThisTurn() { attackedThisTurn = true; }
+    public boolean attackedThisTurn() { return attackedThisTurn; }
+
+    public Card freshCopy(UUID newController) {
+        String prefix = "com.visitor.sets.";
+        String className = getClass().getName();
+        if (!className.startsWith(prefix)) throw new IllegalStateException("Cannot copy " + className);
+        Card copy = HelperFunctions.createCard(game, newController, className.substring(prefix.length()));
+        if (copy == null) throw new IllegalStateException("Cannot copy " + className);
+        return copy;
+    }
+
     /**
      * Enter Play Effect setters
      */
@@ -436,7 +472,10 @@ public abstract class Card implements Targetable {
                 .setZone(zone.toString())
                 .setController(controller.toString())
                 .setDepleted(depleted)
-                .setDescription(text)
+                .setDescription(text + (researchRequirement > 0
+                        ? "\nResearch progress: " + researchProgress + "/" + researchRequirement : ""))
+                .setResearchProgress(researchProgress)
+                .setResearchRequirement(researchRequirement)
                 .setLoyalty(-1)
                 .setCanPlay(canPlay(true))
                 .setCanStudy(canStudy())

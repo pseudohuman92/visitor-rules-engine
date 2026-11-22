@@ -61,6 +61,7 @@ public class Turns extends Actions {
 
     private void endTurn() {
         processEndEvents();
+        if (getPlayer(turnPlayer).consumeLastStand()) destroyAttackedUnits(turnPlayer);
         players.values().forEach(com.visitor.game.Player::endTurn);
         if (getPlayer(turnPlayer).getHandSize() > 7) {
             discard(turnPlayer, getPlayer(turnPlayer).hand.size() - 7);

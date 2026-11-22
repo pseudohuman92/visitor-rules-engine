@@ -38,27 +38,39 @@ public class ClientActions extends Turns {
     }
 
     /** withCost=false is reserved for trusted card effects, not a wire-message option. */
-    public void playCard(UUID playerId, UUID cardId, boolean withCost, Arraylist<Types.TargetSelection> targets) {
+    public void playCard(UUID playerId, UUID cardId, boolean withCost, boolean useFreePlay,
+                         Arraylist<Types.TargetSelection> targets) {
         if (withCost) {
             requireActivePlayer(playerId);
         }
         Card card = requireOwnedCard(playerId, cardId, Zone.Hand);
+        if (useFreePlay) {
+            require(withCost && getPlayer(playerId).hasFreePlayCredit(),
+                    "No free play is available");
+        } else if (withCost) {
+            require(hasEnergy(playerId, card.getCost()), "Not enough energy");
+        }
         require(card.canPlay(withCost), "Card cannot be played now");
         card.validatePlayableTargets(targets);
         // All command validation precedes target storage, extraction, costs and events.
         card.setPlayableTargets(targets);
         extractCard(cardId);
-        card.play(withCost);
+        card.play(withCost && !useFreePlay);
+        if (useFreePlay) getPlayer(playerId).useFreePlayCredit();
         addEvent(Event.playCard(card), true);
         activePlayer = getOpponentId(playerId);
     }
 
     public void playCard(UUID playerId, UUID cardId, Arraylist<Types.TargetSelection> targets) {
-        playCard(playerId, cardId, true, targets);
+        playCard(playerId, cardId, true, false, targets);
+    }
+
+    public void playCard(UUID playerId, UUID cardId, boolean useFreePlay, Arraylist<Types.TargetSelection> targets) {
+        playCard(playerId, cardId, true, useFreePlay, targets);
     }
 
     public void playCardWithoutCost(UUID playerId, UUID cardId, Arraylist<Types.TargetSelection> targets) {
-        playCard(playerId, cardId, false, targets);
+        playCard(playerId, cardId, false, false, targets);
     }
 
     public void activateCard(UUID playerId, UUID cardId, UUID abilityId, Arraylist<Types.TargetSelection> targets) {
@@ -80,7 +92,15 @@ public class ClientActions extends Turns {
         require(knowledge != null && card.isStudiable() && (!regular || card.canStudy()),
                 "Card cannot be studied now");
         if (regular) {
-            if (card.knowledge.isEmpty()) {
+            if (card.getResearchRequirement() > 0) {
+                // Research grants no knowledge; accept an offered symbol from older clients.
+                if (!knowledge.isEmpty()) {
+                    require(knowledge.size() == 1, "Choose at most one offered knowledge");
+                    Types.Knowledge selected = knowledge.keySet().iterator().next();
+                    require(selected != null && card.knowledge.getOrDefault(selected, 0) > 0
+                            && Integer.valueOf(1).equals(knowledge.get(selected)), "Invalid study knowledge");
+                }
+            } else if (card.knowledge.isEmpty()) {
                 require(knowledge.isEmpty(), "This card does not offer a knowledge choice");
             } else {
                 require(knowledge.size() == 1, "Choose one knowledge offered by the card");
@@ -90,6 +110,7 @@ public class ClientActions extends Turns {
             }
         }
         card.study(getPlayer(playerId), regular, knowledge);
+        getPlayer(playerId).registerStudy();
         addEvent(Event.study(playerId, card), regular);
     }
 
@@ -144,6 +165,7 @@ public class ClientActions extends Turns {
         Arraylist<Card> attackingCards = new Arraylist<>();
         declared.forEach((card, target) -> {
             card.setAttacking(target);
+            card.markAttackedThisTurn();
             attackers.add(card.getId());
             attackingCards.add(card);
         });

@@ -227,9 +227,7 @@ public class Playable {
             if (withCost) {
                 game.removeEnergy(card.controller, cost);
             }
-            for (Effect e : costEffects.values()){
-                e.runEffect();
-            }
+            game.payAdditionalCosts(() -> costEffects.values().forEach(Effect::runEffect));
             game.addToStack(card);
         });
     }
@@ -244,7 +242,7 @@ public class Playable {
 
     public void setDefaultPlayResourceCondition() {
         playResourceCondition =
-                () -> game.hasEnergy(card.controller, cost) &&
+                () -> (game.hasEnergy(card.controller, cost) || game.hasFreePlayCredit(card.controller)) &&
                         game.hasKnowledge(card.controller, card.knowledge);
     }
 

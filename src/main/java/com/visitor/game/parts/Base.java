@@ -42,6 +42,7 @@ public class Base implements AutoCloseable {
     Arraylist<Event> eventQueue;
 
     Arraylist<Card> toDeregister;
+    private int costPaymentDepth;
 
     Arraylist<UUID> attackers;
     Arraylist<UUID> blockers;
@@ -64,6 +65,19 @@ public class Base implements AutoCloseable {
 
     public void addToHistory(Object message) {
         history.add(message.toString());
+    }
+
+    public void payAdditionalCosts(Runnable action) {
+        costPaymentDepth++;
+        try {
+            action.run();
+        } finally {
+            costPaymentDepth--;
+        }
+    }
+
+    public boolean isPayingAdditionalCost() {
+        return costPaymentDepth > 0;
     }
 
     public CompletableFuture<Void> executeAction(Runnable action) {

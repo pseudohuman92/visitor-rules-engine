@@ -1,6 +1,7 @@
 package com.visitor.sets.token;
 
 import com.visitor.card.properties.Damagable;
+import com.visitor.card.Card;
 import com.visitor.card.types.Unit;
 import com.visitor.game.parts.Game;
 import com.visitor.helpers.CounterMap;
@@ -12,9 +13,32 @@ import static com.visitor.card.properties.Damagable.CombatAbility.*;
 import static com.visitor.protocol.Types.Knowledge.*;
 
 public class UnitToken extends Unit {
+    private final CardSubtype printedSubtype;
+    private final int printedCost;
+    private final CounterMap<Types.Knowledge> printedKnowledge = new CounterMap<>();
+    private final String printedText;
+    private final int printedAttack;
+    private final int printedHealth;
+    private final Damagable.CombatAbility[] printedAbilities;
+
     public UnitToken(Game game, String name, CardSubtype subtype, int cost, CounterMap<Types.Knowledge> knowledge, String text, int attack, int health, UUID owner, Damagable.CombatAbility... combatAbilities) {
         super(game, name, cost, knowledge, text, attack, health, owner, combatAbilities);
         subtypes.add(subtype);
+        printedSubtype = subtype;
+        printedCost = cost;
+        printedKnowledge.merge(knowledge);
+        printedText = text;
+        printedAttack = attack;
+        printedHealth = health;
+        printedAbilities = combatAbilities.clone();
+    }
+
+    @Override
+    public Card freshCopy(UUID newController) {
+        CounterMap<Types.Knowledge> knowledgeCopy = new CounterMap<>();
+        knowledgeCopy.merge(printedKnowledge);
+        return new UnitToken(game, name, printedSubtype, printedCost, knowledgeCopy,
+                printedText, printedAttack, printedHealth, newController, printedAbilities);
     }
 
     public static UnitToken Zombie_2_2(Game game, UUID owner) {

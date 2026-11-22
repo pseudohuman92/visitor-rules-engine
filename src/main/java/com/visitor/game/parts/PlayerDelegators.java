@@ -22,6 +22,18 @@ public class PlayerDelegators extends CardDelegators {
         return getPlayer(playerId).getMaxEnergy() >= count;
     }
 
+    public boolean hasFreePlayCredit(UUID playerId) {
+        return getPlayer(playerId).hasFreePlayCredit();
+    }
+
+    public void addFreePlayCredit(UUID playerId) {
+        getPlayer(playerId).addFreePlayCredit();
+    }
+
+    public void armLastStand(UUID playerId) {
+        getPlayer(playerId).armLastStand();
+    }
+
 
     public void shuffleDeck(UUID playerId) {
         getPlayer(playerId).shuffleDeck();
@@ -30,6 +42,19 @@ public class PlayerDelegators extends CardDelegators {
 
     public int getKnowledgeCount(UUID playerId, Types.Knowledge knowledge) {
         return getPlayer(playerId).getKnowledgeCount(knowledge);
+    }
+
+    public int getTotalKnowledge(UUID playerId) {
+        int total = 0;
+        for (Types.Knowledge knowledge : Types.Knowledge.values()) {
+            if (knowledge != Types.Knowledge.NONE && knowledge != Types.Knowledge.UNRECOGNIZED)
+                total += getKnowledgeCount(playerId, knowledge);
+        }
+        return total;
+    }
+
+    public int getStudiesThisTurn(UUID playerId) {
+        return getPlayer(playerId).getStudiesThisTurn();
     }
 
     public boolean hasHealth(UUID playerId, int i) {

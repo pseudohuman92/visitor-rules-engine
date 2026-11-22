@@ -44,6 +44,8 @@ public class Actions extends PlayerDelegators {
 
     public void destroy(UUID targetId) {
         Card c = getCard(targetId);
+        if (c == null || c.zone != Play) return;
+        if (isPayingAdditionalCost()) addEvent(Event.sacrifice(c));
         addEvent(Event.death(c));
         c.destroy();
     }
@@ -118,6 +120,13 @@ public class Actions extends PlayerDelegators {
             if (Predicates.isUnit(c)) {
                 destroy(c.getId());
             }
+        });
+    }
+
+    public void destroyAttackedUnits(UUID playerId) {
+        new Arraylist<>(getPlayer(playerId).playArea).forEach(card -> {
+            if (card.attackedThisTurn() && card.hasType(Card.CardType.Unit) && card.zone == Play)
+                destroy(card.getId());
         });
     }
 

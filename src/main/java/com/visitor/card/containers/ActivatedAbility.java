@@ -89,15 +89,13 @@ public class ActivatedAbility {
     public final void activate() {
         Runnable resolution = snapshotResolutionEffect();
         Arraylist<UUID> resolutionTargets = getResolutionTargets();
-        for (Effect e : costEffects.values()) {
-            e.runEffect();
-        }
+        game.payAdditionalCosts(() -> costEffects.values().forEach(Effect::runEffect));
         game.removeEnergy(card.controller, cost);
         if (depleting) {
             game.deplete(card.getId());
         }
         if (selfDestroying) {
-            game.destroy(card.getId());
+            game.payAdditionalCosts(() -> game.destroy(card.getId()));
         }
         clear();
         game.addToStack(new AbilityCard(game, card, text, resolution, resolutionTargets));

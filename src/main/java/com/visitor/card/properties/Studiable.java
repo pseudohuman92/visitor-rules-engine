@@ -18,6 +18,7 @@ public class Studiable {
 
     private final boolean purging;
     private boolean studied;
+    private boolean researchMode;
 
     private final Arraylist<Supplier<Boolean>> studyConditions;
     private final Arraylist<TriConsumer<Player, Boolean, CounterMap<Types.Knowledge>>> studyEffects;
@@ -37,9 +38,13 @@ public class Studiable {
                 game.extractCard(card.getId());
             }
             studied = true;
-            player.addEnergy(1, false);
-            player.addMaxEnergy(1);
-            player.addKnowledge(knowledge);
+            if (researchMode) {
+                card.addResearchProgress(1, true);
+            } else {
+                player.addEnergy(1, false);
+                player.addMaxEnergy(1);
+                player.addKnowledge(knowledge);
+            }
             if (regular) {
                 player.removeStudy(1);
             }
@@ -79,6 +84,10 @@ public class Studiable {
     public Studiable addStudyEffect(TriConsumer<Player, Boolean, CounterMap<Types.Knowledge>> additionalStudyEffect) {
         studyEffects.add(additionalStudyEffect);
         return this;
+    }
+
+    public void setResearchMode() {
+        researchMode = true;
     }
 
     public boolean isStudied() {

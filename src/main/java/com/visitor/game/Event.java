@@ -6,8 +6,12 @@
 package com.visitor.game;
 
 import com.visitor.card.Card;
+import com.visitor.card.properties.Damagable.CombatAbility;
 import com.visitor.helpers.Arraylist;
+import com.visitor.helpers.CounterMap;
+import com.visitor.protocol.Types.Knowledge;
 
+import java.util.EnumSet;
 import java.util.UUID;
 
 import static com.visitor.game.Event.EventType.*;
@@ -19,6 +23,7 @@ public class Event {
 
     public EventType type;
     public Arraylist<Object> data;
+    private final EnumSet<CombatAbility> combatAbilitiesAtDeath = EnumSet.noneOf(CombatAbility.class);
 
     private Event(EventType l) {
         type = l;
@@ -75,6 +80,26 @@ public class Event {
     public static Event death(Card diedCard) {
         Event e = new Event(Death);
         e.data.add(diedCard);
+        diedCard.getCombatAbilities().keySet().forEach(e.combatAbilitiesAtDeath::add);
+        return e;
+    }
+
+    public boolean hadCombatAbility(CombatAbility ability) {
+        return combatAbilitiesAtDeath.contains(ability);
+    }
+
+    public static Event sacrifice(Card sacrificedCard) {
+        Event e = new Event(Sacrifice);
+        e.data.add(sacrificedCard);
+        return e;
+    }
+
+    public static Event knowledgeGained(UUID playerId, CounterMap<Knowledge> gained) {
+        Event e = new Event(Knowledge_Gained);
+        e.data.add(playerId);
+        CounterMap<Knowledge> snapshot = new CounterMap<>();
+        snapshot.merge(gained);
+        e.data.add(snapshot);
         return e;
     }
 
@@ -119,7 +144,7 @@ public class Event {
 
     public enum EventType {
         Turn_Start, Turn_End,
-        Draw, Discard, Study,
+        Draw, Discard, Study, Knowledge_Gained, Sacrifice,
         Transform,
         Play_Card, Enter_Play, Damage, Death, Attack
     }

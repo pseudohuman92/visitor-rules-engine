@@ -113,6 +113,7 @@ public class GameServer {
                     switch (message.getPayloadCase()) {
                         case PLAYCARD:
                             current.playCard(sender, parseId(message.getPlayCard().getCardId()),
+                                    message.getPlayCard().getUseFreePlay(),
                                     new Arraylist<>(message.getPlayCard().getTargetsList()));
                             break;
                         case ACTIVATECARD:

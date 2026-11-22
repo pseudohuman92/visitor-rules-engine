@@ -30,6 +30,9 @@ public class Player implements Targetable {
     private int turnlyEnergy;
     private int maxEnergy;
     private int numOfStudiesLeft;
+    private int studiesThisTurn;
+    private int freePlayCredits;
+    private boolean lastStandArmed;
     public Deck deck;
     public Arraylist<Card> hand;
     public Arraylist<Card> discardPile;
@@ -48,6 +51,7 @@ public class Player implements Targetable {
         turnlyEnergy = 0;
         maxEnergy = 0;
         numOfStudiesLeft = 1;
+        studiesThisTurn = 0;
         hand = new Arraylist<>();
         discardPile = new Arraylist<>();
         playArea = new Arraylist<>();
@@ -112,11 +116,33 @@ public class Player implements Targetable {
     public void newTurn() {
         energy = maxEnergy;
         numOfStudiesLeft = 1;
+        studiesThisTurn = 0;
+        freePlayCredits = 0;
         playArea.forEach(Card::newTurn);
     }
 
     public void addKnowledge(CounterMap<Knowledge> knowledge) {
         knowledgePool.merge(knowledge);
+        if (knowledge.values().stream().anyMatch(count -> count > 0))
+            game.addEvent(Event.knowledgeGained(id, knowledge));
+    }
+
+    public boolean hasFreePlayCredit() { return freePlayCredits > 0; }
+
+    public void registerStudy() { studiesThisTurn++; }
+
+    public int getStudiesThisTurn() { return studiesThisTurn; }
+
+    public void addFreePlayCredit() { freePlayCredits++; }
+
+    public void useFreePlayCredit() { freePlayCredits--; }
+
+    public void armLastStand() { lastStandArmed = true; }
+
+    public boolean consumeLastStand() {
+        boolean armed = lastStandArmed;
+        lastStandArmed = false;
+        return armed;
     }
 
     public boolean hasKnowledge(CounterMap<Knowledge> cardKnowledge) {
@@ -211,6 +237,7 @@ public class Player implements Targetable {
                 .setHandSize(hand.size())
                 .setHealth(damagable.getHealth())
                 .setTime(clock.getTimeLeft())
+                .setFreePlayCredits(freePlayCredits)
                 .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
                 .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()));
 
@@ -241,6 +268,7 @@ public class Player implements Targetable {
         playArea.forEach(Card::endTurn);
         damagable.endTurn();
         turnlyEnergy = 0;
+        freePlayCredits = 0;
     }
 
     public void putToBottomOfDeck(Card card) {

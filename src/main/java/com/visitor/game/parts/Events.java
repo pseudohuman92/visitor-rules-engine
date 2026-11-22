@@ -11,6 +11,7 @@ import static com.visitor.game.Event.turnStart;
 import static java.lang.System.out;
 
 public class Events extends Messaging {
+    private int eventProcessingDepth;
     /**
      * Event Related Methods
      * These are the methods that implements event mechanism.
@@ -31,18 +32,24 @@ public class Events extends Messaging {
      * then card/checker registration order. Explicit nested processing runs inline.
      */
     public void processEvents() {
-        if (!eventQueue.isEmpty()) {
-            Arraylist<Event> tempQueue = eventQueue;
-            eventQueue = new Arraylist<>();
-            while (!tempQueue.isEmpty()) {
-                Event e = tempQueue.remove(0);
-                out.println("Processing Event: " + e.type);
-                triggeringCards.get(turnPlayer).forEach(c -> c.checkEvent(e));
-                triggeringCards.get(this.getOpponentId(turnPlayer)).forEach(c -> c.checkEvent(e));
+        eventProcessingDepth++;
+        try {
+            if (!eventQueue.isEmpty()) {
+                Arraylist<Event> tempQueue = eventQueue;
+                eventQueue = new Arraylist<>();
+                while (!tempQueue.isEmpty()) {
+                    Event e = tempQueue.remove(0);
+                    out.println("Processing Event: " + e.type);
+                    new Arraylist<>(triggeringCards.get(turnPlayer)).forEach(c -> c.checkEvent(e));
+                    new Arraylist<>(triggeringCards.get(this.getOpponentId(turnPlayer))).forEach(c -> c.checkEvent(e));
+                }
+            }
+        } finally {
+            if (--eventProcessingDepth == 0) {
+                toDeregister.forEach(Card::deregister);
+                toDeregister.clear();
             }
         }
-        toDeregister.forEach(Card::deregister);
-        toDeregister.clear();
     }
 
     void processBeginEvents() {

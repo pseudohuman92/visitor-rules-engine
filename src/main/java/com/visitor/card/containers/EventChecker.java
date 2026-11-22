@@ -11,8 +11,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static com.visitor.helpers.HelperFunctions.runIf;
-
 public class EventChecker implements Consumer<Event> {
     private Predicate<Event> condition;
     private Consumer<Event> effect;
@@ -26,6 +24,16 @@ public class EventChecker implements Consumer<Event> {
         this.card = card;
         this.effect = c -> {};
         condition = event -> true;
+    }
+
+    public static EventChecker of(Game game, Card card, Event.EventType type,
+                                  Predicate<Event> predicate, Consumer<Event> effect) {
+        return new EventChecker(game, card).addTypeCondition(type).and(predicate).setEventEffect(effect);
+    }
+
+    private EventChecker setEventEffect(Consumer<Event> effect) {
+        this.effect = effect;
+        return this;
     }
 
     public static EventChecker attackChecker(Game game, Card card, Predicate<Arraylist<Card>>  predicate, Consumer<Arraylist<Card>> effect){
