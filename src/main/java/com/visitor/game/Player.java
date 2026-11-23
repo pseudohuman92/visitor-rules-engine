@@ -238,6 +238,7 @@ public class Player implements Targetable {
                 .setHealth(damagable.getHealth())
                 .setTime(clock.getTimeLeft())
                 .setFreePlayCredits(freePlayCredits)
+                .setStudiesLeft(numOfStudiesLeft)
                 .addAllPlay(playArea.transform(c -> c.toCardMessage().build()))
                 .addAllDiscardPile(discardPile.transform(c -> c.toCardMessage().build()));
 
