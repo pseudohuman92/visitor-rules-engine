@@ -103,6 +103,7 @@ public class Damagable {
     }
 
     public final void setBlocking(UUID unit) {
+        card.deplete();
         blockedAttacker = unit;
     }
 

@@ -324,6 +324,7 @@ public class ClientActionLegalityTest {
         reject(() -> g.selectBlockers(a.getId(),new Types.BlockerAssignment[]{block(blocker,attacker)}));
         g.selectBlockers(b.getId(),new Types.BlockerAssignment[]{block(blocker,attacker)});
         assertEquals(BLOCK_PLAY,g.phase); assertEquals(Arrays.asList(blocker.getId()),g.blockers);
+        assertTrue(blocker.isDepleted()); assertTrue(blocker.toCardMessage().getDepleted());
     }
     @Test public void blockingChecksKeywordsAndCannotOverwriteAnExistingAssignment() {
         Card attacker=f.play(new Stormtrooper(g,a.getId()),a), first=f.play(new Stormtrooper(g,b.getId()),b), second=f.play(new Stormtrooper(g,b.getId()),b);
