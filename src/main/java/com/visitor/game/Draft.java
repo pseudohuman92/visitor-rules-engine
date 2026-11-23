@@ -199,8 +199,8 @@ public class Draft {
         }
     }
 
-    public void removeConnection(UUID playerId) {
-        connections.removeFrom(playerId);
+    public void removeConnection(UUID playerId, DraftEndpoint connection) {
+        connections.remove(playerId, connection);
     }
 
     public void setLastMessage(UUID playerId, ServerGameMessages.ServerGameMessage lastMessage) {
@@ -247,17 +247,17 @@ public class Draft {
         return null;
     }
 
-    public void draftPick(UUID playerId, UUID cardId) {
-        try {
-            responses.get(playerId).put(cardId);
-            picksReceived++;
-            //TODO: Update the player so their picks gets shown
-            if (picksReceived == 2) {
-                picksReceived = 0;
-                processPicks();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public synchronized void draftPick(UUID playerId, UUID cardId) {
+        if (!started || roundsCompleted >= TOTAL_ROUNDS || cardId == null) return;
+        Arraylist<Card> candidates = possiblePicks.get(playerId);
+        ArrayBlockingQueue<Object> response = responses.get(playerId);
+        if (candidates == null || response == null) return;
+        boolean offered = candidates.stream().anyMatch(card -> card.getId().equals(cardId));
+        if (!offered || !response.offer(cardId)) return;
+        picksReceived++;
+        if (picksReceived == 2) {
+            picksReceived = 0;
+            processPicks();
         }
     }
 }

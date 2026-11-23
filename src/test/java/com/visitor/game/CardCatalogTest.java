@@ -39,6 +39,18 @@ public class CardCatalogTest {
         @Override public void send(ServerGameMessage.Builder builder) { latest=builder.build(); }
     }
 
+    @Test public void staleDraftSocketCannotRemoveItsReplacement() {
+        Draft draft = new Draft("first", "second");
+        UUID first = draft.players.values().stream().filter(p -> p.username.equals("first")).findFirst().get().getId();
+        CaptureEndpoint old = new CaptureEndpoint(), replacement = new CaptureEndpoint();
+        draft.addConnection(first, old);
+        draft.addConnection(first, replacement);
+        draft.removeConnection(first, old);
+        assertSame(replacement, draft.connections.get(first));
+        draft.removeConnection(first, replacement);
+        assertFalse(draft.connections.containsKey(first));
+    }
+
     @Test(timeout=10000) public void threeRoundDraftCompletesAndExportsLoadableDecks() throws Exception {
         Draft draft=new Draft("first","second");
         try {
@@ -51,7 +63,10 @@ public class CardCatalogTest {
                 assertEquals(pick%2==0 ? 3 : 2,a.latest.getPickCard().getCandidatesCount());
                 UUID aCard=UUID.fromString(a.latest.getPickCard().getCandidates(0).getId());
                 UUID bCard=UUID.fromString(b.latest.getPickCard().getCandidates(0).getId());
-                draft.draftPick(first,aCard); draft.draftPick(second,bCard);
+                draft.draftPick(first,UUID.randomUUID());
+                draft.draftPick(first,aCard);
+                draft.draftPick(first,aCard);
+                draft.draftPick(second,bCard);
             }
             assertTrue(a.latest.getPickCard().getDraft().getCompleted());
             assertTrue(b.latest.getPickCard().getDraft().getCompleted());

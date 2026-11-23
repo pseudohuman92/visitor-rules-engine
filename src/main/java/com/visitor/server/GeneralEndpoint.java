@@ -59,7 +59,7 @@ public class GeneralEndpoint {
     public void onClose(Session session) {
         out.println(playerName + " disconnected!");
         if (gameServer != null)
-            gameServer.removeConnection(playerName);
+            gameServer.removeConnection(playerName, this);
         this.session = null;
     }
 

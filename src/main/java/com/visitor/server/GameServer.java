@@ -219,6 +219,11 @@ public class GameServer {
                 i--;
             }
         }
+        P2DraftGameQueue.entrySet().removeIf(entry -> entry.getValue().username.equals(username));
+    }
+
+    synchronized void removeConnection(String username, GeneralEndpoint connection) {
+        if (playerConnections.get(username) == connection) removeConnection(username);
     }
 
     CompletableFuture<Void> addGameConnection(UUID gameID, UUID playerId, GameEndpointInterface connection) {
@@ -298,9 +303,11 @@ public class GameServer {
                 try {
                     playerConnections.get(waitingPlayer.username).send(ServerMessage.newBuilder()
                             .setNewGame(NewGame.newBuilder()
+                                    .setGameType(Types.GameType.P2_DRAFT_GAME)
                                     .setGame(game.toGameState(waitingPlayer.username))));
                     playerConnections.get(username).send(ServerMessage.newBuilder()
                             .setNewGame(NewGame.newBuilder()
+                                    .setGameType(Types.GameType.P2_DRAFT_GAME)
                                     .setGame(game.toGameState(username))));
                 } catch (IOException | EncodeException ex) {
                     getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
@@ -428,8 +435,8 @@ public class GameServer {
         drafts.get(draftID).addConnection(playerId, connection);
     }
 
-    synchronized public void removeDraftConnection(UUID draftID, UUID playerId) {
-        drafts.get(draftID).removeConnection(playerId);
+    synchronized public void removeDraftConnection(UUID draftID, UUID playerId, DraftEndpoint connection) {
+        drafts.get(draftID).removeConnection(playerId, connection);
     }
 
     public void draftPick(UUID draftID, UUID playerId, UUID cardId) {
