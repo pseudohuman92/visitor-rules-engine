@@ -51,14 +51,14 @@ public class CardCatalogTest {
         assertFalse(draft.connections.containsKey(first));
     }
 
-    @Test(timeout=10000) public void threeRoundDraftCompletesAndExportsLoadableDecks() throws Exception {
+    @Test(timeout=30000) public void twentyRoundDraftCompletesAndExportsLoadableDecks() throws Exception {
         Draft draft=new Draft("first","second");
         try {
             UUID first=draft.players.values().stream().filter(p -> p.username.equals("first")).findFirst().get().getId();
             UUID second=draft.getOpponentId(first);
             CaptureEndpoint a=new CaptureEndpoint(), b=new CaptureEndpoint();
             draft.addConnection(first,a); draft.addConnection(second,b);
-            for (int pick=0; pick<6; pick++) {
+            for (int pick=0; pick<Draft.TOTAL_ROUNDS * 2; pick++) {
                 assertFalse(a.latest.getPickCard().getDraft().getCompleted());
                 assertEquals(pick%2==0 ? 3 : 2,a.latest.getPickCard().getCandidatesCount());
                 UUID aCard=UUID.fromString(a.latest.getPickCard().getCandidates(0).getId());
@@ -71,11 +71,11 @@ public class CardCatalogTest {
             assertTrue(a.latest.getPickCard().getDraft().getCompleted());
             assertTrue(b.latest.getPickCard().getDraft().getCompleted());
             for (Player player : draft.players.values()) {
-                assertEquals(6,player.deck.size());
+                assertEquals(40,player.deck.size());
                 String[] exported=player.deck.toDeckList().toArray(new String[0]);
                 for (String line : exported) assertTrue(line.contains(";base2."));
                 Deck restored=new Deck(new Game(),player.getId(),exported);
-                assertEquals(6,restored.size());
+                assertEquals(40,restored.size());
                 assertEquals(player.deck.toDeckList(),restored.toDeckList());
             }
         } finally {

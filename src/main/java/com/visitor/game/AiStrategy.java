@@ -601,7 +601,7 @@ public final class AiStrategy {
                 || damage >= health;
     }
 
-    private static double cardValue(Types.CardP card) {
+    static double cardValue(Types.CardP card) {
         double value = 1.6 + effectScore(card.getDescription()) * 0.48 + cardCost(card) * 0.24;
         if (isUnit(card) && card.hasCombat()) {
             value += card.getCombat().getAttack() * 0.72 + card.getCombat().getHealth() * 0.52

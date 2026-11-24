@@ -32,12 +32,18 @@ public class Draft {
     int roundPickCount;
     int roundsCompleted;
     boolean started;
+    private final DraftAi draftAi;
+    private final UUID aiPlayerId;
 
     private final Game game = new Game(); //Dummy game
 
-    private final int TOTAL_ROUNDS = 3;
+    public static final int TOTAL_ROUNDS = 20;
 
     public Draft(String playerName1, String playerName2) {
+        this(playerName1, playerName2, false);
+    }
+
+    public Draft(String playerName1, String playerName2, boolean secondPlayerIsAi) {
         id = randomUUID();
         players = new Hashmap<>();
         connections = new Hashmap<>();
@@ -52,6 +58,8 @@ public class Draft {
 
         Player player1 = new Player(game, playerName1, new String[0]);
         Player player2 = new Player(game, playerName2, new String[0]);
+        draftAi = secondPlayerIsAi ? new DraftAi() : null;
+        aiPlayerId = secondPlayerIsAi ? player2.getId() : null;
         players.put(player1.getId(), player1);
         players.put(player2.getId(), player2);
         responses.put(player1.getId(), new ArrayBlockingQueue<>(1));
@@ -162,6 +170,11 @@ public class Draft {
     }
 
     private void pick(UUID playerId, Arraylist<Card> cards) {
+        if (playerId.equals(aiPlayerId)) {
+            Card choice = draftAi.choose(cards, players.get(playerId).deck, roundsCompleted);
+            draftPick(playerId, choice.getId());
+            return;
+        }
         ServerGameMessages.PickCard.Builder builder = ServerGameMessages.PickCard.newBuilder()
                 .addAllCandidates(cards.transform(c -> c.toCardMessage().build()))
                 .setMessageP("Pick a card to draft.").setDraft(toDraftState(playerId, false));
@@ -192,9 +205,10 @@ public class Draft {
      * Connection Methods
      * To deal with client connections
      */
-    public void addConnection(UUID playerId, DraftEndpoint connection) {
+    public synchronized void addConnection(UUID playerId, DraftEndpoint connection) {
         connections.putIn(playerId, connection);
-        if (!started && connections.keySet().size() > 1) {
+        if (!started && (connections.keySet().size() > 1
+                || (aiPlayerId != null && connections.containsKey(getOpponentId(aiPlayerId))))) {
             startDraft();
         }
     }
@@ -213,6 +227,29 @@ public class Draft {
 
     public UUID getId() {
         return id;
+    }
+
+    public boolean isAiDraft() {
+        return aiPlayerId != null;
+    }
+
+    public boolean isCompleted() {
+        return roundsCompleted >= TOTAL_ROUNDS;
+    }
+
+    public String[] getDecklist(String playerName) {
+        UUID playerId = getPlayerId(playerName);
+        if (playerId == null) throw new IllegalArgumentException("Unknown draft player");
+        return players.get(playerId).deck.toDeckList().toArray(new String[0]);
+    }
+
+    public String[] getAiDecklist() {
+        if (aiPlayerId == null) throw new IllegalStateException("Draft has no AI player");
+        return players.get(aiPlayerId).deck.toDeckList().toArray(new String[0]);
+    }
+
+    public DraftAi getDraftAi() {
+        return draftAi;
     }
 
     public UUID getOpponentId(UUID playerId) {

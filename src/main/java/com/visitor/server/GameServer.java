@@ -277,8 +277,14 @@ public class GameServer {
             case P2_DRAFT:
                 joinP2DraftQueue(username);
                 break;
+            case AI_DRAFT:
+                startAiDraft(username);
+                break;
             case P2_DRAFT_GAME:
                 joinP2DraftGameQueue(draftId, username, decklist);
+                break;
+            case AI_DRAFT_GAME:
+                startAiDraftGame(draftId, username);
                 break;
         }
 
@@ -339,6 +345,46 @@ public class GameServer {
                 getLogger(GameServer.class.getName()).log(SEVERE, null, ex);
             }
         }
+    }
+
+    private void startAiDraft(String username) {
+        Draft draft = new Draft(username, "Draft AI", true);
+        drafts.put(draft.getId(), draft);
+        try {
+            playerConnections.get(username).send(ServerMessage.newBuilder()
+                    .setNewDraft(ServerMessages.NewDraft.newBuilder()
+                            .setDraft(draft.toDraftState(username, false))));
+        } catch (IOException | EncodeException ex) {
+            getLogger(GameServer.class.getName()).log(SEVERE, "Could not start AI draft", ex);
+        }
+    }
+
+    private void startAiDraftGame(UUID draftId, String username) {
+        Draft draft = drafts.get(draftId);
+        if (draft == null || !draft.isAiDraft() || !draft.isCompleted()) return;
+        String[] humanDeck;
+        try {
+            humanDeck = draft.getDecklist(username);
+        } catch (IllegalArgumentException ex) {
+            return;
+        }
+        Game game = new Game();
+        AiPlayer aiPlayer = new AiPlayer(game, "Draft AI", draft.getAiDecklist());
+        game.addToHistory("Game Type: AI Draft");
+        game.addToHistory(username + ":\n" + Arrays.toString(humanDeck));
+        game.addToHistory("Draft AI:\n" + Arrays.toString(draft.getAiDecklist()));
+        game.addPlayers(aiPlayer, new Player(game, username, humanDeck));
+        registerGame(game, () -> {
+            try {
+                playerConnections.get(username).send(ServerMessage.newBuilder()
+                        .setNewGame(NewGame.newBuilder()
+                                .setGameType(Types.GameType.AI_DRAFT_GAME)
+                                .setAiId(aiPlayer.getId().toString())
+                                .setGame(game.toGameState(username))));
+            } catch (IOException | EncodeException ex) {
+                getLogger(GameServer.class.getName()).log(SEVERE, "Could not start AI draft match", ex);
+            }
+        });
     }
 
     private void join1Bo1ConstructedQueue(String username, String[] decklist) {
